@@ -1,7 +1,0 @@
-FreeFormProperty (data, time, date-time, text, number, tel, email, textarea)
-
-SelectOneProperty  (type, range, status, list, rating)
-
-SelectManyProperty  
-
-
