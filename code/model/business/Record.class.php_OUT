@@ -1,0 +1,163 @@
+<?php
+/**
+ * Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @version 0.0.9;
+ */
+namespace svelte\model\business;
+
+use svelte\core\Str;
+use svelte\core\iOption;
+use svelte\core\Collection;
+use svelte\model\business\BusinessModel;
+
+abstract class Record extends BusinessModel implements iOption {
+
+  private $dataObject;
+  private $validFromSource;
+  private $modified;
+
+  /**
+   * Creates record, new or with encapsulated source data contained.
+   * @param \stdClass $dataObject Simple data container
+   */
+  final public function __construct(\stdClass $dataObject = null)
+  {
+    $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
+    $this->updated();
+
+    $children = new Collection(Str::set(__NAMESPACE__ . '\BusinessModel'));
+    $className = get_class($this);
+    foreach (get_class_methods($className) as $methodName) {
+      if (strpos($methodName, 'get_') === 0) {
+
+        foreach (get_class_methods(__NAMESPACE__ . '\Record') as $parentMethod) {
+          if ($methodName == $parentMethod) { continue 2; }
+        }
+
+        $propertyName = str_replace('get_', '', $methodName);
+        if (!isset($this->dataObject->$propertyName)) {
+          $this->dataObject->$propertyName = NULL;
+        }
+        $children[$propertyName] = $this->$propertyName;
+      }
+    }
+    parent::__construct($children);
+  }
+
+  /**
+   */
+  public function updated()
+  {
+    $pkName = $this->primaryKeyName();
+    $this->validFromSource = (isset($this->dataObject->$pkName) && $this->checkRequired($this->dataObject));
+    $this->modified = false;
+  }
+
+  /**
+   * ...
+   * @throws svelte\core\PropertyNotSetException when provided propertyName is NOT settable
+   */
+  public function __set($propertyName, $propertyValue)
+  {
+    parent::__set($propertyName, $propertyValue);
+    $this->modified = true;
+  }
+
+
+  /**
+   * Returns property name of this records primary key.
+   * @return \svelte\core\Str Name of property that is <i>this</i> records primary key
+   */
+  abstract static public function primaryKeyName() : Str;
+
+  /**
+   * {@inherit}
+   */
+  final public function get_id() : Str
+  {
+    return Str::COLON()->prepend(
+      $this->processType((string)$this, TRUE)
+    )->append(
+      Str::hyphenate($this->key)
+    );
+  }
+
+  /**
+   * {@inherit}
+   */
+  public function get_value() : Str
+  {
+    return $this->id;
+  }
+
+  /**
+   * Returns value of primary key.
+   * @return \svelte\core\Str Value of primary key
+   */
+  final public function get_key() : Str
+  {
+    $pkName = (string)$this->primaryKeyName();
+    return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
+  }
+
+  /**
+   */
+  final public function getPropertyValue(Str $propertyName)
+  {
+    $propertyName = (string)$propertyName;
+    return $this->dataObject->$propertyName;
+  }
+
+  /**
+   */
+  final protected function setPropertyValue($propertyName, $value)
+  {
+    $this->dataObject->$propertyName = $value;
+  }
+
+  /**
+   */
+  final public function isNew() : bool
+  {
+    return (!$this->validFromSource);
+  }
+
+  /**
+   */
+  final public function isValid() : bool
+  {
+    $pkName = $this->primaryKeyName();
+    return ($this->validFromSource ||
+      (isset($this->dataObject->$pkName) &&
+      $this->checkRequired($this->dataObject))
+    );
+  }
+
+  /**
+   */
+  final public function isModified() : bool
+  {
+    return $this->modified;
+  }
+
+  /**
+   * Check requeried properties have value or not.
+   * @return bool
+   */
+  abstract protected function checkRequired($dataObject) : bool;
+}

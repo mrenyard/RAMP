@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [ -f /usr/share/php/FPDF.class.php ]; then
+  sudo rm /usr/share/php/FPDF.class.php
+fi
+sudo ln -s /usr/share/php/fpdf/fpdf.php /usr/share/php/FPDF.class.php

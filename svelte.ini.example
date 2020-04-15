@@ -1,0 +1,102 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Svelte - Rapid web application development enviroment for
+;  building flexible, customisable web systems.
+;
+; AUTHOR: Matt Renyard (renyard.m@gmail.com)
+; PACKAGE: svelte.local
+; VERSION: 0.0.9;
+
+;;;;;;;;;;;;;;;;;;;
+; About svelte.ini
+;
+; Svelte's local initialization file, generally called svelte.ini, is responsible for configuring
+; the local aspects of an individual Svelte Project and SHOULD usually be located alongside the
+; public website root folder. i.e.: -- ~/                    (secure ftp folder)
+;                                    |
+;                                    +-- public_html         (website root folder)
+;                                    | |-- index.html        (static homepage)?
+;                                    | |-- robots.txt
+;                                    | |-- humans.txt
+;                                    | |-- controller.php    (svelte controller file)
+;                                    |
+;                                    +-- svelte.ini          (local initialization file)
+;
+; The syntax of the file follows the same conventions as 'php.ini' and therefore is extremely
+; simple.  Whitespace and Lines beginning with a semicolon are silently ignored. Section headers
+; (e.g. [svelte], [foo]) are used throughout this configuration file.
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;
+; Local Svelte settings
+[svelte]
+
+; Domain under which this application is run
+;domain =
+
+; Directory from which to locate application specific code
+; related only to this particular project
+;local_dir =
+
+; Concrete BusinessModelManager used to handle data layer
+; (fully qualified namespace and class name)
+; e.g. svelte\model\business\SQLBusinessModelManager
+;business_model_manager =
+
+; Fully qualified namespace for BusinessModel classes
+; e.g. svelte\model\business
+;business_model_namespace =
+
+; Authenticatible Unit of specific business model
+; MUST have property email as a required field
+; e.g. Person or Organisation
+;authenticatible_unit =
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Model Manager Database Setting
+[database]
+
+; Database connection string
+; replace [host] and [dbname] where appropriate
+; - MS SQL Server and Sybase with PDO_DBLIB
+; -- dbconnection = mssql:host=[host];dbname=[dbname]
+; -- dbconnection = sybase:host=[host];dbname=[dbname]
+; - MySQL with PDO_MYSQL
+; -- dbconnection = mysql:host=[host];dbname=[dbname]
+; - SQLite Database
+; -- dbconnection = sqlite:my/database/path/database.db
+;connection =
+
+; Database user name
+;user =
+
+; Database password
+;password =
+
+; Maximum rows to display on a single page from a single query
+; - defaults to 100 if not set
+;max_results =
+
+
+;;;;;;;;;;;;;;;;;;;;
+; Security settings
+[security]
+
+; SALT value used for password encryption.
+; DO NOT CHANGE THIS VALUE ONCE SITE IS LIVE!
+;password_salt =
+
+
+;;;;;;;;;;;;;;;;;;
+; E-Mail Settings
+[email]
+
+; Name to be used when sending e-mail
+;from_name =
+
+; Sender's e-mail address
+; e.g. no-reply@domain.com
+;from_address =
+
+; 'Reply' to e-mail address
+; e.g. enquires@domain.com
+;reply_address =

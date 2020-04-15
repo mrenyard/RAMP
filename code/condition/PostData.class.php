@@ -1,0 +1,77 @@
+<?php
+/**
+ * Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @package svelte
+ * @version 0.0.9;
+ */
+namespace svelte\condition;
+
+use svelte\core\Str;
+use svelte\core\Collection;
+
+/**
+ * Collection of verified 'property value pairs' for submission into system.
+ * - restricted and evaluated by the constraints of your business model
+ *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+ *
+ * COLLABORATORS
+ * - {@link \svelte\core\Str}
+ * - Collection of {@link \svelte\condition\InputDataCondition}s
+ */
+final class PostData extends Collection
+{
+  /**
+   * Constructs an empty collection for \svelte\condition\InputDataCondition.
+   * A collection of verified property value pairs restricted and evaluated by the constraints of
+   * your business model as defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+   */
+  public function __construct()
+  {
+    parent::__construct(Str::set('svelte\condition\InputDataCondition'));
+  }
+
+  /**
+   * Factory method that validates array of name value pairs (i.e. $_POST) as new PostData object.
+   * @param array $postdata Simple array containing name value pairs for processing into PostData Object
+   * @return PostData Collection of verified 'property value pairs' based on provided array.
+   * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
+   * as defined by your locally defined business model within SVELTE_BUSINESS_MODEL_NAMESPACE.
+   */
+  static public function build(array $postdata) : PostData
+  {
+    $postData = new PostData();
+    foreach ($postdata as $name => $value) {
+
+      $URI = explode(':', $name);
+      if (count($URI) !== 3) {
+        throw new \DomainException(
+          'Invalid format for name in $postdata, SHOULD be URI in the form "record:key:property"'
+        );
+      }
+
+      $record = Str::camelCase(Str::set($URI[0]));
+      $primaryKey = Str::set($URI[1]);
+      $property = Str::camelCase(Str::set($URI[2]), TRUE);
+
+      // InputDataCondition also throws \DomainException - which we allow to bubble up.
+      $postData->add(new InputDataCondition($record, $primaryKey, $property, $value));
+
+    } // END foreach
+    return $postData;
+  }
+}

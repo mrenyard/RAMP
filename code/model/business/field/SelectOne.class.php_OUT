@@ -1,0 +1,69 @@
+<?php
+/**
+ * Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @version 0.0.9;
+ */
+namespace svelte\model\business\field;
+
+use svelte\core\Str;
+use svelte\core\Collection;
+use svelte\core\iOption;
+use svelte\core\OptionList;
+use svelte\core\BadPropertyCallException;
+use svelte\model\business\Record;
+
+/**
+ */
+class SelectOne extends Field {
+
+  /**
+   * Creates property with referance to its containing record.
+   * @param \svelte\model\business\Record $containingRecord Record parent of <i>this</i> property
+   */
+  public function __construct(Str $propertyName, Record $containingRecord, OptionList $options)
+  {
+    parent::__construct($propertyName, $containingRecord, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function get_value()
+  {
+    $propertyFK = $this->propertyName;
+    try {
+      $property = $this->containingRecord->getPropertyValue($propertyFK);
+    } catch (\Exception $e) {}
+
+    return (isset($property))? $this->children[(string)$property] : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __get($propertyName)
+  {
+    try {
+      return parent::__get($propertyName);
+    } catch (BadPropertyCallException $e) {
+      $value = $this->get_value();
+      if (!($value instanceof iOption)) { throw $e; }
+      return $value->$propertyName;
+    }
+  }
+}
