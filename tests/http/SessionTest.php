@@ -69,7 +69,6 @@ class SessionTest extends \PHPUnit\Framework\TestCase
 {
   private static $ref;
 
-  //private static $authenticatableUnit;
   private $sessionLoginAccountEmail;
   private $unencryptedPassword;
 
@@ -97,16 +96,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
           'Session::instance() MUST be called before Session::authorizedAs().',
           $expected->getMessage()
         );
-        try {
-          Session::getInstance();
-        } catch (\BadMethodCallException $expected) {
-          $this->AssertSame(
-            'MUST provide an Authentication Form View and a Reset Password View on first call.',
-            $expected->getMessage()
-          );
-          self::$ref = Session::getInstance(new PasswordResetView());
-          return;
-        }
+        Session::getInstance();
+        self::$ref = Session::getInstance(new PasswordResetView());
+        return;
       }
       $this->fail('An expected \BadMethodCallException has NOT been raised');
     }
@@ -155,7 +147,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     );
     $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->id;
     $dataObject->auPK = 'aperson';
-    $_SESSION['loginAccount'] = new LoginAccount($dataObject);
+    $sessionLoginAccount = new LoginAccount($dataObject);
+    $_SESSION['loginAccount'] = $sessionLoginAccount;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
     $testObject = Session::getInstance(new PasswordResetView());
@@ -166,6 +159,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR()));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR_MANAGER()));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::SYSTEM_ADMINISTRATOR()));
+
+    $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
   }
 
   /**
@@ -173,6 +168,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    *  with already Authenticated $_SESSION.
    * - assert returns without interuption when $_SESSION['LoginAccount'] has sufficient privileges
    * - assert throws Unauthorized401Exception when $_SESSION['LoginAccount'] has insufficient privileges
+   *   - with message: <em>'Unauthenticated or insufficient authority'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsAlreadyAuthenticated()
@@ -190,7 +186,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     );
     $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->id;
     $dataObject->auPK = 'aperson';
-    $_SESSION['loginAccount'] = new LoginAccount($dataObject);
+    $sessionLoginAccount = new LoginAccount($dataObject);
+    $_SESSION['loginAccount'] = $sessionLoginAccount;
     $_POST = $postArray;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
@@ -198,12 +195,16 @@ class SessionTest extends \PHPUnit\Framework\TestCase
 
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
     $this->assertSame($postArray, $_POST);
+    $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::USER()));
     $this->assertSame($postArray, $_POST);
+    $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::AFFILIATE()));
     $this->assertSame($postArray, $_POST);
+    $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR()));
     $this->assertSame($postArray, $_POST);
+    $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
     try {
       $this->assertFalse($testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER()));
     } catch (Unauthorized401Exception $expected) {
@@ -211,11 +212,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
         'Attempting POST to resource REQUIRING authentication or insufficient authority',
         $expected->getMessage()
       );
+      $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
       $_POST = array();
       try {
         $this->assertFalse($testObject->AuthorizeAs(LoginAccountType::SYSTEM_ADMINISTRATOR()));
       } catch (Unauthorized401Exception $expected) {
         $this->assertSame('Unauthenticated or insufficient authority', $expected->getMessage());
+        $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
         return;
       }
     }
@@ -226,6 +229,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  with no $_SESSION logging-in or a set of valid credentials.
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Unauthenticated or insufficient authority'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentials()
@@ -239,6 +244,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $testObject->authorizeAs(LoginAccountType::REGISTERED());
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame('Unauthenticated or insufficient authority', $expected->getMessage());
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -248,6 +254,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  with no $_SESSION logging-in or a set of valid credentials but with $_POST data.
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Attempting POST to resource REQUIRING authentication or insufficient authority'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentialsWithPost()
@@ -271,6 +279,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       );
       $this->assertTrue(isset($_SESSION['post_array']));
       $this->assertSame($_SESSION['post_array'], $postArray);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -280,6 +289,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  while ONLY providing login-email without login-password or [authenticatableUnit]:new:email.
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'SHOULD NEVER REACH HERE!'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithEmailNoPassword()
@@ -301,6 +312,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('SHOULD NEVER REACH HERE!', $expected->getMessage());
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -310,6 +322,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  while logging-in with a set of valid Credentials.
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Account (email) NOT in database'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsEmailNotInDatabase()
@@ -333,6 +347,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['login-password']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -343,6 +358,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    *  while logging-in with a set of valid Credentials.
    * - .
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Invalid password or insufficient privileges'</em>
    */
   public function testAuthorizeAsWithInvalidPassword()
   {
@@ -365,6 +382,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['login-password']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -375,6 +393,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    *  while logging-in with a set of valid Credentials.
    * - .
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Invalid password or insufficient privileges'</em>
    */
   public function testAuthorizeAsWithInsufficientPrivileges()
   {
@@ -397,6 +417,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['login-password']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -426,12 +447,15 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($_POST['login-email']));
     $this->assertFalse(isset($_POST['login-password']));
     $this->assertSame($postArray, $_POST);
+    $this->assertTrue(isset($_SESSION['loginAccount']));
   }
 
   /**
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  with new authenticatible unit details to setup as new login account BUT emails mismatch.
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'new authenticatible unit form e-mail mismatch'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailMismatch()
@@ -454,16 +478,19 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['person:new:email']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
+      // TODO:mrenyard: test errorCollection
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
   }
 
-  //Trying to create new login where one already exists!
   /**
    * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  with new authenticatible unit details to setup as new login account BUT alreay exists
    * - .
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: <em>'Trying to create new login where one already exists!'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailAlreadyExists()
@@ -486,6 +513,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['person:new:email']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+      $this->assertFalse(isset($_SESSION['loginAccount']));
+      // TODO:mrenyard: test errorCollection
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
@@ -514,7 +543,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($_POST['login-email']));
     $this->assertTrue(isset($_POST['person:new:email']));
     $this->assertSame($_SESSION['post_array'], $additionalPostdata);
-    // TODO:mrenyard: unencriptedPassword is accesible.
+    $this->assertTrue(isset($_SESSION['loginAccount']));
     // TODO:mrenyard: Remove need to send PasswordResetView on getInstance().
     // TODO:mrenyard: Tidy up documentation Test and Actual.
   }

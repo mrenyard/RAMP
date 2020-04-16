@@ -46,27 +46,20 @@ final class Session extends SvelteObject {
   private static $instance;
 
   private $modelManager;
-  private $resetPasswordView;
-
   private $loginAccount;
-
   private $accountEmailFilter;
   private $accountEmailCondition;
-
   private $userEmailFilter;
   private $userEmailCondition;
 
   /**
    * Constuct the instance.
-   * @param \svelte\view\View $authenticationForm View used for authentication
-   * @param \svelte\view\View $resetPasswordView View used for password reset including email.
    */
-  private function __construct(View $resetPasswordView)
+  private function __construct()
   {
     @session_start();
     $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
-    $this->resetPasswordView = $resetPasswordView;
 
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
       $this->modelManager->getBusinessModel(
@@ -89,11 +82,6 @@ final class Session extends SvelteObject {
   public static function getInstance(View $resetPasswordView = null) : Session
   {
     if (!isset(self::$instance) || SETTING::$TEST_RESET_SESSION == TRUE) {
-      if ($resetPasswordView == null) {
-        throw new \BadMethodCallException(
-          'MUST provide an Authentication Form View and a Reset Password View on first call.'
-        );
-      }
       self::$instance = new Session($resetPasswordView);
     }
     return self::$instance;
@@ -165,8 +153,6 @@ final class Session extends SvelteObject {
       $loginPassword = $_POST['login-password']; unset($_POST['login-password']);
     }
     $_SESSION['post_array'] = $_POST; // set aside Post array
-    //$postdata = PostData::build($_POST);
-    //$this->user->validate($postdata);
     if (isset($loginPassword)) // attempt email - password authentication
     {
       try {
@@ -186,6 +172,7 @@ final class Session extends SvelteObject {
       {
         $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
       }
+      $_SESSION['loginAccount'] = $this->loginAccount;
       return;
     }
     $auEmailPropertyID = (string)Str::hyphenate(
@@ -215,7 +202,11 @@ final class Session extends SvelteObject {
         if ($authorizationLevel->id == 1)
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
-          if ($this->loginAccount->authenticatableUnit->isValid()) { return; }
+          if ($this->loginAccount->authenticatableUnit->isValid())
+          {
+            $_SESSION['loginAccount'] = $this->loginAccount;
+            return;
+          }
         }
       }
     }
@@ -230,7 +221,7 @@ final class Session extends SvelteObject {
    * @param string $password
    * @param \svelte\Record $accountRecord
    *
-  public static function updatePassword(Str $password, model\UserAccount $accountRecord = \NULL)
+  public static function updatePassword(Str $password, model\business\LoginAccount $accountRecord = \NULL)
   {
     $currentUserAccountRecord = self::get(); // get session data
     if (is_null($accountRecord)) {
