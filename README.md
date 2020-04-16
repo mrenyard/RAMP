@@ -53,11 +53,11 @@ Enhancement and Highly Customisable.
 SOME RULES OF THE WEB WE KEPT IN MIND
 ---------------------------------------------------------
 
-1) There is ONLY ONE type of event in any web application.
+1) There is ONLY ONE type of event in any web application.  
     A HTTP request.
 
-2) Every View (web fragment) ONLY has ONE parent.
-    Semantics are inferred in both page markup
+2) Every View (web fragment) ONLY has ONE parent.  
+    Semantics are inferred in both page markup  
      and overall site structure.
 
 3) Once created, a resource's address SHOULD rarely be abandoned.
@@ -67,17 +67,17 @@ SOME RULES OF THE WEB WE KEPT IN MIND
   - Frames are bad
   - AJAX used to load primary content is bad
 
-5) An Authorisation Form (login), is NOT a resource.
+5) An Authorisation Form (login), is NOT a resource.  
     And therefore should NOT have its own address
 
-6) Functional Enhancements (Javascript) are LAST element
-   in the front end technology stack, NOT the FIRST.
+6) Functional Enhancements (Javascript) are LAST element  
+   in the front end technology stack, NOT the FIRST.  
     Preceded firstly by Markup (HTML) and then Style (CSS)
 
 ---------------------------------------------------------
 
 There are three types of semantics to consider within the
-world wide web:
+world wide web:  
 Hierarchical, Ordered and Networked.
 
 - Hierarchical:
@@ -95,21 +95,21 @@ Hierarchical, Ordered and Networked.
 WE SUPPORT THE PRINCIPLES AND IDEAS OF:
 ----------------------------------------------------------
 
-A Front End Engineer's Manifesto
+A Front End Engineer's Manifesto  
 [http://f2em.com/]
 
-Design Patterns: Elements of Reusable Object-Oriented Software
+Design Patterns: Elements of Reusable Object-Oriented Software  
 (GoF:  Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides)
 
-Design Patterns Explained: A New Perspective on Object-Oriented Design
+Design Patterns Explained: A New Perspective on Object-Oriented Design  
 [https://www.amazon.co.uk/Design-Patterns-Explained-Perspective-Object-Oriented/dp/0321247140]
-and Commonality Variability Analysis whitepaper
+and Commonality Variability Analysis whitepaper  
 [http://www.netobjectives.net/files/pdfs/Introduction_CommonalityVariabilityAnalysis.pdf]
 (NetObjectives).
 
-Hijax
-[https://domscripting.com/blog/display/41]
+Hijax  
+[https://domscripting.com/blog/display/41]  
 (Jeremy Keith)
 
-The Web Standards Project WaSP
+The Web Standards Project WaSP  
 [http://www.webstandards.org/]
