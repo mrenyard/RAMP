@@ -102,9 +102,9 @@ Design Patterns: Elements of Reusable Object-Oriented Software
 (GoF:  Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides)
 
 Design Patterns Explained: A New Perspective on Object-Oriented Design  
-[https://www.amazon.co.uk/Design-Patterns-Explained-Perspective-Object-Oriented/dp/0321247140]
+[https://www.amazon.co.uk/Design-Patterns-Explained-Perspective-Object-Oriented/dp/0321247140]  
 and Commonality Variability Analysis whitepaper  
-[http://www.netobjectives.net/files/pdfs/Introduction_CommonalityVariabilityAnalysis.pdf]
+[http://www.netobjectives.net/files/pdfs/Introduction_CommonalityVariabilityAnalysis.pdf]  
 (NetObjectives).
 
 Hijax  
