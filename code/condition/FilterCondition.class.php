@@ -67,7 +67,7 @@ final class FilterCondition extends BusinessCondition
    * @param mixed $comparable Value to be compared with attribute by operation
    * @throws \DomainException when $comparable argument does Not validate against its associated
    *  property's processValidationRules()
-   * @return string Representation of <i>this</i> filter based on provided target environment
+   * @return string Representation of *this* filter based on provided target environment
    */
   public function __invoke(iEnvironment $targetEnvironment = null, $comparable = null) : string
   {

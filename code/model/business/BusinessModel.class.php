@@ -50,8 +50,8 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Get ID (URN)
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Unique identifier for <i>this</i>
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
   abstract public function get_id() : Str;
 
@@ -66,8 +66,8 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Returns type.
-   * <b>DO NOT CALL DIRECTLY, USE this->type;</b>
-   * @return \svelte\core\Str Type for <i>this</i>
+   * **DO NOT CALL DIRECTLY, USE this->type;**
+   * @return \svelte\core\Str Type for *this*
    */
   final protected function get_type() : Str
   {
@@ -83,7 +83,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * Returns this Business model type without namespace.
    * @param string $classFullName Full class name including path/namespace
    * @param \svelte\core\Boolean $hyphenate Whether model type should be returned hyphenated
-   * @return \svelte\core\Str <i>This</i> business model type (without namespace)
+   * @return \svelte\core\Str *This* business model type (without namespace)
    */
   final protected function processType($classFullName, bool $hyphenate = null) : Str
   {
@@ -94,7 +94,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
   /**
    * Implementation of \IteratorAggregate method for use with foreach etc.
-   * @return \Traversable Iterator to iterate over <i>this</i> traversable using foreach.
+   * @return \Traversable Iterator to iterate over *this* traversable using foreach.
    */
   final public function getIterator() : \Traversable
   {
@@ -125,7 +125,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   /**
    * Validate postdata against this and update accordingly.
    * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on <i>this</i> business model.
+   *  to be assessed for validity and imposed on *this* business model.
    */
   public function validate(PostData $postdata)
   {

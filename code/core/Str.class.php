@@ -29,7 +29,7 @@ namespace svelte\core;
  * - Keep single referance to a set of simple regularly used strings.
  *
  * INVARIANT
- * - State of <i>this</i> is always unchanged (all operations return an existing or new Str)
+ * - State of *this* is always unchanged (all operations return an existing or new Str)
  */
 final class Str extends SvelteObject
 {
@@ -73,7 +73,7 @@ final class Str extends SvelteObject
    * @param string $value Value of encapsulated string literal
    * @return \svelte\core\Str Relevant Str object
    */
-  public static function set($value = \NULL)// : Str
+  public static function set($value = \NULL) : Str
   {
     $s;
     switch((string)$value) {
@@ -146,8 +146,8 @@ final class Str extends SvelteObject
 
   /**
    * Appends provided Str to 'this' and returns new appended Str.
-   * @param \svelte\core\Str $value Str to be appended to <i>this</i>
-   * @return \svelte\core\Str Concatenation of <i>this</i> with provided appended
+   * @param \svelte\core\Str $value Str to be appended to *this*
+   * @return \svelte\core\Str Concatenation of *this* with provided appended
    */
   public function append(Str $value) : Str
   {
@@ -160,8 +160,8 @@ final class Str extends SvelteObject
 
   /**
    * Prepends provided Str with 'this' and returns new prepended Str.
-   * @param \svelte\core\Str $value Str to be prepended to <i>this</i>
-   * @return \svelte\core\Str Concatenation of <i>this</i> with provided prepended
+   * @param \svelte\core\Str $value Str to be prepended to *this*
+   * @return \svelte\core\Str Concatenation of *this* with provided prepended
    */
   public function prepend(Str $value) : Str
   {
@@ -226,7 +226,7 @@ final class Str extends SvelteObject
   /**
    * Ascertain if 'this' Str contains any of provided Strs within a Collection.
    * @param \svelte\core\Collection $stringCollection Collection of Strs to be checked
-   * @return \svelte\core\Boolean <i>This</i> does/not contain any of Strs in provided Collection
+   * @return \svelte\core\Boolean *This* does/not contain any of Strs in provided Collection
    * @throws InvalidArgumentException When Collection NOT a composite of \svelte\core\Strs
    *
   public function contains(Collection $stringCollection) : Boolean

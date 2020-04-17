@@ -39,21 +39,25 @@ abstract class View extends SvelteObject
 
   /**
    * Allows access to properties including properties of held Model
-   * <b>DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!</b>.
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**.
    *
-   * <pre><b>Passes:</b> <code>$object->aProperty;</code>
-   * <b>to:</b> <code>$object->get_aProperty();</code></pre>
+   * **Passes:** `$object->aProperty;`
+   * **to:** `$object->get_aProperty();`
    *
    * Implementation in concrete Object
-   * <pre>private aProperty;
+   * ```php
+   * private aProperty;
    *
    * protected function get_aProperty()
    * {
    *   return $this->aProperty;
-   * }</pre>
+   * }
+   * ```
    *
    * Called externally (C# style)
-   * <pre>$object->aProperty; //Get value 'aProperty'</pre>
+   * ```php
+   * $object->aProperty; //Get value 'aProperty'
+   * ```
    *
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property

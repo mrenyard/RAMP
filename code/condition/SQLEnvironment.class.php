@@ -20,7 +20,7 @@ class SQLEnvironment extends Environment
   private static $INSTANCE;
 
   /**
-   * Set up and return instance of <i>this</i> with full set of operators.
+   * Set up and return instance of *this* with full set of operators.
    * @return \svelte\condition\iEnvironment this with full set of operators
    */
   public static function getInstance() : iEnvironment

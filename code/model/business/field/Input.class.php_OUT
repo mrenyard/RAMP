@@ -30,7 +30,7 @@ class Input extends Field {
 
   /**
    * Creates input property with referance to its containing record.
-   * @param \svelte\model\business\Record $containingRecord Record parent of <i>this</i> property
+   * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    */
   public function __construct(Str $propertyName, Record $containingRecord)
   {

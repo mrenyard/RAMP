@@ -81,7 +81,7 @@ abstract class BusinessCondition extends Condition {
 
   /**
    * Returns name of business record.
-   * <b>DO NOT CALL DIRECTLY, USE this->record;</b>
+   * **DO NOT CALL DIRECTLY, USE this->record;**
    * @return \svelte\core\Str Name of record containing property to evaluate.
    */
   protected function get_record() : Str
@@ -91,7 +91,7 @@ abstract class BusinessCondition extends Condition {
 
   /**
    * Returns name of business property.
-   * <b>DO NOT CALL DIRECTLY, USE this->property;</b>
+   * **DO NOT CALL DIRECTLY, USE this->property;**
    * @return \svelte\core\Str Name of property to be evaluated
    */
   protected function get_property() : Str
@@ -101,7 +101,7 @@ abstract class BusinessCondition extends Condition {
 
   /**
    * Sets value of comparable while comparing its validity against business model.
-   * <b>DO NOT CALL DIRECTLY, USE this->comparable = $value;</b>
+   * **DO NOT CALL DIRECTLY, USE this->comparable = $value;**
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via svelte.ini):

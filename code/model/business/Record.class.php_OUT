@@ -81,7 +81,7 @@ abstract class Record extends BusinessModel implements iOption {
 
   /**
    * Returns property name of this records primary key.
-   * @return \svelte\core\Str Name of property that is <i>this</i> records primary key
+   * @return \svelte\core\Str Name of property that is *this* records primary key
    */
   abstract static public function primaryKeyName() : Str;
 

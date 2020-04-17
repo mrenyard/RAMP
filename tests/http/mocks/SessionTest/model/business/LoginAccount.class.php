@@ -28,6 +28,8 @@ use svelte\model\business\BusinessModel;
 use svelte\model\business\LoginAccountType;
 
 /**
+ * Mock Collection of LoginAccount for testing \svelte\http\Session
+ * .
  */
 class LoginAccountCollection extends RecordCollection
 {
@@ -67,8 +69,8 @@ class LoginAccount extends BusinessModel
 
   /**
    * Get ID (URN)
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Unique identifier for <i>this</i>
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
   public function get_id() : Str
   {
@@ -77,8 +79,8 @@ class LoginAccount extends BusinessModel
 
   /**
    * Get email
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Email address associated with <i>this</i>.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Email address associated with *this*.
    */
   protected function get_email()
   {
@@ -87,7 +89,7 @@ class LoginAccount extends BusinessModel
 
   /**
    * Get login account type
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
+   * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\model\business\LoginAccountType
    */
   protected function get_accountType()
@@ -99,7 +101,7 @@ class LoginAccount extends BusinessModel
 
   /**
    * Get the associated Authenticatable Unit as defined with \svelte\SETTING and $this->auPK.
-   * @return Record Authenticatable Unit associated with <i>this</i>.
+   * @return Record Authenticatable Unit associated with *this*.
    */
   protected function get_authenticatableUnit() //: Record
   {

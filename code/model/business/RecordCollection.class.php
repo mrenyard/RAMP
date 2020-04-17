@@ -44,7 +44,7 @@ abstract class RecordCollection extends BusinessModel implements iCollection {
 
   /**
    * Default constructor for collection of \svelte\model\business\Records.
-   * - Sets composite type for this collection as <i>this</i> class-name with string <i>Collection</i> truncated:
+   * - Sets composite type for this collection as *this* class-name with string *Collection* truncated:
    *  - e.g. {@link \svelte\model\business\UserCollection} would expect to referance only {@link \svelte\model\business\User}s.
    */
   final public function __construct()

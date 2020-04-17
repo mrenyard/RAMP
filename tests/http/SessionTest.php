@@ -73,11 +73,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   private $unencryptedPassword;
 
   /**
-   * Setup
-   * - assert throws \BadMethodCallException MUST provide an Authentication Form View and a
-   *  Reset Password View on first call.
+   * Set-up.
+   * - Add values to SETTINGs for our simulated test environment
+   * - Set test varibles for sessionLoginAccountEmail and unencryptedPassword
+   * - assert throws \BadMethodCallException on calling static function
+   *  Seesion::authorizedAs() prior to Seesion::getInstance().
+   * - Calls Seesion::getInstance() if NOT already defined prior to test.
    */
-  public function setUp() //  - PHP varable that fake a basic HTTP Response.
+  public function setUp()
   {
     SETTING::$TEST_ON = TRUE;
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
@@ -97,7 +100,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
           $expected->getMessage()
         );
         Session::getInstance();
-        self::$ref = Session::getInstance(new PasswordResetView());
+        self::$ref = Session::getInstance();
         return;
       }
       $this->fail('An expected \BadMethodCallException has NOT been raised');
@@ -107,10 +110,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \svelte\http\Session::getInstance().
-   * - assert is instance of {@link svelte\core\SvelteObject}
-   * - assert is instance of {@link svelte\http\Session}
+   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert is instance of {@link \svelte\http\Session}
    * - assert is same instance on every call (Singleton)
-   * - assert cannot be cloned
+   * - assert cannot be cloned, throws \BadMethodCallException
+   *   - with message: <em>'Clone is not allowed'</em>
    * @link svelte.http.Session svelte\http\Session
    */
   public function testGetInstance()
@@ -130,8 +134,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizedAs()
-   *  with already Authenticated $_SESSION.
+   * Collection of assertions for \svelte\http\Session::authorizedAs().
+   *  with already Authenticated $_SESSION['LoginAccount']
+   * - assert $_SESSION['loginAccount'] reference retained.
    * - assert returns TRUE when $_SESSION['LoginAccount'] has sufficient privileges
    * - assert returns FALSE when $_SESSION['LoginAccount'] has insufficient privileges
    * @link svelte.http.Session#method_authorizedAs svelte\http\Session::AuthorizedAs()
@@ -151,24 +156,25 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION['loginAccount'] = $sessionLoginAccount;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
-
+    $testObject = Session::getInstance();
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::REGISTERED()));
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::USER()));
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::AFFILIATE()));
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR()));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR_MANAGER()));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::SYSTEM_ADMINISTRATOR()));
-
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  with already Authenticated $_SESSION.
-   * - assert returns without interuption when $_SESSION['LoginAccount'] has sufficient privileges
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  with already Authenticated $_SESSION['LoginAccount']
+   * - assert $_POST data retained.
+   * - assert $_SESSION['loginAccount'] reference retained.
+   * - assert returns without interruption when $_SESSION['LoginAccount'] has sufficient privileges
    * - assert throws Unauthorized401Exception when $_SESSION['LoginAccount'] has insufficient privileges
    *   - with message: <em>'Unauthenticated or insufficient authority'</em>
+   *   - or with $_POST data message: <em>'Attempting POST to resource REQUIRING authentication or insufficient authority'</em>
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsAlreadyAuthenticated()
@@ -191,7 +197,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = $postArray;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
 
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
     $this->assertSame($postArray, $_POST);
@@ -226,11 +232,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  with no $_SESSION logging-in or a set of valid credentials.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  with no $_SESSION['LoginAccount'] or a set of valid credentials
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Unauthenticated or insufficient authority'</em>
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentials()
@@ -239,7 +245,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = array();
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $testObject->authorizeAs(LoginAccountType::REGISTERED());
     } catch (Unauthorized401Exception $expected) {
@@ -251,11 +257,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  with no $_SESSION logging-in or a set of valid credentials but with $_POST data.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  with no $_SESSION['LoginAccount'] or a set of valid credentials but with $_POST data
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Attempting POST to resource REQUIRING authentication or insufficient authority'</em>
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentialsWithPost()
@@ -269,7 +276,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = $postArray;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $testObject->authorizeAs(LoginAccountType::REGISTERED());
     } catch (Unauthorized401Exception $expected) {
@@ -286,11 +293,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  while ONLY providing login-email without login-password or [authenticatableUnit]:new:email.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  while ONLY providing login-email without login-password or [authenticatableUnit]:new:email
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'SHOULD NEVER REACH HERE!'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithEmailNoPassword()
@@ -305,7 +314,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = $this->sessionLoginAccountEmail;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $testObject->authorizeAs(LoginAccountType::REGISTERED());
     } catch (Unauthorized401Exception $expected) {
@@ -319,11 +328,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  while logging-in with a set of valid Credentials.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  while logging-in with an email NOT in database
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Account (email) NOT in database'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsEmailNotInDatabase()
@@ -339,7 +350,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-password'] = $this->unencryptedPassword;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $testObject->authorizeAs(LoginAccountType::REGISTERED());
     } catch (Unauthorized401Exception $expected) {
@@ -354,12 +365,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  while logging-in with a set of valid Credentials.
-   * - .
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  while logging-in with an invalid password
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Invalid password or insufficient privileges'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
+   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithInvalidPassword()
   {
@@ -389,12 +402,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  while logging-in with a set of valid Credentials.
-   * - .
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  while logging-in with a set of valid Credentials but insufficient privileges
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Invalid password or insufficient privileges'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithInsufficientPrivileges()
   {
@@ -409,7 +423,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-password'] = $this->unencryptedPassword;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $testObject->authorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER());
     } catch (Unauthorized401Exception $expected) {
@@ -417,16 +431,18 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['login-password']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
-      $this->assertFalse(isset($_SESSION['loginAccount']));
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  while logging-in with a set of valid Credentials.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  while logging-in with valid Credentials and holding $_SESSION['post_array'] from previous request
+   * - assert $_POST login related data expunged.
+   * - assert $_SESSION['post_array'] passed back to $_POST
+   * - assert returns without interruption as has sufficient privileges
+   * - assert $_SESSION['loginAccount'] reference is successfully set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithValidCredentials()
@@ -441,7 +457,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-password'] = $this->unencryptedPassword;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
 
     $testObject->authorizeAs(LoginAccountType::REGISTERED());
     $this->assertFalse(isset($_POST['login-email']));
@@ -451,11 +467,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  with new authenticatible unit details to setup as new login account BUT emails mismatch.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  with new authenticatible unit details to setup as new login account BUT emails mismatch
    * - assert throws \svelte\http\Unauthorized401Exception
-   *   - with message: <em>'new authenticatible unit form e-mail mismatch'</em>
+   *   - with message: <em>'New Authenticatible Unit Form: e-mail mismatch'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailMismatch()
@@ -470,11 +488,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = 'misspell@email.com';
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $this->assertTrue($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
     } catch (Unauthorized401Exception $expected) {
-      $this->assertSame('new authenticatible unit form e-mail mismatch', $expected->getMessage());
+      $this->assertSame('New Authenticatible Unit Form: e-mail mismatch', $expected->getMessage());
       $this->assertFalse(isset($_POST['login-email']));
       $this->assertFalse(isset($_POST['person:new:email']));
       $this->assertSame($_SESSION['post_array'], $additionalPostdata);
@@ -486,11 +504,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
    *  with new authenticatible unit details to setup as new login account BUT alreay exists
-   * - .
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: <em>'Trying to create new login where one already exists!'</em>
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
+   * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailAlreadyExists()
@@ -505,7 +525,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = $this->sessionLoginAccountEmail;
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     try {
       $this->assertTrue($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
     } catch (Unauthorized401Exception $expected) {
@@ -521,9 +541,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
-   *  with new authenticatible unit details to setup as new login account.
-   * - .
+   * Collection of assertions for \svelte\http\Session::authorizeAs().
+   *  with new authenticatible unit details to setup as new login account
+   * - assert returns without interruption as has sufficient privileges
+   * - assert $_POST login related data expunged.
+   * - assert $_POST data values retained as successful authorisation.
+   * - assert $_SESSION['loginAccount'] reference is successfully set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccount()
@@ -538,13 +561,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = 'correct@email.com';
 
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance(new PasswordResetView());
+    $testObject = Session::getInstance();
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
     $this->assertFalse(isset($_POST['login-email']));
-    $this->assertTrue(isset($_POST['person:new:email']));
-    $this->assertSame($_SESSION['post_array'], $additionalPostdata);
+    $this->assertFalse(isset($_SESSION['post_array']));
+    $this->assertSame($_POST['person:new:email'], 'correct@email.com');
+    $this->assertSame($_POST['person:new:family-name'], 'Surname');
+    $this->assertSame($_POST['person:new:given-name'], 'Name');
     $this->assertTrue(isset($_SESSION['loginAccount']));
-    // TODO:mrenyard: Remove need to send PasswordResetView on getInstance().
-    // TODO:mrenyard: Tidy up documentation Test and Actual.
   }
 }

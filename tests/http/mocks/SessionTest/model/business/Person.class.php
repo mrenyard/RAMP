@@ -26,6 +26,10 @@ use svelte\model\business\RecordCollection;
 use svelte\model\business\BusinessModel;
 use svelte\model\business\LoginAccountType;
 
+/**
+ * Mock Collection of Person for testing \svelte\http\Session
+ * .
+ */
 class PersonCollection extends RecordCollection
 {
 }
@@ -55,8 +59,8 @@ class Person extends BusinessModel
 
   /**
    * Get ID (URN)
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Unique identifier for <i>this</i>
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
   public function get_id() : Str
   {
@@ -65,8 +69,8 @@ class Person extends BusinessModel
 
   /**
    * Get email
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Email address associated with <i>this</i>.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Email address associated with *this*.
    */
   protected function get_email()
   {
@@ -75,8 +79,8 @@ class Person extends BusinessModel
 
   /**
    * Get email
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Email address associated with <i>this</i>.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Email address associated with *this*.
    */
   protected function get_familyName()
   {
@@ -85,8 +89,8 @@ class Person extends BusinessModel
 
   /**
    * Get email
-   * <b>DO NOT CALL DIRECTLY, USE this->id;</b>
-   * @return \svelte\core\Str Email address associated with <i>this</i>.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Email address associated with *this*.
    */
   protected function get_givenName()
   {

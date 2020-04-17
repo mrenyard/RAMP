@@ -118,7 +118,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Is this request expecting a document fragment or a complete document.
-   * <b>DO NOT CALL DIRECTLY, USE this->expectsFragment;</b>
+   * **DO NOT CALL DIRECTLY, USE this->expectsFragment;**
    * @return bool Expects document fragment
    */
   protected function get_expectsFragment() : bool
@@ -128,7 +128,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns request Method (Verb) (based on HTTP/1.1 specification).
-   * <b>DO NOT CALL DIRECTLY, USE this->method;</b>
+   * **DO NOT CALL DIRECTLY, USE this->method;**
    * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
    * @return \svelte\Method Requested Method
    */
@@ -139,7 +139,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns Uniform Resource Name (URN) of requested svelte\model\Model or NULL.
-   * <b>DO NOT CALL DIRECTLY, USE this->modelURN;</b>
+   * **DO NOT CALL DIRECTLY, USE this->modelURN;**
    * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
    * @return \svelte\core\Str URN of requested svelte\model\Model or NULL.
    */
@@ -177,7 +177,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns Uniform Resource Identifier (URI) of requested resource.
-   * <b>DO NOT CALL DIRECTLY, USE this->resourceURL;</b>
+   * **DO NOT CALL DIRECTLY, USE this->resourceURL;**
    * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
    * @return \svelte\core\Str URI of requested resource
    */
@@ -188,7 +188,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns any requested starting point within a collection.
-   * <b>DO NOT CALL DIRECTLY, USE this->fromIndex;</b>
+   * **DO NOT CALL DIRECTLY, USE this->fromIndex;**
    * @return int Index to start index from
    */
   protected function get_fromIndex() : int
@@ -198,7 +198,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns any filter to apply to a collection.
-   * <b>DO NOT CALL DIRECTLY, USE this->filter;</b>
+   * **DO NOT CALL DIRECTLY, USE this->filter;**
    * @return \svelte\condition\Filter Filter to be applied to collection
    */
   protected function get_filter() : ?Filter
@@ -208,7 +208,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Returns any data for posting sent with request.
-   * <b>DO NOT CALL DIRECTLY, USE this->postData;</b>
+   * **DO NOT CALL DIRECTLY, USE this->postData;**
    * @return \svelte\condition\PostData Data collection to be posted
    */
   protected function get_postData() : ?PostData

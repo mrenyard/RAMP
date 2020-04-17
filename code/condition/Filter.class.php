@@ -115,7 +115,7 @@ final class Filter extends Collection
   /**
    * Returns representation of this filter based on target environment.
    * @param \svelte\condition\iEnvironment $targetEnvironment Environment to target, default SQL.
-   * @return string representation of <i>this</i> based on provided target environment
+   * @return string representation of *this* based on provided target environment
    */
   public function __invoke(iEnvironment $targetEnvironment = null) : string
   {

@@ -28,21 +28,37 @@ use svelte\condition\PostData;
 use svelte\condition\Filter;
 use svelte\condition\FilterCondition;
 use svelte\model\business\SimpleBusinessModelDefinition;
-
 use svelte\model\business\LoginAccountTypeOption;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
-
 use svelte\view\View;
 
 /**
  * Methods relating to logging in, setting up PHP session variables,
- * and checking account security before page execution.
- * <b>An instance of <i>this</i> must be called before outputting anything to the browser, therefore
- * this should be the first object referenced at the top on any HTTP controller script</b>
+ * and checking session security before page execution.
+ * **An instance of *this* must be called before outputting anything to the browser, therefore
+ * this should be the first object referenced at the top on any HTTP controller script**
+ *
+ * EXAMPLE USE:
+ * ```php
+ * $session = http\Session::instance();
+ * try {
+ *   $request = new http\Request...
+ * ...
+ * try {
+ *   $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
+ * } catch (http\Exception401Unauthorized $e) {
+ *   $authenticationForm = new ...
+ *   $authenticationForm->setModel($_SESSION['loginAccount']);
+ *   $authenticationForm->render();
+ *   header('HTTP/1.1 401 Unauthorized');
+ *   return;
+ * }
+ * ...
+ * ```
  */
-final class Session extends SvelteObject {
-
+final class Session extends SvelteObject
+{
   private static $instance;
 
   private $modelManager;
@@ -60,12 +76,10 @@ final class Session extends SvelteObject {
     @session_start();
     $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
-
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
       $this->modelManager->getBusinessModel(
         new SimpleBusinessModelDefinition(Str::set('LoginAccount'), Str::set('new'))
       );
-
     $this->accountEmailFilter = new Filter();
     $this->accountEmailCondition = new FilterCondition(Str::set('LoginAccount'), Str::set('email'));
     $this->accountEmailFilter->add($this->accountEmailCondition);
@@ -73,25 +87,35 @@ final class Session extends SvelteObject {
 
   /**
    * Get instance - same instance on every request (singleton) within same http request.
-   * <b>This method must be called at least once before outputting anything to the browser.</b>
-   * @param \svelte\view\View $resetPasswordView View used for password reset including email.
-   * @throws \BadMethodCallException MUST provide an Authentication Form View and a
-   *  Reset Password View on first call.
+   * **This method MUST be called at least once before outputting anything to the
+   * browser, ideally the first thing at the top of any controller page.**
+   *
+   * PRECONDITIONS
+   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST
+   *
+   * COLLABORATORS
+   * - $_SESSION
+   * - {@link \svelte\SETTING}
+   * - {@link \svelte\condition\Filter}
+   * - {@link \svelte\condition\FiltetCondition}
+   * - {@link \svelte\model\business\iBusinessModelManager}
+   * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
+   *
    * @return \svelte\http\Session Single instance of Session
    */
-  public static function getInstance(View $resetPasswordView = null) : Session
+  public static function getInstance() : Session
   {
     if (!isset(self::$instance) || SETTING::$TEST_RESET_SESSION == TRUE) {
-      self::$instance = new Session($resetPasswordView);
+      self::$instance = new Session();
     }
     return self::$instance;
   }
 
   /**
-   * Checks current user has at least the specified user authentication level.
+   * Returns wether the current authenticated $_SESSION has at least the specified authorization level.
    * @param LoginAccountTypeOption $authorizationLevel Authorization level to be surpassed.
+   * @return bool Current authenticated session login account authorized at authorization level
    * @throws \BadMethodCallException Session::instance() MUST be called prior to use
-   * @return \svelte\core\Boolean Current session login account authorized at authorization level
    */
   public static function authorizedAs(LoginAccountTypeOption $authorizationLevel) : bool
   {
@@ -108,10 +132,45 @@ final class Session extends SvelteObject {
   }
 
   /**
-   * Checks current user has at least the specified user authentication level,
-   * ff successful just returns, otherwise thows an Unauthorized401Exception.
-   * @param AccountType $authorizationLevel
-   * @throws svelte\http\Unauthorized401Exception when authentication fails
+   * Checks the current $_SESSION has at least the specified authentication level
+   * and if successful just returns, otherwise throws an Unauthorized401Exception.
+   *
+   * PRECONDITIONS
+   * - SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE MUST be set
+   * - SETTING::$SVELTE_AUTHENTICATIBLE_UNIT MUST be set
+   * - Session::getInstance() MUST have been called at least once.
+   * - $_SESSION['loginAccount'] MAY already be set, following proir succesfully authentication
+   * - $_POST data MAY be sent for submission
+   * - and or $_POST data login details for authentication
+   *
+   * POSTCONDITIONS
+   * - Login related $_POST data unset
+   * - On failed authentication $_SESSION['post_array'] holds sent $_POST data (NOT login related)
+   * - On successful authentication $_SESSION['loginAccount'] has referance to relevent LoginAccount
+   *
+   * COLLABORATORS
+   * - $_POST
+   * - $_SESSION
+   * - {@link \svelte\SETTING}
+   * - {@link \svelte\condition\Filter}
+   * - {@link \svette\condition\FiltetCondition}
+   * - {@link \svelte\model\business\iBusinessModelManager}
+   * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
+   * - {@link \svelte\model\business\LoginAccountTypeOption}
+   * - {@link \svelte\model\business\LoginAccountType}
+   * - {@link \svelte\model\business\LoginAccount}
+   * - {@link \svelte\http\Unauthorized401Exception}
+   *
+   * @param LoginAccountTypeOption $authorizationLevel Required authorization Level
+   * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
+   * - Unauthenticated or insufficient authority
+   * - Attempting POST to resource REQUIRING authentication or insufficient authority
+   * - Account (email) NOT in database
+   * - Invalid password or insufficient privileges
+   * - New Authenticatible Unit Form: e-mail mismatch
+   * - Trying to create new login where one already exists!
+   * - SHOULD NEVER REACH HERE!
+   * @throws BadMethodCallException Session::instance() MUST be called prior to use
    */
   public function authorizeAs(LoginAccountTypeOption $authorizationLevel)
   {
@@ -126,12 +185,6 @@ final class Session extends SvelteObject {
     $this->attemptAccess($authorizationLevel);
   }
 
-  /**
-   * Uses any avalible credentials to assertain allowed access.
-   * ... .
-   * ... otherwise a 401 error page is generated and script exits
-   * @throws svelte\http\Unauthorized401Exception when authentication fails
-   */
   private function attemptAccess(LoginAccountTypeOption $authorizationLevel)
   {
     $this->loginAccount->forcePasswordField = TRUE;
@@ -184,7 +237,7 @@ final class Session extends SvelteObject {
       {
         unset($_POST[$auEmailPropertyID]);
         // TODO:mrenyard: add e-mail mismatch to errorCollection
-        throw new Unauthorized401Exception('new authenticatible unit form e-mail mismatch');
+        throw new Unauthorized401Exception('New Authenticatible Unit Form: e-mail mismatch');
       }
       try {
         // check authenticatible unit record NOT already exists
@@ -204,6 +257,10 @@ final class Session extends SvelteObject {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
           if ($this->loginAccount->authenticatableUnit->isValid())
           {
+            if (isset($_SESSION['post_array'])) // reset $_POST
+            {
+              $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
+            }
             $_SESSION['loginAccount'] = $this->loginAccount;
             return;
           }

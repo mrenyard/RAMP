@@ -97,7 +97,7 @@ class Collection extends SvelteObject implements iCollection {
 
   /**
    * Implementation of \IteratorAggregate method for use with foreach etc.
-   * @return \Traversable Iterator to iterate over <i>this</i> traversable using foreach.
+   * @return \Traversable Iterator to iterate over *this* traversable using foreach.
    */
   final public function getIterator() : \Traversable
   {

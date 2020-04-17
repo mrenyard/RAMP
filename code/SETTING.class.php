@@ -26,7 +26,7 @@ namespace svelte;
  *
  * Usually generated from Svelte's local initialization file, called svelte.ini.
  * Which SHOULD usually be located alongside the public website root folder. i.e.:
- * <pre>
+ * ```
  * -- ~/                    (secure ftp folder)
  *  |
  *  +-- public_html         (website root folder)
@@ -36,7 +36,7 @@ namespace svelte;
  *  | |-- controller.php    (svelte controller file)
  *  |
  *  +-- svelte.ini          (local initialization file)
- * </pre>
+ * ```
  */
 class SETTING
 {

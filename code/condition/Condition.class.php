@@ -57,7 +57,7 @@ abstract class Condition extends SvelteObject
 
   /**
    * Returns name of attribute.
-   * <b>DO NOT CALL DIRECTLY, USE this->attribute;</b>
+   * **DO NOT CALL DIRECTLY, USE this->attribute;**
    * @return \svelte\core\Str Name of attribute to be restricted, evaluated or modified
    */
   protected function get_attribute() : Str
@@ -67,7 +67,7 @@ abstract class Condition extends SvelteObject
 
   /**
    * Returns the type of Operation to be performed.
-   * <b>DO NOT CALL DIRECTLY, USE this->operator;</b>
+   * **DO NOT CALL DIRECTLY, USE this->operator;**
    * @return \svelte\condition\Operator Performing operation
    */
   protected function get_operator() : Operator
@@ -77,7 +77,7 @@ abstract class Condition extends SvelteObject
 
   /**
    * Returns value to be compared with attribute by operator.
-   * <b>DO NOT CALL DIRECTLY, USE this->comparable;</b>
+   * **DO NOT CALL DIRECTLY, USE this->comparable;**
    * @return mixed Value of comparable
    */
   protected function get_comparable()
@@ -87,7 +87,7 @@ abstract class Condition extends SvelteObject
 
   /**
    * Sets value of comparable (for operator to compare with attribute).
-   * <b>DO NOT CALL DIRECTLY, USE this->comparable = $value;</b>
+   * **DO NOT CALL DIRECTLY, USE this->comparable = $value;**
    * @param mixed $value Value to be compared with attribute by operation
    */
   protected function set_comparable($value)

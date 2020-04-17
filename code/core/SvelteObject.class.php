@@ -16,7 +16,6 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @author Andy Robinson (andy@andyr.co.uk)
  * @package svelte
  * @version 0.0.9;
  */
@@ -27,32 +26,38 @@ namespace svelte\core;
  *
  * RESPONSIBILITIES
  *
- * - Act as superclass for all <i>Object</i>s (everything can cast to <i>SvelteObject</i>).
- * - Define C# type <i>get</i> access to properties by passing
- * <samp>$object->aProperty;</samp> to <samp>$object->get_aProperty();</samp>
- * - Define C# type <i>set</i> access to properties by passing
- * <samp>$object->aProperty = $value;</samp> to <samp>$object->set_aProperty($value);</samp>
- * - Define default <samp>_toString()</samp> method.
+ * - Act as superclass for all *Object*s (everything can cast to *SvelteObject*).
+ *
+ * - Define C# type *get* access to properties by passing
+ * `$object->aProperty;` to `$object->get_aProperty();`
+ *
+ * - Define C# type *set* access to properties by passing
+ * `$object->aProperty = $value;` to `$object->set_aProperty($value);`
+ *
+ * - Define default `_toString()` method.
  */
 abstract class SvelteObject {
 
   /**
    * Allows C# type access to properties.
-   * <b>DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!</b>
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    *
-   * <pre><b>Passes:</b> <code>$object->aProperty;</code>
-   * <b>to:</b> <code>$object->get_aProperty();</code></pre>
+   * **Passes:** `$object->aProperty;` **to:** `$object->get_aProperty();`
    *
    * Implementation in concrete Object
-   * <pre>private aProperty;
+   * ```php
+   * private aProperty;
    *
    * protected function get_aProperty()
    * {
    *   return $this->aProperty;
-   * }</pre>
+   * }
+   * ```
    *
    * Called externally (C# style)
-   * <pre>$object->aProperty; //Get value 'aProperty'</pre>
+   * ```php
+   * $object->aProperty; // Get value 'aProperty'
+   * ```
    *
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
@@ -70,21 +75,24 @@ abstract class SvelteObject {
 
   /**
    * Allows C# type access to properties.
-   * <b>DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!</b>
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    *
-   * <pre><b>Passes:</b> <code>$object->aProperty = $value;</code>
-   * <b>to:</b> <code>$object->set_aProperty($value);</code></pre>
+   * **Passes:** `$object->aProperty = $value;` **to:** `$object->set_aProperty($value);`
    *
    * Implementation in concrete Object
-   * <pre>private aProperty;
+   * ```php
+   * private aProperty;
    *
    * protected function set_aProperty($value)
    * {
    *   $this->aProperty = $value;
-   * }</pre>
+   * }
+   * ```
    *
    * Called externally (C# style)
-   * <pre>$object->aProperty = $value; //Set value of 'aProperty'</pre>
+   * ```php
+   * $object->aProperty = $value; //Set value of 'aProperty'
+   * ```
    *
    * @param string $propertyName Name of property (handled internally)
    * @param mixed $propertyValue The value to set on requested property (handled internally)

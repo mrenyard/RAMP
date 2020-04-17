@@ -63,7 +63,7 @@ final class InputDataCondition extends BusinessCondition {
 
   /**
    * Returns primary key of target business record.
-   * <b>DO NOT CALL DIRECTLY, USE this->primaryKey;</b>
+   * **DO NOT CALL DIRECTLY, USE this->primaryKey;**
    * @return \svelte\core\Str Primary key of target record
    */
   protected function get_primaryKeyValue() : Str
@@ -73,7 +73,7 @@ final class InputDataCondition extends BusinessCondition {
 
   /**
    * returns value to be evaluated (synonym for $this->comparable).
-   * <b>DO NOT CALL DIRECTLY, USE this->value;</b>
+   * **DO NOT CALL DIRECTLY, USE this->value;**
    * @see svelte.condition.InputDataCondition.html#method_get_comparable
    * @return mixed Value to be evaluated
    */
@@ -88,7 +88,7 @@ final class InputDataCondition extends BusinessCondition {
    * @param mixed $value Value to be compared with attribute by operation.
    * @throws \DomainException when second argument ($value) does Not validate against its
    *  associated property's processValidationRules()
-   * @return string Representation of <i>this</i> input data statement based on target environment
+   * @return string Representation of *this* input data statement based on target environment
    */
   public function __invoke(iEnvironment $targetEnvironment = null, $value = null) : string
   {
