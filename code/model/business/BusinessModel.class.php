@@ -85,7 +85,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @param \svelte\core\Boolean $hyphenate Whether model type should be returned hyphenated
    * @return \svelte\core\Str *This* business model type (without namespace)
    */
-  final protected function processType($classFullName, bool $hyphenate = null) : Str
+  final private function processType($classFullName, bool $hyphenate = null) : Str
   {
     $pathNode = explode('\\', $classFullName);
     $modelName = explode('_', array_pop($pathNode));

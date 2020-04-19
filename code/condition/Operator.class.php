@@ -60,7 +60,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'member access' operator syntax.
    * @return \svelte\condition\Operator Representing member access operator syntax
    */
-  public static function MEMBER_ACCESS()
+  public static function MEMBER_ACCESS() : Operator
   {
     if (!isset(self::$MEMBER_ACCESS)) {
       self::$MEMBER_ACCESS = new Operator('memberAccess');
@@ -72,7 +72,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'assignment operator' syntax.
    * @return \svelte\condition\Operator Representing assignment operator syntax
    */
-  public static function ASSIGNMENT()
+  public static function ASSIGNMENT() : Operator
   {
     if (!isset(self::$ASSIGNMENT)) {
       self::$ASSIGNMENT = new Operator('assignment');
@@ -84,7 +84,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'equal to' operator syntax.
    * @return \svelte\condition\Operator Representing 'equal to' operator syntax
    */
-  public static function EQUAL_TO()
+  public static function EQUAL_TO() : Operator
   {
     if (!isset(self::$EQUAL_TO)) {
       self::$EQUAL_TO = new Operator('equalTo');
@@ -96,7 +96,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'not equal to' operator syntax.
    * @return \svelte\condition\Operator Representing 'not equal to' operator syntax
    */
-  public static function NOT_EQUAL_TO()
+  public static function NOT_EQUAL_TO() : Operator
   {
     if (!isset(self::$NOT_EQUAL_TO)) {
       self::$NOT_EQUAL_TO = new Operator('notEqualTo');
@@ -108,7 +108,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'less than' operator syntax.
    * @return \svelte\condition\Operator Representing 'less than' operator syntax
    */
-  public static function LESS_THAN()
+  public static function LESS_THAN() : Operator
   {
     if (!isset(self::$LESS_THAN)) {
       self::$LESS_THAN = new Operator('lessThan');
@@ -120,7 +120,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'greater than' operator syntax.
    * @return \svelte\condition\Operator Representing 'greater than' operator syntax
    */
-  public static function GREATER_THAN()
+  public static function GREATER_THAN() : Operator
   {
     if (!isset(self::$GREATER_THAN)) {
       self::$GREATER_THAN = new Operator('greaterThan');
@@ -132,7 +132,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'and' operator syntax.
    * @return \svelte\condition\Operator Representing 'and' operator syntax
    */
-  public static function AND()
+  public static function AND() : Operator
   {
     if (!isset(self::$AND)) {
       self::$AND = new Operator('and');
@@ -144,7 +144,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'or' operator syntax.
    * @return \svelte\condition\Operator Representing 'or' operator syntax
    */
-  public static function OR()
+  public static function OR() : Operator
   {
     if (!isset(self::$OR)) {
       self::$OR = new Operator('or');
@@ -156,7 +156,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'opening parenthesis' operator syntax.
    * @return \svelte\condition\Operator Representing 'opening parenthesis' operator syntax
    */
-  public static function OPENING_PARENTHESIS()
+  public static function OPENING_PARENTHESIS() : Operator
   {
     if (!isset(self::$OPENING_PARENTHESIS)) {
       self::$OPENING_PARENTHESIS = new Operator('openingParenthesis');
@@ -168,7 +168,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'closing parenthesis' operator syntax.
    * @return \svelte\condition\Operator Representing 'closing parenthesis' operator syntax
    */
-  public static function CLOSING_PARENTHESIS()
+  public static function CLOSING_PARENTHESIS() : Operator
   {
     if (!isset(self::$CLOSING_PARENTHESIS)) {
       self::$CLOSING_PARENTHESIS = new Operator('closingParenthesis');
@@ -180,7 +180,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'opening grouping parenthesis' operator syntax.
    * @return \svelte\condition\Operator Representing 'opening grouping parenthesis' operator syntax
    */
-  public static function OPENING_GROUPING_PARENTHESIS()
+  public static function OPENING_GROUPING_PARENTHESIS() : Operator
   {
     if (!isset(self::$OPENING_GROUPING_PARENTHESIS)) {
       self::$OPENING_GROUPING_PARENTHESIS = new Operator('openingGroupingParenthesis');
@@ -192,7 +192,7 @@ class Operator extends SvelteObject
    * Returns the Operator object representing 'closing grouping parenthesis' operator syntax.
    * @return \svelte\condition\Operator Representing 'closing grouping parenthesis' operator syntax
    */
-  public static function CLOSING_GROUPING_PARENTHESIS()
+  public static function CLOSING_GROUPING_PARENTHESIS() : Operator
   {
     if (!isset(self::$CLOSING_GROUPING_PARENTHESIS)) {
       self::$CLOSING_GROUPING_PARENTHESIS = new Operator('closingGroupingParenthesis');

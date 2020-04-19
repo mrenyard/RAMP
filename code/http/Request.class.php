@@ -46,10 +46,10 @@ use svelte\http\Method;
  * - $_POST
  * - $_GET
  *
- * @link https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol -- HTTP/1.1 (RFC2616)
+ * @link https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
  */
-class Request extends SvelteObject implements iBusinessModelDefinition {
-
+class Request extends SvelteObject implements iBusinessModelDefinition
+{
   private $expectsFragment;
   private $method;
   private $resourceURL;
@@ -63,6 +63,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
 
   /**
    * Interprets HTTP and constructs new Request based on current context.
+   * .
    */
   public function __construct()
   {
@@ -149,7 +150,8 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
   }
 
   /**
-   * {@inheritdoc}
+   * Returns name of requested Record / Record Set or NULL.
+   * @return \svelte\core\Str Name of requested Record / Record Set or NULL.
    */
   public function getRecordName() : Str
   {
@@ -157,7 +159,8 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
   }
 
   /**
-   * {@inheritdoc}
+   * Returns primary key value of requested svelte\model\Record or NULL.
+   * @return \svelte\core\Str Primary key for requested Record if any.
    */
   public function getRecordKey() : ?Str
   {
@@ -168,7 +171,8 @@ class Request extends SvelteObject implements iBusinessModelDefinition {
   }
 
   /**
-   * {@inheritdoc}
+   * Returns name of requested svelte\model\Property of Record or NULL.
+   * @return \svelte\core\Str Name of requested Property if any.
    */
   public function getPropertyName() : ?Str
   {
