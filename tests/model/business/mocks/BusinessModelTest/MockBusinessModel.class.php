@@ -31,23 +31,58 @@ use svelte\model\business\BusinessModel;
  */
 class MockBusinessModel extends BusinessModel
 {
+  private static $count;
+  private $id;
+
+  public  $label;
+  public $validateCount;
+  public $hasErrorsCount;
+  public $isValidCount;
+
+  public static function reset()
+  {
+    self::$count = 0;
+  }
+
+  public function __construct(string $label, iCollection $children = null)
+  {
+    $this->id = Str::set('uid-' . self::$count++);
+    $this->label = $label;
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    $this->isValidCount = 0;
+    parent::__construct($children);
+  }
+
   /**
    * Mocked get_id method
    * @return \svelte\core\Str Str('uid-1')
    */
-  public function get_id() : Str { return Str::set('uid-1'); }
+  public function get_id() : Str
+  {
+    return $this->id;
+  }
 
   /**
-   * Mocked gey_value method
-   * @return int 1
+   * Validate postdata against this and update accordingly.
+   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
    */
-  protected function get_value() { return 1; }
+  public function validate(PostData $postdata)
+  {
+    $this->validateCount++;
+    parent::validate($postdata);
+  }
 
-  /**
-   * Mocked isValid method returns TRUE
-   */
+  public function hasErrors() : bool
+  {
+    $this->hasErrorsCount++;
+    return parent::hasErrors();
+  }
+
   public function isValid() : bool
   {
-    return TRUE;
+    $this->isValidCount++;
+    return parent::isValid();
   }
 }

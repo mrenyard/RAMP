@@ -38,13 +38,15 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 {
   private $children;
 
+  protected $errorCollection;
+
   /**
    * Base constructor for Business Models.
-   * @param \svelte\core\iCollection $children Collection of child elements.
+   * @param \svelte\model\business\BusinessModel $children Collection of child business models.
    */
   public function __construct(iCollection $children = null)
   {
-    $this->children = (isset($children)) ? $children :
+    $this->children = ($children != null) ? $children :
       new Collection(Str::set('\svelte\model\business\BusinessModel'));
   }
 
@@ -85,26 +87,27 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @param \svelte\core\Boolean $hyphenate Whether model type should be returned hyphenated
    * @return \svelte\core\Str *This* business model type (without namespace)
    */
-  final private function processType($classFullName, bool $hyphenate = null) : Str
+  final protected function processType($classFullName, bool $hyphenate = null) : Str
   {
     $pathNode = explode('\\', $classFullName);
     $modelName = explode('_', array_pop($pathNode));
     $type = Str::set(array_pop($modelName));
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
+
   /**
    * Implementation of \IteratorAggregate method for use with foreach etc.
-   * @return \Traversable Iterator to iterate over *this* traversable using foreach.
+   * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
    */
   final public function getIterator() : \Traversable
   {
-    $this->children->getIterator();
+    return $this->children->getIterator();
   }
 
   /**
    * ArrayAccess method offsetGet.
    * @param mixed $offset Index of requested {@link \svelte\core\SvelteObject}.
-   * @return \svelte\core\SvelteObject Object located at provided index.
+   * @return \svelte\model\business\BusinessModel Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
   public function offsetGet($offset)
@@ -129,6 +132,10 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    */
   public function validate(PostData $postdata)
   {
+    $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
+    foreach ($this->children as $child) {
+      $child->validate($postdata);
+    }
   }
 
   /**
@@ -137,6 +144,11 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    */
   public function hasErrors() : bool
   {
+    if ($this->errorCollection->count() > 0) { return TRUE; }
+    foreach ($this->children as $child) {
+      if ($child->hasErrors()) { return TRUE; }
+    }
+    return FALSE;
   }
 
   /**
@@ -145,7 +157,15 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    */
   public function getErrors() : iCollection
   {
+    $errors = clone $this->errorCollection;
+    foreach ($this->children as $child) {
+      foreach ($child->getErrors() as $error) {
+        $errors->add($error);
+      }
+    }
+    return $errors;
   }
+
   /**
    * Returns the number of items currently stored in this collection.
    * @return int Number of items in this collection
@@ -159,7 +179,6 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * ArrayAccess method offsetSet.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object SvelteObject to be placed at provided index.
-   * @throws \InvalidArgumentException When provided object NOT of expected type
    */
   public function offsetSet($offset, $object)
   {
@@ -169,6 +188,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   /**
    * ArrayAccess method offsetUnset, DO NOT USE.
    * @param mixed $offset API to match \ArrayAccess interface
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
   public function offsetUnset($offset)
   {
@@ -176,6 +196,8 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
 
   /**
+   * Returns whether *this* and its child/grandchild... are valid.
+   * @return bool *this* and its child/grandchild... are valid.
    */
   public function isValid() : bool
   {

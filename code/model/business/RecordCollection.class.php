@@ -40,20 +40,8 @@ use svelte\model\business\BusinessModel;
  * COLLABORATORS
  * - Collection of {@link \svelte\model\business\Record}s
  */
-abstract class RecordCollection extends BusinessModel implements iCollection {
-
-  /**
-   * Default constructor for collection of \svelte\model\business\Records.
-   * - Sets composite type for this collection as *this* class-name with string *Collection* truncated:
-   *  - e.g. {@link \svelte\model\business\UserCollection} would expect to referance only {@link \svelte\model\business\User}s.
-   */
-  final public function __construct()
-  {
-    $compositeType = Str::set(get_called_class())->trimEnd(Str::set('Collection'));
-    $children = new Collection($compositeType);
-    parent::__construct($children);
-  }
-
+abstract class RecordCollection extends BusinessModel implements iCollection
+{
   /**
    * {@inheritdoc}
    */
@@ -64,19 +52,22 @@ abstract class RecordCollection extends BusinessModel implements iCollection {
 
   /**
    * {@inheritdoc}
-   */
-  final protected function get_value() : Str
-  {
-    return $this->id;
-  }
-
-  /**
-   * {@inheritdoc}
    * @param \svelte\core\SvelteObject $object SvelteObject reference to be added (Record)
    * @throws \InvalidArgumentException When provided object NOT expected type (Record)
    */
   final public function add(SvelteObject $object)
   {
-    $this[$this->count()] = $object;
+    parent::offsetSet($this->count(), $object);
+  }
+
+  /**
+   * ArrayAccess method offsetSet, DO NOT USE.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object SvelteObject to be placed at provided index.
+   * @throws \BadMethodCallException Array access setting is not allowed.
+   */
+  public function offsetSet($offset, $object)
+  {
+    throw new \BadMethodCallException('Array access setting is not allowed.');
   }
 }

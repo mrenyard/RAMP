@@ -39,7 +39,7 @@ abstract class BusinessModelManager extends SvelteObject
   /**
    * Get instance - same instance on every request (singleton) within same http request.
    */
-  abstract public static function getInstance();
+  abstract public static function getInstance() : BusinessModelManager;
 
   /**
    * Returns requested Model.
