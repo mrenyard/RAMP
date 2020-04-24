@@ -1,4 +1,4 @@
-We use the following commands with PhpUnit and PhpDoc to test and produce documentation you may with to do the same.
+We use the following commands with PhpUnit and PhpDoc to test and produce documentation you may wish to do the same.
 - **Run Unit Tests**
  - *phpunit [pathToProjectRoot]/tests*
 - **Produce Documentation**
