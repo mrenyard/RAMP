@@ -47,7 +47,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   public function __construct(iCollection $children = null)
   {
     $this->children = ($children != null) ? $children :
-      new Collection(Str::set('\svelte\model\business\BusinessModel'));
+      new Collection(Str::set(__NAMESPACE__ . '\BusinessModel'));
   }
 
   /**
@@ -110,7 +110,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @return \svelte\model\business\BusinessModel Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
-  public function offsetGet($offset)
+  final public function offsetGet($offset)
   {
     return $this->children[$offset];
   }
@@ -120,7 +120,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @param mixed $offset Index to be checked for existence.
    * @return bool It does / not exist.
    */
-  public function offsetExists($offset) : bool
+  final public function offsetExists($offset) : bool
   {
     return $this->children->offsetExists($offset);
   }
@@ -155,7 +155,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * Gets collection of recorded errors.
    * @return iCollection List if recorded errors.
    */
-  public function getErrors() : iCollection
+  final public function getErrors() : iCollection
   {
     $errors = clone $this->errorCollection;
     foreach ($this->children as $child) {
@@ -190,7 +190,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  public function offsetUnset($offset)
+  final public function offsetUnset($offset)
   {
     throw new \BadMethodCallException('Array access unsetting is not allowed.');
   }

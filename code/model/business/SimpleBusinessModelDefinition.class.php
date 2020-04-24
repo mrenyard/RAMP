@@ -24,7 +24,7 @@ namespace svelte\model\business;
 use svelte\core\Str;
 
 /**
- * Simple concrete implementation of \svelte\model\iModelDefinition,
+ * Simple concrete implementation of \svelte\model\SimpleBusinessModelDefinition,
  *  defining Model indentifiers (record, key, property).
  */
 class SimpleBusinessModelDefinition implements iBusinessModelDefinition
