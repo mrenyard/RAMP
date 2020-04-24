@@ -21,34 +21,60 @@
  */
 namespace svelte\validation;
 
+use svelte\core\SvelteObject;
+
 /**
+ * Single validation rule to test against an input value before allowing a business model property
+ *  to be set.
  *
+ * RESPONSIBILITIES
+ * - Defines API for test method, where a single code defined test is executed against provided value.
+ * - Act as a decorator pattern where several tests can be organised to run consecutively.
+ * - Works with other ValidationRules to provide more complex set of tests.
+ *
+ * COLLABORATORS
+ * - {@link \svelte\validation\ValidationRule}
  */
-abstract class ValidationRule
+abstract class ValidationRule extends SvelteObject
 {
   private $subRule;
 
   /**
-   *
+   * Default constructor for a ValidationRule.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new FirstValidationRule(
+   *   new SecondValidationRule(
+   *     new ThirdValiationRule(
+   *       new ForthValidationRule()
+   *     )
+   *   )
+   * );
+   * ```
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(ValidationRule $subRule = null)
+  final public function __construct(ValidationRule $subRule = null)
   {
     $this->subRule = $subRule;
   }
 
   /**
-   *
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException if test fails.
    */
   abstract protected function test($value);
 
   /**
-   *
+   * Process each validation test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException if test fails.
    */
   public function process($value)
   {
-    $this->test($value)
+    $this->test($value);
     if (isset($this->subRule)) {
-      $this->subRule-?process($value);
+      $this->subRule->process($value);
     }
   }
 }

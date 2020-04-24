@@ -28,7 +28,6 @@ use svelte\core\Str;
  * Base class abstract environment as defined in iEnvironment.
  *
  * RESPONSIBILITIES
- *
  * - Provide base implementation of iEnvironment.
  * - Hold full set of properties and there accessors.
  * - Simplify code base of inherited specalized environment classes.

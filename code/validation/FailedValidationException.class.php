@@ -19,10 +19,12 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace svelte\validation;
+
+use svelte\core\PropertyNotSetException;
 
 /**
- * Exception thrown when a property fails to validate.
+ * Exception thrown when a ValidationRules test() fails.
  */
 class FailedValidationException extends PropertyNotSetException
 {
