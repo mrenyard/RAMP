@@ -1,8 +1,8 @@
 Svelte
 ======
 
-Rapid web application development enviroment for building
-flexible, customisable web systems.
+**Rapid web application development enviroment for building
+flexible, customisable web systems.**
 
 
 DESIGN PRINCIPLES FOR SVELTE
