@@ -41,8 +41,8 @@ use tests\svelte\core\mocks\CollectionTest\BadObject;
  * - {@link \tests\svelte\condition\mocks\CollectionTest\AnObject}
  * - {@link \tests\svelte\condition\mocks\CollectionTest\BadObject}
  */
-class CollectionTest extends \PHPUnit\Framework\TestCase {
-
+class CollectionTest extends \PHPUnit\Framework\TestCase
+{
   private $typeName;
 
   /**
@@ -67,16 +67,16 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
    */
   public function test__Construct()
   {
-    $testSvelteObject = new Collection($this->typeName);
-    $this->assertInstanceOf('svelte\core\Collection', $testSvelteObject);
-    $this->assertInstanceOf('svelte\core\iCollection', $testSvelteObject);
-    $this->assertInstanceOf('svelte\core\SvelteObject', $testSvelteObject);
-    $this->assertInstanceOf('\IteratorAggregate', $testSvelteObject);
-    $this->assertInstanceOf('\Countable', $testSvelteObject);
-    $this->assertInstanceOf('\ArrayAccess', $testSvelteObject);
+    $testObject = new Collection($this->typeName);
+    $this->assertInstanceOf('svelte\core\Collection', $testObject);
+    $this->assertInstanceOf('svelte\core\iCollection', $testObject);
+    $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
+    $this->assertInstanceOf('\IteratorAggregate', $testObject);
+    $this->assertInstanceOf('\Countable', $testObject);
+    $this->assertInstanceOf('\ArrayAccess', $testObject);
 
     try {
-      $testSvelteObject = new Collection(Str::set('\not\a\Class'));
+      $testObject = new Collection(Str::set('\not\a\Class'));
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame('$compositeType MUST be an accessible class name or interface.', $expected->getMessage());
       return;
@@ -98,10 +98,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
    */
   public function testIsCompositeType()
   {
-    $testSvelteObject = new Collection($this->typeName);
+    $testObject = new Collection($this->typeName);
     $notAClass = Str::set('\not\a\Class');
-    $this->assertTrue($testSvelteObject->isCompositeType($this->typeName));
-    $this->assertFalse($testSvelteObject->isCompositeType($notAClass));
+    $this->assertTrue($testObject->isCompositeType($this->typeName));
+    $this->assertFalse($testObject->isCompositeType($notAClass));
   }
 
   /**
@@ -119,15 +119,15 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
    */
   public function testIteratorAddCount()
   {
-    $testSvelteObject = new Collection($this->typeName);
+    $testObject = new Collection($this->typeName);
 
-    foreach ($testSvelteObject as $o) {
+    foreach ($testObject as $o) {
       $this->fail('Unexpected iteration of empty Collection');
     }
-    $this->assertEquals(0, $testSvelteObject->count());
+    $this->assertEquals(0, $testObject->count());
 
     try {
-      $testSvelteObject->add(new BadObject());
+      $testObject->add(new BadObject());
     } catch (\InvalidArgumentException $expected) {
 
       $this->assertSame(
@@ -137,63 +137,63 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
 
       $i = 0;
       $o1 = new AnObject();
-      $testSvelteObject->add($o1);
-      foreach ($testSvelteObject as $o) { $i++;
+      $testObject->add($o1);
+      foreach ($testObject as $o) { $i++;
         if ($i === 1) { $this->assertSame($o1, $o); }
       }
       $this->assertSame(1, $i);
-      $this->assertEquals(1, $testSvelteObject->count());
+      $this->assertEquals(1, $testObject->count());
 
       $i = 0;
       $o2 = new AnObject();
-      $testSvelteObject->add($o2);
-      foreach ($testSvelteObject as $o) { $i++;
+      $testObject->add($o2);
+      foreach ($testObject as $o) { $i++;
         if ($i === 1) { $this->assertSame($o1, $o); }
         if ($i === 2) { $this->assertSame($o2, $o); }
       }
 
       $this->assertSame(2, $i);
-      $this->assertSame($o2, $testSvelteObject[1]);
-      $this->assertEquals(2, $testSvelteObject->count());
+      $this->assertSame($o2, $testObject[1]);
+      $this->assertEquals(2, $testObject->count());
 
       $i = 0;
       $o3 = new AnObject();
-      $testSvelteObject->add($o3);
-      foreach ($testSvelteObject as $o) { $i++;
+      $testObject->add($o3);
+      foreach ($testObject as $o) { $i++;
         if ($i === 1) { $this->assertSame($o1, $o); }
         if ($i === 2) { $this->assertSame($o2, $o); }
         if ($i === 3) { $this->assertSame($o3, $o); }
       }
       $this->assertSame(3, $i);
-      $this->assertEquals(3, $testSvelteObject->count());
+      $this->assertEquals(3, $testObject->count());
 
       $i = 0;
       $o4 = new AnObject();
-      $testSvelteObject->add($o4);
-      foreach ($testSvelteObject as $o) { $i++;
+      $testObject->add($o4);
+      foreach ($testObject as $o) { $i++;
         if ($i === 1) { $this->assertSame($o1, $o); }
         if ($i === 2) { $this->assertSame($o2, $o); }
         if ($i === 3) { $this->assertSame($o3, $o); }
         if ($i === 4) { $this->assertSame($o4, $o); }
       }
       $this->assertSame(4, $i);
-      $this->assertEquals(4, $testSvelteObject->count());
-      $this->assertFalse(isset($testSvelteObject[4]));
+      $this->assertEquals(4, $testObject->count());
+      $this->assertFalse(isset($testObject[4]));
 
-      $this->assertTrue(isset($testSvelteObject[3]));
-      $this->assertSame($o4, $testSvelteObject[3]);
+      $this->assertTrue(isset($testObject[3]));
+      $this->assertSame($o4, $testObject[3]);
 
-      $this->assertTrue(isset($testSvelteObject[2]));
-      $this->assertSame($o3, $testSvelteObject[2]);
+      $this->assertTrue(isset($testObject[2]));
+      $this->assertSame($o3, $testObject[2]);
 
-      $this->assertTrue(isset($testSvelteObject[1]));
-      $this->assertSame($o2, $testSvelteObject[1]);
+      $this->assertTrue(isset($testObject[1]));
+      $this->assertSame($o2, $testObject[1]);
 
-      $this->assertTrue(isset($testSvelteObject[0]));
-      $this->assertSame($o1, $testSvelteObject[0]);
+      $this->assertTrue(isset($testObject[0]));
+      $this->assertSame($o1, $testObject[0]);
 
       try {
-        $testSvelteObject[4];
+        $testObject[4];
       } catch (\OutOfBoundsException $expected) {
         $this->assertSame('Offset out of bounds', $expected->getMessage());
         return;
@@ -215,24 +215,24 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
    */
   public function testOffsetSet()
   {
-    $testSvelteObject = new Collection($this->typeName);
+    $testObject = new Collection($this->typeName);
     $expectedAtNameIndex = new AnObject();
     $expectedAt0Index = new AnObject();
 
-    $testSvelteObject['name'] = $expectedAtNameIndex;
-    $testSvelteObject[0] = new AnObject();
+    $testObject['name'] = $expectedAtNameIndex;
+    $testObject[0] = new AnObject();
 
     try {
-      $testSvelteObject['name'] = new BadObject();
+      $testObject['name'] = new BadObject();
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
         'tests\svelte\core\mocks\CollectionTest\BadObject NOT instanceof tests\svelte\core\mocks\CollectionTest\AnObject',
         $expected->getMessage()
       );
 
-      $testSvelteObject[0] = $expectedAt0Index;
-      $this->assertSame($expectedAtNameIndex, $testSvelteObject['name']);
-      $this->assertSame($expectedAt0Index, $testSvelteObject[0]);
+      $testObject[0] = $expectedAt0Index;
+      $this->assertSame($expectedAtNameIndex, $testObject['name']);
+      $this->assertSame($expectedAt0Index, $testObject[0]);
       return;
     }
     $this->fail('An expected \InvalidArgumentException has NOT been raised.');
@@ -244,10 +244,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase {
    */
   public function testOffsetUnset()
   {
-    $testSvelteObject = new Collection($this->typeName);
+    $testObject = new Collection($this->typeName);
 
     try {
-      unset($testSvelteObject[0]);
+      unset($testObject[0]);
     } catch (\BadMethodCallException $expected) {
       $this->assertSame('Array access unsetting is not allowed.', $expected->getMessage());
       return;
