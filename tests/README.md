@@ -2,4 +2,4 @@ We use the following commands with PhpUnit and PhpDoc to test and produce docume
 - **Run Unit Tests**
   - *phpunit [pathToProjectRoot]/tests*
 - **Produce Documentation**
-  - *phpdoc --ignore */mocks/* -d [pathToProjectRoot]/code/,[pathToProjectRoot]/tests/ -t [pathToDocumentationFolder]/php --visibility=public,protected && phpunit --coverage-html [pathToDocumentationFolder]/coverage [pathToProjectRoot]/tests --whitelist [pathToProjectRoot]/code*
+  - *phpdoc --ignore &ast;/mocks/&ast; -d [pathToProjectRoot]/code/,[pathToProjectRoot]/tests/ -t [pathToDocumentationFolder]/php --visibility=public,protected && phpunit --coverage-html [pathToDocumentationFolder]/coverage [pathToProjectRoot]/tests --whitelist [pathToProjectRoot]/code*
