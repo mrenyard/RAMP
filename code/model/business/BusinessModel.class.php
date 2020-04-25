@@ -58,8 +58,8 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   abstract public function get_id() : Str;
 
   /**
-   * Get value.
-   * @return mixed Value
+   * Get description.
+   * @return mixed Description
    */
   public function get_description() : Str
   {
@@ -126,56 +126,6 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
 
   /**
-   * Validate postdata against this and update accordingly.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
-  public function validate(PostData $postdata)
-  {
-    $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
-    foreach ($this->children as $child) {
-      $child->validate($postdata);
-    }
-  }
-
-  /**
-   * Checks if any errors have been recorded following validate().
-   * @return bool True if error have been recorded
-   */
-  public function hasErrors() : bool
-  {
-    if ($this->errorCollection->count() > 0) { return TRUE; }
-    foreach ($this->children as $child) {
-      if ($child->hasErrors()) { return TRUE; }
-    }
-    return FALSE;
-  }
-
-  /**
-   * Gets collection of recorded errors.
-   * @return iCollection List if recorded errors.
-   */
-  final public function getErrors() : iCollection
-  {
-    $errors = clone $this->errorCollection;
-    foreach ($this->children as $child) {
-      foreach ($child->getErrors() as $error) {
-        $errors->add($error);
-      }
-    }
-    return $errors;
-  }
-
-  /**
-   * Returns the number of items currently stored in this collection.
-   * @return int Number of items in this collection
-   */
-  final public function count() : int
-  {
-    return $this->children->count();
-  }
-
-  /**
    * ArrayAccess method offsetSet.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object SvelteObject to be placed at provided index.
@@ -196,14 +146,52 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
 
   /**
-   * Returns whether *this* and its child/grandchild... are valid.
-   * @return bool *this* and its child/grandchild... are valid.
+   * Validate postdata against this and update accordingly.
+   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
    */
-  public function isValid() : bool
+  public function validate(PostData $postdata)
   {
+    $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
     foreach ($this->children as $child) {
-      if (!$child->isValid()) { return FALSE; }
+      $child->validate($postdata);
     }
-    return TRUE;
+  }
+
+  /**
+   * Checks if any errors have been recorded following validate().
+   * @return bool True if an error has been recorded
+   */
+  public function hasErrors() : bool
+  {
+    if ($this->errorCollection->count() > 0) { return TRUE; }
+    foreach ($this->children as $child) {
+      if ($child->hasErrors()) { return TRUE; }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * @return iCollection List of recorded errors.
+   */
+  final public function getErrors() : iCollection
+  {
+    $errors = clone $this->errorCollection;
+    foreach ($this->children as $child) {
+      foreach ($child->getErrors() as $error) {
+        $errors->add($error);
+      }
+    }
+    return $errors;
+  }
+
+  /**
+   * Returns the number of items currently stored in this collection.
+   * @return int Number of items in this collection
+   */
+  final public function count() : int
+  {
+    return $this->children->count();
   }
 }

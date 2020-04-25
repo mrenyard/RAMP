@@ -17,7 +17,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\BusinessModelTest;
+namespace tests\svelte\model\business\field\mocks\FieldTest;
 
 use svelte\core\Str;
 use svelte\core\iCollection;
@@ -34,7 +34,7 @@ class MockBusinessModel extends BusinessModel
   private static $count;
   private $id;
 
-  public  $label;
+  public $label;
   public $validateCount;
   public $hasErrorsCount;
   public $isValidCount;
@@ -46,7 +46,7 @@ class MockBusinessModel extends BusinessModel
 
   public function __construct(string $label, iCollection $children = null)
   {
-    $this->id = Str::set('uid-' . self::$count++);
+    $this->id = Str::set('mock-business-model:' . self::$count++);
     $this->label = $label;
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;

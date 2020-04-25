@@ -17,7 +17,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\BusinessModelTest;
+namespace tests\svelte\model\business\field\mocks\FieldTest;
 
 use svelte\core\Str;
 use svelte\core\Collection;

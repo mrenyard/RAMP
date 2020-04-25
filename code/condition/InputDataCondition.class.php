@@ -82,6 +82,22 @@ final class InputDataCondition extends BusinessCondition {
     return $this->get_comparable();
   }
 
+   /**
+   * Returns name of attribute as URN.
+   * **DO NOT CALL DIRECTLY, USE this->attributeAsURN;**
+   * @param \svelte\condition\Environment $targetEnvironment Environment to target, default URN Query.
+   * @return \svelte\core\Str Name of attribute to be restricted, evaluated or modified
+   */
+  public function get_attributeURN() : Str
+  {
+    return Str::hyphenate($this->record)
+      ->append(Str::COLON())
+      ->append(Str::hyphenate($this->primaryKeyValue))
+      ->append(Str::COLON())
+      ->append(Str::hyphenate($this->property)
+    );
+  }
+
   /**
    * Returns string representation of input data statement (attribute–value pair) based on target environment.
    * @param \svelte\condition\Environment $targetEnvironment Environment to target, default URN Query.
@@ -97,14 +113,15 @@ final class InputDataCondition extends BusinessCondition {
 
     if (isset($value)) { $this->comparable = $value; }
 
-    $memberAccessOperator = Operator::MEMBER_ACCESS();
     $primaryOperationOperator = $this->operator;
+    $memberAccessOperator = Operator::MEMBER_ACCESS();
     $openingParenthesisOperator = Operator::OPENING_PARENTHESIS();
     $closingParenthesisOperator = Operator::CLOSING_PARENTHESIS();
 
-    return $this->record . $memberAccessOperator($targetEnvironment) . $this->primaryKeyValue .
-      $memberAccessOperator($targetEnvironment) . $this->property .
-        $primaryOperationOperator($targetEnvironment). $openingParenthesisOperator($targetEnvironment) .
-         $this->value . $closingParenthesisOperator($targetEnvironment);
+    return $this->record . $memberAccessOperator($targetEnvironment) .
+      $this->primaryKeyValue . $memberAccessOperator($targetEnvironment) . $this->property .
+        $primaryOperationOperator($targetEnvironment) .
+          $openingParenthesisOperator($targetEnvironment) .
+            $this->value . $closingParenthesisOperator($targetEnvironment);
   }
 }

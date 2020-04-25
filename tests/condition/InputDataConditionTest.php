@@ -177,9 +177,6 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    *  - [record]:[key]:[property]=[newValue] where new values is the passes second argument.
    * - assert returns expected string where both arguments are suplied in the form:
    *  - [record][memberAccessOperator][key][memberAccessOperator][property][assignmentOperator][openingParenthesisOperator][passedValue][closingParenthesisOperator]
-   * - assert throws \DomainException on setting invalid second argument for value when it
-   *   does Not validate against its associated property's processValidationRules() method
-   *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
    * @link svelte.condition.InputDataCondition#method__invoke svelte\condition\InputDataCondition::__invoke()
    */
   public function test__invoke()
@@ -225,12 +222,5 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
             'NEW VALUE' . $closingParenthesisOperator($MockEnvironment),
       $testObject($MockEnvironment, 'NEW VALUE')
     );
-
-    try {
-      $testObject(null, 'BAD VALUE');
-    } catch (\DomainException $expected) {
-      return;
-    }
-    $this->fail('An expected \DomainException has NOT been raised');
   }
 }

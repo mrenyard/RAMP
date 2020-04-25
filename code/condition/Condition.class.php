@@ -70,7 +70,7 @@ abstract class Condition extends SvelteObject
    * **DO NOT CALL DIRECTLY, USE this->operator;**
    * @return \svelte\condition\Operator Performing operation
    */
-  protected function get_operator() : Operator
+  final protected function get_operator() : Operator
   {
     return $this->operator;
   }
@@ -80,7 +80,7 @@ abstract class Condition extends SvelteObject
    * **DO NOT CALL DIRECTLY, USE this->comparable;**
    * @return mixed Value of comparable
    */
-  protected function get_comparable()
+  final protected function get_comparable()
   {
     return $this->comparable;
   }
@@ -92,6 +92,10 @@ abstract class Condition extends SvelteObject
    */
   protected function set_comparable($value)
   {
+    $value = (is_string($value) && is_numeric($value)) ?
+      ((float)$value == (int)$value) ? (int)$value :
+        (float)$value :
+          $value;
     $this->comparable = $value;
   }
 

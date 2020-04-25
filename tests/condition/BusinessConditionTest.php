@@ -212,9 +212,6 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'comparable'
    * - assert 'comparable' equal to recently set
    * - assert 'comparable' equal to that provided at creation
-   * - assert throws \DomainException on setting invalid argument for comparable when it
-   *   does Not validate against its associated property's processValidationRules() method
-   *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
    * @link svelte.condition.BusinessCondition#method_get_comparable svelte\condition\BusinessCondition::comparable (get)
    * @link svelte.condition.BusinessCondition#method_set_comparable svelte\condition\BusinessCondition::comparable (set)
    */
@@ -227,16 +224,5 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
     $testObject2 = new ConcreteBusinessCondition($this->record, $this->property, $this->operator, 'COMPARABLE');
     $this->assertSame('COMPARABLE', $testObject2->comparable);
-
-    try {
-      $testObject3 = new ConcreteBusinessCondition($this->record, $this->property, $this->operator, 'BAD');
-    } catch (\DomainException $expected) {
-      $this->assertSame(
-        'Supplied argument does Not validate against associated property',
-        $expected->getMessage()
-      );
-      return;
-    }
-    $this->fail('An expected \DomainException has NOT been raised');
   }
 }

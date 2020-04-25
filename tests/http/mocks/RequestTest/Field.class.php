@@ -28,10 +28,10 @@ use svelte\core\SvelteObject;
 class Field extends SvelteObject
 {
   /**
-   * Test processValidationRules.
+   * Test processValidationRule.
    * @param mixed $value Value to be assesed for validity
    */
-  public function processValidationRules($value) : bool
+  public function processValidationRule($value) : bool
   {
     return ($value == 'valueA' || $value == 'valueB' || $value == 'valueC');
   }

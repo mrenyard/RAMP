@@ -98,32 +98,4 @@ abstract class BusinessCondition extends Condition {
   {
     return $this->property;
   }
-
-  /**
-   * Sets value of comparable while comparing its validity against business model.
-   * **DO NOT CALL DIRECTLY, USE this->comparable = $value;**
-   *
-   * PRECONDITIONS
-   * - Requires the following SETTING to have been set (usually via svelte.ini):
-   *  - SETTING::SVELTE_BUSINESS_MODEL_NAMESPACE
-   * @param mixed $value Value to be compared
-   * @throws \DomainException when argument does Not validate against its associated property's processValidationRules()
-   * @link svelte.model.business.Property#method_processValidationRules \svelte\model\business\Property::processValidationRules()
-   */
-  protected function set_comparable($value)
-  {
-    $value = (is_string($value) && is_numeric($value)) ?
-      ((float)$value == (int)$value) ? (int)$value :
-        (float)$value :
-          $value;
-
-    $recordClassName = \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
-    $recordClass = new $recordClassName();
-    $propertyName = (string)$this->property;
-    $propertyClass = $recordClass->$propertyName;
-    if ($propertyClass->processValidationRules($value) == false) {
-      throw new \DomainException('Supplied argument does Not validate against associated property');
-    }
-    parent::set_comparable($value);
-  }
 }

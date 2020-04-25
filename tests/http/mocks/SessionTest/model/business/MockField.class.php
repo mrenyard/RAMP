@@ -22,7 +22,7 @@ namespace svelte\model\business;
 
 class MockField
 {
-  public function processValidationRules($value)
+  public function processValidationRule($value)
   {
     return TRUE;
   }
