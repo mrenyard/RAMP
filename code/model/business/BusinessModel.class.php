@@ -38,6 +38,9 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 {
   private $children;
 
+  /**
+   * Collection of error messages ({@link \svelte\core\iCollection}).
+   */
   protected $errorCollection;
 
   /**

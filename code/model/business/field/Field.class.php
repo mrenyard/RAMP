@@ -59,7 +59,9 @@ abstract class Field extends BusinessModel
   }
 
   /**
-   * {@inheritdoc}
+   * Get ID (URN)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
   final public function get_id() : Str
   {
@@ -71,7 +73,8 @@ abstract class Field extends BusinessModel
   }
 
   /**
-   * {@inheritdoc}
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
    */
   final protected function get_value()
   {

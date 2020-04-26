@@ -29,7 +29,7 @@ use svelte\core\Str;
 interface iEnvironment
 {
   /**
-   * Return relevent environment specific iEnvironment instance.
+   * Return relevant environment specific iEnvironment instance.
    * @return \svelte\condition\iEnvironment this with full set of operators
    */
   public static function getInstance() : iEnvironment;

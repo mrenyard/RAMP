@@ -41,7 +41,9 @@ use svelte\model\business\BusinessModel;
 abstract class RecordCollection extends BusinessModel implements iCollection
 {
   /**
-   * {@inheritdoc}
+   * Get ID (URN)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
   final public function get_id() : Str
   {
@@ -49,7 +51,7 @@ abstract class RecordCollection extends BusinessModel implements iCollection
   }
 
   /**
-   * {@inheritdoc}
+   * Add a reference (Record), to this collection.
    * @param \svelte\core\SvelteObject $object SvelteObject reference to be added (Record)
    * @throws \InvalidArgumentException When provided object NOT expected type (Record)
    */

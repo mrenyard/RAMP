@@ -146,7 +146,7 @@ final class Session extends SvelteObject
    * POSTCONDITIONS
    * - Login related $_POST data unset
    * - On failed authentication $_SESSION['post_array'] holds sent $_POST data (NOT login related)
-   * - On successful authentication $_SESSION['loginAccount'] has referance to relevent LoginAccount
+   * - On successful authentication $_SESSION['loginAccount'] has referance to relevant LoginAccount
    *
    * COLLABORATORS
    * - $_POST
