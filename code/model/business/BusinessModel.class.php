@@ -42,7 +42,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Base constructor for Business Models.
-   * @param \svelte\model\business\BusinessModel $children Collection of child business models.
+   * @param \svelte\core\iCollection $children Collection of child business models.
    */
   public function __construct(iCollection $children = null)
   {

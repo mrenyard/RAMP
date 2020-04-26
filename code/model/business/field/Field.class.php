@@ -30,6 +30,15 @@ use svelte\model\business\Record;
 use svelte\validation\FailedValidationException;
 
 /**
+ * Field related to a single property of its containing \svelte\model\business\Record.
+ *
+ * RESPONSIBILITIES
+ * - Implement property specific methods for iteration, validity checking & error reporting
+ * - Hold referance back to its contining Record
+ * - Define template method, processValidationRule
+ *
+ * COLLABORATORS
+ * - {@link \svelte\model\business\Record}
  */
 abstract class Field extends BusinessModel
 {
@@ -37,10 +46,12 @@ abstract class Field extends BusinessModel
   private $containingRecord;
 
   /**
-   * Creates property with referance to its containing record.
+   * Base constructor for Field related to a single property of containing record.
+   * @param \svelte\core\Str $propertyName Property name of related property of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
+   * @param \svelte\core\iCollection $children Collection of child business models.
    */
-  public function __construct(Str $propertyName, Record $containingRecord, /*ValidationRule $validationRule,*/ iCollection $children = null)
+  public function __construct(Str $propertyName, Record $containingRecord, iCollection $children = null)
   {
     $this->containingRecord = $containingRecord;
     $this->propertyName = $propertyName;
@@ -99,7 +110,8 @@ abstract class Field extends BusinessModel
   }
 
   /**
-   *
+   * Template method for use in validation.
+   * @param mixed $value Value to be processed
    */
   abstract protected function processValidationRule($value);
 }

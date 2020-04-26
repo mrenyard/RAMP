@@ -74,7 +74,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\condition\PostData::build().
    * - assert throws \DomainException when any $postdata NAME is NOT in correct form
-   *   - with message: <em>'Invalid format for name in $postdata, SHOULD be URI in the form "record:key:property"'</em>
+   *   - with message: <em>'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'</em>
    * - assert throws \DomainException when any $postdata NAME does NOT match business model
    *   - with message: <em>'Invalid name in $postdata does NOT match business model'</em>
    * - assert where valid produces like for like representation of provied array as PostData object
@@ -97,7 +97,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
       PostData::build($badlyFormedNameArray);
     } catch(\DomainException $expected) {
       $this->assertSame(
-        'Invalid format for name in $postdata, SHOULD be URI in the form "record:key:property"',
+        'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"',
         $expected->getMessage()
       );
 

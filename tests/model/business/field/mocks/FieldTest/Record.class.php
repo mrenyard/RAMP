@@ -51,8 +51,6 @@ class Record extends BusinessModel
     return 'VALUE';
   }
 
-  /**
-   */
   public function setPropertyValue(string $propertyName, $value)
   {
     self::$setPropertyValueCount++;

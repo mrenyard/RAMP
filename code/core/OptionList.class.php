@@ -24,12 +24,10 @@ namespace svelte\core;
  * Collection for iOption.
  *
  * RESPONSIBILITIES
- *
  * - Holds references to collection of varifiable {@link iOption}s.
  * - Implements the functionality of {@link iCollection}.
  *
  * COLLABORATORS
- *
  * - {@link \svelte\core\Collection}
  * - {@link \svelte\core\iOption}
  */

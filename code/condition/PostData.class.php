@@ -57,16 +57,16 @@ final class PostData extends Collection
     $postData = new PostData();
     foreach ($postdata as $name => $value) {
 
-      $URI = explode(':', $name);
-      if (count($URI) !== 3) {
+      $URN = explode(':', $name);
+      if (count($URN) !== 3) {
         throw new \DomainException(
-          'Invalid format for name in $postdata, SHOULD be URI in the form "record:key:property"'
+          'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'
         );
       }
 
-      $record = Str::camelCase(Str::set($URI[0]));
-      $primaryKey = Str::set($URI[1]);
-      $property = Str::camelCase(Str::set($URI[2]), TRUE);
+      $record = Str::camelCase(Str::set($URN[0]));
+      $primaryKey = Str::set($URN[1]);
+      $property = Str::camelCase(Str::set($URN[2]), TRUE);
 
       // InputDataCondition also throws \DomainException - which we allow to bubble up.
       $postData->add(new InputDataCondition($record, $primaryKey, $property, $value));
