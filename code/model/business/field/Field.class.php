@@ -30,12 +30,12 @@ use svelte\model\business\Record;
 use svelte\validation\FailedValidationException;
 
 /**
- * Field related to a single property of its containing \svelte\model\business\Record.
+ * Abstract field related to a single property of its containing \svelte\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
- * - Hold referance back to its contining Record
  * - Define template method, processValidationRule
+ * - Hold referance back to its contining Record
  *
  * COLLABORATORS
  * - {@link \svelte\model\business\Record}
