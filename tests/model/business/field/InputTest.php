@@ -290,12 +290,17 @@ class InputTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors());
+    $this->assertSame(0, MyValidationRule::$testCallCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $errors = $this->testObject->getErrors();
     $this->assertSame(0, $errors->count());
+
     // Returns same results on subsequent call.
     $secondCallOnErrors = $this->testObject->getErrors();
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
+    $this->assertSame(0, MyValidationRule::$testCallCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
   }
 
   /**
@@ -317,7 +322,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertTrue($this->testObject->hasErrors());
     $this->assertSame(1, MyValidationRule::$testCallCount);
-    $this->assertSame(1, MockRecord::$setPropertyValueCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $errors = $this->testObject->getErrors();
     $this->assertSame('MyValidationRule has error due to $value of BAD!', (string)$errors[0]);
     $this->assertFalse(isset($errors[1]));

@@ -106,6 +106,7 @@ abstract class Field extends BusinessModel
           $this->processValidationRule($inputdata->value);
         } catch (FailedValidationException $e) {
           $this->errorCollection->add(Str::set($e->getMessage()));
+          return;
         }
         $this->containingRecord->setPropertyValue((string)$this->propertyName, $inputdata->value);
       }

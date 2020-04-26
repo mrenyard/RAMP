@@ -424,7 +424,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       'record:new:a-property' => 'BAD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(1, Record::$setPropertyValueCount);
+    $this->assertSame(0, Record::$setPropertyValueCount);
     $this->assertSame(1, $this->testChild1->validateCount);
     $this->assertSame(1, $this->testChild2->validateCount);
     $this->assertSame(1, $this->testChild3->validateCount);
