@@ -31,19 +31,11 @@ use svelte\validation\FailedValidationException;
  */
 class MockField extends Field
 {
-  public static $hasErrorsCount;
   public static $processValidationRuleCount;
 
   public static function reset()
   {
-    self::$hasErrorsCount = 0;
     self::$processValidationRuleCount = 0;
-  }
-
-  public function hasErrors() : bool
-  {
-    self::$hasErrorsCount++;
-    return parent::hasErrors();
   }
 
   protected function processValidationRule($value)

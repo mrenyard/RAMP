@@ -62,15 +62,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     MockBusinessModel::reset();
     $this->children = new Collection();
     $this->grandchildren = new Collection();
-
     $this->mockRecord = new Record();
     $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
-
     $this->testChild1 = new MockBusinessModel('First child');
     $this->testChild2 = new MockBusinessModelWithErrors('Second child');
     $this->testChild3 = new MockBusinessModel('Third child', $this->grandchildren);
     $this->grandchild = new MockBusinessModelWithErrors('First grandchild');
-
     $this->children->add($this->testChild1);
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
@@ -208,7 +205,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function testGetIterator()
   {
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-
     $i = 0;
     $iterator = $this->children->getIterator();
     $iterator->rewind();
@@ -231,13 +227,10 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
-
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[1]);
       $this->assertSame($this->testChild2, $this->testObject[1]);
-
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[2]);
       $this->assertSame($this->testChild3, $this->testObject[2]);
       return;
@@ -292,18 +285,17 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert returns void (null) when called.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
-   * - assert validate method is propagated through (touched on) testsObject and all of
-   *  its children and grandchildren.
+   * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertSame(1, $this->testChild1->validateCount);
-    $this->assertSame(1, $this->testChild2->validateCount);
-    $this->assertSame(1, $this->testChild3->validateCount);
-    $this->assertSame(1, $this->grandchild->validateCount);
+    $this->assertSame(0, $this->testChild1->validateCount);
+    $this->assertSame(0, $this->testChild2->validateCount);
+    $this->assertSame(0, $this->testChild3->validateCount);
+    $this->assertSame(0, $this->grandchild->validateCount);
   }
 
   /**
@@ -315,8 +307,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert if provided PostData contains an InputDataCondition with an attribute that matches
    *    the testObject's id and its processValidationRule method is called and passes, then its
    *    containingRecord setPropertyMethod is called.
-   * - assert validate method is propagated through (touched on) testObject and all of
-   *  its children and grandchildren.
+   * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleCalled()
@@ -325,127 +316,76 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       'record:new:a-property' => 'GOOD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(1, $this->testChild1->validateCount);
-    $this->assertSame(1, $this->testChild2->validateCount);
-    $this->assertSame(1, $this->testChild3->validateCount);
-    $this->assertSame(1, $this->grandchild->validateCount);
     $this->assertSame(1, Record::$setPropertyValueCount);
+    $this->assertSame(0, $this->testChild1->validateCount);
+    $this->assertSame(0, $this->testChild2->validateCount);
+    $this->assertSame(0, $this->testChild3->validateCount);
+    $this->assertSame(0, $this->grandchild->validateCount);
   }
 
   /**
    * Collection of assertions for \svelte\model\business\field\Field::hasErrors().
-   * - assert returns True when any child/grandchild has recorded errors.
+   * - assert returns False when PostData does NOT contain an InputDataCondition with an attribute
+   *   that matches the testObject's id.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
-   *    matches the testObject's id, then its processValidationRule method, is NOT called.
-   * - assert propagates through child/grandchild until reaches one that has recorded errors.
+   *   matches the testObject's id, then its processValidationRule method, is NOT called.
+   * - assert does NOT propagates through to its child/grandchild.
    * @link svelte.model.business.field.Field#method_hasErrors svelte\model\business\field\Field::hasErrors()
    */
   public function testHasErrors()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertTrue($this->testObject->hasErrors());
-
+    $this->assertFalse($this->testObject->hasErrors());
     $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertSame(1, MockField::$hasErrorsCount);
-    $this->assertSame(1, $this->testChild1->hasErrorsCount);
-    $this->assertSame(1, $this->testChild2->hasErrorsCount);
+    $this->assertSame(0, $this->testChild1->hasErrorsCount);
+    $this->assertSame(0, $this->testChild2->hasErrorsCount);
     $this->assertSame(0, $this->testChild3->hasErrorsCount);
-    $this->assertSame(0, $this->grandchild->hasErrorsCount);
   }
 
   /**
    * Collection of assertions for \svelte\model\business\field\Field::getErrors().
-   * - assert following validate(), the expected iCollection of error messages returned from
-   * getErrors() are as expected, depending on which level they are called.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * - assert a single collection containing all errors including children and grandchildren
-   *  of top testObject returned when called on testObject.
-   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link svelte.model.business.field.Field#method_getErrors svelte\model\business\field\Field::getErrors()
-   */
-  public function testGetErrors()
-  {
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertTrue($this->testObject->hasErrors());
-    $errors = $this->testObject->getErrors();
-
-    // All errors including children and grandchildren of top testObject returned in a single collection.
-    $this->assertSame('Second child\'s first error occurred during validation!', (string)$errors[0]);
-    $this->assertSame('Second child\'s second error occurred during validation!', (string)$errors[1]);
-    $this->assertSame('Second child\'s third error occurred during validation!', (string)$errors[2]);
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$errors[3]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$errors[4]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$errors[5]);
-    $this->assertFalse(isset($errors[6]));
-
-    // Returns same results on subsequent call, while BusinessModels are in same state.
-    $secondCallOnErrors = $this->testObject->getErrors();
-    $this->assertEquals($secondCallOnErrors, $errors);
-    $this->assertFalse(isset($secondCallOnErrors[6]));
-
-    // Calls on sub BusinessModels return expected sub set of Errors.
-    $child2Errors = $this->testChild2->getErrors();
-    $this->assertSame('Second child\'s first error occurred during validation!', (string)$child2Errors[0]);
-    $this->assertSame('Second child\'s second error occurred during validation!', (string)$child2Errors[1]);
-    $this->assertSame('Second child\'s third error occurred during validation!', (string)$child2Errors[2]);
-
-    // Calls on sub BusinessModels return expected sub set of Errors, even on grandchildren.
-    $grandchildErrros = $this->grandchild->getErrors();
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$grandchildErrros[0]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$grandchildErrros[1]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$grandchildErrros[2]);
-    $this->assertFalse(isset($child3Errros[3]));
-
-    // Because testChild3 in the parent of grandchild it returns grandchild errors alone with any of own.
-    $child3Errros = $this->testChild3->getErrors();
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$child3Errros[0]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$child3Errros[1]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$child3Errros[2]);
-    $this->assertFalse(isset($child3Errros[3]));
-  }
-
-  /**
-   * Further collection of assertions for \svelte\model\business\field\Field::hasErrors(), where
-   * PostData contains an InputDataCondition with an attribute that matches the testObject's id
-   * and its processValidationRule method is called and fails.
+   * - assert returns an empty iCollection when PostData does NOT contain an InputDataCondition
+   *   with an attribute that matches the testObject's id.
+   * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
+   *   matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert if provided PostData contains an InputDataCondition with an attribute that matches
    *    the testObject's id, then its processValidationRule method is called.
    * - assert if provided PostData contains an InputDataCondition with an attribute that matches
    *    the testObject's id and its processValidationRule method is called and fails, throwing a
    *    FailedValidationException then its message is added to its errorCollection for retrieval
    *    by its hasErrors and getErrors methods.
-   * - assert validate method is propagated through (touched on) testObject and all of
-   *  its children and grandchildren.
-   * @link svelte.model.business.field.Field#method_hasErrors svelte\model\business\field\Field::hasErrors()
+   * - assert following validate(), the expected iCollection of error messages are returned.
+   * - assert any following call to hasErrors returns the same collection of messages as previously.
+   * @link svelte.model.business.field.Field#method_getErrors svelte\model\business\field\Field::getErrors()
    */
-  public function testHasErrorsProcessValidationRuleCalled()
+  public function testGetErrors()
   {
+    // PostData does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
+    $this->assertNull($this->testObject->validate(new PostData()));
+    $this->assertFalse($this->testObject->hasErrors());
+    $errors = $this->testObject->getErrors();
+    $this->assertSame(0, MockField::$processValidationRuleCount);
+    $this->assertInstanceOf('\svelte\core\iCollection', $errors);
+    $this->assertSame(0, $errors->count());
+    $this->assertFalse(isset($errors[0]));
+    // Returns same results on subsequent call, while Field in same state.
+    $secondCallOnErrors = $this->testObject->getErrors();
+    $this->assertEquals($secondCallOnErrors, $errors);
+    $this->assertFalse(isset($secondCallOnErrors[0]));
+    // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
     $this->assertNull($this->testObject->validate(PostData::build(array(
       'record:new:a-property' => 'BAD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame(0, Record::$setPropertyValueCount);
-    $this->assertSame(1, $this->testChild1->validateCount);
-    $this->assertSame(1, $this->testChild2->validateCount);
-    $this->assertSame(1, $this->testChild3->validateCount);
-    $this->assertSame(1, $this->grandchild->validateCount);
-
-    $this->assertTrue($this->testObject->hasErrors());
-    $this->assertSame(1, MockField::$hasErrorsCount);
-    $this->assertSame(0, $this->testChild1->hasErrorsCount);
-    $this->assertSame(0, $this->testChild2->hasErrorsCount);
-    $this->assertSame(0, $this->testChild3->hasErrorsCount);
-    $this->assertSame(0, $this->grandchild->hasErrorsCount);
-
-    $errors = $this->testObject->getErrors();
-    $this->assertSame('MockField\'s has error due to $value of BAD!', (string)$errors[0]);
-    $this->assertSame('Second child\'s first error occurred during validation!', (string)$errors[1]);
-    $this->assertSame('Second child\'s second error occurred during validation!', (string)$errors[2]);
-    $this->assertSame('Second child\'s third error occurred during validation!', (string)$errors[3]);
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$errors[4]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$errors[5]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$errors[6]);
-    $this->assertFalse(isset($errors[7]));
+    $thirdCallOnErrors = $this->testObject->getErrors();
+    $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
+    $this->assertSame(1, $thirdCallOnErrors->count());
+    $this->assertSame('MockField\'s has error due to $value of BAD!', (string)$thirdCallOnErrors[0]);
+    // Returns same results on subsequent call, while Field in same state.
+    $forthCallOnErrors = $this->testObject->getErrors();
+    $this->assertEquals($forthCallOnErrors, $thirdCallOnErrors);
+    $this->assertTrue(isset($thirdCallOnErrors[0]));
   }
 
   /**

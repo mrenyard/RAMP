@@ -179,7 +179,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * Gets collection of recorded errors.
    * @return iCollection List of recorded errors.
    */
-  final public function getErrors() : iCollection
+  public function getErrors() : iCollection
   {
     $errors = clone $this->errorCollection;
     foreach ($this->children as $child) {

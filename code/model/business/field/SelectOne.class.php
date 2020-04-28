@@ -22,45 +22,47 @@
 namespace svelte\model\business\field;
 
 use svelte\core\Str;
+use svelte\core\OptionList;
 use svelte\model\business\Record;
-use svelte\validation\ValidationRule;
+use svelte\validation\FailedValidationException;
 
 /**
- * Input field related to a single property of its containing \svelte\model\business\Record.
+ * Specilised field for selecting one from a collection of iOptions tied to a single property of
+ * its containing \svelte\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
- * - Implement template method, processValidationRule to process provided ValidationRule.
+ * - Implement template method, processValidationRule to validate against avalible iOptions.
  * - Hold referance back to its contining Record
  *
  * COLLABORATORS
  * - {@link \svelte\model\business\Record}
- * - {@link \svelte\validation\ValidationRule}
+ * - {@link \svelte\core\OptionList}
  */
-final class Input extends Field
+final class SelectOne extends Field
 {
-  private $validationRule;
-
   /**
-   * Creates input field related to a single property of containing record.
+   * Creates select one field type, tied to a single property of containing record.
    * @param \svelte\core\Str $propertyName Property name of related property of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\validation\ValidationRule $validationRule Validation rule to test against
+   * @param \svelte\core\OptionList $options Collection of avalible iOptions
    * proir to allowing property value change
    */
-  public function __construct(Str $propertyName, Record $containingRecord, ValidationRule $validationRule)
+  public function __construct(Str $propertyName, Record $containingRecord, OptionList $options)
   {
-    $this->validationRule = $validationRule;
-    parent::__construct($propertyName, $containingRecord);
+    parent::__construct($propertyName, $containingRecord, $options);
   }
 
   /**
-   * Process provided validation rule.
+   * Validate that value is one of avalible options.
    * @param mixed $value Value to be processed
    * @throws \svelte\validation\FailedValidationException When test fails.
    */
   protected function processValidationRule($value)
   {
-    $this->validationRule->process($value);
+    foreach ($this as $option) {
+      if ($value == $option->id) { return; }
+    }
+    throw new FailedValidationException('Selected value NOT an avalible option!');
   }
 }

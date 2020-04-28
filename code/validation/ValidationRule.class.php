@@ -61,14 +61,14 @@ abstract class ValidationRule extends SvelteObject
   /**
    * Runs code defined test against provided value.
    * @param mixed $value Value to be tested.
-   * @throws FailedValidationException if test fails.
+   * @throws FailedValidationException When test fails.
    */
   abstract protected function test($value);
 
   /**
    * Process each validation test against provided value.
    * @param mixed $value Value to be tested.
-   * @throws FailedValidationException if test fails.
+   * @throws FailedValidationException When test fails.
    */
   public function process($value)
   {

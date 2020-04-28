@@ -99,7 +99,8 @@ abstract class Field extends BusinessModel
    */
   final public function validate(PostData $postdata)
   {
-    parent::validate($postdata);
+    //parent::validate($postdata);
+    $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
     foreach ($postdata as $inputdata) {
       if ($inputdata->attributeURN == $this->id) {
         try {
@@ -114,8 +115,29 @@ abstract class Field extends BusinessModel
   }
 
   /**
+   * Checks if any errors have been recorded following validate().
+   * @return bool True if an error has been recorded
+   */
+  final public function hasErrors() : bool
+  {
+    if ($this->errorCollection->count() > 0) { return TRUE; }
+    return FALSE;
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * @return iCollection List of recorded errors.
+   */
+  final public function getErrors() : iCollection
+  {
+    $errors = clone $this->errorCollection;
+    return $errors;
+  }
+
+  /**
    * Template method for use in validation.
    * @param mixed $value Value to be processed
+   * @throws \svelte\validation\FailedValidationException When test fails.
    */
   abstract protected function processValidationRule($value);
 }
