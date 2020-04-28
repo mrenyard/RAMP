@@ -17,14 +17,42 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace tests\svelte\model\business\field\mocks\FieldTest;
 
 use svelte\core\Str;
-use svelte\model\business\BusinessModel;
+use svelte\model\business\Record;
 
 /**
  * Mock Concreate implementation of \svelte\model\business\BusinessModel for testing against.
  */
 class MockRecord extends Record
 {
+  public static $setPropertyValueCount = 0;
+  public static $getPropertyValueCount = 0;
+
+  public static function reset()
+  {
+    self::$setPropertyValueCount = 0;
+    self::$getPropertyValueCount = 0;
+  }
+
+  public function get_id() : Str
+  {
+    return Str::set('mock-record:new');
+  }
+
+  protected function get_aProperty()
+  {
+  }
+
+  public function getPropertyValue(string $propertyName)
+  {
+    self::$getPropertyValueCount++;
+    return 'VALUE';
+  }
+
+  public function setPropertyValue(string $propertyName, $value)
+  {
+    self::$setPropertyValueCount++;
+  }
 }

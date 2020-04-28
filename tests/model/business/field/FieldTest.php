@@ -20,9 +20,10 @@
 namespace tests\svelte\model\business\field;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
+require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/Record.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockField.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
@@ -31,12 +32,12 @@ use svelte\core\Str;
 use svelte\core\Collection;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
+use svelte\model\business\Record;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockField;
+use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
 use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
 use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
-
-use svelte\model\business\Record;
 
 /**
  * Collection of tests for \svelte\model\business\field\Field.
@@ -57,12 +58,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp()
   {
-    Record::reset();
+    MockRecord::reset();
     MockField::reset();
     MockBusinessModel::reset();
     $this->children = new Collection();
     $this->grandchildren = new Collection();
-    $this->mockRecord = new Record();
+    $this->mockRecord = new MockRecord();
     $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
     $this->testChild1 = new MockBusinessModel('First child');
     $this->testChild2 = new MockBusinessModelWithErrors('Second child');
@@ -72,6 +73,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
     $this->grandchildren->add($this->grandchild);
+    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
   }
 
   /**
@@ -162,7 +164,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $value = $this->testObject->value;
-      $this->assertSame(1, Record::$getPropertyValueCount);
+      $this->assertSame(1, MockRecord::$getPropertyValueCount);
       $this->assertSame($this->mockRecord->getPropertyValue('aProperty'), $value);
       $this->assertSame('VALUE', $value);
       return;
@@ -213,7 +215,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
       $iterator->next();
     }
-    $this->assertSame('record:new:a-property', (string)$this->testObject->id);
+    $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
   }
 
   /**
@@ -313,10 +315,10 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessValidationRuleCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'GOOD'
+      'mock-record:new:a-property' => 'GOOD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(1, Record::$setPropertyValueCount);
+    $this->assertSame(1, MockRecord::$setPropertyValueCount);
     $this->assertSame(0, $this->testChild1->validateCount);
     $this->assertSame(0, $this->testChild2->validateCount);
     $this->assertSame(0, $this->testChild3->validateCount);
@@ -373,11 +375,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
+    MockRecord::reset();
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'BAD'
+      'mock-record:new:a-property' => 'BAD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(0, Record::$setPropertyValueCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $thirdCallOnErrors = $this->testObject->getErrors();
     $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
     $this->assertSame(1, $thirdCallOnErrors->count());

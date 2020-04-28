@@ -24,7 +24,7 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/validation/ValidationRule.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/InputTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/InputTest/MyValidationRule.class.php';
 
 use svelte\core\Str;
@@ -33,9 +33,8 @@ use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\field\Input;
 
+use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
 use tests\svelte\model\business\field\mocks\InputTest\MyValidationRule;
-
-use svelte\model\business\MockRecord;
 
 /**
  * Collection of tests for \svelte\model\business\field\Input.
@@ -56,6 +55,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->mockRecord = new MockRecord();
     $this->myValidationRule = new MyValidationRule();
     $this->testObject = new Input(Str::set('aProperty'), $this->mockRecord, $this->myValidationRule);
+    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
   }
 
   /**
@@ -260,7 +260,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
   public function testValidateValidationRuleTestCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'GOOD'
+      'mock-record:new:a-property' => 'GOOD'
     ))));
     $this->assertSame(1, MyValidationRule::$testCallCount);
     $this->assertSame(1, MockRecord::$setPropertyValueCount);
@@ -318,7 +318,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
   public function testHasErrorsValidationRuleTestCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'BAD'
+      'mock-record:new:a-property' => 'BAD'
     ))));
     $this->assertTrue($this->testObject->hasErrors());
     $this->assertSame(1, MyValidationRule::$testCallCount);

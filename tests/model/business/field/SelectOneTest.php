@@ -26,7 +26,7 @@ require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/Record.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
@@ -37,7 +37,7 @@ use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\field\SelectOne;
 
-
+use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
 use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
 use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
 
@@ -61,7 +61,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp()
   {
-    Record::reset();
+    MockRecord::reset();
     MockBusinessModel::reset();
     $this->options = new Collection();
     $this->option1 = new MockBusinessModel('First child');
@@ -70,7 +70,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->options->add($this->option1);
     $this->options->add($this->option2);
     $this->options->add($this->option3);
-    $this->mockRecord = new Record();
+    $this->mockRecord = new MockRecord();
     $this->testObject = new SelectOne(
       Str::set('aProperty'),
       $this->mockRecord,
@@ -166,7 +166,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $value = $this->testObject->value;
-      $this->assertSame(1, Record::$getPropertyValueCount);
+      $this->assertSame(1, MockRecord::$getPropertyValueCount);
       $this->assertSame($this->mockRecord->getPropertyValue('aProperty'), $value);
       $this->assertSame('VALUE', $value);
       return;
@@ -216,7 +216,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
       $iterator->next();
     }
-    $this->assertSame('record:new:a-property', (string)$this->testObject->id);
+    $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
   }
 
   /**
@@ -314,10 +314,10 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessValidationRuleCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'mock-business-model:0'
+      'mock-record:new:a-property' => 'mock-business-model:0'
     ))));
     //$this->assertSame(1, SelectOne::$processValidationRuleCount);
-    $this->assertSame(1, Record::$setPropertyValueCount);
+    $this->assertSame(1, MockRecord::$setPropertyValueCount);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);
@@ -336,7 +336,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors());
-    $this->assertSame(0, Record::$setPropertyValueCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $this->assertSame(0, $this->option1->hasErrorsCount);
     $this->assertSame(0, $this->option2->hasErrorsCount);
     $this->assertSame(0, $this->option3->hasErrorsCount);
@@ -364,7 +364,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors());
     $errors = $this->testObject->getErrors();
-    $this->assertSame(0, Record::$setPropertyValueCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $this->assertInstanceOf('\svelte\core\iCollection', $errors);
     $this->assertSame(0, $errors->count());
     $this->assertFalse(isset($errors[0]));
@@ -374,9 +374,9 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($secondCallOnErrors[0]));
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'record:new:a-property' => 'BAD'
+      'mock-record:new:a-property' => 'BAD'
     ))));
-    $this->assertSame(0, Record::$setPropertyValueCount);
+    $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $thirdCallOnErrors = $this->testObject->getErrors();
     $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
     $this->assertSame(1, $thirdCallOnErrors->count());
