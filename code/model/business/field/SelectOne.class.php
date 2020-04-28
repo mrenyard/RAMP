@@ -46,7 +46,6 @@ final class SelectOne extends Field
    * @param \svelte\core\Str $propertyName Property name of related property of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    * @param \svelte\core\OptionList $options Collection of avalible iOptions
-   * proir to allowing property value change
    */
   public function __construct(Str $propertyName, Record $containingRecord, OptionList $options)
   {

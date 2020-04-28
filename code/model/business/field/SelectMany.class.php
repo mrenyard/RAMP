@@ -27,8 +27,8 @@ use svelte\model\business\Record;
 use svelte\validation\FailedValidationException;
 
 /**
- * Specilised field for selecting one from a collection of iOptions tied to a single property of
- * its containing \svelte\model\business\Record.
+ * Specilised field for selecting zero or many from a collection of iOptions tied to a single
+ * property of its containing \svelte\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
@@ -42,11 +42,10 @@ use svelte\validation\FailedValidationException;
 final class SelectMany extends Field
 {
   /**
-   * Creates select one field type, tied to a single property of containing record.
+   * Creates select many field type, tied to a single property of containing record.
    * @param \svelte\core\Str $propertyName Property name of related property of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    * @param \svelte\core\OptionList $options Collection of avalible iOptions
-   * proir to allowing property value change
    */
   public function __construct(Str $propertyName, Record $containingRecord, OptionList $options)
   {
@@ -54,8 +53,9 @@ final class SelectMany extends Field
   }
 
   /**
-   * Validate that value is one of avalible options.
+   * Validate that value is an array contain zero or many of avalible options.
    * @param mixed $value Value to be processed
+   * @throws \BadMethodCallException When $value parameter in NOT an array.
    * @throws \svelte\validation\FailedValidationException When test fails.
    */
   protected function processValidationRule($value)
