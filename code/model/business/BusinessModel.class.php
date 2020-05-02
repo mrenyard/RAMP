@@ -144,9 +144,9 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  final public function offsetUnset($offset)
+  public function offsetUnset($offset)
   {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
+    unset($this->children[$offset]);
   }
 
   /**
@@ -164,11 +164,12 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Checks if any errors have been recorded following validate().
+   * @todo:mrenyard: change test and make final.
    * @return bool True if an error has been recorded
    */
   public function hasErrors() : bool
   {
-    if ($this->errorCollection->count() > 0) { return TRUE; }
+    if (isset($this->errorCollection) && $this->errorCollection->count() > 0) { return TRUE; }
     foreach ($this->children as $child) {
       if ($child->hasErrors()) { return TRUE; }
     }

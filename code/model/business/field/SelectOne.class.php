@@ -53,13 +53,35 @@ final class SelectOne extends Field
   }
 
   /**
+   * ArrayAccess method offsetSet, DO NOT USE.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object SvelteObject to be placed at provided index.
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetSet($offset, $object)
+  {
+    throw new \BadMethodCallException('Array access setting is not allowed.');
+  }
+
+  /**
+   * ArrayAccess method offsetUnset, DO NOT USE.
+   * @param mixed $offset API to match \ArrayAccess interface
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetUnset($offset)
+  {
+    throw new \BadMethodCallException('Array access unsetting is not allowed.');
+  }
+
+  /**
    * Validate that value is one of avalible options.
    * @param mixed $value Value to be processed
    * @throws \svelte\validation\FailedValidationException When test fails.
    */
-  protected function processValidationRule($value)
+  public function processValidationRule($value)
   {
-    foreach ($this as $option) {
+    foreach ($this as $option)
+    {
       if ($value == $option->id) { return; }
     }
     throw new FailedValidationException('Selected value NOT an avalible option!');

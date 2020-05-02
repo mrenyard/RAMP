@@ -231,33 +231,22 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet.
+   * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
+   * for \svelte\model\business\BusinessModel::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
+   * - asser successful use of offsetUnset
+   * - assert isset return FALSE at the same index once unset has been used.
    * @link svelte.model.business.BusinessModel#method_offsetSet svelte\model\business\BusinessModel::offsetSet()
+   * @link svelte.model.business.BusinessModel#method_offsetUnset svelte\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSet()
+  public function testOffsetSetOffsetUnset()
   {
     $object = new MockBusinessModel('Forth child');
     $this->testObject[3] = $object;
     $this->assertSame($object, $this->testObject[3]);
-  }
-
-  /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetUnset.
-   * - assert throws BadMethodCallException whenever offsetUnset is called
-   *  - with message *Array access unsetting is not allowed.*
-   * @link svelte.model.business.BusinessModel#method_offsetUnset svelte\model\business\BusinessModel::offsetUnset()
-   */
-  public function testOffsetUnset()
-  {
-    try {
-      unset($this->testObject[0]);
-    } catch (\BadMethodCallException $expected) {
-      $this->assertSame('Array access unsetting is not allowed.', $expected->getMessage());
-      return;
-    }
-    $this->fail('An expected \BadMethodCallException has NOT been raised.');
+    unset($this->testObject[3]);
+    $this->assertFalse(isset($this->testObject[3]));
   }
 
   /**

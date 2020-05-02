@@ -141,7 +141,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $value = $this->testObject->value;
       $this->assertSame(1, MockRecord::$getPropertyValueCount);
-      $this->assertSame($this->mockRecord->getPropertyValue('aProperty'), $value);
+      $this->assertSame($this->mockRecord->getPropertyValueFromField('aProperty'), $value);
       $this->assertSame('VALUE', $value);
       return;
     }

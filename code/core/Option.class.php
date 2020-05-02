@@ -19,17 +19,17 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace svelte\core;
 
 use svelte\core\SvelteObject;
 use svelte\core\Str;
 use svelte\core\iOption;
 
 /**
- * A Single login account type.
+ * A Single option.
  * .
  */
-class LoginAccountTypeOption extends SvelteObject implements iOption
+class Option extends SvelteObject implements iOption
 {
   private $id;
   private $description;

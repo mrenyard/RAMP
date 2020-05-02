@@ -68,11 +68,9 @@ class SvelteObjectTest extends \PHPUnit\Framework\TestCase
     try {
       $testSvelteObject->noProperty = $value;
     } catch (PropertyNotSetException $expected) {
-
       try {
         $value = $testSvelteObject->noProperty;
       } catch (BadPropertyCallException $expecrted) {
-
         $testSvelteObject->aProperty = $value;
         $this->assertSame($value, $testSvelteObject->aProperty);
         return;

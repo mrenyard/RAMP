@@ -145,12 +145,12 @@ class Collection extends SvelteObject implements iCollection {
   }
 
   /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
+   * ArrayAccess method offsetUnset.
    * @param mixed $offset API to match \ArrayAccess interface
    */
   public function offsetUnset($offset)
   {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
+    unset($this->collection[$offset]);
   }
 
   /**

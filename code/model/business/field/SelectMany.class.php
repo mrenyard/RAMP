@@ -53,12 +53,33 @@ final class SelectMany extends Field
   }
 
   /**
+   * ArrayAccess method offsetSet, DO NOT USE.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object SvelteObject to be placed at provided index.
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetSet($offset, $object)
+  {
+    throw new \BadMethodCallException('Array access setting is not allowed.');
+  }
+
+  /**
+   * ArrayAccess method offsetUnset, DO NOT USE.
+   * @param mixed $offset API to match \ArrayAccess interface
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetUnset($offset)
+  {
+    throw new \BadMethodCallException('Array access unsetting is not allowed.');
+  }
+
+  /**
    * Validate that value is an array contain zero or many of avalible options.
    * @param mixed $value Value to be processed
    * @throws \BadMethodCallException When $value parameter in NOT an array.
    * @throws \svelte\validation\FailedValidationException When test fails.
    */
-  protected function processValidationRule($value)
+  public function processValidationRule($value)
   {
     if (!is_array($value)) {
       throw new \BadMethodCallException('$value parameter must be an array');

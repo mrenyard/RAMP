@@ -36,23 +36,28 @@ class MockRecord extends Record
     self::$getPropertyValueCount = 0;
   }
 
-  public function get_id() : Str
+  public static function primaryKeyName() : Str
   {
-    return Str::set('mock-record:new');
+    return Str::set('aProperty');
   }
 
   protected function get_aProperty()
   {
   }
 
-  public function getPropertyValue(string $propertyName)
+  public function getPropertyValueFromField(string $propertyName)
   {
     self::$getPropertyValueCount++;
     return 'VALUE';
   }
 
-  public function setPropertyValue(string $propertyName, $value)
+  public function setPropertyValueFromField(string $propertyName, $value)
   {
     self::$setPropertyValueCount++;
+  }
+
+  protected function checkRequired($dataObject) : bool
+  {
+    return (isset($dataObject->aPproperty));
   }
 }

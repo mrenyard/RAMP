@@ -78,18 +78,7 @@ abstract class Field extends BusinessModel
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue($this->propertyName);
-  }
-
-  /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access setting is not allowed.
-   */
-  final public function offsetSet($offset, $object)
-  {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
+    return $this->containingRecord->getPropertyValueFromField($this->propertyName);
   }
 
   /**
@@ -99,7 +88,6 @@ abstract class Field extends BusinessModel
    */
   final public function validate(PostData $postdata)
   {
-    //parent::validate($postdata);
     $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
     foreach ($postdata as $inputdata) {
       if ($inputdata->attributeURN == $this->id) {
@@ -109,7 +97,9 @@ abstract class Field extends BusinessModel
           $this->errorCollection->add(Str::set($e->getMessage()));
           return;
         }
-        $this->containingRecord->setPropertyValue((string)$this->propertyName, $inputdata->value);
+        $this->containingRecord->setPropertyValueFromField(
+          (string)$this->propertyName, $inputdata->value
+        );
       }
     }
   }
@@ -120,7 +110,7 @@ abstract class Field extends BusinessModel
    */
   final public function hasErrors() : bool
   {
-    if ($this->errorCollection->count() > 0) { return TRUE; }
+    if (isset($this->errorCollection) && $this->errorCollection->count() > 0) { return TRUE; }
     return FALSE;
   }
 
@@ -130,8 +120,8 @@ abstract class Field extends BusinessModel
    */
   final public function getErrors() : iCollection
   {
-    $errors = clone $this->errorCollection;
-    return $errors;
+    return (isset($this->errorCollection)) ? $this->errorCollection :
+      new Collection(Str::set('\svelte\core\Str'));
   }
 
   /**

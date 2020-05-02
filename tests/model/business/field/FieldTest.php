@@ -28,6 +28,7 @@ require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/M
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
+use svelte\SETTING;
 use svelte\core\Str;
 use svelte\core\Collection;
 use svelte\core\PropertyNotSetException;
@@ -73,7 +74,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
     $this->grandchildren->add($this->grandchild);
-    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
+    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
   }
 
   /**
@@ -165,7 +166,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $value = $this->testObject->value;
       $this->assertSame(1, MockRecord::$getPropertyValueCount);
-      $this->assertSame($this->mockRecord->getPropertyValue('aProperty'), $value);
+      $this->assertSame($this->mockRecord->getPropertyValueFromField('aProperty'), $value);
       $this->assertSame('VALUE', $value);
       return;
     }
@@ -260,25 +261,44 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert throws BadMethodCallException as this method should be inaccessible
    *   - with message: <em>'Array access setting is not allowed, please use add.'</em>
    * @link svelte.model.business.field.Field#method_offsetSet \svelte\model\business\field\Field::offsetSet()
-   */
+   *
   public function testOffsetSet()
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage = 'Array access setting is not allowed.';
     $this->testObject[3] = new MockBusinessModel('Forth child');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\Field::offsetUnset.
    * - assert throws BadMethodCallException whenever offsetUnset is called
    *  - with message *Array access unsetting is not allowed.*
    * @link svelte.model.business.field.Field#method_offsetUnset svelte\model\business\field\Field::offsetUnset()
-   */
+   *
   public function testOffsetUnset()
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage = 'Array access unsetting is not allowed.';
     unset($this->testObject[0]);
+  }*/
+
+  /**
+   * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
+   * for \svelte\model\business\BusinessModel::offsetUnset.
+   * - assert successful use of offsetSet
+   * - assert returned object is the same object at same index (offset) as was set.
+   * - asser successful use of offsetUnset
+   * - assert isset return FALSE at the same index once unset has been used.
+   * @link svelte.model.business.BusinessModel#method_offsetSet svelte\model\business\BusinessModel::offsetSet()
+   * @link svelte.model.business.BusinessModel#method_offsetUnset svelte\model\business\BusinessModel::offsetUnset()
+   */
+  public function testOffsetSetOffsetUnset()
+  {
+    $object = new MockBusinessModel('Forth child');
+    $this->testObject[3] = $object;
+    $this->assertSame($object, $this->testObject[3]);
+    unset($this->testObject[3]);
+    $this->assertFalse(isset($this->testObject[3]));
   }
 
   /**
