@@ -40,7 +40,7 @@ use svelte\model\Model;
  * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
  * resulting values.
  * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
- * @property-read iCollection Returns a collection of recorded error messages.
+ * @property-read iCollection $errors Returns a collection of recorded error messages.
  * @property-read int $count Returns the number of children currently parented by *this*.
  *
  */
