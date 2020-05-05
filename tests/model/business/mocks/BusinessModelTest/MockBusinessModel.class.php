@@ -74,9 +74,9 @@ class MockBusinessModel extends BusinessModel
     parent::validate($postdata);
   }
 
-  public function hasErrors() : bool
+  public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
-    return parent::hasErrors();
+    return parent::get_hasErrors();
   }
 }

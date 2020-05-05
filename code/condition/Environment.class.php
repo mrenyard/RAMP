@@ -32,6 +32,19 @@ use svelte\core\Str;
  * - Hold full set of properties and there accessors.
  * - Simplify code base of inherited specalized environment classes.
  * @example ./PHPEnvironment.class.php Example specilized implemetation for the PHP environment.
+ *
+ * @property-read \svelte\core\Str $memberAccess Returns Str repesentation of environment specific 'member access' operator.
+ * @property-read \svelte\core\Str $assignment   Returns Str repesentation of environment specific 'assignment' operator.
+ * @property-read \svelte\core\Str $equalTo Returns Str repesentation of environment specific 'equal to' operator.
+ * @property-read \svelte\core\Str $notEqualTo Returns Str repesentation of environment specific 'not equal to' operator.
+ * @property-read \svelte\core\Str $lessThan Returns Str repesentation of environment specific 'less than' operator.
+ * @property-read \svelte\core\Str $greaterThan Returns Str repesentation of environment specific 'greater than' operator.
+ * @property-read \svelte\core\Str $and Returns Str repesentation of environment specific 'and' operator.
+ * @property-read \svelte\core\Str $or Returns Str repesentation of environment specific 'or' operator.
+ * @property-read \svelte\core\Str $openingParentheses Returns Str repesentation of environment specific 'openingParentheses' operator.
+ * @property-read \svelte\core\Str $closingParentheses Returns Str repesentation of environment specific 'closingParentheses' operator.
+ * @property-read \svelte\core\Str $openingGroupingParentheses Returns Str repesentation of environment specific 'openingGroupingParentheses' operator.
+ * @property-read \svelte\core\Str $closingGroupingParentheses Returns Str repesentation of environment specific 'closingGroupingParentheses' operator.
  */
 abstract class Environment extends SvelteObject implements iEnvironment
 {
@@ -124,8 +137,8 @@ abstract class Environment extends SvelteObject implements iEnvironment
   }
 
   /**
-   * Returns string repesentation of environment specific 'member access' operator.
-   * @return \svelte\core\Str Str object composed environment specific 'member access' operator
+   * Returns string repesentation of environment specific 'assignment' operator.
+   * @return \svelte\core\Str Str object composed environment specific 'assignment' operator
    */
   public function get_assignment() : Str
   {

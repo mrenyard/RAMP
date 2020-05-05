@@ -30,9 +30,11 @@ namespace svelte\core;
  *
  * COLLABORATORS
  * - {@link \svelte\core\SvelteObject}
+ *
+ * @property-read int $count Returns the number of items currently stored in this collection.
  */
-interface iCollection extends \IteratorAggregate, \Countable, \ArrayAccess {
-
+interface iCollection extends \IteratorAggregate, \Countable, \ArrayAccess
+{
   /**
    * Add a reference to object (of defined type), to this collection.
    * POSTCONDITIONS
@@ -40,4 +42,11 @@ interface iCollection extends \IteratorAggregate, \Countable, \ArrayAccess {
    * @param \svelte\core\SvelteObject $object reference to be added
    */
   public function add(SvelteObject $object);
+
+  /**
+   * Returns the number of items currently stored in this collection.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of items in this collection
+   */
+  public function get_count() : int;
 }

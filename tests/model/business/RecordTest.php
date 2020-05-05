@@ -234,7 +234,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertInstanceOf('\svelte\model\business\field\Field', $child);
       $iterator->next();
     }
-    $this->assertEquals($this->testObjectProperties->count(), $i);
+    $this->assertEquals($this->testObjectProperties->count, $i);
     $properties = get_object_vars($this->dataObject);
     $this->assertEquals($i, count($properties));
     $this->assertEquals($this->testObjectPropertyCount, $i);
@@ -251,7 +251,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      for ($i = 0; $i < $this->testObjectProperties->count(); $i++)
+      for ($i = 0; $i < $this->testObjectProperties->count; $i++)
       {
         $this->assertInstanceOf(
           '\svelte\model\business\field\Field', $this->testObject['property' . ($i + 1)]
@@ -364,11 +364,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','4','6')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
-    $this->assertFalse($this->testObject->hasErrors());
-    $this->assertEquals(0, $this->testObject->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property3->getErrors()->count());
+    $this->assertFalse($this->testObject->hasErrors);
+    $this->assertEquals(0, $this->testObject->errors->count);
+    $this->assertEquals(0, $this->testObject->property1->errors->count);
+    $this->assertEquals(0, $this->testObject->property2->errors->count);
+    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertEquals('KEY', $dataObjectProperties['property1']);
@@ -379,8 +379,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertTrue($this->testObject->isModified);
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
-    $this->assertFalse($this->testObject->hasErrors());
-    $this->assertEquals(0, $this->testObject->getErrors()->count());
+    $this->assertFalse($this->testObject->hasErrors);
+    $this->assertEquals(0, $this->testObject->errors->count);
   }
 
   /**
@@ -407,13 +407,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','2','6')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $errorMessages = $this->testObject->getErrors();
-    $this->assertEquals(1, $errorMessages->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $errorMessages = $this->testObject->errors;
+    $this->assertEquals(1, $errorMessages->count);
     $this->assertEquals('$value of "BAD" does NOT evaluate to KEY', $errorMessages[0]);
-    $this->assertEquals(1, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property3->getErrors()->count());
+    $this->assertEquals(1, $this->testObject->property1->errors->count);
+    $this->assertEquals(0, $this->testObject->property2->errors->count);
+    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertNull($dataObjectProperties['property1']);
@@ -423,8 +423,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $this->assertEquals(1, $this->testObject->getErrors()->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -451,13 +451,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','2','6')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST3)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $errorMessages = $this->testObject->getErrors();
-    $this->assertEquals(1, $errorMessages->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $errorMessages = $this->testObject->errors;
+    $this->assertEquals(1, $errorMessages->count);
     $this->assertEquals('Selected value NOT an avalible option!', $errorMessages[0]);
-    $this->assertEquals(0, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(1, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property3->getErrors()->count());
+    $this->assertEquals(0, $this->testObject->property1->errors->count);
+    $this->assertEquals(1, $this->testObject->property2->errors->count);
+    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertEquals('KEY', $dataObjectProperties['property1']);
@@ -471,8 +471,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:key:property-3' => array('1','2','6')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $this->assertEquals(1, $this->testObject->getErrors()->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -499,16 +499,16 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST5)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $errorMessages = $this->testObject->getErrors();
-    $this->assertEquals(1, $errorMessages->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $errorMessages = $this->testObject->errors;
+    $this->assertEquals(1, $errorMessages->count);
     $this->assertEquals(
       'At least one selected value is NOT an available option!',
       $errorMessages[0]
     );
-    $this->assertEquals(0, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(1, $this->testObject->property3->getErrors()->count());
+    $this->assertEquals(0, $this->testObject->property1->errors->count);
+    $this->assertEquals(0, $this->testObject->property2->errors->count);
+    $this->assertEquals(1, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertEquals('KEY', $dataObjectProperties['property1']);
@@ -522,8 +522,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:key:property-3' => array('1','8','6') // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST6)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $this->assertEquals(1, $this->testObject->getErrors()->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -550,9 +550,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST7)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $errorMessages = $this->testObject->getErrors();
-    $this->assertEquals(3, $errorMessages->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $errorMessages = $this->testObject->errors;
+    $this->assertEquals(3, $errorMessages->count);
     $this->assertEquals(
       '$value of "BAD" does NOT evaluate to KEY',
       $errorMessages[0]
@@ -565,9 +565,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'At least one selected value is NOT an available option!',
       $errorMessages[2]
     );
-    $this->assertEquals(1, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(1, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(1, $this->testObject->property3->getErrors()->count());
+    $this->assertEquals(1, $this->testObject->property1->errors->count);
+    $this->assertEquals(1, $this->testObject->property2->errors->count);
+    $this->assertEquals(1, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertNull($dataObjectProperties['property1']);
@@ -582,8 +582,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST8)));
-    $this->assertTrue($this->testObject->hasErrors());
-    $this->assertEquals(3, $this->testObject->getErrors()->count());
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertEquals(3, $this->testObject->errors->count);
   }
 
   /**
@@ -618,12 +618,12 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:pkey:property-3' => array('3','4','5')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST9)));
-    $this->assertFalse($this->testObject->hasErrors());
-    $errorMessages = $this->testObject->getErrors();
-    $this->assertEquals(0, $errorMessages->count());
-    $this->assertEquals(0, $this->testObject->property1->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property2->getErrors()->count());
-    $this->assertEquals(0, $this->testObject->property3->getErrors()->count());
+    $this->assertFalse($this->testObject->hasErrors);
+    $errorMessages = $this->testObject->errors;
+    $this->assertEquals(0, $errorMessages->count);
+    $this->assertEquals(0, $this->testObject->property1->errors->count);
+    $this->assertEquals(0, $this->testObject->property2->errors->count);
+    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     // NOTE the primaryKey is NOT updated
@@ -638,8 +638,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'concrete-record:pkey:property-3' => array('3','4','5')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST10)));
-    $this->assertFalse($this->testObject->hasErrors());
-    $this->assertEquals(0, $this->testObject->getErrors()->count());
+    $this->assertFalse($this->testObject->hasErrors);
+    $this->assertEquals(0, $this->testObject->errors->count);
   }
 
   /**
@@ -664,12 +664,12 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   }
 
    /**
-   * Collection of assertions for \svelte\model\business\Record::count().
+   * Collection of assertions for \svelte\model\business\Record::count.
    * - assert return expected int value related to the number of child Records held.
-   * @link svelte.model.business.Record#method_count svelte\model\business\Record::count()
+   * @link svelte.model.business.Record#method_count svelte\model\business\Record::count
    */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count());
+    $this->assertSame(3 ,$this->testObject->count);
   }
 }

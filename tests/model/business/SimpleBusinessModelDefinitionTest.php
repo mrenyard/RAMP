@@ -69,9 +69,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   public function testRecordOnly()
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName);
-    $this->assertSame($this->recordName, $testObject->getRecordName());
-    $this->assertNull($testObject->getRecordKey());
-    $this->assertNull($testObject->getPropertyName());
+    $this->assertSame($this->recordName, $testObject->recordName);
+    $this->assertNull($testObject->recordKey);
+    $this->assertNull($testObject->propertyName);
   }
 
   /**
@@ -86,9 +86,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   public function testRecordWithKey()
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName, $this->recordKey);
-    $this->assertSame($this->recordName, $testObject->getRecordName());
-    $this->assertSame($this->recordKey, $testObject->getRecordKey());
-    $this->assertNull($testObject->getPropertyName());
+    $this->assertSame($this->recordName, $testObject->recordName);
+    $this->assertSame($this->recordKey, $testObject->recordKey);
+    $this->assertNull($testObject->propertyName);
   }
 
   /**
@@ -103,8 +103,8 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   public function testRecordKeyProperty()
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName, $this->recordKey, $this->propertyName);
-    $this->assertSame($this->recordName, $testObject->getRecordName());
-    $this->assertSame($this->recordKey, $testObject->getRecordKey());
-    $this->assertSame($this->propertyName, $testObject->getPropertyName());
+    $this->assertSame($this->recordName, $testObject->recordName);
+    $this->assertSame($this->recordKey, $testObject->recordKey);
+    $this->assertSame($this->propertyName, $testObject->propertyName);
   }
 }

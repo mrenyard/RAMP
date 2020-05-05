@@ -39,6 +39,8 @@ use svelte\core\Str;
  * - {@link \svelte\condition\iEnvironment}
  * - {@link \svelte\condition\SQLEnvironment} (Default)
  * - {@link \svelte\condition\Operator} (Operator::EQUAL_TO Enforced)
+ *
+ * @property-write mixed $comparable Sets value of comparable while comparing its validity against business model.
  */
 final class FilterCondition extends BusinessCondition
 {

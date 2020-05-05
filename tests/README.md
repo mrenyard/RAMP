@@ -5,6 +5,6 @@ phpunit [pathToProjectRoot]/tests
 ```
 **Produce Documentation**
 ```bash
-phpdoc --ignore */mocks/* -d [pathToProjectRoot]/code/,[pathToProjectRoot]/tests/ -t [pathToDocumentationFolder]/php --visibility=public,protected && phpunit --coverage-html [pathToDocumentationFolder]/coverage [pathToProjectRoot]/tests --whitelist [pathToProjectRoot]/code
+phpdoc --ignore */mocks/* -d [pathToProjectRoot]/code/,[pathToProjectRoot]/tests/ -t [pathToDocumentationFolder]/php --visibility=public && phpunit --coverage-html [pathToDocumentationFolder]/coverage [pathToProjectRoot]/tests --whitelist [pathToProjectRoot]/code
 ```
 **NOTE: We ignore anything in a mocks folder as they may share namespaces with our main code and become entangled in there documentation.**

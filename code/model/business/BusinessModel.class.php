@@ -33,6 +33,16 @@ use svelte\model\Model;
  *
  * RESPONSIBILITIES
  * - Define generalized methods for iteration, validity checking & error reporting.
+ *
+ * @property-read \svelte\core\Str $id Returns unique identifier (ID) for *this* (URN).
+ * @property-read \svelte\core\Str $description Returns description.
+ * @property-read \svelte\core\Str $type Returns type definition as a short list, much like we
+ * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
+ * resulting values.
+ * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
+ * @property-read iCollection Returns a collection of recorded error messages.
+ * @property-read int $count Returns the number of children currently parented by *this*.
+ *
  */
 abstract class BusinessModel extends Model implements iOption, \IteratorAggregate, \Countable, \ArrayAccess
 {
@@ -55,7 +65,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
 
   /**
-   * Get ID (URN)
+   * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Unique identifier for *this*
    */
@@ -63,6 +73,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Get description.
+   * **DO NOT CALL DIRECTLY, USE this->description;**
    * @return mixed Description
    */
   public function get_description() : Str
@@ -164,27 +175,28 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
 
   /**
    * Checks if any errors have been recorded following validate().
-   * @todo:mrenyard: change test and make final.
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
    * @return bool True if an error has been recorded
    */
-  public function hasErrors() : bool
+  protected function get_hasErrors() : bool
   {
-    if (isset($this->errorCollection) && $this->errorCollection->count() > 0) { return TRUE; }
+    if (isset($this->errorCollection) && $this->errorCollection->count > 0) { return TRUE; }
     foreach ($this->children as $child) {
-      if ($child->hasErrors()) { return TRUE; }
+      if ($child->hasErrors) { return TRUE; }
     }
     return FALSE;
   }
 
   /**
    * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
    * @return iCollection List of recorded errors.
    */
-  public function getErrors() : iCollection
+  protected function get_errors() : iCollection
   {
     $errors = clone $this->errorCollection;
     foreach ($this->children as $child) {
-      foreach ($child->getErrors() as $error) {
+      foreach ($child->errors as $error) {
         $errors->add($error);
       }
     }
@@ -192,11 +204,22 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
   }
 
   /**
-   * Returns the number of items currently stored in this collection.
-   * @return int Number of items in this collection
+   * Returns the number of children currently parented.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of parenten by *this*
    */
   final public function count() : int
   {
-    return $this->children->count();
+    return $this->count;
+  }
+
+  /**
+   * Returns the number of children currently parented.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of parenten by *this*
+   */
+  final public function get_count() : int
+  {
+    return $this->children->count;
   }
 }

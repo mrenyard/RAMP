@@ -17,6 +17,8 @@
  *
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
+ *
+ * @property-read bool $isModified Returns whether data has been modified since last update.
  */
 namespace svelte\model\business;
 
@@ -38,6 +40,11 @@ use svelte\core\PropertyNotSetException;
  *
  * COLLABORATORS
  * - {@link \svelte\model\business\Field}s
+ *
+ * @property-read \svelte\core\Str $key Returns value of primary key.
+ * @property-read bool $isModified Returns whether data has been modified since last update.
+ * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
+ * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
 abstract class Record extends BusinessModel
 {
@@ -76,7 +83,7 @@ abstract class Record extends BusinessModel
   }
 
   /**
-   * Get ID (URN)
+   * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Unique identifier for *this*
    */
@@ -94,7 +101,7 @@ abstract class Record extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->value;**
    * @return \svelte\core\Str Value for *this*
    */
-  public function get_value() : Str
+  protected function get_value() : Str
   {
     return $this->id;
   }
@@ -139,7 +146,7 @@ abstract class Record extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \svelte\core\Str Value of primary key
    */
-  final public function get_key() : Str
+  final protected function get_key() : Str
   {
     $pkName = (string)$this->primaryKeyName();
     return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
@@ -218,7 +225,7 @@ abstract class Record extends BusinessModel
   }
 
   /**
-   * Returns whether data is in a valid state from source or as new.
+   * Returns whether data is in a valid/complete state from data store or as new.
    * **DO NOT CALL DIRECTLY, USE this->isValid;**
    * @return bool Value of isValid
    */
@@ -242,7 +249,7 @@ abstract class Record extends BusinessModel
   }
 
   /**
-   * Set this as updated
+   * Set this as updated.
    * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
    */
   public function updated()

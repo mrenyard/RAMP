@@ -106,7 +106,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::getIterator(), add() and count().
+   * Collection of assertions for svelte\core\Collection::getIterator(), add() and count.
    * - assert handle unpopulated {@link \svelte\core\Collection} iteration without fail
    * - assert {@link \svelte\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
@@ -116,7 +116,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    *   - with message: <em>'Offset out of bounds'</em>
    * @link svelte.core.Collection#method_getIterator \svelte\core\Collection::getIterator()
    * @link svelte.core.Collection#method_add \svelte\core\Collection::add()
-   * @link svelte.core.Collection#method_count \svelte\core\Collection::count()
+   * @link svelte.core.Collection#method_count \svelte\core\Collection::count
    */
   public function testIteratorAddCount()
   {
@@ -125,7 +125,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     {
       $this->fail('Unexpected iteration of empty Collection');
     }
-    $this->assertEquals(0, $testObject->count());
+    $this->assertEquals(0, $testObject->count);
     try {
       $testObject->add(new BadObject());
     } catch (\InvalidArgumentException $expected) {
@@ -142,7 +142,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         if ($i === 1) { $this->assertSame($o1, $o); }
       }
       $this->assertSame(1, $i);
-      $this->assertEquals(1, $testObject->count());
+      $this->assertEquals(1, $testObject->count);
       $i = 0;
       $o2 = new AnObject();
       $testObject->add($o2);
@@ -154,7 +154,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       }
       $this->assertSame(2, $i);
       $this->assertSame($o2, $testObject[1]);
-      $this->assertEquals(2, $testObject->count());
+      $this->assertEquals(2, $testObject->count);
       $i = 0;
       $o3 = new AnObject();
       $testObject->add($o3);
@@ -166,7 +166,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         if ($i === 3) { $this->assertSame($o3, $o); }
       }
       $this->assertSame(3, $i);
-      $this->assertEquals(3, $testObject->count());
+      $this->assertEquals(3, $testObject->count);
       $i = 0;
       $o4 = new AnObject();
       $testObject->add($o4);
@@ -179,7 +179,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
         if ($i === 4) { $this->assertSame($o4, $o); }
       }
       $this->assertSame(4, $i);
-      $this->assertEquals(4, $testObject->count());
+      $this->assertEquals(4, $testObject->count);
       $this->assertFalse(isset($testObject[4]));
       $this->assertTrue(isset($testObject[3]));
       $this->assertSame($o4, $testObject[3]);
@@ -267,19 +267,19 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     $shallowCollection->add($o1);
     $shallowCollection->add($o2);
     $shallowCollection->add($o3);
-    $this->assertSame(3, $shallowCollection->count());
+    $this->assertSame(3, $shallowCollection->count);
     $deepCollection = new Collection($this->typeName, TRUE);
     $deepCollection->add($o1);
     $deepCollection->add($o2);
     $deepCollection->add($o3);
-    $this->assertSame(3, $deepCollection->count());
+    $this->assertSame(3, $deepCollection->count);
     $shallowClone = clone $shallowCollection;
-    $this->assertSame(3, $shallowClone->count());
+    $this->assertSame(3, $shallowClone->count);
     $this->assertSame($shallowClone[0], $o1);
     $this->assertSame($shallowClone[1], $o2);
     $this->assertSame($shallowClone[2], $o3);
     $deepClone = clone $deepCollection;
-    $this->assertSame(3, $deepClone->count());
+    $this->assertSame(3, $deepClone->count);
     $this->assertNotSame($deepClone[0], $o1);
     $this->assertNotSame($deepClone[1], $o2);
     $this->assertNotSame($deepClone[2], $o3);

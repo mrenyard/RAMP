@@ -276,7 +276,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
   public function testHasErrors()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors());
+    $this->assertFalse($this->testObject->hasErrors);
     $this->assertSame(0, MyValidationRule::$testCallCount);
   }
 
@@ -289,14 +289,14 @@ class InputTest extends \PHPUnit\Framework\TestCase
   public function testGetErrors()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors());
+    $this->assertFalse($this->testObject->hasErrors);
     $this->assertSame(0, MyValidationRule::$testCallCount);
     $this->assertSame(0, MockRecord::$setPropertyValueCount);
-    $errors = $this->testObject->getErrors();
-    $this->assertSame(0, $errors->count());
+    $errors = $this->testObject->errors;
+    $this->assertSame(0, $errors->count);
 
     // Returns same results on subsequent call.
-    $secondCallOnErrors = $this->testObject->getErrors();
+    $secondCallOnErrors = $this->testObject->errors;
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
     $this->assertSame(0, MyValidationRule::$testCallCount);
@@ -320,21 +320,21 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(PostData::build(array(
       'mock-record:new:a-property' => 'BAD'
     ))));
-    $this->assertTrue($this->testObject->hasErrors());
+    $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(1, MyValidationRule::$testCallCount);
     $this->assertSame(0, MockRecord::$setPropertyValueCount);
-    $errors = $this->testObject->getErrors();
+    $errors = $this->testObject->errors;
     $this->assertSame('MyValidationRule has error due to $value of BAD!', (string)$errors[0]);
     $this->assertFalse(isset($errors[1]));
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Input::count().
+   * Collection of assertions for \svelte\model\business\field\Input::count.
    * - assert return expected int value related to the number of children (NO children).
-   * @link svelte.model.business.field.Input#method_count svelte\model\business\field\Input::count()
+   * @link svelte.model.business.field.Input#method_count svelte\model\business\field\Input::count
    */
   public function testCount()
   {
-    $this->assertSame(0 ,$this->testObject->count());
+    $this->assertSame(0 ,$this->testObject->count);
   }
 }

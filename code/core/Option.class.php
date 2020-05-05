@@ -27,7 +27,12 @@ use svelte\core\iOption;
 
 /**
  * A Single option.
- * .
+ *
+ * RESPONSIBILITIES
+ * - Define a simple base implementation of iOption for easy reuse.
+ *
+ * @property-read mixed $id Returns ID (enum:int|URN:Str).
+ * @property-read \svelte\core\Str $description Returns description.
  */
 class Option extends SvelteObject implements iOption
 {
@@ -47,6 +52,7 @@ class Option extends SvelteObject implements iOption
 
   /**
    * Get ID (enum:int|URN:Str)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return mixed ID
    */
   public function get_id()
@@ -56,6 +62,7 @@ class Option extends SvelteObject implements iOption
 
   /**
    * Get Description.
+   * **DO NOT CALL DIRECTLY, USE this->description;**
    * @return Str Description
    */
   public function get_description() : Str

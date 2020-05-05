@@ -32,16 +32,19 @@ use svelte\model\business\Property;
  * RESPONSIBILITIES
  * - Extend Condition to hold additional values for record and property as component parts of attribute.
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+ *   defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
  * - {@link \svelte\condition\Condition}
  * - {@link \svelte\condition\iEnvironment}
  * - {@link \svelte\condition\PHPEnvironment} (Default)
  * - {@link \svelte\condition\Operator}
+ *
+ * @property-read \svelte\core\Str $record Returns name of record containing property to evaluate.
+ * @property-read \svelte\core\Str $property Returns name of property to be evaluated.
  */
-abstract class BusinessCondition extends Condition {
-
+abstract class BusinessCondition extends Condition
+{
   private $record;
   private $property;
 

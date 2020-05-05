@@ -357,7 +357,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function testHasErrors()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors());
+    $this->assertFalse($this->testObject->hasErrors);
     $this->assertSame(0, MockField::$processValidationRuleCount);
     $this->assertSame(0, $this->testChild1->hasErrorsCount);
     $this->assertSame(0, $this->testChild2->hasErrorsCount);
@@ -384,14 +384,14 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   {
     // PostData does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors());
-    $errors = $this->testObject->getErrors();
+    $this->assertFalse($this->testObject->hasErrors);
+    $errors = $this->testObject->errors;
     $this->assertSame(0, MockField::$processValidationRuleCount);
     $this->assertInstanceOf('\svelte\core\iCollection', $errors);
-    $this->assertSame(0, $errors->count());
+    $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
     // Returns same results on subsequent call, while Field in same state.
-    $secondCallOnErrors = $this->testObject->getErrors();
+    $secondCallOnErrors = $this->testObject->errors;
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
@@ -401,23 +401,23 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame(0, MockRecord::$setPropertyValueCount);
-    $thirdCallOnErrors = $this->testObject->getErrors();
+    $thirdCallOnErrors = $this->testObject->errors;
     $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
-    $this->assertSame(1, $thirdCallOnErrors->count());
+    $this->assertSame(1, $thirdCallOnErrors->count);
     $this->assertSame('MockField\'s has error due to $value of BAD!', (string)$thirdCallOnErrors[0]);
     // Returns same results on subsequent call, while Field in same state.
-    $forthCallOnErrors = $this->testObject->getErrors();
+    $forthCallOnErrors = $this->testObject->errors;
     $this->assertEquals($forthCallOnErrors, $thirdCallOnErrors);
     $this->assertTrue(isset($thirdCallOnErrors[0]));
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::count().
+   * Collection of assertions for \svelte\model\business\field\Field::count.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link svelte.model.business.field.Field#method_count svelte\model\business\field\Field::count()
+   * @link svelte.model.business.field.Field#method_count svelte\model\business\field\Field::count
    */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count());
+    $this->assertSame(3 ,$this->testObject->count);
   }
 }

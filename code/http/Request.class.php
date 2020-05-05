@@ -47,13 +47,24 @@ use svelte\http\Method;
  * - $_GET
  *
  * @link https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
+ * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
+ * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
+ * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
+ *
+ * @property-read bool $expectsFragment Returns whether this request is expecting a document fragment or a complete document.
+ * @property-read \svelte\http\Method $method Returns request Method (Verb) (based on HTTP/1.1 specification).
+ * @property-read ?\svelte\core\Str $modelURN Returns Uniform Resource Name (URN) of requested svelte\model\Model or NULL.
+ * @property-read \svelte\core\Str $resourceIdentifier Returns Uniform Resource Identifier (URI) of requested resource.
+ * @property-read int $fromIndex Returns any requested starting point within a collection.
+ * @property-read ?\svelte\condition\Filter $filter Returns any filter to apply to a collection.
+ * @property-read ?\svelte\condition\PostData $postData Returns any data for posting sent with request.
  */
 class Request extends SvelteObject implements iBusinessModelDefinition
 {
   private $expectsFragment;
   private $method;
-  private $resourceURL;
   private $modelURN;
+  private $resourceURL;
   private $recordName;
   private $recordKey;
   private $propertyName;
@@ -71,48 +82,38 @@ class Request extends SvelteObject implements iBusinessModelDefinition
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
       $this->expectsFragment = \TRUE;
     }
-
     $method = $_SERVER['REQUEST_METHOD'];
     $this->method = ((count($_POST) <1) && ($method == 'POST'))?
       Method::GET() : Method::$method();
-
     $controller = ($_SERVER['SCRIPT_NAME'] == '/404.php')? '':
       explode('.', $_SERVER['SCRIPT_NAME'])[0]; //, '/');
-
     $filtersStr = $_SERVER['QUERY_STRING'];
-
     $viewURL = str_replace('?'.$filtersStr, '', $_SERVER['REQUEST_URI']);
     $modelURL = str_replace($controller, '', $viewURL);
-
-    if (($modelURL != '') && ($modelURL != '/')) {
-
+    if (($modelURL != '') && ($modelURL != '/'))
+    {
       $model = explode('/', trim($modelURL, '/'));
       $view = $model;
-
       $this->modelURN = Str::set(implode(':', $model));
       $this->recordName = Str::camelCase(Str::set($model[0]));
-
       $n = count($model);
-      if ($n == 1) {
-
+      if ($n == 1)
+      {
         $this->fromIndex = (isset($_GET['from']))? (int)(string)Str::set($_GET['from']) : 0;
         unset($_GET['from']);
-        if (count($_GET) > 0 ) {
+        if (count($_GET) > 0 )
+        {
           $this->filter = Filter::build($this->recordName, $_GET);
         }
       }
       if ($n > 1) { $this->recordKey = Str::set($model[1]); $view[1] = '~'; }
       if ($n > 2) { $this->propertyName = Str::camelCase(Str::set($model[2]), TRUE); }
-
       array_unshift($view, $controller);
-
     } // END if (($modelURL != '') && ($modelURL != '/'))
-
     $strView = (isset($view))? implode('/', $view) : $controller;
-
     $this->resourceURL = Str::set($strView . '/');
-
-    if ($this->method === Method::POST()) {
+    if ($this->method === Method::POST())
+    {
       $this->postData = PostData::build($_POST);
     }
   }
@@ -150,19 +151,21 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns name of requested Record / Record Set or NULL.
-   * @return \svelte\core\Str Name of requested Record / Record Set or NULL.
+   * Returns name of requested Record one or collection.
+   * **DO NOT CALL DIRECTLY, USE this->recordName;**
+   * @return \svelte\core\Str Name of requested Record one or collection.
    */
-  public function getRecordName() : Str
+  public function get_recordName() : Str
   {
     return $this->recordName;
   }
 
   /**
-   * Returns primary key value of requested svelte\model\Record or NULL.
+   * Returns primary key value of requested svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->recordKey;**
    * @return \svelte\core\Str Primary key for requested Record if any.
    */
-  public function getRecordKey() : ?Str
+  public function get_recordKey() : ?Str
   {
     /*if (($this->recordKey == '~') && Session::user()->isValid()->get()) {
       return Str::set(Session::user()->auPK);
@@ -171,10 +174,11 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns name of requested svelte\model\Property of Record or NULL.
+   * Returns name of requested Property of svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
    * @return \svelte\core\Str Name of requested Property if any.
    */
-  public function getPropertyName() : ?Str
+  public function get_propertyName() : ?Str
   {
     return $this->propertyName;
   }

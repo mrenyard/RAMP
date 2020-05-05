@@ -31,24 +31,31 @@ use \svelte\core\Str;
  *
  * COLLABORATORS
  * - {@link \svelte\core\Str}
+ *
+ * @property-read \svelte\core\Str $recordName Returns name of requested Record one or collection.
+ * @property-read ?\svelte\core\Str $recordKey Returns primary key value of requested Record or NULL.
+ * @property-read ?\svelte\core\Str $propertyName Returns name of requested Property of Record or NULL.
  */
 interface iBusinessModelDefinition
 {
   /**
-   * Returns name of requested Record / Record Set or NULL.
-   * @return \svelte\core\Str Name of requested Record / Record Set or NULL.
+   * Returns name of requested Record one or collection.
+   * **DO NOT CALL DIRECTLY, USE this->recordName;**
+   * @return \svelte\core\Str Name of requested Record one or collection.
    */
-  public function getRecordName() : Str;
+  public function get_recordName() : Str;
 
   /**
-   * Returns primary key value of requested svelte\model\Record or NULL.
+   * Returns primary key value of requested svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->recordKey;**
    * @return \svelte\core\Str Primary key for requested Record if any.
    */
-  public function getRecordKey() : ?Str;
+  public function get_recordKey() : ?Str;
 
   /**
-   * Returns name of requested svelte\model\Property of Record or NULL.
+   * Returns name of requested Property of svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
    * @return \svelte\core\Str Name of requested Property if any.
    */
-  public function getPropertyName(): ?Str;
+  public function get_propertyName(): ?Str;
 }

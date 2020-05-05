@@ -35,6 +35,10 @@ use svelte\core\Str;
  * COLLABORATORS
  * - {@link \svelte\condition\iEnvironment}
  * - {@link \svelte\condition\Operator}
+ *
+ * @property-read \svelte\core\Str $attribute Returns name of attribute to be restricted, evaluated or modified.
+ * @property-read \svelte\condition\Operator $operator Returns the type of Operation to be performed.
+ * @property mixed $comparable Value to be compared with attribute by operation.
  */
 abstract class Condition extends SvelteObject
 {

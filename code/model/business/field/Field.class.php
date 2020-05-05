@@ -39,6 +39,9 @@ use svelte\validation\FailedValidationException;
  *
  * COLLABORATORS
  * - {@link \svelte\model\business\Record}
+ *
+ * @property-read \svelte\core\Str $id Returns unique identifier (id) for *this* (URN).
+ * @property-read mixed $id Returns value held by relevant property of containing record.
  */
 abstract class Field extends BusinessModel
 {
@@ -106,19 +109,21 @@ abstract class Field extends BusinessModel
 
   /**
    * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
    * @return bool True if an error has been recorded
    */
-  final public function hasErrors() : bool
+  final protected function get_hasErrors() : bool
   {
-    if (isset($this->errorCollection) && $this->errorCollection->count() > 0) { return TRUE; }
+    if (isset($this->errorCollection) && $this->errorCollection->count > 0) { return TRUE; }
     return FALSE;
   }
 
   /**
    * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
    * @return iCollection List of recorded errors.
    */
-  final public function getErrors() : iCollection
+  final public function get_errors() : iCollection
   {
     return (isset($this->errorCollection)) ? $this->errorCollection :
       new Collection(Str::set('\svelte\core\Str'));

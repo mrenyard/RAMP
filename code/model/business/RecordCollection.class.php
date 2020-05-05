@@ -57,7 +57,7 @@ abstract class RecordCollection extends BusinessModel implements iCollection
    */
   final public function add(SvelteObject $object)
   {
-    parent::offsetSet($this->count(), $object);
+    parent::offsetSet($this->count, $object);
   }
 
   /**

@@ -80,13 +80,13 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
-    if ($definition->getRecordName() == 'LoginAccount')
+    if ($definition->recordName == 'LoginAccount')
     {
-      if ($definition->getRecordKey() == 'new')
+      if ($definition->recordKey == 'new')
       {
         return new LoginAccount();
       }
-      else if (($definition->getRecordKey() == null) && (isset($filter)))
+      else if (($definition->recordKey == null) && (isset($filter)))
       {
         $collection = new LoginAccountCollection();
         if ($filter(SQLEnvironment::getInstance()) == 'LoginAccount.email = "a.person@domain.com"')
@@ -102,7 +102,7 @@ class MockBusinessModelManager extends BusinessModelManager
         }
         return $collection;
       }
-      else if ($definition->getRecordKey() == 'aperson')
+      else if ($definition->recordKey == 'aperson')
       {
         // valid LoginAccount
         $dataObject = new \stdClass();
@@ -114,14 +114,14 @@ class MockBusinessModelManager extends BusinessModelManager
         return new LoginAccount($dataObject);
       }
     }
-    if ($definition->getRecordName() == 'Person')
+    if ($definition->recordName == 'Person')
     {
-      if ($definition->getRecordKey() == 'new')
+      if ($definition->recordKey == 'new')
       {
         // new Person
         return new Person();
       }
-      else if ($definition->getRecordKey() == 'aperson')
+      else if ($definition->recordKey == 'aperson')
       {
         // valid Person
         $dataObject = new \stdClass();

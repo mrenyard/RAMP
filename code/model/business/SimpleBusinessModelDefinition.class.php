@@ -22,15 +22,16 @@
 namespace svelte\model\business;
 
 use svelte\core\Str;
+use svelte\core\SvelteObject;
 
 /**
  * Simple concrete implementation of \svelte\model\SimpleBusinessModelDefinition,
  *  defining Model indentifiers (record, key, property).
  */
-class SimpleBusinessModelDefinition implements iBusinessModelDefinition
+class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessModelDefinition
 {
   private $recordName;
-  private $recorddKey;
+  private $recordKey;
   private $propertyName;
 
   /**
@@ -47,28 +48,31 @@ class SimpleBusinessModelDefinition implements iBusinessModelDefinition
   }
 
   /**
-   * Returns name of requested Record / Record Set or NULL.
-   * @return \svelte\core\Str Name of requested Record / Record Set or NULL.
+   * Returns name of requested Record one or collection.
+   * **DO NOT CALL DIRECTLY, USE this->recordName;**
+   * @return \svelte\core\Str Name of requested Record one or collection.
    */
-  public function getRecordName() : Str
+  public function get_recordName() : Str
   {
     return $this->recordName;
   }
 
   /**
-   * Returns primary key value of requested svelte\model\Record or NULL.
+   * Returns primary key value of requested svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->recordKey;**
    * @return \svelte\core\Str Primary key for requested Record if any.
    */
-  public function getRecordKey() : ?Str
+  public function get_recordKey() : ?Str
   {
     return $this->recordKey;
   }
 
   /**
-   * Returns name of requested svelte\model\Property of Record or NULL.
+   * Returns name of requested Property of svelte\model\business\Record or NULL.
+   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
    * @return \svelte\core\Str Name of requested Property if any.
    */
-  public function getPropertyName() : ?Str
+  public function get_propertyName() : ?Str
   {
     return $this->propertyName;
   }

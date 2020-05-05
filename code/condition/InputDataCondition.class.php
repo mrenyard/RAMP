@@ -41,6 +41,10 @@ use svelte\core\Str;
  * - {@link \svelte\condition\iEnvironment}
  * - {@link \svelte\condition\URNQueryEnvironment} (Default)
  * - {@link \svelte\condition\Operator} (Operator::ASSIGNMENT Enforced)
+ *
+ * @property-read \svelte\core\Str $primaryKeyValue Returns primary key of target business record.
+ * @property-read mixed $value Returns value to be evaluated (synonym for comparable).
+ * @property-read \svelte\core\Str $attributeURN Returns name of attribute as URN to be restricted, evaluated or modified.
  */
 final class InputDataCondition extends BusinessCondition {
 
@@ -88,7 +92,7 @@ final class InputDataCondition extends BusinessCondition {
    * @param \svelte\condition\Environment $targetEnvironment Environment to target, default URN Query.
    * @return \svelte\core\Str Name of attribute to be restricted, evaluated or modified
    */
-  public function get_attributeURN() : Str
+  protected function get_attributeURN() : Str
   {
     return Str::hyphenate($this->record)
       ->append(Str::COLON())
