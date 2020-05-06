@@ -31,7 +31,7 @@ use svelte\core\iOption;
  */
 class LoginAccountTypeOption extends SvelteObject implements iOption
 {
-  private $id;
+  private $key;
   private $description;
 
   /**
@@ -39,19 +39,19 @@ class LoginAccountTypeOption extends SvelteObject implements iOption
    * @param int $id  Value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct(int $id, Str $description)
+  public function __construct(int $key, Str $description)
   {
-    $this->id = $id;
+    $this->key = $key;
     $this->description = $description;
   }
 
   /**
-   * Get ID (enum:int|URN:Str)
-   * @return mixed ID
+   * Get key (enum:int|URN:Str)
+   * @return mixed Key
    */
-  public function get_id()
+  public function get_key()
   {
-    return $this->id;
+    return $this->key;
   }
 
   /**

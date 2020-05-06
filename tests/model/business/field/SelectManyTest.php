@@ -25,14 +25,17 @@ require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
+require_once '/usr/share/php/svelte/core/Option.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
+//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
 use svelte\core\Str;
 use svelte\core\Collection;
 use svelte\core\OptionList;
+use svelte\core\Option;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\field\SelectMany;
@@ -134,7 +137,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
    * @link svelte.model.business.field.SelectMany#method_get_description svelte\model\business\field\SelectMany::description
-   */
+   *
   public function testGet_description()
   {
     try {
@@ -150,7 +153,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\SelectMany::value.
@@ -314,10 +317,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertSame(0, MockRecord::$setPropertyValueCount);
     $this->testObject->validate(PostData::build(array(
-      'mock-record:new:a-property' => Array(
-        'mock-business-model:0',
-        'mock-business-model:2'
-      )
+      'mock-record:new:a-property' => Array(1,2)
     )));
     $this->assertSame(1, MockRecord::$setPropertyValueCount);
     $this->assertSame(0, $this->option1->validateCount);
@@ -384,8 +384,8 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('$value parameter must be an array', $expected->getMessage());
       $this->testObject->validate(PostData::build(array(
         'mock-record:new:a-property' => Array(
-          'mock-business-model:0',
-          'mock-business-model:BAD'
+          '1',
+          'BAD'
         )
       )));
       $this->assertSame(0, MockRecord::$setPropertyValueCount);

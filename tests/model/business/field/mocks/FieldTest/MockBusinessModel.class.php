@@ -20,6 +20,7 @@
 namespace tests\svelte\model\business\field\mocks\FieldTest;
 
 use svelte\core\Str;
+use svelte\core\iOption;
 use svelte\core\iCollection;
 use svelte\core\Collection;
 use svelte\condition\PostData;
@@ -29,10 +30,10 @@ use svelte\model\business\BusinessModel;
  * Mock Concreate implementation of \svelte\model\business\BusinessModel for testing against.
  * .
  */
-class MockBusinessModel extends BusinessModel
+class MockBusinessModel extends BusinessModel implements iOption
 {
   private static $count;
-  private $id;
+  private $key;
 
   public $label;
   public $validateCount;
@@ -46,7 +47,7 @@ class MockBusinessModel extends BusinessModel
 
   public function __construct(string $label, iCollection $children = null)
   {
-    $this->id = Str::set('mock-business-model:' . self::$count++);
+    $this->key = self::$count++;
     $this->label = $label;
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -54,11 +55,17 @@ class MockBusinessModel extends BusinessModel
     parent::__construct($children);
   }
 
-  /**
-   * Mocked get_id method
-   * @return \svelte\core\Str Str('uid-1')
-   */
-  public function get_id() : Str
+  protected function get_id() : Str
+  {
+    return Str::set('mock-business-model:' . $this->key);;
+  }
+
+  public function get_key()
+  {
+    return $this->key;
+  }
+
+  public function get_description() : Str
   {
     return $this->id;
   }

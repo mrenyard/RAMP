@@ -32,11 +32,11 @@ namespace svelte\core;
 interface iOption
 {
   /**
-   * Get ID (enum:int|URN:Str)
+   * Get key (enum:int|URN:Str)
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return mixed ID
    */
-  public function get_id();
+  public function get_key();
 
   /**
    * Get Description.

@@ -29,11 +29,15 @@ class MockRecord extends Record
 {
   public static $setPropertyValueCount = 0;
   public static $getPropertyValueCount = 0;
+  public static $validateCount;
+  public static $hasErrorsCount;
 
   public static function reset()
   {
     self::$setPropertyValueCount = 0;
     self::$getPropertyValueCount = 0;
+    self::$validateCount = 0;
+    self::$hasErrorsCount = 0;
   }
 
   public static function primaryKeyName() : Str

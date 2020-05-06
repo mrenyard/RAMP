@@ -89,7 +89,6 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
     $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
-    $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
@@ -128,7 +127,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
    * @link svelte.model.business.BusinessModel#method_get_description svelte\model\business\BusinessModel::description
-   */
+   *
   public function testGet_description()
   {
     try {
@@ -145,7 +144,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\BusinessModel::type.

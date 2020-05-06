@@ -31,12 +31,12 @@ use svelte\core\iOption;
  * RESPONSIBILITIES
  * - Define a simple base implementation of iOption for easy reuse.
  *
- * @property-read mixed $id Returns ID (enum:int|URN:Str).
+ * @property-read mixed $key Returns key (enum:int|URN:Str).
  * @property-read \svelte\core\Str $description Returns description.
  */
 class Option extends SvelteObject implements iOption
 {
-  private $id;
+  private $key;
   private $description;
 
   /**
@@ -44,20 +44,20 @@ class Option extends SvelteObject implements iOption
    * @param int $id  Value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct(int $id, Str $description)
+  public function __construct(int $key, Str $description)
   {
-    $this->id = $id;
+    $this->key = $key;
     $this->description = $description;
   }
 
   /**
-   * Get ID (enum:int|URN:Str)
+   * Get key (enum:int|URN:Str)
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return mixed ID
+   * @return mixed Key
    */
-  public function get_id()
+  public function get_key()
   {
-    return $this->id;
+    return $this->key;
   }
 
   /**

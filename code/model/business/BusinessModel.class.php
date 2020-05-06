@@ -44,7 +44,7 @@ use svelte\model\Model;
  * @property-read int $count Returns the number of children currently parented by *this*.
  *
  */
-abstract class BusinessModel extends Model implements iOption, \IteratorAggregate, \Countable, \ArrayAccess
+abstract class BusinessModel extends Model implements \IteratorAggregate, \Countable, \ArrayAccess
 {
   private $children;
 
@@ -69,17 +69,7 @@ abstract class BusinessModel extends Model implements iOption, \IteratorAggregat
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Unique identifier for *this*
    */
-  abstract public function get_id() : Str;
-
-  /**
-   * Get description.
-   * **DO NOT CALL DIRECTLY, USE this->description;**
-   * @return mixed Description
-   */
-  public function get_description() : Str
-  {
-    return $this->id;
-  }
+  abstract protected function get_id() : Str;
 
   /**
    * Returns type.

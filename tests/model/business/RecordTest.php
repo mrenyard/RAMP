@@ -178,7 +178,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
    * @link svelte.model.business.Record#method_get_value svelte\model\business\Record::value
-   */
+   *
   public function testGet_value()
   {
     try {
@@ -191,7 +191,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\Record::type.

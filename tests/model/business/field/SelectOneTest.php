@@ -134,7 +134,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
    * @link svelte.model.business.field.SelectOne#method_get_description svelte\model\business\field\SelectOne::description
-   */
+   *
   public function testGet_description()
   {
     try {
@@ -150,7 +150,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\SelectOne::value.
@@ -314,7 +314,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessValidationRuleCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
-      'mock-record:new:a-property' => 'mock-business-model:0'
+      'mock-record:new:a-property' => '0'
     ))));
     //$this->assertSame(1, SelectOne::$processValidationRuleCount);
     $this->assertSame(1, MockRecord::$setPropertyValueCount);

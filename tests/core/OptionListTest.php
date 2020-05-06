@@ -57,7 +57,7 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
   {
     $this->testCollection = new Collection(Str::set('svelte\core\SvelteObject'));
     for ($i=0; $i < 5; $i++) {
-      $this->testCollection->add(new ConcreteOption(Str::set('id' . $i), Str::set('VALUE' . $i)));
+      $this->testCollection->add(new ConcreteOption($i, Str::set('VALUE' . $i)));
     }
     $this->testObject = new OptionList($this->testCollection);
   }

@@ -111,7 +111,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
    * @link svelte.model.business.field.Input#method_get_description svelte\model\business\field\Input::description
-   */
+   *
   public function testGet_description()
   {
     try {
@@ -124,7 +124,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\Input::value.

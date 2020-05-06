@@ -127,7 +127,7 @@ final class Session extends SvelteObject
     return (
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid()) &&
-      (self::$instance->loginAccount->accountType->id >= $authorizationLevel->id)
+      (self::$instance->loginAccount->accountType->key >= $authorizationLevel->key)
     );
   }
 
@@ -217,7 +217,7 @@ final class Session extends SvelteObject
       }
       if (
         (!$loginAccount->validatePassword($loginPassword)) ||
-        ((int)$loginAccount->accountType->id <= (int)$authorizationLevel->id)
+        ((int)$loginAccount->accountType->key <= (int)$authorizationLevel->key)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -252,7 +252,7 @@ final class Session extends SvelteObject
       }
       catch (\OutOfBoundsException $emailNOTexist) // new login details successfully confirmed
       {
-        if ($authorizationLevel->id == 1)
+        if ($authorizationLevel->key == 1)
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
           if ($this->loginAccount->authenticatableUnit->isValid())
