@@ -70,7 +70,7 @@ class ConcreteRecord extends Record
     return $this['property3'];
   }
 
-  protected function checkRequired($dataObject) : bool
+  protected static function checkRequired($dataObject) : bool
   {
     return isset($dataObject->property1);
   }

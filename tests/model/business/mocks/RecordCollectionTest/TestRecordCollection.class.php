@@ -17,19 +17,14 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordTest;
+namespace tests\svelte\model\business\mocks\RecordCollectionTest;
 
-use svelte\validation\ValidationRule;
-use svelte\validation\FailedValidationException;
+use svelte\model\business\RecordCollection;
 
-class ConcreteValidationRule extends ValidationRule
+/**
+ * Mock Concreate implementation of \svelte\model\business\RecordCollection for testing against.
+ * .
+ */
+class TestRecordCollection extends RecordCollection
 {
-  protected function test($value)
-  {
-    if ($value != 'key')
-    {
-      throw new FailedValidationException(
-        '$value of "' . $value . '" does NOT evaluate to KEY');
-    }
-  }
 }

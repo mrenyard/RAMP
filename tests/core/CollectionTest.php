@@ -126,6 +126,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       $this->fail('Unexpected iteration of empty Collection');
     }
     $this->assertEquals(0, $testObject->count);
+    $this->assertEquals(0, $testObject->count());
     try {
       $testObject->add(new BadObject());
     } catch (\InvalidArgumentException $expected) {
@@ -143,6 +144,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       }
       $this->assertSame(1, $i);
       $this->assertEquals(1, $testObject->count);
+      $this->assertEquals(1, $testObject->count());
       $i = 0;
       $o2 = new AnObject();
       $testObject->add($o2);
@@ -167,6 +169,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       }
       $this->assertSame(3, $i);
       $this->assertEquals(3, $testObject->count);
+      $this->assertEquals(3, $testObject->count());
       $i = 0;
       $o4 = new AnObject();
       $testObject->add($o4);
@@ -180,6 +183,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       }
       $this->assertSame(4, $i);
       $this->assertEquals(4, $testObject->count);
+      $this->assertEquals(4, $testObject->count());
       $this->assertFalse(isset($testObject[4]));
       $this->assertTrue(isset($testObject[3]));
       $this->assertSame($o4, $testObject[3]);

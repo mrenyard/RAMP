@@ -27,19 +27,6 @@ use svelte\model\business\Record;
  */
 class MockRecord extends Record
 {
-  public static $setPropertyValueCount = 0;
-  public static $getPropertyValueCount = 0;
-  public static $validateCount;
-  public static $hasErrorsCount;
-
-  public static function reset()
-  {
-    self::$setPropertyValueCount = 0;
-    self::$getPropertyValueCount = 0;
-    self::$validateCount = 0;
-    self::$hasErrorsCount = 0;
-  }
-
   public static function primaryKeyName() : Str
   {
     return Str::set('aProperty');
@@ -49,18 +36,7 @@ class MockRecord extends Record
   {
   }
 
-  public function getPropertyValueFromField(string $propertyName)
-  {
-    self::$getPropertyValueCount++;
-    return 'VALUE';
-  }
-
-  public function setPropertyValueFromField(string $propertyName, $value)
-  {
-    self::$setPropertyValueCount++;
-  }
-
-  protected function checkRequired($dataObject) : bool
+  protected static function checkRequired($dataObject) : bool
   {
     return (isset($dataObject->aPproperty));
   }

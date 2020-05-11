@@ -329,12 +329,14 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
    /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::count().
+   * Collection of assertions for \svelte\model\business\BusinessModel::count and
+   * \svelte\model\business\BusinessModel::count()
    * - assert return expected int value related to the number of child BusinessModels held.
    * @link svelte.model.business.BusinessModel#method_count svelte\model\business\BusinessModel::count()
    */
   public function testCount()
   {
     $this->assertSame(3 ,$this->testObject->count);
+    $this->assertSame(3 ,$this->testObject->count());
   }
 }

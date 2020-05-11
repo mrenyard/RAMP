@@ -41,7 +41,7 @@ class Option extends SvelteObject implements iOption
 
   /**
    * Constructor for new instance of LoginAccountTypeOption.
-   * @param int $id  Value to be set for id.
+   * @param int $key  Value to be set for key.
    * @param \svelte\core\Str $description String value to be set for description.
    */
   public function __construct(int $key, Str $description)
@@ -52,7 +52,7 @@ class Option extends SvelteObject implements iOption
 
   /**
    * Get key (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return mixed Key
    */
   public function get_key()

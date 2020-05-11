@@ -53,6 +53,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $mockRecord;
+  private $dataObject;
 
   private $options;
   private $option1;
@@ -64,7 +65,6 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp()
   {
-    MockRecord::reset();
     MockBusinessModel::reset();
     $this->options = new Collection();
     $this->option1 = new MockBusinessModel('First child');
@@ -73,7 +73,9 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     $this->options->add($this->option1);
     $this->options->add($this->option2);
     $this->options->add($this->option3);
-    $this->mockRecord = new MockRecord();
+    $this->dataObject = new \stdClass();
+    $this->dataObject->aProperty = NULL;
+    $this->mockRecord = new MockRecord($this->dataObject);
     $this->testObject = new SelectMany(
       Str::set('aProperty'),
       $this->mockRecord,
@@ -130,32 +132,6 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.field.SelectMany#method_get_description svelte\model\business\field\SelectMany::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->description);
-      $this->assertEquals('mock-business-model:0', (string)$this->option1->description);
-      $this->assertEquals('mock-business-model:1', (string)$this->option2->description);
-      $this->assertEquals('mock-business-model:2', (string)$this->option3->description);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
-
-  /**
    * Collection of assertions for \svelte\model\business\field\SelectMany::value.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
@@ -168,9 +144,9 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
+      $this->dataObject->aProperty = 'VALUE';
       $value = $this->testObject->value;
-      $this->assertSame(1, MockRecord::$getPropertyValueCount);
-      $this->assertSame($this->mockRecord->getPropertyValueFromField('aProperty'), $value);
+      $this->assertSame($this->dataObject->aProperty, $value);
       $this->assertSame('VALUE', $value);
       return;
     }
@@ -315,11 +291,11 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleCalled()
   {
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $this->testObject->validate(PostData::build(array(
       'mock-record:new:a-property' => Array(1,2)
     )));
-    $this->assertSame(1, MockRecord::$setPropertyValueCount);
+    $this->assertSame(Array(1,2), $this->dataObject->aProperty);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);
@@ -338,7 +314,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors);
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $this->assertSame(0, $this->option1->hasErrorsCount);
     $this->assertSame(0, $this->option2->hasErrorsCount);
     $this->assertSame(0, $this->option3->hasErrorsCount);
@@ -369,7 +345,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors);
     $errors = $this->testObject->errors;
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $this->assertInstanceOf('\svelte\core\iCollection', $errors);
     $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
@@ -388,7 +364,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
           'BAD'
         )
       )));
-      $this->assertSame(0, MockRecord::$setPropertyValueCount);
+      $this->assertNull($this->dataObject->aProperty);
       $thirdCallOnErrors = $this->testObject->errors;
       $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
       $this->assertSame(1, $thirdCallOnErrors->count);

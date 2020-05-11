@@ -19,6 +19,7 @@
  */
 namespace tests\svelte\model\business;
 
+require_once '/usr/share/php/svelte/SETTING.class.php';
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
@@ -169,29 +170,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
   }
-
-  /**
-   * Collection of assertions for \svelte\model\business\Record::value.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
-   * - assert property 'vlaue' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.Record#method_get_value svelte\model\business\Record::value
-   *
-  public function testGet_value()
-  {
-    try {
-      $this->testObject->value = "VALUE";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->value is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->value);
-      $this->assertEquals($this->testObject->id, $this->testObject->value);
-      $this->assertEquals('concrete-record:new', (string)$this->testObject->value);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\Record::type.
@@ -359,7 +337,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function testValidateHasGetErrorsNewAllGood()
   {
     $_POST1 = array(
-      'concrete-record:new:property-1' => 'KEY',
+      'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => '3',
       'concrete-record:new:property-3' => array('1','4','6')
     );
@@ -371,7 +349,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('KEY', $dataObjectProperties['property1']);
+    $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('3', $dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
@@ -446,7 +424,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function testValidateHasGetErrorsNewP2Bad()
   {
     $_POST3 = array(
-      'concrete-record:new:property-1' => 'KEY',
+      'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => '7', // BAD - Beyond index
       'concrete-record:new:property-3' => array('1','2','6')
     );
@@ -460,14 +438,14 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('KEY', $dataObjectProperties['property1']);
+    $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST4 = array(
-      'concrete-record:key:property-2' => '7', // BAD - Beyond index
+      'concrete-record:key:property-2' => '8', // BAD - Beyond index
       'concrete-record:key:property-3' => array('1','2','6')
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
@@ -494,7 +472,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function testValidateHasGetErrorsNewP3Bad()
   {
     $_POST5 = array(
-      'concrete-record:new:property-1' => 'KEY',
+      'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => '5',
       'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
     );
@@ -511,7 +489,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals(1, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('KEY', $dataObjectProperties['property1']);
+    $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
@@ -611,7 +589,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->updated());
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
-
     $_POST9 = array(
       'concrete-record:pkey:property-1' => 'KEY',
       'concrete-record:pkey:property-2' => '5',

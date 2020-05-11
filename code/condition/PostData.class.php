@@ -55,22 +55,19 @@ final class PostData extends Collection
   static public function build(array $postdata) : PostData
   {
     $postData = new PostData();
-    foreach ($postdata as $name => $value) {
-
+    foreach ($postdata as $name => $value)
+    {
       $URN = explode(':', $name);
       if (count($URN) !== 3) {
         throw new \DomainException(
           'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'
         );
       }
-
       $record = Str::camelCase(Str::set($URN[0]));
       $primaryKey = Str::set($URN[1]);
       $property = Str::camelCase(Str::set($URN[2]), TRUE);
-
       // InputDataCondition also throws \DomainException - which we allow to bubble up.
       $postData->add(new InputDataCondition($record, $primaryKey, $property, $value));
-
     } // END foreach
     return $postData;
   }

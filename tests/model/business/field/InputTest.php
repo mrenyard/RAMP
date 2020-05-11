@@ -43,6 +43,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $mockRecord;
+  private $dataObject;
   private $myValidationRule;
 
   /**
@@ -50,9 +51,10 @@ class InputTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp()
   {
-    MockRecord::reset();
     MyValidationRule::reset();
-    $this->mockRecord = new MockRecord();
+    $this->dataObject = new \stdClass();
+    $this->dataObject->aProperty = NULL;
+    $this->mockRecord = new MockRecord($this->dataObject);
     $this->myValidationRule = new MyValidationRule();
     $this->testObject = new Input(Str::set('aProperty'), $this->mockRecord, $this->myValidationRule);
     \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
@@ -104,29 +106,6 @@ class InputTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Input::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.field.Input#method_get_description svelte\model\business\field\Input::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->description);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
-
-  /**
    * Collection of assertions for \svelte\model\business\field\Input::value.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
@@ -139,9 +118,9 @@ class InputTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
+      $this->dataObject->aProperty = 'VALUE';
       $value = $this->testObject->value;
-      $this->assertSame(1, MockRecord::$getPropertyValueCount);
-      $this->assertSame($this->mockRecord->getPropertyValueFromField('aProperty'), $value);
+      $this->assertSame($this->dataObject->aProperty, $value);
       $this->assertSame('VALUE', $value);
       return;
     }
@@ -263,7 +242,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
       'mock-record:new:a-property' => 'GOOD'
     ))));
     $this->assertSame(1, MyValidationRule::$testCallCount);
-    $this->assertSame(1, MockRecord::$setPropertyValueCount);
+    $this->assertSame('GOOD', $this->dataObject->aProperty);
   }
 
   /**
@@ -291,16 +270,15 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertSame(0, MyValidationRule::$testCallCount);
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $errors = $this->testObject->errors;
     $this->assertSame(0, $errors->count);
-
     // Returns same results on subsequent call.
     $secondCallOnErrors = $this->testObject->errors;
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
     $this->assertSame(0, MyValidationRule::$testCallCount);
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
   }
 
   /**
@@ -322,7 +300,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(1, MyValidationRule::$testCallCount);
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $errors = $this->testObject->errors;
     $this->assertSame('MyValidationRule has error due to $value of BAD!', (string)$errors[0]);
     $this->assertFalse(isset($errors[1]));

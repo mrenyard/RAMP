@@ -92,8 +92,10 @@ abstract class Field extends BusinessModel
   final public function validate(PostData $postdata)
   {
     $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
-    foreach ($postdata as $inputdata) {
-      if ($inputdata->attributeURN == $this->id) {
+    foreach ($postdata as $inputdata)
+    {
+      if ($inputdata->attributeURN == $this->id)
+      {
         try {
           $this->processValidationRule($inputdata->value);
         } catch (FailedValidationException $e) {

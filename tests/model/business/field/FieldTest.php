@@ -46,6 +46,7 @@ use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithError
 class FieldTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
+  private $dataObject;
   private $mockRecord;
   private $children;
   private $testChild1;
@@ -59,12 +60,13 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp()
   {
-    MockRecord::reset();
     MockField::reset();
     MockBusinessModel::reset();
     $this->children = new Collection();
     $this->grandchildren = new Collection();
-    $this->mockRecord = new MockRecord();
+    $this->dataObject = new \stdClass();
+    $this->dataObject->aProperty = NULL;
+    $this->mockRecord = new MockRecord($this->dataObject);
     $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
     $this->testChild1 = new MockBusinessModel('First child');
     $this->testChild2 = new MockBusinessModelWithErrors('Second child');
@@ -125,33 +127,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.field.Field#method_get_description svelte\model\business\field\Field::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->description);
-      $this->assertEquals('mock-business-model:0', (string)$this->testChild1->description);
-      $this->assertEquals('mock-business-model:1', (string)$this->testChild2->description);
-      $this->assertEquals('mock-business-model:2', (string)$this->testChild3->description);
-      $this->assertEquals('mock-business-model:3', (string)$this->grandchild->description);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
-
-  /**
    * Collection of assertions for \svelte\model\business\field\Field::value.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
@@ -164,9 +139,9 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
+      $this->dataObject->aProperty = 'VALUE';
       $value = $this->testObject->value;
-      $this->assertSame(1, MockRecord::$getPropertyValueCount);
-      $this->assertSame($this->mockRecord->getPropertyValueFromField('aProperty'), $value);
+      $this->assertSame($this->dataObject->aProperty, $value);
       $this->assertSame('VALUE', $value);
       return;
     }
@@ -257,32 +232,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\model\business\field\Field::offsetSet().
-   * - assert throws BadMethodCallException as this method should be inaccessible
-   *   - with message: <em>'Array access setting is not allowed, please use add.'</em>
-   * @link svelte.model.business.field.Field#method_offsetSet \svelte\model\business\field\Field::offsetSet()
-   *
-  public function testOffsetSet()
-  {
-    $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage = 'Array access setting is not allowed.';
-    $this->testObject[3] = new MockBusinessModel('Forth child');
-  }*/
-
-  /**
-   * Collection of assertions for \svelte\model\business\field\Field::offsetUnset.
-   * - assert throws BadMethodCallException whenever offsetUnset is called
-   *  - with message *Array access unsetting is not allowed.*
-   * @link svelte.model.business.field.Field#method_offsetUnset svelte\model\business\field\Field::offsetUnset()
-   *
-  public function testOffsetUnset()
-  {
-    $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage = 'Array access unsetting is not allowed.';
-    unset($this->testObject[0]);
-  }*/
-
-  /**
    * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
    * for \svelte\model\business\BusinessModel::offsetUnset.
    * - assert successful use of offsetSet
@@ -338,7 +287,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       'mock-record:new:a-property' => 'GOOD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(1, MockRecord::$setPropertyValueCount);
+    $this->assertSame('GOOD', $this->dataObject->aProperty);
     $this->assertSame(0, $this->testChild1->validateCount);
     $this->assertSame(0, $this->testChild2->validateCount);
     $this->assertSame(0, $this->testChild3->validateCount);
@@ -395,12 +344,11 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
-    MockRecord::reset();
     $this->assertNull($this->testObject->validate(PostData::build(array(
       'mock-record:new:a-property' => 'BAD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(0, MockRecord::$setPropertyValueCount);
+    $this->assertNull($this->dataObject->aProperty);
     $thirdCallOnErrors = $this->testObject->errors;
     $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
     $this->assertSame(1, $thirdCallOnErrors->count);

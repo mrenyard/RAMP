@@ -46,8 +46,8 @@ use svelte\core\Str;
  * @property-read mixed $value Returns value to be evaluated (synonym for comparable).
  * @property-read \svelte\core\Str $attributeURN Returns name of attribute as URN to be restricted, evaluated or modified.
  */
-final class InputDataCondition extends BusinessCondition {
-
+final class InputDataCondition extends BusinessCondition
+{
   private $primaryKeyValue;
 
   /**
@@ -96,7 +96,7 @@ final class InputDataCondition extends BusinessCondition {
   {
     return Str::hyphenate($this->record)
       ->append(Str::COLON())
-      ->append(Str::hyphenate($this->primaryKeyValue))
+      ->append($this->primaryKeyValue)
       ->append(Str::COLON())
       ->append(Str::hyphenate($this->property)
     );

@@ -92,9 +92,7 @@ abstract class Record extends BusinessModel implements iOption
   {
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
-    )->append(
-      Str::hyphenate($this->key)
-    );
+    )->append($this->key);
   }
 
   /**
@@ -112,7 +110,7 @@ abstract class Record extends BusinessModel implements iOption
    * @param mixed $offset Index to place provided object.
    * @param mixed $object SvelteObject to be placed at provided index.
    */
-  public function offsetSet($offset, $object)
+  final public function offsetSet($offset, $object)
   {
     if (is_numeric($offset) ||(!($object instanceof \svelte\model\business\field\Field)))
     {
@@ -131,7 +129,7 @@ abstract class Record extends BusinessModel implements iOption
    * ArrayAccess method offsetUnset, USES DISCOURAGED.
    * @param mixed $offset API to match \ArrayAccess interface
    */
-  public function offsetUnset($offset)
+  final public function offsetUnset($offset)
   {
     if (isset($this->dataObject->$offset))
     {
@@ -202,7 +200,7 @@ abstract class Record extends BusinessModel implements iOption
    * @throws \svelte\validation\FailedValidationException When &value fails validation.
    * @throws svelte\validation\ValidationRule\FailedValidationException when
    */
-  public function __set($propertyName, $propertyValue)
+  final public function __set($propertyName, $propertyValue)
   {
     if (isset($this[$propertyName]))
     {
@@ -253,7 +251,7 @@ abstract class Record extends BusinessModel implements iOption
    * Set this as updated.
    * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
    */
-  public function updated()
+  final public function updated()
   {
     $pkName = (string)$this->primaryKeyName();
     $this->validFromSource = (isset($this->dataObject->$pkName) && $this->checkRequired($this->dataObject));
@@ -265,5 +263,5 @@ abstract class Record extends BusinessModel implements iOption
    * @param DataObject to be checked for requiered property values
    * @return bool Check all requiered properties are set.
    */
-  abstract protected function checkRequired($dataObject) : bool;
+  abstract protected static function checkRequired($dataObject) : bool;
 }

@@ -17,19 +17,19 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordTest;
+namespace tests\svelte\model\business\mocks\RecordCollectionTest;
 
 use svelte\validation\ValidationRule;
 use svelte\validation\FailedValidationException;
 
-class ConcreteValidationRule extends ValidationRule
+class ConcreteValidationRule2 extends ValidationRule
 {
   protected function test($value)
   {
-    if ($value != 'key')
+    if ($value != 'GOOD')
     {
       throw new FailedValidationException(
-        '$value of "' . $value . '" does NOT evaluate to KEY');
+        '$value of "' . $value . '" does NOT evaluate to GOOD');
     }
   }
 }

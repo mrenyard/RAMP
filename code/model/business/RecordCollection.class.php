@@ -23,6 +23,7 @@ namespace svelte\model\business;
 
 use svelte\core\SvelteObject;
 use svelte\core\iCollection;
+use svelte\core\Collection;
 use svelte\core\Str;
 use svelte\model\business\BusinessModel;
 
@@ -40,6 +41,20 @@ use svelte\model\business\BusinessModel;
  */
 abstract class RecordCollection extends BusinessModel implements iCollection
 {
+  /**
+   * Default constructor for collection of \svelte\model\business\Records.
+   * - Sets composite type for this collection as <i>this</i> class-name with string <i>Collection</i> truncated:
+   *  - e.g. {@link \svelte\model\business\UserCollection} would expect to referance only {@link \svelte\model\business\User}s.
+   */
+  final public function __construct()
+  {
+    parent::__construct(
+      new Collection(
+        Str::set(preg_replace('/Collection$/', '', get_class($this)))
+      )
+    );
+  }
+
   /**
    * Get ID (URN)
    * **DO NOT CALL DIRECTLY, USE this->id;**
@@ -69,5 +84,15 @@ abstract class RecordCollection extends BusinessModel implements iCollection
   public function offsetSet($offset, $object)
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
+  }
+
+  /**
+   * ArrayAccess method offsetUnset, DO NOT USE.
+   * @param mixed $offset API to match \ArrayAccess interface
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetUnset($offset)
+  {
+    throw new \BadMethodCallException('Array access unsetting is not allowed.');
   }
 }
