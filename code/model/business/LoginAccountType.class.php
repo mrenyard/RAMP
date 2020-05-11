@@ -22,8 +22,16 @@ namespace svelte\model\business;
 
 use svelte\core\Str;
 use svelte\core\iOption;
+use svelte\core\Option;
 use svelte\core\OptionList;
 use svelte\core\Collection;
+
+/**
+ * A Single login account type.
+ */
+class LoginAccountTypeOption extends Option
+{
+}
 
 /**
  * Pre defined enum/list of \svelte\model\business\LoginAccountTypeOption.

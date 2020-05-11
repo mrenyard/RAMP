@@ -126,7 +126,7 @@ final class Session extends SvelteObject
     }
     return (
       (isset(self::$instance->loginAccount)) &&
-      (self::$instance->loginAccount->isValid()) &&
+      (self::$instance->loginAccount->isValid) &&
       (self::$instance->loginAccount->accountType->key >= $authorizationLevel->key)
     );
   }

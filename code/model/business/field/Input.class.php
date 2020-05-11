@@ -23,7 +23,7 @@ namespace svelte\model\business\field;
 
 use svelte\core\Str;
 use svelte\model\business\Record;
-use svelte\validation\ValidationRule;
+use svelte\model\business\validation\ValidationRule;
 
 /**
  * Input field related to a single property of its containing \svelte\model\business\Record.

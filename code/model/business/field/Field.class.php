@@ -27,7 +27,7 @@ use svelte\core\Collection;
 use svelte\condition\PostData;
 use svelte\model\business\BusinessModel;
 use svelte\model\business\Record;
-use svelte\validation\FailedValidationException;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Abstract field related to a single property of its containing \svelte\model\business\Record.

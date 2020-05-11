@@ -24,7 +24,7 @@ namespace svelte\model\business\field;
 use svelte\core\Str;
 use svelte\core\OptionList;
 use svelte\model\business\Record;
-use svelte\validation\FailedValidationException;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Specilised field for selecting one from a collection of iOptions tied to a single property of

@@ -22,7 +22,7 @@ namespace tests\svelte\model\business\field;
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/InputTest/MyValidationRule.class.php';

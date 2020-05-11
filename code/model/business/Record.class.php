@@ -96,6 +96,17 @@ abstract class Record extends BusinessModel implements iOption
   }
 
   /**
+   * Returns value of primary key.
+   * **DO NOT CALL DIRECTLY, USE this->key;**
+   * @return \svelte\core\Str Value of primary key
+   */
+  final public function get_key() : Str
+  {
+    $pkName = (string)$this->primaryKeyName();
+    return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
+  }
+
+  /**
    * Get description.
    * **DO NOT CALL DIRECTLY, USE this->description;**
    * @return svelte\core\Str Description
@@ -138,17 +149,6 @@ abstract class Record extends BusinessModel implements iOption
       );
     }
     parent::offsetUnset($offset);
-  }
-
-  /**
-   * Returns value of primary key.
-   * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return \svelte\core\Str Value of primary key
-   */
-  final public function get_key() : Str
-  {
-    $pkName = (string)$this->primaryKeyName();
-    return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
   }
 
   /**

@@ -17,16 +17,17 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\validation;
+namespace tests\svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
-use svelte\validation\ValidationRule;
+use svelte\model\business\validation\ValidationRule;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Concreate implementation of \svelte\validation\ValidationRule for testing against.
  * .
  */
-class MockValidationRule extends ValidationRule
+class FailOnBadValidationRule extends ValidationRule
 {
   public static $testCallCount = 0;
 
@@ -41,5 +42,8 @@ class MockValidationRule extends ValidationRule
   protected function test($value)
   {
     self::$testCallCount++;
+    if ($value == 'BAD') {
+      throw new FailedValidationException('FailOnBadValidationRule has been given the value BAD');
+    }
   }
 }

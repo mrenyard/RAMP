@@ -37,8 +37,8 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
-require_once '/usr/share/php/svelte/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';

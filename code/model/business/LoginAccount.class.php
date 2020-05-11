@@ -39,7 +39,7 @@ class LoginAccountCollection extends RecordCollection
  * Mock LoginAccount for testing \svelte\http\Session
  * .
  */
-class LoginAccount extends BusinessModel
+class LoginAccount extends Record
 {
   private $authenticatableUnit;
   private $dataObject;
@@ -50,31 +50,23 @@ class LoginAccount extends BusinessModel
   public $forcePasswordField;
 
   /**
-   * Mock LoginAccount, new or with encapsulated source data contained.
-   * @param \stdClass $dataObject Simple data container
+   * Returns property name of concrete classes primary key.
+   * @return \svelte\core\Str Name of property that is concrete classes primary key
    */
-  final public function __construct(\stdClass $dataObject = null)
-  {
-    if (!isset($dataObject)) {
-      $dataObject = new \stdClass();
-      $dataObject->id = 'login-account:new';
-      $dataObject->email = null;
-      $dataObject->encryptedPassword = null;
-      $dataObject->typeID = null;
-      $dataObject->auPK = null;
-    }
-    $this->dataObject =  $dataObject;
-    parent::__construct(null);
-  }
+  protected static function primaryKeyName() : Str { return Str::set('auPK'); }
 
-  /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
-   */
-  public function get_id() : Str
+
+  protected function get_auPK() : field\Field
   {
-    return Str::set($dataObject->id);
+    if (!isset($this->children['auPK']))
+    {
+      $this->children['auPK'] = new field\Input(
+        Str::set('auPK'),
+        $this,
+        new validationRule\LowerCaseAlphanumeric()
+      );
+    }
+    return $this->children['auPK'];
   }
 
   /**
@@ -89,7 +81,7 @@ class LoginAccount extends BusinessModel
 
   /**
    * Get login account type
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE this->accountType;**
    * @return \svelte\model\business\LoginAccountType
    */
   protected function get_accountType()
@@ -160,19 +152,6 @@ class LoginAccount extends BusinessModel
   }
 
   /**
-   * Mocked isValid method returns TRUE
-   */
-  public function isValid() : bool
-  {
-    return (
-      isset($this->dataObject->auPK) &&
-      isset($this->dataObject->email) &&
-      isset($this->dataObject->encryptedPassword) &&
-      isset($this->dataObject->typeID)
-    );
-  }
-
-  /**
    * Generate a random string for a password.
    * @return \svelte\String $newPassword New rendom grnerated password.
    *
@@ -186,4 +165,19 @@ class LoginAccount extends BusinessModel
     }
     return $randkey;
   }*/
+
+  /**
+   * Check requeried properties have value or not.
+   * @param DataObject to be checked for requiered property values
+   * @return bool Check all requiered properties are set.
+   */
+  protected static function checkRequired($dataObject) : bool
+  {
+    return (
+      isset($this->dataObject->auPK) &&
+      isset($this->dataObject->email) &&
+      isset($this->dataObject->encryptedPassword) &&
+      isset($this->dataObject->typeID)
+    );
+  }
 }

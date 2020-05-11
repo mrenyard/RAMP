@@ -17,16 +17,16 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\validation;
+namespace tests\svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
-use svelte\validation\ValidationRule;
+use svelte\model\business\validation\ValidationRule;
 
 /**
  * Concreate implementation of \svelte\validation\ValidationRule for testing against.
  * .
  */
-class ThirdValidationRule extends ValidationRule
+class SecondValidationRule extends ValidationRule
 {
   public static $testCallCount = 0;
 

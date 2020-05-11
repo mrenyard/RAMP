@@ -84,7 +84,13 @@ class MockBusinessModelManager extends BusinessModelManager
     {
       if ($definition->recordKey == 'new')
       {
-        return new LoginAccount();
+        $dataObject = new \stdClass();
+        $dataObject->id = 'login-account:new';
+        $dataObject->email = null;
+        $dataObject->encryptedPassword = null;
+        $dataObject->typeID = null;
+        $dataObject->auPK = null;
+        return new LoginAccount(); //$dataObject);
       }
       else if (($definition->recordKey == null) && (isset($filter)))
       {

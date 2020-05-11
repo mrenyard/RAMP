@@ -20,8 +20,8 @@
 namespace tests\svelte\model\business\field\mocks\InputTest;
 
 use svelte\core\SvelteObject;
-use svelte\validation\ValidationRule;
-use svelte\validation\FailedValidationException;
+use svelte\model\business\validation\ValidationRule;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Concreate implementation of \svelte\validation\ValidationRule for testing against.

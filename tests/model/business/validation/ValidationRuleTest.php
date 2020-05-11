@@ -17,26 +17,26 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\validation;
+namespace tests\svelte\model\business\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 
-require_once '/usr/share/php/tests/svelte/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/validation/mocks/ValidationRuleTest/FirstValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/validation/mocks/ValidationRuleTest/SecondValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FirstValidationRule.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/SecondValidationRule.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use svelte\core\SvelteObject;
-use svelte\validation\FailedValidationException;
+use svelte\model\business\validation\FailedValidationException;
 
-use tests\svelte\validation\MockValidationRule;
-use tests\svelte\validation\FirstValidationRule;
-use tests\svelte\validation\SecondValidationRule;
-use tests\svelte\validation\ThirdValidationRule;
-use tests\svelte\validation\FailOnBadValidationRule;
+use tests\svelte\model\business\validation\MockValidationRule;
+use tests\svelte\model\business\validation\FirstValidationRule;
+use tests\svelte\model\business\validation\SecondValidationRule;
+use tests\svelte\model\business\validation\ThirdValidationRule;
+use tests\svelte\model\business\validation\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \svelte\validation\ValidationRule.
@@ -56,7 +56,7 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
   {
     $testObject = new MockValidationRule();
     $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('svelte\validation\ValidationRule', $testObject);
+    $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $testObject);
   }
 
   /**
