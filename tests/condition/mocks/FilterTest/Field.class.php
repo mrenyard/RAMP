@@ -20,6 +20,7 @@
 namespace tests\svelte\condition\mocks\FilterTest;
 
 use svelte\core\SvelteObject;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Mock Field with processValidationRules method.
@@ -29,10 +30,12 @@ class Field extends SvelteObject
 {
   /**
    * Test processValidationRule.
-   * @param mixed $value Value to be assesed for validity
+   * @param mixed $value Value to be processed
+   * @throws \svelte\validation\FailedValidationException When test fails.
    */
-  public function processValidationRule($value) : bool
+  public function processValidationRule($value)
   {
-    return ($value == 'valueA' || $value == 'valueB' || $value == 'valueC' || ($value > 0 && $value < 20));
+    if ($value == 'valueA' || $value == 'valueB' || $value == 'valueC' || ($value > 0 && $value < 20)) { return; }
+    throw new FailedValidationException('$value NOT one of valueA, valueB, valueC or an int between 0 and 20');
   }
 }

@@ -298,7 +298,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
-   *
+   */
   public function testAuthorizeAsWithEmailNoPassword()
   {
     $additionalPostdata = array(
@@ -321,7 +321,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected Unauthorized401Exception has NOT been raised');
-  }*/
+  }
 
   /**
    * Collection of assertions for \svelte\http\Session::authorizeAs().

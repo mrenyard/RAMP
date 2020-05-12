@@ -20,6 +20,7 @@
 namespace tests\svelte\condition\mocks\FilterConditionTest;
 
 use svelte\core\SvelteObject;
+use svelte\model\business\validation\FailedValidationException;
 
 /**
  * Mock Field with processValidationRules method.
@@ -29,10 +30,12 @@ class Field extends SvelteObject
 {
   /**
    * Test processValidationRule.
-   * @param mixed $value Value to be assesed for validity
+   * @param mixed $value Value to be processed
+   * @throws \svelte\validation\FailedValidationException When test fails.
    */
-  public function processValidationRule($value) : bool
+  public function processValidationRule($value)
   {
-    return ($value == 'GOOD' || $value == 'COMPARABLE' || $value == 'NEW COMPARABLE' );
+    if ($value == 'GOOD' || $value == 'COMPARABLE' || $value == 'NEW COMPARABLE' ) { return; }
+    throw new FailedValidationException('$value NOT one of GOOD, COMPARABLE or NEW COMPARABLE');
   }
 }

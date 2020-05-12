@@ -31,6 +31,7 @@ use svelte\model\business\SimpleBusinessModelDefinition;
 use svelte\model\business\LoginAccountTypeOption;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
+use svelte\model\business\validation\FailedValidationException;
 use svelte\view\View;
 
 /**
@@ -165,6 +166,7 @@ final class Session extends SvelteObject
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
    * - Unauthenticated or insufficient authority
    * - Attempting POST to resource REQUIRING authentication or insufficient authority
+   * - Invalid email provided
    * - Account (email) NOT in database
    * - Invalid password or insufficient privileges
    * - New Authenticatible Unit Form: e-mail mismatch
@@ -200,7 +202,11 @@ final class Session extends SvelteObject
       );
     }
     $loginEmail = $_POST['login-email']; unset($_POST['login-email']);
-    $this->accountEmailCondition->comparable = $loginEmail;
+    try {
+      $this->accountEmailCondition->comparable = $loginEmail;
+    } catch (\DomainException $exception) {
+      throw new Unauthorized401Exception('Invalid email provided');
+    }
     if (isset($_POST['login-password']))
     {
       $loginPassword = $_POST['login-password']; unset($_POST['login-password']);
