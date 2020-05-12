@@ -76,6 +76,15 @@ final class Input extends Field
   }
 
   /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
+  {
+    return $this->containingRecord->getPropertyValueFromField($this->propertyName);
+  }
+
+  /**
    * Process provided validation rule.
    * @param mixed $value Value to be processed
    * @throws \svelte\validation\FailedValidationException When test fails.

@@ -177,7 +177,7 @@ abstract class Record extends BusinessModel implements iOption
   public function getPropertyValueFromField(string $propertyName)
   {
     $propertyName = (string)$propertyName;
-    return $this->dataObject->$propertyName;
+    return (isset($this->dataObject->$propertyName)) ? $this->dataObject->$propertyName : NULL;
   }
 
   /**
@@ -199,7 +199,7 @@ abstract class Record extends BusinessModel implements iOption
    * @param mixed $propertyValue The value to set on requested property (handled internally)
    * @throws \svelte\validation\FailedValidationException When &value fails validation.
    * @throws svelte\validation\ValidationRule\FailedValidationException when
-   */
+   *
   final public function __set($propertyName, $propertyValue)
   {
     if (isset($this[$propertyName]))
@@ -211,7 +211,7 @@ abstract class Record extends BusinessModel implements iOption
     }
     parent::__set($propertyName, $propertyValue);
     // @codeCoverageIgnoreStart
-  }
+  }*/
 
   /**
    * Returns whether data has been modified since last update.

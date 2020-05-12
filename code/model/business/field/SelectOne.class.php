@@ -74,6 +74,16 @@ final class SelectOne extends Field
   }
 
   /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
+  {
+    $index = $this->containingRecord->getPropertyValueFromField($this->propertyName);
+    return (is_int($index)) ? $this[$index] : $this[0];
+  }
+
+  /**
    * Validate that value is one of avalible options.
    * @param mixed $value Value to be processed
    * @throws \svelte\validation\FailedValidationException When test fails.

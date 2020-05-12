@@ -42,7 +42,6 @@ class LoginAccountCollection extends RecordCollection
 class LoginAccount extends Record
 {
   private $authenticatableUnit;
-  private $dataObject;
 
   /**
    * Flag for assiciated View expressing wish to show password field.
@@ -58,15 +57,15 @@ class LoginAccount extends Record
 
   protected function get_auPK() : field\Field
   {
-    if (!isset($this->children['auPK']))
+    if (!isset($this['auPK']))
     {
-      $this->children['auPK'] = new field\Input(
+      $this['auPK'] = new field\Input(
         Str::set('auPK'),
         $this,
-        new validationRule\LowerCaseAlphanumeric()
+        new validation\LowerCaseAlphanumeric()
       );
     }
-    return $this->children['auPK'];
+    return $this['auPK'];
   }
 
   /**
@@ -76,7 +75,15 @@ class LoginAccount extends Record
    */
   protected function get_email()
   {
-    return new MockField(); //Str::set('email'), $this);
+    if (!isset($this['email']))
+    {
+      $this['email'] = new field\Input(
+        Str::set('email'),
+        $this,
+        new validation\RegexEmail()
+      );
+    }
+    return $this['email'];
   }
 
   /**
@@ -86,15 +93,23 @@ class LoginAccount extends Record
    */
   protected function get_accountType()
   {
-    return (isset($this->dataObject->typeID)) ?
-      LoginAccountType::get($this->dataObject->typeID) :
-        LoginAccountType::get(0);
+    $typeID = $this->getPropertyValueFromField('typeID');
+    return ($typeID != NULL) ? LoginAccountType::get($typeID) : LoginAccountType::get(0);
+    /*if (!isset($this['accountType']))
+    {
+      $this['accountType'] = new field\SelectOne(
+        Str::set['accountType'],
+        $this,
+        LoginAccountType::get()
+      );
+    }
+    return $this['accountType'];*/
   }
 
   /**
    * Get the associated Authenticatable Unit as defined with \svelte\SETTING and $this->auPK.
    * @return Record Authenticatable Unit associated with *this*.
-   */
+   *
   protected function get_authenticatableUnit() //: Record
   {
     if (!isset($this->authenticatableUnit))
@@ -112,7 +127,7 @@ class LoginAccount extends Record
       }
     }
     return $this->authenticatableUnit;
-  }
+  }*/
 
   /**
    * {@inheritdoc}
@@ -174,10 +189,10 @@ class LoginAccount extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($this->dataObject->auPK) &&
-      isset($this->dataObject->email) &&
-      isset($this->dataObject->encryptedPassword) &&
-      isset($this->dataObject->typeID)
+      isset($dataObject->auPK) &&
+      isset($dataObject->email) &&
+      //isset($dataObject->encryptedPassword) &&
+      isset($dataObject->typeID)
     );
   }
 }

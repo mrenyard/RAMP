@@ -38,6 +38,14 @@ class MockField extends Field
     self::$processValidationRuleCount = 0;
   }
 
+  /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
+  {
+  }
+
   public function processValidationRule($value)
   {
     self::$processValidationRuleCount++;

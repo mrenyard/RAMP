@@ -55,6 +55,8 @@ use svelte\model\business\field\SelectMany;
 
 use tests\svelte\model\business\mocks\RecordTest\ConcreteRecord;
 use tests\svelte\model\business\mocks\RecordTest\ConcreteValidationRule;
+use tests\svelte\model\business\mocks\RecordTest\ConcreteOptionList;
+use tests\svelte\model\business\mocks\RecordTest\ConcreteOption;
 
 /**
  * Collection of tests for \svelte\model\business\Record.
@@ -352,7 +354,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('3', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('1','4','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertTrue($this->testObject->isModified);
@@ -397,7 +399,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('4', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
@@ -441,7 +443,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame(ConcreteOptionList::get(0), $this->testObject->property2->value);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST4 = array(
@@ -492,7 +494,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST6 = array(
@@ -551,7 +553,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame(ConcreteOptionList::get(0), $this->testObject->property2->value);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST8 = array(
@@ -607,7 +609,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('pkey', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('3','4','5'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST10 = array(
@@ -621,23 +623,14 @@ class RecordTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \svelte\model\business\Record::__set(),
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when unable to set undefined or
-   *   inaccessible property
-   * - assert get <i>Record['aProperty']</i> returns same as set <i>Record->aProperty = $value</i>
-   * @param \svelte\core\SvelteObject $testSvelteObject Instance of MockSvelteObject for testing
+   * - assert {@link \svelte\core\PropertyNotSetException} thrown when unable
+   *   to set undefined or inaccessible property
    * @link svelte.model.business.Record#method__set svelte\model\business\Record::__set()
    */
   public function test__set()
   {
-    try {
-      $this->testObject->noProperty = 'VALUE';
-    } catch (PropertyNotSetException $expected) {
-      $this->testObject->property2 = '1';
-      $this->assertEquals($this->testObject['property2'], $this->testObject->property2);
-      $this->assertEquals('1', $this->testObject->property2->value);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->expectException(PropertyNotSetException::class);
+    $this->testObject->property2 = 1;
   }
 
    /**

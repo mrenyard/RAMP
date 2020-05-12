@@ -133,7 +133,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert returned same as provided records getPropertyValue() method.
    * - assert returned value matches expected result.
    * @link svelte.model.business.field.Field#method_get_value svelte\model\business\field\Field::value
-   */
+   *
   public function testGet_value()
   {
     try {
@@ -146,7 +146,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\Field::type.

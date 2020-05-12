@@ -45,8 +45,8 @@ use svelte\model\business\validation\FailedValidationException;
  */
 abstract class Field extends BusinessModel
 {
-  private $propertyName;
-  private $containingRecord;
+  protected $propertyName;
+  protected $containingRecord;
 
   /**
    * Base constructor for Field related to a single property of containing record.
@@ -79,10 +79,7 @@ abstract class Field extends BusinessModel
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */
-  final protected function get_value()
-  {
-    return $this->containingRecord->getPropertyValueFromField($this->propertyName);
-  }
+  abstract protected function get_value();
 
   /**
    * Validate postdata against this and update accordingly.

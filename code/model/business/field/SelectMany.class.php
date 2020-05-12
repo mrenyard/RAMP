@@ -74,6 +74,15 @@ final class SelectMany extends Field
   }
 
   /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
+  {
+    return $this->containingRecord->getPropertyValueFromField($this->propertyName);
+  }
+
+  /**
    * Validate that value is an array contain zero or many of avalible options.
    * @param mixed $value Value to be processed
    * @throws \BadMethodCallException When $value parameter in NOT an array.

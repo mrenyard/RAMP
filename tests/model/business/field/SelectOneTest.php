@@ -63,9 +63,11 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   {
     MockBusinessModel::reset();
     $this->options = new Collection();
+    $this->option0 = new MockBusinessModel('No option selected');
     $this->option1 = new MockBusinessModel('First child');
     $this->option2 = new MockBusinessModelWithErrors('Second child');
     $this->option3 = new MockBusinessModel('Third child');
+    $this->options->add($this->option0);
     $this->options->add($this->option1);
     $this->options->add($this->option2);
     $this->options->add($this->option3);
@@ -119,39 +121,14 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
-      $this->assertSame('mock-business-model:0', (string)$this->option1->id);
-      $this->assertSame('mock-business-model:1', (string)$this->option2->id);
-      $this->assertSame('mock-business-model:2', (string)$this->option3->id);
+      $this->assertSame('mock-business-model:0', (string)$this->option0->id);
+      $this->assertSame('mock-business-model:1', (string)$this->option1->id);
+      $this->assertSame('mock-business-model:2', (string)$this->option2->id);
+      $this->assertSame('mock-business-model:3', (string)$this->option3->id);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
   }
-
-  /**
-   * Collection of assertions for \svelte\model\business\field\SelectOne::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.field.SelectOne#method_get_description svelte\model\business\field\SelectOne::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->description);
-      $this->assertEquals('mock-business-model:0', (string)$this->option1->description);
-      $this->assertEquals('mock-business-model:1', (string)$this->option2->description);
-      $this->assertEquals('mock-business-model:2', (string)$this->option3->description);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
 
   /**
    * Collection of assertions for \svelte\model\business\field\SelectOne::value.
@@ -166,10 +143,8 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
-      $this->dataObject->aProperty = 'VALUE';
-      $value = $this->testObject->value;
-      $this->assertSame($this->dataObject->aProperty, $value);
-      $this->assertSame('VALUE', $value);
+      $this->assertSame($this->option0, $this->testObject->value);
+      $this->assertSame(0, $this->testObject->value->key);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -232,11 +207,13 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[0]);
-      $this->assertSame($this->option1, $this->testObject[0]);
+      $this->assertSame($this->option0, $this->testObject[0]);
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[1]);
-      $this->assertSame($this->option2, $this->testObject[1]);
+      $this->assertSame($this->option1, $this->testObject[1]);
       $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[2]);
-      $this->assertSame($this->option3, $this->testObject[2]);
+      $this->assertSame($this->option2, $this->testObject[2]);
+      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[3]);
+      $this->assertSame($this->option3, $this->testObject[3]);
       return;
     }
     $this->fail('An expected \OutOfBoundsException has NOT been raised.');
@@ -253,7 +230,8 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(isset($this->testObject[0]));
     $this->assertTrue(isset($this->testObject[1]));
     $this->assertTrue(isset($this->testObject[2]));
-    $this->assertFalse(isset($this->testObject[3]));
+    $this->assertTrue(isset($this->testObject[3]));
+    $this->assertFalse(isset($this->testObject[4]));
   }
 
   /**
@@ -294,7 +272,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    //$this->assertSame(0, SelectOne::$processValidationRuleCount);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);
@@ -394,6 +371,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count);
+    $this->assertSame(4 ,$this->testObject->count);
   }
 }
