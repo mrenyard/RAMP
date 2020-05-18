@@ -259,12 +259,12 @@ final class Session extends SvelteObject
       {
         if ($authorizationLevel->key == 1)
         {
+          $this->loginAccount->populateAsNew(PostData::build($_POST));
+          $_SESSION['loginAccount'] = $this->loginAccount;
           if (isset($_SESSION['post_array'])) // reset $_POST
           {
             $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
           }
-          $this->loginAccount->populateAsNew(PostData::build($_POST));
-          $_SESSION['loginAccount'] = $this->loginAccount;
           return;
         }
       }

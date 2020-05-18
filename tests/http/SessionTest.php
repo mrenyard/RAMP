@@ -294,6 +294,32 @@ class SessionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \svelte\http\Session::authorizeAs()
+   *  while providing malformed login-email.
+   * - assert throws \svelte\http\Unauthorized401Exception
+   *   - with message: *'Invalid email format'*
+   * - assert $_POST login related data expunged.
+   * - assert $_SESSION['loginAccount'] NOT set.
+   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   */
+  public function testAuthorizeAsWithMalformedEmail()
+  {
+    $_SESSION = array();
+    $_POST['login-email'] = 'not.email.address';
+    SETTING::$TEST_RESET_SESSION = TRUE;
+    $testObject = Session::getInstance();
+    try {
+      $testObject->authorizeAs(LoginAccountType::REGISTERED());
+    } catch (Unauthorized401Exception $expected) {
+      $this->assertSame('Invalid email format', $expected->getMessage());
+      $this->assertFalse(isset($_POST['login-email']));
+      $this->assertFalse(isset($_SESSION['loginAccount']));
+      return;
+    }
+    $this->fail('An expected Unauthorized401Exception has NOT been raised');
+  }
+
+  /**
+   * Collection of assertions for \svelte\http\Session::authorizeAs()
    *  while ONLY providing login-email without login-password or [authenticatableUnit]:new:email.
    * - assert throws \svelte\http\Unauthorized401Exception
    *   - with message: *'SHOULD NEVER REACH HERE!'*
