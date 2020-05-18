@@ -34,12 +34,24 @@ class LoginAccountTypeOption extends Option
 }
 
 /**
- * Pre defined enum/list of \svelte\model\business\LoginAccountTypeOption.
+ * Pre defined enum/list of svelte\model\business\LoginAccountTypeOption.
  * .
  */
 class LoginAccountType extends OptionList
 {
   private static $instance;
+
+  /**
+   * Accessor to the full collection of enums
+   * @return svelte\model\business\LoginAccountTypeOption Full list of enum options
+   */
+  public static function getInstance()
+  {
+    if (!isset(self::$instance)) {
+      self::$instance = new LoginAccountType();
+    }
+    return self::$instance;
+  }
 
   /**
    * Accessor to each of a collection of enums
@@ -48,10 +60,7 @@ class LoginAccountType extends OptionList
    */
   public static function get(int $index) : iOption
   {
-    if (!isset(self::$instance)) {
-      self::$instance = new LoginAccountType();
-    }
-    return self::$instance[$index];
+    return self::getInstance()[$index];
   }
 
   private function __construct()

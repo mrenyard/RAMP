@@ -107,7 +107,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    *   that match the testObjects (Record) get_ methods.
    * @link svelte.model.business.Record svelte\model\business\Record
    */
-  public function test__construction()
+  public function test__construct()
   {
     $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
@@ -303,7 +303,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         $property5 = $this->testObject['property5'] = new Input(
           Str::set('property5'), $this->testObject, new ConcreteValidationRule()
         );
-        $this->testObject->setPropertyValueFromField('property5', 'GOOD');
+        $this->testObject->setPropertyValue('property5', 'GOOD');
         $this->assertEquals('GOOD', $this->dataObject->property5);
         try {
           unset($this->testObject['property5']);

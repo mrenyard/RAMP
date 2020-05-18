@@ -67,7 +67,7 @@ class SETTING
   /**
    * Authenticatible Unit of specific business model Record.
    */
-  public static $SVELTE_AUTHENTICATIBLE_UNIT;
+  public static $SVELTE_AUTHENTICATABLE_UNIT;
 
   /**
    * Database connection string.

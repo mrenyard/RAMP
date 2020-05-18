@@ -192,8 +192,8 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($URNQueryEnvironment) . $this->primaryKeyValue .
-        $memberAccessOperator($URNQueryEnvironment) . $this->property .
+      Str::hyphenate($this->record) . $memberAccessOperator($URNQueryEnvironment) . $this->primaryKeyValue .
+        $memberAccessOperator($URNQueryEnvironment) . Str::hyphenate($this->property) .
           $assignmentOperator($URNQueryEnvironment) . $openingParenthesisOperator($URNQueryEnvironment) .
             $this->value . $closingParenthesisOperator($URNQueryEnvironment),
       $testObject()
@@ -208,10 +208,11 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($URNQueryEnvironment) . $this->primaryKeyValue .
-        $memberAccessOperator($URNQueryEnvironment) . $this->property .
-          $assignmentOperator($URNQueryEnvironment) . $openingParenthesisOperator($URNQueryEnvironment) .
-            'NEW VALUE' . $closingParenthesisOperator($URNQueryEnvironment),
+      Str::hyphenate($this->record) . $memberAccessOperator($URNQueryEnvironment) .
+       $this->primaryKeyValue .  $memberAccessOperator($URNQueryEnvironment) .
+        Str::hyphenate($this->property) . $assignmentOperator($URNQueryEnvironment) .
+         $openingParenthesisOperator($URNQueryEnvironment) . 'NEW VALUE' .
+          $closingParenthesisOperator($URNQueryEnvironment),
       $testObject(null, 'NEW VALUE')
     );
 

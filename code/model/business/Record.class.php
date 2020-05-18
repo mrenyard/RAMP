@@ -19,6 +19,8 @@
  * @version 0.0.9;
  *
  * @property-read bool $isModified Returns whether data has been modified since last update.
+ * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
+ * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
 namespace svelte\model\business;
 
@@ -57,7 +59,7 @@ abstract class Record extends BusinessModel implements iOption
    * Returns property name of concrete classes primary key.
    * @return \svelte\core\Str Name of property that is concrete classes primary key
    */
-  abstract protected static function primaryKeyName() : Str;
+  abstract public static function primaryKeyName() : Str;
 
   /**
    * Creates record, new or with encapsulated source data contained.
@@ -174,7 +176,7 @@ abstract class Record extends BusinessModel implements iOption
    * @param string $propertyName Name of property.
    * @return mixed The value of property assosiated with requested property.
    */
-  public function getPropertyValueFromField(string $propertyName)
+  public function getPropertyValue(string $propertyName)
   {
     $propertyName = (string)$propertyName;
     return (isset($this->dataObject->$propertyName)) ? $this->dataObject->$propertyName : NULL;
@@ -186,32 +188,11 @@ abstract class Record extends BusinessModel implements iOption
    * @param string $propertyName Name of property to be set.
    * @param mixed The value to be set on provided property.
    */
-  public function setPropertyValueFromField(string $propertyName, $value)
+  public function setPropertyValue(string $propertyName, $value)
   {
     $this->dataObject->$propertyName = $value;
     $this->modified = true;
   }
-
-  /**
-   * Allows C# type access to properties.
-   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
-   * @param string $propertyName Name of property (handled internally)
-   * @param mixed $propertyValue The value to set on requested property (handled internally)
-   * @throws \svelte\validation\FailedValidationException When &value fails validation.
-   * @throws svelte\validation\ValidationRule\FailedValidationException when
-   *
-  final public function __set($propertyName, $propertyValue)
-  {
-    if (isset($this[$propertyName]))
-    {
-      $this[$propertyName]->processValidationRule($propertyValue);
-      $this->dataObject->$propertyName = $propertyValue;
-      $this->modified = true;
-      return;
-    }
-    parent::__set($propertyName, $propertyValue);
-    // @codeCoverageIgnoreStart
-  }*/
 
   /**
    * Returns whether data has been modified since last update.

@@ -45,19 +45,19 @@ use svelte\model\business\validation\FailedValidationException;
  */
 abstract class Field extends BusinessModel
 {
-  protected $propertyName;
+  protected $dataObjectPropertyName;
   protected $containingRecord;
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \svelte\core\Str $propertyName Property name of related property of containing record
+   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    * @param \svelte\core\iCollection $children Collection of child business models.
    */
-  public function __construct(Str $propertyName, Record $containingRecord, iCollection $children = null)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, iCollection $children = null)
   {
     $this->containingRecord = $containingRecord;
-    $this->propertyName = $propertyName;
+    $this->dataObjectPropertyName = $dataObjectPropertyName;
     parent::__construct($children);
   }
 
@@ -71,7 +71,7 @@ abstract class Field extends BusinessModel
     return Str::COLON()->prepend(
       $this->containingRecord->id
     )->append(
-      Str::hyphenate($this->propertyName)
+      Str::hyphenate($this->dataObjectPropertyName)
     );
   }
 
@@ -99,8 +99,8 @@ abstract class Field extends BusinessModel
           $this->errorCollection->add(Str::set($e->getMessage()));
           return;
         }
-        $this->containingRecord->setPropertyValueFromField(
-          (string)$this->propertyName, $inputdata->value
+        $this->containingRecord->setPropertyValue(
+          (string)$this->dataObjectPropertyName, $inputdata->value
         );
       }
     }

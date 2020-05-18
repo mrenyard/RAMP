@@ -43,15 +43,15 @@ final class Input extends Field
 
   /**
    * Creates input field related to a single property of containing record.
-   * @param \svelte\core\Str $propertyName Property name of related property of containing record
+   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    * @param \svelte\validation\ValidationRule $validationRule Validation rule to test against
    * proir to allowing property value change
    */
-  public function __construct(Str $propertyName, Record $containingRecord, ValidationRule $validationRule)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, ValidationRule $validationRule)
   {
     $this->validationRule = $validationRule;
-    parent::__construct($propertyName, $containingRecord);
+    parent::__construct($dataObjectPropertyName, $containingRecord);
   }
 
   /**
@@ -81,7 +81,7 @@ final class Input extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValueFromField($this->propertyName);
+    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
   }
 
   /**

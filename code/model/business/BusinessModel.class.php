@@ -42,7 +42,6 @@ use svelte\model\Model;
  * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
  * @property-read iCollection $errors Returns a collection of recorded error messages.
  * @property-read int $count Returns the number of children currently parented by *this*.
- *
  */
 abstract class BusinessModel extends Model implements \IteratorAggregate, \Countable, \ArrayAccess
 {

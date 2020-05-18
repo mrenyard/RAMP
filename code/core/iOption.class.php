@@ -34,7 +34,7 @@ interface iOption
   /**
    * Get key (enum:int|URN:Str)
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return mixed ID
+   * @return mixed Key
    */
   public function get_key();
 

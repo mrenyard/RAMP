@@ -43,13 +43,13 @@ final class SelectOne extends Field
 {
   /**
    * Creates select one field type, tied to a single property of containing record.
-   * @param \svelte\core\Str $propertyName Property name of related property of containing record
+   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
    * @param \svelte\core\OptionList $options Collection of avalible iOptions
    */
-  public function __construct(Str $propertyName, Record $containingRecord, OptionList $options)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
   {
-    parent::__construct($propertyName, $containingRecord, $options);
+    parent::__construct($dataObjectPropertyName, $containingRecord, $options);
   }
 
   /**
@@ -79,7 +79,7 @@ final class SelectOne extends Field
    */
   final protected function get_value()
   {
-    $index = $this->containingRecord->getPropertyValueFromField($this->propertyName);
+    $index = $this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
     return (is_int($index)) ? $this[$index] : $this[0];
   }
 

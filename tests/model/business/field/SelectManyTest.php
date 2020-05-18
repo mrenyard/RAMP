@@ -30,7 +30,6 @@ require_once '/usr/share/php/svelte/core/Str.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
-//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
 use svelte\core\Str;
 use svelte\core\Collection;

@@ -121,9 +121,13 @@ final class InputDataCondition extends BusinessCondition
     $memberAccessOperator = Operator::MEMBER_ACCESS();
     $openingParenthesisOperator = Operator::OPENING_PARENTHESIS();
     $closingParenthesisOperator = Operator::CLOSING_PARENTHESIS();
+    $record = ($targetEnvironment == URNQueryEnvironment::getInstance()) ?
+      Str::hyphenate($this->record) : $this->record;
+    $property = ($targetEnvironment == URNQueryEnvironment::getInstance()) ?
+      Str::hyphenate($this->property) : $this->property;
 
-    return $this->record . $memberAccessOperator($targetEnvironment) .
-      $this->primaryKeyValue . $memberAccessOperator($targetEnvironment) . $this->property .
+    return $record . $memberAccessOperator($targetEnvironment) .
+      $this->primaryKeyValue . $memberAccessOperator($targetEnvironment) . $property .
         $primaryOperationOperator($targetEnvironment) .
           $openingParenthesisOperator($targetEnvironment) .
             $this->value . $closingParenthesisOperator($targetEnvironment);

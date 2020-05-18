@@ -32,7 +32,7 @@ class LowerCaseAlphanumeric extends ValidationRule
    */
   protected function test($value)
   {
-    if (preg_match('/^[a-z0-9]$/', $value)) { return; }
+    if (preg_match('/^[a-z0-9]*$/', $value)) { return; }
     throw new FailedValidationException(
       'Please make sure input value is alphanumeric and lower case'
     );

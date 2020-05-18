@@ -30,6 +30,8 @@ use svelte\model\business\LoginAccount;
 use svelte\condition\Filter;
 use svelte\condition\SQLEnvironment;
 
+use tests\svelte\http\SessionTest;
+
 /**
  * Mock business model managers for testing \svelte\http\Session
  * .
@@ -37,8 +39,8 @@ use svelte\condition\SQLEnvironment;
 class MockBusinessModelManager extends BusinessModelManager
 {
   private static $instance;
-  private static $loginAccount;
-  private static $authenticatableUnit;
+  public static $updateLog;
+  public static $loginAccountDataObject;
 
   /**
    * Constuct the instance.
@@ -84,70 +86,71 @@ class MockBusinessModelManager extends BusinessModelManager
     {
       if ($definition->recordKey == 'new')
       {
-        $dataObject = new \stdClass();
-        $dataObject->id = 'login-account:new';
-        $dataObject->email = null;
-        $dataObject->encryptedPassword = null;
-        $dataObject->typeID = null;
-        $dataObject->auPK = null;
-        return new LoginAccount(); //$dataObject);
+        self::$loginAccountDataObject = new \stdClass();
+        self::$loginAccountDataObject->auPK = null;
+        self::$loginAccountDataObject->email = null;
+        self::$loginAccountDataObject->encryptedPassword = null;
+        self::$loginAccountDataObject->typeID = null;
+        return new LoginAccount(self::$loginAccountDataObject);
       }
-      else if (($definition->recordKey == null) && (isset($filter)))
+      elseif (($definition->recordKey == null) && (isset($filter)))
       {
         $collection = new LoginAccountCollection();
         if ($filter(SQLEnvironment::getInstance()) == 'LoginAccount.email = "a.person@domain.com"')
         {
           // collection of one valid LoginAccount
           $dataObject = new \stdClass();
-          $dataObject->id = 'login-account:aperson';
-          $dataObject->email = 'a.person@domain.com';
-          $dataObject->encryptedPassword = crypt('P@assw0rd!', SETTING::$SECURITY_PASSWORD_SALT);
-          $dataObject->typeID = 4;
           $dataObject->auPK = 'aperson';
+          $dataObject->email = SessionTest::$sessionLoginAccountEmail;
+          $dataObject->encryptedPassword = crypt(SessionTest::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT);
+          $dataObject->typeID = 4;
           $collection->add(new LoginAccount($dataObject));
         }
         return $collection;
       }
-      else if ($definition->recordKey == 'aperson')
+      elseif ($definition->recordKey == 'aperson')
       {
         // valid LoginAccount
         $dataObject = new \stdClass();
-        $dataObject->id = 'login-account:aperson';
-        $dataObject->email = 'a.person@domain.com';
-        $dataObject->encryptedPassword = crypt('P@assw0rd!', SETTING::$SECURITY_PASSWORD_SALT);
-        $dataObject->typeID = 4;
         $dataObject->auPK = 'aperson';
+        $dataObject->email = SessionTest::$sessionLoginAccountEmail;
+        $dataObject->encryptedPassword = crypt(SessionTest::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT);
+        $dataObject->accountType = 4;
         return new LoginAccount($dataObject);
       }
     }
-    if ($definition->recordName == 'Person')
+    if ($definition->recordName == 'AnAuthenticatableUnit')
     {
       if ($definition->recordKey == 'new')
       {
-        // new Person
-        return new Person();
+        // new
+        return new AnAuthenticatableUnit();
       }
-      else if ($definition->recordKey == 'aperson')
+      elseif ($definition->recordKey == 'aperson')
       {
-        // valid Person
+        // valid
         $dataObject = new \stdClass();
-        $dataObject->id = 'person:aperson';
-        $dataObject->email = 'a.person@domain.com';
-        return new Person($dataObject);
+        $dataObject->uname = 'aperson';
+        $dataObject->email = SessionTest::$sessionLoginAccountEmail;
+        $dataObject->givenName = 'ann';
+        $dataObject->familyName = 'person';
+        return new AnAuthenticatableUnit($dataObject);
       }
     }
     throw new \DomainException('No matching Record(s) found in data storage!');
   }
 
   /**
-   * Update {@link Model} to any permanent data store
-   *
+   * Update {@link Model} to any permanent data store.
    * @param BusinessModel Object to be updated
    * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
    *  was not initially retrieved using this BusinessModelManager
    */
   public function update(BusinessModel $model)
   {
+    if (!isset(self::$updateLog)) { self::$updateLog = array(); }
+    self::$updateLog[get_class($model) . ':' . $model->key] = 'updated ' . date('H:i:s');
+    $model->updated();
   }
 
   /**

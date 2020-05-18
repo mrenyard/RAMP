@@ -54,8 +54,8 @@ class ConcreteOptionList extends OptionList
 
   /**
    * Accessor to each of a collection of enums
-   * @param int $index Index/ID of requiered LoginAccountTypeOption
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType of provided index
+   * @param int $index Index/ID of requiered ConcreteOption
+   * @return tests\svelte\model\business\mocks\RecordTest\ConcreteOptionList ConcreteOption of provided index
    */
   public static function get(int $index) : iOption
   {

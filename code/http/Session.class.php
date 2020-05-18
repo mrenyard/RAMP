@@ -128,7 +128,7 @@ final class Session extends SvelteObject
     return (
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid) &&
-      (self::$instance->loginAccount->accountType->key >= $authorizationLevel->key)
+      (self::$instance->loginAccount->accountType->value->key >= $authorizationLevel->key)
     );
   }
 
@@ -166,7 +166,7 @@ final class Session extends SvelteObject
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
    * - Unauthenticated or insufficient authority
    * - Attempting POST to resource REQUIRING authentication or insufficient authority
-   * - Invalid email provided
+   * - Invalid email format
    * - Account (email) NOT in database
    * - Invalid password or insufficient privileges
    * - New Authenticatible Unit Form: e-mail mismatch
@@ -204,8 +204,8 @@ final class Session extends SvelteObject
     $loginEmail = $_POST['login-email']; unset($_POST['login-email']);
     try {
       $this->accountEmailCondition->comparable = $loginEmail;
-    } catch (\DomainException $exception) {
-      throw new Unauthorized401Exception('Invalid email provided');
+    } catch (\DomainException $invalidEmailFormat) {
+      throw new Unauthorized401Exception('Invalid email format');
     }
     if (isset($_POST['login-password']))
     {
@@ -215,15 +215,15 @@ final class Session extends SvelteObject
     if (isset($loginPassword)) // attempt email - password authentication
     {
       try {
-        $loginAccount = $this->modelManager->getBusinessModel(
+        $this->loginAccount = $this->modelManager->getBusinessModel(
           new SimpleBusinessModelDefinition(Str::set('LoginAccount')), $this->accountEmailFilter
         )[0];
-      } catch (\OutOfBoundsException $e) {
+      } catch (\OutOfBoundsException $emailNotInDatabase) {
         throw new Unauthorized401Exception('Account (email) NOT in database');
       }
       if (
-        (!$loginAccount->validatePassword($loginPassword)) ||
-        ((int)$loginAccount->accountType->key <= (int)$authorizationLevel->key)
+        (!$this->loginAccount->validatePassword($loginPassword)) ||
+        ((int)$this->loginAccount->accountType->value->key <= (int)$authorizationLevel->key)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -235,7 +235,7 @@ final class Session extends SvelteObject
       return;
     }
     $auEmailPropertyID = (string)Str::hyphenate(
-      Str::set(SETTING::$SVELTE_AUTHENTICATIBLE_UNIT), TRUE)->append(Str::set(':new:email')
+      Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
     );
     if (isset($_POST[$auEmailPropertyID]))
     {
@@ -243,33 +243,29 @@ final class Session extends SvelteObject
       {
         unset($_POST[$auEmailPropertyID]);
         // TODO:mrenyard: add e-mail mismatch to errorCollection
-        throw new Unauthorized401Exception('New Authenticatible Unit Form: e-mail mismatch');
+        throw new Unauthorized401Exception('New Authenticatable Unit Form: e-mail mismatch');
       }
       try {
-        // check authenticatible unit record NOT already exists
+        // check login account NOT already exist
         $this->modelManager->getBusinessModel(
           new SimpleBusinessModelDefinition(Str::set('LoginAccount')), $this->accountEmailFilter
         )[0];
         unset($_POST[$auEmailPropertyID]);
-        //TODO:mrenyard: add already registered to errorCollection
         throw new Unauthorized401Exception(
           'Trying to create new login where one already exists!'
         );
       }
-      catch (\OutOfBoundsException $emailNOTexist) // new login details successfully confirmed
+      catch (\OutOfBoundsException $confirmedEmailIsNew) // new login details successfully confirmed
       {
         if ($authorizationLevel->key == 1)
         {
-          $this->loginAccount->populateAsNew(PostData::build($_POST));
-          if ($this->loginAccount->authenticatableUnit->isValid())
+          if (isset($_SESSION['post_array'])) // reset $_POST
           {
-            if (isset($_SESSION['post_array'])) // reset $_POST
-            {
-              $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
-            }
-            $_SESSION['loginAccount'] = $this->loginAccount;
-            return;
+            $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
           }
+          $this->loginAccount->populateAsNew(PostData::build($_POST));
+          $_SESSION['loginAccount'] = $this->loginAccount;
+          return;
         }
       }
     }

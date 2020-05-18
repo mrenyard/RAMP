@@ -22,29 +22,57 @@ namespace svelte\model\business;
 
 use svelte\SETTING;
 use svelte\core\Str;
+use svelte\core\BadPropertyCallException;
 use svelte\condition\PostData;
 use svelte\model\business\RecordCollection;
 use svelte\model\business\BusinessModel;
 use svelte\model\business\LoginAccountType;
+use svelte\model\business\AuthenticatibleUnit;
 
 /**
- * Mock Collection of LoginAccount for testing \svelte\http\Session
- * .
+ * Referance and maintain a collection of \svelte\model\business\LoginAccounts.
+ *
+ * RESPONSIBILITIES
+ * - Implement methods for property access
+ * - Implement methods for validity checking & reporting
+ * - Provide access to this Collection
+ * - Provide methods to maintain a Collection of {@link Record}s
+ *
+ * COLLABORATORS
+ * - Collection of {@link \svelte\model\business\LoginAccount}s
  */
 class LoginAccountCollection extends RecordCollection
 {
 }
 
 /**
- * Mock LoginAccount for testing \svelte\http\Session
- * .
+ * LoginAccount for authentication and authorization.
+ *
+ * RESPONSIBILITIES
+ * - Act as main component of {@link \svelte\http\Session} to manage login activities
+ * - Holds current access level {@link \svelte\model\business\LoginAccountType}
+ * - Coupling of login and authentication activities with chosen local
+ *   {@link \svelte\model\business\AuthenticatableUnit}
+ * - Auto generate secure password to associate with provided email address
+ *
+ * COLLABORATORS
+ * - {@link \svelte\model\business\AuthenticatableUnit}
+ * - {@link \svelte\model\business\LoginAccountType}
+ * - {@link \svelte\model\business\field\SelectOne}
+ * - {@link \svelte\model\business\field\Input}
+ *
+ * @property-read field\Field $auPK Returns field containg value of Authenticatable Unit Primary Key.
+ * @property-read field\Field $email Returns field containing value of login account associated email address.
+ * @property-read field\Field $accountType Returns field containing value of account type (LoginAccountType).
  */
 class LoginAccount extends Record
 {
   private $authenticatableUnit;
+  private $unencryptedPassword;
 
   /**
    * Flag for assiciated View expressing wish to show password field.
+   * @var bool $forcePasswordField Show password field flag
    */
   public $forcePasswordField;
 
@@ -52,9 +80,15 @@ class LoginAccount extends Record
    * Returns property name of concrete classes primary key.
    * @return \svelte\core\Str Name of property that is concrete classes primary key
    */
-  protected static function primaryKeyName() : Str { return Str::set('auPK'); }
+  public static function primaryKeyName() : Str { return Str::set('auPK'); }
 
 
+  /**
+   * Get field containing authenticatable unit's primary key
+   * **DO NOT CALL DIRECTLY, USE this->auPK;**
+   * @return \svelte\model\business\field\Field Returns field containing value of
+   * authenticatable unit's primary key.
+   */
   protected function get_auPK() : field\Field
   {
     if (!isset($this['auPK']))
@@ -69,11 +103,11 @@ class LoginAccount extends Record
   }
 
   /**
-   * Get email
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Email address associated with *this*.
+   * Get field containing email address
+   * **DO NOT CALL DIRECTLY, USE this->email;**
+   * @return \svelte\model\business\field\Field Returns field containing value of email address
    */
-  protected function get_email()
+  protected function get_email() : field\Field
   {
     if (!isset($this['email']))
     {
@@ -87,111 +121,171 @@ class LoginAccount extends Record
   }
 
   /**
-   * Get login account type
+   * Get field containing login account type
    * **DO NOT CALL DIRECTLY, USE this->accountType;**
-   * @return \svelte\model\business\LoginAccountType
+   * @return \svelte\model\business\field\Field Returns field containing value (LoginAccountType)
    */
-  protected function get_accountType()
+  protected function get_accountType() : field\Field
   {
-    $typeID = $this->getPropertyValueFromField('typeID');
-    return ($typeID != NULL) ? LoginAccountType::get($typeID) : LoginAccountType::get(0);
-    /*if (!isset($this['accountType']))
+    if (!isset($this['accountType']))
     {
       $this['accountType'] = new field\SelectOne(
-        Str::set['accountType'],
+        Str::set('typeID'),
         $this,
-        LoginAccountType::get()
+        LoginAccountType::getInstance()
       );
     }
-    return $this['accountType'];*/
+    return $this['accountType'];
   }
 
   /**
    * Get the associated Authenticatable Unit as defined with \svelte\SETTING and $this->auPK.
-   * @return Record Authenticatable Unit associated with *this*.
-   *
-  protected function get_authenticatableUnit() //: Record
+   * @return AuthenticatableUnit Authenticatable Unit associated with *this*.
+   */
+  private function getAuthenticatableUnit() : AuthenticatableUnit
   {
-    if (!isset($this->authenticatableUnit))
+    $auPK = $this->getPropertyValue('auPK');
+    $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+    if (isset($auPK) && (!isset($this->authenticatableUnit) || $this->authenticatableUnit->isNew))
     {
-      $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
-      $auPK = $this->dataObject->auPK;
-      if ($auPK) {
-        $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-          new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATIBLE_UNIT), Str::set($auPK))
-        );
-      } else {
-        $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-          new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATIBLE_UNIT), Str::set('new'))
-        );
-      }
+      $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), Str::set($auPK))
+      );
+    }
+    elseif (!isset($this->authenticatableUnit))
+    {
+      $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), Str::set('new'))
+      );
     }
     return $this->authenticatableUnit;
-  }*/
+  }
 
   /**
-   * {@inheritdoc}
+   * Allows C# type access to properties, including those of associated AutenticatableUnit's
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
+   *
+   * **Passes:** `$object->aProperty;` **to:** `$object->get_aProperty();`
+   *
+   * Implementation in concrete Object
+   * ```php
+   * private aProperty;
+   *
+   * protected function get_aProperty()
+   * {
+   *   return $this->aProperty;
+   * }
+   * ```
+   *
+   * Called externally (C# style)
+   * ```php
+   * $object->aProperty; // Get value 'aProperty'
+   * ```
+   *
+   * @param string $propertyName Name of property (handled internally)
+   * @return mixed|void The value of requested property
+   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $e) {
-      return $this->getAuthenticatableUnit()->$propertyName;
+      return  $this->getAuthenticatableUnit()->$propertyName;
     }
   }
 
+  /**
+   * Validate provided password against stored encrypted password.
+   * @param string $password Password to be validated
+   * @return bool Password validity
+   */
   public function validatePassword(string $password) : bool
   {
-    return ($password == 'P@ssw0rd!');
+    return ($this->getPropertyValue('encryptedPassword') == crypt($password, SETTING::$SECURITY_PASSWORD_SALT));
   }
 
   /**
-   *
+   * Populate properties of *this* and associated authenticatable unit with provided PostData,
+   * generated or default values.
+   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * to be assessed for validity and imposed on associated authenticatable unit or *this*
+   * @throws \BadMethodCallException When NOT new
    */
   public function populateAsNew(PostData $postdata)
   {
-    /*if (!$this->isNew() || !$this->isValid()) { throw new BadMethodCallException(); }
-    $this->setPassword($this->generateRandomPassword());
-    $this->validate($postdata);
+    if (!$this->isNew)
+    {
+      throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!');
+    }
     $au = $this->getAuthenticatableUnit();
     $au->validate($postdata);
-    $auPkName = (string)$au->primaryKeyName();
-    $this->auPK = $au->$auPkName;
-    if ($au->isValid() && $account->isValid()) {
+    $this->setPropertyValue('auPK', $au->getPropertyValue((string)$au->primaryKeyName()));
+    $this->setPropertyValue('email', $au->getPropertyValue('email'));
+    $this->setPropertyValue('typeID', 1);
+    $this->setPassword($this->generateRandomPassword());
+    if ($this->isValid && $au->isValid) {
       $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       $modelManager->update($au);
       $modelManager->update($this);
-    }*/
+    }
+  }
+
+  /**
+   * Returns recently set password (unencrypted) provided called within the same HTTP request.
+   * @return string Returns recently set password (unencrypted).
+   * @throws \svelte\core\BadPropertyCallException When called outside of same http request as set
+   */
+  public function getUnencryptedPassword() : string
+  {
+    if (!isset($this->unencryptedPassword))
+    {
+      throw new \BadMethodCallException(
+        'Unencrypted password only available on same http request as set'
+      );
+    }
+    return $this->unencryptedPassword;
+  }
+
+  /**
+   * Set and encrypt password
+   * @param string $unencryptedPassword Password to be encrypted and set
+   */
+  public function setPassword(string $unencryptedPassword)
+  {
+    $this->unencryptedPassword = $unencryptedPassword;
+    $this->setPropertyValue(
+      'encryptedPassword',
+      crypt($this->unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT)
+    );
   }
 
   /**
    * Generate a random string for a password.
-   * @return \svelte\String $newPassword New rendom grnerated password.
-   *
-  private static function generateRandomPassword()
+   * @return string $newPassword New rendom grnerated password.
+   */
+  private static function generateRandomPassword() : string
   {
     $numChars = 8;
-    $keyset = 'abcdefghjkmpqrstuvwxyABCDEFGHJKLMNPQRSTVWXYZ1234567890!"#$%&()+,-./:;<=>?@[\]^_`{|}~';
+    $keyset = 'abcdefghjkmpqrstuvwxyzABCDEFGHJKLMNPQRSTVWXYZ0123456789!"#$%&()+,-./:;<=>?@[]^_`{|}~';
     $randkey = '';
     for ($i = 0; $i < $numChars; $i++) {
       $randkey .= substr($keyset, rand(0, strlen($keyset) - 1), 1);
     }
     return $randkey;
-  }*/
+  }
 
   /**
    * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
+   * @param $dataObject DataObject to be checked for requiered property values
+   * @return bool All requiered properties set.
    */
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->auPK) &&
       isset($dataObject->email) &&
-      //isset($dataObject->encryptedPassword) &&
+      isset($dataObject->encryptedPassword) &&
       isset($dataObject->typeID)
     );
   }
