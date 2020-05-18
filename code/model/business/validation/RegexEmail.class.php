@@ -20,13 +20,13 @@
 namespace svelte\model\business\validation;
 
 /**
- * Lower case alphanumeric validation test.
+ * Email address format validation.
  * Runs code defined test against provided value.
  */
 class RegexEmail extends ValidationRule
 {
   /**
-   * Asserts that $value is lower case and alphanumeric.
+   * Asserts that $value is format of valid email address.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */

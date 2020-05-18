@@ -72,7 +72,6 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
     $testObject = new MockValidationRule();
     $testObject->process('GOOD');
     $this->assertSame(1, MockValidationRule::$testCallCount);
-
     MockValidationRule::reset();
     $testObject = new MockValidationRule(
       new MockValidationRule(
@@ -85,7 +84,6 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
     );
     $testObject->process('GOOD');
     $this->assertSame(5, MockValidationRule::$testCallCount);
-
     FirstValidationRule::reset();
     SecondValidationRule::reset();
     ThirdValidationRule::reset();
@@ -98,7 +96,6 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(1, FirstValidationRule::$testCallCount);
     $this->assertSame(1, SecondValidationRule::$testCallCount);
     $this->assertSame(1, ThirdValidationRule::$testCallCount);
-
     FirstValidationRule::reset();
     SecondValidationRule::reset();
     ThirdValidationRule::reset();
@@ -120,7 +117,6 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(1, SecondValidationRule::$testCallCount);
       $this->assertSame(1, ThirdValidationRule::$testCallCount);
       $this->assertSame(1, FailOnBadValidationRule::$testCallCount);
-
       FirstValidationRule::reset();
       SecondValidationRule::reset();
       ThirdValidationRule::reset();

@@ -24,7 +24,7 @@ namespace svelte\model\business\validation;
 use svelte\core\PropertyNotSetException;
 
 /**
- * Exception thrown when a ValidationRules test() fails.
+ * Exception thrown when a ValidationRule test() fails.
  */
 class FailedValidationException extends PropertyNotSetException
 {

@@ -20,7 +20,7 @@
 namespace svelte\model\business\validation;
 
 /**
- * Lower case alphanumeric validation test.
+ * Lower case alphanumeric validation.
  * Runs code defined test against provided value.
  */
 class LowerCaseAlphanumeric extends ValidationRule
