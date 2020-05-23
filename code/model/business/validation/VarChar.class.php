@@ -39,6 +39,7 @@ class VarChar extends ValidationRule
    *   )
    * );
    * ```
+   * @param int $maxLength Maximum number of characters
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
   public function __construct(int $maxLength, ValidationRule $subRule = null)

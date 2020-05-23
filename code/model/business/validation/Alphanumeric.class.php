@@ -32,15 +32,9 @@ class Alphanumeric extends ValidationRule
    */
   protected function test($value)
   {
-    if (
-      is_string($value) &&
-      preg_match('/^[a-zA-Z0-9]*$/', $value)
-    )
-    {
-      return;
-    }
+    if (preg_match('/^[a-zA-Z0-9]*$/', $value)) { return; }
     throw new FailedValidationException(
-      'Please make sure input value is alphanumeric!'
+      'Please make sure input value is alphanumeric'
     );
   }
 }
