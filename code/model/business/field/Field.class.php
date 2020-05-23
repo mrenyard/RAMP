@@ -41,7 +41,8 @@ use svelte\model\business\validation\FailedValidationException;
  * - {@link \svelte\model\business\Record}
  *
  * @property-read \svelte\core\Str $id Returns unique identifier (id) for *this* (URN).
- * @property-read mixed $id Returns value held by relevant property of containing record.
+ * @property-read mixed $value Returns value held by relevant property of containing record.
+ * @property-read \svelte\model\business\Record $containingRecord Record containing property related to *this*.
  */
 abstract class Field extends BusinessModel
 {
@@ -80,6 +81,16 @@ abstract class Field extends BusinessModel
    * @return mixed Value held by relevant property of containing record
    */
   abstract protected function get_value();
+
+  /**
+   * Get containing record
+   * **DO NOT CALL DIRECTLY, USE this->containingRecord;**
+   * @return \svelte\model\business\Record Containing record of *this*
+   */
+  final public function get_containingRecord() : Record
+  {
+    return $this->containingRecord;
+  }
 
   /**
    * Validate postdata against this and update accordingly.

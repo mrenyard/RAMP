@@ -82,7 +82,6 @@ class LoginAccount extends Record
    */
   public static function primaryKeyName() : Str { return Str::set('auPK'); }
 
-
   /**
    * Get field containing authenticatable unit's primary key
    * **DO NOT CALL DIRECTLY, USE this->auPK;**

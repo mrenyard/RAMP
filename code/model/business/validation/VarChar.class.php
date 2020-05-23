@@ -1,7 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
- *  flexible, customisable web systems.
+ * Svelte - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -16,28 +15,17 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
  * @version 0.0.9;
  */
 namespace svelte\model\business\validation;
 
-use svelte\core\SvelteObject;
-
 /**
- * Single validation rule to test against an input value before allowing a business model property
- *  to be set.
- *
- * RESPONSIBILITIES
- * - Defines API for test method, where a single code defined test is executed against provided value.
- * - Act as a decorator pattern where several tests can be organised to run consecutively.
- * - Works with other ValidationRules to provide more complex set of tests.
- *
- * COLLABORATORS
- * - {@link \svelte\validation\ValidationRule}
+ * Is string validation.
+ * Runs code defined test against provided value.
  */
-abstract class ValidationRule extends SvelteObject
+class VarChar extends ValidationRule
 {
-  private $subRule;
+  private $maxLength;
 
   /**
    * Default constructor for a ValidationRule.
@@ -53,28 +41,22 @@ abstract class ValidationRule extends SvelteObject
    * ```
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(ValidationRule $subRule = null)
+  public function __construct(int $maxLength, ValidationRule $subRule = null)
   {
-    $this->subRule = $subRule;
+    $this->maxLength = $maxLength;
+    parent::__construct($subRule);
   }
 
   /**
-   * Runs code defined test against provided value.
+   * Asserts that $value is a string.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  abstract protected function test($value);
-
-  /**
-   * Process each validation test against provided value.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  public function process($value)
+  protected function test($value)
   {
-    $this->test($value);
-    if (isset($this->subRule)) {
-      $this->subRule->process($value);
-    }
+    if (is_string($value) && strlen($value) <= $this->maxLength) { return; }
+    throw new FailedValidationException(
+      'Please make sure input value is a string less than ' . $this->maxLength . ' characters!'
+    );
   }
 }

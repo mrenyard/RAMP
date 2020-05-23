@@ -43,25 +43,27 @@ abstract class BusinessModelManager extends SvelteObject
 
   /**
    * Returns requested Model.
-   * @param \svelte\model\iModelDefinition $definition  Definition of requested Model
-   * @param \svelte\condition\Filter $filter Optional Filter to be apply to Model
-   * @param int $fromIndex Optional index for first entry in a collection
-   * @return \svelte\model\Model Relevant requested Model object
-   * @throws \DomainException when {@link \svelte\model\Model}(s) NOT found
+   * @param \svelte\model\business\iBusinessModelDefinition $definition Definition of requested Model
+   * @param \svelte\condition\Filter $filter Optional Filter to be apply to BusinessModel
+   * @param int $fromIndex Optional index of first entry in a collection
+   * @return \svelte\model\business\BusinessModel Relevant requested BusinessModel
+   * @throws \DomainException When {@link \svelte\model\business\BusinessModel}(s) NOT found
    */
   abstract public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel;
 
   /**
-   * Update {@link Model} to any permanent data store
-   *
-   * @param BusinessModel Object to be updated
+   * Update {@link BusinessModel} to any permanent data store
+   * @param \svelte\model\business\BusinessModel $model BusinessModel object to be updated
    * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
-   *  was not initially retrieved using this BusinessModelManager
+   *  was not initially retrieved using *this* BusinessModelManager
    */
   abstract public function update(BusinessModel $model);
 
   /**
-   * Ensure update of any out of sync Models with any permanent data store.
+   * Ensure update of any out of sync Records with any permanent data store.
+   * Uses the following properties of {@link \svelte\model\business\Record} for varification:
+   * - {@link \svelte\model\business\Record::isValid}
+   * - {@link \svelte\model\business\Record::isModified}
    */
   abstract public function updateAny();
 }
