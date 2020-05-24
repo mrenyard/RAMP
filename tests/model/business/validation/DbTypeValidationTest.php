@@ -23,69 +23,74 @@ require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
 
+require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
+use svelte\core\SvelteObject;
 use svelte\core\Str;
 use svelte\model\business\validation\FailedValidationException;
-use svelte\model\business\validation\VarChar;
 
+use tests\svelte\model\business\validation\MockDbTypeValidation;
 use tests\svelte\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\model\business\validation\Alphanumeric.
+ * Collection of tests for \svelte\validation\ValidationRule.
+ *
+ * COLLABORATORS
+ * - {@link \tests\svelte\validation\MockValidationRule}
  */
-class VarCharTest extends \PHPUnit\Framework\TestCase
+class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
-  private $maxLength;
   private $errorMessage;
 
   /**
-   * Setup
+   * Set-up.
    */
   public function setUp()
   {
-    $this->maxLength = 10;
     $this->errorMessage = Str::set('My error message HERE!');
-    $this->testObject = new VarChar(
-      $this->maxLength,
+    $this->testObject = new MockDbTypeValidation(
       new FailOnBadValidationRule(),
       $this->errorMessage
     );
+    FailOnBadValidationRule::reset();
+    MockDbTypeValidation::reset();
   }
 
   /**
-   * Collection of assertions for svelte\validation\VarChar::__construct().
+   * Collection of assertions for svelte\validation\DbTypeValidation::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \svelte\model\business\validation\VarChar}
-   * @link svelte.model.business.validation.VarChar \svelte\model\business\validation\VarChar
+   * - assert is instance of {@link \svelte\validation\ValidationRule}
+   * - assert is instance of {@link \svelte\validation\DbTypeValidation}
+   * @link svelte.validation.DbTypeValidationTest \svelte\validation\DbTypeValidationTest
    */
   public function test__Construct()
   {
     $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\DbTypeValidation', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\VarChar', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\VarChar::process().
-   * - assert void returned when test successful
-   * - assert {@link \svelte\model\business\validation\FailedValidationException} thrown when test fails
-   * @link svelte.model.business.validation.VarChar#method_process \svelte\model\business\validation\VarChar::process()
+   * Collection of assertions for svelte\model\business\validation\DbTypeValidationTest::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@link \svelte\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @link svelte.model.business.validation.DbTypeValidationTest#method_test \svelte\model\business\validation\DbTypeValidationTest::test()
+   * @link svelte.model.business.validation.DbTypeValidationTest#method_process \svelte\model\business\validation\DbTypeValidationTest::process()
    */
-  public function testTest()
+  public function testProcess()
   {
-    $this->assertNull($this->testObject->process('aEoOp245&%'));
+    $this->assertNull($this->testObject->process('GOOD'));
+    $this->assertSame(1, MockDbTypeValidation::$testCallCount);
+    $this->assertSame(1, FailOnBadValidationRule::$testCallCount);
     try {
-      $this->testObject->process('LongerThan10Chars');
+      $this->testObject->process('BAD');
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertSame((string)$this->errorMessage, $expected->getMessage());
       return;
     }
-    $this->fail('An expected \svelte\model\business\validation\FailedValidationException has NOT been raised.');
+    $this->fail('An expected \FailedValidationException has NOT been raised.');
   }
 }

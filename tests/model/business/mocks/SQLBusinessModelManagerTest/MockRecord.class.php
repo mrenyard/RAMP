@@ -24,6 +24,7 @@ use svelte\model\business\Record;
 use svelte\model\business\RecordCollection;
 use svelte\model\business\field\Field;
 use svelte\model\business\field\Input;
+use svelte\model\business\field\UniquePrimaryKey;
 use svelte\model\business\validation\VarChar;
 use svelte\model\business\validation\Alphanumeric;
 use svelte\model\business\validation\LowerCaseAlphanumeric;
@@ -36,13 +37,15 @@ class MockRecordCollection extends RecordCollection { }
 /**
  * Mock Concreate implementation of \svelte\model\business\Record for testing against.
  *
- * @property-read \svelte\model\business\field\Field $property eturns field containing value of property.
- * @property-read \svelte\model\business\field\Field $propertyA eturns field containing value of propertyA.
- * @property-read \svelte\model\business\field\Field $propertyB eturns field containing value of propertyB.
- * @property-read \svelte\model\business\field\Field $propertyC eturns field containing value of propertyC.
+ * @property-read \svelte\model\business\field\Field $property Returns field containing value of property.
+ * @property-read \svelte\model\business\field\Field $propertyA Returns field containing value of propertyA.
+ * @property-read \svelte\model\business\field\Field $propertyB Returns field containing value of propertyB.
+ * @property-read \svelte\model\business\field\Field $propertyC Returns field containing value of propertyC.
  */
 class MockRecord extends Record
 {
+  private $primaryProperty;
+
   /**
    * Returns property name of concrete classes primary key.
    * @return \svelte\core\Str Name of property that is concrete classes primary key
@@ -56,15 +59,20 @@ class MockRecord extends Record
    */
   protected function get_property() : Field
   {
-    if (!isset($this['property']))
+    if (!isset($this->primaryProperty))
     {
-      $this['property'] = new Input(
+      $this->primaryProperty = new UniquePrimaryKey(
         Str::set('property'),
         $this,
-        new VarChar(10, new LowerCaseAlphanumeric())
+        new VarChar(
+          20,
+          new LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
+      if ($this->isNew) { $this['property'] = $this->primaryProperty; }
     }
-    return $this['property'];
+    return $this->primaryProperty;
   }
 
   /**
@@ -79,7 +87,11 @@ class MockRecord extends Record
       $this['propertyA'] = new Input(
         Str::set('propertyA'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyA'];
@@ -97,7 +109,11 @@ class MockRecord extends Record
       $this['propertyB'] = new Input(
         Str::set('propertyB'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyB'];
@@ -115,7 +131,11 @@ class MockRecord extends Record
       $this['propertyC'] = new Input(
         Str::set('propertyC'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyC'];

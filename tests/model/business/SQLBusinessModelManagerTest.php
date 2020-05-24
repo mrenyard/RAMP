@@ -43,8 +43,10 @@ require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
+require_once '/usr/share/php/svelte/model/business/field/UniquePrimaryKey.class.php';
 require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
@@ -177,11 +179,6 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       'mock-record:new:propertyC' => 'valueC'
     );
     $newRecord->validate(PostData::build($_POST));
-    $this->assertFalse($newRecord->hasErrors);
-    $this->assertTrue($newRecord->isNew);
-    $this->assertTrue($newRecord->isValid);
-    $this->assertTrue($newRecord->isModified);
-    $this->testObject->update($newRecord);
     $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $this->recordName .
       ' (property, propertyA, propertyB, propertyC) ' .
       'VALUES (:property, :propertyA, :propertyB, :propertyC)';
@@ -199,6 +196,17 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertSame('valueB', $newRecord->propertyB->value);
     $this->assertInstanceOf('\svelte\model\business\field\Field', $newRecord->propertyC);
     $this->assertSame('valueC', $newRecord->propertyC->value);
+    \ChromePhp::clear();
+    $this->testObject->updateAny();
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    \ChromePhp::clear();
+    $this->testObject->update($newRecord);
+    $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
+      'property=:property, propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC ' .
+      'WHERE property=:property';
+    $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
+    $expectedLog2 = 'LOG:values: key, valueA, valueB, valueC';
+    $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
   }
 
   /**

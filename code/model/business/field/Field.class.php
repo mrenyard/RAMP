@@ -97,7 +97,7 @@ abstract class Field extends BusinessModel
    * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  final public function validate(PostData $postdata)
+  public function validate(PostData $postdata)
   {
     $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
     foreach ($postdata as $inputdata)

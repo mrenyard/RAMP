@@ -141,7 +141,7 @@ abstract class Record extends BusinessModel implements iOption
   /**
    * ArrayAccess method offsetUnset, USES DISCOURAGED.
    * @param mixed $offset API to match \ArrayAccess interface
-   */
+   *
   final public function offsetUnset($offset)
   {
     if (isset($this->dataObject->$offset))
@@ -151,7 +151,7 @@ abstract class Record extends BusinessModel implements iOption
       );
     }
     parent::offsetUnset($offset);
-  }
+  }*/
 
   /**
    * Validate postdata against this and update accordingly.
@@ -161,13 +161,14 @@ abstract class Record extends BusinessModel implements iOption
   final public function validate(PostData $postdata)
   {
     $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
-    $pk = $this[(string)$this->primaryKeyName()];
+    $pk = (isset($this[(string)$this->primaryKeyName()])) ?
+      $this[(string)$this->primaryKeyName()] : NULL;
     foreach ($this as $child)
     {
       if ($child === $pk) { continue; }
       $child->validate($postdata);
     }
-    if ($this->isNew) { $pk->validate($postdata); }
+    if ($pk) { $pk->validate($postdata); }
   }
 
   /**

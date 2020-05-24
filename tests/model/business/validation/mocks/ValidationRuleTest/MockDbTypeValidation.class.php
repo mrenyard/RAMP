@@ -20,13 +20,13 @@
 namespace tests\svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
-use svelte\model\business\validation\ValidationRule;
+use svelte\model\business\validation\DbTypeValidation;
 
 /**
- * Concreate implementation of \svelte\validation\model\business\ValidationRule for testing against.
+ * Concreate implementation of \svelte\model\business\validation\DbTypeValidation for testing against.
  * .
  */
-class MockValidationRule extends ValidationRule
+class MockDbTypeValidation extends DbTypeValidation
 {
   public static $testCallCount = 0;
 

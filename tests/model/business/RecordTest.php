@@ -305,7 +305,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         );
         $this->testObject->setPropertyValue('property5', 'GOOD');
         $this->assertEquals('GOOD', $this->dataObject->property5);
-        try {
+        /*try {
           unset($this->testObject['property5']);
         } catch (\BadMethodCallException $expected) {
           $this->assertEquals(
@@ -313,7 +313,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
             $expected->getMessage()
           );
           return;
-        }
+        }*/
+        return;
       }
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised.');
@@ -592,7 +593,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
     $_POST9 = array(
-      'concrete-record:pkey:property-1' => 'KEY',
       'concrete-record:pkey:property-2' => '5',
       'concrete-record:pkey:property-3' => array('3','4','5')
     );

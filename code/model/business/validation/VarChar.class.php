@@ -19,11 +19,13 @@
  */
 namespace svelte\model\business\validation;
 
+use svelte\core\Str;
+
 /**
  * Is string validation.
  * Runs code defined test against provided value.
  */
-class VarChar extends ValidationRule
+class VarChar extends DbTypeValidation
 {
   private $maxLength;
 
@@ -42,10 +44,10 @@ class VarChar extends ValidationRule
    * @param int $maxLength Maximum number of characters
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(int $maxLength, ValidationRule $subRule = null)
+  public function __construct(int $maxLength, ValidationRule $subRule, Str $errorMessage)
   {
     $this->maxLength = $maxLength;
-    parent::__construct($subRule);
+    parent::__construct($subRule, $errorMessage);
   }
 
   /**
@@ -56,8 +58,6 @@ class VarChar extends ValidationRule
   protected function test($value)
   {
     if (is_string($value) && strlen($value) <= $this->maxLength) { return; }
-    throw new FailedValidationException(
-      'Please make sure input value is a string less than ' . $this->maxLength . ' characters!'
-    );
+    throw new FailedValidationException();
   }
 }

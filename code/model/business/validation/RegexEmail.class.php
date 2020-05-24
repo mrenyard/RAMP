@@ -34,7 +34,7 @@ class RegexEmail extends ValidationRule
   {
     if (filter_var($value, FILTER_VALIDATE_EMAIL)) { return; }
     throw new FailedValidationException(
-      'Please make sure input value is a valid email address'
+      //'Please make sure input value is a valid email address'
     );
   }
 }

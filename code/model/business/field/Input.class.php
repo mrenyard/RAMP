@@ -37,7 +37,7 @@ use svelte\model\business\validation\ValidationRule;
  * - {@link \svelte\model\business\Record}
  * - {@link \svelte\validation\ValidationRule}
  */
-final class Input extends Field
+class Input extends Field
 {
   private $validationRule;
 

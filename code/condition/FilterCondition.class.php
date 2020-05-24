@@ -71,7 +71,7 @@ final class FilterCondition extends BusinessCondition
    * - Requires the following SETTING to have been set (usually via svelte.ini):
    *  - SETTING::SVELTE_BUSINESS_MODEL_NAMESPACE
    * @param mixed $value Value to be compared
-   * @throws \DomainException when argument does Not validate against its associated property's processValidationRules()
+   * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
    * @link svelte.model.business.Property#method_processValidationRules \svelte\model\business\Property::processValidationRules()
    */
   protected function set_comparable($value)
