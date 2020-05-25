@@ -23,20 +23,20 @@ require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/Boolean.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/Flag.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use svelte\core\Str;
 use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\dbtype\Boolean;
+use svelte\model\business\validation\dbtype\Flag;
 
 use tests\svelte\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\model\business\validation\dbtype\Boolean.
+ * Collection of tests for \svelte\model\business\validation\dbtype\Flag.
  */
-class BooleanTest extends \PHPUnit\Framework\TestCase
+class FlagTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $maxLength;
@@ -48,29 +48,29 @@ class BooleanTest extends \PHPUnit\Framework\TestCase
   public function setUp()
   {
     $this->errorMessage = Str::set('My error message HERE!');
-    $this->testObject = new Boolean($this->errorMessage);
+    $this->testObject = new Flag($this->errorMessage);
   }
 
   /**
-   * Collection of assertions for svelte\validation\dbtype\Boolean::__construct().
+   * Collection of assertions for svelte\validation\dbtype\Flag::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
    * - assert is instance of {@link \svelte\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \svelte\model\business\validation\Boolean}
-   * @link svelte.model.business.validation.dbtype.Boolean \svelte\model\business\validation\dbtype\Boolean
+   * - assert is instance of {@link \svelte\model\business\validation\Flag}
+   * @link svelte.model.business.validation.dbtype.Flag \svelte\model\business\validation\dbtype\Flag
    */
   public function test__Construct()
   {
     $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\dbtype\Boolean', $this->testObject);
+    $this->assertInstanceOf('svelte\model\business\validation\dbtype\Flag', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\dbtype\Boolean::process().
+   * Collection of assertions for svelte\model\business\validation\dbtype\Flag::process().
    * - assert void returned when test successful
    * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
-   * @link svelte.model.business.validation.dbtype.Boolean#method_process \svelte\model\business\validation\dbtype\Boolean::process()
+   * @link svelte.model.business.validation.dbtype.Flag#method_process \svelte\model\business\validation\dbtype\Flag::process()
    */
   public function testTest()
   {

@@ -24,13 +24,13 @@ use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
 /**
- * Boolean database type validation rule, TRUE or FALSE.
+ * Flag database type validation rule, TRUE or FALSE.
  * Runs code defined test against provided value.
  */
-class Boolean extends DbTypeValidation
+class Flag extends DbTypeValidation
 {
   /**
-   * Default constructor for a validation rule of database type Boolean.
+   * Default constructor for a validation rule of database type Flag.
    * @param \svelte\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
   public function __construct(Str $errorMessage)
