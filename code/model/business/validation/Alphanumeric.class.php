@@ -22,13 +22,13 @@ namespace svelte\model\business\validation;
 use svelte\model\business\FailedValidationException;
 
 /**
- * Lower case alphanumeric validation.
+ * Alphanumeric validation.
  * Runs code defined test against provided value.
  */
 class Alphanumeric extends ValidationRule
 {
   /**
-   * Asserts that $value is lower case and alphanumeric.
+   * Asserts that $value is alphanumeric.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
