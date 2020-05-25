@@ -35,11 +35,11 @@ class Text extends DbTypeValidation
    * Default constructor for a validation rule of database type Text.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myRule = new validation\dbtype\Text(
+   * $myValidationRule = new validation\dbtype\Text(
    *   NULL,
-   *   new SecondValidationRule(
-   *     new ThirdValiationRule(
-   *       new ForthValidationRule()
+   *   new validation\SecondValidationRule(
+   *     new validation\ThirdValiationRule(
+   *       new validation\ForthValidationRule()
    *     )
    *   ),
    *   Str::set('My error message HERE!')

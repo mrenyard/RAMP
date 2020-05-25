@@ -35,11 +35,11 @@ class VarChar extends DbTypeValidation
    * Default constructor for a validation rule of database type VarChar.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myRule = new validation\dbtype\VarChar(
+   * $myValidationRule = new validation\dbtype\VarChar(
    *   20,
-   *   new SecondValidationRule(
-   *     new ThirdValiationRule(
-   *       new ForthValidationRule()
+   *   new validation\SecondValidationRule(
+   *     new validation\ThirdValiationRule(
+   *       new validation\ForthValidationRule()
    *     )
    *   ),
    *   Str::set('My error message HERE!')

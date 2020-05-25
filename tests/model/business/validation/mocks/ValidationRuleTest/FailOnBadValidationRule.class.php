@@ -42,7 +42,7 @@ class FailOnBadValidationRule extends ValidationRule
   protected function test($value)
   {
     self::$testCallCount++;
-    if ($value == 'BAD') {
+    if ($value === 'BAD') {
       throw new FailedValidationException('FailOnBadValidationRule has been given the value BAD');
     }
   }
