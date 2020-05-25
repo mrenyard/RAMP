@@ -43,14 +43,14 @@ require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/field/UniquePrimaryKey.class.php';
 require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrimaryKey.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/BadRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';

@@ -17,24 +17,24 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation;
+namespace tests\svelte\model\business\dbtype\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use svelte\core\Str;
 use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\VarChar;
+use svelte\model\business\validation\dbtype\VarChar;
 
 use tests\svelte\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\model\business\validation\Alphanumeric.
+ * Collection of tests for \svelte\model\business\validation\dbtype\VarChar.
  */
 class VarCharTest extends \PHPUnit\Framework\TestCase
 {
@@ -57,25 +57,25 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\validation\VarChar::__construct().
+   * Collection of assertions for svelte\validation\dbtype\VarChar::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
    * - assert is instance of {@link \svelte\model\business\validation\ValidationRule}
    * - assert is instance of {@link \svelte\model\business\validation\VarChar}
-   * @link svelte.model.business.validation.VarChar \svelte\model\business\validation\VarChar
+   * @link svelte.model.business.validation.dbtype.VarChar \svelte\model\business\validation\dbtype\VarChar
    */
   public function test__Construct()
   {
     $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\DbTypeValidation', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\VarChar', $this->testObject);
+    $this->assertInstanceOf('svelte\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    $this->assertInstanceOf('svelte\model\business\validation\dbtype\VarChar', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\VarChar::process().
+   * Collection of assertions for svelte\model\business\validation\dbtype\VarChar::process().
    * - assert void returned when test successful
    * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
-   * @link svelte.model.business.validation.VarChar#method_process \svelte\model\business\validation\VarChar::process()
+   * @link svelte.model.business.validation.dbtype.VarChar#method_process \svelte\model\business\validation\dbtype\VarChar::process()
    */
   public function testTest()
   {

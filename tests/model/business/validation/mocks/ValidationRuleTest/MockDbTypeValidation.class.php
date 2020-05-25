@@ -20,7 +20,7 @@
 namespace tests\svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
-use svelte\model\business\validation\DbTypeValidation;
+use svelte\model\business\validation\dbtype\DbTypeValidation;
 
 /**
  * Concreate implementation of \svelte\model\business\validation\DbTypeValidation for testing against.

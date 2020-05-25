@@ -17,12 +17,14 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation;
+namespace tests\svelte\model\business\dbtype\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+//require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
+//require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrimaryKey.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
@@ -70,7 +72,7 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\DbTypeValidation', $this->testObject);
+    $this->assertInstanceOf('svelte\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
   }
 
   /**

@@ -24,10 +24,10 @@ use svelte\model\business\Record;
 use svelte\model\business\RecordCollection;
 use svelte\model\business\field\Field;
 use svelte\model\business\field\Input;
-use svelte\model\business\field\UniquePrimaryKey;
-use svelte\model\business\validation\VarChar;
 use svelte\model\business\validation\Alphanumeric;
 use svelte\model\business\validation\LowerCaseAlphanumeric;
+use svelte\model\business\validation\dbtype\VarChar;
+use svelte\model\business\validation\dbtype\UniquePrimaryKey;
 
 /**
  * Mock Concreate implementation of \svelte\model\business\RecordCollection for testing against.
@@ -61,12 +61,14 @@ class MockRecord extends Record
   {
     if (!isset($this->primaryProperty))
     {
-      $this->primaryProperty = new UniquePrimaryKey(
+      $this->primaryProperty = new Input(
         Str::set('property'),
         $this,
         new VarChar(
-          20,
-          new LowerCaseAlphanumeric(),
+          10,
+          new LowerCaseAlphanumeric(
+            new UniquePrimaryKey($this)
+          ),
           Str::set('My error message HERE!')
         )
       );

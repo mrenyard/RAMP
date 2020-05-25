@@ -191,6 +191,7 @@ abstract class Record extends BusinessModel implements iOption
    */
   public function setPropertyValue(string $propertyName, $value)
   {
+    if ($this->getPropertyValue($propertyName) == $value) { return; }
     $this->dataObject->$propertyName = $value;
     $this->modified = true;
   }

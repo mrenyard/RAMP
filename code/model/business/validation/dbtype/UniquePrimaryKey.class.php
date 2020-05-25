@@ -17,48 +17,43 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation;
+namespace svelte\model\business\validation\dbtype;
 
-use svelte\core\Str;
+use svelte\model\business\Record;
 use svelte\model\business\FailedValidationException;
+use svelte\model\business\validation\ValidationRule;
 
 /**
- * Is string validation.
+ * Lower case alphanumeric validation.
  * Runs code defined test against provided value.
  */
-class VarChar extends DbTypeValidation
+class UniquePrimaryKey extends ValidationRule
 {
-  private $maxLength;
+  private $associatedRecord;
 
-  /**
-   * Default constructor for a ValidationRule.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myRule = new FirstValidationRule(
-   *   new SecondValidationRule(
-   *     new ThirdValiationRule(
-   *       new ForthValidationRule()
-   *     )
-   *   )
-   * );
-   * ```
-   * @param int $maxLength Maximum number of characters
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
-   */
-  public function __construct(int $maxLength, ValidationRule $subRule, Str $errorMessage)
+  public function __construct(Record $associatedRecord)
   {
-    $this->maxLength = $maxLength;
-    parent::__construct($subRule, $errorMessage);
+    $this->associatedRecord = $associatedRecord;
+    parent::__construct();
   }
 
   /**
-   * Asserts that $value is a string.
+   * Asserts that $value is lower case and alphanumeric.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   protected function test($value)
   {
-    if (is_string($value) && strlen($value) <= $this->maxLength) { return; }
-    throw new FailedValidationException();
+    $pkName = (string)$this->associatedRecord->primaryKeyName();
+    $MODEL_MANAGER = \svelte\SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+    $modelManager = $MODEL_MANAGER::getInstance();
+    $this->associatedRecord->setPropertyValue($pkName, $value);
+    try {
+      $modelManager->update($this->associatedRecord);
+    } catch (\PDOException $e) {
+      throw new FailedValidationException();
+      return;
+    }
+    unset($this->associatedRecord[$pkName]);
   }
 }

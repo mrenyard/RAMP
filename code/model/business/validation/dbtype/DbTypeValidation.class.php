@@ -19,11 +19,12 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation;
+namespace svelte\model\business\validation\dbtype;
 
 use svelte\core\SvelteObject;
 use svelte\core\Str;
 use svelte\model\business\FailedValidationException;
+use svelte\model\business\validation\ValidationRule;
 
 /**
  * Single validation rule to test against an input value before allowing a business model property
