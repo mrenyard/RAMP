@@ -17,14 +17,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\dbtype\validation;
+namespace tests\svelte\model\business\validation\dbtype;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-//require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
-//require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrimaryKey.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
@@ -37,7 +35,7 @@ use tests\svelte\model\business\validation\MockDbTypeValidation;
 use tests\svelte\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\validation\ValidationRule.
+ * Collection of tests for \svelte\model\business\validation\dbtype\DbTypeValidation.
  *
  * COLLABORATORS
  * - {@link \tests\svelte\validation\MockValidationRule}

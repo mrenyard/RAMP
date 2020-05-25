@@ -17,7 +17,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\dbtype\validation;
+namespace tests\svelte\model\business\validation\dbtype;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';

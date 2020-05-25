@@ -27,13 +27,13 @@ use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
 /**
- * Single validation rule to test against an input value before allowing a business model property
- *  to be set.
+ * Database type validation rule, one of a set of rules to be the first in any decorated set
+ * used to test an input value before allowing a business model property to be set.
  *
  * RESPONSIBILITIES
- * - Defines API for test method, where a single code defined test is executed against provided value.
- * - Act as a decorator pattern where several tests can be organised to run consecutively.
- * - Works with other ValidationRules to provide more complex set of tests.
+ * - Inherits API for test method, where a single code defined test is executed against provided value.
+ * - Act as the first validation rule of a decorator pattern where several tests can be organised to run consecutively.
+ * - Takes and argument of $errorMessage to bubble up as message of FailedValidationException when test fails.
  *
  * COLLABORATORS
  * - {@link \svelte\validation\ValidationRule}

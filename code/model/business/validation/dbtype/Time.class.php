@@ -42,7 +42,6 @@ class Time extends DbTypeValidation
    *   Str::set('My error message HERE!')
    * );
    * ```
-   * @param int $size Maximum number of characters from 0 to 16383
    * @param \svelte\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    * @param \svelte\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */

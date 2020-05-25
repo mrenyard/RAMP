@@ -24,13 +24,46 @@ use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
 /**
- * Lower case alphanumeric validation.
+ * Unique Primary Key validation rule, ensure unique primary key while reserving space in data store.
  * Runs code defined test against provided value.
  */
 class UniquePrimaryKey extends ValidationRule
 {
   private $associatedRecord;
 
+  /**
+   * Default constructor for a validation rule to ensure uniqueness of primary key.
+   * Example use within a Record were its PrimarKey is 'key':
+   * ```php
+   * private $primaryProperty;
+   *
+   * public static function primaryKeyName() : Str
+   * {
+   *   return Str::set('key');
+   * }
+   *
+   * protected function get_key() : field\Field
+   * {
+   *   if (!isset($this->primaryProperty))
+   *   {
+   *     $this->primaryProperty = field\Input(
+   *       Str::set('key'),
+   *       $this,
+   *       new validation\dbtype\VarChar(
+   *         15,
+   *         new validation\LowerCaseAlphanumeric(
+   *           new validation\UniquePrimaryKey($this)
+   *         ),
+   *         Str::set('My error message HERE!')
+   *       )
+   *     );
+   *     if ($this->isNew) { $this['property'] = $this->primaryProperty; }
+   *   }
+   *   return $this->primaryProperty;
+   * }
+   * ```
+   * @param \svelte\model\business\Record $associatedRecord Record that holds primary key to be tested
+   */
   public function __construct(Record $associatedRecord)
   {
     $this->associatedRecord = $associatedRecord;
@@ -38,7 +71,7 @@ class UniquePrimaryKey extends ValidationRule
   }
 
   /**
-   * Asserts that $value is lower case and alphanumeric.
+   * Asserts that $value is unique primary key while reserving space in data store.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */

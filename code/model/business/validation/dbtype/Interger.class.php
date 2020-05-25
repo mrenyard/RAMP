@@ -24,7 +24,7 @@ use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
 /**
- * Interger database type validation rule, TRUE or FALSE.
+ * Interger database type validation rule, a number which is not a decimal a whole number.
  * Runs code defined test against provided value.
  */
 class Interger extends DbTypeValidation
@@ -39,7 +39,7 @@ class Interger extends DbTypeValidation
   }
 
   /**
-   * Asserts that $value is a boolean, TRUE or FALSE.
+   * Asserts that $value is an Interger, a whole number.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */

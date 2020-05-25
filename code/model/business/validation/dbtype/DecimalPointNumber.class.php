@@ -24,7 +24,7 @@ use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
 /**
- * DecimalPointNumber database type validation rule, a string of characters with defined max length.
+ * DecimalPointNumber database type validation rule, fractional part of number represented in tenth after a dot.
  * Runs code defined test against provided value.
  */
 class DecimalPointNumber extends DbTypeValidation
@@ -36,17 +36,11 @@ class DecimalPointNumber extends DbTypeValidation
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myValidationRule = new validation\dbtype\DecimalPointNumber(
-   *   20,
-   *   new validation\SecondValidationRule(
-   *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
-   *     )
-   *   ),
+   *   2,
    *   Str::set('My error message HERE!')
    * );
    * ```
-   * @param int $size Maximum number of characters from 0 to 16383
-   * @param \svelte\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @param int $point Number of places from decimal point expected
    * @param \svelte\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
   public function __construct(int $point, Str $errorMessage)
@@ -56,7 +50,7 @@ class DecimalPointNumber extends DbTypeValidation
   }
 
   /**
-   * Asserts that $value is a string upto defined max length.
+   * Asserts that $value is a float with no more than X point places.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
