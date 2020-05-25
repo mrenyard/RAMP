@@ -20,7 +20,7 @@
 namespace tests\svelte\condition\mocks\FilterTest;
 
 use svelte\core\SvelteObject;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 
 /**
  * Mock Field with processValidationRules method.

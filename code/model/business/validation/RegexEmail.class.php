@@ -19,6 +19,8 @@
  */
 namespace svelte\model\business\validation;
 
+use svelte\model\business\FailedValidationException;
+
 /**
  * Email address format validation.
  * Runs code defined test against provided value.
@@ -33,8 +35,6 @@ class RegexEmail extends ValidationRule
   protected function test($value)
   {
     if (filter_var($value, FILTER_VALIDATE_EMAIL)) { return; }
-    throw new FailedValidationException(
-      //'Please make sure input value is a valid email address'
-    );
+    throw new FailedValidationException();
   }
 }

@@ -82,7 +82,7 @@ final class FilterCondition extends BusinessCondition
     $propertyClass = $recordClass->$propertyName;
     try {
       $propertyClass->processValidationRule($value);
-    } catch (\svelte\model\business\validation\FailedValidationException $exception) {
+    } catch (\svelte\model\business\FailedValidationException $exception) {
       throw new \DomainException('Supplied argument does Not validate against associated property');
     }
     parent::set_comparable($value);

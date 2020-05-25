@@ -20,7 +20,7 @@
 namespace tests\svelte\model\business\mocks\RecordTest;
 
 use svelte\model\business\validation\ValidationRule;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 
 class ConcreteValidationRule extends ValidationRule
 {

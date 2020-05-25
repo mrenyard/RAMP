@@ -19,6 +19,8 @@
  */
 namespace svelte\model\business\validation;
 
+use svelte\model\business\FailedValidationException;
+
 /**
  * Lower case alphanumeric validation.
  * Runs code defined test against provided value.
@@ -33,8 +35,6 @@ class Alphanumeric extends ValidationRule
   protected function test($value)
   {
     if (preg_match('/^[a-zA-Z0-9]*$/', $value)) { return; }
-    throw new FailedValidationException(
-      //'Please make sure input value is alphanumeric'
-    );
+    throw new FailedValidationException();
   }
 }

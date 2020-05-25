@@ -21,7 +21,7 @@ namespace tests\svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
 use svelte\model\business\validation\ValidationRule;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 
 /**
  * Concreate implementation of \svelte\validation\ValidationRule for testing against.

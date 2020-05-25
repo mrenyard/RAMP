@@ -28,6 +28,7 @@ require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/svelte/condition/FilterCondition.class.php';
 require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/svelte/condition/mocks/FilterConditionTest/Field.class.php';
 require_once '/usr/share/php/tests/svelte/condition/mocks/FilterConditionTest/Record.class.php';

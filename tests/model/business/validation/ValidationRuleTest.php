@@ -20,7 +20,7 @@
 namespace tests\svelte\model\business\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
@@ -30,7 +30,7 @@ require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/Valida
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use svelte\core\SvelteObject;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 
 use tests\svelte\model\business\validation\MockValidationRule;
 use tests\svelte\model\business\validation\FirstValidationRule;

@@ -23,6 +23,7 @@ namespace svelte\model\business\validation;
 
 use svelte\core\SvelteObject;
 use svelte\core\Str;
+use svelte\model\business\FailedValidationException;
 
 /**
  * Single validation rule to test against an input value before allowing a business model property

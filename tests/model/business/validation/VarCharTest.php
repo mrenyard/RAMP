@@ -20,7 +20,7 @@
 namespace tests\svelte\model\business\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
@@ -28,7 +28,7 @@ require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php'
 require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use svelte\core\Str;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\VarChar;
 
 use tests\svelte\model\business\validation\FailOnBadValidationRule;
@@ -74,7 +74,7 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for svelte\model\business\validation\VarChar::process().
    * - assert void returned when test successful
-   * - assert {@link \svelte\model\business\validation\FailedValidationException} thrown when test fails
+   * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
    * @link svelte.model.business.validation.VarChar#method_process \svelte\model\business\validation\VarChar::process()
    */
   public function testTest()
@@ -86,6 +86,6 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
       $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
       return;
     }
-    $this->fail('An expected \svelte\model\business\validation\FailedValidationException has NOT been raised.');
+    $this->fail('An expected \svelte\model\business\FailedValidationException has NOT been raised.');
   }
 }

@@ -24,7 +24,7 @@ use svelte\core\iCollection;
 use svelte\core\Collection;
 use svelte\condition\PostData;
 use svelte\model\business\field\Field;
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 
 /**
  * Mock Concreate implementation of \svelte\model\business\BusinessModel as field for testing against.

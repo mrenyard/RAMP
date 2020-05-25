@@ -19,7 +19,7 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation;
+namespace svelte\model\business;
 
 use svelte\core\PropertyNotSetException;
 

@@ -20,6 +20,7 @@
 namespace svelte\model\business\validation;
 
 use svelte\core\Str;
+use svelte\model\business\FailedValidationException;
 
 /**
  * Is string validation.

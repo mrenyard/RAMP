@@ -50,7 +50,7 @@ require_once '/usr/share/php/svelte/model/business/validation/DbTypeValidation.c
 require_once '/usr/share/php/svelte/model/business/validation/VarChar.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/BadRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';

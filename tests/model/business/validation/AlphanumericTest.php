@@ -19,11 +19,11 @@
  */
 namespace tests\svelte\model\business\validation;
 
-require_once '/usr/share/php/svelte/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 
-use svelte\model\business\validation\FailedValidationException;
+use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\Alphanumeric;
 
 /**
@@ -58,7 +58,7 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for svelte\model\business\validation\Alphanumeric::process().
    * - assert void returned when test successful
-   * - assert {@link \svelte\model\business\validation\FailedValidationException} thrown when test fails
+   * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
    * @link svelte.model.business.validation.Alphanumeric#method_process \svelte\model\business\validation\Alphanumeric::process()
    */
   public function testTest()
@@ -69,11 +69,8 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('Not-Alphanumeric');
     } catch (FailedValidationException $expected) {
-      /*$this->assertEquals(
-        'Please make sure input value is alphanumeric', $expected->getMessage()
-      );*/
       return;
     }
-    $this->fail('An expected \svelte\model\business\validation\FailedValidationException has NOT been raised.');
+    $this->fail('An expected \svelte\model\business\FailedValidationException has NOT been raised.');
   }
 }

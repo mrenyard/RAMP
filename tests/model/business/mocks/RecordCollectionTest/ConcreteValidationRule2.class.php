@@ -19,8 +19,8 @@
  */
 namespace tests\svelte\model\business\mocks\RecordCollectionTest;
 
+use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
-use svelte\model\business\validation\FailedValidationException;
 
 class ConcreteValidationRule2 extends ValidationRule
 {
