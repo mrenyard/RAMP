@@ -32,6 +32,7 @@ use svelte\core\Collection;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\field\Input;
+use svelte\model\business\validation\dbtype\VarChar;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
 use tests\svelte\model\business\field\mocks\InputTest\MyValidationRule;
@@ -44,6 +45,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
   private $testObject;
   private $mockRecord;
   private $dataObject;
+  private $erroMessage;
   private $myValidationRule;
 
   /**
@@ -55,7 +57,8 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
-    $this->myValidationRule = new MyValidationRule();
+    $this->errorMessage = 'MyValidationRule has error due to $value of BAD!';
+    $this->myValidationRule = new VarChar(10, new MyValidationRule(), Str::set($this->errorMessage));
     $this->testObject = new Input(Str::set('aProperty'), $this->mockRecord, $this->myValidationRule);
     \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
   }
@@ -302,7 +305,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(1, MyValidationRule::$testCallCount);
     $this->assertNull($this->dataObject->aProperty);
     $errors = $this->testObject->errors;
-    $this->assertSame('MyValidationRule has error due to $value of BAD!', (string)$errors[0]);
+    $this->assertSame($this->errorMessage, (string)$errors[0]);
     $this->assertFalse(isset($errors[1]));
   }
 

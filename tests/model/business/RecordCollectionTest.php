@@ -35,6 +35,8 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordCollectionTest/ConcreteValidationRule2.class.php';
@@ -291,24 +293,24 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
      'test-record:key3:a-property' => 'INCORRECT'
     ))));
     $errors = $this->testObject->errors;
-    $this->assertEquals('$value of "BAD" does NOT evaluate to GOOD', (string)$errors[0]);
-    $this->assertEquals('$value of "INCORRECT" does NOT evaluate to GOOD', (string)$errors[1]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[0]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[1]);
     $this->assertEquals(2, $errors->count);
 
     $errors2 = $this->testObject->errors;
-    $this->assertEquals('$value of "BAD" does NOT evaluate to GOOD', (string)$errors2[0]);
-    $this->assertEquals('$value of "INCORRECT" does NOT evaluate to GOOD', (string)$errors2[1]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[0]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[1]);
     $this->assertEquals(2, $errors2->count);
 
     $child1Errors = $this->testChild1->errors;
-    $this->assertEquals('$value of "BAD" does NOT evaluate to GOOD', (string)$child1Errors[0]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[0]);
     $this->assertEquals(1, $child1Errors->count);
 
     $child2Errors = $this->testChild2->errors;
     $this->assertEquals(0, $child2Errors->count);
 
     $child3Errors = $this->testChild3->errors;
-    $this->assertEquals('$value of "INCORRECT" does NOT evaluate to GOOD', (string)$child3Errors[0]);
+    $this->assertEquals('$value does NOT evaluate to GOOD', (string)$errors[0]);
     $this->assertEquals(1, $child3Errors->count);
   }
 

@@ -23,7 +23,7 @@ namespace svelte\model\business\field;
 
 use svelte\core\Str;
 use svelte\model\business\Record;
-use svelte\model\business\validation\ValidationRule;
+use svelte\model\business\validation\dbtype\DbTypeValidation;
 
 /**
  * Input field related to a single property of its containing \svelte\model\business\Record.
@@ -45,10 +45,10 @@ class Input extends Field
    * Creates input field related to a single property of containing record.
    * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\validation\ValidationRule $validationRule Validation rule to test against
+   * @param \svelte\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, ValidationRule $validationRule)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, DbTypeValidation $validationRule)
   {
     $this->validationRule = $validationRule;
     parent::__construct($dataObjectPropertyName, $containingRecord);

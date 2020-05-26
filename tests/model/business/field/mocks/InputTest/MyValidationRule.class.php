@@ -43,7 +43,7 @@ class MyValidationRule extends ValidationRule
   {
     self::$testCallCount++;
     if ($value == 'BAD') {
-      throw new FailedValidationException('MyValidationRule has error due to $value of BAD!');
+      throw new FailedValidationException();
     }
   }
 }

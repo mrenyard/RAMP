@@ -37,8 +37,10 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
@@ -52,6 +54,7 @@ use svelte\condition\PostData;
 use svelte\model\business\field\Input;
 use svelte\model\business\field\SelectOne;
 use svelte\model\business\field\SelectMany;
+use svelte\model\business\validation\dbtype\VarChar;
 
 use tests\svelte\model\business\mocks\RecordTest\ConcreteRecord;
 use tests\svelte\model\business\mocks\RecordTest\ConcreteValidationRule;
@@ -279,14 +282,28 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetSetUnset()
   {
-    $object = new Input(Str::set('property4'), $this->testObject, new ConcreteValidationRule());
+    $object = new Input(
+      Str::set('property4'),
+      $this->testObject,
+      new VarChar(
+        10,
+        new ConcreteValidationRule(),
+        Str::set('My error message HERE!')
+      )
+    );
     $this->testObject['property4'] = $object;
     $this->assertSame($object, $this->testObject['property4']);
     unset($this->testObject['property4']);
     $this->assertFalse(isset($this->testObject['property4']));
     try {
       $this->testObject[0] = new Input(
-        Str::set('property5'), $this->testObject, new ConcreteValidationRule()
+        Str::set('property5'),
+        $this->testObject,
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('My error message HERE!')
+        )
       );
       } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
@@ -301,7 +318,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
           $expected->getMessage()
         );
         $property5 = $this->testObject['property5'] = new Input(
-          Str::set('property5'), $this->testObject, new ConcreteValidationRule()
+          Str::set('property5'),
+          $this->testObject,
+          new VarChar(
+            10,
+            new ConcreteValidationRule(),
+            Str::set('My error message HERE!')
+          )
         );
         $this->testObject->setPropertyValue('property5', 'GOOD');
         $this->assertEquals('GOOD', $this->dataObject->property5);
@@ -391,7 +414,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(1, $errorMessages->count);
-    $this->assertEquals('$value of "BAD" does NOT evaluate to KEY', $errorMessages[0]);
+    $this->assertEquals('$value does NOT evaluate to KEY', $errorMessages[0]);
     $this->assertEquals(1, $this->testObject->property1->errors->count);
     $this->assertEquals(0, $this->testObject->property2->errors->count);
     $this->assertEquals(0, $this->testObject->property3->errors->count);
@@ -534,10 +557,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(3, $errorMessages->count);
-    $this->assertEquals(
-      '$value of "BAD" does NOT evaluate to KEY',
-      $errorMessages[0]
-    );
+    $this->assertEquals('$value does NOT evaluate to KEY', $errorMessages[0]);
     $this->assertEquals(
       'Selected value NOT an avalible option!',
       $errorMessages[1]

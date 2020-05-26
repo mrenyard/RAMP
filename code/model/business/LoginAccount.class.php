@@ -67,6 +67,7 @@ class LoginAccountCollection extends RecordCollection
  */
 class LoginAccount extends Record
 {
+  private $primaryProperty;
   private $authenticatableUnit;
   private $unencryptedPassword;
 
@@ -90,15 +91,20 @@ class LoginAccount extends Record
    */
   protected function get_auPK() : field\Field
   {
-    if (!isset($this['auPK']))
+    if (!isset($this->primaryProperty))
     {
-      $this['auPK'] = new field\Input(
+      $this->primaryProperty = new field\Input(
         Str::set('auPK'),
         $this,
-        new validation\LowerCaseAlphanumeric()
+        new validation\dbtype\VarChar(
+          20,
+          new validation\LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
+      if ($this->isNew) { $this['auPK'] = $this->primaryProperty; }
     }
-    return $this['auPK'];
+    return $this->primaryProperty;
   }
 
   /**
@@ -113,7 +119,11 @@ class LoginAccount extends Record
       $this['email'] = new field\Input(
         Str::set('email'),
         $this,
-        new validation\RegexEmail()
+        new validation\dbtype\VarChar(
+          150,
+          new validation\RegexEmail(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['email'];

@@ -28,8 +28,8 @@ class ConcreteValidationRule extends ValidationRule
   {
     if ($value != 'key')
     {
-      throw new FailedValidationException(
-        '$value of "' . $value . '" does NOT evaluate to KEY');
+      throw new FailedValidationException();
+      //'$value of "' . $value . '" does NOT evaluate to KEY');
     }
   }
 }

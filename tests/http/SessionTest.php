@@ -47,6 +47,8 @@ require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/HeaderFunctions.php';
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
@@ -362,7 +364,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert $_SESSION['loginAccount'] NOT set.
    * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
    */
-  public function testAuthorizeAsEmailNotInDatabase()
+  public function testAuthorizeAsEmailNotInDataStore()
   {
     $additionalPostdata = array(
       'record-name:key:property-a' => 'valueA',

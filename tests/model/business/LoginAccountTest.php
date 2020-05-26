@@ -46,6 +46,8 @@ require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
@@ -58,6 +60,7 @@ use svelte\model\business\LoginAccountCollection;
 use svelte\model\business\LoginAccount;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\field\Input;
+use svelte\model\business\validation\dbtype\VarChar;
 use svelte\model\business\validation\LowerCaseAlphanumeric;
 use svelte\model\business\validation\RegexEmail;
 
@@ -132,7 +135,11 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->testObject->auPK = new Input(
         Str::set('auPK'),
         $this->testObject,
-        new LowerCaseAlphanumeric()
+        new VarChar(
+          30,
+          new LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
@@ -161,7 +168,11 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->testObject->email = new Input(
         Str::set('email'),
         $this->testObject,
-        new RegexEmail()
+        new VarChar(
+          20,
+          new RegexEmail(),
+          Str::set('My error message HERE!')
+        )
       );
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
@@ -190,7 +201,11 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->testObject->accountType = new Input(
         Str::set('accountType'),
         $this->testObject,
-        new RegexEmail()
+        new VarChar(
+          20,
+          new RegexEmail(),
+          Str::set('My error message HERE!')
+        )
       );
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(

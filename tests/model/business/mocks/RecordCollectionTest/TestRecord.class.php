@@ -25,6 +25,7 @@ use svelte\core\Collection;
 use svelte\condition\PostData;
 use svelte\model\business\Record;
 use svelte\model\business\field\Input;
+use svelte\model\business\validation\dbtype\VarChar;
 
 use tests\svelte\model\business\mocks\RecordTest\ConcreteValidationRule;
 use tests\svelte\model\business\mocks\RecordCollectionTest\ConcreteValidationRule2;
@@ -46,7 +47,11 @@ class TestRecord extends Record
       $this['keyProperty'] = new Input(
         Str::set('keyProperty'),
         $this,
-        new ConcreteValidationRule()
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['keyProperty'];
@@ -58,7 +63,11 @@ class TestRecord extends Record
       $this['aProperty'] = new Input(
         Str::set('aProperty'),
         $this,
-        new ConcreteValidationRule2()
+        new VarChar(
+          10,
+          new ConcreteValidationRule2(),
+          Str::set('$value does NOT evaluate to GOOD')
+        )
       );
     }
     return $this['aProperty'];

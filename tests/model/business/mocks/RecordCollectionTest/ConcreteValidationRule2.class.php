@@ -28,8 +28,8 @@ class ConcreteValidationRule2 extends ValidationRule
   {
     if ($value != 'GOOD')
     {
-      throw new FailedValidationException(
-        '$value of "' . $value . '" does NOT evaluate to GOOD');
+      throw new FailedValidationException();
+      //'$value of "' . $value . '" does NOT evaluate to GOOD');
     }
   }
 }

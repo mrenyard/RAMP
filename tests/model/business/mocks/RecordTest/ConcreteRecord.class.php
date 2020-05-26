@@ -26,6 +26,7 @@ use svelte\model\business\Record;
 use svelte\model\business\field\Input;
 use svelte\model\business\field\SelectOne;
 use svelte\model\business\field\SelectMany;
+use svelte\model\business\validation\dbtype\VarChar;
 
 class ConcreteRecord extends Record
 {
@@ -40,7 +41,11 @@ class ConcreteRecord extends Record
       $this['property1'] = new Input(
         Str::set('property1'),
         $this,
-        new ConcreteValidationRule()
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate to KEY')
+        )
       );
     }
     return $this['property1'];

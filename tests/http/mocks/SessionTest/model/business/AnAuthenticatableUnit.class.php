@@ -37,6 +37,8 @@ class AnAuthenticatibleUnitCollection extends RecordCollection
  */
 class AnAuthenticatableUnit extends AuthenticatableUnit
 {
+  private $primaryProperty;
+
   /**
    * Returns property name of concrete classes primary key.
    * @return \svelte\core\Str Name of property that is concrete classes primary key
@@ -45,15 +47,20 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
 
   protected function get_uname() : field\Field
   {
-    if (!isset($this['uname']))
+    if (!isset($this->primaryProperty))
     {
-      $this['uname'] = new field\Input(
+      $this->primaryProperty = new field\Input(
         Str::set('uname'),
         $this,
-        new validation\LowerCaseAlphanumeric()
+        new validation\dbtype\VarChar(
+          15,
+          new validation\LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
+      if ($this->isNew) { $this['uname'] = $this->primaryProperty; }
     }
-    return $this['uname'];
+    return $this->primaryProperty;
   }
 
   /**
@@ -68,7 +75,11 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
       $this['email'] = new field\Input(
         Str::set('email'),
         $this,
-        new validation\RegexEmail()
+        new validation\dbtype\VarChar(
+          150,
+          new validation\RegexEmail(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['email'];
@@ -86,7 +97,11 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
       $this['familyName'] = new field\Input(
         Str::set('familyName'),
         $this,
-        new validation\LowerCaseAlphanumeric()
+        new validation\dbtype\VarChar(
+          15,
+          new validation\LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['familyName'];
@@ -104,7 +119,11 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
       $this['givenName'] = new field\Input(
         Str::set('givenName'),
         $this,
-        new validation\LowerCaseAlphanumeric() //CapitalizedFirstLetter
+        new validation\dbtype\VarChar(
+          15,
+          new validation\LowerCaseAlphanumeric(), //CapitalizedFirstLetter
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['givenName'];

@@ -124,7 +124,8 @@ class MockBusinessModelManager extends BusinessModelManager
       if ($definition->recordKey == 'new')
       {
         // new
-        return new AnAuthenticatableUnit();
+        $dataObject = new \stdClass();
+        return new AnAuthenticatableUnit($dataObject);
       }
       elseif ($definition->recordKey == 'aperson')
       {
