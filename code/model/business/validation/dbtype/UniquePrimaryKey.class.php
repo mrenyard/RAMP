@@ -37,17 +37,14 @@ class UniquePrimaryKey extends ValidationRule
    * ```php
    * private $primaryProperty;
    *
-   * public static function primaryKeyName() : Str
-   * {
-   *   return Str::set('key');
-   * }
+   * public static function primaryKeyName() : Str { return Str::set('uniqueKey'); }
    *
-   * protected function get_key() : field\Field
+   * protected function get_uniqueKey() : field\Field
    * {
    *   if (!isset($this->primaryProperty))
    *   {
    *     $this->primaryProperty = field\Input(
-   *       Str::set('key'),
+   *       Str::set('uniqueKey'),
    *       $this,
    *       new validation\dbtype\VarChar(
    *         15,
@@ -57,7 +54,7 @@ class UniquePrimaryKey extends ValidationRule
    *         Str::set('My error message HERE!')
    *       )
    *     );
-   *     if ($this->isNew) { $this['property'] = $this->primaryProperty; }
+   *     if ($this->isNew) { $this['uniqueKey'] = $this->primaryProperty; }
    *   }
    *   return $this->primaryProperty;
    * }
