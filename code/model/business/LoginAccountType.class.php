@@ -45,7 +45,7 @@ class LoginAccountType extends OptionList
    * Accessor to the full collection of enums
    * @return svelte\model\business\LoginAccountTypeOption Full list of enum options
    */
-  public static function getInstance()
+  public static function getInstance() : OptionList
   {
     if (!isset(self::$instance)) {
       self::$instance = new LoginAccountType();
@@ -58,7 +58,7 @@ class LoginAccountType extends OptionList
    * @param int $index Index/ID of requiered LoginAccountTypeOption
    * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType of provided index
    */
-  public static function get(int $index) : iOption
+  public static function get(int $index) : LoginAccountTypeOption
   {
     return self::getInstance()[$index];
   }
