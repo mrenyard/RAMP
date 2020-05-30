@@ -42,6 +42,7 @@ class DocumentModel extends Model
   private $style;
 
   /**
+   * Constructs a DocumentModel.
    */
   public function __construct()
   {
@@ -49,12 +50,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for Unique Identifier
+   * Setter for Unique Identifier.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->id = $value;
    * ```
-   * @param Str Str - Value of the property *id*
+   * @param \svetle\core\Str $value Value of the property *id*
    */
   protected function set_id(Str $value)
   {
@@ -62,12 +63,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for Unique Identifier
+   * Getter for Unique Identifier.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->id;
    * ```
-   * @return Str Str - Value of the property *id*
+   * @return \svetle\core\Str $value Value of the property *id*
    */
   protected function get_id()
   {
@@ -75,12 +76,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for title
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * Setter for title.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->title = $value;
    * ```
-   * @param Str Str - Value of the property *title*
+   * @param \svetle\core\Str $value Value of the property *title*
    */
   protected function set_title(Str $value)
   {
@@ -88,12 +89,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for title
+   * Getter for title.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->title;
    * ```
-   * @return Str Str - Value of the property *title*
+   * @return \svetle\core\Str Value of the property *title*
    */
   protected function get_title()
   {
@@ -101,12 +102,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for heading
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * Setter for heading.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->heading = $value;
    * ```
-   * @param Str Str - Value of the property *heading*
+   * @param \svetle\core\Str $value Value of the property *heading*
    */
   protected function set_heading(Str $value)
   {
@@ -114,12 +115,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for heading
+   * Getter for heading.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->heading;
    * ```
-   * @return Str Str - Value of the property *heading*
+   * @return \svetle\core\Str Value of the property *heading*
    */
   protected function get_heading()
   {
@@ -127,7 +128,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for label - synonym {@link #set_heading}
+   * Setter for label - synonym {@link #set_heading}.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * ```php
+   * $this->label = $value;
+   * ```
+   * @param \svetle\core\Str $value Value of the property *label*
    */
   protected function set_label(Str $value)
   {
@@ -135,7 +141,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for label - synonym {@link #get_heading}
+   * Getter for label - synonym {@link #get_heading}.
+   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * ```php
+   * $this->label;
+   * ```
+   * @param \svetle\core\Str Value of the property *label*
    */
   protected function get_label()
   {
@@ -143,12 +154,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for summary
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * Setter for summary.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->summary = $value;
    * ```
-   * @param Str Str - Value of the property *summary*
+   * @param \svetle\core\Str $value Value of the property *summary*
    */
   protected function set_summary(Str $value)
   {
@@ -156,12 +167,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for summary
+   * Getter for summary.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->summary;
    * ```
-   * @return Str Str - Value of the property *summary*
+   * @return \svetle\core\Str Value of the property *summary*
    */
   protected function get_summary()
   {
@@ -169,7 +180,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for placeholder - synonym {@link #set_summary}
+   * Setter for placeholder - synonym {@link #set_summary}.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * ```php
+   * $this->placeholder = $value;
+   * ```
+   * @return \svetle\core\Str Value of the property *placeholder*
    */
   protected function set_placeholder(Str $value)
   {
@@ -177,7 +193,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for placeholder - synonym {@link #get_summary}
+   * Getter for placeholder - synonym {@link #get_summary}.
+   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * ```php
+   * $this->placeholder;
+   * ```
+   * @return \svetle\core\Str Value of the property *placeholder*
    */
   protected function get_placeholder()
   {
@@ -185,12 +206,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Setter for style
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
+   * Setter for style.
+   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->style = $value;
    * ```
-   * @param Str Str - Value of the property *style*
+   * @param \svetle\core\Str $value Value of the property *style*
    */
   protected function set_style(Str $value)
   {
@@ -198,12 +219,12 @@ class DocumentModel extends Model
   }
 
   /**
-   * Getter for style
+   * Getter for style.
    * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
    * ```php
    * $this->style;
    * ```
-   * @return Str Str - Value of the property *style*
+   * @return \svetle\core\Str Value of the property *style*
    */
   protected function get_style()
   {
@@ -211,6 +232,7 @@ class DocumentModel extends Model
   }
 
   /**
+   * Create a copy, ensures a unique id.
    */
   public function __clone()
   {
