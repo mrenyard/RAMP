@@ -1,6 +1,7 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development using best practice.
+ * Testing - Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -28,7 +29,7 @@ require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
+//require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/svelte/condition/PostData.class.php';
 require_once '/usr/share/php/svelte/model/Model.class.php';

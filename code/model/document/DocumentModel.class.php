@@ -30,6 +30,14 @@ use svelte\model\Model;
  * RESPONSIBILITIES
  * - Inherit generalized methods for property access (from {@link \svelte\core\SvelteObject})
  * - Define generalized properties for DocumentModels
+ * @todo:mrenyard: Find my original defintions for each HTML attribute context spesific etc.
+ * @property \svetle\core\Str $id Unique Identifier of document / fragment
+ * @property \svetle\core\Str $title Title of document / fragment
+ * @property \svetle\core\Str $heading Heading of document / fragment
+ * @property \svetle\core\Str $label Unique Identifier
+ * @property \svetle\core\Str $summary Unique Identifier
+ * @property \svetle\core\Str $placeholder Unique Identifier
+ * @property \svetle\core\Str $style Unique Identifier
  */
 class DocumentModel extends Model
 {

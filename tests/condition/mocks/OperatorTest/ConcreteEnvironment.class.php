@@ -1,6 +1,7 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * Testing - Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package svelte
