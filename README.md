@@ -1,7 +1,7 @@
 Svelte
 ======
 
-**Rapid web application development enviroment for building
+**Rapid web application development environment for building
 flexible, customisable web systems.**
 
 
