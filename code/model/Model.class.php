@@ -29,4 +29,6 @@ use svelte\core\SvelteObject;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@link \svelte\core\SvelteObject})
  */
-abstract class Model extends SvelteObject { }
+abstract class Model extends SvelteObject
+{
+}
