@@ -45,7 +45,7 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->targetEnvironment = ConcreteEnvironment::getInstance();
   }

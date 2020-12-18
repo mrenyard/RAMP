@@ -49,7 +49,7 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
   /**
    * Set-up.
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new MockDbTypeValidation(

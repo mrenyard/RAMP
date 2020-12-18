@@ -45,7 +45,7 @@ class TextTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new Text(

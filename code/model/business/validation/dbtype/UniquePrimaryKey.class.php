@@ -20,6 +20,7 @@
 namespace svelte\model\business\validation\dbtype;
 
 use svelte\model\business\Record;
+use svelte\model\business\DataWriteException;
 use svelte\model\business\FailedValidationException;
 use svelte\model\business\validation\ValidationRule;
 
@@ -33,7 +34,7 @@ class UniquePrimaryKey extends ValidationRule
 
   /**
    * Default constructor for a validation rule to ensure uniqueness of primary key.
-   * Example use within a Record were its PrimarKey is 'key':
+   * Example use within a Record were its PrimarKey is 'uniqueKeybluetooth':
    * ```php
    * private $primaryProperty;
    *
@@ -80,7 +81,7 @@ class UniquePrimaryKey extends ValidationRule
     $this->associatedRecord->setPropertyValue($pkName, $value);
     try {
       $modelManager->update($this->associatedRecord);
-    } catch (\PDOException $e) {
+    } catch (DataWriteException $e) {
       throw new FailedValidationException();
       return;
     }

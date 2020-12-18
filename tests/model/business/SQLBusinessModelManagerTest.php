@@ -20,7 +20,6 @@
  */
 namespace tests\svelte\model\business;
 
-require_once '/usr/share/php/tests/ChromePhp.class.php';
 require_once '/usr/share/php/svelte/SETTING.class.php';
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
@@ -45,6 +44,8 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/svelte/model/business/DataWriteException.class.php';
+require_once '/usr/share/php/svelte/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
@@ -52,6 +53,7 @@ require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrima
 require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 
+require_once '/usr/share/php/tests/svelte/ChromePhp.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/BadRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';
 
@@ -79,7 +81,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\mocks\SQLBusinessModelManagerTest';
     SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\SQLBusinessModelManager';
@@ -306,7 +308,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
         new SimpleBusinessModelDefinition($this->recordName, Str::set('badkey'))
       );
     } catch (\DomainException $expected) {
-      $this->assertSame('No matching Record(s) found in data storage!', $expected->getMessage());
+      $this->assertSame('No matching Record found in data storage!', $expected->getMessage());
       $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName . ' WHERE ' .
         $this->recordName . '.' . $this->primaryKeyName . ' = "badkey";';
       $this->assertSame($expectedLog, (string)\ChromePhp::getMessages()[0]);
@@ -508,7 +510,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
         Filter::build($this->recordName, array('property-a' => 'valueB'))
       );
     } catch (\DomainException $expected) {
-      $this->assertSame('No matching Record(s) found in data storage!', $expected->getMessage());
+      $this->assertSame('No matching Records found in data storage!', $expected->getMessage());
       return;
     }
     $this->fail('An expected \DomainException has NOT been raised.');

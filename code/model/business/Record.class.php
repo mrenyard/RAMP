@@ -119,7 +119,7 @@ abstract class Record extends BusinessModel implements iOption
   }
 
   /**
-   * ArrayAccess method offsetSet, USES DISCOURAGED.
+   * ArrayAccess method offsetSet, USE DISCOURAGED.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object SvelteObject to be placed at provided index.
    */

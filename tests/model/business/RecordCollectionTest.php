@@ -70,7 +70,7 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\mocks\RecordCollectionTest';
     $this->children = new Collection();

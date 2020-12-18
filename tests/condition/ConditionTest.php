@@ -54,7 +54,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->attribute = Str::set('attributeName');
     $this->operator = Operator::EQUAL_TO();

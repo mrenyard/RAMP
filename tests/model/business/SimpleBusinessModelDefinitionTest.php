@@ -40,7 +40,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   /**
    * Setup - add variables
    */
-  public function setup()
+  public function setup() : void
   {
     $this->recordName = Str::set('Record');
     $this->recordKey = Str::set('key');

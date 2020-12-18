@@ -59,11 +59,12 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Setup - PHP varable that fake a basic HTTP Response.
    */
-  public function setUp()
+  public function setUp() : void
   {
     \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\http\mocks\RequestTest';
 
-    $_SERVER = array(); $_GET = array(); $_POST = array();
+    $_GET = array();
+    $_POST = array();
     $_SERVER['SCRIPT_NAME'] = '/404.php';
 
     $_SERVER['REQUEST_METHOD'] = 'GET';
@@ -141,7 +142,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->assertNull($testObject->propertyName);
     $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/', (string)$testObject->resourceIdentifier);
-    $this->assertInternalType('int', $testObject->fromIndex);
+    $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(100, $testObject->fromIndex);
     $this->assertInstanceOf('svelte\condition\Filter', $testObject->filter);
     $expectedFilter = new Filter();
@@ -204,7 +205,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->assertNull($testObject->propertyName);
     $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/~/', (string)$testObject->resourceIdentifier);
-    $this->assertInternalType('int', $testObject->fromIndex);
+    $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(0, $testObject->fromIndex);
     $this->assertNull($testObject->filter);
     $this->assertInstanceOf('svelte\condition\PostData', $testObject->postData);
@@ -271,7 +272,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->assertEquals('propertyB', (string)$testObject->propertyName);
     $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/~/property-b/', (string)$testObject->resourceIdentifier);
-    $this->assertInternalType('int', $testObject->fromIndex);
+    $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(0, $testObject->fromIndex);
     $this->assertNull($testObject->filter);
     $this->assertInstanceOf('svelte\condition\PostData', $testObject->postData);

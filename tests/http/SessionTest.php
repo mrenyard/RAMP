@@ -89,7 +89,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    *  Seesion::authorizedAs() prior to Seesion::getInstance().
    * - Calls Seesion::getInstance() if NOT already defined prior to test.
    */
-  public function setUp()
+  public function setUp() : void
   {
     SETTING::$TEST_ON = TRUE;
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';

@@ -20,14 +20,20 @@
  */
 namespace tests\svelte\model\business\validation\dbtype;
 
+require_once '/usr/share/php/svelte/SETTING.class.php';
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
+require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrimaryKey.class.php';
+require_once '/usr/share/php/svelte/model/business/DataWriteException.class.php';
 
+require_once 'tests/svelte/ChromePhp.class.php';
 require_once 'tests/svelte/model/business/validation/dbtype/mocks/UniquePrimaryKeyTest/SimpleRecord.class.php';
+require_once 'tests/svelte/model/business/validation/dbtype/mocks/UniquePrimaryKeyTest/UniquePrimaryKeyBusinessModelManager.class.php';
 
 use svelte\SETTING;
 use svelte\core\Str;
@@ -36,6 +42,7 @@ use svelte\model\business\SimpleBusinessModelDefinition;
 use svelte\model\business\validation\dbtype\UniquePrimaryKey;
 
 use tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest\SimpleRecord;
+use tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest\UniquePrimaryKeyBusinessModelManager;
 
 /**
  * Collection of tests for \svelte\model\business\validation\dbtype\UniquePrimaryKey.
@@ -45,25 +52,23 @@ class UniquePrimaryKeyTest extends \PHPUnit\Framework\TestCase
   private $testObject;
   private $recordName;
   private $associatedRecord;
+  private $modelManager;
 
   /**
    * Setup
    */
-  public function setUp()
+  public function setUp() : void
   {
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\SQLBusinessModelManager';
-    SETTING::$DATABASE_CONNECTION = 'sqlite:/usr/share/php/' . str_replace('\\', '/', SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE) . '/database.db';
-    $DIR = '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest';
-    copy($DIR . '/database_copy.db', $DIR . '/database.db') or die("Unable to copy database.");
+    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest\UniquePrimaryKeyBusinessModelManager';
+    UniquePrimaryKeyBusinessModelManager::reset();
     $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
-    $modelManager = $MODEL_MANAGER::getInstance();
+    $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->recordName = Str::set('SimpleRecord');
-    $this->associatedRecord = $modelManager->getBusinessModel(
+    $this->associatedRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition($this->recordName, Str::set('new'))
     );
     $this->testObject = SimpleRecord::$uniquePrimaryKeyTest;
-    \ChromePhp::clear();
   }
 
   /**
@@ -92,12 +97,14 @@ class UniquePrimaryKeyTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertEquals(1, $this->associatedRecord->count);
     $this->assertNull($this->testObject->process('key2'));
-    $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $this->recordName .
-      ' (uniqueKey) VALUES (:uniqueKey)';
-    $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: key2';
-    $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
-    $this->assertEquals(0, $this->associatedRecord->count);
+    $this->assertEquals('key2', $this->associatedRecord->uniqueKey->value);
+    try {
+      $this->testObject->process('key2');
+    } catch (FailedValidationException $expected) {
+      $this->assertEquals(0, $this->associatedRecord->count);
+      return;
+    }
+    $this->fail('An expected \svelte\model\business\FailedValidationException has NOT been raised.');
   }
 
   /**
@@ -114,11 +121,6 @@ class UniquePrimaryKeyTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('key1');
     } catch (FailedValidationException $expected) {
-      $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $this->recordName .
-        ' (uniqueKey) VALUES (:uniqueKey)';
-      $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-      $expectedLog2 = 'LOG:values: key1';
-      $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
       $this->assertEquals(1, $this->associatedRecord->count);
       return;
     }

@@ -127,7 +127,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param int $fromIndex Optional index of first entry in a collection
    * @return \svelte\model\business\BusinessModel Relevant requested BusinessModel
    * @throws \DomainException When {@link \svelte\model\business\BusinessModel}(s) NOT found
-   * @throws \PDOException When unable to fetch from data store
+   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
@@ -145,7 +145,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \svelte\core\Str $key Primary key of record
    * @return \svelte\model\business\Record Relevant requested Record
    * @throws \DomainException When {@link \svelte\model\business\Record} of type with $key NOT found
-   * @throws \PDOException When unable to fetch from data store
+   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
    */
   private function getRecord(Str $name, Str $key) : Record
   {
@@ -176,7 +176,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
           $dataObject = $statementHandle->fetch();
           if (!($dataObject instanceof \stdClass))
           {
-            throw new \DomainException('No matching Record(s) found in data storage!');
+            throw new \DomainException('No matching Record found in data storage!');
           }
           $record = new $recordFullName($dataObject);
           $this->recordCollection->attach($record);
@@ -184,7 +184,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
           $this->databaseHandle = \NULL;
         } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
           $this->databaseHandle = \NULL;
-          throw $pdoException; // @codeCoverageIgnoreEnd
+          throw new DataFetchException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
         }
       }
     }
@@ -198,7 +198,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param int $fromIndex Optional index for first entry of collection
    * @return \svelte\model\business\RecordCollection Relevant requested RecordCollection
    * @throws \DomainException When {@link \svelte\model\business\RecordCollection} of type NOT found
-   * @throws \PDOException When unable to fetch from data store
+   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
    */
   private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
   {
@@ -217,7 +217,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       $dataObject = $statementHandle->fetch();
       if (!($dataObject instanceof \stdClass))
       {
-        throw new \DomainException('No matching Record(s) found in data storage!');
+        throw new \DomainException('No matching Records found in data storage!');
       }
       $collection = new $classFullName();
       do {
@@ -236,7 +236,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       $this->databaseHandle = \NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
       $this->databaseHandle = \NULL;
-      throw $pdoException; // @codeCoverageIgnoreEnd
+      throw new DataFetchException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
     }
     return $collection;
   }
@@ -246,7 +246,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \svelte\model\business\BusinessModel $model BusinessModel object to be updated
    * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
-   * @throws \PDOException When unable to write to data store
+   * @throws \svelte\model\business\DataWriteException When unable to write to data store
    */
   public function update(BusinessModel $model)
   {
@@ -286,7 +286,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \svelte\model\business\Record $record Record to be updated
    * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
-   * @throws \PDOException When unable to write to data store
+   * @throws \svelte\model\business\DataWriteException When unable to write to data store
    */
   private function updateRecord(Record $record)
   {
@@ -333,7 +333,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
       }
     } while ($count < 3);
-    throw $pdoException; // @codeCoverageIgnoreEnd
+    throw new DataWriteException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
   }
 
   /**
@@ -341,7 +341,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * Uses the following properties of {@link \svelte\model\business\Record} for varification:
    * - {@link \svelte\model\business\Record::isValid}
    * - {@link \svelte\model\business\Record::isModified}
-   * @throws \PDOException When unable to write to data store
+   * @throws \svelte\model\business\DataWriteException When unable to write to data store
    */
   public function updateAny()
   {

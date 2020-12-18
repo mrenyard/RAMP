@@ -59,7 +59,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     MockField::reset();
     MockBusinessModel::reset();
@@ -128,26 +128,22 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::value.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
-   * - assert property 'value' is gettable.
-   * - assert returned same as provided records getPropertyValue() method.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.field.Field#method_get_value svelte\model\business\field\Field::value
-   *
-  public function testGet_value()
+   * Collection of assertions for \svelte\model\business\field\Field::containingRecord.
+   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'containingRecord'
+   * - assert property 'containingRecord' is gettable.
+   * - assert returned Record matches Record as provided construct.
+   * @link svelte.model.business.field.Field#method_get_containingRecord svelte\model\business\field\Field::containingRecord
+   */
+  public function testGet_containingRecord()
   {
     try {
-      $this->testObject->value = 'VALUE';
+      $this->testObject->containingRecord = $this->mockRecord;
     } catch (PropertyNotSetException $expected) {
-      $this->dataObject->aProperty = 'VALUE';
-      $value = $this->testObject->value;
-      $this->assertSame($this->dataObject->aProperty, $value);
-      $this->assertSame('VALUE', $value);
+      $this->assertSame($this->mockRecord, $this->testObject->containingRecord);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
    * Collection of assertions for \svelte\model\business\field\Field::type.

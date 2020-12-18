@@ -48,6 +48,7 @@ abstract class BusinessModelManager extends SvelteObject
    * @param int $fromIndex Optional index of first entry in a collection
    * @return \svelte\model\business\BusinessModel Relevant requested BusinessModel
    * @throws \DomainException When {@link \svelte\model\business\BusinessModel}(s) NOT found
+   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
    */
   abstract public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel;
 
@@ -56,6 +57,7 @@ abstract class BusinessModelManager extends SvelteObject
    * @param \svelte\model\business\BusinessModel $model BusinessModel object to be updated
    * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
+   * @throws \svelte\model\business\DataWriteException When unable to write to data store
    */
   abstract public function update(BusinessModel $model);
 
@@ -64,6 +66,7 @@ abstract class BusinessModelManager extends SvelteObject
    * Uses the following properties of {@link \svelte\model\business\Record} for varification:
    * - {@link \svelte\model\business\Record::isValid}
    * - {@link \svelte\model\business\Record::isModified}
+   * @throws \svelte\model\business\DataWriteException When unable to write to data store
    */
   abstract public function updateAny();
 }

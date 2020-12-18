@@ -78,7 +78,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   /**
    * Set-up.
    */
-  public function setUp()
+  public function setUp() : void
   {
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
     SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\MockBusinessModelManager';

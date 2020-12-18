@@ -44,21 +44,21 @@ use svelte\core\BadPropertyCallException;
  */
 class ViewTest extends \PHPUnit\Framework\TestCase
 {
-  private $testObject;
+  //private $testObject;
   //private $mockViewCollection;
   //private $mockModel;
 
-  public function setUp()
+  /*public function setUp() : void
   {
     $this->testObject = new MockView();
-/*
+
     $this->mockViewCollection = new \SplObjectStorage();
     $this->mockViewCollection->attach(new MockViewA());
     $this->mockViewCollection->attach(new MockViewB());
     $this->mockViewCollection->attach(new MockViewC());
 
-    $this->mockModel = new MockModel();*/
-  }
+    $this->mockModel = new MockModel();
+  }*/
 
   /**
    * Collection of assertions for \svelte\view\View::__construct().
@@ -67,8 +67,9 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\view\View', $this->testObject);
+    $testObject = new MockView();
+    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
+    $this->assertInstanceOf('\svelte\view\View', $testObject);
   }
 
   /**

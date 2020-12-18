@@ -51,7 +51,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->typeName = Str::set('tests\svelte\core\mocks\CollectionTest\AnObject');
   }

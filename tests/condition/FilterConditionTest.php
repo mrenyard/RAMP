@@ -59,7 +59,7 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\condition\mocks\FilterConditionTest';
     $this->record = Str::set('Record');

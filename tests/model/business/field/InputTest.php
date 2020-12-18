@@ -52,7 +52,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     MyValidationRule::reset();
     $this->dataObject = new \stdClass();

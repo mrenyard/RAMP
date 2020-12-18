@@ -41,7 +41,7 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->key = 1;
     $this->description = Str::set('DESCRIPTION');

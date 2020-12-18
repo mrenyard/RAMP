@@ -46,7 +46,7 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->point = 2;
     $this->errorMessage = Str::set('My error message HERE!');

@@ -54,7 +54,7 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->testCollection = new Collection(Str::set('svelte\core\SvelteObject'));
     for ($i=0; $i < 5; $i++) {

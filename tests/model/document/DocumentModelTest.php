@@ -38,7 +38,7 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup - add variables
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->testObject = new DocumentModel();
     self::$NEXT_ID++;

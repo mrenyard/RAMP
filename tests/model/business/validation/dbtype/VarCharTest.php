@@ -46,7 +46,7 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
   /**
    * Setup
    */
-  public function setUp()
+  public function setUp() : void
   {
     $this->maxLength = 10;
     $this->errorMessage = Str::set('My error message HERE!');
