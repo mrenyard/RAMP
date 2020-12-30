@@ -22,7 +22,6 @@
 namespace svelte\view;
 
 use svelte\core\SvelteObject;
-use svelte\http\Method;
 //use svelte\core\Str;
 //use svelte\core\Collection;
 //use svelte\core\BadPropertyCallException;
