@@ -21,6 +21,7 @@
 namespace tests\svelte\model;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/model/Model.class.php';
 require_once '/usr/share/php/svelte/model/document/DocumentModel.class.php';
 

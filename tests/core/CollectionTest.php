@@ -80,7 +80,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     try {
       $testObject = new Collection(Str::set('\not\a\Class'));
     } catch (\InvalidArgumentException $expected) {
-      $this->assertSame('$compositeType MUST be an accessible class name or interface.', $expected->getMessage());
+      $this->assertSame('$compositeType (\not\a\Class) MUST be an accessible class name or interface.', $expected->getMessage());
       return;
     }
     $this->fail('An expected \InvalidArgumentException has NOT been raised');

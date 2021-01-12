@@ -21,6 +21,8 @@
 namespace tests\svelte\model\business\validation;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
+require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 

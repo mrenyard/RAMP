@@ -22,6 +22,7 @@ namespace tests\svelte\model\business;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
+require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/Option.class.php';
 

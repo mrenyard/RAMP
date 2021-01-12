@@ -26,6 +26,8 @@ require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/svelte/condition/Condition.class.php';
+require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/svelte/condition/PostData.class.php';
 require_once '/usr/share/php/svelte/model/Model.class.php';

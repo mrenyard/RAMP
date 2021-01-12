@@ -22,6 +22,7 @@
 namespace svelte\condition;
 
 use svelte\core\Str;
+use svelte\core\PropertyNotSetException;
 
 /**
  * Single representation of a verified filter for filtering \svelte\model\business\Records.
@@ -82,7 +83,7 @@ final class FilterCondition extends BusinessCondition
     $propertyClass = $recordClass->$propertyName;
     try {
       $propertyClass->processValidationRule($value);
-    } catch (\svelte\model\business\FailedValidationException $exception) {
+    } catch (PropertyNotSetException $exception) {
       throw new \DomainException('Supplied argument does Not validate against associated property');
     }
     parent::set_comparable($value);

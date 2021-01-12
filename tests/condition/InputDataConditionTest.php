@@ -29,6 +29,7 @@ require_once '/usr/share/php/svelte/condition/Condition.class.php';
 require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/Environment.class.php';
+require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/URNQueryEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
 

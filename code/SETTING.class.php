@@ -54,13 +54,13 @@ class SETTING
   /**
    * Concrete BusinessModelManager used to handle data layer
    * (fully qualified namespace and class name).
-   * - e.g. {@link svelte\model\business\SQLBusinessModelManager}
+   * - e.g. \svelte\model\business\SQLBusinessModelManager
    */
   public static $SVELTE_BUSINESS_MODEL_MANAGER;
 
   /**
    * Fully qualified namespace for business model classes.
-   * - e.g. svelte\model\business
+   * - e.g. \svelte\model\business
    */
   public static $SVELTE_BUSINESS_MODEL_NAMESPACE;
 

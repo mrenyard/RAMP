@@ -22,6 +22,7 @@ namespace tests\svelte\condition;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
+require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/Environment.class.php';
 require_once '/usr/share/php/svelte/condition/URNQueryEnvironment.class.php';

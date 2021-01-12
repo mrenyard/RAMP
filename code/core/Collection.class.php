@@ -56,7 +56,7 @@ class Collection extends SvelteObject implements iCollection
       '\svelte\core\SvelteObject';
     if (!class_exists($compositeType) && !interface_exists($compositeType)) {
       throw new \InvalidArgumentException(
-        '$compositeType MUST be an accessible class name or interface.'
+        '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'
       );
     }
     $this->compositeType = $compositeType;

@@ -206,7 +206,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $recordFullName = SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $pkName = $recordFullName::primaryKeyName();
     $sql = 'SELECT * FROM '. $recordName;
-    if ($filter) { $sql.= ' WHERE ' . $filter(SqlEnvironment::getInstance()); }
+    if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
     $limit = ($fromIndex)? $fromIndex . ', ' .($this->maxResults + $fromIndex) : '0, '.$this->maxResults;
     $sql.= ' LIMIT '. $limit . ';';
     \ChromePhp::log('SQL:', $sql);

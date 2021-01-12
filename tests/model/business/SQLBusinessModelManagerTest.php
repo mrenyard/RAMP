@@ -34,6 +34,10 @@ require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/svelte/condition/PostData.class.php';
 require_once '/usr/share/php/svelte/condition/Filter.class.php';
 require_once '/usr/share/php/svelte/condition/FilterCondition.class.php';
+require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
+require_once '/usr/share/php/svelte/condition/Environment.class.php';
+require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/svelte/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/svelte/model/Model.class.php';
 require_once '/usr/share/php/svelte/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/svelte/model/business/SQLBusinessModelManager.class.php';
@@ -47,6 +51,7 @@ require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition
 require_once '/usr/share/php/svelte/model/business/DataWriteException.class.php';
 require_once '/usr/share/php/svelte/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/UniquePrimaryKey.class.php';

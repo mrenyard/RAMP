@@ -20,17 +20,34 @@
  */
 namespace tests\svelte\model\business\field;
 
+require_once '/usr/share/php/svelte/SETTING.class.php';
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
+require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/svelte/condition/Operator.class.php';
+require_once '/usr/share/php/svelte/condition/Condition.class.php';
+require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
+require_once '/usr/share/php/svelte/condition/Environment.class.php';
+require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/svelte/condition/PostData.class.php';
+require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/svelte/model/business/Record.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
+use svelte\SETTING;
 use svelte\core\Str;
 use svelte\core\Collection;
 use svelte\core\OptionList;
@@ -62,6 +79,8 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
+    SETTING::$SVELTE_LOCAL_DIR = '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/';
+    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
     MockBusinessModel::reset();
     $this->options = new Collection();
     $this->option0 = new MockBusinessModel('No option selected');

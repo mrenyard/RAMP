@@ -20,11 +20,16 @@
  */
 namespace tests\svelte\condition;
 
+require_once '/usr/share/php/svelte/SETTING.class.php';
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
+require_once '/usr/share/php/svelte/condition/Operator.class.php';
 require_once '/usr/share/php/svelte/condition/Condition.class.php';
+require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
+require_once '/usr/share/php/svelte/condition/Environment.class.php';
+require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/svelte/condition/PostData.class.php';

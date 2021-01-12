@@ -20,6 +20,7 @@
  */
 namespace tests\svelte\view;
 
+require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 //require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
