@@ -21,27 +21,26 @@
 namespace tests\svelte\view\mocks\ViewTest;
 
 use svelte\core\Str;
-use svelte\view\View;
+use svelte\model\Model;
 
 /**
- * Mock Concreate implementation of \svelte\view\View for testing login against.
+ * Mock Concreate implementation of \svelte\model\Model for testing against.
  */
-class MockView extends View
+class MockNoCountModel extends Model implements \IteratorAggregate
 {
-  /**
-   */
-  public function render()
+  private $aProperty;
+
+  protected function get_aProperty()
   {
-    print($this);
-    if ($this->bProperty != NULL) {
-      print(':' . $this->bProperty);
-    }
-    print(' ');
-    $this->children;
+    return $this->aProperty;
+  }
+
+  protected function set_aProperty($value)
+  {
+    $this->aProperty = $value;
+  }
+
+  public function getIterator() : Traversable
+  {
   }
 }
-
-class MockViewA extends MockView {}
-class MockViewB extends MockView {}
-class MockViewC extends MockView {}
-class MockViewD extends MockView {}

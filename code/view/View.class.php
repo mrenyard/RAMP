@@ -22,12 +22,23 @@
 namespace svelte\view;
 
 use svelte\core\SvelteObject;
-//use svelte\core\Str;
-//use svelte\core\Collection;
-//use svelte\core\BadPropertyCallException;
-//use svelte\model\Model;
+use svelte\core\Str;
+use svelte\core\Collection;
+use svelte\core\BadPropertyCallException;
+use svelte\model\Model;
 
 /**
+ * Definition of presentation format and type for a given Model.
+ * 
+ * RESPONSIBILITIES
+ * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
+ * - Enable read access to associated {@link \svelte\model\Model}.
+ * - Provide Decorator pattern implementation
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\Model}.
+ * 
+ * COLLABORATORS
+ * - {@link \svelte\view\View}
+ * - {@link \svelte\model\Model}
  */
 abstract class View extends SvelteObject
 {
@@ -35,24 +46,26 @@ abstract class View extends SvelteObject
   private $model;
 
   /**
-   * Gives provided \svelte\view\{@link Render} access to *this* {@link render()}ing
-   * \svelte\model\{@link Model}.
+   * Provide read access to associated Model's properties.
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    *
-   * PRECONDITIONS
-   * - ?requires *this* to be currently {@link render()}ing a \svelte\view{@link Render};
-   * - ?requires *this* has valid \svelte\model\{@link Model} passed with {@link render()}
-   *
-   * INVARIANTS
-   * - ensures *this* state is unchanged
-   *
-   * DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!
-   *
-   * NOTE: ONLY ACCESSIBLE TO ASSOCIATED \svlete\view\{@link Render} FROM WIHIN {@link render()}
-   * @param Str name of property (handled internally)
-   * @return mixed|void mixed|void - Relevant property value from *self* |
-   * \svelte\model\{@link Model}
-   * @throws BadPropertyCallException - Property does NOT exist
-   *
+   * **Passes:** `$this->aProperty;` **to:** `$this->model->get_aProperty();`
+   * 
+   * Called within Render() method
+   * ```php
+   *   public function render()
+   *   {
+   *      print_r($this->aProperty);
+   *   }
+   * ```
+   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * ```php
+   *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
+   * ```
+   * @param string $propertyName Name of property (handled internally)
+   * @return mixed|void The value of requested property
+   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   */
   public function __get($propertyName)
   {
     try {
@@ -61,27 +74,56 @@ abstract class View extends SvelteObject
       if (!isset($this->model)) { throw $e; }
       return $this->model->$propertyName;
     }
-  }*/
+  }
 
   /**
-   *
-  final protected function get_children()
+   * Render children, child view collection of this.
+   * 
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
+   * 
+   * **Call:** `$this->children;`
+   * 
+   * Called within Render() method
+   * ```php
+   *   public function render()
+   *   {
+   *      $this->children;
+   *   }
+   * ```
+   * 
+   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * ```php
+   *  <section>
+   *    <header>
+   *      <h1><?=$this->heading; ?></h1>
+   *      <p><?=$this->summary; ?></p>
+   *    </header>
+   *<?=$this->children; ?>
+   *  </section>
+   * ```
+   */
+  final public function get_children()
   {
     if (!isset($this->viewCollection)) { return; }
     foreach ($this->viewCollection as $view) {
       $view->render();
     }
-  }*/
+  }
 
   /**
-   *
+   * Set associated Model.
+   * Model can be a complex hierarchical ordered tree or a simple one level object,
+   * either way it will be interlaced appropriately with *this* View up to the
+   * same depth of structure.
+   * @param \svelte\model\Model $model Model containing data used in View
+   */
   public function setModel(Model $model)
   {
-    //if ($this->modelIsSet()) { throw new \Exception('model already set violation'); }
+    if (isset($this->model)) { throw new \Exception('model already set violation'); }
 
     $this->model = $model;
 
-    /*if ($model instanceof \Traversable) {
+    if ($model instanceof \Traversable) {
       if (!($model instanceof \Countable)) {
         throw new \LogicException('All Traversable Model(s) MUST also implement Countable');
       }
@@ -102,7 +144,8 @@ abstract class View extends SvelteObject
 
       // set position subModel to same position subView
       $viewIterator = $this->viewCollection->getIterator();
-      $viewIterator->rewind(); $i=0;
+      $viewIterator->rewind();
+      $i=0;
       foreach ($model as $subModel) {
         if (!$viewIterator->valid()) { throw new \LengthException('SHOULD NEVER REACH HERE!'); }
         $view = $viewIterator->current();
@@ -110,18 +153,13 @@ abstract class View extends SvelteObject
 
         $viewIterator->next();
       } // END foreach
-    } // END if *
-  }*/
+    } // END if
+  }
 
   /**
-   *
-  protected function modelIsSet()
-  {
-    return (isset($this->model));
-  }*/
-
-  /**
-   *
+   * Add a child View
+   * @param View $view Child View to be sequentially added to this. 
+   */
   final public function add(View $view)
   {
     if (!isset($this->viewCollection)) {
@@ -129,26 +167,19 @@ abstract class View extends SvelteObject
     }
     // todo:Matt Renyard: compatibleDescendantCheck()
     $this->viewCollection->add($view);
-  }*/
+  }
 
   /**
-   * Render provided {@link DocumentModel} within *this*.
-   *
-   * PRECONDITIONS
-   * - requires *this* to be in a valid state
-   * - ?requires a valid {@link DocumentModel} to be provided using {@link setModel()}
-   *
-   * POSTCONDITIONS
-   * - ?ensures the rendering of \svelte\model\{@link Model} in\svelte\view\{@link Render}
-   * - ?ensures {@link $model} reset to null upon successful rendering
-   *
-   * INVARIANTS
-   * - ensures {@link $view} able to access {@link __get()} during {@link render()}ing
-   * - **all** ensures that *this* state is unchanged post render()
+   * Render relevant output.
+   * Combining data (@link \svelte\model\Model) with defined presentation ({@link View}).
    */
   abstract public function render();
 
   /**
+   * Defines amendments post copy, cloning.
+   * POSTCONDITIONS
+   *  - unset any associated {@link \svelte\mode\Model}
+   *  - copy child views
    */
   public function __clone()
   {

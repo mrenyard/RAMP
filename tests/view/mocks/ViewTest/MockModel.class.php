@@ -21,27 +21,43 @@
 namespace tests\svelte\view\mocks\ViewTest;
 
 use svelte\core\Str;
-use svelte\view\View;
+use svelte\model\business\BusinessModel;
 
 /**
- * Mock Concreate implementation of \svelte\view\View for testing login against.
+ * Mock Concreate implementation of \svelte\model\Model for testing against.
  */
-class MockView extends View
+class MockModel extends BusinessModel
 {
+  private $id;
+  private $aProperty;
+  private $bProperty;
+
   /**
+   * Get ID (URN).
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str Unique identifier for *this*
    */
-  public function render()
+  protected function get_id() : Str
   {
-    print($this);
-    if ($this->bProperty != NULL) {
-      print(':' . $this->bProperty);
-    }
-    print(' ');
-    $this->children;
+  }
+
+  protected function get_aProperty()
+  {
+    return $this->aProperty;
+  }
+
+  protected function set_aProperty($value)
+  {
+    $this->aProperty = $value;
+  }
+
+  protected function get_bProperty()
+  {
+    return $this->bProperty;
+  }
+
+  protected function set_bProperty($value)
+  {
+    $this->bProperty = $value;
   }
 }
-
-class MockViewA extends MockView {}
-class MockViewB extends MockView {}
-class MockViewC extends MockView {}
-class MockViewD extends MockView {}

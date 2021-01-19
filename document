@@ -1,0 +1,1 @@
+sudo -S phpdoc --ignore */mocks/* -d $HOME/Projects/Svelte/code/,$HOME/Projects/Svelte/tests/ -t $HOME/Code/Documentation/php --visibility=public

@@ -21,23 +21,34 @@
 namespace tests\svelte\view;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-//require_once '/usr/share/php/svelte/core/Collection.class.php';
+require_once '/usr/share/php/svelte/core/iCollection.class.php';
+require_once '/usr/share/php/svelte/core/Collection.class.php';
+require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
+require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/svelte/model/business/Record.class.php';
+require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/svelte/view/View.class.php';
 
 require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockView.class.php';
-//require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockModel.class.php';
-//require_once '/usr/share/php/tests/svelte/model/MockNoCountModel.class.php';
-//require_once '/usr/share/php/tests/svelte/model/MockIterableModel.class.php';
+require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockModel.class.php';
+require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockNoCountModel.class.php';
+require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockModelCollection.class.php';
 
+use tests\svelte\view\mocks\ViewTest\MockModel;
 use tests\svelte\view\mocks\ViewTest\MockView;
-//use tests\svelte\view\mocks\ViewTest\MockModel;
-//use tests\svelte\model\MockNoCountModel;
-//use tests\svelte\model\MockIterableModel;
+use tests\svelte\view\mocks\ViewTest\MockViewA;
+use tests\svelte\view\mocks\ViewTest\MockViewB;
+use tests\svelte\view\mocks\ViewTest\MockViewC;
+use tests\svelte\view\mocks\ViewTest\MockViewD;
+use tests\svelte\view\mocks\ViewTest\MockNoCountModel;
+use tests\svelte\view\mocks\ViewTest\MockModelCollection;
 
 use svelte\view\View;
-use svelte\core\PropertyNotSetException;
+use svelte\core\PropertyNotSetException; 
 use svelte\core\BadPropertyCallException;
 
 /**
@@ -45,128 +56,155 @@ use svelte\core\BadPropertyCallException;
  */
 class ViewTest extends \PHPUnit\Framework\TestCase
 {
-  //private $testObject;
-  //private $mockViewCollection;
-  //private $mockModel;
+  private $testObject;
+  private $mockViewCollection;
+  private $mockModel;
 
-  /*public function setUp() : void
+  /**
+   * Setup test articles
+   */
+  public function setUp() : void
   {
     $this->testObject = new MockView();
-
     $this->mockViewCollection = new \SplObjectStorage();
     $this->mockViewCollection->attach(new MockViewA());
     $this->mockViewCollection->attach(new MockViewB());
     $this->mockViewCollection->attach(new MockViewC());
-
     $this->mockModel = new MockModel();
-  }*/
+  }
 
   /**
    * Collection of assertions for \svelte\view\View::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert is instance of {@link \svelte\view\View}
    * @link svelte.view.View svelte\view\View
    */
   public function test__construct()
   {
-    $testObject = new MockView();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\view\View', $testObject);
+    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
+    $this->assertInstanceOf('\svelte\view\View', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::__get().
-   * - assert BadPropertyCallException throw when property does NOT exist
-   * - assert get `Object->aProperty` returns same as set `Object->aProperty = $value`
-   *
-  public function test__get()
+   * Collection of assertions for \svelte\view\View::__get() and \svelte\view\View::__set
+   * - assert BadPropertyCallException thrown when trying to get value pre model set.
+   * - assert PropertyNotSetException thrown when trying to set value of none existant property
+   * - assert BadPropertyCallException thrown when trying to get value of none existant property
+   * - assert that property calls are passes to its component (contained) \svelte\model\Model
+   */
+  public function test__get__set()
   {
-    $value = 'aValue';
     try {
-      $this->testObject->noProperty = $value;
-    } catch (PropertyNotSetException $expected) {
+      $this->testObject->aProperty;
+    } catch (BadPropertyCallException $expected) {
+      $this->testObject->setModel($this->mockModel);
       try {
-        $value = $this->testObject->noProperty;
-      } catch (BadPropertyCallException $expected) {
-        $this->testObject->aProperty = $value;
-        $this->assertSame($value, $this->testObject->aProperty);
-        return;
+        $value = 'aValue';
+        $this->testObject->noProperty = $value;
+      } catch (PropertyNotSetException $expected) {
+        try {
+          $value = $this->testObject->noProperty;
+        } catch (BadPropertyCallException $expected) {
+          $this->mockModel->aProperty = $value;
+          $this->assertSame($value, $this->testObject->aProperty);
+          $this->assertSame($this->mockModel->aProperty, $this->testObject->aProperty);
+          return;
+        }
+        $this->fail('An expected BadPropertyCallException has NOT been raised.');
       }
-      $this->fail('An expected BadPropertyCallException has NOT been raised.');
     }
     $this->fail('An expected PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link View#get_children}.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::children and \svelte\view\View::add(Model $model).
+   * - assert each child view added sequentially
+   * - assert View->children output maintains sequance and format
+   */
   public function testAddGet_children()
   {
     $i=0;
-    foreach ($this->mockViewCollection as $view) {
-
-      $this->testObject->add($view); $i++;
-
+    foreach ($this->mockViewCollection as $view)
+    {
+      $view->setModel(new MockModel());
+      $this->testObject->add($view);
+      $i++;
       ob_start();
       $this->testObject->children;
       $output = ob_get_clean();
-
-      if ($i === 1) {
-        $this->assertSame('tests\svelte\view\MockViewA ', $output);
+      if ($i === 1)
+      {
+        $this->assertEquals(
+          'tests\svelte\view\mocks\ViewTest\MockViewA ',
+          $output
+        );
       }
-
-      if ($i === 2) {
-        $this->assertSame('tests\svelte\view\MockViewA tests\svelte\view\MockViewB ', $output);
+      if ($i === 2)
+      {
+        $this->assertEquals(
+          'tests\svelte\view\mocks\ViewTest\MockViewA '.
+          'tests\svelte\view\mocks\ViewTest\MockViewB ',
+          $output
+        );
       }
-
-      if ($i === 3) {
-        $this->assertSame(
-          'tests\svelte\view\MockViewA tests\svelte\view\MockViewB tests\svelte\view\MockViewC ',
+      if ($i === 3)
+      {
+        $this->assertEquals(
+          'tests\svelte\view\mocks\ViewTest\MockViewA '.
+          'tests\svelte\view\mocks\ViewTest\MockViewB '.
+          'tests\svelte\view\mocks\ViewTest\MockViewC ',
           $output
         );
       }
     }
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link View#setModel}.
-   * - assert .
-   *
-  public function testSetModelGet_property()
+   * Collection of assertions for \svelte\view\View::setModel}.
+   * - assert Exception thrown when model already set.
+   */
+  public function testSetModelAlreadySet()
   {
-    $value = 'bValue';
-    $this->mockModel->bProperty = $value;
     $this->testObject->setModel($this->mockModel);
-    $this->assertSame($value, $this->testObject->bProperty);
-  }*/
+    $this->expectException('\Exception');
+    $this->expectExceptionMessage('model already set violation');
+    $this->testObject->setModel($this->mockModel);
+  }
 
   /**
-   * Collection of assertions for {@link View#setModel}.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::setModel}.
+   * - assert LogicException thrown when model \Traversable but NOT \Countable.
+   */
   public function testSetModelNoCount()
   {
-    $noCountMode = new MockNoCountModel();
-    try {
-      $this->testObject->setModel($noCountMode);
-    } catch (\LogicException $expected) { return; }
-    $this->fail('An expected \LogicalException has NOT been raised.');
-  }*/
+    $this->expectException('\LogicException');
+    $this->expectExceptionMessage('All Traversable Model(s) MUST also implement Countable');
+    $this->testObject->setModel(new MockNoCountModel());
+  }
 
   /**
-   * Collection of assertions for {@link View#setModel}.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::setModel().
+   * - assert each view added sequentially and hieratically as expected
+   * - assert output from View->render() maintains sequance and hieratically format
+   */
   public function testSetModelComplex1()
   {
     foreach ($this->mockViewCollection as $view) {
       $this->testObject->add($view);
     }
 
-    $model = new MockIterableModel(); $model->bProperty = 'parent';
-    $subModel1 = new MockModel(); $subModel1->bProperty = 'one'; $model->add($subModel1);
-    $subModel2 = new MockModel(); $subModel2->bProperty = 'two'; $model->add($subModel2);
-    $subModel3 = new MockModel(); $subModel3->bProperty = 'three'; $model->add($subModel3);
+    $model = new MockModelCollection();
+    $model->bProperty = 'parent';
+    $subModel1 = new MockModel();
+    $subModel1->bProperty = 'one';
+    $model->add($subModel1);
+    $subModel2 = new MockModel();
+    $subModel2->bProperty = 'two';
+    $model->add($subModel2);
+    $subModel3 = new MockModel();
+    $subModel3->bProperty = 'three';
+    $model->add($subModel3);
+    
     $this->testObject->setModel($model);
 
     ob_start();
@@ -174,18 +212,19 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\MockView:parent '.
-      'tests\svelte\view\MockViewA:one '.
-      'tests\svelte\view\MockViewB:two '.
-      'tests\svelte\view\MockViewC:three ',
+      'tests\svelte\view\mocks\ViewTest\MockView:parent '.
+      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:three ',
       $output
     );
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link View#setModel}.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::setModel().
+   * - assert each view added sequentially and hieratically as expected
+   * - assert output from View->render() maintains sequance and hieratically format
+   */
   public function testSetModelComplex2()
   {
 
@@ -193,13 +232,27 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       $this->testObject->add($view);
     }
 
-    $model = new MockIterableModel(); $model->bProperty = 'parent';
-    $subModel1 = new MockModel(); $subModel1->bProperty = 'one'; $model->add($subModel1);
-    $subModel2 = new MockModel(); $subModel2->bProperty = 'two'; $model->add($subModel2);
-    $subModel3 = new MockModel(); $subModel3->bProperty = 'three'; $model->add($subModel3);
-    $subModel4 = new MockModel(); $subModel4->bProperty = 'four'; $model->add($subModel4);
-    $subModel5 = new MockModel(); $subModel5->bProperty = 'five'; $model->add($subModel5);
-    $subModel6 = new MockModel(); $subModel6->bProperty = 'six'; $model->add($subModel6);
+    $model = new MockModelCollection();
+    $model->bProperty = 'parent';
+    $subModel1 = new MockModel();
+    $subModel1->bProperty = 'one';
+    $model->add($subModel1);
+    $subModel2 = new MockModel();
+    $subModel2->bProperty = 'two';
+    $model->add($subModel2);
+    $subModel3 = new MockModel();
+    $subModel3->bProperty = 'three';
+    $model->add($subModel3);
+    $subModel4 = new MockModel();
+    $subModel4->bProperty = 'four'; 
+    $model->add($subModel4);
+    $subModel5 = new MockModel();
+    $subModel5->bProperty = 'five';
+    $model->add($subModel5);
+    $subModel6 = new MockModel();
+    $subModel6->bProperty = 'six';
+    $model->add($subModel6);
+
     $this->testObject->setModel($model);
 
     ob_start();
@@ -207,32 +260,42 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\MockView:parent '.
-      'tests\svelte\view\MockViewA:one '.
-      'tests\svelte\view\MockViewB:two '.
-      'tests\svelte\view\MockViewC:three '.
-      'tests\svelte\view\MockViewA:four '.
-      'tests\svelte\view\MockViewB:five '.
-      'tests\svelte\view\MockViewC:six ',
+      'tests\svelte\view\mocks\ViewTest\MockView:parent '.
+      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
+      'tests\svelte\view\mocks\ViewTest\MockViewA:four '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:six ',
       $output
     );
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link }.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::setModel().
+   * - assert each view added sequentially and hieratically as expected
+   * - assert output from View->render() maintains sequance and hieratically format
+   */
   public function testSetModelHierarchy1()
   {
-    $viewA = new MockViewA(); $viewB = new MockViewB(); $viewC = new MockViewC();
-    $viewA->add($viewB); $viewB->add($viewC);
+    $viewA = new MockViewA();
+    $viewB = new MockViewB();
+    $viewC = new MockViewC();
+    $viewA->add($viewB);
+    $viewB->add($viewC);
 
-    $model1 = new MockIterableModel(); $model1->bProperty = 'one';
-    $model2 = new MockIterableModel(); $model2->bProperty = 'two';
-    $model3 = new MockIterableModel(); $model3->bProperty = 'three';
-    $model4 = new MockIterableModel(); $model4->bProperty = 'four';
-    $model5 = new MockIterableModel(); $model5->bProperty = 'five';
-    $model6 = new MockIterableModel(); $model6->bProperty = 'six';
+    $model1 = new MockModelCollection();
+    $model1->bProperty = 'one';
+    $model2 = new MockModelCollection();
+    $model2->bProperty = 'two';
+    $model3 = new MockModel();
+    $model3->bProperty = 'three';
+    $model4 = new MockModel();
+    $model4->bProperty = 'four';
+    $model5 = new MockModelCollection();
+    $model5->bProperty = 'five';
+    $model6 = new MockModel();
+    $model6->bProperty = 'six';
 
       $model1->add($model2);
         $model2->add($model3);
@@ -247,39 +310,56 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\MockViewA:one '.
-      'tests\svelte\view\MockViewB:two '.
-      'tests\svelte\view\MockViewC:three '.
-      'tests\svelte\view\MockViewC:four '.
-      'tests\svelte\view\MockViewB:five '.
-      'tests\svelte\view\MockViewC:six ',
+      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:four '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:six ',
       $output
     );
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link }.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::setModel.
+   * - assert each view added sequentially and hieratically as expected
+   * - assert output from View->render() maintains sequance and hieratically format
+   */
   public function testSetModelHierarchy2()
   {
-    $viewA = new MockViewA(); $viewB = new MockViewB();
-    $viewC = new MockViewC(); $viewD = new MockViewD();
-    $viewA->add($viewB); $viewB->add($viewC); $viewC->add($viewD);
+    $viewA = new MockViewA();
+    $viewB = new MockViewB();
+    $viewC = new MockViewC();
+    $viewD = new MockViewD();
+    $viewA->add($viewB);
+    $viewB->add($viewC);
+    $viewC->add($viewD);
 
-    $model1 = new MockIterableModel(); $model1->bProperty = 'one';
-    $model2 = new MockIterableModel(); $model2->bProperty = 'two';
-    $model3 = new MockIterableModel(); $model3->bProperty = 'three';
-    $model4 = new MockIterableModel(); $model4->bProperty = 'four';
-    $model5 = new MockIterableModel(); $model5->bProperty = 'five';
-    $model6 = new MockIterableModel(); $model6->bProperty = 'six';
+    $model1 = new MockModelCollection();
+    $model1->bProperty = 'one';
+    $model2 = new MockModelCollection();
+    $model2->bProperty = 'two';
+    $model3 = new MockModelCollection();
+    $model3->bProperty = 'three';
+    $model4 = new MockModelCollection();
+    $model4->bProperty = 'four';
+    $model5 = new MockModelCollection();
+    $model5->bProperty = 'five';
+    $model6 = new MockModelCollection();
+    $model6->bProperty = 'six';
 
-    $model7 = new MockIterableModel(); $model7->bProperty = 'seven';
-    $model8 = new MockIterableModel(); $model8->bProperty = 'eight';
-    $model9 = new MockIterableModel(); $model9->bProperty = 'nine';
-    $model10 = new MockIterableModel(); $model10->bProperty = 'ten';
-    $model11 = new MockIterableModel(); $model11->bProperty = 'eleven';
-    $model12 = new MockIterableModel(); $model12->bProperty = 'twelve';
+    $model7 = new MockModel();
+    $model7->bProperty = 'seven';
+    $model8 = new MockModel();
+    $model8->bProperty = 'eight';
+    $model9 = new MockModel();
+    $model9->bProperty = 'nine';
+    $model10 = new MockModel();
+    $model10->bProperty = 'ten';
+    $model11 = new MockModel();
+    $model11->bProperty = 'eleven';
+    $model12 = new MockModel();
+    $model12->bProperty = 'twelve';
 
       $model1->add($model2);
         $model2->add($model3);
@@ -300,26 +380,28 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\MockViewA:one '.
-      'tests\svelte\view\MockViewB:two '.
-      'tests\svelte\view\MockViewC:three '.
-      'tests\svelte\view\MockViewD:seven '.
-      'tests\svelte\view\MockViewD:ten '.
-      'tests\svelte\view\MockViewC:four '.
-      'tests\svelte\view\MockViewD:eight '.
-      'tests\svelte\view\MockViewD:eleven '.
-      'tests\svelte\view\MockViewB:five '.
-      'tests\svelte\view\MockViewC:six '.
-      'tests\svelte\view\MockViewD:nine '.
-      'tests\svelte\view\MockViewD:twelve ',
+      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:seven '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:ten '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:four '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:eight '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:eleven '.
+      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
+      'tests\svelte\view\mocks\ViewTest\MockViewC:six '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:nine '.
+      'tests\svelte\view\mocks\ViewTest\MockViewD:twelve ',
       $output
     );
-  }*/
+  }
 
   /**
-   * Collection of assertions for {@link View#__clone}.
-   * - assert .
-   *
+   * Collection of assertions for \svelte\view\View::__clone.
+   * - assert cloned View without associated model is equal to the original
+   * - assert cloned View with associated model NOT equal as Model association removed
+   * - assert cloned View with model re associated is equal to the original 
+   */
   public function test__clone()
   {
     $clone = clone $this->testObject;
@@ -335,5 +417,5 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($this->testObject, $clone);
     $this->assertNotSame($this->testObject, $clone);
     unset($clone);
-  }*/
+  }
 }
