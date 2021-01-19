@@ -91,6 +91,8 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert PropertyNotSetException thrown when trying to set value of none existant property
    * - assert BadPropertyCallException thrown when trying to get value of none existant property
    * - assert that property calls are passes to its component (contained) \svelte\model\Model
+   * @link svelte.view.View#method__get svelte\view\View::__get()
+   * @link svelte.view.View#method__set svelte\view\View::__set()
    */
   public function test__get__set()
   {
@@ -120,6 +122,8 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\View::children and \svelte\view\View::add(Model $model).
    * - assert each child view added sequentially
    * - assert View->children output maintains sequance and format
+   * @link svelte.view.View#method_add svelte\view\View::add()
+   * @link svelte.view.View#method_children svelte\view\View::children
    */
   public function testAddGet_children()
   {
@@ -162,6 +166,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\view\View::setModel}.
    * - assert Exception thrown when model already set.
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelAlreadySet()
   {
@@ -174,6 +179,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\view\View::setModel}.
    * - assert LogicException thrown when model \Traversable but NOT \Countable.
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelNoCount()
   {
@@ -186,6 +192,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelComplex1()
   {
@@ -224,6 +231,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelComplex2()
   {
@@ -275,6 +283,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelHierarchy1()
   {
@@ -324,6 +333,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\View::setModel.
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
+   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
    */
   public function testSetModelHierarchy2()
   {
@@ -401,6 +411,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert cloned View without associated model is equal to the original
    * - assert cloned View with associated model NOT equal as Model association removed
    * - assert cloned View with model re associated is equal to the original 
+   * @link svelte.view.View#method__clone svelte\view\View::__clone()
    */
   public function test__clone()
   {
