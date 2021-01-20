@@ -178,7 +178,7 @@ abstract class View extends SvelteObject
   /**
    * Defines amendments post copy, cloning.
    * POSTCONDITIONS
-   *  - unset any associated {@link \svelte\mode\Model}
+   *  - unset associated {@link \svelte\model\Model}
    *  - copy child views
    */
   public function __clone()
