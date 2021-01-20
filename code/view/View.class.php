@@ -28,7 +28,7 @@ use svelte\core\BadPropertyCallException;
 use svelte\model\Model;
 
 /**
- * Definition of presentation format and type for a given Model.
+ * Definition of presentation format and type to be associated with a given Model.
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
