@@ -78,7 +78,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str $value Value of the property *id*
    */
-  protected function get_id()
+  protected function get_id() : Str
   {
     return $this->id;
   }
@@ -104,7 +104,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *title*
    */
-  protected function get_title()
+  protected function get_title() : Str
   {
     return (isset($this->title)) ? $this->title : Str::set('[title]');
   }
@@ -182,9 +182,9 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *summary*
    */
-  protected function get_summary()
+  protected function get_summary() : Str
   {
-    return (isset($this->summary)) ? $this->summary : '[summary]';
+    return (isset($this->summary)) ? $this->summary : Str::set('[summary]');
   }
 
   /**
@@ -234,7 +234,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *style*
    */
-  protected function get_style()
+  protected function get_style() : ?Str
   {
     return $this->style;
   }
