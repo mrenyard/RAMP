@@ -32,7 +32,7 @@ use svelte\view\View;
 abstract class ChildView extends View
 {
   /**
-   * Base constructor for all Views the requeir a parent.
+   * Base constructor for all Views that require a parent.
    * @param View $parentView Parent of this child
    */
   public function __construct(View $parentView)
