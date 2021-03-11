@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view;
+namespace tests\svelte\view\document;
 
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
@@ -69,7 +69,8 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\view\document\DocumentView::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
    * - assert is instance of {@link \svelte\view\View}
-   * - assert is instance of {@link \svelte\view\RootView}
+   * - assert is instance of {@link \svelte\view\ChildView}
+   * - assert is instance of {@link \svelte\view\document\DocumentView}
    * @link svelte.view.document.DocumentView svelte\view\document\DocumentView
    */
   public function test__construct()

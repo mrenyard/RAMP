@@ -30,12 +30,26 @@ use svelte\view\View;
 use svelte\view\ChildView;
 
 /**
+ * Abstract specialist document view (presentation) includes composite DocumentModel.
+ * 
+ * RESPONSIBILITIES
+ * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
+ * - Enable read access to associated {@link \svelte\model\business\BusinessModel} and {@link \svelte\model\document\DocumentModel}
+ * - Provide Decorator pattern implementation
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\business\BusinessModel}.
+ * 
+ * COLLABORATORS
+ * - {@link \svelte\view\View}
+ * - {@link \svelte\model\business\BusinessModel}
+ * - {@link \svelte\model\document\DocumentModel}
  */
 abstract class DocumentView extends ChildView
 {
   private $documentModel;
 
   /**
+   * Base constructor for document based views.
+   * @param View $parentView Parent of this child
    */
   public function __construct(View $parentView)
   {
@@ -44,19 +58,65 @@ abstract class DocumentView extends ChildView
   }
 
   /**
+   * Allows C# type access to properties.
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
+   *
+   * **Passes:** `$object->aProperty = $value;` **to:** `$this->set_aProperty($value);`
+   * 
+   * **or** `$object->header = $vlaue;` **to** `$this->documentModel->set_header($value);`
+   *
+   * Implementation in concrete Object
+   * ```php
+   * private aProperty;
+   *
+   * protected function set_aProperty($value)
+   * {
+   *   $this->aProperty = $value;
+   * }
+   * ```
+   *
+   * Called externally (C# style)
+   * ```php
+   * $object->aProperty = $value; //Set value of 'aProperty'
+   * ```
+   *
+   * @param string $propertyName Name of property (handled internally)
+   * @param mixed $propertyValue The value to set on requested property (handled internally)
+   * @throws \svelte\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
-  final public function __set($propertyName, $value)
+  final public function __set($propertyName, $propertyValue)
   {
     try {
-      parent::__set($propertyName, $value);
+      parent::__set($propertyName, $propertyValue);
     } catch (PropertyNotSetException $e) {
       try {
-        $this->documentModel->$propertyName = $value;
+        $this->documentModel->$propertyName = $propertyValue;
       } catch (PropertyNotSetException $f) { throw $e; }
     }
   }
 
   /**
+   * Provide read access to associated Models' properties.
+   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
+   *
+   * **Passes:** `$object->aProperty;` **to:** `$this->model->get_aProperty();`
+   * 
+   * **or** `$object->header;` **to:** `$this->documentModel->get_header();`
+   * 
+   * Called within Render() method
+   * ```php
+   *   public function render()
+   *   {
+   *      print_r($this->aProperty);
+   *   }
+   * ```
+   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * ```php
+   *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
+   * ```
+   * @param string $propertyName Name of property (handled internally)
+   * @return mixed|void The value of requested property
+   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -71,6 +131,12 @@ abstract class DocumentView extends ChildView
   }
 
   /**
+   * Set associated Model.
+   * Model can be a complex hierarchical ordered tree or a simple one level object,
+   * either way it will be interlaced appropriately with *this* View up to the
+   * same depth of structure.
+   * @param \svelte\model\Model $model Model containing data used in View
+   * @throws \InvalidArgumentException Expecting instanceof BusinessModel
    */
   final public function setModel(Model $model)
   {
