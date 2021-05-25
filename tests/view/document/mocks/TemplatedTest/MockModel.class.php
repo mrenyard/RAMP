@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * Testing - Svelte - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,27 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace tests\svelte\view\document\mocks\TemplatedTest;
 
-use svelte\view\View;
+use svelte\model\Model;
 
 /**
- * Belonging to one parent - definition of presentation format and
- * type to be associated with a given Model.
- * 
- * {@inheritdoc}
+ * Mock Concreate implementation of \svelte\model\Model for testing against.
  */
-abstract class ChildView extends View
+class MockModel extends Model
 {
-  /**
-   * Base constructor for all Views that require a parent.
-   * @param View $parent Parent of this child
-   */
-  public function __construct(View $parent)
-  {
-    $parent->add($this);
-  }
 }

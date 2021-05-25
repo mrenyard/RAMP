@@ -49,11 +49,11 @@ abstract class DocumentView extends ChildView
 
   /**
    * Base constructor for document based views.
-   * @param View $parentView Parent of this child
+   * @param View $parent Parent of this child
    */
-  public function __construct(View $parentView)
+  public function __construct(View $parent)
   {
-    parent::__construct($parentView);
+    parent::__construct($parent);
     $this->documentModel = new DocumentModel();
   }
 

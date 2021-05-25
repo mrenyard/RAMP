@@ -19,24 +19,5 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\view;
-
-use svelte\view\View;
-
-/**
- * Belonging to one parent - definition of presentation format and
- * type to be associated with a given Model.
- * 
- * {@inheritdoc}
- */
-abstract class ChildView extends View
-{
-  /**
-   * Base constructor for all Views that require a parent.
-   * @param View $parent Parent of this child
-   */
-  public function __construct(View $parent)
-  {
-    $parent->add($this);
-  }
-}
+?>
+<!-- <?=$this->template; ?> -->
