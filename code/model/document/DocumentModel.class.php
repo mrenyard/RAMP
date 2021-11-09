@@ -104,9 +104,9 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *title*
    */
-  protected function get_title() : Str
+  protected function get_title() : ?Str
   {
-    return (isset($this->title)) ? $this->title : Str::set('[title]');
+    return $this->title;
   }
 
   /**
@@ -130,7 +130,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *heading*
    */
-  protected function get_heading()
+  protected function get_heading() : ?Str
   {
     return $this->heading;
   }
@@ -156,7 +156,7 @@ class DocumentModel extends Model
    * ```
    * @param \svetle\core\Str Value of the property *label*
    */
-  protected function get_label()
+  protected function get_label() : ?Str
   {
     return $this->get_heading();
   }
@@ -182,9 +182,9 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *summary*
    */
-  protected function get_summary() : Str
+  protected function get_summary() : ?Str
   {
-    return (isset($this->summary)) ? $this->summary : Str::set('[summary]');
+    return $this->summary;
   }
 
   /**
@@ -208,7 +208,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *placeholder*
    */
-  protected function get_placeholder()
+  protected function get_placeholder() : ?Str 
   {
     return $this->get_summary();
   }
