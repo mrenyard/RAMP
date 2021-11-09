@@ -65,7 +65,7 @@ class SETTING
   public static $SVELTE_BUSINESS_MODEL_NAMESPACE;
 
   /**
-   * Authenticatible Unit of specific business model Record.
+   * Authenticatable Unit of specific business model Record.
    */
   public static $SVELTE_AUTHENTICATABLE_UNIT;
 

@@ -163,7 +163,7 @@ class TemplatedTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\view\document\Templated::templateType.
    * - assert path (OBJECT::$templte) contains template type (html) by default.
-   * - assert post set path (OBJECT::$templte) contains template type as expected. 
+   * - assert post set path (OBJECT::$template) contains template type as expected. 
    * - assert throws {@link \svelte\core\PropertyNotSetException} when provided value does NOT translate to a valid file path. 
    *  - with message 'Provided $templateName ([...]) of $templateType ([...]) is non existant!'
    * @link svelte.view.document.Templated#method_set_templateType svelte\view\document\Templated::templateType

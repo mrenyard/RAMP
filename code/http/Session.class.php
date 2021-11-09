@@ -92,13 +92,13 @@ final class Session extends SvelteObject
    * browser, ideally the first thing at the top of any controller page.**
    *
    * PRECONDITIONS
-   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST
+   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST be set.
    *
    * COLLABORATORS
    * - $_SESSION
    * - {@link \svelte\SETTING}
    * - {@link \svelte\condition\Filter}
-   * - {@link \svelte\condition\FiltetCondition}
+   * - {@link \svelte\condition\FilterCondition}
    * - {@link \svelte\model\business\iBusinessModelManager}
    * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
    *
@@ -270,6 +270,15 @@ final class Session extends SvelteObject
       }
     }
     throw new Unauthorized401Exception('SHOULD NEVER REACH HERE!');
+  }
+
+  /**
+   * Accessor to logingAccount
+   * @return \svelte\model\business\LoginAccount loginAccount LoginAccount for authentication and authorization
+   */
+  protected function get_loginAccount()
+  {
+    return $this->loginAccount;
   }
 
   /**
