@@ -46,6 +46,17 @@ use svelte\http\Method;
  * - $_POST
  * - $_GET
  *
+ * EXAMPLE USE:
+ * ```php
+ * try {
+ *   $request = new http\Request();
+ * } catch (\DomainException $e) {
+ *   header('HTTP/1.1 404 Not Found');
+ *   ...
+  *  return;
+ * }
+ * ...
+ * ```
  * @link https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
  * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
  * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
@@ -74,8 +85,11 @@ class Request extends SvelteObject implements iBusinessModelDefinition
 
   /**
    * Interprets HTTP and constructs new Request based on current context.
-   * .
-   */
+   * PRECONDITIONS
+   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST be set.
+   * @throws \DomainException When supplied arguments do NOT meet the restrictions and
+   * limits as defined by local business model (SVELTE_BUESINESS_MODEL_NAMESPACE)
+ */
   public function __construct()
   {
     $this->expectsFragment = \FALSE;

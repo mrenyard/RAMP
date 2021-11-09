@@ -71,7 +71,6 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_SERVER['SCRIPT_NAME'] = '/404.php';
 
     $_SERVER['REQUEST_METHOD'] = 'GET';
-    $_SERVER['REQUEST_URI'] = '/';
     $_SERVER['QUERY_STRING'] = null;
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
@@ -86,10 +85,28 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function test__construct()
   {
+    $_SERVER['REQUEST_URI'] = '/';
     $testObject = new Request();
     $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
     $this->assertInstanceOf('svelte\model\business\iBusinessModelDefinition', $testObject);
     $this->assertInstanceOf('svelte\http\Request', $testObject);
+  }
+
+  /**
+   * Collection of assertions based on Property NOT defined in business model.
+   * - $_SERVER['REQUEST_URI'] equals '/mock-record/?property-not=valueOK'
+   * - $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
+   * - $_GET['property-not'] = 'valueOK';
+   * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
+   *   limits as defined by local business model (SVELTE_BUESINESS_MODEL_NAMESPACE)
+   */
+  public function testDomainException()
+  {
+    $this->expectException(\DomainException::class);
+    $_SERVER['REQUEST_URI'] = '/mock-record/?property-not=valueOK';
+    $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
+    $_GET['property-not'] = 'valueOK';
+    $testObject = new Request();
   }
 
   /**

@@ -42,17 +42,19 @@ use svelte\view\View;
  *
  * EXAMPLE USE:
  * ```php
- * $session = http\Session::instance();
+ * $session = http\Session::getInstance();
  * try {
- *   $request = new http\Request...
- * ...
+ *   $request = new http\Request();
+ * } catch (\DomainException $e) {
+ *   header('HTTP/1.1 404 Not Found');
+ *   ...
+  *  return;
+ * }
  * try {
  *   $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
- * } catch (http\Exception401Unauthorized $e) {
- *   $authenticationForm = new ...
- *   $authenticationForm->setModel($_SESSION['loginAccount']);
- *   $authenticationForm->render();
+ * } catch (http\Unauthorized401Exception $e) {
  *   header('HTTP/1.1 401 Unauthorized');
+ *   ...
  *   return;
  * }
  * ...
