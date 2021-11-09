@@ -92,9 +92,9 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   public function testGetSet_title()
   {
     $value = $this->testObject->title;
-    $this->assertEquals('[title]', (string)$value);
-    $this->assertInstanceOf('\svelte\core\Str', $value);
+    $this->assertNull($value);
     $this->testObject->title = Str::set('newTitle');
+    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->title);
     $this->assertEquals('newTitle', (string)$this->testObject->title);
   }
 
