@@ -69,7 +69,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * **DO NOT CALL DIRECTLY, USE this->email;**
    * @return \svelte\model\business\field\Field Email address field.
    */
-  public function get_email() : field\Field
+  protected function get_email() : field\Field
   {
     if (!isset($this['email']))
     {
@@ -87,7 +87,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   }
 
   /**
-   * Get email
+   * Get familyName
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Email address associated with *this*.
    */
@@ -109,7 +109,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   }
 
   /**
-   * Get email
+   * Get givenName
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Email address associated with *this*.
    */

@@ -44,13 +44,6 @@ use svelte\view\View;
  * ```php
  * $session = http\Session::getInstance();
  * try {
- *   $request = new http\Request();
- * } catch (\DomainException $e) {
- *   header('HTTP/1.1 404 Not Found');
- *   ...
-  *  return;
- * }
- * try {
  *   $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
  * } catch (http\Unauthorized401Exception $e) {
  *   header('HTTP/1.1 401 Unauthorized');

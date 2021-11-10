@@ -125,7 +125,7 @@ abstract class Record extends BusinessModel implements iOption
    */
   final public function offsetSet($offset, $object)
   {
-    if (is_numeric($offset) ||(!($object instanceof \svelte\model\business\field\Field)))
+    if (is_numeric($offset) || (!($object instanceof \svelte\model\business\field\Field)))
     {
       throw new \BadMethodCallException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
