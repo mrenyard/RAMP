@@ -166,7 +166,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
 
   /**
    * Returns name of requested Record one or collection.
-   * **DO NOT CALL DIRECTLY, USE this->recordName;**
+   * Can be called directly inline with iBusinessModelDefinition or by using this->recordName;
    * @return \svelte\core\Str Name of requested Record one or collection.
    */
   public function get_recordName() : Str
@@ -176,7 +176,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
 
   /**
    * Returns primary key value of requested svelte\model\business\Record or NULL.
-   * **DO NOT CALL DIRECTLY, USE this->recordKey;**
+   * Can be called directly inline with iBusinessModelDefinition or by using this->recordKey;
    * @return \svelte\core\Str Primary key for requested Record if any.
    */
   public function get_recordKey() : ?Str
@@ -189,7 +189,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
 
   /**
    * Returns name of requested Property of svelte\model\business\Record or NULL.
-   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
+   * Can be called directly inline with iBusinessModelDefinition or by using this->propertyName;
    * @return \svelte\core\Str Name of requested Property if any.
    */
   public function get_propertyName() : ?Str
