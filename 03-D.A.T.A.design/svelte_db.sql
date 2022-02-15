@@ -56,18 +56,18 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `svelte_db`.`CountryList`
+-- Table `svelte_db`.`Country`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `svelte_db`.`CountryList` ;
+DROP TABLE IF EXISTS `svelte_db`.`Country` ;
 
-CREATE TABLE IF NOT EXISTS `svelte_db`.`CountryList` (
-  `id` INT(3) NOT NULL,
+CREATE TABLE IF NOT EXISTS `svelte_db`.`Country` (
+  `nid` INT(3) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
-  `value` VARCHAR(45) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
   `sageCode` VARCHAR(5) NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id` (`id` ASC) VISIBLE,
-  UNIQUE INDEX `code` (`code` ASC) VISIBLE)
+  PRIMARY KEY (`code`),
+  UNIQUE INDEX `code` (`code` ASC) VISIBLE,
+  UNIQUE INDEX `nid` (`nid` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
@@ -90,17 +90,17 @@ CREATE TABLE IF NOT EXISTS `svelte_db`.`Person` (
   `locality` VARCHAR(45) NULL DEFAULT NULL,
   `region` VARCHAR(45) NULL DEFAULT NULL,
   `postalCode` VARCHAR(45) NULL DEFAULT NULL,
-  `countryListID` INT(11) NULL DEFAULT NULL,
+  `country` VARCHAR(2) NULL DEFAULT NULL,
   `telephone` VARCHAR(45) NULL DEFAULT NULL,
   `mobile` VARCHAR(45) NULL DEFAULT NULL,
   `fax` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`uname`),
-  INDEX `fk_Person_countryListID` (`countryListID` ASC) VISIBLE,
+  INDEX `fk_Person_country` (`country` ASC) VISIBLE,
   UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  CONSTRAINT `fk_Person_countryListID`
-    FOREIGN KEY (`countryListID`)
-    REFERENCES `svelte_db`.`CountryList` (`id`)
+  CONSTRAINT `fk_Person_country`
+    FOREIGN KEY (`country`)
+    REFERENCES `svelte_db`.`Country` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

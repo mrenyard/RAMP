@@ -1,7 +1,7 @@
 --
--- Data for table `CountryList`
+-- Data for table `Country`
 --
-INSERT INTO `CountryList` (`id`, `code`, `value`, `sageCode`) VALUES
+INSERT INTO `Country` (`nid`, `code`, `name`, `sageCode`) VALUES
 (040, 'AT', 'AUSTRIA', 'T4'),
 (056, 'BE', 'BELGIUM', 'T4'),
 (191, 'HR', 'CROATIA', 'T9'),
