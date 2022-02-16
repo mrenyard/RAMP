@@ -30,7 +30,12 @@ class MockRecord extends Record
 {
   public static function primaryKeyName() : Str
   {
-    return Str::set('aProperty');
+    return Str::set('pk');
+  }
+
+  protected function get_pk()
+  {
+    return Str::set('new');
   }
 
   protected function get_aProperty()
@@ -39,6 +44,6 @@ class MockRecord extends Record
 
   protected static function checkRequired($dataObject) : bool
   {
-    return (isset($dataObject->aPproperty));
+    return (isset($dataObject->aProperty));
   }
 }

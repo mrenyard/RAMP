@@ -98,7 +98,7 @@ final class SelectMany extends Field
       foreach ($this as $option) {
         if ((string)$selected == (string)$option->id) {
           $valid = TRUE;
-          break;
+          continue;
         }
       }
       if (!$valid) {

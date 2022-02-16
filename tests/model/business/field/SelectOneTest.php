@@ -28,6 +28,7 @@ require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/svelte/condition/Operator.class.php';
 require_once '/usr/share/php/svelte/condition/Condition.class.php';
 require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
@@ -164,7 +165,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $this->assertSame($this->option0, $this->testObject->value);
-      $this->assertSame(0, $this->testObject->value->key);
+      $this->assertSame('mock-business-model:0', (string)$this->testObject->value->id);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -311,10 +312,14 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleCalled()
   {
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'mock-record:new:a-property' => '1'
-    ))));
-    $this->assertSame(1, $this->dataObject->aProperty);
+    $selected = 'mock-business-model:2';
+    $this->assertNull($this->dataObject->aProperty);
+    $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:new:a-property' => $selected
+    )));
+    $this->assertTrue($this->mockRecord->isModified);
+    $this->assertEquals($selected, $this->dataObject->aProperty);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);

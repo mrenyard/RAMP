@@ -29,6 +29,7 @@ require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/svelte/condition/Operator.class.php';
 require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/Environment.class.php';
@@ -310,11 +311,17 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleCalled()
   {
+    $selected = Array(
+      'mock-business-model:1',
+      'mock-business-model:2'
+    );
     $this->assertNull($this->dataObject->aProperty);
-    $this->testObject->validate(PostData::build(array(
-      'mock-record:new:a-property' => Array(1,2)
+    $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
+    $this->testObject->validate(PostData::build(Array(
+      'mock-record:new:a-property' => $selected
     )));
-    $this->assertSame(Array(1,2), $this->dataObject->aProperty);
+    $this->assertTrue($this->mockRecord->isModified);
+    $this->assertSame($selected, $this->dataObject->aProperty);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);

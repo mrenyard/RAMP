@@ -66,10 +66,10 @@ class MockBusinessModel extends BusinessModel implements iOption
     return $this->id;
   }
 
-  protected function get_key()
+  /*protected function get_key()
   {
     return $this->key;
-  }
+  }*/
 
   /**
    * Validate postdata against this and update accordingly.
