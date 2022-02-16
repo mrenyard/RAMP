@@ -92,7 +92,7 @@ final class SelectOne extends Field
   {
     foreach ($this as $option)
     {
-      if ((string)$value == (string)$option->key) { return; }
+      if ((string)$value == (string)$option->id) { return; }
     }
     throw new FailedValidationException('Selected value NOT an avalible option!');
   }

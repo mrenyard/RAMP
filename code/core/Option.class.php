@@ -36,28 +36,28 @@ use svelte\core\iOption;
  */
 class Option extends SvelteObject implements iOption
 {
-  private $key;
+  private $id;
   private $description;
 
   /**
    * Constructor for new instance of LoginAccountTypeOption.
-   * @param int $key  Value to be set for key.
+   * @param int $id  Value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct(int $key, Str $description)
+  public function __construct(int $id, Str $description)
   {
-    $this->key = $key;
+    $this->id = $id;
     $this->description = $description;
   }
 
   /**
-   * Get key (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return mixed Key
+   * Get id (enum:int|URN:Str)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return mixed id
    */
-  public function get_key()
+  public function get_id()
   {
-    return $this->key;
+    return $this->id;
   }
 
   /**

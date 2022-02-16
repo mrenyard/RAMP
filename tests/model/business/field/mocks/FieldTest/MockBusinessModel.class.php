@@ -56,19 +56,19 @@ class MockBusinessModel extends BusinessModel implements iOption
     parent::__construct($children);
   }
 
-  protected function get_id() : Str
+  public function get_id() : Str
   {
     return Str::set('mock-business-model:' . $this->key);;
-  }
-
-  public function get_key()
-  {
-    return $this->key;
   }
 
   public function get_description() : Str
   {
     return $this->id;
+  }
+
+  protected function get_key()
+  {
+    return $this->key;
   }
 
   /**

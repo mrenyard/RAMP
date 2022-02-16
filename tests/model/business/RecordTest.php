@@ -386,7 +386,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('3', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
     $this->assertEquals(array('1','4','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertTrue($this->testObject->isModified);
@@ -431,7 +431,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('4', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
@@ -526,7 +526,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST6 = array(
@@ -637,7 +637,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('pkey', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
     $this->assertEquals(array('3','4','5'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST10 = array(

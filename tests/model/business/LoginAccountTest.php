@@ -221,10 +221,10 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       );
       $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->accountType);
       $this->assertEquals(LoginAccountType::get(0), $this->testObject->accountType->value);
-      $this->assertEquals(0, $this->testObject->accountType->value->key);
+      $this->assertEquals(0, $this->testObject->accountType->value->id);
       $this->dataObject->typeID = 4;
       $this->assertEquals(LoginAccountType::get(4), $this->testObject->accountType->value);
-      $this->assertEquals(4, $this->testObject->accountType->value->key);
+      $this->assertEquals(4, $this->testObject->accountType->value->id);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');

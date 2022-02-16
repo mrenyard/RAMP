@@ -30,7 +30,7 @@ use svelte\core\Str;
  */
 class ConcreteOption extends SvelteObject implements iOption
 {
-  private $key;
+  private $id;
   private $description;
 
   /**
@@ -38,18 +38,18 @@ class ConcreteOption extends SvelteObject implements iOption
    * @param \svelte\core\Str $id String value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct($key, Str $description)
+  public function __construct($id, Str $description)
   {
-    $this->key = $key;
+    $this->id = $id;
     $this->description = $description;
   }
 
   /**
    * A test getter for ConcreteOption::getId
    */
-  public function get_key()
+  public function get_id()
   {
-    return $this->key;
+    return $this->id;
   }
 
   /**

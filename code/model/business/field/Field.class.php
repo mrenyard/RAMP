@@ -77,6 +77,16 @@ abstract class Field extends BusinessModel
   }
 
   /**
+   * Get Label
+   * **DO NOT CALL DIRECTLY, USE this->label;**
+   * @return \svelte\core\Str Label for *this*
+   */
+  protected function get_label() : Str
+  {
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->dataObjectPropertyName))));
+  }
+
+  /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */
@@ -133,7 +143,7 @@ abstract class Field extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->errors;**
    * @return iCollection List of recorded errors.
    */
-  final public function get_errors() : iCollection
+  final protected function get_errors() : iCollection
   {
     return (isset($this->errorCollection)) ? $this->errorCollection :
       new Collection(Str::set('\svelte\core\Str'));

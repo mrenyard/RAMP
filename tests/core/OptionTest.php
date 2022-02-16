@@ -64,20 +64,20 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::key.
+   * Collection of assertions for \svelte\core\Option::id.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown
-   *   when trying to set property 'key'
-   * - assert property 'key' is gettable.
+   *   when trying to set property 'id'
+   * - assert property 'id' is gettable.
    * - assert returned value matches expected result.
-   * @link svelte.core.Option#method_get_key svelte\core\Option::key
+   * @link svelte.core.Option#method_get_id svelte\core\Option::id
    */
-  public function testGet_key()
+  public function testGet_id()
   {
     try {
-      $this->testObject->key = 1;
+      $this->testObject->id = 1;
     } catch (PropertyNotSetException $expected) {
-      $this->assertEquals('svelte\core\Option->key is NOT settable', $expected->getMessage());
-      $this->assertSame($this->key, $this->testObject->key);
+      $this->assertEquals('svelte\core\Option->id is NOT settable', $expected->getMessage());
+      $this->assertSame($this->key, $this->testObject->id);
     }
   }
 

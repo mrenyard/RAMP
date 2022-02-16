@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Svelte - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,32 +16,12 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
+ * @package svelte
  * @version 0.0.9;
+ * 
+              <option value="<?=$this->key; ?>"<?=(($this->value) && ($this->key == $this->value->key))? ' selected="selected"' : '';?>><?=$this->description->value; ?></option>
+TODO:mrenyard: log $this->value to view object
  */
-namespace svelte\core;
-
-/**
- * Interface representing a choice, single or one of several.
- *
- * RESPONSIBILITIES
- * - Describe base api for a choice.
- *
- * @property-read mixed $id Returns unique identifier (enum:int|URN:string|etc).
- * @property-read \svelte\core\Str $description Returns description.
- */
-interface iOption
-{
-  /**
-   * Get key (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return mixed Key
-   */
-  public function get_id();
-
-  /**
-   * Get Description.
-   * **DO NOT CALL DIRECTLY, USE this->description;**
-   * @return Str Description
-   */
-  public function get_description() : Str;
-}
+\ChromePhp::log('key', $this->key);
+?>
+              <option value="<?=$this->key; ?>"><?=$this->description; ?></option>

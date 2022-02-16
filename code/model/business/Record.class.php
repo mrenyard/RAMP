@@ -90,7 +90,7 @@ abstract class Record extends BusinessModel implements iOption
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Unique identifier for *this*
    */
-  final protected function get_id() : Str
+  final public function get_id() : Str
   {
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
@@ -102,7 +102,7 @@ abstract class Record extends BusinessModel implements iOption
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \svelte\core\Str Value of primary key
    */
-  final public function get_key() : Str
+  final protected function get_key() : Str
   {
     $pkName = (string)$this->primaryKeyName();
     return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
