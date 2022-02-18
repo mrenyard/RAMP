@@ -1,8 +1,7 @@
-Svelte
+RAMP
 ======
 
-**Rapid web application development environment for building
-flexible, customisable web systems.**
+**Rapid web application development environment for building flexible, customisable web systems using the LAMP development Stack**
 
 
 DESIGN PRINCIPLES FOR SVELTE
