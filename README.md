@@ -1,7 +1,8 @@
 RAMP
 ======
 
-**Rapid web application development environment for building flexible, customisable web systems using the LAMP development Stack**
+**Rapid web application development environment for building accessible,
+flexible, customisable web systems using the LAMP development Stack**
 
 
 DESIGN PRINCIPLES FOR SVELTE
@@ -66,7 +67,7 @@ SOME RULES OF THE WEB WE KEPT IN MIND
   - Frames are bad
   - AJAX used to load primary content is bad
 
-5) An Authorisation Form (login), is NOT a resource.  
+5) Authorisation (login), is NOT a resource.  
     And therefore should NOT have its own address
 
 6) Functional Enhancements (Javascript) are LAST element  
