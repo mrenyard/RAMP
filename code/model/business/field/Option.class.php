@@ -19,7 +19,7 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace svelte\model\business\field;
 
 use svelte\core\SvelteObject;
 use svelte\core\Str;
@@ -36,28 +36,30 @@ use svelte\core\iOption;
  */
 class Option extends SvelteObject implements iOption
 {
-  private $id;
+  private $key;
   private $description;
+  private $parentField;
 
   /**
    * Constructor for new instance of LoginAccountTypeOption.
    * @param int $id  Value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct(int $id, Str $description)
+  public function __construct(int $key, Str $description) //, Field $parentField)
   {
-    $this->id = $id;
+    $this->key = $key;
     $this->description = $description;
+    //$this->parentField = $parentField;
   }
 
   /**
-   * Get id (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return mixed id
+   * Get key unique identifier (enum:int|URN:Str)
+   * **DO NOT CALL DIRECTLY, USE this->key;**
+   * @return mixed Key
    */
-  public function get_id()
+  public function get_key()
   {
-    return $this->id;
+    return $this->key;
   }
 
   /**
@@ -68,5 +70,25 @@ class Option extends SvelteObject implements iOption
   public function get_description() : Str
   {
     return $this->description;
+  }
+
+  /**
+   * Returns whether this has been chosen.
+   * **DO NOT CALL DIRECTLY, USE this->isSelected;**
+   */
+  public function get_isSelected() : bool
+  {
+    switch(get_class($this->parentField)) {
+      case 'Flag':
+        return $parentField->value;
+      case 'SelectOne':
+        return ($this->parentField->value->key = $this->key);
+      case 'SelectMany':
+        foreach($value as $selected) {
+          if ($selected->key == $this->key) { return true; }
+        }
+      default:
+        return false;
+    }
   }
 }

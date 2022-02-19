@@ -24,11 +24,11 @@ require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/Option.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
 
 use svelte\core\Str;
-use svelte\core\Option;
 use svelte\core\PropertyNotSetException;
+use svelte\model\business\field\Option;
 
 /**
  * Collection of tests for \svelte\core\Option.
@@ -60,7 +60,7 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
-    $this->assertInstanceOf('\svelte\core\Option', $this->testObject);
+    $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject);
   }
 
   /**
@@ -71,13 +71,13 @@ class OptionTest extends \PHPUnit\Framework\TestCase
    * - assert returned value matches expected result.
    * @link svelte.core.Option#method_get_id svelte\core\Option::id
    */
-  public function testGet_id()
+  public function testGet_key()
   {
     try {
-      $this->testObject->id = 1;
+      $this->testObject->key = 1;
     } catch (PropertyNotSetException $expected) {
-      $this->assertEquals('svelte\core\Option->id is NOT settable', $expected->getMessage());
-      $this->assertSame($this->key, $this->testObject->id);
+      $this->assertEquals('svelte\model\business\field\Option->key is NOT settable', $expected->getMessage());
+      $this->assertSame($this->key, $this->testObject->key);
     }
   }
 
@@ -95,7 +95,7 @@ class OptionTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->description = 1;
     } catch (PropertyNotSetException $expected) {
-      $this->assertEquals('svelte\core\Option->description is NOT settable', $expected->getMessage());
+      $this->assertEquals('svelte\model\business\field\Option->description is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
       $this->assertSame($this->description, $this->testObject->description);
     }

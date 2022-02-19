@@ -26,7 +26,6 @@ require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
@@ -49,6 +48,10 @@ require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/svelte/model/business/AuthenticatableUnit.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
@@ -57,9 +60,6 @@ require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanume
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/http/Session.class.php';
 require_once '/usr/share/php/svelte/http/Unauthorized401Exception.class.php';
 
@@ -170,7 +170,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->id;
+    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->key;
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
@@ -209,7 +209,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->id;
+    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->key;
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;

@@ -26,7 +26,6 @@ require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
@@ -45,12 +44,13 @@ require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition
 require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/AuthenticatableUnit.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
@@ -221,10 +221,10 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       );
       $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->accountType);
       $this->assertEquals(LoginAccountType::get(0), $this->testObject->accountType->value);
-      $this->assertEquals(0, $this->testObject->accountType->value->id);
+      $this->assertEquals(0, $this->testObject->accountType->value->key);
       $this->dataObject->typeID = 4;
       $this->assertEquals(LoginAccountType::get(4), $this->testObject->accountType->value);
-      $this->assertEquals(4, $this->testObject->accountType->value->id);
+      $this->assertEquals(4, $this->testObject->accountType->value->key);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');

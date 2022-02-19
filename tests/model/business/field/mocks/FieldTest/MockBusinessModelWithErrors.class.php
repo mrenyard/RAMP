@@ -21,7 +21,6 @@
 namespace tests\svelte\model\business\field\mocks\FieldTest;
 
 use svelte\core\Str;
-use svelte\core\Collection;
 use svelte\condition\PostData;
 
 /**

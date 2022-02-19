@@ -151,7 +151,7 @@ class MockBusinessModelManager extends BusinessModelManager
   public function update(BusinessModel $model)
   {
     if (!isset(self::$updateLog)) { self::$updateLog = array(); }
-    self::$updateLog[get_class($model) . ':' . $model->key] = 'updated ' . date('H:i:s');
+    self::$updateLog[get_class($model) . ':' . $model->primaryKey] = 'updated ' . date('H:i:s');
     $model->updated();
   }
 

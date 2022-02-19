@@ -496,7 +496,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
           'WHERE property=:property';
       $this->assertEquals($expectedLogStatement, \ChromePhp::getMessages()[$i++]);
       $c = ($i == 1) ? 'valueC' : 'newValueC';
-      $expectedLogValues = 'LOG:values: ' . $record->key . ', ' .
+      $expectedLogValues = 'LOG:values: ' . $record->primaryKey . ', ' .
         $record->propertyA->value . ', ' . $record->propertyB->value . ', ' . $c;
       $this->assertEquals($expectedLogValues, \ChromePhp::getMessages()[$i++]);
     }

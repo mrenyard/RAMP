@@ -1,11 +1,11 @@
 RAMP
-======
+====
 
 **Rapid web application development environment for building accessible,
 flexible, customisable web systems using the LAMP development Stack**
 
 
-DESIGN PRINCIPLES FOR SVELTE
+DESIGN PRINCIPLES FOR RAMP
 ---------------------------------------------------------
 
 Rapid Development path from a good data structure design

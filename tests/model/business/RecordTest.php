@@ -27,7 +27,6 @@ require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/svelte/condition/Operator.class.php';
@@ -45,6 +44,7 @@ require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
@@ -110,7 +110,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@link \svelte\model\Model}
    * - assert is instance of {@link \svelte\model\business\BusinessModel}
    * - assert is instance of {@link \svelte\model\business\Record}
-   * - assert is instance of {@link \svelte\core\iOption}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
@@ -124,7 +123,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
     $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\svelte\model\business\Record', $this->testObject);
-    $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
@@ -156,29 +154,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
       $this->assertSame('concrete-record:new', (string)$this->testObject->id);
-      return;
-    }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for \svelte\model\business\Record::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link svelte.model.business.Record#method_get_description svelte\model\business\Record::description
-   */
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertEquals('concrete-record:new', (string)$this->testObject->description);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -336,7 +311,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         );
         $this->testObject->setPropertyValue('property5', 'GOOD');
         $this->assertEquals('GOOD', $this->dataObject->property5);
-        /*try {
+        try {
           unset($this->testObject['property5']);
         } catch (\BadMethodCallException $expected) {
           $this->assertEquals(
@@ -344,7 +319,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
             $expected->getMessage()
           );
           return;
-        }*/
+        }
         return;
       }
     }
@@ -386,7 +361,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('3', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('1','4','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertTrue($this->testObject->isModified);
@@ -431,7 +406,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('4', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
@@ -526,7 +501,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST6 = array(
@@ -637,7 +612,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('pkey', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->id);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertEquals(array('3','4','5'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST10 = array(
@@ -654,20 +629,20 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * - assert {@link \svelte\core\PropertyNotSetException} thrown when unable
    *   to set undefined or inaccessible property
    * @link svelte.model.business.Record#method__set svelte\model\business\Record::__set()
-   */
+   *
   public function test__set()
   {
     $this->expectException(PropertyNotSetException::class);
     $this->testObject->property2 = 1;
-  }
+  }*/
 
    /**
    * Collection of assertions for \svelte\model\business\Record::count.
    * - assert return expected int value related to the number of child Records held.
    * @link svelte.model.business.Record#method_count svelte\model\business\Record::count
-   */
+   *
   public function testCount()
   {
     $this->assertSame(3 ,$this->testObject->count);
-  }
+  }*/
 }

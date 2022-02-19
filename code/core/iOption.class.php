@@ -26,17 +26,18 @@ namespace svelte\core;
  * RESPONSIBILITIES
  * - Describe base api for a choice.
  *
- * @property-read mixed $id Returns unique identifier (enum:int|URN:string|etc).
+ * @property-read mixed $key Returns unique identifier (enum:int|URN:string|etc).
  * @property-read \svelte\core\Str $description Returns description.
+ * @property-read bool $isSelected Returns whether this has been chosen.
  */
 interface iOption
 {
   /**
-   * Get key (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * Get key unique identifier (enum:int|URN:Str)
+   * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return mixed Key
    */
-  public function get_id();
+  public function get_key();
 
   /**
    * Get Description.
@@ -44,4 +45,10 @@ interface iOption
    * @return Str Description
    */
   public function get_description() : Str;
+
+  /**
+   * Returns whether this has been chosen.
+   * **DO NOT CALL DIRECTLY, USE this->isSelected;**
+   */
+  public function get_isSelected() : bool;
 }

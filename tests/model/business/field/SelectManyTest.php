@@ -26,7 +26,6 @@ require_once '/usr/share/php/svelte/core/iOption.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/Option.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
@@ -44,6 +43,7 @@ require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
@@ -53,9 +53,9 @@ use svelte\SETTING;
 use svelte\core\Str;
 use svelte\core\Collection;
 use svelte\core\OptionList;
-use svelte\core\Option;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
+use svelte\model\business\field\Option;
 use svelte\model\business\field\SelectMany;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;

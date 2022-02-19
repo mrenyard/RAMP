@@ -49,7 +49,7 @@ use svelte\core\PropertyNotSetException;
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
-abstract class Record extends BusinessModel implements iOption
+abstract class Record extends BusinessModel
 {
   private $dataObject;
   private $validFromSource;
@@ -90,11 +90,11 @@ abstract class Record extends BusinessModel implements iOption
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Unique identifier for *this*
    */
-  final public function get_id() : Str
+  final protected function get_id() : Str
   {
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
-    )->append($this->key);
+    )->append($this->get_primarykey());
   }
 
   /**
@@ -102,20 +102,10 @@ abstract class Record extends BusinessModel implements iOption
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \svelte\core\Str Value of primary key
    */
-  final protected function get_key() : Str
+  final protected function get_primarykey() : Str
   {
     $pkName = (string)$this->primaryKeyName();
     return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
-  }
-
-  /**
-   * Get description.
-   * **DO NOT CALL DIRECTLY, USE this->description;**
-   * @return svelte\core\Str Description
-   */
-  public function get_description() : Str
-  {
-    return $this->id;
   }
 
   /**

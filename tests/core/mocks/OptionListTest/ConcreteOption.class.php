@@ -30,33 +30,42 @@ use svelte\core\Str;
  */
 class ConcreteOption extends SvelteObject implements iOption
 {
-  private $id;
+  private $key;
   private $description;
+  private $selected;
 
   /**
    * Constructor for new instance of SimpleOption.
    * @param \svelte\core\Str $id String value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct($id, Str $description)
+  public function __construct($key, Str $description)
   {
-    $this->id = $id;
+    $this->key = $key;
     $this->description = $description;
   }
 
   /**
-   * A test getter for ConcreteOption::getId
+   * A test getter for ConcreteOption::get_key
    */
-  public function get_id()
+  public function get_key()
   {
-    return $this->id;
+    return $this->key;
   }
 
   /**
-   * A test getter for ConcreteOption::getDescription
+   * A test getter for ConcreteOption::get_description
    */
   public function get_description() : Str
   {
     return $this->description;
+  }
+
+  /**
+   * A test getter for ConcreteOption::get_isSelected
+   */
+  public function get_isSelected() : bool
+  {
+    //return $this->selected;
   }
 }
