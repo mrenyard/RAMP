@@ -52,8 +52,7 @@ class Collection extends SvelteObject implements iCollection
    */
   public function __construct(Str $compositeType = null, bool $deepClone = null)
   {
-    $compositeType = (isset($compositeType)) ? (string)$compositeType :
-      '\svelte\core\SvelteObject';
+    $compositeType = (isset($compositeType)) ? (string)$compositeType : '\svelte\core\SvelteObject';
     if (!class_exists($compositeType) && !interface_exists($compositeType)) {
       throw new \InvalidArgumentException(
         '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'

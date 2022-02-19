@@ -24,6 +24,7 @@ namespace svelte\model\business\field;
 use svelte\core\Str;
 use svelte\core\iCollection;
 use svelte\core\Collection;
+use svelte\core\OptionList;
 use svelte\condition\PostData;
 use svelte\model\business\BusinessModel;
 use svelte\model\business\Record;
@@ -53,13 +54,13 @@ abstract class Field extends BusinessModel
    * Base constructor for Field related to a single property of containing record.
    * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\core\iCollection $children Collection of child business models.
+   * @param \svelte\core\OptionList $options Collection of iOptions, either suggestions or to select from.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, iCollection $children = null)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options = null)
   {
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
-    parent::__construct($children);
+    parent::__construct($options);
   }
 
   /**

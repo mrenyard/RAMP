@@ -26,6 +26,7 @@ require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/iCollection.class.php';
 require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
+require_once '/usr/share/php/svelte/core/OptionList.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/svelte/condition/Operator.class.php';
 require_once '/usr/share/php/svelte/condition/Condition.class.php';
@@ -49,6 +50,7 @@ require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/M
 use svelte\SETTING;
 use svelte\core\Str;
 use svelte\core\Collection;
+use svelte\core\OptionList;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\Record;
@@ -80,8 +82,8 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   {
     MockField::reset();
     MockBusinessModel::reset();
-    $this->children = new Collection();
-    $this->grandchildren = new Collection();
+    $this->children = new OptionList();
+    $this->grandchildren = new OptionList();
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);

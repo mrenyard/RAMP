@@ -20,6 +20,8 @@
  */
 namespace svelte\core;
 
+use svelte\core\Str;
+
 /**
  * Collection for iOption.
  *
@@ -38,12 +40,15 @@ class OptionList extends Collection
    * POSTCONDITIONS
    * - New collection containing provided {@link \svelte\core\iOption}s from $optionCastableCollection or Empty.
    * @param \svelte\core\iCollection $optionCastableCollection Collection of iOptions to be stored in *this*.
+   * @param \svelte\core\Str $optionCastableType Full class name for Type of objects to be stored in this collection.
    * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
    */
-  public function __construct(iCollection $optionCastableCollection = null) {
-    parent::__construct(Str::set('svelte\core\iOption'));
-    if (isset($optionCastableCollection)) {
-      foreach ($optionCastableCollection as $option) {
+  public function __construct(iCollection $iOptionCastableCollection = null, Str $iOptionCastableType = null)
+  {
+    $compositeType = ($iOptionCastableType == null)? Str::set('svelte\core\iOption') : $iOptionCastableType;
+    parent::__construct($compositeType);
+    if (isset($iOptionCastableCollection)) {
+      foreach ($iOptionCastableCollection as $option) {
         parent::add($option);
       }
     }
