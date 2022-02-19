@@ -41,7 +41,7 @@ class OptionList extends Collection
    * - New collection containing provided {@link \svelte\core\iOption}s from $optionCastableCollection or Empty.
    * @param \svelte\core\iCollection $optionCastableCollection Collection of iOptions to be stored in *this*.
    * @param \svelte\core\Str $optionCastableType Full class name for Type of objects to be stored in this collection.
-   * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
+   * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to provided $iOptionCastableType or iOption.
    */
   public function __construct(iCollection $iOptionCastableCollection = null, Str $iOptionCastableType = null)
   {

@@ -30,6 +30,7 @@ require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
 
 require_once '/usr/share/php/tests/svelte/core/mocks/OptionListTest/NotAnOption.class.php';
 require_once '/usr/share/php/tests/svelte/core/mocks/OptionListTest/ConcreteOption.class.php';
+require_once '/usr/share/php/tests/svelte/core/mocks/OptionListTest/SpecialistOption.class.php';
 
 use svelte\core\Str;
 use svelte\core\OptionList;
@@ -37,6 +38,7 @@ use svelte\core\Collection;
 
 use tests\svelte\core\mocks\OptionListTest\NotAnOption;
 use tests\svelte\core\mocks\OptionListTest\ConcreteOption;
+use tests\svelte\core\mocks\OptionListTest\SpecialistOption;
 
 /**
  * Collection of tests for \svelte\core\OptionList.
@@ -44,7 +46,6 @@ use tests\svelte\core\mocks\OptionListTest\ConcreteOption;
  * COLLABORATORS
  * - {@link \tests\svelte\core\mocks\OptionListTest\ConcreteOption}
  * - {@link \tests\svelte\core\mocks\OptionListTest\NotAnOption}
- * - {@link \tests\svelte\core\mocks\OptionListTest\ExtendedAsEnum}
  */
 class OptionlistTest extends \PHPUnit\Framework\TestCase
 {
@@ -56,15 +57,14 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testCollection = new Collection(Str::set('svelte\core\SvelteObject'));
+    $this->testCollection = new Collection();
     for ($i=0; $i < 5; $i++) {
       $this->testCollection->add(new ConcreteOption($i, Str::set('VALUE' . $i)));
     }
-    $this->testObject = new OptionList($this->testCollection);
   }
 
   /**
-   * Collection of assertions for svelte\core\OptionList::__construct().
+   * Collection of assertions for svelte\core\OptionList::__construct() no arguments.
    * - assert is instance of {@link \svelte\core\OptionList}
    * - assert is instance of {@link \svelte\core\Collection}
    * - assert is instance of {@link \svelte\core\SvelteObject}
@@ -75,8 +75,48 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
    *   - with message: <em>'[provided object]  NOT instanceof svelte\core\iOption'</em>
    * @link svelte.core.Collection \svelte\core\Collection
    */
-  public function test__Construct()
+  public function test__ConstructNoAguments()
   {
+    $this->testObject = new OptionList();
+    $this->assertInstanceOf('svelte\core\OptionList', $this->testObject);
+    $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
+    $this->assertInstanceOf('svelte\core\iCollection', $this->testObject);
+    $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
+    $this->assertInstanceOf('\Countable', $this->testObject);
+    $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+
+    foreach ($this->testCollection as $item) {
+      $this->testObject->add($item);
+    }
+
+    $this->assertSame($this->testObject->count, $this->testCollection->count);
+    
+    try {
+      $this->testObject->add(new NotAnOption());
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertSame(
+        'tests\svelte\core\mocks\OptionListTest\NotAnOption NOT instanceof svelte\core\iOption',
+        $expected->getMessage()
+      );
+      return;
+    }
+  }
+
+  /**
+   * Collection of assertions for svelte\core\OptionList::__construct() with provided iOption Collection.
+   * - assert is instance of {@link \svelte\core\OptionList}
+   * - assert is instance of {@link \svelte\core\Collection}
+   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert implements \IteratorAggregate
+   * - assert implements \Countable
+   * - assert implements \ArrayAccess
+   * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
+   *   - with message: <em>'[provided object]  NOT instanceof svelte\core\iOption'</em>
+   * @link svelte.core.Collection \svelte\core\Collection
+   */
+  public function test__ConstructWithCollection()
+  {
+    $this->testObject = new OptionList($this->testCollection);
     $this->assertInstanceOf('svelte\core\OptionList', $this->testObject);
     $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('svelte\core\iCollection', $this->testObject);
@@ -94,6 +134,54 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
         $expected->getMessage()
       );
       return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised');
+  }
+
+  
+  /**
+   * Collection of assertions for svelte\core\OptionList::__construct() for specialist iOption Collection.
+   * - assert is instance of {@link \svelte\core\OptionList}
+   * - assert is instance of {@link \svelte\core\Collection}
+   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert implements \IteratorAggregate
+   * - assert implements \Countable
+   * - assert implements \ArrayAccess
+   * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
+   *   - with message: <em>'[provided object]  NOT instanceof svelte\core\iOption'</em>
+   * @link svelte.core.Collection \svelte\core\Collection
+   */
+  public function test__ConstructSpecialist()
+  {  
+    $testCollection2 = new Collection();
+    for ($i=0; $i < 5; $i++) {
+      $testCollection2->add(new SpecialistOption($i, Str::set('VALUE' . $i)));
+    }
+
+    $this->testObject = new OptionList($testCollection2, Str::set('tests\svelte\core\mocks\OptionListTest\SpecialistOption'));
+    $this->assertInstanceOf('svelte\core\OptionList', $this->testObject);
+    $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
+    $this->assertInstanceOf('svelte\core\iCollection', $this->testObject);
+    $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
+    $this->assertInstanceOf('\Countable', $this->testObject);
+    $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+
+    try {
+      $this->testObject->add(new ConcreteOption($i, Str::set('VALUE' . $i)));
+    } catch (\InvalidArgumentException $expected) { 
+      $this->assertSame(
+        'tests\svelte\core\mocks\OptionListTest\ConcreteOption NOT instanceof tests\svelte\core\mocks\OptionListTest\SpecialistOption',
+        $expected->getMessage()
+      ); 
+      try {
+        $this->testObject2 = new OptionList($this->testCollection, Str::set('tests\svelte\core\mocks\OptionListTest\SpecialistOption'));
+      } catch (\InvalidArgumentException $expected) {
+        $this->assertSame(
+          'tests\svelte\core\mocks\OptionListTest\ConcreteOption NOT instanceof tests\svelte\core\mocks\OptionListTest\SpecialistOption',
+          $expected->getMessage()
+        );
+        return;
+      }
     }
     $this->fail('An expected \InvalidArgumentException has NOT been raised');
   }
