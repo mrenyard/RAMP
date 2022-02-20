@@ -40,12 +40,13 @@ require_once '/usr/share/php/svelte/model/Model.class.php';
 require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/svelte/model/business/Record.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockField.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
+//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
+//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
 use svelte\SETTING;
 use svelte\core\Str;
@@ -54,11 +55,12 @@ use svelte\core\OptionList;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\Record;
+use svelte\model\business\field\Option;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockField;
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
-use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
-use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
+//use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
+//use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
 
 /**
  * Collection of tests for \svelte\model\business\field\Field.
@@ -72,8 +74,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   private $testChild1;
   private $testChild2;
   private $testChild3;
-  private $grandchildren;
-  private $grandchild;
 
   /**
    * Setup - add variables
@@ -81,26 +81,24 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     MockField::reset();
-    MockBusinessModel::reset();
-    $this->children = new OptionList();
-    $this->grandchildren = new OptionList();
+    // MockBusinessModel::reset();
+    $this->children = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
+    // $this->grandchildren = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
-    $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
-    $this->testChild1 = new MockBusinessModel('First child');
-    $this->testChild2 = new MockBusinessModelWithErrors('Second child');
-    $this->testChild3 = new MockBusinessModel('Third child', $this->grandchildren);
-    $this->grandchild = new MockBusinessModelWithErrors('First grandchild');
+    $this->testChild1 = new Option(1, Str::set('First child'));
+    $this->testChild2 = new Option(2, Str::set('Second child'));
+    $this->testChild3 = new Option(3, Str::set('Third child'));
     $this->children->add($this->testChild1);
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
-    $this->grandchildren->add($this->grandchild);
+    $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::__construct().
+    * Collection of assertions for \svelte\model\business\field\Field::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
    * - assert is instance of {@link \svelte\model\Model}
    * - assert is instance of {@link \svelte\model\business\BusinessModel}
@@ -119,6 +117,17 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject);
+ 
+    try {
+      new MockField(Str::set('aProperty'), $this->mockRecord, new OptionList());
+    } catch(\InvalidArgumentException $expected) {
+      $this->assertEquals(
+        'OptionList $options compositeType MUST be \svelte\model\business\field\Option',
+        $expected->getMessage()
+      );
+      return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
   }
 
   /**
@@ -137,10 +146,9 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
-      $this->assertSame('mock-business-model:0', (string)$this->testChild1->id);
-      $this->assertSame('mock-business-model:1', (string)$this->testChild2->id);
-      $this->assertSame('mock-business-model:2', (string)$this->testChild3->id);
-      //$this->assertSame('mock-business-model:3', (string)$this->grandchild->id);
+      $this->assertSame('First child', (string)$this->testChild1->description);
+      $this->assertSame('Second child', (string)$this->testChild2->description);
+      $this->assertSame('Third child', (string)$this->testChild3->description);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -180,10 +188,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
       $this->assertEquals(' mock-field field', (string)$this->testObject->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->testChild1->type);
-      $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->testChild2->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->testChild3->type);
-      $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -204,7 +208,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertSame($child, $iterator->current());
-      $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
+      //$this->assertSame('mock-business-model:' . $i++, (string)$child->description);
       $iterator->next();
     }
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
@@ -221,11 +225,11 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[0]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[1]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[1]);
       $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[2]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[2]);
       $this->assertSame($this->testChild3, $this->testObject[2]);
       return;
     }
@@ -243,10 +247,8 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(isset($this->testObject[0]));
     $this->assertTrue(isset($this->testObject[1]));
     $this->assertTrue(isset($this->testObject[2]));
-    $this->assertTrue(isset($this->testObject[2][0]));
     $this->assertFalse(isset($this->testObject[3]));
   }
-
   /**
    * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
    * for \svelte\model\business\BusinessModel::offsetUnset.
@@ -259,7 +261,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetSetOffsetUnset()
   {
-    $object = new MockBusinessModel('Forth child');
+    $object = new Option(4, Str::set('Forth child'));
     $this->testObject[3] = $object;
     $this->assertSame($object, $this->testObject[3]);
     unset($this->testObject[3]);
@@ -279,10 +281,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertSame(0, $this->testChild1->validateCount);
-    $this->assertSame(0, $this->testChild2->validateCount);
-    $this->assertSame(0, $this->testChild3->validateCount);
-    $this->assertSame(0, $this->grandchild->validateCount);
   }
 
   /**
@@ -304,10 +302,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame('GOOD', $this->dataObject->aProperty);
-    $this->assertSame(0, $this->testChild1->validateCount);
-    $this->assertSame(0, $this->testChild2->validateCount);
-    $this->assertSame(0, $this->testChild3->validateCount);
-    $this->assertSame(0, $this->grandchild->validateCount);
   }
 
   /**
@@ -324,9 +318,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertSame(0, $this->testChild1->hasErrorsCount);
-    $this->assertSame(0, $this->testChild2->hasErrorsCount);
-    $this->assertSame(0, $this->testChild3->hasErrorsCount);
   }
 
   /**

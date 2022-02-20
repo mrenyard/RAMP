@@ -45,11 +45,19 @@ class Option extends SvelteObject implements iOption
    * @param int $id  Value to be set for id.
    * @param \svelte\core\Str $description String value to be set for description.
    */
-  public function __construct(int $key, Str $description) //, Field $parentField)
+  public function __construct(int $key, Str $description)
   {
     $this->key = $key;
     $this->description = $description;
-    //$this->parentField = $parentField;
+  }
+
+  /**
+   * Sets relationship to parent field'
+   * @param Field $value Parent field.
+   */
+  public function setParentField(Field $value)
+  {
+    $this->parentField = $value;
   }
 
   /**
@@ -78,17 +86,19 @@ class Option extends SvelteObject implements iOption
    */
   public function get_isSelected() : bool
   {
-    switch(get_class($this->parentField)) {
-      case 'Flag':
-        return $parentField->value;
-      case 'SelectOne':
-        return ($this->parentField->value->key = $this->key);
-      case 'SelectMany':
-        foreach($value as $selected) {
-          if ($selected->key == $this->key) { return true; }
-        }
-      default:
-        return false;
+    if (isset($this->parentField->value)) {
+      switch(array_pop(explode('\\', get_class($this->parentField)))) {
+        case 'Flag':
+          return (bool)$parentField->value;
+        case 'SelectOne':
+          return ($this->parentField->value->key = $this->key);
+        case 'SelectMany':
+          foreach($this->parentField->value as $selected) {
+            if ($selected->key == $this->key) { return true; }
+          }
+          // PASS THROUGH
+      }
     }
+    return false;
   }
 }

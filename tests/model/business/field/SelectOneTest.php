@@ -41,12 +41,11 @@ require_once '/usr/share/php/svelte/model/Model.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/svelte/model/business/Record.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
 use svelte\SETTING;
 use svelte\core\Str;
@@ -54,11 +53,10 @@ use svelte\core\Collection;
 use svelte\core\OptionList;
 use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
+use svelte\model\business\field\Option;
 use svelte\model\business\field\SelectOne;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
-use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
-use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
 
 use svelte\model\business\Record;
 
@@ -82,12 +80,12 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   {
     SETTING::$SVELTE_LOCAL_DIR = '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/';
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
-    MockBusinessModel::reset();
+    //MockBusinessModel::reset();
     $this->options = new Collection();
-    $this->option0 = new MockBusinessModel('No option selected');
-    $this->option1 = new MockBusinessModel('First child');
-    $this->option2 = new MockBusinessModelWithErrors('Second child');
-    $this->option3 = new MockBusinessModel('Third child');
+    $this->option0 = new Option(0, Str::set('No option selected'));
+    $this->option1 = new Option(1, Str::set('First child'));
+    $this->option2 = new Option(2, Str::set('Second child'));
+    $this->option3 = new Option(3, Str::set('Third child'));
     $this->options->add($this->option0);
     $this->options->add($this->option1);
     $this->options->add($this->option2);
@@ -98,7 +96,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->testObject = new SelectOne(
       Str::set('aProperty'),
       $this->mockRecord,
-      new OptionList($this->options)
+      new OptionList($this->options, Str::set('\svelte\model\business\field\Option'))
     );
   }
 
@@ -142,10 +140,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
-      $this->assertSame('mock-business-model:0', (string)$this->option0->id);
-      $this->assertSame('mock-business-model:1', (string)$this->option1->id);
-      $this->assertSame('mock-business-model:2', (string)$this->option2->id);
-      $this->assertSame('mock-business-model:3', (string)$this->option3->id);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -165,7 +159,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $this->assertSame($this->option0, $this->testObject->value);
-      $this->assertSame('mock-business-model:0', (string)$this->testObject->value->id);
+      $this->assertSame(0, $this->testObject->value->key);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -187,9 +181,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
       $this->assertEquals(' select-one field', (string)$this->testObject->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->option1->type);
-      $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->option2->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->option3->type);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -210,7 +201,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertSame($child, $iterator->current());
-      $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
+      // $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
       $iterator->next();
     }
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
@@ -227,13 +218,13 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[0]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[0]);
       $this->assertSame($this->option0, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[1]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[1]);
       $this->assertSame($this->option1, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[2]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[2]);
       $this->assertSame($this->option2, $this->testObject[2]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[3]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[3]);
       $this->assertSame($this->option3, $this->testObject[3]);
       return;
     }
@@ -265,7 +256,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage = 'Array access setting is not allowed.';
-    $this->testObject[3] = new MockBusinessModel('Forth child');
+    $this->testObject[3] = new Option(4, Str::set('Forth child'));
   }
 
   /**
@@ -289,14 +280,15 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
-   */
+   *
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
+    $this->assertSame(0, $this->testObject->validateCount);
     $this->assertSame(0, $this->option1->validateCount);
     $this->assertSame(0, $this->option2->validateCount);
     $this->assertSame(0, $this->option3->validateCount);
-  }
+  }*/
 
   /**
    * Further collection of assertions for \svelte\model\business\field\Field::validate(), where
@@ -312,7 +304,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleCalled()
   {
-    $selected = 'mock-business-model:2';
+    $selected = 2;
     $this->assertNull($this->dataObject->aProperty);
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
     $this->testObject->validate(PostData::build(array(
@@ -320,9 +312,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     )));
     $this->assertTrue($this->mockRecord->isModified);
     $this->assertEquals($selected, $this->dataObject->aProperty);
-    $this->assertSame(0, $this->option1->validateCount);
-    $this->assertSame(0, $this->option2->validateCount);
-    $this->assertSame(0, $this->option3->validateCount);
   }
 
   /**
@@ -339,9 +328,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertNull($this->dataObject->aProperty);
-    $this->assertSame(0, $this->option1->hasErrorsCount);
-    $this->assertSame(0, $this->option2->hasErrorsCount);
-    $this->assertSame(0, $this->option3->hasErrorsCount);
   }
 
   /**

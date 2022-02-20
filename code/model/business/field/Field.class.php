@@ -54,13 +54,18 @@ abstract class Field extends BusinessModel
    * Base constructor for Field related to a single property of containing record.
    * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\core\OptionList $options Collection of iOptions, either suggestions or to select from.
+   * @param \svelte\core\OptionList $options Collection of field\Options, either suggestions or to select from.
+   * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options = null)
   {
+    if (($options != null) && (!$options->isCompositeType('\svelte\model\business\field\Option'))) {
+      throw new \InvalidArgumentException('OptionList $options compositeType MUST be \svelte\model\business\field\Option'); 
+    }
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
     parent::__construct($options);
+    //foreach ($options as $option) { $option->setParentField($this); }
   }
 
   /**
@@ -81,11 +86,11 @@ abstract class Field extends BusinessModel
    * Get Label
    * **DO NOT CALL DIRECTLY, USE this->label;**
    * @return \svelte\core\Str Label for *this*
-   */
+   *
   protected function get_label() : Str
   {
     return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->dataObjectPropertyName))));
-  }
+  }*/
 
   /**
    * Returns value held by relevant property of containing record.

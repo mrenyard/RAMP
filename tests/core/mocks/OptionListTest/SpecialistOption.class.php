@@ -27,14 +27,9 @@ use svelte\core\Str;
 /**
  * Concrete implementation of \svelte\core\iOption for testing against.
  * .
- * TODO:mrenyard: remove exasive code?
  */
-class ConcreteOption extends SvelteObject implements iOption
+class SpecialistOption extends SvelteObject implements iOption
 {
-  //private $key;
-  //private $description;
-  //private $selected;
-
   /**
    * Constructor for new instance of SimpleOption.
    * @param \svelte\core\Str $id String value to be set for id.
@@ -42,31 +37,26 @@ class ConcreteOption extends SvelteObject implements iOption
    */
   public function __construct($key, Str $description)
   {
-    //$this->key = $key;
-    //$this->description = $description;
   }
 
   /**
-   * A test getter for ConcreteOption::get_key
+   * A test getter for SpecialistOption::get_key
    */
   public function get_key()
   {
-    //return $this->key;
   }
 
   /**
-   * A test getter for ConcreteOption::get_description
+   * A test getter for SpecialistOption::get_description
    */
   public function get_description() : Str
   {
-    //return $this->description;
   }
 
   /**
-   * A test getter for ConcreteOption::get_isSelected
+   * A test getter for SpecialistOption::get_isSelected
    */
   public function get_isSelected() : bool
   {
-    //return $this->selected;
   }
 }

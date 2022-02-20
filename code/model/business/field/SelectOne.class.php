@@ -45,11 +45,11 @@ final class SelectOne extends Field
    * Creates select one field type, tied to a single property of containing record.
    * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\core\OptionList $options Collection of avalible iOptions
+   * @param \svelte\core\OptionList $options Collection of available field\Options
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
   {
-    parent::__construct($dataObjectPropertyName, $containingRecord, $options);
+    parent::__construct($dataObjectPropertyName, $containingRecord, $options);  
   }
 
   /**
@@ -80,7 +80,7 @@ final class SelectOne extends Field
   final protected function get_value()
   {
     $index = $this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
-    return (is_int($index)) ? $this[$index] : $this[0];
+    return (isset($index))? $this[$index] : $this[0];
   }
 
   /**

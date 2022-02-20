@@ -40,6 +40,7 @@ class MockRecord extends Record
 
   protected function get_aProperty()
   {
+    return $this->getPropertyValue('aProperty');
   }
 
   protected static function checkRequired($dataObject) : bool
