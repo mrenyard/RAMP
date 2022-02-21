@@ -28,7 +28,7 @@ use svelte\condition\PostData;
 use svelte\condition\Filter;
 use svelte\condition\FilterCondition;
 use svelte\model\business\SimpleBusinessModelDefinition;
-use svelte\model\business\LoginAccountTypeOption;
+//use svelte\model\business\LoginAccountTypeOption;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
 use svelte\model\business\validation\FailedValidationException;
@@ -109,11 +109,11 @@ final class Session extends SvelteObject
 
   /**
    * Returns wether the current authenticated $_SESSION has at least the specified authorization level.
-   * @param LoginAccountTypeOption $authorizationLevel Authorization level to be surpassed.
+   * @param int $authorizationLevel Authorization level to be surpassed.
    * @return bool Current authenticated session login account authorized at authorization level
    * @throws \BadMethodCallException Session::instance() MUST be called prior to use
    */
-  public static function authorizedAs(LoginAccountTypeOption $authorizationLevel) : bool
+  public static function authorizedAs(int $authorizationLevel) : bool
   {
     if(!isset(self::$instance)) {
       throw new \BadMethodCallException(
@@ -121,9 +121,10 @@ final class Session extends SvelteObject
       );
     }
     return (
+      
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid) &&
-      (self::$instance->loginAccount->accountType->value->key >= $authorizationLevel->key)
+      (self::$instance->loginAccount->accountType->value->key >= $authorizationLevel)
     );
   }
 
@@ -157,7 +158,7 @@ final class Session extends SvelteObject
    * - {@link \svelte\model\business\LoginAccount}
    * - {@link \svelte\http\Unauthorized401Exception}
    *
-   * @param LoginAccountTypeOption $authorizationLevel Required authorization Level
+   * @param int $authorizationLevel Required authorization Level
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
    * - Unauthenticated or insufficient authority
    * - Attempting POST to resource REQUIRING authentication or insufficient authority
@@ -169,7 +170,7 @@ final class Session extends SvelteObject
    * - SHOULD NEVER REACH HERE!
    * @throws BadMethodCallException Session::instance() MUST be called prior to use
    */
-  public function authorizeAs(LoginAccountTypeOption $authorizationLevel)
+  public function authorizeAs(int $authorizationLevel)
   {
     if (self::authorizedAs($authorizationLevel))
     {
@@ -182,7 +183,7 @@ final class Session extends SvelteObject
     $this->attemptAccess($authorizationLevel);
   }
 
-  private function attemptAccess(LoginAccountTypeOption $authorizationLevel)
+  private function attemptAccess(int $authorizationLevel)
   {
     $this->loginAccount->forcePasswordField = TRUE;
     if (!isset($_POST) || count($_POST) < 1) // GET request
@@ -218,7 +219,7 @@ final class Session extends SvelteObject
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
-        ((int)$this->loginAccount->accountType->value->key <= (int)$authorizationLevel->key)
+        ((int)$this->loginAccount->accountType->value->key <= $authorizationLevel)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -252,7 +253,7 @@ final class Session extends SvelteObject
       }
       catch (\OutOfBoundsException $confirmedEmailIsNew) // new login details successfully confirmed
       {
-        if ($authorizationLevel->key == 1)
+        if ($authorizationLevel == 1)
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
           $_SESSION['loginAccount'] = $this->loginAccount;

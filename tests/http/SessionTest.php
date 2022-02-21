@@ -70,7 +70,7 @@ require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/
 use svelte\SETTING;
 use svelte\http\Session;
 use svelte\http\Unauthorized401Exception;
-use svelte\model\business\LoginAccountTypeOption;
+use svelte\model\business\LoginAccountOptions;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
 
@@ -170,7 +170,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->key;
+    $dataObject->typeID = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
@@ -209,7 +209,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR()->key;
+    $dataObject->typeID = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
