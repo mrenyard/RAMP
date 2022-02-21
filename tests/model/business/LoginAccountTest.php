@@ -220,11 +220,9 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
         get_class($this->testObject) . '->accountType is NOT settable', $expected->getMessage()
       );
       $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->accountType);
-      $this->assertEquals(LoginAccountType::get(0), $this->testObject->accountType->value);
       $this->assertEquals(0, $this->testObject->accountType->value->key);
-      $this->dataObject->typeID = 4;
-      $this->assertEquals(LoginAccountType::get(4), $this->testObject->accountType->value);
-      $this->assertEquals(4, $this->testObject->accountType->value->key);
+      $this->dataObject->typeID = LoginAccountType::ADMINISTRATOR();
+      $this->assertEquals(LoginAccountType::ADMINISTRATOR(), $this->testObject->accountType->value->key);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');

@@ -141,7 +141,7 @@ class LoginAccount extends Record
       $this['accountType'] = new field\SelectOne(
         Str::set('typeID'),
         $this,
-        LoginAccountType::getInstance()
+        new LoginAccountType()
       );
     }
     return $this['accountType'];

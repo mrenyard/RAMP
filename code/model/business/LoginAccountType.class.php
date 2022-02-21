@@ -21,112 +21,62 @@
 namespace svelte\model\business;
 
 use svelte\core\Str;
-use svelte\core\iOption;
+//use svelte\core\iOption;
 use svelte\core\OptionList;
-use svelte\core\Collection;
+//use svelte\core\Collection;
 use svelte\model\business\field\Option;
 
 /**
- * A Single login account type.
- */
-class LoginAccountTypeOption extends Option
-{
-}
-
-/**
- * Pre defined enum/list of svelte\model\business\LoginAccountTypeOption.
+ * Pre defined enum/list for use as Login Account Types.
  * .
  */
 class LoginAccountType extends OptionList
 {
-  private static $instance;
-
-  /**
-   * Accessor to the full collection of enums
-   * @return svelte\model\business\LoginAccountTypeOption Full list of enum options
-   */
-  public static function getInstance() : OptionList
+  public function __construct()
   {
-    if (!isset(self::$instance)) {
-      self::$instance = new LoginAccountType();
-    }
-    return self::$instance;
+    parent::__construct(null, Str::set('\svelte\model\business\field\Option'));
+    $this->add(new Option(0, Str::set('Please choose:')));
+    $this->add(new Option(LoginAccountType::REGISTERED(), Str::set('Registered')));
+    $this->add(new Option(LoginAccountType::USER(), Str::set('User')));
+    $this->add(new Option(LoginAccountType::AFFILIATE(), Str::set('Affiliate')));
+    $this->add(new Option(LoginAccountType::ADMINISTRATOR(), Str::set('Administrator')));
+    $this->add(new Option(LoginAccountType::ADMINISTRATOR_MANAGER(), Str::set('Administrator Manager')));
+    $this->add(new Option(LoginAccountType::SYSTEM_ADMINISTRATOR(), Str::set('System Administrator')));
   }
 
   /**
-   * Accessor to each of a collection of enums
-   * @param int $index Index/ID of requiered LoginAccountTypeOption
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType of provided index
+   * Returns the REGISTERED enum of LoginAccountType.
+   * @return int LoginAccountType 'REGISTERED' enum 1
    */
-  public static function get(int $index) : LoginAccountTypeOption
-  {
-    return self::getInstance()[$index];
-  }
-
-  private function __construct()
-  {
-    $list = new Collection();
-    $list[0] = new LoginAccountTypeOption(0, Str::set('Please choose:'));
-    $list[1] = new LoginAccountTypeOption(1, Str::set('Registered'));
-    $list[2] = new LoginAccountTypeOption(2, Str::set('User'));
-    $list[3] = new LoginAccountTypeOption(3, Str::set('Affiliate'));
-    $list[4] = new LoginAccountTypeOption(4, Str::set('Administrator'));
-    $list[5] = new LoginAccountTypeOption(5, Str::set('Administrator Manager'));
-    $list[6] = new LoginAccountTypeOption(6, Str::set('System Administrator'));
-    parent::__construct($list);
-  }
+  public static function REGISTERED() : int { return 1; }
 
   /**
-   * Returns the REGISTERED variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType 'REGISTERED' at index 1
+   * Returns the USER enum of LoginAccountType.
+   * @return int LoginAccountType 'USER' enum 2
    */
-  public static function REGISTERED() : LoginAccountTypeOption
-  {
-    return self::get(1);
-  }
+  public static function USER() : int { return 2; }
 
   /**
-   * Returns the USER variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType 'USER' at index 2
+   * Returns the AFFILIATE enum of LoginAccountType.
+   * @return int LoginAccountType 'AFFILIATE' enum 3
    */
-  public static function USER() : LoginAccountTypeOption
-  {
-    return self::get(2);
-  }
+  public static function AFFILIATE() : int { return 3; }
 
   /**
-   * Returns the AFFILIATE variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType 'AFFILIATE' at index 3
+   * Returns the ADMINISTRATOR enum of LoginAccountType.
+   * @return int LoginAccountType 'ADMINISTRATOR' enum 4
    */
-  public static function AFFILIATE() : LoginAccountTypeOption
-  {
-    return self::get(3);
-  }
+  public static function ADMINISTRATOR() : int { return 4; }
 
   /**
-   * Returns the ADMINISTRATOR variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOptionOption LoginAccountType 'ADMINISTRATOR' at index 4
+   * Returns the ADMINISTRATOR_MANAGER enum of LoginAccountType.
+   * @return int LoginAccountType 'ADMINISTRATOR_MANAGER' enum 5
    */
-  public static function ADMINISTRATOR() : LoginAccountTypeOption
-  {
-    return self::get(4);
-  }
+  public static function ADMINISTRATOR_MANAGER() : int { return 5; }
 
   /**
-   * Returns the ADMINISTRATOR_MANAGER variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType 'ADMINISTRATOR_MANAGER' at index 5
+   * Returns the SYSTEM_ADMINISTRATOR enum of LoginAccountType.
+   * @return int LoginAccountType 'SYSTEM_ADMINISTRATOR' enum 6
    */
-  public static function ADMINISTRATOR_MANAGER() : LoginAccountTypeOption
-  {
-    return self::get(5);
-  }
-
-  /**
-   * Returns the SYSTEM_ADMINISTRATOR variant of LoginAccountType.
-   * @return \svelte\model\business\LoginAccountTypeOption LoginAccountType 'SYSTEM_ADMINISTRATOR' at index 6
-   */
-  public static function SYSTEM_ADMINISTRATOR() : LoginAccountTypeOption
-  {
-    return self::get(6);
-  }
+  public static function SYSTEM_ADMINISTRATOR() : int { return 6; }
 }
