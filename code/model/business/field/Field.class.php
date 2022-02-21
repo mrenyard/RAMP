@@ -86,11 +86,11 @@ abstract class Field extends BusinessModel
    * Get Label
    * **DO NOT CALL DIRECTLY, USE this->label;**
    * @return \svelte\core\Str Label for *this*
-   *
+   */
   protected function get_label() : Str
   {
     return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->dataObjectPropertyName))));
-  }*/
+  }
 
   /**
    * Returns value held by relevant property of containing record.
