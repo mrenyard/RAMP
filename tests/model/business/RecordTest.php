@@ -450,7 +450,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame(ConcreteOptionList::get(0), $this->testObject->property2->value);
+    $this->assertSame(0, $this->testObject->property2->value->key);
+    $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
     $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST4 = array(
@@ -557,7 +558,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame(ConcreteOptionList::get(0), $this->testObject->property2->value);
+    $this->assertSame(0, $this->testObject->property2->value->key);
+    $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
     $_POST8 = array(
@@ -629,20 +631,20 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * - assert {@link \svelte\core\PropertyNotSetException} thrown when unable
    *   to set undefined or inaccessible property
    * @link svelte.model.business.Record#method__set svelte\model\business\Record::__set()
-   *
+   */
   public function test__set()
   {
     $this->expectException(PropertyNotSetException::class);
     $this->testObject->property2 = 1;
-  }*/
+  }
 
    /**
    * Collection of assertions for \svelte\model\business\Record::count.
    * - assert return expected int value related to the number of child Records held.
    * @link svelte.model.business.Record#method_count svelte\model\business\Record::count
-   *
+   */
   public function testCount()
   {
     $this->assertSame(3 ,$this->testObject->count);
-  }*/
+  }
 }

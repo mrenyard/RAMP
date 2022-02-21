@@ -58,7 +58,7 @@ class ConcreteRecord extends Record
       $this['property2'] = new SelectOne(
         Str::set('property2'),
         $this,
-        ConcreteOptionList::getInstance()
+        new ConcreteOptionList()
       );
     }
     return $this['property2'];
@@ -70,7 +70,7 @@ class ConcreteRecord extends Record
       $this['property3'] = new SelectMany(
         Str::set('property3'),
         $this,
-        ConcreteOptionList::getInstance()
+        new ConcreteOptionList()
       );
     }
     return $this['property3'];
