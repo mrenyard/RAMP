@@ -23,6 +23,7 @@ namespace svelte\model\business\field;
 
 use svelte\core\Str;
 use svelte\core\OptionList;
+use svelte\core\Collection;
 use svelte\model\business\Record;
 use svelte\model\business\FailedValidationException;
 
@@ -79,7 +80,12 @@ final class SelectMany extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
+    $selection = new Collection();
+    $selectionArray = (array)$this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
+    foreach ($selectionArray as $index) {
+      $selection->add($this[$index]);
+    }
+    return $selection;
   }
 
   /**

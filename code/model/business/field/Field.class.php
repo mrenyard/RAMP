@@ -65,7 +65,7 @@ abstract class Field extends BusinessModel
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
     parent::__construct($options);
-    //foreach ($options as $option) { $option->setParentField($this); }
+    // foreach ($options as $option) { $option->setParentField($this); }
   }
 
   /**

@@ -45,8 +45,6 @@ require_once '/usr/share/php/svelte/model/business/FailedValidationException.cla
 
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockField.class.php';
-//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModel.class.php';
-//require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockBusinessModelWithErrors.class.php';
 
 use svelte\SETTING;
 use svelte\core\Str;
@@ -59,8 +57,6 @@ use svelte\model\business\field\Option;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockField;
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
-//use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModel;
-//use tests\svelte\model\business\field\mocks\FieldTest\MockBusinessModelWithErrors;
 
 /**
  * Collection of tests for \svelte\model\business\field\Field.
@@ -81,9 +77,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     MockField::reset();
-    // MockBusinessModel::reset();
     $this->children = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
-    // $this->grandchildren = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
@@ -208,7 +202,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertSame($child, $iterator->current());
-      //$this->assertSame('mock-business-model:' . $i++, (string)$child->description);
       $iterator->next();
     }
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);

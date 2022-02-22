@@ -55,10 +55,10 @@ use svelte\core\PropertyNotSetException;
 use svelte\condition\PostData;
 use svelte\model\business\field\Option;
 use svelte\model\business\field\SelectMany;
+use svelte\model\business\Record;
 
 use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
 
-use svelte\model\business\Record;
 
 /**
  * Collection of tests for \svelte\model\business\field\SelectMany.
@@ -82,9 +82,11 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     SETTING::$SVELTE_LOCAL_DIR = '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/';
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
     $this->options = new Collection();
+    $this->option0 = new Option(0, Str::set('Select from:'));
     $this->option1 = new Option(1, Str::set('First child'));
     $this->option2 = new Option(2, Str::set('Second child'));
     $this->option3 = new Option(3, Str::set('Third child'));
+    $this->options->add($this->option0);
     $this->options->add($this->option1);
     $this->options->add($this->option2);
     $this->options->add($this->option3);
@@ -156,10 +158,13 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
-      $this->dataObject->aProperty = 'VALUE';
-      $value = $this->testObject->value;
-      $this->assertSame($this->dataObject->aProperty, $value);
-      $this->assertSame('VALUE', $value);
+      $expectedValues = array(1,3);
+      $this->dataObject->aProperty = $expectedValues;
+      $selected = $this->testObject->value;
+      $this->assertInstanceOf('\svelte\core\Collection', $selected);
+      foreach ($selected as $item) {
+        $this->assertSame(array_shift($expectedValues), $item->key);
+      }
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
@@ -219,11 +224,13 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
       $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[0]);
-      $this->assertSame($this->option1, $this->testObject[0]);
+      $this->assertSame($this->option0, $this->testObject[0]);
       $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[1]);
-      $this->assertSame($this->option2, $this->testObject[1]);
+      $this->assertSame($this->option1, $this->testObject[1]);
       $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[2]);
-      $this->assertSame($this->option3, $this->testObject[2]);
+      $this->assertSame($this->option2, $this->testObject[2]);
+      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[3]);
+      $this->assertSame($this->option3, $this->testObject[3]);
       return;
     }
     $this->fail('An expected \OutOfBoundsException has NOT been raised.');
@@ -240,7 +247,8 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(isset($this->testObject[0]));
     $this->assertTrue(isset($this->testObject[1]));
     $this->assertTrue(isset($this->testObject[2]));
-    $this->assertFalse(isset($this->testObject[3]));
+    $this->assertTrue(isset($this->testObject[3]));
+    $this->assertFalse(isset($this->testObject[4]));
   }
 
   /**
@@ -392,6 +400,6 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count);
+    $this->assertSame(4 ,$this->testObject->count);
   }
 }

@@ -52,7 +52,7 @@ class Option extends SvelteObject implements iOption
   }
 
   /**
-   * Sets relationship to parent field'
+   * Sets relationship to parent field for use by isSelected.
    * @param Field $value Parent field.
    */
   public function setParentField(Field $value)
@@ -81,23 +81,27 @@ class Option extends SvelteObject implements iOption
   }
 
   /**
-   * Returns whether this has been chosen.
+   * Returns whether this option has been chosen/selected.
    * **DO NOT CALL DIRECTLY, USE this->isSelected;**
+   * @throws \BadMethodCallException When called without parentField first being set.
    */
   public function get_isSelected() : bool
   {
-    if (isset($this->parentField->value)) {
-      switch(array_pop(explode('\\', get_class($this->parentField)))) {
-        case 'Flag':
-          return (bool)$parentField->value;
-        case 'SelectOne':
-          return ($this->parentField->value->key = $this->key);
-        case 'SelectMany':
-          foreach($this->parentField->value as $selected) {
-            if ($selected->key == $this->key) { return true; }
-          }
-          // PASS THROUGH
-      }
+    if (!isset($this->parentField)) {
+      throw new \BadMethodCallException('Must set parentField before calling isSelected.');
+    }
+    $fullClassName = explode('\\', get_class($this->parentField));
+    $className = array_pop($fullClassName);
+    switch($className) {
+      /*case "Flag":
+        return (bool)$this->parentField->value;*/
+      case "SelectOne":
+        return ($this->parentField->value->key == $this->key);
+      case "SelectMany":
+        foreach($this->parentField->value as $selected) {
+          if ($selected->key == $this->key) { return true; }
+        }
+        // PASS THROUGH
     }
     return false;
   }

@@ -23,12 +23,30 @@ namespace tests\svelte\model\business\field;
 require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
 require_once '/usr/share/php/svelte/core/Str.class.php';
 require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/svelte/core/iCollection.class.php';
+require_once '/usr/share/php/svelte/core/Collection.class.php';
 require_once '/usr/share/php/svelte/core/iOption.class.php';
+require_once '/usr/share/php/svelte/core/OptionList.class.php';
+require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/svelte/model/business/Record.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
 require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
+
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/OptionTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/OptionTest/MockField.class.php';
 
 use svelte\core\Str;
+use svelte\core\OptionList;
 use svelte\core\PropertyNotSetException;
 use svelte\model\business\field\Option;
+use svelte\model\business\field\SelectOne;
+use svelte\model\business\field\SelectMany;
+
+use tests\svelte\model\business\field\mocks\OptionTest\MockField;
+use tests\svelte\model\business\field\mocks\OptionTest\MockRecord;
 
 /**
  * Collection of tests for \svelte\core\Option.
@@ -44,7 +62,7 @@ class OptionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->key = 1;
+    $this->key = 2;
     $this->description = Str::set('DESCRIPTION');
     $this->testObject = new Option($this->key, $this->description);
   }
@@ -61,6 +79,58 @@ class OptionTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
     $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
     $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject);
+  }
+
+  /**
+   * Collection of assertions for \svelte\core\Option::get_isSelected
+   * - assert throws \BadMethodCallException When isSelected called without first setting <em>set_parentField</em>.
+   *   - with message: <em>'Must set parentField before calling isSelected.'</em>
+   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
+   */
+  public function testIsSelected()
+  {
+    $this->expectException(\BadMethodCallException::class);
+    $this->expectExceptionMessage('Must set parentField before calling isSelected.');
+    $this->testObject->isSelected;
+  }
+
+  /**
+   * Collection of assertions for \svelte\core\Option::get_isSelected and
+   *  \svelte\core\Option::setParentField with setParentField correctly set.
+   * - assert isSelected returns false by default.
+   * - assert isSelected returns false when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
+   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
+   * @link svelte.core.Option#method_setParentField svelte\core\Option::setParentField
+   */
+  public function testIsSelectedAndSetParentField()
+  {
+    $dataObject = new \stdClass();
+    $mockRecord = new MockRecord($dataObject);
+
+    $options = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
+    $options->add(new Option(0, Str::set('Select from:')));
+    $options->add(new Option(1, Str::set('First child')));
+    $options->add($this->testObject);
+    $options->add(new Option(3, Str::set('Third child')));
+
+    $this->testObject->setParentField(new MockField(Str::set('aProperty'), $mockRecord, $options));
+    $this->assertFalse($this->testObject->isSelected);
+
+    $dataObject->aProperty = 2;
+    $this->testObject->setParentField(new SelectOne(Str::set('aProperty'), $mockRecord, $options));
+    $this->assertTrue($this->testObject->isSelected);
+
+    $dataObject->aProperty = 1;
+    $this->testObject->setParentField(new SelectOne(Str::set('aProperty'), $mockRecord, $options));
+    $this->assertFalse($this->testObject->isSelected);
+
+    $dataObject->aProperty = array(1,2);
+    $this->testObject->setParentField(new SelectMany(Str::set('aProperty'), $mockRecord, $options));
+    $this->assertTrue($this->testObject->isSelected);
+
+    $dataObject->aProperty = array(1,3);
+    $this->testObject->setParentField(new SelectMany(Str::set('aProperty'), $mockRecord, $options));
+    $this->assertFalse($this->testObject->isSelected);
   }
 
   /**

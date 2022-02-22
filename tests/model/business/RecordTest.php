@@ -345,10 +345,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewAllGood()
   {
+    $selection = array(1,4,6);;
     $_POST1 = array(
       'concrete-record:new:property-1' => 'key',
-      'concrete-record:new:property-2' => '3',
-      'concrete-record:new:property-3' => array('1','4','6')
+      'concrete-record:new:property-2' => 3,
+      'concrete-record:new:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
     $this->assertFalse($this->testObject->hasErrors);
@@ -360,10 +361,12 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $dataObjectProperties = get_object_vars($this->dataObject);
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertEquals('3', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
-    $this->assertEquals(array('1','4','6'), $dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    $this->assertEquals(3, $dataObjectProperties['property2']);
+    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);    
+    $this->assertEquals($selection, $dataObjectProperties['property3']);
+    foreach ($this->testObject->property3->value as $item) {
+      $this->assertSame(array_shift($selection), (int)$item->key);
+    }
     $this->assertTrue($this->testObject->isModified);
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
     $this->assertFalse($this->testObject->hasErrors);
@@ -388,10 +391,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewP1Bad()
   {
+    $selection = array(1,2,6);
     $_POST2 = array(
       'concrete-record:new:property-1' => 'BAD',
-      'concrete-record:new:property-2' => '4',
-      'concrete-record:new:property-3' => array('1','2','6')
+      'concrete-record:new:property-2' => 4,
+      'concrete-record:new:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -407,8 +411,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('4', $dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
-    $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    $this->assertEquals($selection, $dataObjectProperties['property3']);
+    foreach ($this->testObject->property3->value as $item) {
+      $this->assertSame(array_shift($selection), (int)$item->key);
+    }
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertEquals(1, $this->testObject->errors->count);
@@ -432,10 +438,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewP2Bad()
   {
+    $selection = array('1','2','6');
     $_POST3 = array(
       'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => '7', // BAD - Beyond index
-      'concrete-record:new:property-3' => array('1','2','6')
+      'concrete-record:new:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST3)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -452,11 +459,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property2']);
     $this->assertSame(0, $this->testObject->property2->value->key);
     $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
-    $this->assertEquals(array('1','2','6'), $dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    $this->assertEquals($selection, $dataObjectProperties['property3']);
+    foreach ($this->testObject->property3->value as $item) {
+      $this->assertSame((int)array_shift($selection), (int)$item->key);
+    }
     $_POST4 = array(
       'concrete-record:key:property-2' => '8', // BAD - Beyond index
-      'concrete-record:key:property-3' => array('1','2','6')
+      'concrete-record:key:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -481,10 +490,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewP3Bad()
   {
+    $selection = array('1','8','6'); // BAD - Second argument beyond index
     $_POST5 = array(
       'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => '5',
-      'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
+      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST5)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -504,10 +514,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('5', $dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
     $this->assertNull($dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    $this->assertSame(0, $this->testObject->property3->value->count);
     $_POST6 = array(
       'concrete-record:key:property-2' => '5',
-      'concrete-record:key:property-3' => array('1','8','6') // BAD - Second argument beyond index
+      'concrete-record:key:property-3' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST6)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -532,10 +542,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewAllBad()
   {
+    $selection = array('1','8','6'); // BAD - Second argument beyond index
     $_POST7 = array(
       'concrete-record:new:property-1' => 'BAD',
       'concrete-record:new:property-2' => '7', // BAD - Beyond index
-      'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
+      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST7)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -561,11 +572,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(0, $this->testObject->property2->value->key);
     $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
     $this->assertNull($dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    foreach ($this->testObject->property3->value as $item) {
+      $this->assertSame((int)array_shift($selection), (int)$item->key);
+    }
     $_POST8 = array(
       'concrete-record:new:property-1' => 'BAD',
       'concrete-record:new:property-2' => '7', // BAD - Beyond index
-      'concrete-record:new:property-3' => array('1','8','6') // BAD - Second argument beyond index
+      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST8)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -592,14 +605,15 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function testValidateHasGetErrorsExistingAllGood()
   {
     $this->dataObject->property1 = 'pkey';
-    $this->dataObject->property2 = '2';
+    $this->dataObject->property2 = 2;
     $this->dataObject->property3 = array('1','2','6');
     $this->assertNull($this->testObject->updated());
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
+    $selection = array('3','4','5');
     $_POST9 = array(
       'concrete-record:pkey:property-2' => '5',
-      'concrete-record:pkey:property-3' => array('3','4','5')
+      'concrete-record:pkey:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST9)));
     $this->assertFalse($this->testObject->hasErrors);
@@ -615,11 +629,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
     $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
-    $this->assertEquals(array('3','4','5'), $dataObjectProperties['property3']);
-    $this->assertSame($dataObjectProperties['property3'], $this->testObject->property3->value);
+    $this->assertEquals($selection, $dataObjectProperties['property3']);
+    foreach ($this->testObject->property3->value as $item) {
+      $this->assertSame((int)array_shift($selection), (int)$item->key);
+    }
     $_POST10 = array(
       'concrete-record:pkey:property-2' => '5',
-      'concrete-record:pkey:property-3' => array('3','4','5')
+      'concrete-record:pkey:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST10)));
     $this->assertFalse($this->testObject->hasErrors);

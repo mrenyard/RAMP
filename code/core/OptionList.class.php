@@ -20,8 +20,6 @@
  */
 namespace svelte\core;
 
-use svelte\core\Str;
-
 /**
  * Collection for iOption.
  *
