@@ -41,8 +41,8 @@ class Option extends SvelteObject implements iOption
   private $parentField;
 
   /**
-   * Constructor for new instance of LoginAccountTypeOption.
-   * @param int $id  Value to be set for id.
+   * Constructor for new instance of Option.
+   * @param int $key Value to be set for key.
    * @param \svelte\core\Str $description String value to be set for description.
    */
   public function __construct(int $key, Str $description)

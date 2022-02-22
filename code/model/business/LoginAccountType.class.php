@@ -32,6 +32,9 @@ use svelte\model\business\field\Option;
  */
 class LoginAccountType extends OptionList
 {
+  /**
+   * Creates LoginAccountType option list.
+   */
   public function __construct()
   {
     parent::__construct(null, Str::set('\svelte\model\business\field\Option'));
