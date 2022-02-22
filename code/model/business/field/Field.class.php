@@ -140,8 +140,7 @@ abstract class Field extends BusinessModel
    */
   final protected function get_hasErrors() : bool
   {
-    if (isset($this->errorCollection) && $this->errorCollection->count > 0) { return TRUE; }
-    return FALSE;
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
   }
 
   /**
