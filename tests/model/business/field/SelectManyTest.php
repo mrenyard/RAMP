@@ -303,11 +303,12 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    *    the testObject's id and its processValidationRule method is called and passes, then its
    *    containingRecord setPropertyMethod is called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
+   * - assert relevant options isSelected return true.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleCalled()
   {
-    $selected = Array(1,2);
+    $selected = Array(1,3);
     $this->assertNull($this->dataObject->aProperty);
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
     $this->testObject->validate(PostData::build(Array(
@@ -315,6 +316,10 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     )));
     $this->assertTrue($this->mockRecord->isModified);
     $this->assertSame($selected, $this->dataObject->aProperty);
+
+    $this->assertTrue($this->option1->isSelected);
+    $this->assertFalse($this->option2->isSelected);
+    $this->assertTrue($this->option3->isSelected);
   }
 
   /**

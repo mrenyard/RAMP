@@ -80,7 +80,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   {
     SETTING::$SVELTE_LOCAL_DIR = '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/';
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
-    //MockBusinessModel::reset();
     $this->options = new Collection();
     $this->option0 = new Option(0, Str::set('No option selected'));
     $this->option1 = new Option(1, Str::set('First child'));
@@ -201,7 +200,6 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertSame($child, $iterator->current());
-      // $this->assertSame('mock-business-model:' . $i++, (string)$child->id);
       $iterator->next();
     }
     $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
@@ -280,15 +278,13 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
-   *
+   */
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertSame(0, $this->testObject->validateCount);
-    $this->assertSame(0, $this->option1->validateCount);
-    $this->assertSame(0, $this->option2->validateCount);
-    $this->assertSame(0, $this->option3->validateCount);
-  }*/
+    $this->assertFalse($this->mockRecord->isModified);
+    $this->assertNull($this->dataObject->aProperty);
+  }
 
   /**
    * Further collection of assertions for \svelte\model\business\field\Field::validate(), where
@@ -300,6 +296,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
    *    the testObject's id and its processValidationRule method is called and passes, then its
    *    containingRecord setPropertyMethod is called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
+   * - assert relevant option isSelected returns true.
    * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleCalled()
@@ -312,6 +309,10 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
     )));
     $this->assertTrue($this->mockRecord->isModified);
     $this->assertEquals($selected, $this->dataObject->aProperty);
+
+    $this->assertFalse($this->option1->isSelected);
+    $this->assertTrue($this->option2->isSelected);
+    $this->assertFalse($this->option3->isSelected);
   }
 
   /**

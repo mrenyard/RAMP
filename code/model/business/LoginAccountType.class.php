@@ -21,9 +21,7 @@
 namespace svelte\model\business;
 
 use svelte\core\Str;
-//use svelte\core\iOption;
 use svelte\core\OptionList;
-//use svelte\core\Collection;
 use svelte\model\business\field\Option;
 
 /**

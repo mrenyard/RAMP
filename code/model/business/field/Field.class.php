@@ -59,13 +59,15 @@ abstract class Field extends BusinessModel
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options = null)
   {
-    if (($options != null) && (!$options->isCompositeType('\svelte\model\business\field\Option'))) {
-      throw new \InvalidArgumentException('OptionList $options compositeType MUST be \svelte\model\business\field\Option'); 
+    if ($options != null) {
+      if (!$options->isCompositeType('\svelte\model\business\field\Option')) {
+        throw new \InvalidArgumentException('OptionList $options compositeType MUST be \svelte\model\business\field\Option'); 
+      }
+      foreach ($options as $option) { $option->setParentField($this); }
     }
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
     parent::__construct($options);
-    // foreach ($options as $option) { $option->setParentField($this); }
   }
 
   /**
@@ -113,7 +115,7 @@ abstract class Field extends BusinessModel
    * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata)
+  public function validate(PostData $postdata) : void
   {
     $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
     foreach ($postdata as $inputdata)

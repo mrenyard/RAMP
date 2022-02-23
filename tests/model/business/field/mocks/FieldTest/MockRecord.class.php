@@ -33,18 +33,11 @@ class MockRecord extends Record
     return Str::set('pk');
   }
 
-  protected function get_pk()
-  {
-    return Str::set('new');
-  }
-
   protected function get_aProperty()
   {
-    return $this->getPropertyValue('aProperty');
   }
-
+  
   protected static function checkRequired($dataObject) : bool
   {
-    return (isset($dataObject->aProperty));
   }
 }

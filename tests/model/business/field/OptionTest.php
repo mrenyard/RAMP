@@ -97,8 +97,12 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\core\Option::get_isSelected and
    *  \svelte\core\Option::setParentField with setParentField correctly set.
-   * - assert isSelected returns false by default.
-   * - assert isSelected returns false when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
+   * - assert isSelected returns FALSE by default.
+   * - assert isSelected returns FALSE when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
+   * - assert isSelected returns TRUE on SelectOne were selected
+   * - assert isSelected returns FALSE on SelectOne were another is selected
+   * - assert isSelected returns TRUE on SelectMany were is one of selected
+   * - assert is Selected returns FALSE on SelectMany were is NOT one of selected 
    * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
    * @link svelte.core.Option#method_setParentField svelte\core\Option::setParentField
    */
