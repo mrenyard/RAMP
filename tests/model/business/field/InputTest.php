@@ -143,9 +143,8 @@ class InputTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $this->dataObject->aProperty = 'VALUE';
-      $value = $this->testObject->value;
-      $this->assertSame($this->dataObject->aProperty, $value);
-      $this->assertSame('VALUE', $value);
+      $this->assertSame($this->dataObject->aProperty, $this->testObject->value);
+      $this->assertSame('VALUE', $this->testObject->value);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');

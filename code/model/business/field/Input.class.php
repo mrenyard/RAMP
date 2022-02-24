@@ -89,7 +89,7 @@ class Input extends Field
    * @param mixed $value Value to be processed
    * @throws \svelte\validation\FailedValidationException When test fails.
    */
-  public function processValidationRule($value)
+  public function processValidationRule($value) : void
   {
     $this->validationRule->process($value);
   }

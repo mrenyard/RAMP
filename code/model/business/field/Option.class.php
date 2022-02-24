@@ -93,8 +93,6 @@ class Option extends SvelteObject implements iOption
     $fullClassName = explode('\\', get_class($this->parentField));
     $className = array_pop($fullClassName);
     switch($className) {
-      /*case "Flag":
-        return (bool)$this->parentField->value;*/
       case "SelectOne":
         return ($this->parentField->value->key == $this->key);
       case "SelectMany":
