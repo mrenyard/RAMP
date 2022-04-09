@@ -200,8 +200,6 @@ class LoginAccount extends Record
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $e) {
-      print_r($propertyName . ' ');
-      print_r($this->getAuthenticatableUnit());
       return  $this->getAuthenticatableUnit()->$propertyName;
     }
   }
