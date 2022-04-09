@@ -24,6 +24,13 @@ namespace svelte\model\business;
 use svelte\core\Str;
 use svelte\model\business\RecordCollection;
 use svelte\model\business\AuthenticatableUnit;
+use svelte\model\business\field\Field;
+use svelte\model\business\field\Input;
+use svelte\model\business\validation\dbtype\VarChar;
+use svelte\model\business\validation\Alphanumeric;
+use svelte\model\business\validation\LowerCaseAlphanumeric;
+use svelte\model\business\validation\RegexEmail;
+
 
 /**
  * Mock Collection of Person for testing \svelte\http\Session
@@ -46,16 +53,16 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   public static function primaryKeyName() : Str { return Str::set('uname'); }
 
-  protected function get_uname() : field\Field
+  protected function get_uname() : Field
   {
     if (!isset($this->primaryProperty))
     {
-      $this->primaryProperty = new field\Input(
+      $this->primaryProperty = new Input(
         Str::set('uname'),
         $this,
-        new validation\dbtype\VarChar(
+        new VarChar(
           15,
-          new validation\LowerCaseAlphanumeric(),
+          new LowerCaseAlphanumeric(),
           Str::set('My error message HERE!')
         )
       );
@@ -69,16 +76,16 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * **DO NOT CALL DIRECTLY, USE this->email;**
    * @return \svelte\model\business\field\Field Email address field.
    */
-  protected function get_email() : field\Field
+  protected function get_email() : Field
   {
     if (!isset($this['email']))
     {
-      $this['email'] = new field\Input(
+      $this['email'] = new Input(
         Str::set('email'),
         $this,
-        new validation\dbtype\VarChar(
+        new VarChar(
           150,
-          new validation\RegexEmail(),
+          new RegexEmail(),
           Str::set('My error message HERE!')
         )
       );
@@ -91,16 +98,16 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Email address associated with *this*.
    */
-  protected function get_familyName() : field\Field
+  protected function get_familyName() : Field
   {
     if (!isset($this['familyName']))
     {
-      $this['familyName'] = new field\Input(
+      $this['familyName'] = new Input(
         Str::set('familyName'),
         $this,
-        new validation\dbtype\VarChar(
+        new VarChar(
           15,
-          new validation\LowerCaseAlphanumeric(),
+          new Alphanumeric(),
           Str::set('My error message HERE!')
         )
       );
@@ -113,16 +120,16 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Email address associated with *this*.
    */
-  protected function get_givenName() : field\Field
+  protected function get_givenName() : Field
   {
     if (!isset($this['givenName']))
     {
-      $this['givenName'] = new field\Input(
+      $this['givenName'] = new Input(
         Str::set('givenName'),
         $this,
-        new validation\dbtype\VarChar(
+        new VarChar(
           15,
-          new validation\LowerCaseAlphanumeric(), //CapitalizedFirstLetter
+          new Alphanumeric(), //CapitalizedFirstLetter
           Str::set('My error message HERE!')
         )
       );

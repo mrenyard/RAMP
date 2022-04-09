@@ -362,10 +362,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals(3, $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);    
+    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);    
     $this->assertEquals($selection, $dataObjectProperties['property3']);
     foreach ($this->testObject->property3->value as $item) {
-      $this->assertSame(array_shift($selection), (int)$item->key);
+      $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $this->assertTrue($this->testObject->isModified);
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
@@ -410,10 +410,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('4', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
     $this->assertEquals($selection, $dataObjectProperties['property3']);
     foreach ($this->testObject->property3->value as $item) {
-      $this->assertSame(array_shift($selection), (int)$item->key);
+      $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -457,11 +457,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame(0, $this->testObject->property2->value->key);
+    $this->assertSame('0', (string)$this->testObject->property2->value->id);
     $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
     $this->assertEquals($selection, $dataObjectProperties['property3']);
     foreach ($this->testObject->property3->value as $item) {
-      $this->assertSame((int)array_shift($selection), (int)$item->key);
+      $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $_POST4 = array(
       'concrete-record:key:property-2' => '8', // BAD - Beyond index
@@ -512,7 +512,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('key', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame(0, $this->testObject->property3->value->count);
     $_POST6 = array(
@@ -569,7 +569,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame(0, $this->testObject->property2->value->key);
+    $this->assertSame('0', (string)$this->testObject->property2->value->id);
     $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
     $this->assertNull($dataObjectProperties['property3']);
     foreach ($this->testObject->property3->value as $item) {
@@ -628,10 +628,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('pkey', $dataObjectProperties['property1']);
     $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
     $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame($dataObjectProperties['property2'], $this->testObject->property2->value->key);
+    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
     $this->assertEquals($selection, $dataObjectProperties['property3']);
     foreach ($this->testObject->property3->value as $item) {
-      $this->assertSame((int)array_shift($selection), (int)$item->key);
+      $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $_POST10 = array(
       'concrete-record:pkey:property-2' => '5',

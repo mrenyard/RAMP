@@ -24,7 +24,7 @@ namespace svelte\model\business;
 use svelte\SETTING;
 use svelte\core\Str;
 use svelte\condition\Filter;
-use svelte\condition\SqlEnvironment;
+use svelte\condition\SQLEnvironment;
 
 /**
  * Manage all models within systems business domain, uses SQL for permanat storage.

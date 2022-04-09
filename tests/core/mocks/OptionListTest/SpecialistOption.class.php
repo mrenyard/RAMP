@@ -40,9 +40,16 @@ class SpecialistOption extends SvelteObject implements iOption
   }
 
   /**
+   * A test getter for SpecialistOption::get_id
+   */
+  public function get_id() : Str
+  {
+  }
+
+  /**
    * A test getter for SpecialistOption::get_key
    */
-  public function get_key()
+  public function get_key() : int
   {
   }
 

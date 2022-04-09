@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field\mocks\OptionTest;
+namespace tests\svelte\model\business\field\mocks\RecordAsOptionTest;
 
 use svelte\core\Str;
 use svelte\model\business\Record;
@@ -30,7 +30,7 @@ class MockRecord extends Record
 {
   public static function primaryKeyName() : Str
   {
-    return Str::set('pk');
+    return Str::set('id');
   }
   
   protected function get_aProperty()
@@ -38,5 +38,6 @@ class MockRecord extends Record
     return $this->getPropertyValue('aProperty');
   }
 
-  protected static function checkRequired($dataObject) : bool { return false; }
+  protected static function checkRequired($dataObject) : bool {
+    return (isset($dataObject->id)); }
 }

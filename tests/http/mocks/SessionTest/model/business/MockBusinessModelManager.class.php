@@ -19,7 +19,7 @@
  * @package svelte
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace tests\svelte\http\mocks\SessionTest\model\business;
 
 use svelte\SETTING;
 use svelte\core\Str;
@@ -28,10 +28,12 @@ use svelte\model\business\BusinessModel;
 use svelte\model\business\BusinessModelManager;
 use svelte\model\business\iBusinessModelDefinition;
 use svelte\model\business\LoginAccount;
+use svelte\model\business\LoginAccountCollection;
 use svelte\condition\Filter;
 use svelte\condition\SQLEnvironment;
 
 use tests\svelte\http\SessionTest;
+use svelte\model\business\AnAuthenticatableUnit;
 
 /**
  * Mock business model managers for testing \svelte\http\Session
@@ -42,6 +44,7 @@ class MockBusinessModelManager extends BusinessModelManager
   private static $instance;
   public static $updateLog;
   public static $loginAccountDataObject;
+  public static $anAuthenticatableUnit;
 
   /**
    * Constuct the instance.
@@ -91,7 +94,7 @@ class MockBusinessModelManager extends BusinessModelManager
         self::$loginAccountDataObject->auPK = null;
         self::$loginAccountDataObject->email = null;
         self::$loginAccountDataObject->encryptedPassword = null;
-        self::$loginAccountDataObject->typeID = null;
+        self::$loginAccountDataObject->accountType = null;
         return new LoginAccount(self::$loginAccountDataObject);
       }
       elseif (($definition->recordKey == null) && (isset($filter)))
@@ -104,7 +107,7 @@ class MockBusinessModelManager extends BusinessModelManager
           $dataObject->auPK = 'aperson';
           $dataObject->email = SessionTest::$sessionLoginAccountEmail;
           $dataObject->encryptedPassword = crypt(SessionTest::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT);
-          $dataObject->typeID = 4;
+          $dataObject->accountType = 4;
           $collection->add(new LoginAccount($dataObject));
         }
         return $collection;
@@ -120,22 +123,22 @@ class MockBusinessModelManager extends BusinessModelManager
         return new LoginAccount($dataObject);
       }
     }
-    if ($definition->recordName == 'AnAuthenticatableUnit')
+    if ((string)$definition->recordName == 'AnAuthenticatableUnit')
     {
-      if ($definition->recordKey == 'new')
+      if ((string)$definition->recordKey == 'new')
       {
         // new
-        $dataObject = new \stdClass();
-        return new AnAuthenticatableUnit($dataObject);
+        self::$anAuthenticatableUnit = new AnAuthenticatableUnit(new \stdClass());
+        return self::$anAuthenticatableUnit;
       }
-      elseif ($definition->recordKey == 'aperson')
+      if ($definition->recordKey == 'aperson')
       {
         // valid
         $dataObject = new \stdClass();
         $dataObject->uname = 'aperson';
-        $dataObject->email = SessionTest::$sessionLoginAccountEmail;
-        $dataObject->givenName = 'ann';
-        $dataObject->familyName = 'person';
+        $dataObject->email = 'aperson@domain.com';
+        $dataObject->givenName = 'Ann';
+        $dataObject->familyName = 'Person';
         return new AnAuthenticatableUnit($dataObject);
       }
     }
@@ -160,5 +163,6 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function updateAny()
   {
+    // STUB
   }
 }

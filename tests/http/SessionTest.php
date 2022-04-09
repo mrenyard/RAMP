@@ -56,6 +56,7 @@ require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
@@ -66,6 +67,7 @@ require_once '/usr/share/php/svelte/http/Unauthorized401Exception.class.php';
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/HeaderFunctions.php';
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
+require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/RecordName.class.php';
 
 use svelte\SETTING;
 use svelte\http\Session;
@@ -74,7 +76,7 @@ use svelte\model\business\LoginAccountOptions;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
 
-use svelte\model\business\MockBusinessModelManager;
+use tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager;
 use svelte\model\business\AnAuthenticatableUnit;
 
 /**
@@ -106,7 +108,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   {
     SETTING::$TEST_ON = TRUE;
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\MockBusinessModelManager';
+    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
     SETTING::$SVELTE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     self::$sessionLoginAccountEmail = 'a.person@domain.com';
@@ -170,7 +172,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR();
+    $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
@@ -209,7 +211,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->typeID = LoginAccountType::ADMINISTRATOR();
+    $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
@@ -487,9 +489,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $postArray = array(
       'record-name:key:property-a' => 'valueA',
       'record-name:key:property-b' => 'valueB',
-      'record-name:key:property-c' => 'valueC'
+      'record-name:key:property-c' => 'valueC',
     );
-    $_SESSION['post_array'] = $postArray;
+    $_POST = $postArray;
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     $_POST['login-password'] = self::$unencryptedPassword;
     SETTING::$TEST_RESET_SESSION = TRUE;
@@ -500,10 +502,10 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($postArray, $_POST);
     $this->assertTrue(isset($_SESSION['loginAccount']));
     $this->assertSame(self::$sessionLoginAccountEmail, $_SESSION['loginAccount']->email->value);
-    $this->assertSame('aperson', $_SESSION['loginAccount']->uname->value);
     $this->assertSame('aperson', $_SESSION['loginAccount']->auPK->value);
-    $this->assertSame('person', $_SESSION['loginAccount']->familyName->value);
-    $this->assertSame('ann', $_SESSION['loginAccount']->givenName->value);
+    $this->assertSame('aperson', $_SESSION['loginAccount']->uname->value);
+    $this->assertSame('Person', $_SESSION['loginAccount']->familyName->value);
+    $this->assertSame('Ann', $_SESSION['loginAccount']->givenName->value);
     $this->assertSame(
       $_SESSION['loginAccount']->getPropertyValue('encryptedPassword'),
       crypt(self::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT)
@@ -600,14 +602,20 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    */
   public function testAuthorizeAsNewLoginAccount()
   {
-    $additionalPostdata = array (
+    $postArray = array(
       'an-authenticatable-unit:new:uname' => 'user',
       'an-authenticatable-unit:new:email' => 'correct@email.com',
       'an-authenticatable-unit:new:family-name' => 'surname',
       'an-authenticatable-unit:new:given-name' => 'name'
     );
+    $additionalPostdata = array (
+      'record-name:key:property-a' => 'valueA',
+      'record-name:key:property-b' => 'valueB',
+      'record-name:key:property-c' => 'valueC',
+    );
     $_SESSION = array();
-    $_POST = $additionalPostdata;
+    $_POST = $postArray;
+    $_POST += $additionalPostdata;
     $_POST['login-email'] = 'correct@email.com';
     SETTING::$TEST_RESET_SESSION = TRUE;
     $testObject = Session::getInstance();
@@ -626,6 +634,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \svelte\SETTING::$SECURITY_PASSWORD_SALT),
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
+    $this->assertEquals($_POST, $additionalPostdata);
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:user']));
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:user']));
   }

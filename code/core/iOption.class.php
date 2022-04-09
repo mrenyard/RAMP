@@ -33,13 +33,20 @@ namespace svelte\core;
 interface iOption
 {
   /**
-   * Get key unique identifier (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return mixed Key
+   * Get id unique identifier (URN:Str)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str id
    */
-  public function get_key();
+  public function get_id(): Str;
 
   /**
+   * Get key unique identifier (enum:int)
+   * **DO NOT CALL DIRECTLY, USE this->key;**
+   * @return int Key
+   */
+   public function get_key(): int;
+
+   /**
    * Get Description.
    * **DO NOT CALL DIRECTLY, USE this->description;**
    * @return Str Description

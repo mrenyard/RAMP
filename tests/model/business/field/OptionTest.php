@@ -49,7 +49,7 @@ use tests\svelte\model\business\field\mocks\OptionTest\MockField;
 use tests\svelte\model\business\field\mocks\OptionTest\MockRecord;
 
 /**
- * Collection of tests for \svelte\core\Option.
+ * Collection of tests for \svelte\model\business\field\Option.
  */
 class OptionTest extends \PHPUnit\Framework\TestCase
 {
@@ -68,10 +68,10 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::__construct().
+   * Collection of assertions for \svelte\model\business\field\Option::__construct().
    * - assert is instance of {@link \svelte\core\SvelteObject}
    * - assert is instance of {@link \svelte\core\iOption}
-   * - assert is instance of {@link \svelte\core\Option}
+   * - assert is instance of {@link \svelte\model\business\field\Option}
    * @link svelte.core.Option svelte\core\Option
    */
   public function test__construction()
@@ -82,7 +82,7 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::get_isSelected
+   * Collection of assertions for \svelte\model\business\field\Option::get_isSelected
    * - assert throws \BadMethodCallException When isSelected called without first setting <em>set_parentField</em>.
    *   - with message: <em>'Must set parentField before calling isSelected.'</em>
    * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
@@ -95,8 +95,8 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::get_isSelected and
-   *  \svelte\core\Option::setParentField with setParentField correctly set.
+   * Collection of assertions for \svelte\model\business\field\Option::get_isSelected and
+   *  \svelte\model\business\field\Option::setParentField with setParentField correctly set.
    * - assert isSelected returns FALSE by default.
    * - assert isSelected returns FALSE when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
    * - assert isSelected returns TRUE on SelectOne were selected
@@ -138,25 +138,25 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::id.
+   * Collection of assertions for \svelte\model\business\field\Option::id.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown
    *   when trying to set property 'id'
    * - assert property 'id' is gettable.
    * - assert returned value matches expected result.
    * @link svelte.core.Option#method_get_id svelte\core\Option::id
    */
-  public function testGet_key()
+  public function testGet_id()
   {
     try {
       $this->testObject->key = 1;
     } catch (PropertyNotSetException $expected) {
       $this->assertEquals('svelte\model\business\field\Option->key is NOT settable', $expected->getMessage());
-      $this->assertSame($this->key, $this->testObject->key);
+      $this->assertSame((string)$this->key, (string)$this->testObject->id);
     }
   }
 
   /**
-   * Collection of assertions for \svelte\core\Option::description.
+   * Collection of assertions for \svelte\model\business\field\Option::description.
    * - assert {@link \svelte\core\PropertyNotSetException} thrown
    *   when trying to set property 'description'
    * - assert property 'description' is gettable.

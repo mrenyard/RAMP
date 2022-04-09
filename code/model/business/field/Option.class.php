@@ -24,6 +24,7 @@ namespace svelte\model\business\field;
 use svelte\core\SvelteObject;
 use svelte\core\Str;
 use svelte\core\iOption;
+use svelte\model\business\BusinessModel;
 
 /**
  * A Single option.
@@ -34,7 +35,7 @@ use svelte\core\iOption;
  * @property-read mixed $key Returns key (enum:int|URN:Str).
  * @property-read \svelte\core\Str $description Returns description.
  */
-class Option extends SvelteObject implements iOption
+class Option extends BusinessModel implements iOption
 {
   private $key;
   private $description;
@@ -61,13 +62,23 @@ class Option extends SvelteObject implements iOption
   }
 
   /**
-   * Get key unique identifier (enum:int|URN:Str)
+   * Get key (enum:int|URN:Str)
    * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return mixed Key
+   * @return int Key
    */
-  public function get_key()
+  public function get_key() : int
   {
     return $this->key;
+  }
+
+  /**
+   * Get unique identifier
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \svelte\core\Str id
+   */
+  public function get_id() : Str
+  {
+    return Str::set($this->key);
   }
 
   /**
@@ -94,10 +105,10 @@ class Option extends SvelteObject implements iOption
     $className = array_pop($fullClassName);
     switch($className) {
       case "SelectOne":
-        return ($this->parentField->value->key == $this->key);
+        return ($this->parentField->value->key === $this->key);
       case "SelectMany":
         foreach($this->parentField->value as $selected) {
-          if ($selected->key == $this->key) { return true; }
+          if ($selected->key === $this->key) { return true; }
         }
         // PASS THROUGH
     }

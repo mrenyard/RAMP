@@ -102,7 +102,6 @@ abstract class Field extends BusinessModel
 
   /**
    * Get containing record
-   * TODO:mrenyard: Remove?
    * **DO NOT CALL DIRECTLY, USE this->containingRecord;**
    * @return \svelte\model\business\Record Containing record of *this*
    */

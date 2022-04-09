@@ -163,7 +163,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $selected = $this->testObject->value;
       $this->assertInstanceOf('\svelte\core\Collection', $selected);
       foreach ($selected as $item) {
-        $this->assertSame(array_shift($expectedValues), $item->key);
+        $this->assertSame((string)array_shift($expectedValues), (string)$item->id);
       }
       return;
     }

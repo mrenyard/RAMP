@@ -139,7 +139,7 @@ class LoginAccount extends Record
     if (!isset($this['accountType']))
     {
       $this['accountType'] = new field\SelectOne(
-        Str::set('typeID'),
+        Str::set('accountType'),
         $this,
         new LoginAccountType()
       );
@@ -200,6 +200,8 @@ class LoginAccount extends Record
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $e) {
+      print_r($propertyName . ' ');
+      print_r($this->getAuthenticatableUnit());
       return  $this->getAuthenticatableUnit()->$propertyName;
     }
   }
@@ -231,7 +233,7 @@ class LoginAccount extends Record
     $au->validate($postdata);
     $this->setPropertyValue('auPK', $au->getPropertyValue((string)$au->primaryKeyName()));
     $this->setPropertyValue('email', $au->getPropertyValue('email'));
-    $this->setPropertyValue('typeID', 1);
+    $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
     if ($this->isValid && $au->isValid) {
       $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
@@ -295,7 +297,7 @@ class LoginAccount extends Record
     return (
       isset($dataObject->email) &&
       isset($dataObject->encryptedPassword) &&
-      isset($dataObject->typeID)
+      isset($dataObject->accountType)
     );
   }
 }

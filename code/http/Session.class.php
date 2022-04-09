@@ -28,7 +28,6 @@ use svelte\condition\PostData;
 use svelte\condition\Filter;
 use svelte\condition\FilterCondition;
 use svelte\model\business\SimpleBusinessModelDefinition;
-//use svelte\model\business\LoginAccountTypeOption;
 use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
 use svelte\model\business\validation\FailedValidationException;
@@ -121,7 +120,6 @@ final class Session extends SvelteObject
       );
     }
     return (
-      
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid) &&
       (self::$instance->loginAccount->accountType->value->key >= $authorizationLevel)
@@ -153,7 +151,6 @@ final class Session extends SvelteObject
    * - {@link \svette\condition\FiltetCondition}
    * - {@link \svelte\model\business\iBusinessModelManager}
    * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
-   * - {@link \svelte\model\business\LoginAccountTypeOption}
    * - {@link \svelte\model\business\LoginAccountType}
    * - {@link \svelte\model\business\LoginAccount}
    * - {@link \svelte\http\Unauthorized401Exception}
@@ -219,7 +216,7 @@ final class Session extends SvelteObject
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
-        ((int)$this->loginAccount->accountType->value->key <= $authorizationLevel)
+        ($this->loginAccount->accountType->value->key <= $authorizationLevel)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -250,9 +247,7 @@ final class Session extends SvelteObject
         throw new Unauthorized401Exception(
           'Trying to create new login where one already exists!'
         );
-      }
-      catch (\OutOfBoundsException $confirmedEmailIsNew) // new login details successfully confirmed
-      {
+      } catch (\DomainException | \OutOfBoundsException $confirmedEmailNew) { // new login details successfully confirmed
         if ($authorizationLevel == 1)
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
@@ -260,6 +255,11 @@ final class Session extends SvelteObject
           if (isset($_SESSION['post_array'])) // reset $_POST
           {
             $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
+            foreach ($_POST as $name => $value) {
+              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
+                unset($_POST[$name]);
+              }
+            }
           }
           return;
         }

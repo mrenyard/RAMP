@@ -38,6 +38,7 @@ require_once '/usr/share/php/svelte/condition/Environment.class.php';
 require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/svelte/condition/PostData.class.php';
 require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/svelte/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
@@ -52,6 +53,7 @@ require_once '/usr/share/php/svelte/model/business/AuthenticatableUnit.class.php
 require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
 require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
@@ -72,7 +74,7 @@ use svelte\model\business\validation\dbtype\VarChar;
 use svelte\model\business\validation\LowerCaseAlphanumeric;
 use svelte\model\business\validation\RegexEmail;
 
-use svelte\model\business\MockBusinessModelManager;
+use tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager;
 
 /**
  * Collection of tests for svelte\model\business\LoginAccount.
@@ -89,7 +91,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\MockBusinessModelManager';
+    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
     SETTING::$SVELTE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     $this->dataObject = new \stdClass();
@@ -221,7 +223,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       );
       $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->accountType);
       $this->assertEquals(0, $this->testObject->accountType->value->key);
-      $this->dataObject->typeID = LoginAccountType::ADMINISTRATOR();
+      $this->dataObject->accountType = LoginAccountType::ADMINISTRATOR();
       $this->assertEquals(LoginAccountType::ADMINISTRATOR(), $this->testObject->accountType->value->key);
       return;
     }
@@ -282,15 +284,15 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   public function testPopulateAsNew()
   {
     $_POST = array(
-      'an-authenticatable-unit:new:uname' => 'user',
-      'an-authenticatable-unit:new:email' => 'correct@email.com',
-      'an-authenticatable-unit:new:family-name' => 'surname',
-      'an-authenticatable-unit:new:given-name' => 'name'
+      'an-authenticatable-unit:new:uname' => 'aperson',
+      'an-authenticatable-unit:new:email' => 'a.person@domain.com',
+      'an-authenticatable-unit:new:family-name' => 'Person',
+      'an-authenticatable-unit:new:given-name' => 'Ann',
     );
     $this->assertNull($this->testObject->populateAsNew(PostData::build($_POST)));
-    $this->assertEquals('user', $this->dataObject->auPK);
-    $this->assertEquals('correct@email.com', $this->dataObject->email);
-    $this->assertEquals(1, $this->dataObject->typeID);
+    $this->assertEquals('aperson', $this->dataObject->auPK);
+    $this->assertEquals('a.person@domain.com', $this->dataObject->email);
+    $this->assertEquals(1, $this->dataObject->accountType);
     $this->assertRegExp(
       "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{8}$/",
       $this->testObject->getUnencryptedPassword()
@@ -299,11 +301,12 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       crypt((string)$this->testObject->getUnencryptedPassword(), \svelte\SETTING::$SECURITY_PASSWORD_SALT),
       $this->dataObject->encryptedPassword
     );
-    $this->assertEquals('user', $this->testObject->uname->value);
-    $this->assertEquals('surname', $this->testObject->familyName->value);
-    $this->assertEquals('name', $this->testObject->givenName->value);
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:user']));
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:user']));
+    $this->assertEquals('aperson', $this->testObject->uname->value);
+    $this->assertEquals('a.person@domain.com', $this->testObject->email->value);
+    $this->assertEquals('Person', $this->testObject->familyName->value);
+    $this->assertEquals('Ann', $this->testObject->givenName->value);
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:aperson']));
     $this->testObject->updated();
     $this->assertFalse($this->testObject->isNew);
     try {

@@ -158,7 +158,7 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
       $this->assertSame($this->option0, $this->testObject->value);
-      $this->assertSame(0, $this->testObject->value->key);
+      $this->assertSame('0', (string)$this->testObject->value->id);
       return;
     }
     $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
