@@ -181,9 +181,9 @@ class Request extends SvelteObject implements iBusinessModelDefinition
    */
   public function get_recordKey() : ?Str
   {
-    /*if (($this->recordKey == '~') && Session::user()->isValid()->get()) {
-      return Str::set(Session::user()->auPK);
-    }*/
+    if (($this->recordKey == '~') && $_SESSION['loginAccount']->isValid) {
+      return Str::set($_SESSION['loginAccount']->auPK->value);
+    }
     return $this->recordKey;
   }
 

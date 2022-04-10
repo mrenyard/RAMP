@@ -142,15 +142,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   public function testGet_auPK()
   {
     try {
-      $this->testObject->auPK = new Input(
-        Str::set('auPK'),
-        $this->testObject,
-        new VarChar(
-          30,
-          new LowerCaseAlphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
+      $this->testObject->auPK = 'bad';
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
         get_class($this->testObject) . '->auPK is NOT settable', $expected->getMessage()
@@ -175,15 +167,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   public function testGet_email()
   {
     try {
-      $this->testObject->email = new Input(
-        Str::set('email'),
-        $this->testObject,
-        new VarChar(
-          20,
-          new RegexEmail(),
-          Str::set('My error message HERE!')
-        )
-      );
+      $this->testObject->email = 'bad@doman.com';
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
         get_class($this->testObject) . '->email is NOT settable', $expected->getMessage()
@@ -208,15 +192,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   public function testGet_accountType()
   {
     try {
-      $this->testObject->accountType = new Input(
-        Str::set('accountType'),
-        $this->testObject,
-        new VarChar(
-          20,
-          new RegexEmail(),
-          Str::set('My error message HERE!')
-        )
-      );
+      $this->testObject->accountType = 1;
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
         get_class($this->testObject) . '->accountType is NOT settable', $expected->getMessage()
@@ -271,6 +247,8 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \svelte\model\business\LoginAccount::populateAsNew().
    * - assert void returned on calling
+   * - assert 'auPK' present child pre calling
+   * - assert removes 'auPK' as child (property) post calling
    * - assert contained dataObject populated as expected
    * - assert property accountType is set to level one
    * - assert password auto generated, accessible through getUnencryptedPassword(), in expected format.
@@ -289,7 +267,9 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       'an-authenticatable-unit:new:family-name' => 'Person',
       'an-authenticatable-unit:new:given-name' => 'Ann',
     );
+    $this->assertArrayHasKey('auPK', $this->testObject);
     $this->assertNull($this->testObject->populateAsNew(PostData::build($_POST)));
+    $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('aperson', $this->dataObject->auPK);
     $this->assertEquals('a.person@domain.com', $this->dataObject->email);
     $this->assertEquals(1, $this->dataObject->accountType);
@@ -307,7 +287,6 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('Ann', $this->testObject->givenName->value);
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:aperson']));
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:aperson']));
-    $this->testObject->updated();
     $this->assertFalse($this->testObject->isNew);
     try {
       $this->testObject->populateAsNew(PostData::build($_POST));

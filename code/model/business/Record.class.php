@@ -201,7 +201,7 @@ abstract class Record extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->isValid;**
    * @return bool Value of isValid
    */
-  final protected function get_isValid() : bool
+  protected function get_isValid() : bool
   {
     $pkName = (string)$this->primaryKeyName();
     return ($this->validFromSource || (
@@ -224,9 +224,10 @@ abstract class Record extends BusinessModel
    * Set this as updated.
    * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
    */
-  final public function updated()
+  public function updated()
   {
     $pkName = (string)$this->primaryKeyName();
+    if (isset($this[$pkName])) { unset($this[$pkName]); }
     $this->validFromSource = (isset($this->dataObject->$pkName) && $this->checkRequired($this->dataObject));
     $this->modified = false;
   }

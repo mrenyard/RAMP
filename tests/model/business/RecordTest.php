@@ -589,7 +589,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \svelte\model\business\Record::validate(),
    * \svelte\model\business\Record::hasErrors() and \svelte\model\business\Record::getErrors().
    * - assert PrimaryKey is NOT updated.
-   * - assert returns void (null) when called.
+   * - assert removes PrimaryProperty as child after first updated()
+   * - assert validate returns void (null) when called.
    * - assert validate method is propagated through each property of testsObject
    * - assert returns True when any property has recorded errors.
    * - assert propagates through properties until reaches one that has recorded errors.
@@ -607,7 +608,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->dataObject->property1 = 'pkey';
     $this->dataObject->property2 = 2;
     $this->dataObject->property3 = array('1','2','6');
+    $this->assertArrayHasKey('property1', $this->testObject);
     $this->assertNull($this->testObject->updated());
+    $this->assertArrayNotHasKey('property1', $this->testObject);
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
     $selection = array('3','4','5');

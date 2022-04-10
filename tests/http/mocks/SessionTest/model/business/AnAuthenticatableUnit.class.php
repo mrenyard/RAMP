@@ -72,28 +72,6 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   }
 
   /**
-   * Get email
-   * **DO NOT CALL DIRECTLY, USE this->email;**
-   * @return \svelte\model\business\field\Field Email address field.
-   */
-  protected function get_email() : Field
-  {
-    if (!isset($this['email']))
-    {
-      $this['email'] = new Input(
-        Str::set('email'),
-        $this,
-        new VarChar(
-          150,
-          new RegexEmail(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['email'];
-  }
-
-  /**
    * Get familyName
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \svelte\core\Str Email address associated with *this*.
@@ -145,8 +123,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->uname) &&
-      isset($dataObject->email)
+      isset($dataObject->uname)
     );
   }
 }

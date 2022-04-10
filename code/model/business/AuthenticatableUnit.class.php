@@ -39,10 +39,48 @@ use svelte\model\business\Record;
  */
 abstract class AuthenticatableUnit extends Record
 {
+  private $email;
+
   /**
-   * Get email.
+   * Get email
    * **DO NOT CALL DIRECTLY, USE this->email;**
-   * @return \svelte\model\business\field\Field Email address field.
+   * @return field\Field Containing value for email.
    */
-  abstract protected function get_email() : field\Field;
+  protected function get_email() : field\Field
+  {
+    if (!isset($this->email))
+    {
+      $this->email = new field\Input(
+        Str::set('email'),
+        $this,
+        new validation\dbtype\VarChar(
+          150,
+          new validation\RegexEmail(),
+          Str::set('Please provide a correctly formated email address!')
+        )
+      );
+      if ($this->isNew) { $this['email'] = $this->email; }
+    }
+    return $this->email;
+  }
+
+  /**
+   * Set this as updated.
+   * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
+   */
+  final public function updated()
+  {
+    if (isset($this['email'])) { unset($this['email']); }
+    parent::updated();
+  }
+
+  /**
+   * Returns whether data is in a valid/complete state from data store or as new.
+   * **DO NOT CALL DIRECTLY, USE this->isValid;**
+   * @return bool Value of isValid
+   */
+  final protected function get_isValid() : bool
+  {
+    return (($this->email->value != NULL) && parent::get_isValid());
+  }
 }
