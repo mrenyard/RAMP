@@ -43,11 +43,6 @@ class ViewManager extends SvelteObject {
     $body = new document\Templated(RootView::getInstance(), Str::set('body'));
     $page = new document\Templated($body, Str::set('page'));
     $section = new document\Templated($page, Str::set('section'));
-    if ($request->modelURN == 'login-account') {
-      $auth = new document\Templated($section, Str::set('au-form'));
-      // $auFormfield = new document\Templated($auForm, Str::set('formfield'));
-      // $auOption = new document\Templated($auFormfield, Str::set('option'));
-    }
     $form = new document\Templated($section, Str::set('form'));
     $formfield = new document\Templated($form, Str::set('formfield'));
     $option = new document\Templated($formfield, Str::set('option'));

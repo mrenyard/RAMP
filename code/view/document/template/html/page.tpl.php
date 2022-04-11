@@ -20,4 +20,15 @@
  * @version 0.0.9;
  */
 ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+    <div id="lightbox"></div>
+    <header role="banner">
+<!-- include header -->
+    </header>
+    <div id="main" role="main">
+      <h1><?=$this->heading; ?></h1>
+      <p><?=$this->summary; ?></p>
+<?=$this->children ?>
+    </div><!-- #main -->
+    <footer role="contentinfo">
+<!-- include footer -->
+    </footer>

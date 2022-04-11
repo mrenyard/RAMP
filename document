@@ -1,2 +1,2 @@
-sudo -S phpdoc --ignore */mocks/* -d $HOME/Projects/Svelte/code/,$HOME/Projects/Svelte/tests/ -t $HOME/Code/Documentation/php --visibility=public
-sudo phpunit --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/Svelte/tests --whitelist $HOME/Projects/Svelte/code
+sudo -S phpdoc --ignore */mocks/* -d $HOME/Projects/RAMP/code/,$HOME/Projects/RAMP/tests/ -t $HOME/Code/Documentation/php --visibility=public
+sudo phpunit --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code

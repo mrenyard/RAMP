@@ -18,6 +18,22 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package svelte
  * @version 0.0.9;
+ * 
  */
-?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
+switch ($this->type) {
+  case ' select-one field': ?>
+          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+            <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required">
+<?=$this->children; ?>
+            </select>
+            <span class="name" data-error-message="Please select from the list below"><?=$this->label; ?></span>
+          </label>
+<?php break;
+  default: ?>
+          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+            <span class="name" data-error-message="Error message"><?=$this->label; ?>:</span>
+            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
+          </label>
+<?php break;
+} ?>

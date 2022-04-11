@@ -37,7 +37,7 @@ use svelte\core\Str;
  *   - (Svelte\code|local\svelte)\view\document\template\(text|html|pdf)\[...].tpl.php
  * - {@link \svelte\model\business\BusinessModel}
  */
-class AuthenticationForm extends ChildView
+class AuthenticationForm extends document\Templated
 {
   private $formTemplate;
   
@@ -45,27 +45,15 @@ class AuthenticationForm extends ChildView
    * Constructs Templated Document View.
    * Uses $templateName and $templateType to locate template file (.tpl.php) as view definition on render().
    */
-  public function __construct()
+  public function __construct($errorMessage)
   {
-    $parentView = new document\Templated(
+    $body = new document\Templated(
       RootView::getInstance(),
       Str::set('body')
     );
-    // ...
-    $parentView->title = Str::set('Login ' . \svelte\SETTING::$SVELTE_DOMAIN);
-    //$parentView->summary = Str::set('[summary]');
-    $parentView->style = Str::set('dialogue-only');
-    parent::__construct($parentView);
-  }
-
-  /**
-   * Render relevant output.
-   * Combining data (@link \svelte\model\business\BusinessModel) and (@link \svelte\model\document\DocumentModel)
-   * with defined presentation as defined in referenced template file (.tpl.php).
-   */
-  public function render()
-  {
-    $view = new document\Templated($this,Str::set('authentication-form'));
-    $this->children;
+    $body->title = Str::set('Login ' . \svelte\SETTING::$SVELTE_DOMAIN);
+    parent::__construct($body, Str::set('authentication-form'));
+    $this->title = Str::set($errorMessage);
+    $this->style = Str::set('dialogue-only');
   }
 }

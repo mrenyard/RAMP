@@ -19,5 +19,10 @@
  * @package svelte
  * @version 0.0.9;
  */
+$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
+$type = (isset($this->type))? strtolower($this->type) : '';
 ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+        <form method="post" id="<?=$this->id; ?>" class="<?=$type; ?>" >
+<?=$this->children; ?>
+          <input type="submit" value="<?=(strpos((string)$this->id, ':new'))? 'add':'update'; ?>" tabindex="<?=$tabindex; ?>" />
+        </form>

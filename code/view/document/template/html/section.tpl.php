@@ -20,4 +20,10 @@
  * @version 0.0.9;
  */
 ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+      <section id="<?=$this->id; ?>" class="<?=$this->style; ?>">
+        <header>
+          <h2><a href="#<?=$this->id; ?>" title="<?=$this->title; ?>"><?=$this->heading; ?></a></h2>
+          <p><?=$this->summary; ?></p>
+        </header>
+<?=$this->children; ?>
+      </section><!-- #<?=$this->id; ?> -->

@@ -20,4 +20,20 @@
  * @version 0.0.9;
  */
 ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+    <div id="lightbox" class="active">
+      <div class="dialogue">
+        <h1><?=$this->title; ?></h1>
+        <form method="post">
+          <h2>Login Form</h2>
+          <label class="input text field" title="">
+            <input id="login-email" name="login-email" type="text" placeholder="e.g. jane.doe@domain.co.uk" />
+            <span class="name">E-mail address</span>
+          </label>
+          <label class="input text field" title="">
+            <input id="login-password" name="login-password" type="password" />
+            <span class="name">Password</span>
+          </label>
+          <input type="submit" value="Log me in..." />
+        </form>
+      </div>      
+    </div>

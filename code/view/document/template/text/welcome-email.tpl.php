@@ -20,4 +20,13 @@
  * @version 0.0.9;
  */
 ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+Dear <?=$this->honorificPrefix->value; ?> <?=$this->givenName->value; ?> <?=$this->familyName->value; ?>,
+
+Welcome to RAMP the CMS with get up and go.
+
+ - Your password is: <?=$this->unencryptedPassword; ?>
+
+
+Yours,
+
+The RAMP Admin Team.

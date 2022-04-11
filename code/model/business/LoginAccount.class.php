@@ -68,6 +68,7 @@ class LoginAccountCollection extends RecordCollection
 class LoginAccount extends Record
 {
   private $primaryProperty;
+  private $email;
   private $authenticatableUnit;
   private $unencryptedPassword;
 
@@ -114,9 +115,9 @@ class LoginAccount extends Record
    */
   protected function get_email() : field\Field
   {
-    if (!isset($this['email']))
+    if (!isset($this->email))
     {
-      $this['email'] = new field\Input(
+      $this->email = new field\Input(
         Str::set('email'),
         $this,
         new validation\dbtype\VarChar(
@@ -125,8 +126,9 @@ class LoginAccount extends Record
           Str::set('My error message HERE!')
         )
       );
+      // if ($this->isNew) { $this['email'] = $this->email; }
     }
-    return $this['email'];
+    return $this->email;
   }
 
   /**
@@ -200,6 +202,9 @@ class LoginAccount extends Record
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $e) {
+      if ($propertyName == 'unencryptedPassword' && isset($this->unencryptedPassword)) {
+        return $this->getUnencryptedPassword();
+      }
       return  $this->getAuthenticatableUnit()->$propertyName;
     }
   }
@@ -223,8 +228,7 @@ class LoginAccount extends Record
    */
   public function populateAsNew(PostData $postdata)
   {
-    if (!$this->isNew)
-    {
+    if (!$this->isNew) {
       throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!');
     }
     $au = $this->getAuthenticatableUnit();
@@ -233,12 +237,12 @@ class LoginAccount extends Record
     $this->setPropertyValue('email', $au->getPropertyValue('email'));
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
-    if ($this->isValid && $au->isValid) {
+    /*if ($this->isValid && $au->isValid) {
       $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       $modelManager->update($au);
       $modelManager->update($this);
-    }
+    }*/
   }
 
   /**
@@ -276,8 +280,8 @@ class LoginAccount extends Record
    */
   private static function generateRandomPassword() : string
   {
-    $numChars = 8;
-    $keyset = 'abcdefghjkmpqrstuvwxyzABCDEFGHJKLMNPQRSTVWXYZ0123456789!"#$%&()+,-./:;<=>?@[]^_`{|}~';
+    $numChars = 12;
+    $keyset = 'abcdefghjkmpqrstuvwxyzABCDEFGHJKLMNPQRSTVWXYZ0123456789!"#$%&()+,-./:;<=>?[]^_`{|}~';
     $randkey = '';
     for ($i = 0; $i < $numChars; $i++) {
       $randkey .= substr($keyset, rand(0, strlen($keyset) - 1), 1);

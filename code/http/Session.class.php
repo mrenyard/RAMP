@@ -32,6 +32,8 @@ use svelte\model\business\LoginAccountType;
 use svelte\model\business\LoginAccount;
 use svelte\model\business\validation\FailedValidationException;
 use svelte\view\View;
+use svelte\view\RootView;
+use svelte\view\document\Email;
 
 /**
  * Methods relating to logging in, setting up PHP session variables,
@@ -248,9 +250,14 @@ final class Session extends SvelteObject
           'Trying to create new login where one already exists!'
         );
       } catch (\DomainException | \OutOfBoundsException $confirmedEmailNew) { // new login details successfully confirmed
-        if ($authorizationLevel == 1)
+        if ($authorizationLevel == LoginAccountType::REGISTERED())
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
+          $view = new Email(RootView::getInstance(), Str::set('welcome-email'), Str::set('text'));
+          $view->title = Str::set('Welcome to RAMP - All you need, login and more...');
+          $view->setModel($this->loginAccount);
+          // if (defined('DEV_MODE') && DEV_MODE) { \ChromePhp::log('Password is: ' . $this->loginAccount->getUnencryptedPassword()); }
+          $this->modelManager->updateAny();
           $_SESSION['loginAccount'] = $this->loginAccount;
           if (isset($_SESSION['post_array'])) // reset $_POST
           {
