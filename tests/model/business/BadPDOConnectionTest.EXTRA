@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,55 +18,55 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business;
+namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/tests/ChromePhp.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/svelte/model/business/SQLBusinessModelManager.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/SQLBusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\condition\PostData;
-use svelte\model\business\SimpleBusinessModelDefinition;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\condition\PostData;
+use ramp\model\business\SimpleBusinessModelDefinition;
 
 /**
- * Specialist testing of bad PDO connection in \svelte\model\business\SQLBusinessModelManager.
+ * Specialist testing of bad PDO connection in \ramp\model\business\SQLBusinessModelManager.
  * Run independatly as special case due to intentianal performace lag and the use of constants
  */
 class BadPDOConnectionTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of PDO connection related assertions for \svelte\model\business\BusinessModelManager::getBusinessModel().
+   * Collection of PDO connection related assertions for \ramp\model\business\BusinessModelManager::getBusinessModel().
    * - assert unsuccessfull re-attemps 2 other times at gradualy prelonged intervals
    * - assert reports detail of attemps on fail
-   * @link svelte.BusinessModelManager#method_getBusinessModel svelte\BusinessModelManager::getBusinessModel()
+   * @link ramp.BusinessModelManager#method_getBusinessModel ramp\BusinessModelManager::getBusinessModel()
    */
   public function testBadConnection()
   {
     \ChromePhp::clear();
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\mocks\SQLBusinessModelManagerTest';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'svelte\model\business\SQLBusinessModelManager';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
+    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
     SETTING::$DATABASE_CONNECTION = 'mysql:host=localhost;dbname=notDB';
     SETTING::$DATABASE_PASSWORD = 'notpassword';
     SETTING::$DATABASE_USER = 'notroot';
     SETTING::$DATABASE_MAX_RESULTS = 4;
     try {
-      $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+      $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
       $testObject = $MODEL_MANAGER::getInstance();
       $testObject->getBusinessModel(new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('key1')));
     } catch (\PDOException $expected) {

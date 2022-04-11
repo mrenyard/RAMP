@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,42 +18,42 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\SQLBusinessModelManagerTest;
+namespace tests\ramp\model\business\mocks\SQLBusinessModelManagerTest;
 
-use svelte\core\Str;
-use svelte\model\business\Record;
-use svelte\model\business\RecordCollection;
-use svelte\model\business\field\Field;
-use svelte\model\business\field\Input;
-use svelte\model\business\validation\VarChar;
-use svelte\model\business\validation\Alphanumeric;
-use svelte\model\business\validation\LowerCaseAlphanumeric;
+use ramp\core\Str;
+use ramp\model\business\Record;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\field\Field;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\VarChar;
+use ramp\model\business\validation\Alphanumeric;
+use ramp\model\business\validation\LowerCaseAlphanumeric;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\RecordCollection for testing against.
+ * Mock Concreate implementation of \ramp\model\business\RecordCollection for testing against.
  *
- * @property-read \svelte\model\business\field\Field $property eturns field containing value of property.
- * @property-read \svelte\model\business\field\Field $propertyA eturns field containing value of propertyA.
- * @property-read \svelte\model\business\field\Field $propertyB eturns field containing value of propertyB.
- * @property-read \svelte\model\business\field\Field $propertyC eturns field containing value of propertyC.
+ * @property-read \ramp\model\business\field\Field $property eturns field containing value of property.
+ * @property-read \ramp\model\business\field\Field $propertyA eturns field containing value of propertyA.
+ * @property-read \ramp\model\business\field\Field $propertyB eturns field containing value of propertyB.
+ * @property-read \ramp\model\business\field\Field $propertyC eturns field containing value of propertyC.
  */
 class BadRecordCollection extends RecordCollection { }
 
 /**
- * Mock Concreate implementation of \svelte\model\business\Record for testing against.
+ * Mock Concreate implementation of \ramp\model\business\Record for testing against.
  */
 class BadRecord extends Record
 {
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   public static function primaryKeyName() : Str { return Str::set('property'); }
 
   /**
    * Get field containing property
    * **DO NOT CALL DIRECTLY, USE this->property;**
-   * @return \svelte\model\business\field\Field Returns field containing value of property
+   * @return \ramp\model\business\field\Field Returns field containing value of property
    */
   protected function get_property() : Field
   {
@@ -71,7 +71,7 @@ class BadRecord extends Record
   /**
    * Get field containing propertyA
    * **DO NOT CALL DIRECTLY, USE this->propertyA;**
-   * @return \svelte\model\business\field\Field Returns field containing value of propertyA
+   * @return \ramp\model\business\field\Field Returns field containing value of propertyA
    */
   protected function get_propertyA() : Field
   {
@@ -89,7 +89,7 @@ class BadRecord extends Record
   /**
    * Get field containing propertyB
    * **DO NOT CALL DIRECTLY, USE this->propertyB;**
-   * @return \svelte\model\business\field\Field Returns field containing value of propertyB
+   * @return \ramp\model\business\field\Field Returns field containing value of propertyB
    */
   protected function get_propertyB() : Field
   {
@@ -107,7 +107,7 @@ class BadRecord extends Record
   /**
    * Get field containing propertyC
    * **DO NOT CALL DIRECTLY, USE this->propertyC;**
-   * @return \svelte\model\business\field\Field Returns field containing value of propertyC
+   * @return \ramp\model\business\field\Field Returns field containing value of propertyC
    */
   protected function get_propertyC() : Field
   {

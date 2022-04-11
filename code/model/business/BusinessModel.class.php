@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,17 +16,17 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\core\iOption;
-use svelte\core\iCollection;
-use svelte\core\Collection;
-use svelte\condition\PostData;
-use svelte\model\Model;
+use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\condition\PostData;
+use ramp\model\Model;
 
 /**
  * Abstract Business Model.
@@ -34,9 +34,9 @@ use svelte\model\Model;
  * RESPONSIBILITIES
  * - Define generalized methods for iteration, validity checking & error reporting.
  *
- * @property-read \svelte\core\Str $id Returns unique identifier (ID) for *this* (URN).
- * @property-read \svelte\core\Str $description Returns description.
- * @property-read \svelte\core\Str $type Returns type definition as a short list, much like we
+ * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).
+ * @property-read \ramp\core\Str $description Returns description.
+ * @property-read \ramp\core\Str $type Returns type definition as a short list, much like we
  * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
  * resulting values.
  * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
@@ -48,14 +48,14 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   private $children;
 
   /**
-   * Collection of error messages ( \svelte\core\Str ).
-   * @var \svelte\core\iCollection
+   * Collection of error messages ( \ramp\core\Str ).
+   * @var \ramp\core\iCollection
    */
   protected $errorCollection;
 
   /**
    * Base constructor for Business Models.
-   * @param \svelte\core\iCollection $children Collection of child business models.
+   * @param \ramp\core\iCollection $children Collection of child business models.
    */
   public function __construct(iCollection $children = null)
   {
@@ -66,14 +66,14 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   /**
    * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
+   * @return \ramp\core\Str Unique identifier for *this*
    */
   abstract protected function get_id() : Str;
 
   /**
    * Returns type.
    * **DO NOT CALL DIRECTLY, USE this->type;**
-   * @return \svelte\core\Str Type for *this*
+   * @return \ramp\core\Str Type for *this*
    */
   final protected function get_type() : Str
   {
@@ -88,8 +88,8 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   /**
    * Returns this Business model type without namespace.
    * @param string $classFullName Full class name including path/namespace
-   * @param \svelte\core\Boolean $hyphenate Whether model type should be returned hyphenated
-   * @return \svelte\core\Str *This* business model type (without namespace)
+   * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
+   * @return \ramp\core\Str *This* business model type (without namespace)
    */
   final protected function processType($classFullName, bool $hyphenate = null) : Str
   {
@@ -110,8 +110,8 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
 
   /**
    * ArrayAccess method offsetGet.
-   * @param mixed $offset Index of requested {@link \svelte\core\SvelteObject}.
-   * @return \svelte\model\business\BusinessModel Object located at provided index.
+   * @param mixed $offset Index of requested {@link \ramp\core\RAMPObject}.
+   * @return \ramp\model\business\BusinessModel Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
   final public function offsetGet($offset)
@@ -132,7 +132,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   /**
    * ArrayAccess method offsetSet.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    */
   public function offsetSet($offset, $object)
   {
@@ -151,12 +151,12 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
 
   /**
    * Validate postdata against this and update accordingly.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
   public function validate(PostData $postdata)
   {
-    $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
+    $this->errorCollection = new Collection(Str::set('ramp\core\Str'));
     foreach ($this->children as $child) {
       $child->validate($postdata);
     }

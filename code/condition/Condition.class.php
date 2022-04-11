@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,13 +16,13 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
 
 /**
  * Code defined statement that restricts, evaluates or modifies its predict.
@@ -33,14 +33,14 @@ use svelte\core\Str;
  * - Hold values/references for attribute, operator and comparible
  *
  * COLLABORATORS
- * - {@link \svelte\condition\iEnvironment}
- * - {@link \svelte\condition\Operator}
+ * - {@link \ramp\condition\iEnvironment}
+ * - {@link \ramp\condition\Operator}
  *
- * @property-read \svelte\core\Str $attribute Returns name of attribute to be restricted, evaluated or modified.
- * @property-read \svelte\condition\Operator $operator Returns the type of Operation to be performed.
+ * @property-read \ramp\core\Str $attribute Returns name of attribute to be restricted, evaluated or modified.
+ * @property-read \ramp\condition\Operator $operator Returns the type of Operation to be performed.
  * @property mixed $comparable Value to be compared with attribute by operation.
  */
-abstract class Condition extends SvelteObject
+abstract class Condition extends RAMPObject
 {
   private $attribute;
   private $operator;
@@ -48,8 +48,8 @@ abstract class Condition extends SvelteObject
 
   /**
    * Base constructor for Condition.
-   * @param \svelte\core\Str $attribute Name of attribute to be restricted, evaluated or modified
-   * @param \svelte\condition\Operator $operator Operation to perform
+   * @param \ramp\core\Str $attribute Name of attribute to be restricted, evaluated or modified
+   * @param \ramp\condition\Operator $operator Operation to perform
    * @param mixed $comparable Value to be compared with attribute by operation
    */
   public function __construct(Str $attribute, Operator $operator, $comparable = null)
@@ -62,7 +62,7 @@ abstract class Condition extends SvelteObject
   /**
    * Returns name of attribute.
    * **DO NOT CALL DIRECTLY, USE this->attribute;**
-   * @return \svelte\core\Str Name of attribute to be restricted, evaluated or modified
+   * @return \ramp\core\Str Name of attribute to be restricted, evaluated or modified
    */
   protected function get_attribute() : Str
   {
@@ -72,7 +72,7 @@ abstract class Condition extends SvelteObject
   /**
    * Returns the type of Operation to be performed.
    * **DO NOT CALL DIRECTLY, USE this->operator;**
-   * @return \svelte\condition\Operator Performing operation
+   * @return \ramp\condition\Operator Performing operation
    */
   final protected function get_operator() : Operator
   {
@@ -105,7 +105,7 @@ abstract class Condition extends SvelteObject
 
   /**
    * Returns relevant condition statement based on target environment.
-   * @param \svelte\condition\iEnvironment $targetEnvironment Environment to target.
+   * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target.
    * @param mixed $comparable Value to be compared with attribute by operation.
    * @return string Representation of condition based on provided target environment
    */

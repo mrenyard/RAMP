@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,50 +18,50 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field;
+namespace tests\ramp\model\business\field;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\core\OptionList;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\PostData;
-use svelte\model\business\field\Option;
-use svelte\model\business\field\SelectMany;
-use svelte\model\business\Record;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\core\OptionList;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
+use ramp\model\business\field\Option;
+use ramp\model\business\field\SelectMany;
+use ramp\model\business\Record;
 
-use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
+use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
 
 
 /**
- * Collection of tests for \svelte\model\business\field\SelectMany.
+ * Collection of tests for \ramp\model\business\field\SelectMany.
  */
 class SelectManyTest extends \PHPUnit\Framework\TestCase
 {
@@ -79,8 +79,8 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$SVELTE_LOCAL_DIR = '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/';
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
+    SETTING::$RAMPE_LOCAL_DIR = '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
     $this->options = new Collection();
     $this->option0 = new Option(0, Str::set('Select from:'));
     $this->option1 = new Option(1, Str::set('First child'));
@@ -96,41 +96,41 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     $this->testObject = new SelectMany(
       Str::set('aProperty'),
       $this->mockRecord,
-      new OptionList($this->options, Str::set('\svelte\model\business\field\Option'))
+      new OptionList($this->options, Str::set('\ramp\model\business\field\Option'))
     );
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * - assert is instance of {@link \svelte\model\business\BusinessModel}
+   * Collection of assertions for \ramp\model\business\field\SelectMany::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \svelte\model\field\Field}
-   * - assert is instance of {@link \svelte\model\field\SelectMany}
-   * @link svelte.model.business.field.SelectMany svelte\model\business\field\SelectMany
+   * - assert is instance of {@link \ramp\model\field\Field}
+   * - assert is instance of {@link \ramp\model\field\SelectMany}
+   * @link ramp.model.business.field.SelectMany ramp\model\business\field\SelectMany
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\field\SelectMany', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\SelectMany', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::id.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * Collection of assertions for \ramp\model\business\field\SelectMany::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.field.SelectMany#method_get_id svelte\model\business\field\SelectMany::id
+   * @link ramp.model.business.field.SelectMany#method_get_id ramp\model\business\field\SelectMany::id
    */
   public function testGet_id()
   {
@@ -138,20 +138,20 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $this->testObject->id = "ID";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::value.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'value'
+   * Collection of assertions for \ramp\model\business\field\SelectMany::value.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
    * - assert returned same as provided records getPropertyValue() method.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.field.SelectMany#method_get_value svelte\model\business\field\SelectMany::value
+   * @link ramp.model.business.field.SelectMany#method_get_value ramp\model\business\field\SelectMany::value
    */
   public function testGet_value()
   {
@@ -161,22 +161,22 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $expectedValues = array(1,3);
       $this->dataObject->aProperty = $expectedValues;
       $selected = $this->testObject->value;
-      $this->assertInstanceOf('\svelte\core\Collection', $selected);
+      $this->assertInstanceOf('\ramp\core\Collection', $selected);
       foreach ($selected as $item) {
         $this->assertSame((string)array_shift($expectedValues), (string)$item->id);
       }
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::type.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * Collection of assertions for \ramp\model\business\field\SelectMany::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \svelte\core\Str}.
+   * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.field.SelectMany#method_get_type svelte\model\business\field\SelectMany::type
+   * @link ramp.model.business.field.SelectMany#method_get_type ramp\model\business\field\SelectMany::type
    */
   public function testGet_type()
   {
@@ -184,19 +184,19 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       $this->testObject->type = "TYPE";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
       $this->assertEquals(' select-many field', (string)$this->testObject->type);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::getIterator().
+   * Collection of assertions for \ramp\model\business\field\SelectMany::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through each expected object.
    * - assert foreach returned object matches expected.
-   * @link svelte.model.business.field.SelectMany#method_getIterator svelte\model\business\field\SelectMany::getIterator()
+   * @link ramp.model.business.field.SelectMany#method_getIterator ramp\model\business\field\SelectMany::getIterator()
    */
   public function testGetIterator()
   {
@@ -213,23 +213,23 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::offsetGet.
+   * Collection of assertions for \ramp\model\business\field\SelectMany::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * - assert expected object returned at its expected index.
-   * @link svelte.model.business.field.SelectMany#method_offsetGet svelte\model\business\field\SelectMany::offsetGet()
+   * @link ramp.model.business.field.SelectMany#method_offsetGet ramp\model\business\field\SelectMany::offsetGet()
    */
   public function testOffsetGet()
   {
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[0]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[0]);
       $this->assertSame($this->option0, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[1]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[1]);
       $this->assertSame($this->option1, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[2]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[2]);
       $this->assertSame($this->option2, $this->testObject[2]);
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[3]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[3]);
       $this->assertSame($this->option3, $this->testObject[3]);
       return;
     }
@@ -237,10 +237,10 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::offsetExists.
+   * Collection of assertions for \ramp\model\business\field\SelectMany::offsetExists.
    * - assert True returned on isset() when within expected bounds.
    * - assert False returned on isset() when outside expected bounds.
-   * @link svelte.model.business.field.SelectMany#method_offsetExists svelte\model\business\field\SelectMany::offsetExists()
+   * @link ramp.model.business.field.SelectMany#method_offsetExists ramp\model\business\field\SelectMany::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -252,10 +252,10 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\model\business\field\SelectMany::offsetSet().
+   * Collection of assertions for ramp\model\business\field\SelectMany::offsetSet().
    * - assert throws BadMethodCallException as this method should be inaccessible
    *   - with message: <em>'Array access setting is not allowed, please use add.'</em>
-   * @link svelte.model.business.field.SelectMany#method_offsetSet \svelte\model\business\field\SelectMany::offsetSet()
+   * @link ramp.model.business.field.SelectMany#method_offsetSet \ramp\model\business\field\SelectMany::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -265,10 +265,10 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::offsetUnset.
+   * Collection of assertions for \ramp\model\business\field\SelectMany::offsetUnset.
    * - assert throws BadMethodCallException whenever offsetUnset is called
    *  - with message *Array access unsetting is not allowed.*
-   * @link svelte.model.business.field.SelectMany#method_offsetUnset svelte\model\business\field\SelectMany::offsetUnset()
+   * @link ramp.model.business.field.SelectMany#method_offsetUnset ramp\model\business\field\SelectMany::offsetUnset()
    */
   public function testOffsetUnset()
   {
@@ -278,13 +278,13 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::validate() where PostData
+   * Collection of assertions for \ramp\model\business\field\Field::validate() where PostData
    * does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
-   * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
+   * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleNotCalled()
   {
@@ -294,7 +294,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Further collection of assertions for \svelte\model\business\field\Field::validate(), where
+   * Further collection of assertions for \ramp\model\business\field\Field::validate(), where
    * PostData contains an InputDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
    * - assert if provided PostData contains an InputDataCondition with an attribute that matches
@@ -304,7 +304,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    *    containingRecord setPropertyMethod is called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
    * - assert relevant options isSelected return true.
-   * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
+   * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleCalled()
   {
@@ -323,13 +323,13 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::hasErrors().
+   * Collection of assertions for \ramp\model\business\field\Field::hasErrors().
    * - assert returns False when PostData does NOT contain an InputDataCondition with an attribute
    *   that matches the testObject's id.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *   matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert does NOT propagates through to its child/grandchild.
-   * @link svelte.model.business.field.Field#method_hasErrors svelte\model\business\field\Field::hasErrors()
+   * @link ramp.model.business.field.Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
    */
   public function testHasErrors()
   {
@@ -339,7 +339,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::getErrors().
+   * Collection of assertions for \ramp\model\business\field\Field::getErrors().
    * - assert returns an empty iCollection when PostData does NOT contain an InputDataCondition
    *   with an attribute that matches the testObject's id.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
@@ -355,7 +355,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    *    by its hasErrors and getErrors methods.
    * - assert following validate(), the expected iCollection of error messages are returned.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * @link svelte.model.business.field.Field#method_getErrors svelte\model\business\field\Field::getErrors()
+   * @link ramp.model.business.field.Field#method_getErrors ramp\model\business\field\Field::getErrors()
    */
   public function testGetErrors()
   {
@@ -364,7 +364,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($this->testObject->hasErrors);
     $errors = $this->testObject->errors;
     $this->assertNull($this->dataObject->aProperty);
-    $this->assertInstanceOf('\svelte\core\iCollection', $errors);
+    $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
     // Returns same results on subsequent call, while Field in same state.
@@ -384,7 +384,7 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
       )));
       $this->assertNull($this->dataObject->aProperty);
       $thirdCallOnErrors = $this->testObject->errors;
-      $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
+      $this->assertInstanceOf('\ramp\core\iCollection', $thirdCallOnErrors);
       $this->assertSame(1, $thirdCallOnErrors->count);
       $this->assertSame(
         'At least one selected value is NOT an available option!', (string)$thirdCallOnErrors[0]
@@ -399,9 +399,9 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\SelectMany::count.
+   * Collection of assertions for \ramp\model\business\field\SelectMany::count.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link svelte.model.business.field.SelectMany#method_count svelte\model\business\field\SelectMany::count
+   * @link ramp.model.business.field.SelectMany#method_count ramp\model\business\field\SelectMany::count
    */
   public function testCount()
   {

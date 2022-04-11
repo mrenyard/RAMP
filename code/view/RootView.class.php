@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,13 +16,13 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace ramp\view;
 
-use svelte\view\View;
-use svelte\model\Model;
+use ramp\view\View;
+use ramp\model\Model;
 
 /**
  * Top level view, defined once per HTTP request
@@ -46,7 +46,7 @@ final class RootView extends View
   /**
    * Prevent setting of Model.
    * @throws \BadMethodCallException SHOULD NOT USE THIS METHOD
-   * @param \svelte\model\Model $model Model NOT to be set
+   * @param \ramp\model\Model $model Model NOT to be set
    */
   public function setModel(Model $model)
   {

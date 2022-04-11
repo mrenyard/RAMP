@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,30 +16,30 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\Str;
-use svelte\core\PropertyNotSetException;
+use ramp\core\Str;
+use ramp\core\PropertyNotSetException;
 
 /**
- * Single representation of a verified filter for filtering \svelte\model\business\Records.
+ * Single representation of a verified filter for filtering \ramp\model\business\Records.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Enforce 'equal to' operator as the primary operation.
- * - Set defaults target environment as {@link \svelte\condition\SQLEnvironment}
+ * - Set defaults target environment as {@link \ramp\condition\SQLEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - {@link \svelte\condition\BusinessCondition}
- * - {@link \svelte\condition\iEnvironment}
- * - {@link \svelte\condition\SQLEnvironment} (Default)
- * - {@link \svelte\condition\Operator} (Operator::EQUAL_TO Enforced)
+ * - {@link \ramp\condition\BusinessCondition}
+ * - {@link \ramp\condition\iEnvironment}
+ * - {@link \ramp\condition\SQLEnvironment} (Default)
+ * - {@link \ramp\condition\Operator} (Operator::EQUAL_TO Enforced)
  *
  * @property-write mixed $comparable Sets value of comparable while comparing its validity against business model.
  */
@@ -47,12 +47,12 @@ final class FilterCondition extends BusinessCondition
 {
   /**
    * Default constructor for FilterCondition.
-   * @param \svelte\core\Str $record Name of business record containing property to evaluate
-   * @param \svelte\core\Str $property Name of property to be evaluated
+   * @param \ramp\core\Str $record Name of business record containing property to evaluate
+   * @param \ramp\core\Str $property Name of property to be evaluated
    * @param mixed $comparable Value to be compared
-   * @param \svelte\condition\Operator $operator Operation to perform, default EQUAL_TO
+   * @param \ramp\condition\Operator $operator Operation to perform, default EQUAL_TO
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (SVELTE_BUSINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMPE_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct(Str $record, Str $property, $comparable = null, Operator $operator = null)
   {
@@ -69,15 +69,15 @@ final class FilterCondition extends BusinessCondition
    * **DO NOT CALL DIRECTLY, USE this->comparable = $value;**
    *
    * PRECONDITIONS
-   * - Requires the following SETTING to have been set (usually via svelte.ini):
-   *  - SETTING::SVELTE_BUSINESS_MODEL_NAMESPACE
+   * - Requires the following SETTING to have been set (usually via ramp.ini):
+   *  - SETTING::RAMPE_BUSINESS_MODEL_NAMESPACE
    * @param mixed $value Value to be compared
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
-   * @link svelte.model.business.Property#method_processValidationRules \svelte\model\business\Property::processValidationRules()
+   * @link ramp.model.business.Property#method_processValidationRules \ramp\model\business\Property::processValidationRules()
    */
   protected function set_comparable($value)
   {
-    $recordClassName = \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
+    $recordClassName = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
     $recordClass = new $recordClassName();
     $propertyName = (string)$this->property;
     $propertyClass = $recordClass->$propertyName;
@@ -91,7 +91,7 @@ final class FilterCondition extends BusinessCondition
 
   /**
    * Returns string representation of this filter based on target environment.
-   * @param \svelte\condition\Environment $targetEnvironment Environment to target, default SQL.
+   * @param \ramp\condition\Environment $targetEnvironment Environment to target, default SQL.
    * @param mixed $comparable Value to be compared with attribute by operation
    * @throws \DomainException when $comparable argument does Not validate against its associated
    *  property's processValidationRules()

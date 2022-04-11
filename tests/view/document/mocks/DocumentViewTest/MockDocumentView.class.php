@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,12 +18,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\document\mocks\DocumentViewTest;
+namespace tests\ramp\view\document\mocks\DocumentViewTest;
 
-use svelte\view\document\DocumentView;
+use ramp\view\document\DocumentView;
 
 /**
- * Mock Concreate implementation of \svelte\view\document\DocumentView for testing login against.
+ * Mock Concreate implementation of \ramp\view\document\DocumentView for testing login against.
  */
 class MockDocumentView extends DocumentView
 {

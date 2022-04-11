@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,38 +18,38 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field;
+namespace tests\ramp\model\business\field;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/OptionTest/MockRecord.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/OptionTest/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/OptionTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/OptionTest/MockField.class.php';
 
-use svelte\core\Str;
-use svelte\core\OptionList;
-use svelte\core\PropertyNotSetException;
-use svelte\model\business\field\Option;
-use svelte\model\business\field\SelectOne;
-use svelte\model\business\field\SelectMany;
+use ramp\core\Str;
+use ramp\core\OptionList;
+use ramp\core\PropertyNotSetException;
+use ramp\model\business\field\Option;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
 
-use tests\svelte\model\business\field\mocks\OptionTest\MockField;
-use tests\svelte\model\business\field\mocks\OptionTest\MockRecord;
+use tests\ramp\model\business\field\mocks\OptionTest\MockField;
+use tests\ramp\model\business\field\mocks\OptionTest\MockRecord;
 
 /**
- * Collection of tests for \svelte\model\business\field\Option.
+ * Collection of tests for \ramp\model\business\field\Option.
  */
 class OptionTest extends \PHPUnit\Framework\TestCase
 {
@@ -68,24 +68,24 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Option::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\core\iOption}
-   * - assert is instance of {@link \svelte\model\business\field\Option}
-   * @link svelte.core.Option svelte\core\Option
+   * Collection of assertions for \ramp\model\business\field\Option::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\core\iOption}
+   * - assert is instance of {@link \ramp\model\business\field\Option}
+   * @link ramp.core.Option ramp\core\Option
    */
   public function test__construction()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\iOption', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Option::get_isSelected
+   * Collection of assertions for \ramp\model\business\field\Option::get_isSelected
    * - assert throws \BadMethodCallException When isSelected called without first setting <em>set_parentField</em>.
    *   - with message: <em>'Must set parentField before calling isSelected.'</em>
-   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
+   * @link ramp.core.Option#method_get_isSelected ramp\core\Option::isSelected
    */
   public function testIsSelected()
   {
@@ -95,23 +95,23 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Option::get_isSelected and
-   *  \svelte\model\business\field\Option::setParentField with setParentField correctly set.
+   * Collection of assertions for \ramp\model\business\field\Option::get_isSelected and
+   *  \ramp\model\business\field\Option::setParentField with setParentField correctly set.
    * - assert isSelected returns FALSE by default.
    * - assert isSelected returns FALSE when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
    * - assert isSelected returns TRUE on SelectOne were selected
    * - assert isSelected returns FALSE on SelectOne were another is selected
    * - assert isSelected returns TRUE on SelectMany were is one of selected
    * - assert is Selected returns FALSE on SelectMany were is NOT one of selected 
-   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
-   * @link svelte.core.Option#method_setParentField svelte\core\Option::setParentField
+   * @link ramp.core.Option#method_get_isSelected ramp\core\Option::isSelected
+   * @link ramp.core.Option#method_setParentField ramp\core\Option::setParentField
    */
   public function testIsSelectedAndSetParentField()
   {
     $dataObject = new \stdClass();
     $mockRecord = new MockRecord($dataObject);
 
-    $options = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
+    $options = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
     $options->add(new Option(0, Str::set('Select from:')));
     $options->add(new Option(1, Str::set('First child')));
     $options->add($this->testObject);
@@ -138,39 +138,39 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Option::id.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown
+   * Collection of assertions for \ramp\model\business\field\Option::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown
    *   when trying to set property 'id'
    * - assert property 'id' is gettable.
    * - assert returned value matches expected result.
-   * @link svelte.core.Option#method_get_id svelte\core\Option::id
+   * @link ramp.core.Option#method_get_id ramp\core\Option::id
    */
   public function testGet_id()
   {
     try {
       $this->testObject->key = 1;
     } catch (PropertyNotSetException $expected) {
-      $this->assertEquals('svelte\model\business\field\Option->key is NOT settable', $expected->getMessage());
+      $this->assertEquals('ramp\model\business\field\Option->key is NOT settable', $expected->getMessage());
       $this->assertSame((string)$this->key, (string)$this->testObject->id);
     }
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Option::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown
+   * Collection of assertions for \ramp\model\business\field\Option::description.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown
    *   when trying to set property 'description'
    * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.core.Option#method_get_description svelte\core\Option::description
+   * @link ramp.core.Option#method_get_description ramp\core\Option::description
    */
   public function testGet_description()
   {
     try {
       $this->testObject->description = 1;
     } catch (PropertyNotSetException $expected) {
-      $this->assertEquals('svelte\model\business\field\Option->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
+      $this->assertEquals('ramp\model\business\field\Option->description is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->description);
       $this->assertSame($this->description, $this->testObject->description);
     }
   }

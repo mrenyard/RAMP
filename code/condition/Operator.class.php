@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,12 +16,12 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\SvelteObject;
+use ramp\core\RAMPObject;
 
 /**
  * An operation to be performed against a Conditions predict.
@@ -32,9 +32,9 @@ use svelte\core\SvelteObject;
  * - Work with iEnvironment in providing string literal representations of relavant operation.
  *
  * COLLABORATORS
- * - {@link \svelte\condition\iEnvironment}
+ * - {@link \ramp\condition\iEnvironment}
  */
-class Operator extends SvelteObject
+class Operator extends RAMPObject
 {
   private $type;
 
@@ -58,7 +58,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'member access' operator syntax.
-   * @return \svelte\condition\Operator Representing member access operator syntax
+   * @return \ramp\condition\Operator Representing member access operator syntax
    */
   public static function MEMBER_ACCESS() : Operator
   {
@@ -70,7 +70,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'assignment operator' syntax.
-   * @return \svelte\condition\Operator Representing assignment operator syntax
+   * @return \ramp\condition\Operator Representing assignment operator syntax
    */
   public static function ASSIGNMENT() : Operator
   {
@@ -82,7 +82,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'equal to' operator syntax.
-   * @return \svelte\condition\Operator Representing 'equal to' operator syntax
+   * @return \ramp\condition\Operator Representing 'equal to' operator syntax
    */
   public static function EQUAL_TO() : Operator
   {
@@ -94,7 +94,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'not equal to' operator syntax.
-   * @return \svelte\condition\Operator Representing 'not equal to' operator syntax
+   * @return \ramp\condition\Operator Representing 'not equal to' operator syntax
    */
   public static function NOT_EQUAL_TO() : Operator
   {
@@ -106,7 +106,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'less than' operator syntax.
-   * @return \svelte\condition\Operator Representing 'less than' operator syntax
+   * @return \ramp\condition\Operator Representing 'less than' operator syntax
    */
   public static function LESS_THAN() : Operator
   {
@@ -118,7 +118,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'greater than' operator syntax.
-   * @return \svelte\condition\Operator Representing 'greater than' operator syntax
+   * @return \ramp\condition\Operator Representing 'greater than' operator syntax
    */
   public static function GREATER_THAN() : Operator
   {
@@ -130,7 +130,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'and' operator syntax.
-   * @return \svelte\condition\Operator Representing 'and' operator syntax
+   * @return \ramp\condition\Operator Representing 'and' operator syntax
    */
   public static function AND() : Operator
   {
@@ -142,7 +142,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'or' operator syntax.
-   * @return \svelte\condition\Operator Representing 'or' operator syntax
+   * @return \ramp\condition\Operator Representing 'or' operator syntax
    */
   public static function OR() : Operator
   {
@@ -154,7 +154,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'opening parenthesis' operator syntax.
-   * @return \svelte\condition\Operator Representing 'opening parenthesis' operator syntax
+   * @return \ramp\condition\Operator Representing 'opening parenthesis' operator syntax
    */
   public static function OPENING_PARENTHESIS() : Operator
   {
@@ -166,7 +166,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'closing parenthesis' operator syntax.
-   * @return \svelte\condition\Operator Representing 'closing parenthesis' operator syntax
+   * @return \ramp\condition\Operator Representing 'closing parenthesis' operator syntax
    */
   public static function CLOSING_PARENTHESIS() : Operator
   {
@@ -178,7 +178,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'opening grouping parenthesis' operator syntax.
-   * @return \svelte\condition\Operator Representing 'opening grouping parenthesis' operator syntax
+   * @return \ramp\condition\Operator Representing 'opening grouping parenthesis' operator syntax
    */
   public static function OPENING_GROUPING_PARENTHESIS() : Operator
   {
@@ -190,7 +190,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns the Operator object representing 'closing grouping parenthesis' operator syntax.
-   * @return \svelte\condition\Operator Representing 'closing grouping parenthesis' operator syntax
+   * @return \ramp\condition\Operator Representing 'closing grouping parenthesis' operator syntax
    */
   public static function CLOSING_GROUPING_PARENTHESIS() : Operator
   {
@@ -202,7 +202,7 @@ class Operator extends SvelteObject
 
   /**
    * Returns relevant string literal operator based on target environment.
-   * @param \svelte\condition\iEnvironment $targetEnvironment Environment to target.
+   * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target.
    * @return string Representation of operator based on provided target environment
    */
   public function __invoke(iEnvironment $targetEnvironment = null) : string

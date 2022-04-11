@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,20 +18,20 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition\mocks\BusinessConditionTest;
+namespace tests\ramp\condition\mocks\BusinessConditionTest;
 
-use svelte\condition\BusinessCondition;
-use svelte\condition\iEnvironment;
+use ramp\condition\BusinessCondition;
+use ramp\condition\iEnvironment;
 
 /**
- * Concreate implementation of \svelte\condition\BusinessCondition for testing against.
+ * Concreate implementation of \ramp\condition\BusinessCondition for testing against.
  * .
  */
 class ConcreteBusinessCondition extends BusinessCondition
 {
   /**
    * Stub method returns empty string ('').
-   * @param \svelte\condition\iEnvironment $targetEnvironment Environment to target.
+   * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target.
    * @param mixed $comparable Value to be compared with attribute by operation.
    * @return string returns empty string ('')
    */

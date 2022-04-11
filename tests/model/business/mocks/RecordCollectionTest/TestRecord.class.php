@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,21 +18,21 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordCollectionTest;
+namespace tests\ramp\model\business\mocks\RecordCollectionTest;
 
-use svelte\core\Str;
-use svelte\core\iCollection;
-use svelte\core\Collection;
-use svelte\condition\PostData;
-use svelte\model\business\Record;
-use svelte\model\business\field\Input;
-use svelte\model\business\validation\dbtype\VarChar;
+use ramp\core\Str;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\condition\PostData;
+use ramp\model\business\Record;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\svelte\model\business\mocks\RecordTest\ConcreteValidationRule;
-use tests\svelte\model\business\mocks\RecordCollectionTest\ConcreteValidationRule2;
+use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
+use tests\ramp\model\business\mocks\RecordCollectionTest\ConcreteValidationRule2;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\BusinessModel for testing against.
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  * .
  */
 class TestRecord extends Record

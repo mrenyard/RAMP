@@ -1,4 +1,4 @@
-Package: svelte
+Package: ramp
 Version: 0.1
 Section: base
 Priority: optional
@@ -6,7 +6,7 @@ Architecture: all
 Depends: apache2-webshop-conf, php-fpdf (>=1.6), php-curl, postfix, php-sqlite3
 Recomends: webproject-tools
 Maintainer: renyard.m@gmail.com
-Description: Svelte
+Description: RAMP
   Rapid easy-to-use 'best practice' web application development enviroment.
    - Clear seperation of form and function
    - total control over output (semantic HTML etc)

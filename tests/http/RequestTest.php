@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,41 +18,41 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\http;
+namespace tests\ramp\http;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Filter.class.php';
-require_once '/usr/share/php/svelte/condition/FilterCondition.class.php';
-require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/http/Request.class.php';
-require_once '/usr/share/php/svelte/http/Method.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/http/Request.class.php';
+require_once '/usr/share/php/ramp/http/Method.class.php';
 
-require_once '/usr/share/php/tests/svelte/http/mocks/RequestTest/Field.class.php';
-require_once '/usr/share/php/tests/svelte/http/mocks/RequestTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/RequestTest/Field.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/RequestTest/MockRecord.class.php';
 
-use svelte\core\Str;
-use svelte\http\Request;
-use svelte\http\Method;
-use svelte\condition\Filter;
-use svelte\condition\FilterCondition;
-use svelte\condition\PostData;
-use svelte\condition\InputDataCondition;
-use svelte\model\business\iBusinessModelDefinition;
+use ramp\core\Str;
+use ramp\http\Request;
+use ramp\http\Method;
+use ramp\condition\Filter;
+use ramp\condition\FilterCondition;
+use ramp\condition\PostData;
+use ramp\condition\InputDataCondition;
+use ramp\model\business\iBusinessModelDefinition;
 
 /**
- * Collection of tests for \svelte\http\Request.
+ * Collection of tests for \ramp\http\Request.
  */
 class RequestTest extends \PHPUnit\Framework\TestCase {
 
@@ -64,7 +64,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
-    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\http\mocks\RequestTest';
+    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\http\mocks\RequestTest';
 
     $_GET = array();
     $_POST = array();
@@ -77,19 +77,19 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Collection of assertions for svelte\http\Request::__construct().
-   * - assert is instance of {@link \svelte\core\Object}
-   * - assert is instance of {@link \svelte\model\iModelDefinition}
-   * - assert is instance of {@link \svelte\http\Request}
-   * @link svelte.http.Request svelte\request\http\Request
+   * Collection of assertions for ramp\http\Request::__construct().
+   * - assert is instance of {@link \ramp\core\Object}
+   * - assert is instance of {@link \ramp\model\iModelDefinition}
+   * - assert is instance of {@link \ramp\http\Request}
+   * @link ramp.http.Request ramp\request\http\Request
    */
   public function test__construct()
   {
     $_SERVER['REQUEST_URI'] = '/';
     $testObject = new Request();
-    $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('svelte\model\business\iBusinessModelDefinition', $testObject);
-    $this->assertInstanceOf('svelte\http\Request', $testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('ramp\model\business\iBusinessModelDefinition', $testObject);
+    $this->assertInstanceOf('ramp\http\Request', $testObject);
   }
 
   /**
@@ -98,7 +98,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
    * - $_GET['property-not'] = 'valueOK';
    * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
-   *   limits as defined by local business model (SVELTE_BUESINESS_MODEL_NAMESPACE)
+   *   limits as defined by local business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
    */
   public function testDomainException()
   {
@@ -112,9 +112,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (GET Record collection filtered):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals NULL
-   *  - assert expectsFragment returns {@link \svelte\core\Boolean::FALSE()}
+   *  - assert expectsFragment returns {@link \ramp\core\Boolean::FALSE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'GET'
-   *  - assert method returns {@link \svelte\Method::GET()}
+   *  - assert method returns {@link \ramp\Method::GET()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/?property-a=valueA&property-b=valueB&property-c=valueC&from=100'
    * - $_SERVER['QUERY_STRING'] equals 'property-a=valueA&property-b=valueB&property-c=valueC&from=100'
    *  - assert modelURN mock-record
@@ -131,16 +131,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    *  - assert filter returns comparable Filter object
    * - $_POST[] (postData)
    *  - assert postData returns NULL
-   * @link svelte.http.Request#method_get_expectsFragment svelte\request\http\Request::expectsFragment
-   * @link svelte.http.Request#method_get_method svelte\request\http\Request::method
-   * @link svelte.http.Request#method_get_resourceIdentifier svelte\request\http\Request::resourceIdentifier
-   * @link svelte.http.Request#method_get_modelURN svelte\request\http\Request::modelURN
-   * @link svelte.http.Request#method_get_recordName svelte\request\http\Request::recordName
-   * @link svelte.http.Request#method_get_recordKey svelte\request\http\Request::recordKey
-   * @link svelte.http.Request#method_get_propertyName svelte\request\http\Request::propertyName
-   * @link svelte.http.Request#method_get_fromIndex svelte\request\http\Request::fromIndex
-   * @link svelte.http.Request#method_get_filter svelte\request\http\Request::filter
-   * @link svelte.http.Request#method_get_postData svelte\request\http\Request::postData
+   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function testGETRecordCollection()
   {
@@ -154,21 +154,21 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
 
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::GET());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->modelURN);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->modelURN);
     $this->assertEquals('mock-record', (string)$testObject->modelURN);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->recordName);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_recordName());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordName);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_recordName());
     $this->assertEquals('MockRecord', (string)$testObject->recordName);
     $this->assertEquals('MockRecord', (string)$testObject->get_recordName());
     $this->assertNull($testObject->recordKey);
     $this->assertNull($testObject->get_recordKey());
     $this->assertNull($testObject->propertyName);
     $this->assertNull($testObject->get_propertyName());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/', (string)$testObject->resourceIdentifier);
     $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(100, $testObject->fromIndex);
-    $this->assertInstanceOf('svelte\condition\Filter', $testObject->filter);
+    $this->assertInstanceOf('ramp\condition\Filter', $testObject->filter);
     $expectedFilter = new Filter();
     $expectedFilter->add(new FilterCondition($this->record, Str::set('propertyA'), 'valueA'));
     $expectedFilter->add(new FilterCondition($this->record, Str::set('propertyB'), 'valueB'));
@@ -180,9 +180,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (POST individual Record):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals 'NotXmlHTTPRequest'
-   *  - assert expectsFragment returns {@link \svelte\core\Boolean::FALSE()}
+   *  - assert expectsFragment returns {@link \ramp\core\Boolean::FALSE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'POST'
-   *  - assert method returns {@link \svelte\Method::POST()}
+   *  - assert method returns {@link \ramp\Method::POST()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/key/'
    *  - assert modelURN mock-record:property-a
    *  - assert recordName MockRecord
@@ -197,16 +197,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - $_POST['mock-record:key:property-b'] equals 'valueB'
    * - $_POST['mock-record:key:property-c'] equals 'valueC'
    *   - assert postData returns comparable PostData object
-   * @link svelte.http.Request#method_get_expectsFragment svelte\request\http\Request::expectsFragment
-   * @link svelte.http.Request#method_get_method svelte\request\http\Request::method
-   * @link svelte.http.Request#method_get_resourceIdentifier svelte\request\http\Request::resourceIdentifier
-   * @link svelte.http.Request#method_get_modelURN svelte\request\http\Request::modelURN
-   * @link svelte.http.Request#method_get_recordName svelte\request\http\Request::recordName
-   * @link svelte.http.Request#method_get_recordKey svelte\request\http\Request::recordKey
-   * @link svelte.http.Request#method_get_propertyName svelte\request\http\Request::propertyName
-   * @link svelte.http.Request#method_get_fromIndex svelte\request\http\Request::fromIndex
-   * @link svelte.http.Request#method_get_filter svelte\request\http\Request::filter
-   * @link svelte.http.Request#method_get_postData svelte\request\http\Request::postData
+   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function testPOSTRecord()
   {
@@ -220,24 +220,24 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
 
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::POST());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->modelURN);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->modelURN);
     $this->assertEquals('mock-record:key', (string)$testObject->modelURN);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->recordName);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_recordName());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordName);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_recordName());
     $this->assertEquals('MockRecord', (string)$testObject->recordName);
     $this->assertEquals('MockRecord', (string)$testObject->get_recordName());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->recordKey);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_recordKey());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordKey);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_recordKey());
     $this->assertEquals('key', (string)$testObject->recordKey);
     $this->assertEquals('key', (string)$testObject->get_recordKey());
     $this->assertNull($testObject->propertyName);
     $this->assertNull($testObject->get_propertyName());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/~/', (string)$testObject->resourceIdentifier);
     $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(0, $testObject->fromIndex);
     $this->assertNull($testObject->filter);
-    $this->assertInstanceOf('svelte\condition\PostData', $testObject->postData);
+    $this->assertInstanceOf('ramp\condition\PostData', $testObject->postData);
     $expectedPostData = new PostData();
     $expectedPostData->add(
       new InputDataCondition($this->record, $this->key, Str::set('propertyA'), 'valueA')
@@ -254,9 +254,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (POST Property of Record return fragment):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals 'Xmlhttp\Request'
-   *  - assert expectsFragment returns {@link \svelte\core\Boolean::TRUE()}
+   *  - assert expectsFragment returns {@link \ramp\core\Boolean::TRUE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'POST'
-   *  - assert method returns {@link \svelte\Method::POST()}
+   *  - assert method returns {@link \ramp\Method::POST()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/key/property-a'
    *  - assert modelURN mock-record:key:property-a
    *  - assert recordName MockRecord
@@ -270,16 +270,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    *  - assert filter returns NULL
    * - $_POST['record:key:property-b'] equals 'valueB'
    *   - assert postData returns comparable PostData object
-   * @link svelte.http.Request#method_get_expectsFragment svelte\request\http\Request::expectsFragment
-   * @link svelte.http.Request#method_get_method svelte\request\http\Request::method
-   * @link svelte.http.Request#method_get_resourceIdentifier svelte\request\http\Request::resourceIdentifier
-   * @link svelte.http.Request#method_get_modelURN svelte\request\http\Request::modelURN
-   * @link svelte.http.Request#method_get_recordName svelte\request\http\Request::recordName
-   * @link svelte.http.Request#method_get_recordKey svelte\request\http\Request::recordKey
-   * @link svelte.http.Request#method_get_propertyName svelte\request\http\Request::propertyName
-   * @link svelte.http.Request#method_get_fromIndex svelte\request\http\Request::fromIndex
-   * @link svelte.http.Request#method_get_filter svelte\request\http\Request::filter
-   * @link svelte.http.Request#method_get_postData svelte\request\http\Request::postData
+   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function test_POSTProperty()
   {
@@ -291,26 +291,26 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
 
     $this->assertTrue($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::POST());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->modelURN);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->modelURN);
     $this->assertEquals('mock-record:key:property-b', (string)$testObject->modelURN);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->recordName);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_recordName());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordName);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_recordName());
     $this->assertEquals('MockRecord', (string)$testObject->recordName);
     $this->assertEquals('MockRecord', (string)$testObject->get_recordName());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->recordKey);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_recordKey());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordKey);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_recordKey());
     $this->assertEquals('key', (string)$testObject->recordKey);
     $this->assertEquals('key', (string)$testObject->get_recordKey());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->propertyName);
-    $this->assertInstanceOf('svelte\core\Str', $testObject->get_propertyName());
+    $this->assertInstanceOf('ramp\core\Str', $testObject->propertyName);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->get_propertyName());
     $this->assertEquals('propertyB', (string)$testObject->propertyName);
     $this->assertEquals('propertyB', (string)$testObject->get_propertyName());
-    $this->assertInstanceOf('svelte\core\Str', $testObject->resourceIdentifier);
+    $this->assertInstanceOf('ramp\core\Str', $testObject->resourceIdentifier);
     $this->assertEquals('/mock-record/~/property-b/', (string)$testObject->resourceIdentifier);
     $this->assertIsInt($testObject->fromIndex);
     $this->assertEquals(0, $testObject->fromIndex);
     $this->assertNull($testObject->filter);
-    $this->assertInstanceOf('svelte\condition\PostData', $testObject->postData);
+    $this->assertInstanceOf('ramp\condition\PostData', $testObject->postData);
     $expectedPostData = new PostData();
     $expectedPostData->add(
       new InputDataCondition($this->record, $this->key, Str::set('propertyB'), 'valueB')

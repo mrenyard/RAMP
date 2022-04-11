@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,51 +18,51 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view;
+namespace tests\ramp\view;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/view/View.class.php';
-require_once '/usr/share/php/svelte/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/ChildView.class.php';
 
-require_once '/usr/share/php/tests/svelte/view/mocks/ChildViewTest/MockChildView.class.php';
-require_once '/usr/share/php/tests/svelte/view/mocks/ChildViewTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockChildView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockView.class.php';
 
-use tests\svelte\view\mocks\ChildViewTest\MockChildView;
-use tests\svelte\view\mocks\ChildViewTest\MockView;
+use tests\ramp\view\mocks\ChildViewTest\MockChildView;
+use tests\ramp\view\mocks\ChildViewTest\MockView;
 
-use svelte\view\View;
-use svelte\view\ChildView;
+use ramp\view\View;
+use ramp\view\ChildView;
 
 /**
- * Collection of tests for \svelte\view\ChildView.
+ * Collection of tests for \ramp\view\ChildView.
  */
 class ChildViewTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for \svelte\view\ChildView::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\view\View}
-   * - assert is instance of {@link \svelte\view\RootView}
+   * Collection of assertions for \ramp\view\ChildView::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\view\View}
+   * - assert is instance of {@link \ramp\view\RootView}
    * - assert output of children on provided parentView is as expected maintaining sequance and format
    * - assert output of render on provided parentView is as expected maintaining sequance and format
-   * @link svelte.view.ChildView svelte\view\ChildView
+   * @link ramp.view.ChildView ramp\view\ChildView
    */
   public function test__construct()
   {
     $parentView = new MockView();
     $testObject = new MockChildView($parentView);
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\view\View', $testObject);
-    $this->assertInstanceOf('\svelte\view\ChildView', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\view\View', $testObject);
+    $this->assertInstanceOf('\ramp\view\ChildView', $testObject);
 
     ob_start();
     $parentView->children;
     $output = ob_get_clean();
     $this->assertEquals(
-      'tests\svelte\view\mocks\ChildViewTest\MockChildView ',
+      'tests\ramp\view\mocks\ChildViewTest\MockChildView ',
       $output
     );
 
@@ -70,8 +70,8 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertEquals(
-      'tests\svelte\view\mocks\ChildViewTest\MockView ' .
-      'tests\svelte\view\mocks\ChildViewTest\MockChildView ',
+      'tests\ramp\view\mocks\ChildViewTest\MockView ' .
+      'tests\ramp\view\mocks\ChildViewTest\MockChildView ',
       $output
     );
   }

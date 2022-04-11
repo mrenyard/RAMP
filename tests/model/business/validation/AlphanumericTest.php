@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,20 +18,20 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation;
+namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
 
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\Alphanumeric;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\Alphanumeric;
 
 /**
- * Collection of tests for \svelte\model\business\validation\Alphanumeric.
+ * Collection of tests for \ramp\model\business\validation\Alphanumeric.
  */
 class AlphanumericTest extends \PHPUnit\Framework\TestCase
 {
@@ -46,24 +46,24 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\validation\Alphanumeric::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \svelte\model\business\validation\Alphanumeric}
-   * @link svelte.model.business.validation.Alphanumeric \svelte\model\business\validation\Alphanumeric
+   * Collection of assertions for ramp\validation\Alphanumeric::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@link \ramp\model\business\validation\Alphanumeric}
+   * @link ramp.model.business.validation.Alphanumeric \ramp\model\business\validation\Alphanumeric
    */
   public function test__Construct()
   {
-    $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\Alphanumeric', $this->testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\Alphanumeric', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\Alphanumeric::process().
+   * Collection of assertions for ramp\model\business\validation\Alphanumeric::process().
    * - assert void returned when test successful
-   * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
-   * @link svelte.model.business.validation.Alphanumeric#method_process \svelte\model\business\validation\Alphanumeric::process()
+   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
+   * @link ramp.model.business.validation.Alphanumeric#method_process \ramp\model\business\validation\Alphanumeric::process()
    */
   public function testTest()
   {
@@ -75,6 +75,6 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
     } catch (FailedValidationException $expected) {
       return;
     }
-    $this->fail('An expected \svelte\model\business\FailedValidationException has NOT been raised.');
+    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }
 }

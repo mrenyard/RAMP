@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,32 +16,32 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view\document;
+namespace ramp\view\document;
 
-use svelte\core\PropertyNotSetException;
-use svelte\core\BadPropertyCallException;
-use svelte\model\Model;
-use svelte\model\document\DocumentModel;
-use svelte\model\business\BusinessModel;
-use svelte\view\View;
-use svelte\view\ChildView;
+use ramp\core\PropertyNotSetException;
+use ramp\core\BadPropertyCallException;
+use ramp\model\Model;
+use ramp\model\document\DocumentModel;
+use ramp\model\business\BusinessModel;
+use ramp\view\View;
+use ramp\view\ChildView;
 
 /**
  * Abstract specialist document view (presentation) includes composite DocumentModel.
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
- * - Enable read access to associated {@link \svelte\model\business\BusinessModel} and {@link \svelte\model\document\DocumentModel}
+ * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
- * - {@link \svelte\view\View}
- * - {@link \svelte\model\business\BusinessModel}
- * - {@link \svelte\model\document\DocumentModel}
+ * - {@link \ramp\view\View}
+ * - {@link \ramp\model\business\BusinessModel}
+ * - {@link \ramp\model\document\DocumentModel}
  */
 abstract class DocumentView extends ChildView
 {
@@ -82,7 +82,7 @@ abstract class DocumentView extends ChildView
    *
    * @param string $propertyName Name of property (handled internally)
    * @param mixed $propertyValue The value to set on requested property (handled internally)
-   * @throws \svelte\core\PropertyNotSetException Unable to set property when undefined or inaccessible
+   * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
   final public function __set($propertyName, $propertyValue)
   {
@@ -110,13 +110,13 @@ abstract class DocumentView extends ChildView
    *      print_r($this->aProperty);
    *   }
    * ```
-   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
    * ```php
    *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
    * ```
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
-   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -135,7 +135,7 @@ abstract class DocumentView extends ChildView
    * Model can be a complex hierarchical ordered tree or a simple one level object,
    * either way it will be interlaced appropriately with *this* View up to the
    * same depth of structure.
-   * @param \svelte\model\Model $model Model containing data used in View
+   * @param \ramp\model\Model $model Model containing data used in View
    * @throws \InvalidArgumentException Expecting instanceof BusinessModel
    */
   final public function setModel(Model $model)

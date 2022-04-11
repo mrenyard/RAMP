@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,51 +18,51 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business;
+namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordCollectionTest/ConcreteValidationRule2.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordCollectionTest/TestRecordCollection.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/mocks/RecordCollectionTest/TestRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordCollectionTest/ConcreteValidationRule2.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordCollectionTest/TestRecordCollection.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordCollectionTest/TestRecord.class.php';
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\PostData;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
 
-use tests\svelte\model\business\mocks\RecordCollectionTest\TestRecordCollection;
-use tests\svelte\model\business\mocks\RecordCollectionTest\TestRecord;
+use tests\ramp\model\business\mocks\RecordCollectionTest\TestRecordCollection;
+use tests\ramp\model\business\mocks\RecordCollectionTest\TestRecord;
 
 /**
- * Collection of tests for \svelte\model\business\RecordCollection.
+ * Collection of tests for \ramp\model\business\RecordCollection.
  */
 class RecordCollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -80,7 +80,7 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\mocks\RecordCollectionTest';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordCollectionTest';
     $this->children = new Collection();
     $this->testObject = new TestRecordCollection();
     $this->child1Data = new \stdClass();
@@ -101,35 +101,35 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * - assert is instance of {@link \svelte\model\business\RecordCollection}
-   * - assert is instance of {@link \svelte\core\iOption}
+   * Collection of assertions for \ramp\model\business\RecordCollection::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\business\RecordCollection}
+   * - assert is instance of {@link \ramp\core\iOption}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \svelte\core\iCollection}
-   * @link svelte.model.business.RecordCollection svelte\model\business\RecordCollection
+   * - assert is instance of {@link \ramp\core\iCollection}
+   * @link ramp.model.business.RecordCollection ramp\model\business\RecordCollection
    */
   public function test__construction()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\RecordCollection', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\svelte\core\iCollection', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\iCollection', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::id.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * Collection of assertions for \ramp\model\business\RecordCollection::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.RecordCollection#method_get_id svelte\model\business\RecordCollection::id
+   * @link ramp.model.business.RecordCollection#method_get_id ramp\model\business\RecordCollection::id
    */
   public function testGet_id()
   {
@@ -137,20 +137,20 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
       $this->testObject->id = "ID";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame('test-record-collection', (string)$this->testObject->id);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::type.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * Collection of assertions for \ramp\model\business\RecordCollection::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \svelte\core\Str}.
+   * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.RecordCollection#method_get_type svelte\model\business\RecordCollection::type
+   * @link ramp.model.business.RecordCollection#method_get_type ramp\model\business\RecordCollection::type
    */
   public function testGet_type()
   {
@@ -158,19 +158,19 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
       $this->testObject->type = "TYPE";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
       $this->assertSame(' test-record-collection record-collection', (string)$this->testObject->type);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::getIterator().
+   * Collection of assertions for \ramp\model\business\RecordCollection::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through each expected object.
    * - assert foreach returned object matches expected.
-   * @link svelte.model.business.RecordCollection#method_getIterator svelte\model\business\RecordCollection::getIterator()
+   * @link ramp.model.business.RecordCollection#method_getIterator ramp\model\business\RecordCollection::getIterator()
    */
   public function testGetIterator()
   {
@@ -188,21 +188,21 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::offsetGet.
+   * Collection of assertions for \ramp\model\business\RecordCollection::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * - assert expected object returned at its expected index.
-   * @link svelte.model.business.RecordCollection#method_offsetGet svelte\model\business\RecordCollection::offsetGet()
+   * @link ramp.model.business.RecordCollection#method_offsetGet ramp\model\business\RecordCollection::offsetGet()
    */
   public function testOffsetGet()
   {
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\Record', $this->testObject[0]);
+      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\Record', $this->testObject[1]);
+      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[1]);
       $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\Record', $this->testObject[2]);
+      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[2]);
       $this->assertSame($this->testChild3, $this->testObject[2]);
       return;
     }
@@ -210,10 +210,10 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::offsetExists.
+   * Collection of assertions for \ramp\model\business\RecordCollection::offsetExists.
    * - assert True returned on isset() when within expected bounds.
    * - assert False returned on isset() when outside expected bounds.
-   * @link svelte.model.business.RecordCollection#method_offsetExists svelte\model\business\RecordCollection::offsetExists()
+   * @link ramp.model.business.RecordCollection#method_offsetExists ramp\model\business\RecordCollection::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -224,14 +224,14 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::offsetSet and
-   * for \svelte\model\business\RecordCollection::offsetUnset.
+   * Collection of assertions for \ramp\model\business\RecordCollection::offsetSet and
+   * for \ramp\model\business\RecordCollection::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link svelte.model.business.RecordCollection#method_offsetSet svelte\model\business\RecordCollection::offsetSet()
-   * @link svelte.model.business.RecordCollection#method_offsetUnset svelte\model\business\RecordCollection::offsetUnset()
+   * @link ramp.model.business.RecordCollection#method_offsetSet ramp\model\business\RecordCollection::offsetSet()
+   * @link ramp.model.business.RecordCollection#method_offsetUnset ramp\model\business\RecordCollection::offsetUnset()
    */
   public function testOffsetSetOffsetUnset()
   {
@@ -250,10 +250,10 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::validate().
+   * Collection of assertions for \ramp\model\business\RecordCollection::validate().
    * - assert returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of its children.
-   * @link svelte.model.business.RecordCollection#method_validate svelte\model\business\RecordCollection::validate()
+   * @link ramp.model.business.RecordCollection#method_validate ramp\model\business\RecordCollection::validate()
    */
   public function testValidate()
   {
@@ -268,11 +268,11 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::hasErrors().
+   * Collection of assertions for \ramp\model\business\RecordCollection::hasErrors().
    * - assert returns True when any child (Record) has recorded errors.
    * - assert propagates through children until reaches one that has recorded errors.
    * - assert each child returns whether it has errors called.
-   * @link svelte.model.business.RecordCollection#method_hasErrors svelte\model\business\RecordCollection::hasErrors()
+   * @link ramp.model.business.RecordCollection#method_hasErrors ramp\model\business\RecordCollection::hasErrors()
    */
   public function testHasErrors()
   {
@@ -288,11 +288,11 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::getErrors().
+   * Collection of assertions for \ramp\model\business\RecordCollection::getErrors().
    * - assert following validate(), the expected iCollection of error messages are returned.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
    * - assert a single collection containing relevent sub errors returned when called on sub Records
-   * @link svelte.model.business.RecordCollection#method_getErrors svelte\model\business\RecordCollection::getErrors()
+   * @link ramp.model.business.RecordCollection#method_getErrors ramp\model\business\RecordCollection::getErrors()
    */
   public function testGetErrors()
   {
@@ -324,9 +324,9 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
    /**
-   * Collection of assertions for \svelte\model\business\RecordCollection::count().
+   * Collection of assertions for \ramp\model\business\RecordCollection::count().
    * - assert return expected int value related to the number of child RecordCollections held.
-   * @link svelte.model.business.RecordCollection#method_count svelte\model\business\RecordCollection::count()
+   * @link ramp.model.business.RecordCollection#method_count ramp\model\business\RecordCollection::count()
    */
   public function testCount()
   {

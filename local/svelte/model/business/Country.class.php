@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,17 +15,17 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-//use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\iOption;
-//use svelte\model\business\Option;
-use svelte\model\business\RecordCollection;
-use svelte\model\business\Record;
+//use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\iOption;
+//use ramp\model\business\Option;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\Record;
 
 /**
  * Collection of Coutry.
@@ -42,7 +42,7 @@ class Country extends Record
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   static public function primaryKeyName() : Str { return Str::set('code'); }
 

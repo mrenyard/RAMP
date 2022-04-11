@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,48 +18,48 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field;
+namespace tests\ramp\model\business\field;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockRecord.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/field/mocks/FieldTest/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockField.class.php';
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\core\OptionList;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\PostData;
-use svelte\model\business\Record;
-use svelte\model\business\field\Option;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\core\OptionList;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
+use ramp\model\business\Record;
+use ramp\model\business\field\Option;
 
-use tests\svelte\model\business\field\mocks\FieldTest\MockField;
-use tests\svelte\model\business\field\mocks\FieldTest\MockRecord;
+use tests\ramp\model\business\field\mocks\FieldTest\MockField;
+use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
 
 /**
- * Collection of tests for \svelte\model\business\field\Field.
+ * Collection of tests for \ramp\model\business\field\Field.
  */
 class FieldTest extends \PHPUnit\Framework\TestCase
 {
@@ -77,7 +77,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     MockField::reset();
-    $this->children = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
+    $this->children = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
@@ -88,35 +88,35 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
     $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE = 'tests\svelte\model\business\field\mocks\FieldTest';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }
 
   /**
-    * Collection of assertions for \svelte\model\business\field\Field::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * - assert is instance of {@link \svelte\model\business\BusinessModel}
+    * Collection of assertions for \ramp\model\business\field\Field::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \svelte\model\field\Field}
-   * @link svelte.model.business.field.Field svelte\model\business\field\Field
+   * - assert is instance of {@link \ramp\model\field\Field}
+   * @link ramp.model.business.field.Field ramp\model\business\field\Field
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
  
     try {
       new MockField(Str::set('aProperty'), $this->mockRecord, new OptionList());
     } catch(\InvalidArgumentException $expected) {
       $this->assertEquals(
-        'OptionList $options compositeType MUST be \svelte\model\business\field\Option',
+        'OptionList $options compositeType MUST be \ramp\model\business\field\Option',
         $expected->getMessage()
       );
       return;
@@ -125,12 +125,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::id.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * Collection of assertions for \ramp\model\business\field\Field::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.field.Field#method_get_id svelte\model\business\field\Field::id
+   * @link ramp.model.business.field.Field#method_get_id ramp\model\business\field\Field::id
    */
   public function testGet_id()
   {
@@ -138,22 +138,22 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->testObject->id = "ID";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
       $this->assertSame('First child', (string)$this->testChild1->description);
       $this->assertSame('Second child', (string)$this->testChild2->description);
       $this->assertSame('Third child', (string)$this->testChild3->description);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::containingRecord.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'containingRecord'
+   * Collection of assertions for \ramp\model\business\field\Field::containingRecord.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'containingRecord'
    * - assert property 'containingRecord' is gettable.
    * - assert returned Record matches Record as provided construct.
-   * @link svelte.model.business.field.Field#method_get_containingRecord svelte\model\business\field\Field::containingRecord
+   * @link ramp.model.business.field.Field#method_get_containingRecord ramp\model\business\field\Field::containingRecord
    */
   public function testGet_containingRecord()
   {
@@ -163,16 +163,16 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->assertSame($this->mockRecord, $this->testObject->containingRecord);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::type.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * Collection of assertions for \ramp\model\business\field\Field::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \svelte\core\Str}.
+   * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.field.Field#method_get_type svelte\model\business\field\Field::type
+   * @link ramp.model.business.field.Field#method_get_type ramp\model\business\field\Field::type
    */
   public function testGet_type()
   {
@@ -180,19 +180,19 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->testObject->type = "TYPE";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
       $this->assertEquals(' mock-field field', (string)$this->testObject->type);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::getIterator().
+   * Collection of assertions for \ramp\model\business\field\Field::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through each expected object.
    * - assert foreach returned object matches expected.
-   * @link svelte.model.business.field.Field#method_getIterator svelte\model\business\field\Field::getIterator()
+   * @link ramp.model.business.field.Field#method_getIterator ramp\model\business\field\Field::getIterator()
    */
   public function testGetIterator()
   {
@@ -208,21 +208,21 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::offsetGet.
+   * Collection of assertions for \ramp\model\business\field\Field::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * - assert expected object returned at its expected index.
-   * @link svelte.model.business.field.Field#method_offsetGet svelte\model\business\field\Field::offsetGet()
+   * @link ramp.model.business.field.Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
    */
   public function testOffsetGet()
   {
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[0]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[1]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[1]);
       $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\field\Option', $this->testObject[2]);
+      $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject[2]);
       $this->assertSame($this->testChild3, $this->testObject[2]);
       return;
     }
@@ -230,10 +230,10 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::offsetExists.
+   * Collection of assertions for \ramp\model\business\field\Field::offsetExists.
    * - assert True returned on isset() when within expected bounds.
    * - assert False returned on isset() when outside expected bounds.
-   * @link svelte.model.business.field.Field#method_offsetExists svelte\model\business\field\Field::offsetExists()
+   * @link ramp.model.business.field.Field#method_offsetExists ramp\model\business\field\Field::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -243,14 +243,14 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($this->testObject[3]));
   }
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
-   * for \svelte\model\business\BusinessModel::offsetUnset.
+   * Collection of assertions for \ramp\model\business\BusinessModel::offsetSet and
+   * for \ramp\model\business\BusinessModel::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link svelte.model.business.BusinessModel#method_offsetSet svelte\model\business\BusinessModel::offsetSet()
-   * @link svelte.model.business.BusinessModel#method_offsetUnset svelte\model\business\BusinessModel::offsetUnset()
+   * @link ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
+   * @link ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
    */
   public function testOffsetSetOffsetUnset()
   {
@@ -262,13 +262,13 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::validate() where PostData
+   * Collection of assertions for \ramp\model\business\field\Field::validate() where PostData
    * does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
-   * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
+   * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleNotCalled()
   {
@@ -277,7 +277,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Further collection of assertions for \svelte\model\business\field\Field::validate(), where
+   * Further collection of assertions for \ramp\model\business\field\Field::validate(), where
    * PostData contains an InputDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
    * - assert if provided PostData contains an InputDataCondition with an attribute that matches
@@ -286,7 +286,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    *    the testObject's id and its processValidationRule method is called and passes, then its
    *    containingRecord setPropertyMethod is called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
-   * @link svelte.model.business.field.Field#method_validate svelte\model\business\field\Field::validate()
+   * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
    */
   public function testValidateProcessValidationRuleCalled()
   {
@@ -298,13 +298,13 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::hasErrors().
+   * Collection of assertions for \ramp\model\business\field\Field::hasErrors().
    * - assert returns False when PostData does NOT contain an InputDataCondition with an attribute
    *   that matches the testObject's id.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *   matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert does NOT propagates through to its child/grandchild.
-   * @link svelte.model.business.field.Field#method_hasErrors svelte\model\business\field\Field::hasErrors()
+   * @link ramp.model.business.field.Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
    */
   public function testHasErrors()
   {
@@ -314,7 +314,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::getErrors().
+   * Collection of assertions for \ramp\model\business\field\Field::getErrors().
    * - assert returns an empty iCollection when PostData does NOT contain an InputDataCondition
    *   with an attribute that matches the testObject's id.
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
@@ -327,7 +327,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    *    by its hasErrors and getErrors methods.
    * - assert following validate(), the expected iCollection of error messages are returned.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * @link svelte.model.business.field.Field#method_getErrors svelte\model\business\field\Field::getErrors()
+   * @link ramp.model.business.field.Field#method_getErrors ramp\model\business\field\Field::getErrors()
    */
   public function testGetErrors()
   {
@@ -336,7 +336,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($this->testObject->hasErrors);
     $errors = $this->testObject->errors;
     $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertInstanceOf('\svelte\core\iCollection', $errors);
+    $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
     // Returns same results on subsequent call, while Field in same state.
@@ -350,7 +350,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertNull($this->dataObject->aProperty);
     $thirdCallOnErrors = $this->testObject->errors;
-    $this->assertInstanceOf('\svelte\core\iCollection', $thirdCallOnErrors);
+    $this->assertInstanceOf('\ramp\core\iCollection', $thirdCallOnErrors);
     $this->assertSame(1, $thirdCallOnErrors->count);
     $this->assertSame('MockField\'s has error due to $value of BAD!', (string)$thirdCallOnErrors[0]);
     // Returns same results on subsequent call, while Field in same state.
@@ -360,9 +360,9 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\field\Field::count.
+   * Collection of assertions for \ramp\model\business\field\Field::count.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link svelte.model.business.field.Field#method_count svelte\model\business\field\Field::count
+   * @link ramp.model.business.field.Field#method_count ramp\model\business\field\Field::count
    */
   public function testCount()
   {

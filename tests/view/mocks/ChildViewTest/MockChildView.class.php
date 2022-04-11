@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,12 +18,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\mocks\ChildViewTest;
+namespace tests\ramp\view\mocks\ChildViewTest;
 
-use svelte\view\ChildView;
+use ramp\view\ChildView;
 
 /**
- * Mock Concreate implementation of \svelte\view\ChildView for testing login against.
+ * Mock Concreate implementation of \ramp\view\ChildView for testing login against.
  */
 class MockChildView extends ChildView
 {

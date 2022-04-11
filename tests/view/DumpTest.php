@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,47 +18,47 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view;
+namespace tests\ramp\view;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/view/View.class.php';
-require_once '/usr/share/php/svelte/view/ChildView.class.php';
-require_once '/usr/share/php/svelte/view/Dump.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/Dump.class.php';
 
-require_once '/usr/share/php/tests/svelte/view/mocks/DumpTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/DumpTest/MockView.class.php';
 
-use tests\svelte\view\mocks\DumpTest\MockView;
+use tests\ramp\view\mocks\DumpTest\MockView;
 
-use svelte\view\View;
-use svelte\view\Dump;
+use ramp\view\View;
+use ramp\view\Dump;
 
 /**
- * Collection of tests for \svelte\view\Dump.
+ * Collection of tests for \ramp\view\Dump.
  */
 class DumpTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for \svelte\view\ChildView::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\view\View}
-   * - assert is instance of {@link \svelte\view\RootView}
+   * Collection of assertions for \ramp\view\ChildView::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\view\View}
+   * - assert is instance of {@link \ramp\view\RootView}
    * - assert output of children on provided parentView is as expected maintaining sequance and format
    * - assert output of render on provided parentView is as expected maintaining sequance and format
-   * @link svelte.view.ChildView svelte\view\ChildView
+   * @link ramp.view.ChildView ramp\view\ChildView
    */
   public function test__construct()
   {
     $rootView = new MockView();
     $testObject = new Dump($rootView);
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\view\View', $testObject);
-    $this->assertInstanceOf('\svelte\view\Dump', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\view\View', $testObject);
+    $this->assertInstanceOf('\ramp\view\Dump', $testObject);
 
     $expectedRegEx = '#^<pre>[A-Za-z0-9 _/]*code/view/Dump.class.php:[0-9]*:'.PHP_EOL.
-    'class svelte\\\view\\\Dump\#[0-9]* \([0-9]*\) {'.PHP_EOL.
+    'class ramp\\\view\\\Dump\#[0-9]* \([0-9]*\) {'.PHP_EOL.
     '  private \$viewCollection =>'.PHP_EOL.
     '  NULL'.PHP_EOL.
     '  private \$model =>'.PHP_EOL.

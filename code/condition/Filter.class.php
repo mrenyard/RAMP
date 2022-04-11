@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,53 +16,53 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\condition\SQLEnvironment;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\condition\SQLEnvironment;
 
 /**
- * Collection of verified filters for filtering collections of \svelte\model\business\Records.
+ * Collection of verified filters for filtering collections of \ramp\model\business\Records.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - Collection of {@link \svelte\condition\FilterCondition}s
- * - {@link \svelte\model\business\RecordCollection}
- * - {@link \svelte\model\business\Record}
+ * - Collection of {@link \ramp\condition\FilterCondition}s
+ * - {@link \ramp\model\business\RecordCollection}
+ * - {@link \ramp\model\business\Record}
  */
 final class Filter extends Collection
 {
   public $subOrGroups;
 
   /**
-   * Constructs an empty collection for \svelte\condition\FilterCondition.
-   * A collection of verified filters for filtering collections of {@link \svelte\model\business\Record}s
+   * Constructs an empty collection for \ramp\condition\FilterCondition.
+   * A collection of verified filters for filtering collections of {@link \ramp\model\business\Record}s
    * - restricted and evaluated by the constraints of your business model
-   *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+   *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct()
   {
-    parent::__construct(Str::set('svelte\condition\FilterCondition'));
+    parent::__construct(Str::set('ramp\condition\FilterCondition'));
   }
 
   /**
    * Factory method that validates array of filters (i.e. $_GET) as new Filter object.
-   * @param \svelte\core\Str $recordName Name of RecordCollection to apply filter/s
+   * @param \ramp\core\Str $recordName Name of RecordCollection to apply filter/s
    * @param array $filters Simple array containing filterProperty filterValue pairs for processing
    * against RecordCollection
    * @throws \LengthException when $filters is empty
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (SVELTE_BUESINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
    */
   public static function build(Str $recordName, array $filters) : Filter
   {
@@ -114,7 +114,7 @@ final class Filter extends Collection
 
   /**
    * Returns representation of this filter based on target environment.
-   * @param \svelte\condition\iEnvironment $targetEnvironment Environment to target, default SQL.
+   * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target, default SQL.
    * @return string representation of *this* based on provided target environment
    */
   public function __invoke(iEnvironment $targetEnvironment = null) : string

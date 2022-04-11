@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,12 +16,12 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation;
+namespace ramp\model\business\validation;
 
-use svelte\core\SvelteObject;
+use ramp\core\RAMPObject;
 
 /**
  * Single validation rule to test against an input value before allowing a business model property
@@ -33,9 +33,9 @@ use svelte\core\SvelteObject;
  * - Works with other ValidationRules to provide more complex set of tests.
  *
  * COLLABORATORS
- * - {@link \svelte\validation\ValidationRule}
+ * - {@link \ramp\validation\ValidationRule}
  */
-abstract class ValidationRule extends SvelteObject
+abstract class ValidationRule extends RAMPObject
 {
   private $subRule;
 

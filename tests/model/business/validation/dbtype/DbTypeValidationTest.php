@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,30 +18,30 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation\dbtype;
+namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\model\business\FailedValidationException;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\model\business\FailedValidationException;
 
-use tests\svelte\model\business\validation\MockDbTypeValidation;
-use tests\svelte\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\model\business\validation\MockDbTypeValidation;
+use tests\ramp\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\model\business\validation\dbtype\DbTypeValidation.
+ * Collection of tests for \ramp\model\business\validation\dbtype\DbTypeValidation.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\validation\MockValidationRule}
+ * - {@link \tests\ramp\validation\MockValidationRule}
  */
 class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
 {
@@ -63,25 +63,25 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\validation\DbTypeValidation::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\validation\ValidationRule}
-   * - assert is instance of {@link \svelte\validation\DbTypeValidation}
-   * @link svelte.validation.DbTypeValidationTest \svelte\validation\DbTypeValidationTest
+   * Collection of assertions for ramp\validation\DbTypeValidation::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\validation\ValidationRule}
+   * - assert is instance of {@link \ramp\validation\DbTypeValidation}
+   * @link ramp.validation.DbTypeValidationTest \ramp\validation\DbTypeValidationTest
    */
   public function test__Construct()
   {
-    $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\DbTypeValidationTest::process() and test().
+   * Collection of assertions for ramp\model\business\validation\DbTypeValidationTest::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@link \svelte\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @link svelte.model.business.validation.DbTypeValidationTest#method_test \svelte\model\business\validation\DbTypeValidationTest::test()
-   * @link svelte.model.business.validation.DbTypeValidationTest#method_process \svelte\model\business\validation\DbTypeValidationTest::process()
+   * - assert {@link \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @link ramp.model.business.validation.DbTypeValidationTest#method_test \ramp\model\business\validation\DbTypeValidationTest::test()
+   * @link ramp.model.business.validation.DbTypeValidationTest#method_process \ramp\model\business\validation\DbTypeValidationTest::process()
    */
   public function testProcess()
   {

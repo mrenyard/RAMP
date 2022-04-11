@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,15 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation\dbtype;
+namespace ramp\model\business\validation\dbtype;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\ValidationRule;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
 
 /**
  * Database type validation rule, one of a set of rules to be the first in any decorated set
@@ -36,7 +36,7 @@ use svelte\model\business\validation\ValidationRule;
  * - Takes and argument of $errorMessage to bubble up as message of FailedValidationException when test fails.
  *
  * COLLABORATORS
- * - {@link \svelte\validation\ValidationRule}
+ * - {@link \ramp\validation\ValidationRule}
  */
 abstract class DbTypeValidation extends ValidationRule
 {
@@ -56,7 +56,7 @@ abstract class DbTypeValidation extends ValidationRule
    * );
    * ```
    * @param ValidationRule $subRule Addtional rule to be added to *this* test
-   * @param \svelte\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    */
   public function __construct(ValidationRule $subRule = NULL, Str $errorMessage)
   {

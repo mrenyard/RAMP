@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,34 +18,34 @@
  * @author mrenyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition;
+namespace tests\ramp\condition;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
 
-require_once '/usr/share/php/tests/svelte/condition/mocks/PostDataTest/Field.class.php';
-require_once '/usr/share/php/tests/svelte/condition/mocks/PostDataTest/Record.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/PostDataTest/Field.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/PostDataTest/Record.class.php';
 
-use \svelte\core\Str;
-use \svelte\condition\PostData;
+use \ramp\core\Str;
+use \ramp\condition\PostData;
 
 /**
- * Collection of tests for \svelte\condition\PostData.
+ * Collection of tests for \ramp\condition\PostData.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\condition\mocks\PostDataTest\Property}
- * - {@link \tests\svelte\condition\mocks\PostDataTest\Record}
+ * - {@link \tests\ramp\condition\mocks\PostDataTest\Property}
+ * - {@link \tests\ramp\condition\mocks\PostDataTest\Record}
  */
 class PostDataTest extends \PHPUnit\Framework\TestCase
 {
@@ -54,37 +54,37 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\condition\mocks\PostDataTest';
+    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\PostDataTest';
   }
 
   /**
-   * Collection of assertions for \svelte\condition\PostData::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\core\Collection}
-   * - assert is instance of {@link \svelte\condition\PostData}
-   * - assert is composed of {@link \svelte\condition\InputDataCondition}s
-   * @link svelte.condition.PostData#method___construct svelte\condition\PostData
+   * Collection of assertions for \ramp\condition\PostData::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\core\Collection}
+   * - assert is instance of {@link \ramp\condition\PostData}
+   * - assert is composed of {@link \ramp\condition\InputDataCondition}s
+   * @link ramp.condition.PostData#method___construct ramp\condition\PostData
    */
   public function test__Construct()
   {
     $testObject = new PostData();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\core\Collection', $testObject);
-    $this->assertInstanceOf('\svelte\condition\PostData', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\core\Collection', $testObject);
+    $this->assertInstanceOf('\ramp\condition\PostData', $testObject);
 
     $this->assertTrue($testObject->isCompositeType(
-      Str::set('svelte\condition\InputDataCondition')
+      Str::set('ramp\condition\InputDataCondition')
     ));
   }
 
   /**
-   * Collection of assertions for \svelte\condition\PostData::build().
+   * Collection of assertions for \ramp\condition\PostData::build().
    * - assert throws \DomainException when any $postdata NAME is NOT in correct form
    *   - with message: <em>'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'</em>
    * - assert throws \DomainException when any $postdata NAME does NOT match business model
    *   - with message: <em>'Invalid name in $postdata does NOT match business model'</em>
    * - assert where valid produces like for like representation of provied array as PostData object
-   * @link svelte.condition.PostData#method___build svelte\condition\PostData::build()
+   * @link ramp.condition.PostData#method___build ramp\condition\PostData::build()
    */
   public function testBuild()
   {

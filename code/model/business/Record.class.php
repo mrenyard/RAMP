@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -22,14 +22,14 @@
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\core\iOption;
-use svelte\core\Collection;
-use svelte\condition\PostData;
-use svelte\model\business\BusinessModel;
-use svelte\core\PropertyNotSetException;
+use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\Collection;
+use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
+use ramp\core\PropertyNotSetException;
 
 /**
  * Abstract business model Record definition.
@@ -42,9 +42,9 @@ use svelte\core\PropertyNotSetException;
  * - Provide methods to expose to BusinessModelManager
  *
  * COLLABORATORS
- * - {@link \svelte\model\business\Field}s
+ * - {@link \ramp\model\business\Field}s
  *
- * @property-read \svelte\core\Str $key Returns value of primary key.
+ * @property-read \ramp\core\Str $key Returns value of primary key.
  * @property-read bool $isModified Returns whether data has been modified since last update.
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
@@ -57,7 +57,7 @@ abstract class Record extends BusinessModel
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   abstract public static function primaryKeyName() : Str;
 
@@ -88,7 +88,7 @@ abstract class Record extends BusinessModel
   /**
    * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
+   * @return \ramp\core\Str Unique identifier for *this*
    */
   final protected function get_id() : Str
   {
@@ -100,7 +100,7 @@ abstract class Record extends BusinessModel
   /**
    * Returns value of primary key.
    * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return \svelte\core\Str Value of primary key
+   * @return \ramp\core\Str Value of primary key
    */
   final protected function get_primarykey() : Str
   {
@@ -111,11 +111,11 @@ abstract class Record extends BusinessModel
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    */
   final public function offsetSet($offset, $object)
   {
-    if (is_numeric($offset) || (!($object instanceof \svelte\model\business\field\Field)))
+    if (is_numeric($offset) || (!($object instanceof \ramp\model\business\field\Field)))
     {
       throw new \BadMethodCallException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
@@ -145,12 +145,12 @@ abstract class Record extends BusinessModel
 
   /**
    * Validate postdata against this and update accordingly.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
   final public function validate(PostData $postdata)
   {
-    $this->errorCollection = new Collection(Str::set('svelte\core\Str'));
+    $this->errorCollection = new Collection(Str::set('ramp\core\Str'));
     $pk = (isset($this[(string)$this->primaryKeyName()])) ?
       $this[(string)$this->primaryKeyName()] : NULL;
     foreach ($this as $child)

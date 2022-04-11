@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,26 +18,26 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation\dbtype;
+namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/Interger.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Interger.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
-use svelte\core\Str;
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\dbtype\Interger;
+use ramp\core\Str;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\dbtype\Interger;
 
-use tests\svelte\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\model\business\validation\dbtype\Interger.
+ * Collection of tests for \ramp\model\business\validation\dbtype\Interger.
  */
 class IntergerTest extends \PHPUnit\Framework\TestCase
 {
@@ -55,25 +55,25 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\validation\dbtype\Interger::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \svelte\model\business\validation\Interger}
-   * @link svelte.model.business.validation.dbtype.Interger \svelte\model\business\validation\dbtype\Interger
+   * Collection of assertions for ramp\validation\dbtype\Interger::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@link \ramp\model\business\validation\Interger}
+   * @link ramp.model.business.validation.dbtype.Interger \ramp\model\business\validation\dbtype\Interger
    */
   public function test__Construct()
   {
-    $this->assertInstanceOf('svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\dbtype\Interger', $this->testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\dbtype\Interger', $this->testObject);
   }
 
   /**
-   * Collection of assertions for svelte\model\business\validation\dbtype\Interger::process().
+   * Collection of assertions for ramp\model\business\validation\dbtype\Interger::process().
    * - assert void returned when test successful
-   * - assert {@link \svelte\model\business\FailedValidationException} thrown when test fails
-   * @link svelte.model.business.validation.dbtype.Interger#method_process \svelte\model\business\validation\dbtype\Interger::process()
+   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
+   * @link ramp.model.business.validation.dbtype.Interger#method_process \ramp\model\business\validation\dbtype\Interger::process()
    */
   public function testTest()
   {
@@ -90,6 +90,6 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
         return;
       }
     }
-    $this->fail('An expected \svelte\model\business\FailedValidationException has NOT been raised.');
+    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }
 }

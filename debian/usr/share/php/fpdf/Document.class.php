@@ -14,8 +14,8 @@ class Document extends \FPDF {
 
   public function __construct($orientation='P', $unit='mm', $format='A4') {
     parent::__construct($orientation, $unit, $format);
-    $this->pageCoords = new \svelte\Coords(0, 0);
-    $this->outlineCoords = new \svelte\Coords(0, 0);
+    $this->pageCoords = new \ramp\Coords(0, 0);
+    $this->outlineCoords = new \ramp\Coords(0, 0);
   }
 
   /**

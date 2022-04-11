@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,33 +18,33 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model;
+namespace tests\ramp\model;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
 
-use svelte\model\Model;
+use ramp\model\Model;
 
 /**
- * Mock Concreate implementation of \svelte\model\Model for testing against.
+ * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
 class MockModel extends Model { }
 
 /**
- * Collection of tests for \svelte\model\Model.
+ * Collection of tests for \ramp\model\Model.
  */
 class ModelTest extends \PHPUnit\Framework\TestCase {
 
   /**
-   * Collection of assertions for \svelte\model\Model::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * @link svelte.model.Model svelte\model\Model
+   * Collection of assertions for \ramp\model\Model::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * @link ramp.model.Model ramp\model\Model
    */
   public function testConstruct()
   {
     $testObject = new MockModel();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $testObject);
   }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,10 +16,10 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace ramp\core;
 
 /**
  * Strongly typed string used universally.
@@ -31,7 +31,7 @@ namespace svelte\core;
  * INVARIANT
  * - State of *this* is always unchanged (all operations return an existing or new Str)
  */
-final class Str extends SvelteObject
+final class Str extends RAMPObject
 {
   /**
    * Singleton reference to {@link Str} with value ''.
@@ -71,7 +71,7 @@ final class Str extends SvelteObject
   /**
    * Instantiate or get copy of Str based on provided string literal.
    * @param string $value Value of encapsulated string literal
-   * @return \svelte\core\Str Relevant Str object
+   * @return \ramp\core\Str Relevant Str object
    */
   public static function set($value = \NULL) : Str
   {
@@ -98,7 +98,7 @@ final class Str extends SvelteObject
 
   /**
    * Returns Empty Str.
-   * @return \svelte\core\Str Str object composed empty string literal ('')
+   * @return \ramp\core\Str Str object composed empty string literal ('')
    */
   public static function _EMPTY() : Str
   {
@@ -110,7 +110,7 @@ final class Str extends SvelteObject
 
   /**
    * Returns Space Str.
-   * @return \svelte\core\Str Str object composed space (' ')
+   * @return \ramp\core\Str Str object composed space (' ')
    */
   public static function SPACE() : Str
   {
@@ -122,7 +122,7 @@ final class Str extends SvelteObject
 
   /**
    * Returns Colon Str (':')
-   * @return \svelte\core\Str Str object composed colon (':')
+   * @return \ramp\core\Str Str object composed colon (':')
    */
   public static function COLON() : Str
   {
@@ -134,7 +134,7 @@ final class Str extends SvelteObject
 
   /**
    * Returns Semicolon Str (';')
-   * @return \svelte\core\Str Str object composed semicolon (';')
+   * @return \ramp\core\Str Str object composed semicolon (';')
    */
   public static function SEMICOLON() : Str
   {
@@ -146,8 +146,8 @@ final class Str extends SvelteObject
 
   /**
    * Appends provided Str to 'this' and returns new appended Str.
-   * @param \svelte\core\Str $value Str to be appended to *this*
-   * @return \svelte\core\Str Concatenation of *this* with provided appended
+   * @param \ramp\core\Str $value Str to be appended to *this*
+   * @return \ramp\core\Str Concatenation of *this* with provided appended
    */
   public function append(Str $value) : Str
   {
@@ -160,8 +160,8 @@ final class Str extends SvelteObject
 
   /**
    * Prepends provided Str with 'this' and returns new prepended Str.
-   * @param \svelte\core\Str $value Str to be prepended to *this*
-   * @return \svelte\core\Str Concatenation of *this* with provided prepended
+   * @param \ramp\core\Str $value Str to be prepended to *this*
+   * @return \ramp\core\Str Concatenation of *this* with provided prepended
    */
   public function prepend(Str $value) : Str
   {
@@ -174,8 +174,8 @@ final class Str extends SvelteObject
 
   /**
    * Returns a new Str 'this' with provided removed from end.
-   * @param \svelte\core\Str $value Str to be removed from end
-   * @return \svelte\core\Str New Str with provided value removed from end
+   * @param \ramp\core\Str $value Str to be removed from end
+   * @return \ramp\core\Str New Str with provided value removed from end
    */
   public function trimEnd(Str $value) : Str
   {
@@ -190,9 +190,9 @@ final class Str extends SvelteObject
 
   /**
    * Creates a camelcase version of the provided Str.
-   * @param \svelte\core\Str $value Str to camelcase
+   * @param \ramp\core\Str $value Str to camelcase
    * @param boolean $lowerCaseFirstLetter Lowercase the first letter
-   * @return \svelte\core\Str New Str camel cased based on provided
+   * @return \ramp\core\Str New Str camel cased based on provided
    */
   public static function camelCase(Str $value, bool $lowerCaseFirstLetter = \NULL) : Str
   {
@@ -209,8 +209,8 @@ final class Str extends SvelteObject
 
   /**
    * Creates a hyphenated version of the provided Str.
-   * @param \svelte\core\Str $value Str to hyphenate
-   * @return \svelte\core\Str New Str hyphenated based on provided
+   * @param \ramp\core\Str $value Str to hyphenate
+   * @return \ramp\core\Str New Str hyphenated based on provided
    */
   public static function hyphenate(Str $value) : Str
   {
@@ -225,14 +225,14 @@ final class Str extends SvelteObject
 
   /**
    * Ascertain if 'this' Str contains any of provided Strs within a Collection.
-   * @param \svelte\core\Collection $stringCollection Collection of Strs to be checked
-   * @return \svelte\core\Boolean *This* does/not contain any of Strs in provided Collection
-   * @throws InvalidArgumentException When Collection NOT a composite of \svelte\core\Strs
+   * @param \ramp\core\Collection $stringCollection Collection of Strs to be checked
+   * @return \ramp\core\Boolean *This* does/not contain any of Strs in provided Collection
+   * @throws InvalidArgumentException When Collection NOT a composite of \ramp\core\Strs
    *
   public function contains(Collection $stringCollection) : Boolean
   {
     if (!($stringCollection->isComposedOf($this)->get())) {
-      throw new \InvalidArgumentException('Provided Collection MUST be a composite of \svelte\core\Strs');
+      throw new \InvalidArgumentException('Provided Collection MUST be a composite of \ramp\core\Strs');
     }
     foreach($stringCollection as $value) {
         if (stripos($this->value, (string)$value) !== false) { return Boolean::TRUE(); }

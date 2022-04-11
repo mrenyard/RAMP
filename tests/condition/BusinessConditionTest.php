@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,37 +18,37 @@
  * @author mrenyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition;
+namespace tests\ramp\condition;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 
-require_once '/usr/share/php/tests/svelte/condition/mocks/BusinessConditionTest/Field.class.php';
-require_once '/usr/share/php/tests/svelte/condition/mocks/BusinessConditionTest/Record.class.php';
-require_once '/usr/share/php/tests/svelte/condition/mocks/BusinessConditionTest/ConcreteBusinessCondition.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/Field.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/Record.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/ConcreteBusinessCondition.class.php';
 
-use svelte\core\Str;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\Operator;
+use ramp\core\Str;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\Operator;
 
-use tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition;
+use tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition;
 
 /**
- * Collection of tests for \svelte\condition\BusinessCondition.
+ * Collection of tests for \ramp\condition\BusinessCondition.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition}
- * - {@link \tests\svelte\condition\mocks\BusinessConditionTest\Property}
- * - {@link \tests\svelte\condition\mocks\BusinessConditionTest\Record}
+ * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition}
+ * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\Property}
+ * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\Record}
  */
 class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 {
@@ -61,7 +61,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\condition\mocks\BusinessConditionTest';
+    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\BusinessConditionTest';
     $this->record = Str::set('Record');
     $this->property = Str::set('property');
     $this->operator = Operator::EQUAL_TO();
@@ -69,20 +69,20 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\BusinessCondition::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\condition\Condition}
-   * - assert is instance of {@link \svelte\condition\BusinessCondition}
+   * Collection of assertions for \ramp\BusinessCondition::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\condition\Condition}
+   * - assert is instance of {@link \ramp\condition\BusinessCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
    *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
-   * @link svelte.condition.BusinessCondition#method___construct svelte\condition\BusinessCondition
+   * @link ramp.condition.BusinessCondition#method___construct ramp\condition\BusinessCondition
    */
   public function test__construct()
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\condition\Condition', $testObject);
-    $this->assertInstanceOf('\svelte\condition\BusinessCondition', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\condition\Condition', $testObject);
+    $this->assertInstanceOf('\ramp\condition\BusinessCondition', $testObject);
 
     try {
       $testObject = new ConcreteBusinessCondition(Str::set('NotARecord'), $this->property, $this->operator);
@@ -105,39 +105,39 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\condition\BusinessCondition::attribute.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} trying to set 'attribute'
+   * Collection of assertions for \ramp\condition\BusinessCondition::attribute.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'attribute'
    *   - with message: <em>'[className]->attribute is NOT settable'</em>
    * - assert allows retrieval of 'attribute'
-   * - assert retrieved is a {@link \svelte\core\Str}
+   * - assert retrieved is a {@link \ramp\core\Str}
    * - assert 'attribute' is composite of [property]->[property]
-   * @link svelte.condition.BusinessCondition#method_get_attribute svelte\condition\BusinessCondition::attribute
+   * @link ramp.condition.BusinessCondition#method_get_attribute ramp\condition\BusinessCondition::attribute
    */
   public function testAttribute()
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    $this->assertInstanceOf('\svelte\core\Str', $testObject->attribute);
+    $this->assertInstanceOf('\ramp\core\Str', $testObject->attribute);
     try {
       $testObject->attribute = Str::set($this->expectedAttribute);
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->attribute is NOT settable',
+        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->attribute is NOT settable',
         $expected->getMessage()
       );
       $this->assertEquals($this->expectedAttribute, $testObject->attribute);
       return;
     }
-    $this->fail('An expected svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\BusinessCondition::record.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} trying to set 'record'
+   * Collection of assertions for \ramp\condition\BusinessCondition::record.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'record'
    *   - with message: <em>'[className]->record is NOT settable'</em>
    * - assert allows retrieval of 'record'
-   * - assert 'record' is a {@link \svelte\core\Str}
+   * - assert 'record' is a {@link \ramp\core\Str}
    * - assert 'record' equal to provided at creation
-   * @link svelte.condition.BusinessCondition#method_get_record svelte\condition\BusinessCondition::record
+   * @link ramp.condition.BusinessCondition#method_get_record ramp\condition\BusinessCondition::record
    */
   public function testRecord()
   {
@@ -146,23 +146,23 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
       $testObject->record = $this->record;
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->record is NOT settable', $expected->getMessage()
+        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->record is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $testObject->record);
+      $this->assertInstanceOf('\ramp\core\Str', $testObject->record);
       $this->assertSame($this->record, $testObject->record);
       return;
     }
-    $this->fail('An expected svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\BusinessCondition::property.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} trying to set 'property'
+   * Collection of assertions for \ramp\condition\BusinessCondition::property.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'property'
    *   - with message: <em>'[className]->property is NOT settable'</em>
    * - assert allows retrieval of 'property'
-   * - assert 'property' is a {@link \svelte\core\Str}
+   * - assert 'property' is a {@link \ramp\core\Str}
    * - assert 'property' equal to provided at creation
-   * @link svelte.condition.BusinessCondition#method_get_property svelte\condition\BusinessCondition::property
+   * @link ramp.condition.BusinessCondition#method_get_property ramp\condition\BusinessCondition::property
    */
   public function testProperty()
   {
@@ -171,23 +171,23 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
       $testObject->property = $this->property;
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->property is NOT settable', $expected->getMessage()
+        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->property is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $testObject->property);
+      $this->assertInstanceOf('\ramp\core\Str', $testObject->property);
       $this->assertSame($this->property, $testObject->property);
       return;
     }
-    $this->fail('An expected svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\BusinessCondition::operator.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'operator'
+   * Collection of assertions for \ramp\condition\BusinessCondition::operator.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'operator'
    *   - with message: <em>'[className]->operator is NOT settable'</em>.
    * - assert allows retrieval of 'operator'.
-   * - assert retreved is an instance of {@link \svelte\condition\Operator}.
+   * - assert retreved is an instance of {@link \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @link svelte.condition.BusinessCondition#method_get_operator svelte\condition\BusinessCondition::operator.
+   * @link ramp.condition.BusinessCondition#method_get_operator ramp\condition\BusinessCondition::operator.
    */
   public function testOperator()
   {
@@ -196,25 +196,25 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
       $testObject->operator = $this->operator;
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'tests\svelte\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->operator is NOT settable',
+        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->operator is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\condition\Operator', $testObject->operator);
+      $this->assertInstanceOf('\ramp\condition\Operator', $testObject->operator);
       $this->assertSame($this->operator, $testObject->operator);
       return;
     }
-    $this->fail('An expected svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\BusinessCondition::comparable.
+   * Collection of assertions for \ramp\condition\BusinessCondition::comparable.
    * - assert 'comparable' default is NULL
    * - assert allows setting of 'comparable'
    * - assert allows retrieval of 'comparable'
    * - assert 'comparable' equal to recently set
    * - assert 'comparable' equal to that provided at creation
-   * @link svelte.condition.BusinessCondition#method_get_comparable svelte\condition\BusinessCondition::comparable (get)
-   * @link svelte.condition.BusinessCondition#method_set_comparable svelte\condition\BusinessCondition::comparable (set)
+   * @link ramp.condition.BusinessCondition#method_get_comparable ramp\condition\BusinessCondition::comparable (get)
+   * @link ramp.condition.BusinessCondition#method_set_comparable ramp\condition\BusinessCondition::comparable (set)
    */
   public function testComparable()
   {

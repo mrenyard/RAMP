@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -17,12 +17,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation\dbtype;
+namespace ramp\model\business\validation\dbtype;
 
-use svelte\model\business\Record;
-use svelte\model\business\DataWriteException;
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\ValidationRule;
+use ramp\model\business\Record;
+use ramp\model\business\DataWriteException;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
 
 /**
  * Unique Primary Key validation rule, ensure unique primary key while reserving space in data store.
@@ -60,7 +60,7 @@ class UniquePrimaryKey extends ValidationRule
    *   return $this->primaryProperty;
    * }
    * ```
-   * @param \svelte\model\business\Record $associatedRecord Record that holds primary key to be tested
+   * @param \ramp\model\business\Record $associatedRecord Record that holds primary key to be tested
    */
   public function __construct(Record $associatedRecord)
   {
@@ -76,7 +76,7 @@ class UniquePrimaryKey extends ValidationRule
   protected function test($value)
   {
     $pkName = (string)$this->associatedRecord->primaryKeyName();
-    $MODEL_MANAGER = \svelte\SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
     $modelManager = $MODEL_MANAGER::getInstance();
     $this->associatedRecord->setPropertyValue($pkName, $value);
     try {

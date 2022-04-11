@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,19 +16,19 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\core\SvelteObject;
+use ramp\core\Str;
+use ramp\core\RAMPObject;
 
 /**
- * Simple concrete implementation of \svelte\model\SimpleBusinessModelDefinition,
+ * Simple concrete implementation of \ramp\model\SimpleBusinessModelDefinition,
  *  defining Model indentifiers (record, key, property).
  */
-class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessModelDefinition
+class SimpleBusinessModelDefinition extends RAMPObject implements iBusinessModelDefinition
 {
   private $recordName;
   private $recordKey;
@@ -36,9 +36,9 @@ class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessMod
 
   /**
    * Constructs a SimpleBusinessModelDefinition.
-   * @param \svelte\core\Str $recordName Value for RecordName
-   * @param \svelte\core\Str $recordKey Value for RecordKey
-   * @param \svelte\core\Str $propertyName Value for PropertyName
+   * @param \ramp\core\Str $recordName Value for RecordName
+   * @param \ramp\core\Str $recordKey Value for RecordKey
+   * @param \ramp\core\Str $propertyName Value for PropertyName
    */
   public function __construct(Str $recordName, Str $recordKey = null, Str $propertyName = null)
   {
@@ -50,7 +50,7 @@ class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessMod
   /**
    * Returns name of requested Record one or collection.
    * **DO NOT CALL DIRECTLY, USE this->recordName;**
-   * @return \svelte\core\Str Name of requested Record one or collection.
+   * @return \ramp\core\Str Name of requested Record one or collection.
    */
   public function get_recordName() : Str
   {
@@ -58,9 +58,9 @@ class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessMod
   }
 
   /**
-   * Returns primary key value of requested svelte\model\business\Record or NULL.
+   * Returns primary key value of requested ramp\model\business\Record or NULL.
    * **DO NOT CALL DIRECTLY, USE this->recordKey;**
-   * @return \svelte\core\Str Primary key for requested Record if any.
+   * @return \ramp\core\Str Primary key for requested Record if any.
    */
   public function get_recordKey() : ?Str
   {
@@ -68,9 +68,9 @@ class SimpleBusinessModelDefinition extends SvelteObject implements iBusinessMod
   }
 
   /**
-   * Returns name of requested Property of svelte\model\business\Record or NULL.
+   * Returns name of requested Property of ramp\model\business\Record or NULL.
    * **DO NOT CALL DIRECTLY, USE this->propertyName;**
-   * @return \svelte\core\Str Name of requested Property if any.
+   * @return \ramp\core\Str Name of requested Property if any.
    */
   public function get_propertyName() : ?Str
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,56 +18,56 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation;
+namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FirstValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/SecondValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FirstValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/SecondValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
-use svelte\core\SvelteObject;
-use svelte\model\business\FailedValidationException;
+use ramp\core\RAMPObject;
+use ramp\model\business\FailedValidationException;
 
-use tests\svelte\model\business\validation\MockValidationRule;
-use tests\svelte\model\business\validation\FirstValidationRule;
-use tests\svelte\model\business\validation\SecondValidationRule;
-use tests\svelte\model\business\validation\ThirdValidationRule;
-use tests\svelte\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\model\business\validation\MockValidationRule;
+use tests\ramp\model\business\validation\FirstValidationRule;
+use tests\ramp\model\business\validation\SecondValidationRule;
+use tests\ramp\model\business\validation\ThirdValidationRule;
+use tests\ramp\model\business\validation\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \svelte\validation\ValidationRule.
+ * Collection of tests for \ramp\validation\ValidationRule.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\validation\MockValidationRule}
+ * - {@link \tests\ramp\validation\MockValidationRule}
  */
 class ValidationRuleTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for svelte\validation\ValidationRule::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\validation\ValidationRule}
-   * @link svelte.validation.ValidationRule \svelte\validation\ValidationRule
+   * Collection of assertions for ramp\validation\ValidationRule::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\validation\ValidationRule}
+   * @link ramp.validation.ValidationRule \ramp\validation\ValidationRule
    */
   public function test__Construct()
   {
     $testObject = new MockValidationRule();
-    $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('svelte\model\business\validation\ValidationRule', $testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $testObject);
   }
 
   /**
-   * Collection of assertions for svelte\validation\ValidationRule::process() and test().
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@link \svelte\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @link svelte.validation.ValidationRule#method_test \svelte\validation\ValidationRule::test()
-   * @link svelte.validation.ValidationRule#method_process \svelte\validation\ValidationRule::process()
+   * - assert {@link \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @link ramp.validation.ValidationRule#method_test \ramp\validation\ValidationRule::test()
+   * @link ramp.validation.ValidationRule#method_process \ramp\validation\ValidationRule::process()
    */
   public function testProcess()
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,34 +18,34 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business;
+namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 
-require_once '/usr/share/php/tests/svelte/model/business/mocks/BusinessModelTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/svelte/model/business/mocks/BusinessModelTest/MockBusinessModelWithErrors.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModel.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModelWithErrors.class.php';
 
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\PostData;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
 
-use tests\svelte\model\business\mocks\BusinessModelTest\MockBusinessModelWithErrors;
-use tests\svelte\model\business\mocks\BusinessModelTest\MockBusinessModel;
+use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelWithErrors;
+use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModel;
 
 /**
- * Collection of tests for \svelte\model\business\BusinessModel.
+ * Collection of tests for \ramp\model\business\BusinessModel.
  */
 class BusinessModelTest extends \PHPUnit\Framework\TestCase
 {
@@ -77,33 +77,33 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * - assert is instance of {@link \svelte\model\business\BusinessModel}
-   * - assert is instance of {@link \svelte\core\iOption}
+   * Collection of assertions for \ramp\model\business\BusinessModel::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert is instance of {@link \ramp\core\iOption}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * @link svelte.model.business.BusinessModel svelte\model\business\BusinessModel
+   * @link ramp.model.business.BusinessModel ramp\model\business\BusinessModel
    */
   public function test__construction()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::id.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * Collection of assertions for \ramp\model\business\BusinessModel::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.BusinessModel#method_get_id svelte\model\business\BusinessModel::id
+   * @link ramp.model.business.BusinessModel#method_get_id ramp\model\business\BusinessModel::id
    */
   public function testGet_id()
   {
@@ -111,7 +111,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->testObject->id = "ID";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->id);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame('uid-0', (string)$this->testObject->id);
       $this->assertSame('uid-1', (string)$this->testChild1->id);
       $this->assertSame('uid-2', (string)$this->testChild2->id);
@@ -119,17 +119,17 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('uid-4', (string)$this->grandchild->id);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::description.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'description'
+   * Collection of assertions for \ramp\model\business\BusinessModel::description.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'description'
    * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned same as 'id'.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.BusinessModel#method_get_description svelte\model\business\BusinessModel::description
+   * @link ramp.model.business.BusinessModel#method_get_description ramp\model\business\BusinessModel::description
    *
   public function testGet_description()
   {
@@ -137,7 +137,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->testObject->description = "DESCRIPTION";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->description);
       $this->assertEquals($this->testObject->id, $this->testObject->description);
       $this->assertEquals('uid-0', (string)$this->testObject->description);
       $this->assertEquals('uid-1', (string)$this->testChild1->description);
@@ -146,16 +146,16 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->assertEquals('uid-4', (string)$this->grandchild->description);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }*/
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::type.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * Collection of assertions for \ramp\model\business\BusinessModel::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \svelte\core\Str}.
+   * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link svelte.model.business.BusinessModel#method_get_type svelte\model\business\BusinessModel::type
+   * @link ramp.model.business.BusinessModel#method_get_type ramp\model\business\BusinessModel::type
    */
   public function testGet_type()
   {
@@ -163,7 +163,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->testObject->type = "TYPE";
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->type);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
       $this->assertSame(' mock-business-model business-model', (string)$this->testObject->type);
       $this->assertSame(' mock-business-model business-model', (string)$this->testChild1->type);
       $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->testChild2->type);
@@ -171,15 +171,15 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::getIterator().
+   * Collection of assertions for \ramp\model\business\BusinessModel::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through each expected object.
    * - assert foreach returned object matches expected.
-   * @link svelte.model.business.BusinessModel#method_getIterator svelte\model\business\BusinessModel::getIterator()
+   * @link ramp.model.business.BusinessModel#method_getIterator ramp\model\business\BusinessModel::getIterator()
    */
   public function testGetIterator()
   {
@@ -196,21 +196,21 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetGet.
+   * Collection of assertions for \ramp\model\business\BusinessModel::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * - assert expected object returned at its expected index.
-   * @link svelte.model.business.BusinessModel#method_offsetGet svelte\model\business\BusinessModel::offsetGet()
+   * @link ramp.model.business.BusinessModel#method_offsetGet ramp\model\business\BusinessModel::offsetGet()
    */
   public function testOffsetGet()
   {
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[0]);
+      $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[1]);
+      $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[1]);
       $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject[2]);
+      $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[2]);
       $this->assertSame($this->testChild3, $this->testObject[2]);
       return;
     }
@@ -218,10 +218,10 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetExists.
+   * Collection of assertions for \ramp\model\business\BusinessModel::offsetExists.
    * - assert True returned on isset() when within expected bounds.
    * - assert False returned on isset() when outside expected bounds.
-   * @link svelte.model.business.BusinessModel#method_offsetExists svelte\model\business\BusinessModel::offsetExists()
+   * @link ramp.model.business.BusinessModel#method_offsetExists ramp\model\business\BusinessModel::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -233,14 +233,14 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::offsetSet and
-   * for \svelte\model\business\BusinessModel::offsetUnset.
+   * Collection of assertions for \ramp\model\business\BusinessModel::offsetSet and
+   * for \ramp\model\business\BusinessModel::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link svelte.model.business.BusinessModel#method_offsetSet svelte\model\business\BusinessModel::offsetSet()
-   * @link svelte.model.business.BusinessModel#method_offsetUnset svelte\model\business\BusinessModel::offsetUnset()
+   * @link ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
+   * @link ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
    */
   public function testOffsetSetOffsetUnset()
   {
@@ -252,11 +252,11 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::validate().
+   * Collection of assertions for \ramp\model\business\BusinessModel::validate().
    * - assert returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of
    *  its children and grandchildren.
-   * @link svelte.model.business.BusinessModel#method_validate svelte\model\business\BusinessModel::validate()
+   * @link ramp.model.business.BusinessModel#method_validate ramp\model\business\BusinessModel::validate()
    */
   public function testValidate()
   {
@@ -269,10 +269,10 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::hasErrors().
+   * Collection of assertions for \ramp\model\business\BusinessModel::hasErrors().
    * - assert returns True when any child/grandchild has recorded errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @link svelte.model.business.BusinessModel#method_hasErrors svelte\model\business\BusinessModel::hasErrors()
+   * @link ramp.model.business.BusinessModel#method_hasErrors ramp\model\business\BusinessModel::hasErrors()
    */
   public function testHasErrors()
   {
@@ -286,14 +286,14 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::getErrors().
+   * Collection of assertions for \ramp\model\business\BusinessModel::getErrors().
    * - assert following validate(), the expected iCollection of error messages returned from
    * getErrors() are as expected, depending on which level they are called.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
    * - assert a single collection containing all errors including children and grandchildren
    *  of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link svelte.model.business.BusinessModel#method_getErrors svelte\model\business\BusinessModel::getErrors()
+   * @link ramp.model.business.BusinessModel#method_getErrors ramp\model\business\BusinessModel::getErrors()
    */
   public function testGetErrors()
   {
@@ -332,10 +332,10 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   }
 
    /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::count and
-   * \svelte\model\business\BusinessModel::count()
+   * Collection of assertions for \ramp\model\business\BusinessModel::count and
+   * \ramp\model\business\BusinessModel::count()
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link svelte.model.business.BusinessModel#method_count svelte\model\business\BusinessModel::count()
+   * @link ramp.model.business.BusinessModel#method_count ramp\model\business\BusinessModel::count()
    */
   public function testCount()
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,41 +18,41 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view;
+namespace tests\ramp\view;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/svelte/view/View.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
 
-require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockModel.class.php';
-require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockNoCountModel.class.php';
-require_once '/usr/share/php/tests/svelte/view/mocks/ViewTest/MockModelCollection.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockNoCountModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModelCollection.class.php';
 
-use tests\svelte\view\mocks\ViewTest\MockModel;
-use tests\svelte\view\mocks\ViewTest\MockView;
-use tests\svelte\view\mocks\ViewTest\MockViewA;
-use tests\svelte\view\mocks\ViewTest\MockViewB;
-use tests\svelte\view\mocks\ViewTest\MockViewC;
-use tests\svelte\view\mocks\ViewTest\MockViewD;
-use tests\svelte\view\mocks\ViewTest\MockNoCountModel;
-use tests\svelte\view\mocks\ViewTest\MockModelCollection;
+use tests\ramp\view\mocks\ViewTest\MockModel;
+use tests\ramp\view\mocks\ViewTest\MockView;
+use tests\ramp\view\mocks\ViewTest\MockViewA;
+use tests\ramp\view\mocks\ViewTest\MockViewB;
+use tests\ramp\view\mocks\ViewTest\MockViewC;
+use tests\ramp\view\mocks\ViewTest\MockViewD;
+use tests\ramp\view\mocks\ViewTest\MockNoCountModel;
+use tests\ramp\view\mocks\ViewTest\MockModelCollection;
 
-use svelte\view\View;
-use svelte\core\PropertyNotSetException; 
-use svelte\core\BadPropertyCallException;
+use ramp\view\View;
+use ramp\core\PropertyNotSetException; 
+use ramp\core\BadPropertyCallException;
 
 /**
- * Collection of tests for \svelte\view\View.
+ * Collection of tests for \ramp\view\View.
  */
 class ViewTest extends \PHPUnit\Framework\TestCase
 {
@@ -74,25 +74,25 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\view\View}
-   * @link svelte.view.View svelte\view\View
+   * Collection of assertions for \ramp\view\View::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\view\View}
+   * @link ramp.view.View ramp\view\View
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\view\View', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\view\View', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::__get() and \svelte\view\View::__set
+   * Collection of assertions for \ramp\view\View::__get() and \ramp\view\View::__set
    * - assert BadPropertyCallException thrown when trying to get value pre model set.
    * - assert PropertyNotSetException thrown when trying to set value of none existant property
    * - assert BadPropertyCallException thrown when trying to get value of none existant property
-   * - assert that property calls are passes to its component (contained) \svelte\model\Model
-   * @link svelte.view.View#method__get svelte\view\View::__get()
-   * @link svelte.view.View#method__set svelte\view\View::__set()
+   * - assert that property calls are passes to its component (contained) \ramp\model\Model
+   * @link ramp.view.View#method__get ramp\view\View::__get()
+   * @link ramp.view.View#method__set ramp\view\View::__set()
    */
   public function test__get__set()
   {
@@ -119,11 +119,11 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::children and \svelte\view\View::add(Model $model).
+   * Collection of assertions for \ramp\view\View::children and \ramp\view\View::add(Model $model).
    * - assert each child view added sequentially
    * - assert View->children output maintains sequance and format
-   * @link svelte.view.View#method_add svelte\view\View::add()
-   * @link svelte.view.View#method_children svelte\view\View::children
+   * @link ramp.view.View#method_add ramp\view\View::add()
+   * @link ramp.view.View#method_children ramp\view\View::children
    */
   public function testAddGet_children()
   {
@@ -139,24 +139,24 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       if ($i === 1)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\ViewTest\MockViewA ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA ',
           $output
         );
       }
       if ($i === 2)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\ViewTest\MockViewA '.
-          'tests\svelte\view\mocks\ViewTest\MockViewB ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA '.
+          'tests\ramp\view\mocks\ViewTest\MockViewB ',
           $output
         );
       }
       if ($i === 3)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\ViewTest\MockViewA '.
-          'tests\svelte\view\mocks\ViewTest\MockViewB '.
-          'tests\svelte\view\mocks\ViewTest\MockViewC ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA '.
+          'tests\ramp\view\mocks\ViewTest\MockViewB '.
+          'tests\ramp\view\mocks\ViewTest\MockViewC ',
           $output
         );
       }
@@ -164,9 +164,9 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel}.
+   * Collection of assertions for \ramp\view\View::setModel}.
    * - assert Exception thrown when model already set.
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelAlreadySet()
   {
@@ -177,9 +177,9 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel}.
+   * Collection of assertions for \ramp\view\View::setModel}.
    * - assert LogicException thrown when model \Traversable but NOT \Countable.
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelNoCount()
   {
@@ -189,10 +189,10 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel().
+   * Collection of assertions for \ramp\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelComplex1()
   {
@@ -219,19 +219,19 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\mocks\ViewTest\MockView:parent '.
-      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:three ',
+      'tests\ramp\view\mocks\ViewTest\MockView:parent '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:three ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel().
+   * Collection of assertions for \ramp\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelComplex2()
   {
@@ -268,22 +268,22 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\mocks\ViewTest\MockView:parent '.
-      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
-      'tests\svelte\view\mocks\ViewTest\MockViewA:four '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:six ',
+      'tests\ramp\view\mocks\ViewTest\MockView:parent '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:six ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel().
+   * Collection of assertions for \ramp\view\View::setModel().
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelHierarchy1()
   {
@@ -319,21 +319,21 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:four '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:six ',
+      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:six ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::setModel.
+   * Collection of assertions for \ramp\view\View::setModel.
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link svelte.view.View#method_setModel svelte\view\View::setModel()
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
    */
   public function testSetModelHierarchy2()
   {
@@ -390,28 +390,28 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\svelte\view\mocks\ViewTest\MockViewA:one '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:two '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:three '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:seven '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:ten '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:four '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:eight '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:eleven '.
-      'tests\svelte\view\mocks\ViewTest\MockViewB:five '.
-      'tests\svelte\view\mocks\ViewTest\MockViewC:six '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:nine '.
-      'tests\svelte\view\mocks\ViewTest\MockViewD:twelve ',
+      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:seven '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:ten '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:eight '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:eleven '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:six '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:nine '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:twelve ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \svelte\view\View::__clone.
+   * Collection of assertions for \ramp\view\View::__clone.
    * - assert cloned View without associated model is equal to the original
    * - assert cloned View with associated model NOT equal as Model association removed
    * - assert cloned View with model re associated is equal to the original 
-   * @link svelte.view.View#method__clone svelte\view\View::__clone()
+   * @link ramp.view.View#method__clone ramp\view\View::__clone()
    */
   public function test__clone()
   {

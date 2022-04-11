@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,10 +18,10 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\model\business\Record;
+use ramp\core\Str;
+use ramp\model\business\Record;
 
 /**
  * Mock business record with property.

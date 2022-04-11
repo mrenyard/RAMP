@@ -1,16 +1,16 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace tests\svelte\condition\mocks\FilterConditionTest;
+namespace tests\ramp\condition\mocks\FilterConditionTest;
 
-use \svelte\condition\iEnvironment;
-use \svelte\condition\Environment;
+use \ramp\condition\iEnvironment;
+use \ramp\condition\Environment;
 
 /**
  * Mock environment, contining specilised operator strings as defined in iEnvironment.
@@ -22,7 +22,7 @@ class MockEnvironment extends Environment
 
   /**
    * Set up and return instance of <i>this</i> with full set of operators.
-   * @return \svelte\condition\iEnvironment this with full set of operators
+   * @return \ramp\condition\iEnvironment this with full set of operators
    */
   public static function getInstance() : iEnvironment
   {

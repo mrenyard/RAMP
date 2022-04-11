@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,43 +18,43 @@
  * @author mrenyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition;
+namespace tests\ramp\condition;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/Filter.class.php';
-require_once '/usr/share/php/svelte/condition/FilterCondition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/SQLEnvironment.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
-require_once '/usr/share/php/tests/svelte/condition/mocks/FilterTest/Field.class.php';
-require_once '/usr/share/php/tests/svelte/condition/mocks/FilterTest/Record.class.php';
-require_once '/usr/share/php/tests/svelte/condition/mocks/FilterTest/MockEnvironment.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/Field.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/Record.class.php';
+require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/MockEnvironment.class.php';
 
-use svelte\core\Str;
-use svelte\condition\Filter;
-use svelte\condition\Operator;
-use svelte\condition\SQLEnvironment;
+use ramp\core\Str;
+use ramp\condition\Filter;
+use ramp\condition\Operator;
+use ramp\condition\SQLEnvironment;
 
-use tests\svelte\condition\mocks\FilterTest\MockEnvironment;
+use tests\ramp\condition\mocks\FilterTest\MockEnvironment;
 
 /**
- * Collection of tests for \svelte\condition\Filter.
+ * Collection of tests for \ramp\condition\Filter.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\condition\mocks\FilterTest\MockEnvironment}
- * - {@link \tests\svelte\condition\mocks\FilterTest\Property}
- * - {@link \tests\svelte\condition\mocks\FilterTest\Record}
+ * - {@link \tests\ramp\condition\mocks\FilterTest\MockEnvironment}
+ * - {@link \tests\ramp\condition\mocks\FilterTest\Property}
+ * - {@link \tests\ramp\condition\mocks\FilterTest\Record}
  */
 class FilterTest extends \PHPUnit\Framework\TestCase {
 
@@ -67,7 +67,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
-    \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='tests\svelte\condition\mocks\FilterTest';
+    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterTest';
     $this->record = Str::set('Record');
     $this->goodArray = array(
       'property-a' => 'valueA',
@@ -85,27 +85,27 @@ class FilterTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Filter::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\core\Collection}
-   * - assert is instance of {@link \svelte\condition\Filter}
-   * - assert is composite type {@link \svelte\condition\FilterCondition}
-   * @link svelte.condition.Filter#method___construct svelte\condition\Filter
+   * Collection of assertions for \ramp\condition\Filter::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\core\Collection}
+   * - assert is instance of {@link \ramp\condition\Filter}
+   * - assert is composite type {@link \ramp\condition\FilterCondition}
+   * @link ramp.condition.Filter#method___construct ramp\condition\Filter
    */
   public function test__Construct()
   {
     $testObject = new Filter();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\core\Collection', $testObject);
-    $this->assertInstanceOf('\svelte\condition\Filter', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\core\Collection', $testObject);
+    $this->assertInstanceOf('\ramp\condition\Filter', $testObject);
 
     $this->assertTrue($testObject->isCompositeType(
-      Str::set('svelte\condition\FilterCondition')
+      Str::set('ramp\condition\FilterCondition')
     ));
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Filter::build().
+   * Collection of assertions for \ramp\condition\Filter::build().
    * - assert throws \LengthException when $filters is empty
    *   - with message: <em>'2nd argument $filters, MUST NOT be empty'</em>
    * - assert throws \DomainException when RECORD does NOT match business model
@@ -115,7 +115,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase {
    * - assert throws \DomainException when any $filter VALUE does NOT validate against associated property
    *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
    * - assert where valid, produces like for like representation of provied array as Filter object
-   * @link svelte.condition.Filter#method___build svelte\condition\Filter::build()
+   * @link ramp.condition.Filter#method___build ramp\condition\Filter::build()
    */
   public function testBuild()
   {
@@ -236,13 +236,13 @@ class FilterTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Filter::__invoke().
+   * Collection of assertions for \ramp\condition\Filter::__invoke().
    * - assert returns expected string with SQLEnvironment operation values in the form:
    *  - [record].[property] = "[value]" AND [record].[prop... as default.
    * - assert returns expected string when first argument (iEnvironment) differs from default in the form:
    *  - [record][memberAccessOperator][key][memberAccessOperator][property][assignmentOperator]
    * [openingParenthesisOperator][value][closingParenthesisOperator][andOperator][record][member...
-   * @link svelte.condition.Filter#method___invoke svelte\condition\Filter::__invoke()
+   * @link ramp.condition.Filter#method___invoke ramp\condition\Filter::__invoke()
    */
   public function test__invoke()
   {

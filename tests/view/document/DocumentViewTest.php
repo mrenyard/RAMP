@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,38 +18,38 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\document;
+namespace tests\ramp\view\document;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/view/View.class.php';
-require_once '/usr/share/php/svelte/view/ChildView.class.php';
-require_once '/usr/share/php/svelte/view/document/DocumentView.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/document/DocumentModel.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 
-require_once '/usr/share/php/tests/svelte/view/document/mocks/DocumentViewTest/MockDocumentView.class.php';
-require_once '/usr/share/php/tests/svelte/view/document/mocks/DocumentViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/svelte/view/document/mocks/DocumentViewTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/svelte/view/document/mocks/DocumentViewTest/MockModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockDocumentView.class.php';
+require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockBusinessModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockModel.class.php';
 
-use tests\svelte\view\document\mocks\DocumentViewTest\MockDocumentView;
-use tests\svelte\view\document\mocks\DocumentViewTest\MockView;
-use tests\svelte\view\document\mocks\DocumentViewTest\MockBusinessModel;
-use tests\svelte\view\document\mocks\DocumentViewTest\MockModel;
+use tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView;
+use tests\ramp\view\document\mocks\DocumentViewTest\MockView;
+use tests\ramp\view\document\mocks\DocumentViewTest\MockBusinessModel;
+use tests\ramp\view\document\mocks\DocumentViewTest\MockModel;
 
-use svelte\core\Str;
-use svelte\core\BadPropertyCallException;
-use svelte\core\PropertyNotSetException;
-use svelte\view\document\DocumentView;
+use ramp\core\Str;
+use ramp\core\BadPropertyCallException;
+use ramp\core\PropertyNotSetException;
+use ramp\view\document\DocumentView;
 
 /**
- * Collection of tests for \svelte\view\document\DocumentView.
+ * Collection of tests for \ramp\view\document\DocumentView.
  */
 class DocumentViewTest extends \PHPUnit\Framework\TestCase
 {
@@ -66,31 +66,31 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\document\DocumentView::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\view\View}
-   * - assert is instance of {@link \svelte\view\ChildView}
-   * - assert is instance of {@link \svelte\view\document\DocumentView}
-   * @link svelte.view.document.DocumentView svelte\view\document\DocumentView
+   * Collection of assertions for \ramp\view\document\DocumentView::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\view\View}
+   * - assert is instance of {@link \ramp\view\ChildView}
+   * - assert is instance of {@link \ramp\view\document\DocumentView}
+   * @link ramp.view.document.DocumentView ramp\view\document\DocumentView
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\view\View', $this->testObject);
-    $this->assertInstanceOf('\svelte\view\ChildView', $this->testObject);
-    $this->assertInstanceOf('\svelte\view\document\DocumentView', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\view\View', $this->testObject);
+    $this->assertInstanceOf('\ramp\view\ChildView', $this->testObject);
+    $this->assertInstanceOf('\ramp\view\document\DocumentView', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\view\document\DocumentView::__set() and
-   * \svelte\view\document\DocumentView::__get().
+   * Collection of assertions for \ramp\view\document\DocumentView::__set() and
+   * \ramp\view\document\DocumentView::__get().
    * - assert PropertyNotSetException thrown when trying to set value of none existant property
    * - assert BadPropertyCallException thrown when trying to get value of none existant property
-   * - assert setting of property on component (contained) \svelte\model\document\DocumentModel passed through 
-   * - assert that property calls are passes to its component (contained) \svelte\model\document\DocumentModel
-   * - assert that property calls are passes to its component (contained) \svelte\model\business\BusinessModel
-   * @link svelte.view.document.DocumentView#method__set svelte\view\document\DocumentView::__set()
-   * @link svelte.view.document.DocumentView#method__get svelte\view\document\DocumentView::__get()
+   * - assert setting of property on component (contained) \ramp\model\document\DocumentModel passed through 
+   * - assert that property calls are passes to its component (contained) \ramp\model\document\DocumentModel
+   * - assert that property calls are passes to its component (contained) \ramp\model\business\BusinessModel
+   * @link ramp.view.document.DocumentView#method__set ramp\view\document\DocumentView::__set()
+   * @link ramp.view.document.DocumentView#method__get ramp\view\document\DocumentView::__get()
    */
   public function test__set__get()
   {
@@ -98,14 +98,14 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
       $fail = $this->testObject->noProperty;
     } catch (BadPropertyCallException $expected) {
       $this->assertEquals(
-        'Unable to locate noProperty of \'tests\svelte\view\document\mocks\DocumentViewTest\MockDocumentView\'',
+        'Unable to locate noProperty of \'tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView\'',
         $expected->getMessage()
       );
       try {
         $this->testObject->noProperty = 'aValue';
       } catch (PropertyNotSetException $expected) {
         $this->assertEquals(
-          'tests\svelte\view\document\mocks\DocumentViewTest\MockDocumentView->noProperty is NOT settable',
+          'tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView->noProperty is NOT settable',
           $expected->getMessage()
         );
         $value = Str::set('[TITLE]');
@@ -119,13 +119,13 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\document\DocumentView::setModel()
-   *  and \svelte\view\document\DocumentView::__get().
-   * - assert throws InvalidArgumentException when not presented with {@link \svelte\model\business\BusinessModel} 
+   * Collection of assertions for \ramp\view\document\DocumentView::setModel()
+   *  and \ramp\view\document\DocumentView::__get().
+   * - assert throws InvalidArgumentException when not presented with {@link \ramp\model\business\BusinessModel} 
    *  - with message 'Expecting instanceof BusinessModel'
-   * - assert that property calls are passes to its component (contained) {@link \svelte\model\business\BusinessModel}
-   * @link svelte.view.document.DocumentView#method_setModel svelte\view\document\DocumentView::setModel()
-   * @link svelte.view.document.DocumentView#method__get svelte\view\document\DocumentView::__get()
+   * - assert that property calls are passes to its component (contained) {@link \ramp\model\business\BusinessModel}
+   * @link ramp.view.document.DocumentView#method_setModel ramp\view\document\DocumentView::setModel()
+   * @link ramp.view.document.DocumentView#method__get ramp\view\document\DocumentView::__get()
    */
   public function testSetModel()
   {

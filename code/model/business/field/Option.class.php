@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,15 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\field;
+namespace ramp\model\business\field;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\iOption;
-use svelte\model\business\BusinessModel;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\model\business\BusinessModel;
 
 /**
  * A Single option.
@@ -33,7 +33,7 @@ use svelte\model\business\BusinessModel;
  * - Define a simple base implementation of iOption for easy reuse.
  *
  * @property-read mixed $key Returns key (enum:int|URN:Str).
- * @property-read \svelte\core\Str $description Returns description.
+ * @property-read \ramp\core\Str $description Returns description.
  */
 class Option extends BusinessModel implements iOption
 {
@@ -44,7 +44,7 @@ class Option extends BusinessModel implements iOption
   /**
    * Constructor for new instance of Option.
    * @param int $key Value to be set for key.
-   * @param \svelte\core\Str $description String value to be set for description.
+   * @param \ramp\core\Str $description String value to be set for description.
    */
   public function __construct(int $key, Str $description)
   {
@@ -74,7 +74,7 @@ class Option extends BusinessModel implements iOption
   /**
    * Get unique identifier
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str id
+   * @return \ramp\core\Str id
    */
   public function get_id() : Str
   {

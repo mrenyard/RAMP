@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,24 +16,24 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\http;
+namespace ramp\http;
 
-use svelte\SETTING;
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\condition\PostData;
-use svelte\condition\Filter;
-use svelte\condition\FilterCondition;
-use svelte\model\business\SimpleBusinessModelDefinition;
-use svelte\model\business\LoginAccountType;
-use svelte\model\business\LoginAccount;
-use svelte\model\business\validation\FailedValidationException;
-use svelte\view\View;
-use svelte\view\RootView;
-use svelte\view\document\Email;
+use ramp\SETTING;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\condition\PostData;
+use ramp\condition\Filter;
+use ramp\condition\FilterCondition;
+use ramp\model\business\SimpleBusinessModelDefinition;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\LoginAccount;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\view\View;
+use ramp\view\RootView;
+use ramp\view\document\Email;
 
 /**
  * Methods relating to logging in, setting up PHP session variables,
@@ -54,7 +54,7 @@ use svelte\view\document\Email;
  * ...
  * ```
  */
-final class Session extends SvelteObject
+final class Session extends RAMPObject
 {
   private static $instance;
 
@@ -71,7 +71,7 @@ final class Session extends SvelteObject
   private function __construct()
   {
     @session_start();
-    $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
       $this->modelManager->getBusinessModel(
@@ -88,17 +88,17 @@ final class Session extends SvelteObject
    * browser, ideally the first thing at the top of any controller page.**
    *
    * PRECONDITIONS
-   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST be set.
+   * - SETTING::$RAMPE_BUSINESS_MODEL_MANAGER MUST be set.
    *
    * COLLABORATORS
    * - $_SESSION
-   * - {@link \svelte\SETTING}
-   * - {@link \svelte\condition\Filter}
-   * - {@link \svelte\condition\FilterCondition}
-   * - {@link \svelte\model\business\iBusinessModelManager}
-   * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
+   * - {@link \ramp\SETTING}
+   * - {@link \ramp\condition\Filter}
+   * - {@link \ramp\condition\FilterCondition}
+   * - {@link \ramp\model\business\iBusinessModelManager}
+   * - {@link \ramp\model\business\SimpleBusinessModelDefinition}
    *
-   * @return \svelte\http\Session Single instance of Session
+   * @return \ramp\http\Session Single instance of Session
    */
   public static function getInstance() : Session
   {
@@ -133,8 +133,8 @@ final class Session extends SvelteObject
    * and if successful just returns, otherwise throws an Unauthorized401Exception.
    *
    * PRECONDITIONS
-   * - SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE MUST be set
-   * - SETTING::$SVELTE_AUTHENTICATIBLE_UNIT MUST be set
+   * - SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE MUST be set
+   * - SETTING::$RAMPE_AUTHENTICATIBLE_UNIT MUST be set
    * - Session::getInstance() MUST have been called at least once.
    * - $_SESSION['loginAccount'] MAY already be set, following proir succesfully authentication
    * - $_POST data MAY be sent for submission
@@ -148,14 +148,14 @@ final class Session extends SvelteObject
    * COLLABORATORS
    * - $_POST
    * - $_SESSION
-   * - {@link \svelte\SETTING}
-   * - {@link \svelte\condition\Filter}
+   * - {@link \ramp\SETTING}
+   * - {@link \ramp\condition\Filter}
    * - {@link \svette\condition\FiltetCondition}
-   * - {@link \svelte\model\business\iBusinessModelManager}
-   * - {@link \svelte\model\business\SimpleBusinessModelDefinition}
-   * - {@link \svelte\model\business\LoginAccountType}
-   * - {@link \svelte\model\business\LoginAccount}
-   * - {@link \svelte\http\Unauthorized401Exception}
+   * - {@link \ramp\model\business\iBusinessModelManager}
+   * - {@link \ramp\model\business\SimpleBusinessModelDefinition}
+   * - {@link \ramp\model\business\LoginAccountType}
+   * - {@link \ramp\model\business\LoginAccount}
+   * - {@link \ramp\http\Unauthorized401Exception}
    *
    * @param int $authorizationLevel Required authorization Level
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
@@ -230,7 +230,7 @@ final class Session extends SvelteObject
       return;
     }
     $auEmailPropertyID = (string)Str::hyphenate(
-      Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
+      Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
     );
     if (isset($_POST[$auEmailPropertyID]))
     {
@@ -263,7 +263,7 @@ final class Session extends SvelteObject
           {
             $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
             foreach ($_POST as $name => $value) {
-              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
+              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
                 unset($_POST[$name]);
               }
             }
@@ -277,7 +277,7 @@ final class Session extends SvelteObject
 
   /**
    * Accessor to logingAccount
-   * @return \svelte\model\business\LoginAccount loginAccount LoginAccount for authentication and authorization
+   * @return \ramp\model\business\LoginAccount loginAccount LoginAccount for authentication and authorization
    */
   protected function get_loginAccount()
   {

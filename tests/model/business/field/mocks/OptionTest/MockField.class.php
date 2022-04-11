@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,17 +18,17 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field\mocks\OptionTest;
+namespace tests\ramp\model\business\field\mocks\OptionTest;
 
-use svelte\core\Str;
-use svelte\core\iCollection;
-use svelte\core\Collection;
-use svelte\condition\PostData;
-use svelte\model\business\field\Field;
-use svelte\model\business\FailedValidationException;
+use ramp\core\Str;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\condition\PostData;
+use ramp\model\business\field\Field;
+use ramp\model\business\FailedValidationException;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\BusinessModel as field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
  */
 class MockField extends Field
 {

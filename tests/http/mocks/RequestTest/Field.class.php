@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,15 +18,15 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\http\mocks\RequestTest;
+namespace tests\ramp\http\mocks\RequestTest;
 
-use svelte\core\SvelteObject;
+use ramp\core\RAMPObject;
 
 /**
  * Mock field with processValidationRule method.
  * .
  */
-class Field extends SvelteObject
+class Field extends RAMPObject
 {
   /**
    * Test processValidationRule.

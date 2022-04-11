@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte;
+namespace ramp;
 
 /**
  * Application Settings class, responsible for holding configuration details for the local aspects
- * of an individual Svelte Project.
+ * of an individual RAMP Project.
  *
- * Usually generated from Svelte's local initialization file, called svelte.ini.
+ * Usually generated from RAMP's local initialization file, called ramp.ini.
  * Which SHOULD usually be located alongside the public website root folder. i.e.:
  * ```
  * -- ~/                    (secure ftp folder)
@@ -33,9 +33,9 @@ namespace svelte;
  *  | |-- index.html        (static homepage)?
  *  | |-- robots.txt
  *  | |-- humans.txt
- *  | |-- controller.php    (svelte controller file)
+ *  | |-- controller.php    (ramp controller file)
  *  |
- *  +-- svelte.ini          (local initialization file)
+ *  +-- ramp.ini          (local initialization file)
  * ```
  */
 class SETTING
@@ -43,31 +43,31 @@ class SETTING
   /**
    * Domain under which this application is run.
    */
-  public static $SVELTE_DOMAIN;
+  public static $RAMPE_DOMAIN;
 
   /**
    * Directory from which to locate application specific code
    * related only to this particular project.
    */
-  public static $SVELTE_LOCAL_DIR;
+  public static $RAMPE_LOCAL_DIR;
 
   /**
    * Concrete BusinessModelManager used to handle data layer
    * (fully qualified namespace and class name).
-   * - e.g. \svelte\model\business\SQLBusinessModelManager
+   * - e.g. \ramp\model\business\SQLBusinessModelManager
    */
-  public static $SVELTE_BUSINESS_MODEL_MANAGER;
+  public static $RAMPE_BUSINESS_MODEL_MANAGER;
 
   /**
    * Fully qualified namespace for business model classes.
-   * - e.g. \svelte\model\business
+   * - e.g. \ramp\model\business
    */
-  public static $SVELTE_BUSINESS_MODEL_NAMESPACE;
+  public static $RAMPE_BUSINESS_MODEL_NAMESPACE;
 
   /**
    * Authenticatable Unit of specific business model Record.
    */
-  public static $SVELTE_AUTHENTICATABLE_UNIT;
+  public static $RAMPE_AUTHENTICATABLE_UNIT;
 
   /**
    * Database connection string.

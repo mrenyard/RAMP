@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,24 +16,24 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\model\business\RecordCollection;
-use svelte\model\business\AuthenticatableUnit;
-use svelte\model\business\field\Field;
-use svelte\model\business\field\Input;
-use svelte\model\business\validation\dbtype\VarChar;
-use svelte\model\business\validation\Alphanumeric;
-use svelte\model\business\validation\LowerCaseAlphanumeric;
-use svelte\model\business\validation\RegexEmail;
+use ramp\core\Str;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\AuthenticatableUnit;
+use ramp\model\business\field\Field;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\dbtype\VarChar;
+use ramp\model\business\validation\Alphanumeric;
+use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\RegexEmail;
 
 
 /**
- * Mock Collection of Person for testing \svelte\http\Session
+ * Mock Collection of Person for testing \ramp\http\Session
  * .
  */
 class AnAuthenticatibleUnitCollection extends RecordCollection
@@ -41,7 +41,7 @@ class AnAuthenticatibleUnitCollection extends RecordCollection
 }
 
 /**
- * Mock AuthenticatableUnit for testing \svelte\http\Session
+ * Mock AuthenticatableUnit for testing \ramp\http\Session
  */
 class AnAuthenticatableUnit extends AuthenticatableUnit
 {
@@ -49,7 +49,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   public static function primaryKeyName() : Str { return Str::set('uname'); }
 
@@ -74,7 +74,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   /**
    * Get familyName
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Email address associated with *this*.
+   * @return \ramp\core\Str Email address associated with *this*.
    */
   protected function get_familyName() : Field
   {
@@ -96,7 +96,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   /**
    * Get givenName
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Email address associated with *this*.
+   * @return \ramp\core\Str Email address associated with *this*.
    */
   protected function get_givenName() : Field
   {

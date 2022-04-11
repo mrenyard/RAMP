@@ -1,13 +1,13 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
 /**
  * URN Query environment, contining specilised operator strings as defined in iEnvironment.
@@ -21,7 +21,7 @@ class URNQueryEnvironment extends Environment
 
   /**
    * Set up and return instance of *this* with full set of operators.
-   * @return \svelte\condition\iEnvironment this with full set of operators
+   * @return \ramp\condition\iEnvironment this with full set of operators
    */
   public static function getInstance() : iEnvironment
   {

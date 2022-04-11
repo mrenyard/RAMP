@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,29 +18,29 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\core;
+namespace tests\ramp\core;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
 
-require_once '/usr/share/php/tests/svelte/core/mocks/CollectionTest/AnObject.class.php';
-require_once '/usr/share/php/tests/svelte/core/mocks/CollectionTest/BadObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/mocks/CollectionTest/AnObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/mocks/CollectionTest/BadObject.class.php';
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\Collection;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\Collection;
 
-use tests\svelte\core\mocks\CollectionTest\AnObject;
-use tests\svelte\core\mocks\CollectionTest\BadObject;
+use tests\ramp\core\mocks\CollectionTest\AnObject;
+use tests\ramp\core\mocks\CollectionTest\BadObject;
 
 /**
- * Collection of tests for \svelte\core\Collection.
+ * Collection of tests for \ramp\core\Collection.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\condition\mocks\CollectionTest\AnObject}
- * - {@link \tests\svelte\condition\mocks\CollectionTest\BadObject}
+ * - {@link \tests\ramp\condition\mocks\CollectionTest\AnObject}
+ * - {@link \tests\ramp\condition\mocks\CollectionTest\BadObject}
  */
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -53,27 +53,27 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->typeName = Str::set('tests\svelte\core\mocks\CollectionTest\AnObject');
+    $this->typeName = Str::set('tests\ramp\core\mocks\CollectionTest\AnObject');
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::__construct().
-   * - assert is instance of {@link \svelte\core\Collection}
-   * - assert is instance of {@link \svelte\core\iCollection}
-   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * Collection of assertions for ramp\core\Collection::__construct().
+   * - assert is instance of {@link \ramp\core\Collection}
+   * - assert is instance of {@link \ramp\core\iCollection}
+   * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
-   * @link svelte.core.Collection \svelte\core\Collection
+   * @link ramp.core.Collection \ramp\core\Collection
    */
   public function test__Construct()
   {
     $testObject = new Collection($this->typeName);
-    $this->assertInstanceOf('svelte\core\Collection', $testObject);
-    $this->assertInstanceOf('svelte\core\iCollection', $testObject);
-    $this->assertInstanceOf('svelte\core\SvelteObject', $testObject);
+    $this->assertInstanceOf('ramp\core\Collection', $testObject);
+    $this->assertInstanceOf('ramp\core\iCollection', $testObject);
+    $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
     $this->assertInstanceOf('\IteratorAggregate', $testObject);
     $this->assertInstanceOf('\Countable', $testObject);
     $this->assertInstanceOf('\ArrayAccess', $testObject);
@@ -87,16 +87,16 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::isCompositeType().
+   * Collection of assertions for ramp\core\Collection::isCompositeType().
    * - assert returns TRUE when $compositeType name provided to constructor is
-   *    same as provided {@link \svelte\core\Str}
+   *    same as provided {@link \ramp\core\Str}
    * - assert evaluates TRUE where $compositeType name provided to constructor is
-   *    same as provided {@link \svelte\core\Str}
+   *    same as provided {@link \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided to constructor is
-   *    NOT same as provided {@link \svelte\core\Str}
+   *    NOT same as provided {@link \ramp\core\Str}
    * - assert evaluates FALSE where $compositeType name provided to constructor is
-   *    NOT same as provided {@link \svelte\core\Str}
-   * @link svelte.core.Collection#method_isCompositeType \svelte\core\Collection::isCompositeType()
+   *    NOT same as provided {@link \ramp\core\Str}
+   * @link ramp.core.Collection#method_isCompositeType \ramp\core\Collection::isCompositeType()
    */
   public function testIsCompositeType()
   {
@@ -107,17 +107,17 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::getIterator(), add() and count.
-   * - assert handle unpopulated {@link \svelte\core\Collection} iteration without fail
-   * - assert {@link \svelte\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
+   * - assert handle unpopulated {@link \ramp\core\Collection} iteration without fail
+   * - assert {@link \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
-   * - assert {@link \svelte\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   * - assert {@link \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
    *   - with message: <em>'Offset out of bounds'</em>
-   * @link svelte.core.Collection#method_getIterator \svelte\core\Collection::getIterator()
-   * @link svelte.core.Collection#method_add \svelte\core\Collection::add()
-   * @link svelte.core.Collection#method_count \svelte\core\Collection::count
+   * @link ramp.core.Collection#method_getIterator \ramp\core\Collection::getIterator()
+   * @link ramp.core.Collection#method_add \ramp\core\Collection::add()
+   * @link ramp.core.Collection#method_count \ramp\core\Collection::count
    */
   public function testIteratorAddCount()
   {
@@ -132,7 +132,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       $testObject->add(new BadObject());
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
-        'tests\svelte\core\mocks\CollectionTest\BadObject NOT instanceof tests\svelte\core\mocks\CollectionTest\AnObject',
+        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof tests\ramp\core\mocks\CollectionTest\AnObject',
         $expected->getMessage()
       );
       $i = 0;
@@ -207,12 +207,12 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::offsetSet().
-   * - assert {@link \svelte\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   * Collection of assertions for ramp\core\Collection::offsetSet().
+   * - assert {@link \ramp\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
-   * @link svelte.core.Collection#method_offsetSet \svelte\core\mocks\CollectionTest\Collection::offsetSet()
+   * @link ramp.core.Collection#method_offsetSet \ramp\core\mocks\CollectionTest\Collection::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -225,7 +225,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       $testObject['name'] = new BadObject();
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
-        'tests\svelte\core\mocks\CollectionTest\BadObject NOT instanceof tests\svelte\core\mocks\CollectionTest\AnObject',
+        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof tests\ramp\core\mocks\CollectionTest\AnObject',
         $expected->getMessage()
       );
       $testObject[0] = $expectedAt0Index;
@@ -237,17 +237,17 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::offsetUnset().
+   * Collection of assertions for ramp\core\Collection::offsetUnset().
    * - assert value unset with name key is no longer retivable with same name key
    * - assert value set at index is no longer retivable at same index.
    * @depends testOffsetSet
    * @param Collection The test object.
-   * @link svelte.core.Collection#method_offsetUnset \svelte\core\mocks\CollectionTest\Collection::offsetUnset()
+   * @link ramp.core.Collection#method_offsetUnset \ramp\core\mocks\CollectionTest\Collection::offsetUnset()
    */
   public function testOffsetUnset(Collection $testObject)
   {
-    $this->assertInstanceOf('tests\svelte\core\mocks\CollectionTest\AnObject', $testObject['name']);
-    $this->assertInstanceOf('tests\svelte\core\mocks\CollectionTest\AnObject', $testObject[0]);
+    $this->assertInstanceOf('tests\ramp\core\mocks\CollectionTest\AnObject', $testObject['name']);
+    $this->assertInstanceOf('tests\ramp\core\mocks\CollectionTest\AnObject', $testObject[0]);
     unset($testObject['name']);
     unset($testObject[0]);
     $this->assertFalse(isset($testObject['name']));
@@ -255,10 +255,10 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for svelte\core\Collection::__clone().
+   * Collection of assertions for ramp\core\Collection::__clone().
    * - assert Shallow Cloning (default) composite collection is referenced only
    * - assert when Deep Cloning that NEW objects are formed with same values
-   * @link svelte.core.Collection#method__clone \svelte\core\mocks\CollectionTest\Collection::__clone()
+   * @link ramp.core.Collection#method__clone \ramp\core\mocks\CollectionTest\Collection::__clone()
    */
   public function test__clone()
   {

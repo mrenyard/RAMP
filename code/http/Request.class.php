@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,32 +16,32 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\http;
+namespace ramp\http;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\condition\PostData;
-use svelte\condition\Filter;
-use svelte\model\business\iBusinessModelDefinition;
-use svelte\model\business\AccountType;
-use svelte\http\Method;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\condition\PostData;
+use ramp\condition\Filter;
+use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\AccountType;
+use ramp\http\Method;
 
 /**
  * Request data interpreted based on HyperText Transfer Protocol (HTTP).
  *
  * RESPONSIBILITIES
  * - Interpret HTTP request
- * - Act as {@link \svelte\model\business\iBusinessModelDefinition}
+ * - Act as {@link \ramp\model\business\iBusinessModelDefinition}
  *
  * COLLABORATORS
- * - {@link svelte\model\business\iBusinessModelDefinition}
- * - {@link svelte\condition\PostData}
- * - {@link svelte\condition\Filter}
- * - {@link svelte\http\Method}
+ * - {@link ramp\model\business\iBusinessModelDefinition}
+ * - {@link ramp\condition\PostData}
+ * - {@link ramp\condition\Filter}
+ * - {@link ramp\http\Method}
  * - $_SERVER
  * - $_POST
  * - $_GET
@@ -63,14 +63,14 @@ use svelte\http\Method;
  * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
  *
  * @property-read bool $expectsFragment Returns whether this request is expecting a document fragment or a complete document.
- * @property-read \svelte\http\Method $method Returns request Method (Verb) (based on HTTP/1.1 specification).
- * @property-read ?\svelte\core\Str $modelURN Returns Uniform Resource Name (URN) of requested svelte\model\Model or NULL.
- * @property-read \svelte\core\Str $resourceIdentifier Returns Uniform Resource Identifier (URI) of requested resource.
+ * @property-read \ramp\http\Method $method Returns request Method (Verb) (based on HTTP/1.1 specification).
+ * @property-read ?\ramp\core\Str $modelURN Returns Uniform Resource Name (URN) of requested ramp\model\Model or NULL.
+ * @property-read \ramp\core\Str $resourceIdentifier Returns Uniform Resource Identifier (URI) of requested resource.
  * @property-read int $fromIndex Returns any requested starting point within a collection.
- * @property-read ?\svelte\condition\Filter $filter Returns any filter to apply to a collection.
- * @property-read ?\svelte\condition\PostData $postData Returns any data for posting sent with request.
+ * @property-read ?\ramp\condition\Filter $filter Returns any filter to apply to a collection.
+ * @property-read ?\ramp\condition\PostData $postData Returns any data for posting sent with request.
  */
-class Request extends SvelteObject implements iBusinessModelDefinition
+class Request extends RAMPObject implements iBusinessModelDefinition
 {
   private $expectsFragment;
   private $method;
@@ -86,9 +86,9 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   /**
    * Interprets HTTP and constructs new Request based on current context.
    * PRECONDITIONS
-   * - SETTING::$SVELTE_BUSINESS_MODEL_MANAGER MUST be set.
+   * - SETTING::$RAMPE_BUSINESS_MODEL_MANAGER MUST be set.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and
-   * limits as defined by local business model (SVELTE_BUESINESS_MODEL_NAMESPACE)
+   * limits as defined by local business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
  */
   public function __construct()
   {
@@ -146,7 +146,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
    * Returns request Method (Verb) (based on HTTP/1.1 specification).
    * **DO NOT CALL DIRECTLY, USE this->method;**
    * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
-   * @return \svelte\Method Requested Method
+   * @return \ramp\Method Requested Method
    */
   protected function get_method() : Method
   {
@@ -154,10 +154,10 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns Uniform Resource Name (URN) of requested svelte\model\Model or NULL.
+   * Returns Uniform Resource Name (URN) of requested ramp\model\Model or NULL.
    * **DO NOT CALL DIRECTLY, USE this->modelURN;**
    * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
-   * @return \svelte\core\Str URN of requested svelte\model\Model or NULL.
+   * @return \ramp\core\Str URN of requested ramp\model\Model or NULL.
    */
   protected function get_modelURN() : ?Str
   {
@@ -167,7 +167,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   /**
    * Returns name of requested Record one or collection.
    * Can be called directly inline with iBusinessModelDefinition or by using this->recordName;
-   * @return \svelte\core\Str Name of requested Record one or collection.
+   * @return \ramp\core\Str Name of requested Record one or collection.
    */
   public function get_recordName() : Str
   {
@@ -175,9 +175,9 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns primary key value of requested svelte\model\business\Record or NULL.
+   * Returns primary key value of requested ramp\model\business\Record or NULL.
    * Can be called directly inline with iBusinessModelDefinition or by using this->recordKey;
-   * @return \svelte\core\Str Primary key for requested Record if any.
+   * @return \ramp\core\Str Primary key for requested Record if any.
    */
   public function get_recordKey() : ?Str
   {
@@ -188,9 +188,9 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns name of requested Property of svelte\model\business\Record or NULL.
+   * Returns name of requested Property of ramp\model\business\Record or NULL.
    * Can be called directly inline with iBusinessModelDefinition or by using this->propertyName;
-   * @return \svelte\core\Str Name of requested Property if any.
+   * @return \ramp\core\Str Name of requested Property if any.
    */
   public function get_propertyName() : ?Str
   {
@@ -201,7 +201,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
    * Returns Uniform Resource Identifier (URI) of requested resource.
    * **DO NOT CALL DIRECTLY, USE this->resourceURL;**
    * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
-   * @return \svelte\core\Str URI of requested resource
+   * @return \ramp\core\Str URI of requested resource
    */
   protected function get_resourceIdentifier() : Str
   {
@@ -221,7 +221,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   /**
    * Returns any filter to apply to a collection.
    * **DO NOT CALL DIRECTLY, USE this->filter;**
-   * @return \svelte\condition\Filter Filter to be applied to collection
+   * @return \ramp\condition\Filter Filter to be applied to collection
    */
   protected function get_filter() : ?Filter
   {
@@ -231,7 +231,7 @@ class Request extends SvelteObject implements iBusinessModelDefinition
   /**
    * Returns any data for posting sent with request.
    * **DO NOT CALL DIRECTLY, USE this->postData;**
-   * @return \svelte\condition\PostData Data collection to be posted
+   * @return \ramp\condition\PostData Data collection to be posted
    */
   protected function get_postData() : ?PostData
   {

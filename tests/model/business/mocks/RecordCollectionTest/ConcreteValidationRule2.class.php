@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,10 +18,10 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordCollectionTest;
+namespace tests\ramp\model\business\mocks\RecordCollectionTest;
 
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\ValidationRule;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
 
 class ConcreteValidationRule2 extends ValidationRule
 {

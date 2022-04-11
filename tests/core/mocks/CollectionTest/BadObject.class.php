@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,12 +18,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\core\mocks\CollectionTest;
+namespace tests\ramp\core\mocks\CollectionTest;
 
-use svelte\core\SvelteObject;
+use ramp\core\RAMPObject;
 
 /**
- * Another Concreate implementation of \svelte\core\Object for testing against.
+ * Another Concreate implementation of \ramp\core\Object for testing against.
  * .
  */
-class BadObject extends SvelteObject { }
+class BadObject extends RAMPObject { }

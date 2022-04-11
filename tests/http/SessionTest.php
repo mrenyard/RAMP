@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,69 +18,76 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\http;
+namespace tests\ramp\http;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/SQLEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/FilterCondition.class.php';
-require_once '/usr/share/php/svelte/condition/Filter.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/svelte/model/business/AuthenticatableUnit.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
-require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
-require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
-require_once '/usr/share/php/svelte/http/Session.class.php';
-require_once '/usr/share/php/svelte/http/Unauthorized401Exception.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/AuthenticatableUnit.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/http/Session.class.php';
+require_once '/usr/share/php/ramp/http/Unauthorized401Exception.class.php';
+require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/RootView.class.php';
+require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
+require_once '/usr/share/php/ramp/view/document/Templated.class.php';
+require_once '/usr/share/php/ramp/view/document/Email.class.php';
 
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/HeaderFunctions.php';
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/RecordName.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/HeaderFunctions.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/RecordName.class.php';
 
-use svelte\SETTING;
-use svelte\http\Session;
-use svelte\http\Unauthorized401Exception;
-use svelte\model\business\LoginAccountOptions;
-use svelte\model\business\LoginAccountType;
-use svelte\model\business\LoginAccount;
+use ramp\SETTING;
+use ramp\http\Session;
+use ramp\http\Unauthorized401Exception;
+use ramp\model\business\LoginAccountOptions;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\LoginAccount;
 
-use tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager;
-use svelte\model\business\AnAuthenticatableUnit;
+use tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager;
+use ramp\model\business\AnAuthenticatableUnit;
 
 /**
- * Collection of tests for svelte\http\Session.
+ * Collection of tests for ramp\http\Session.
  */
 class SessionTest extends \PHPUnit\Framework\TestCase
 {
@@ -107,10 +114,10 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     SETTING::$TEST_ON = TRUE;
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
+    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
-    SETTING::$SVELTE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
+    SETTING::$RAMPE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     self::$sessionLoginAccountEmail = 'a.person@domain.com';
     self::$unencryptedPassword = 'P@ssw0rd!';
     if (!isset(self::$ref))
@@ -132,19 +139,19 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::getInstance().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\http\Session}
+   * Collection of assertions for \ramp\http\Session::getInstance().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\http\Session}
    * - assert is same instance on every call (Singleton)
    * - assert cannot be cloned, throws \BadMethodCallException
    *   - with message: *'Clone is not allowed'*
-   * @link svelte.http.Session svelte\http\Session
+   * @link ramp.http.Session ramp\http\Session
    */
   public function testGetInstance()
   {
     $testObject = Session::getInstance();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\http\Session', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\http\Session', $testObject);
     $this->assertSame(Session::getInstance(), $testObject);
     try {
       $fail = clone $testObject;
@@ -157,12 +164,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizedAs()
+   * Collection of assertions for \ramp\http\Session::authorizedAs()
    *  with already Authenticated $_SESSION['LoginAccount'].
    * - assert $_SESSION['loginAccount'] reference retained.
    * - assert returns TRUE when $_SESSION['LoginAccount'] has sufficient privileges
    * - assert returns FALSE when $_SESSION['LoginAccount'] has insufficient privileges
-   * @link svelte.http.Session#method_authorizedAs svelte\http\Session::AuthorizedAs()
+   * @link ramp.http.Session#method_authorizedAs ramp\http\Session::AuthorizedAs()
    */
   public function testAuthorizedAsAlreadyAuthenticated()
   {
@@ -170,7 +177,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject = new \stdClass();
     $dataObject->email = self::$sessionLoginAccountEmail;
     $dataObject->encryptedPassword = crypt(
-      self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
+      self::$unencryptedPassword, \ramp\SETTING::$SECURITY_PASSWORD_SALT
     );
     $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
@@ -188,7 +195,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with already Authenticated $_SESSION['LoginAccount'].
    * - assert $_POST data retained.
    * - assert $_SESSION['loginAccount'] reference retained.
@@ -196,7 +203,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert throws Unauthorized401Exception when $_SESSION['LoginAccount'] has insufficient privileges
    *   - with message: *'Unauthenticated or insufficient authority'*
    *   - or with $_POST data message: *'Attempting POST to resource REQUIRING authentication or insufficient authority'*
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsAlreadyAuthenticated()
   {
@@ -209,7 +216,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->id = 'login-account:aperson';
     $dataObject->email = self::$sessionLoginAccountEmail;
     $dataObject->encryptedPassword = crypt(
-      self::$unencryptedPassword, \svelte\SETTING::$SECURITY_PASSWORD_SALT
+      self::$unencryptedPassword, \ramp\SETTING::$SECURITY_PASSWORD_SALT
     );
     $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
@@ -251,12 +258,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with no $_SESSION['LoginAccount'] or a set of valid credentials.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Unauthenticated or insufficient authority'*
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentials()
   {
@@ -275,13 +282,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with no $_SESSION['LoginAccount'] or a set of valid credentials but with $_POST data.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Attempting POST to resource REQUIRING authentication or insufficient authority'*
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNoCredentialsWithPost()
   {
@@ -310,13 +317,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while providing malformed login-email.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Invalid email format'*
    * - assert $_POST login related data expunged.
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithMalformedEmail()
   {
@@ -336,14 +343,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while ONLY providing login-email without login-password or [authenticatableUnit]:new:email.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'SHOULD NEVER REACH HERE!'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithEmailNoPassword()
   {
@@ -370,14 +377,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while logging-in with an email NOT in database.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Account (email) NOT in database'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsEmailNotInDataStore()
   {
@@ -406,14 +413,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while logging-in with an invalid password.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Invalid password or insufficient privileges'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithInvalidPassword()
   {
@@ -442,13 +449,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while logging-in with a set of valid Credentials but insufficient privileges.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Invalid password or insufficient privileges'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithInsufficientPrivileges()
   {
@@ -476,13 +483,13 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  while logging-in with valid Credentials and holding $_SESSION['post_array'] from previous request.
    * - assert $_POST login related data expunged.
    * - assert $_SESSION['post_array'] passed back to $_POST
    * - assert returns without interruption as has sufficient privileges
    * - assert $_SESSION['loginAccount'] reference is successfully set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsWithValidCredentials()
   {
@@ -513,14 +520,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with new authenticatible unit details to setup as new login account BUT emails mismatch.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'New Authenticatible Unit Form: e-mail mismatch'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailMismatch()
   {
@@ -550,14 +557,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with new authenticatible unit details to setup as new login account BUT alreay exists.
-   * - assert throws \svelte\http\Unauthorized401Exception
+   * - assert throws \ramp\http\Unauthorized401Exception
    *   - with message: *'Trying to create new login where one already exists!'*
    * - assert $_POST login related data expunged.
    * - assert $_POST data array stored in $_SESSION as $_SESSION['post_array']
    * - assert $_SESSION['loginAccount'] NOT set.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
    */
   public function testAuthorizeAsNewLoginAccountEmailAlreadyExists()
   {
@@ -587,7 +594,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs()
    *  with new authenticatible unit details to setup as a new login account.
    * - assert returns without interruption as has sufficient privileges.
    * - assert $_POST login related data expunged.
@@ -598,8 +605,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert related authenticatible unit properties are accessable throuth loginAccount.
    * - assert a password has been auto generated for loginAccount.
    * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager.
-   * @link svelte.http.Session#method_authorizeAs svelte\http\Session::AuthorizeAs()
-   */
+   * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
+   *
   public function testAuthorizeAsNewLoginAccount()
   {
     $postArray = array(
@@ -631,11 +638,11 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertSame('surname', $_SESSION['loginAccount']->familyName->value);
     $this->assertSame('name', $_SESSION['loginAccount']->givenName->value);
     $this->assertSame(
-      crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \svelte\SETTING::$SECURITY_PASSWORD_SALT),
+      crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:user']));
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:user']));
-  }
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:user']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:user']));
+  }*/
 }

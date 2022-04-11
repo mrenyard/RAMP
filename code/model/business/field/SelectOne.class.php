@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,19 +16,19 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\field;
+namespace ramp\model\business\field;
 
-use svelte\core\Str;
-use svelte\core\OptionList;
-use svelte\model\business\Record;
-use svelte\model\business\FailedValidationException;
+use ramp\core\Str;
+use ramp\core\OptionList;
+use ramp\model\business\Record;
+use ramp\model\business\FailedValidationException;
 
 /**
  * Specilised field for selecting one from a collection of iOptions tied to a single property of
- * its containing \svelte\model\business\Record.
+ * its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
@@ -36,16 +36,16 @@ use svelte\model\business\FailedValidationException;
  * - Hold referance back to its contining Record
  *
  * COLLABORATORS
- * - {@link \svelte\model\business\Record}
- * - {@link \svelte\core\OptionList}
+ * - {@link \ramp\model\business\Record}
+ * - {@link \ramp\core\OptionList}
  */
 final class SelectOne extends Field
 {
   /**
    * Creates select one field type, tied to a single property of containing record.
-   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
-   * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\core\OptionList $options Collection of available field\Options
+   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
+   * @param \ramp\core\OptionList $options Collection of available field\Options
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
   {
@@ -55,7 +55,7 @@ final class SelectOne extends Field
   /**
    * ArrayAccess method offsetSet, DO NOT USE.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
   public function offsetSet($offset, $object)
@@ -86,7 +86,7 @@ final class SelectOne extends Field
   /**
    * Validate that value is one of avalible options.
    * @param mixed $value Value to be processed
-   * @throws \svelte\validation\FailedValidationException When test fails.
+   * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value)
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,29 +18,29 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest;
+namespace tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest;
 
-use svelte\core\Str;
-use svelte\model\business\Record;
-use svelte\model\business\RecordCollection;
-use svelte\model\business\field\Field;
-use svelte\model\business\field\Input;
-use svelte\model\business\validation\Alphanumeric;
-use svelte\model\business\validation\LowerCaseAlphanumeric;
-use svelte\model\business\validation\dbtype\VarChar;
-use svelte\model\business\validation\dbtype\UniquePrimaryKey;
+use ramp\core\Str;
+use ramp\model\business\Record;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\field\Field;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\Alphanumeric;
+use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\dbtype\VarChar;
+use ramp\model\business\validation\dbtype\UniquePrimaryKey;
 
-use tests\svelte\model\business\validation\dbtype\UniquePrimaryKeyTest;
+use tests\ramp\model\business\validation\dbtype\UniquePrimaryKeyTest;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\RecordCollection for testing against.
+ * Mock Concreate implementation of \ramp\model\business\RecordCollection for testing against.
  */
 class SimpleRecordCollection extends RecordCollection { }
 
 /**
- * Mock Concreate implementation of \svelte\model\business\Record for testing against.
+ * Mock Concreate implementation of \ramp\model\business\Record for testing against.
  *
- * @property-read \svelte\model\business\field\Field $primaryKey Returns field containing value of property.
+ * @property-read \ramp\model\business\field\Field $primaryKey Returns field containing value of property.
  */
 class SimpleRecord extends Record
 {
@@ -49,14 +49,14 @@ class SimpleRecord extends Record
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   public static function primaryKeyName() : Str { return Str::set('uniqueKey'); }
 
   /**
    * Get field containing uniqueKey
    * **DO NOT CALL DIRECTLY, USE this->uniqueKey;**
-   * @return \svelte\model\business\field\Field Returns field containing value of uniqueKey
+   * @return \ramp\model\business\field\Field Returns field containing value of uniqueKey
    */
   protected function get_uniqueKey() : Field
   {

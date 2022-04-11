@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordTest;
+namespace tests\ramp\model\business\mocks\RecordTest;
 
-use svelte\core\Str;
-use svelte\core\iOption;
-use svelte\core\OptionList;
-use svelte\core\Collection;
-use svelte\model\business\field\Option;
+use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\OptionList;
+use ramp\core\Collection;
+use ramp\model\business\field\Option;
 
 /**
  * Pre defined enum/list for testing.
@@ -37,7 +37,7 @@ class ConcreteOptionList extends OptionList
    */
   public function __construct()
   {
-    parent::__construct(null, Str::set('\svelte\model\business\field\Option'));
+    parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
     $this->add(new Option(0, Str::set('Please choose:')));
     $this->add(new Option(1, Str::set('Option One')));
     $this->add(new Option(2, Str::set('Option Two')));

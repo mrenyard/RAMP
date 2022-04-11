@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,21 +16,21 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\field;
+namespace ramp\model\business\field;
 
-use svelte\core\Str;
-use svelte\model\business\Record;
-use svelte\model\business\validation\dbtype\Flag as Rule;
+use ramp\core\Str;
+use ramp\model\business\Record;
+use ramp\model\business\validation\dbtype\Flag as Rule;
 
 class Flag extends Field
 {
   /**
    * Creates boolean field related to a single property of containing record.
-   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
-   * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
+   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    * proir to allowing property value change
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord)
@@ -41,7 +41,7 @@ class Flag extends Field
   /**
    * ArrayAccess method offsetSet, DO NOT USE.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
   public function offsetSet($offset, $object)
@@ -71,7 +71,7 @@ class Flag extends Field
   /**
    * Process provided validation rule.
    * @param mixed $value Value to be processed
-   * @throws \svelte\validation\FailedValidationException When test fails.
+   * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value) : void
   {

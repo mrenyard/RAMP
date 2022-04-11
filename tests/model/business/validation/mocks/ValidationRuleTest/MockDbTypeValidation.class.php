@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation;
+namespace tests\ramp\model\business\validation;
 
-use svelte\core\SvelteObject;
-use svelte\model\business\validation\dbtype\DbTypeValidation;
+use ramp\core\RAMPObject;
+use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Concreate implementation of \svelte\model\business\validation\DbTypeValidation for testing against.
+ * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
  * .
  */
 class MockDbTypeValidation extends DbTypeValidation

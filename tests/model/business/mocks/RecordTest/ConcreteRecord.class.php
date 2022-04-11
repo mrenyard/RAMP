@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,16 +18,16 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\RecordTest;
+namespace tests\ramp\model\business\mocks\RecordTest;
 
-use svelte\core\Str;
-use svelte\core\OptionList;
-use svelte\core\PropertyNotSetException;
-use svelte\model\business\Record;
-use svelte\model\business\field\Input;
-use svelte\model\business\field\SelectOne;
-use svelte\model\business\field\SelectMany;
-use svelte\model\business\validation\dbtype\VarChar;
+use ramp\core\Str;
+use ramp\core\OptionList;
+use ramp\core\PropertyNotSetException;
+use ramp\model\business\Record;
+use ramp\model\business\field\Input;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
+use ramp\model\business\validation\dbtype\VarChar;
 
 class ConcreteRecord extends Record
 {

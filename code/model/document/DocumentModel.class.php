@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,19 +16,19 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\document;
+namespace ramp\model\document;
 
-use svelte\core\Str;
-use svelte\model\Model;
+use ramp\core\Str;
+use ramp\model\Model;
 
 /**
  * Superclass for *DocumentModel*.
  *
  * RESPONSIBILITIES
- * - Inherit generalized methods for property access (from {@link \svelte\core\SvelteObject})
+ * - Inherit generalized methods for property access (from {@link \ramp\core\RAMPObject})
  * - Define generalized properties for DocumentModels
  * @property \svetle\core\Str $id Unique Identifier of document / fragment
  * @property \svetle\core\Str $title Title of document / fragment

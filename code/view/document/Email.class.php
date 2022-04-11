@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,14 +15,14 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view\document;
+namespace ramp\view\document;
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\view\View;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\view\View;
 
 /**
  */

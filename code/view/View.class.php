@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,31 +16,31 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace ramp\view;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\core\BadPropertyCallException;
-use svelte\model\Model;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\core\BadPropertyCallException;
+use ramp\model\Model;
 
 /**
  * Definition of presentation format and type to be associated with a given Model.
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
- * - Enable read access to associated {@link \svelte\model\Model}.
+ * - Enable read access to associated {@link \ramp\model\Model}.
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\Model}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\Model}.
  * 
  * COLLABORATORS
- * - {@link \svelte\view\View}
- * - {@link \svelte\model\Model}
+ * - {@link \ramp\view\View}
+ * - {@link \ramp\model\Model}
  */
-abstract class View extends SvelteObject
+abstract class View extends RAMPObject
 {
   private $viewCollection;
   private $model;
@@ -58,13 +58,13 @@ abstract class View extends SvelteObject
    *      print_r($this->aProperty);
    *   }
    * ```
-   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
    * ```php
    *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
    * ```
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
-   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -91,7 +91,7 @@ abstract class View extends SvelteObject
    *   }
    * ```
    * 
-   * Called within Template file (.tpl.php), where {@link \svelte\view\Templated} is used.
+   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
    * ```php
    *  <section>
    *    <header>
@@ -115,7 +115,7 @@ abstract class View extends SvelteObject
    * Model can be a complex hierarchical ordered tree or a simple one level object,
    * either way it will be interlaced appropriately with *this* View up to the
    * same depth of structure.
-   * @param \svelte\model\Model $model Model containing data used in View
+   * @param \ramp\model\Model $model Model containing data used in View
    */
   public function setModel(Model $model)
   {
@@ -163,7 +163,7 @@ abstract class View extends SvelteObject
   final public function add(View $view)
   {
     if (!isset($this->viewCollection)) {
-      $this->viewCollection = new Collection(Str::set('svelte\view\View'), TRUE);
+      $this->viewCollection = new Collection(Str::set('ramp\view\View'), TRUE);
     }
     // todo:Matt Renyard: compatibleDescendantCheck()
     $this->viewCollection->add($view);
@@ -171,14 +171,14 @@ abstract class View extends SvelteObject
 
   /**
    * Render relevant output.
-   * Combining data (@link \svelte\model\Model) with defined presentation ({@link View}).
+   * Combining data (@link \ramp\model\Model) with defined presentation ({@link View}).
    */
   abstract public function render();
 
   /**
    * Defines amendments post copy, cloning.
    * POSTCONDITIONS
-   *  - unset associated {@link \svelte\model\Model}
+   *  - unset associated {@link \ramp\model\Model}
    *  - copy child views
    */
   public function __clone()

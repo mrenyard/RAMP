@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,21 +18,21 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition\mocks\FilterConditionTest;
+namespace tests\ramp\condition\mocks\FilterConditionTest;
 
-use svelte\core\SvelteObject;
-use svelte\model\business\FailedValidationException;
+use ramp\core\RAMPObject;
+use ramp\model\business\FailedValidationException;
 
 /**
  * Mock Field with processValidationRules method.
  * .
  */
-class Field extends SvelteObject
+class Field extends RAMPObject
 {
   /**
    * Test processValidationRule.
    * @param mixed $value Value to be processed
-   * @throws \svelte\validation\FailedValidationException When test fails.
+   * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value)
   {

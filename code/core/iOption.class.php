@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace ramp\core;
 
 /**
  * Interface representing a choice, single or one of several.
@@ -27,7 +27,7 @@ namespace svelte\core;
  * - Describe base api for a choice.
  *
  * @property-read mixed $key Returns unique identifier (enum:int|URN:string|etc).
- * @property-read \svelte\core\Str $description Returns description.
+ * @property-read \ramp\core\Str $description Returns description.
  * @property-read bool $isSelected Returns whether this has been chosen.
  */
 interface iOption
@@ -35,7 +35,7 @@ interface iOption
   /**
    * Get id unique identifier (URN:Str)
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str id
+   * @return \ramp\core\Str id
    */
   public function get_id(): Str;
 

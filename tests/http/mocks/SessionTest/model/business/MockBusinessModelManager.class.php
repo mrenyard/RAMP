@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,27 +16,27 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace tests\svelte\http\mocks\SessionTest\model\business;
+namespace tests\ramp\http\mocks\SessionTest\model\business;
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\model\business\BusinessModel;
-use svelte\model\business\BusinessModelManager;
-use svelte\model\business\iBusinessModelDefinition;
-use svelte\model\business\LoginAccount;
-use svelte\model\business\LoginAccountCollection;
-use svelte\condition\Filter;
-use svelte\condition\SQLEnvironment;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\model\business\BusinessModel;
+use ramp\model\business\BusinessModelManager;
+use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\LoginAccount;
+use ramp\model\business\LoginAccountCollection;
+use ramp\condition\Filter;
+use ramp\condition\SQLEnvironment;
 
-use tests\svelte\http\SessionTest;
-use svelte\model\business\AnAuthenticatableUnit;
+use tests\ramp\http\SessionTest;
+use ramp\model\business\AnAuthenticatableUnit;
 
 /**
- * Mock business model managers for testing \svelte\http\Session
+ * Mock business model managers for testing \ramp\http\Session
  * .
  */
 class MockBusinessModelManager extends BusinessModelManager
@@ -58,15 +58,15 @@ class MockBusinessModelManager extends BusinessModelManager
    *
    * PRECONDITIONS
    * - Requires the following global constants to be set
-   *  (depending on data storage type) (usually via svelte.ini):
-   *  - \svelte\SETTING::$DATABASE_CONNECTION
-   *  - \svelte\SETTING::$DATABASE_USER
-   *  - \svelte\SETTING::$DATABASE_PASSWORD
-   *  - \svelte\SETTING::$DATABASE_MAX_RESULTS
-   *  - \svelte\SETTING::$SVELTE_MODEL_NAMESPACE
+   *  (depending on data storage type) (usually via ramp.ini):
+   *  - \ramp\SETTING::$DATABASE_CONNECTION
+   *  - \ramp\SETTING::$DATABASE_USER
+   *  - \ramp\SETTING::$DATABASE_PASSWORD
+   *  - \ramp\SETTING::$DATABASE_MAX_RESULTS
+   *  - \ramp\SETTING::$RAMPE_MODEL_NAMESPACE
    * POSTCONDITIONS
    * - ensures default values set on relavant properties
-   * @return \svelte\model\business\BusinessModelManager Single instance of BusinessModelManager
+   * @return \ramp\model\business\BusinessModelManager Single instance of BusinessModelManager
    */
   public static function getInstance() : BusinessModelManager
   {
@@ -78,11 +78,11 @@ class MockBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns requested Model.
-   * @param \svelte\model\iModelDefinition $definition  Definition of requested Model
-   * @param \svelte\condition\Filter $filter Optional Filter to be apply to Model
+   * @param \ramp\model\iModelDefinition $definition  Definition of requested Model
+   * @param \ramp\condition\Filter $filter Optional Filter to be apply to Model
    * @param int $fromIndex Optional index for first entry in a collection
-   * @return \svelte\model\Model Relevant requested Model object
-   * @throws \DomainException when {@link \svelte\model\Model}(s) NOT found
+   * @return \ramp\model\Model Relevant requested Model object
+   * @throws \DomainException when {@link \ramp\model\Model}(s) NOT found
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
@@ -148,7 +148,7 @@ class MockBusinessModelManager extends BusinessModelManager
   /**
    * Update {@link Model} to any permanent data store.
    * @param BusinessModel Object to be updated
-   * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
+   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
    *  was not initially retrieved using this BusinessModelManager
    */
   public function update(BusinessModel $model)

@@ -8,22 +8,22 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema svelte_db
+-- Schema ramp_db
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `svelte_db` ;
+DROP SCHEMA IF EXISTS `ramp_db` ;
 
 -- -----------------------------------------------------
--- Schema svelte_db
+-- Schema ramp_db
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `svelte_db` DEFAULT CHARACTER SET utf8 ;
-USE `svelte_db` ;
+CREATE SCHEMA IF NOT EXISTS `ramp_db` DEFAULT CHARACTER SET utf8 ;
+USE `ramp_db` ;
 
 -- -----------------------------------------------------
--- Table `svelte_db`.`AccountType`
+-- Table `ramp_db`.`AccountType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `svelte_db`.`AccountType` ;
+DROP TABLE IF EXISTS `ramp_db`.`AccountType` ;
 
-CREATE TABLE IF NOT EXISTS `svelte_db`.`AccountType` (
+CREATE TABLE IF NOT EXISTS `ramp_db`.`AccountType` (
   `key` INT(11) NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`key`),
@@ -33,11 +33,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `svelte_db`.`LoginAccount`
+-- Table `ramp_db`.`LoginAccount`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `svelte_db`.`LoginAccount` ;
+DROP TABLE IF EXISTS `ramp_db`.`LoginAccount` ;
 
-CREATE TABLE IF NOT EXISTS `svelte_db`.`LoginAccount` (
+CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
   `auPK` VARCHAR(45) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
   `typeID` INT(11) NOT NULL DEFAULT '1',
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `svelte_db`.`LoginAccount` (
   UNIQUE INDEX `auPK_UNIQUE` (`auPK` ASC) VISIBLE,
   CONSTRAINT `fk_Account_typeID`
     FOREIGN KEY (`typeID`)
-    REFERENCES `svelte_db`.`AccountType` (`key`)
+    REFERENCES `ramp_db`.`AccountType` (`key`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -56,11 +56,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `svelte_db`.`Country`
+-- Table `ramp_db`.`Country`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `svelte_db`.`Country` ;
+DROP TABLE IF EXISTS `ramp_db`.`Country` ;
 
-CREATE TABLE IF NOT EXISTS `svelte_db`.`Country` (
+CREATE TABLE IF NOT EXISTS `ramp_db`.`Country` (
   `nid` INT(3) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -73,11 +73,11 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `svelte_db`.`Person`
+-- Table `ramp_db`.`Person`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `svelte_db`.`Person` ;
+DROP TABLE IF EXISTS `ramp_db`.`Person` ;
 
-CREATE TABLE IF NOT EXISTS `svelte_db`.`Person` (
+CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `uname` VARCHAR(45) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
   `honorificPrefix` VARCHAR(45) NULL DEFAULT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `svelte_db`.`Person` (
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   CONSTRAINT `fk_Person_country`
     FOREIGN KEY (`country`)
-    REFERENCES `svelte_db`.`Country` (`code`)
+    REFERENCES `ramp_db`.`Country` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,12 +18,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\core\mocks\OptionListTest;
+namespace tests\ramp\core\mocks\OptionListTest;
 
-use svelte\core\SvelteObject;
+use ramp\core\RAMPObject;
 
 /**
- * Not a \svelte\core\iOption for testing against.
+ * Not a \ramp\core\iOption for testing against.
  * .
  */
-class NotAnOption extends SvelteObject { }
+class NotAnOption extends RAMPObject { }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,17 +16,17 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace ramp\core;
 
 /**
- * Strongly typed Object used universally within Svelte.
+ * Strongly typed Object used universally within RAMP.
  *
  * RESPONSIBILITIES
  *
- * - Act as superclass for all *Object*s (everything can cast to *SvelteObject*).
+ * - Act as superclass for all *Object*s (everything can cast to *RAMPObject*).
  *
  * - Define C# type *get* access to properties by passing
  * `$object->aProperty;` to `$object->get_aProperty();`
@@ -36,7 +36,7 @@ namespace svelte\core;
  *
  * - Define default `_toString()` method.
  */
-abstract class SvelteObject {
+abstract class RAMPObject {
 
   /**
    * Allows C# type access to properties.
@@ -61,7 +61,7 @@ abstract class SvelteObject {
    *
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
-   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -96,7 +96,7 @@ abstract class SvelteObject {
    *
    * @param string $propertyName Name of property (handled internally)
    * @param mixed $propertyValue The value to set on requested property (handled internally)
-   * @throws \svelte\core\PropertyNotSetException Unable to set property when undefined or inaccessible
+   * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
   public function __set($propertyName, $propertyValue)
   {

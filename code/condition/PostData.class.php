@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,33 +16,33 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\Str;
-use svelte\core\Collection;
+use ramp\core\Str;
+use ramp\core\Collection;
 
 /**
  * Collection of verified 'property value pairs' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
  *
  * COLLABORATORS
- * - {@link \svelte\core\Str}
- * - Collection of {@link \svelte\condition\InputDataCondition}s
+ * - {@link \ramp\core\Str}
+ * - Collection of {@link \ramp\condition\InputDataCondition}s
  */
 final class PostData extends Collection
 {
   /**
-   * Constructs an empty collection for \svelte\condition\InputDataCondition.
+   * Constructs an empty collection for \ramp\condition\InputDataCondition.
    * A collection of verified property value pairs restricted and evaluated by the constraints of
-   * your business model as defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+   * your business model as defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
    */
   public function __construct()
   {
-    parent::__construct(Str::set('svelte\condition\InputDataCondition'));
+    parent::__construct(Str::set('ramp\condition\InputDataCondition'));
   }
 
   /**
@@ -50,7 +50,7 @@ final class PostData extends Collection
    * @param array $postdata Simple array containing name value pairs for processing into PostData Object
    * @return PostData Collection of verified 'property value pairs' based on provided array.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model within SVELTE_BUSINESS_MODEL_NAMESPACE.
+   * as defined by your locally defined business model within RAMPE_BUSINESS_MODEL_NAMESPACE.
    */
   static public function build(array $postdata) : PostData
   {

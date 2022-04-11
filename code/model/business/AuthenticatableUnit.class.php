@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,14 +16,14 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\condition\PostData;
-use svelte\model\business\Record;
+use ramp\core\Str;
+use ramp\condition\PostData;
+use ramp\model\business\Record;
 
 /**
  * Abstract representing something that can be authenticated.
@@ -32,10 +32,10 @@ use svelte\model\business\Record;
  * - Describe base api for an authenticatible unit.
  *
  * COLLABORATORS
- * - extends {@link svelte\model\business\Record}
- * - used by {@link svelte\model\business\LoginAccount}
+ * - extends {@link ramp\model\business\Record}
+ * - used by {@link ramp\model\business\LoginAccount}
  *
- * @property-read \svelte\model\business\field\Field $email Returns an email address field.
+ * @property-read \ramp\model\business\field\Field $email Returns an email address field.
  */
 abstract class AuthenticatableUnit extends Record
 {

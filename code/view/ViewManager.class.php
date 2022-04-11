@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,24 +16,24 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace ramp\view;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\http\Request;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\http\Request;
 
 /**
  */
-class ViewManager extends SvelteObject {
+class ViewManager extends RAMPObject {
 
   /**
    */
   public static function getView(Request $request)
   {
-    //require_once(SVELTE_LOCAL_DIR . SVELTE_SITE_VIEWS . '.php');
+    //require_once(RAMPE_LOCAL_DIR . RAMPE_SITE_VIEWS . '.php');
 
     /*$viewFunc = str_replace('/', '_', trim((string)$request->resourceIdentifier, '/'));
     \FB::log($viewFunc, 'VIEW');

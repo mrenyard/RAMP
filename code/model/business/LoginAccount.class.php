@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,22 +15,22 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\BadPropertyCallException;
-use svelte\condition\PostData;
-use svelte\model\business\RecordCollection;
-use svelte\model\business\BusinessModel;
-use svelte\model\business\LoginAccountType;
-use svelte\model\business\AuthenticatibleUnit;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\BadPropertyCallException;
+use ramp\condition\PostData;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\BusinessModel;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\AuthenticatibleUnit;
 
 /**
- * Referance and maintain a collection of \svelte\model\business\LoginAccounts.
+ * Referance and maintain a collection of \ramp\model\business\LoginAccounts.
  *
  * RESPONSIBILITIES
  * - Implement methods for property access
@@ -39,7 +39,7 @@ use svelte\model\business\AuthenticatibleUnit;
  * - Provide methods to maintain a Collection of {@link Record}s
  *
  * COLLABORATORS
- * - Collection of {@link \svelte\model\business\LoginAccount}s
+ * - Collection of {@link \ramp\model\business\LoginAccount}s
  */
 class LoginAccountCollection extends RecordCollection
 {
@@ -49,17 +49,17 @@ class LoginAccountCollection extends RecordCollection
  * LoginAccount for authentication and authorization.
  *
  * RESPONSIBILITIES
- * - Act as main component of {@link \svelte\http\Session} to manage login activities
- * - Holds current access level {@link \svelte\model\business\LoginAccountType}
+ * - Act as main component of {@link \ramp\http\Session} to manage login activities
+ * - Holds current access level {@link \ramp\model\business\LoginAccountType}
  * - Coupling of login and authentication activities with chosen local
- *   {@link \svelte\model\business\AuthenticatableUnit}
+ *   {@link \ramp\model\business\AuthenticatableUnit}
  * - Auto generate secure password to associate with provided email address
  *
  * COLLABORATORS
- * - {@link \svelte\model\business\AuthenticatableUnit}
- * - {@link \svelte\model\business\LoginAccountType}
- * - {@link \svelte\model\business\field\SelectOne}
- * - {@link \svelte\model\business\field\Input}
+ * - {@link \ramp\model\business\AuthenticatableUnit}
+ * - {@link \ramp\model\business\LoginAccountType}
+ * - {@link \ramp\model\business\field\SelectOne}
+ * - {@link \ramp\model\business\field\Input}
  *
  * @property-read field\Field $auPK Returns field containg value of Authenticatable Unit Primary Key.
  * @property-read field\Field $email Returns field containing value of login account associated email address.
@@ -80,14 +80,14 @@ class LoginAccount extends Record
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \svelte\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
   public static function primaryKeyName() : Str { return Str::set('auPK'); }
 
   /**
    * Get field containing authenticatable unit's primary key
    * **DO NOT CALL DIRECTLY, USE this->auPK;**
-   * @return \svelte\model\business\field\Field Returns field containing value of
+   * @return \ramp\model\business\field\Field Returns field containing value of
    * authenticatable unit's primary key.
    */
   protected function get_auPK() : field\Field
@@ -111,7 +111,7 @@ class LoginAccount extends Record
   /**
    * Get field containing email address
    * **DO NOT CALL DIRECTLY, USE this->email;**
-   * @return \svelte\model\business\field\Field Returns field containing value of email address
+   * @return \ramp\model\business\field\Field Returns field containing value of email address
    */
   protected function get_email() : field\Field
   {
@@ -134,7 +134,7 @@ class LoginAccount extends Record
   /**
    * Get field containing login account type
    * **DO NOT CALL DIRECTLY, USE this->accountType;**
-   * @return \svelte\model\business\field\Field Returns field containing value (LoginAccountType)
+   * @return \ramp\model\business\field\Field Returns field containing value (LoginAccountType)
    */
   protected function get_accountType() : field\Field
   {
@@ -150,23 +150,23 @@ class LoginAccount extends Record
   }
 
   /**
-   * Get the associated Authenticatable Unit as defined with \svelte\SETTING and $this->auPK.
+   * Get the associated Authenticatable Unit as defined with \ramp\SETTING and $this->auPK.
    * @return AuthenticatableUnit Authenticatable Unit associated with *this*.
    */
   private function getAuthenticatableUnit() : AuthenticatableUnit
   {
     $auPK = $this->getPropertyValue('auPK');
-    $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
     if (isset($auPK) && (!isset($this->authenticatableUnit) || $this->authenticatableUnit->isNew))
     {
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), Str::set($auPK))
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), Str::set($auPK))
       );
     }
     elseif (!isset($this->authenticatableUnit))
     {
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$SVELTE_AUTHENTICATABLE_UNIT), Str::set('new'))
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), Str::set('new'))
       );
     }
     return $this->authenticatableUnit;
@@ -195,7 +195,7 @@ class LoginAccount extends Record
    *
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
-   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -222,7 +222,7 @@ class LoginAccount extends Record
   /**
    * Populate properties of *this* and associated authenticatable unit with provided PostData,
    * generated or default values.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    * to be assessed for validity and imposed on associated authenticatable unit or *this*
    * @throws \BadMethodCallException When NOT new
    */
@@ -238,7 +238,7 @@ class LoginAccount extends Record
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
     /*if ($this->isValid && $au->isValid) {
-      $MODEL_MANAGER = SETTING::$SVELTE_BUSINESS_MODEL_MANAGER;
+      $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       $modelManager->update($au);
       $modelManager->update($this);
@@ -248,7 +248,7 @@ class LoginAccount extends Record
   /**
    * Returns recently set password (unencrypted) provided called within the same HTTP request.
    * @return string Returns recently set password (unencrypted).
-   * @throws \svelte\core\BadPropertyCallException When called outside of same http request as set
+   * @throws \ramp\core\BadPropertyCallException When called outside of same http request as set
    */
   public function getUnencryptedPassword() : string
   {

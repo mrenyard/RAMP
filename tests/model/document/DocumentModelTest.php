@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,18 +18,18 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model;
+namespace tests\ramp\model;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
 
-use svelte\core\Str;
-use svelte\model\document\DocumentModel;
+use ramp\core\Str;
+use ramp\model\document\DocumentModel;
 
 /**
- * Collection of tests for \svelte\model\document\DocumentModel.
+ * Collection of tests for \ramp\model\document\DocumentModel.
  */
 class DocumentModelTest extends \PHPUnit\Framework\TestCase
 {
@@ -46,33 +46,33 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\document\DocumentModel::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\Model}
-   * - assert is instance of {@link \svelte\model\document\DocumentModel}
-   * @link svelte.model.Model svelte\model\document\DocumentModel
+   * Collection of assertions for \ramp\model\document\DocumentModel::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\document\DocumentModel}
+   * @link ramp.model.Model ramp\model\document\DocumentModel
    */
   public function testConstruct()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\Model', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\document\DocumentModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\document\DocumentModel', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::id.
+   * Collection of assertions for \ramp\model\business\BusinessModel::id.
    * - assert property 'id' is gettable
    * - assert property 'id' is settable
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @link svelte.model.business.BusinessModel#method_set_id svelte\model\business\BusinessModel::id
-   * @link svelte.model.business.BusinessModel#method_get_id svelte\model\business\BusinessModel::id
+   * @link ramp.model.business.BusinessModel#method_set_id ramp\model\business\BusinessModel::id
+   * @link ramp.model.business.BusinessModel#method_get_id ramp\model\business\BusinessModel::id
    */
   public function testGetSet_id()
   {
     $value = $this->testObject->id;
     $this->assertEquals('uid' . self::$NEXT_ID, (string)$value);
-    $this->assertInstanceOf('\svelte\core\Str', $value);
+    $this->assertInstanceOf('\ramp\core\Str', $value);
     $testObject2 = new DocumentModel();
     self::$NEXT_ID++;
     $this->assertEquals('uid' . self::$NEXT_ID, (string)$testObject2->id);
@@ -81,102 +81,102 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::title.
+   * Collection of assertions for \ramp\model\business\BusinessModel::title.
    * - assert property 'title' is gettable
    * - assert property 'title' is settable
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @link svelte.model.business.BusinessModel#method_set_title svelte\model\business\BusinessModel::title
-   * @link svelte.model.business.BusinessModel#method_get_title svelte\model\business\BusinessModel::title
+   * @link ramp.model.business.BusinessModel#method_set_title ramp\model\business\BusinessModel::title
+   * @link ramp.model.business.BusinessModel#method_get_title ramp\model\business\BusinessModel::title
    */
   public function testGetSet_title()
   {
     $value = $this->testObject->title;
     $this->assertNull($value);
     $this->testObject->title = Str::set('newTitle');
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->title);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->title);
     $this->assertEquals('newTitle', (string)$this->testObject->title);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::heading and
-   * \svelte\model\business\BusinessModel::label.
+   * Collection of assertions for \ramp\model\business\BusinessModel::heading and
+   * \ramp\model\business\BusinessModel::label.
    * - assert property 'heading' is settable
    * - assert property 'heading' is gettable
    * - assert property 'label' is gettable (synonym)
    * - assert property 'label' is settable (synonym)
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @link svelte.model.business.BusinessModel#method_set_heading svelte\model\business\BusinessModel::heading
-   * @link svelte.model.business.BusinessModel#method_get_heading svelte\model\business\BusinessModel::heading
-   * @link svelte.model.business.BusinessModel#method_set_label svelte\model\business\BusinessModel::label
-   * @link svelte.model.business.BusinessModel#method_get_label svelte\model\business\BusinessModel::label
+   * @link ramp.model.business.BusinessModel#method_set_heading ramp\model\business\BusinessModel::heading
+   * @link ramp.model.business.BusinessModel#method_get_heading ramp\model\business\BusinessModel::heading
+   * @link ramp.model.business.BusinessModel#method_set_label ramp\model\business\BusinessModel::label
+   * @link ramp.model.business.BusinessModel#method_get_label ramp\model\business\BusinessModel::label
    */
   public function testGetSet_headingLabel()
   {
     $this->testObject->heading = Str::set('Heading');
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->heading);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->heading);
     $this->assertEquals('Heading', (string)$this->testObject->heading);
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->label);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
     $this->assertEquals('Heading', (string)$this->testObject->label);
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->label);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
     $this->assertEquals('Heading', (string)$this->testObject->label);
     $this->testObject->label = Str::set('Label');
     $this->assertEquals('Label', (string)$this->testObject->heading);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::summary and
-   * \svelte\model\business\BusinessModel::placeholder.
+   * Collection of assertions for \ramp\model\business\BusinessModel::summary and
+   * \ramp\model\business\BusinessModel::placeholder.
    * - assert property 'summary' is settable
    * - assert property 'summary' is gettable
    * - assert property 'placeholder' is gettable (synonym)
    * - assert property 'placeholder' is settable (synonym)
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @link svelte.model.business.BusinessModel#method_set_summary svelte\model\business\BusinessModel::summary
-   * @link svelte.model.business.BusinessModel#method_get_summary svelte\model\business\BusinessModel::summary
-   * @link svelte.model.business.BusinessModel#method_set_placeholder svelte\model\business\BusinessModel::placeholder
-   * @link svelte.model.business.BusinessModel#method_get_placeholder svelte\model\business\BusinessModel::placeholder
+   * @link ramp.model.business.BusinessModel#method_set_summary ramp\model\business\BusinessModel::summary
+   * @link ramp.model.business.BusinessModel#method_get_summary ramp\model\business\BusinessModel::summary
+   * @link ramp.model.business.BusinessModel#method_set_placeholder ramp\model\business\BusinessModel::placeholder
+   * @link ramp.model.business.BusinessModel#method_get_placeholder ramp\model\business\BusinessModel::placeholder
    */
   public function testGetSet_summaryLabel()
   {
     $this->testObject->summary = Str::set('Heading');
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->summary);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->summary);
     $this->assertEquals('Heading', (string)$this->testObject->summary);
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->placeholder);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->placeholder);
     $this->assertEquals('Heading', (string)$this->testObject->placeholder);
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->placeholder);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->placeholder);
     $this->assertEquals('Heading', (string)$this->testObject->placeholder);
     $this->testObject->placeholder = Str::set('Label');
     $this->assertEquals('Label', (string)$this->testObject->summary);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::style.
+   * Collection of assertions for \ramp\model\business\BusinessModel::style.
    * - assert property 'style' is gettable
    * - assert property 'style' is settable
-   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @link svelte.model.business.BusinessModel#method_set_style svelte\model\business\BusinessModel::style
-   * @link svelte.model.business.BusinessModel#method_get_style svelte\model\business\BusinessModel::style
+   * @link ramp.model.business.BusinessModel#method_set_style ramp\model\business\BusinessModel::style
+   * @link ramp.model.business.BusinessModel#method_get_style ramp\model\business\BusinessModel::style
    */
   public function testGetSet_style()
   {
     $value = $this->testObject->style;
     $this->assertNull($value);
     $this->testObject->style = Str::set('style');
-    $this->assertInstanceOf('\svelte\core\Str', $this->testObject->style);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->style);
     $this->assertEquals('style', (string)$this->testObject->style);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\BusinessModel::clone().
-   * - assert clone is instance of {@link \svelte\model\document\DocumentModel}.
+   * Collection of assertions for \ramp\model\business\BusinessModel::clone().
+   * - assert clone is instance of {@link \ramp\model\document\DocumentModel}.
    * - assert clone id has been set to next avalible uniqie id
    * - assert clone has same properties as cloned excluding id
    * - assert clone property values matches expected results.
-   * @link svelte.model.business.BusinessModel#method_clone svelte\model\business\BusinessModel::clone()
+   * @link ramp.model.business.BusinessModel#method_clone ramp\model\business\BusinessModel::clone()
    */
   public function testClone()
   {
@@ -189,20 +189,20 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
     $this->testObject->summary = $expectedSummary;
     $this->testObject->style = $expectedStyle;
     $cloneObject = clone $this->testObject;
-    $this->assertInstanceOf('\svelte\model\document\DocumentModel', $cloneObject);
-    $this->assertInstanceOf('\svelte\core\Str', $cloneObject->id);
+    $this->assertInstanceOf('\ramp\model\document\DocumentModel', $cloneObject);
+    $this->assertInstanceOf('\ramp\core\Str', $cloneObject->id);
     $this->assertNotEquals((string)$this->testObject->id, (string)$cloneObject);
     $this->assertEquals('uid' . ++self::$NEXT_ID, (string)$cloneObject->id);
-    $this->assertInstanceOf('\svelte\core\Str', $cloneObject->title);
+    $this->assertInstanceOf('\ramp\core\Str', $cloneObject->title);
     $this->assertSame($this->testObject->title, $cloneObject->title);
     $this->assertEquals((string)$expectedTitle, (string)$cloneObject->title);
-    $this->assertInstanceOf('\svelte\core\Str', $cloneObject->heading);
+    $this->assertInstanceOf('\ramp\core\Str', $cloneObject->heading);
     $this->assertSame($this->testObject->heading, $cloneObject->heading);
     $this->assertEquals((string)$expectedHeading, (string)$cloneObject->heading);
-    $this->assertInstanceOf('\svelte\core\Str', $cloneObject->summary);
+    $this->assertInstanceOf('\ramp\core\Str', $cloneObject->summary);
     $this->assertSame($this->testObject->summary, $cloneObject->summary);
     $this->assertEquals((string)$expectedSummary, (string)$cloneObject->summary);
-    $this->assertInstanceOf('\svelte\core\Str', $cloneObject->style);
+    $this->assertInstanceOf('\ramp\core\Str', $cloneObject->style);
     $this->assertSame($this->testObject->style, $cloneObject->style);
     $this->assertEquals((string)$expectedStyle, (string)$cloneObject->style);
   }

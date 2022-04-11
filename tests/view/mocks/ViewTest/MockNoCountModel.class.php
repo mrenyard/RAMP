@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ViewTest;
 
-use svelte\core\Str;
-use svelte\model\Model;
+use ramp\core\Str;
+use ramp\model\Model;
 
 /**
- * Mock Concreate implementation of \svelte\model\Model for testing against.
+ * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
 class MockNoCountModel extends Model implements \IteratorAggregate
 {

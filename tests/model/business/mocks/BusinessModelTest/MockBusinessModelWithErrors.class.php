@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,14 +18,14 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\mocks\BusinessModelTest;
+namespace tests\ramp\model\business\mocks\BusinessModelTest;
 
-use svelte\core\Str;
-use svelte\core\Collection;
-use svelte\condition\PostData;
+use ramp\core\Str;
+use ramp\core\Collection;
+use ramp\condition\PostData;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\BusinessModel for testing against
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against
  * than adds error messages to the errorCollection.
  * .
  */
@@ -33,7 +33,7 @@ class MockBusinessModelWithErrors extends MockBusinessModel
 {
   /**
    * Validate postdata against this and update accordingly.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
   public function validate(PostData $postdata)

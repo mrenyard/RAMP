@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,14 +18,14 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field\mocks\InputTest;
+namespace tests\ramp\model\business\field\mocks\InputTest;
 
-use svelte\core\SvelteObject;
-use svelte\model\business\validation\ValidationRule;
-use svelte\model\business\FailedValidationException;
+use ramp\core\RAMPObject;
+use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\FailedValidationException;
 
 /**
- * Concreate implementation of \svelte\validation\ValidationRule for testing against.
+ * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
 class MyValidationRule extends ValidationRule

@@ -1,34 +1,34 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; Svelte - Rapid web application development enviroment for
+; RAMP - Rapid web application development enviroment for
 ;  building flexible, customisable web systems.
 ;
 ; AUTHOR: Matt Renyard (renyard.m@gmail.com)
-; PACKAGE: svelte.local
+; PACKAGE: RAMP.local
 ; VERSION: 0.0.9;
 
 ;;;;;;;;;;;;;;;;;;;
-; About svelte.ini
+; About RAMP.ini
 ;
-; Svelte's local initialization file, generally called svelte.ini, is responsible for configuring
-; the local aspects of an individual Svelte Project and SHOULD usually be located alongside the
+; RAMP's local initialization file, generally called RAMP.ini, is responsible for configuring
+; the local aspects of an individual RAMP Project and SHOULD usually be located alongside the
 ; public website root folder. i.e.: -- ~/                    (secure ftp folder)
 ;                                    |
 ;                                    +-- public_html         (website root folder)
 ;                                    | |-- index.html        (static homepage)?
 ;                                    | |-- robots.txt
 ;                                    | |-- humans.txt
-;                                    | |-- controller.php    (svelte controller file)
+;                                    | |-- controller.php    (RAMP controller file)
 ;                                    |
-;                                    +-- svelte.ini          (local initialization file)
+;                                    +-- RAMP.ini          (local initialization file)
 ;
 ; The syntax of the file follows the same conventions as 'php.ini' and therefore is extremely
 ; simple.  Whitespace and Lines beginning with a semicolon are silently ignored. Section headers
-; (e.g. [svelte], [foo]) are used throughout this configuration file.
+; (e.g. [RAMP], [foo]) are used throughout this configuration file.
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
-; Local Svelte settings
-[svelte]
+; Local RAMP settings
+[RAMP]
 
 ; Domain under which this application is run
 ;domain =
@@ -39,11 +39,11 @@
 
 ; Concrete BusinessModelManager used to handle data layer
 ; (fully qualified namespace and class name)
-; e.g. svelte\model\business\SQLBusinessModelManager
+; e.g. ramp\model\business\SQLBusinessModelManager
 ;business_model_manager =
 
 ; Fully qualified namespace for BusinessModel classes
-; e.g. svelte\model\business
+; e.g. ramp\model\business
 ;business_model_namespace =
 
 ; Authenticatible Unit of specific business model

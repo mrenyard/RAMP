@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,22 +16,22 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business\field;
+namespace ramp\model\business\field;
 
-use svelte\core\Str;
-use svelte\core\iCollection;
-use svelte\core\Collection;
-use svelte\core\OptionList;
-use svelte\condition\PostData;
-use svelte\model\business\BusinessModel;
-use svelte\model\business\Record;
-use svelte\model\business\FailedValidationException;
+use ramp\core\Str;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\core\OptionList;
+use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
+use ramp\model\business\Record;
+use ramp\model\business\FailedValidationException;
 
 /**
- * Abstract field related to a single property of its containing \svelte\model\business\Record.
+ * Abstract field related to a single property of its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
@@ -39,11 +39,11 @@ use svelte\model\business\FailedValidationException;
  * - Hold referance back to its contining Record
  *
  * COLLABORATORS
- * - {@link \svelte\model\business\Record}
+ * - {@link \ramp\model\business\Record}
  *
- * @property-read \svelte\core\Str $id Returns unique identifier (id) for *this* (URN).
+ * @property-read \ramp\core\Str $id Returns unique identifier (id) for *this* (URN).
  * @property-read mixed $value Returns value held by relevant property of containing record.
- * @property-read \svelte\model\business\Record $containingRecord Record containing property related to *this*.
+ * @property-read \ramp\model\business\Record $containingRecord Record containing property related to *this*.
  */
 abstract class Field extends BusinessModel
 {
@@ -52,16 +52,16 @@ abstract class Field extends BusinessModel
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \svelte\core\Str $dataObjectPropertyName Related dataObject property name of containing record
-   * @param \svelte\model\business\Record $containingRecord Record parent of *this* property
-   * @param \svelte\core\OptionList $options Collection of field\Options, either suggestions or to select from.
+   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
+   * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options = null)
   {
     if ($options != null) {
-      if (!$options->isCompositeType('\svelte\model\business\field\Option')) {
-        throw new \InvalidArgumentException('OptionList $options compositeType MUST be \svelte\model\business\field\Option'); 
+      if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
+        throw new \InvalidArgumentException('OptionList $options compositeType MUST be \ramp\model\business\field\Option'); 
       }
       foreach ($options as $option) { $option->setParentField($this); }
     }
@@ -73,7 +73,7 @@ abstract class Field extends BusinessModel
   /**
    * Get ID (URN)
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
+   * @return \ramp\core\Str Unique identifier for *this*
    */
   final public function get_id() : Str
   {
@@ -87,7 +87,7 @@ abstract class Field extends BusinessModel
   /**
    * Get Label
    * **DO NOT CALL DIRECTLY, USE this->label;**
-   * @return \svelte\core\Str Label for *this*
+   * @return \ramp\core\Str Label for *this*
    */
   protected function get_label() : Str
   {
@@ -103,7 +103,7 @@ abstract class Field extends BusinessModel
   /**
    * Get containing record
    * **DO NOT CALL DIRECTLY, USE this->containingRecord;**
-   * @return \svelte\model\business\Record Containing record of *this*
+   * @return \ramp\model\business\Record Containing record of *this*
    */
   final public function get_containingRecord() : Record
   {
@@ -112,12 +112,12 @@ abstract class Field extends BusinessModel
 
   /**
    * Validate postdata against this and update accordingly.
-   * @param \svelte\condition\PostData $postdata Collection of InputDataCondition\s
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = new Collection(Str::set('\svelte\core\Str'));
+    $this->errorCollection = new Collection(Str::set('\ramp\core\Str'));
     foreach ($postdata as $inputdata)
     {
       if ($inputdata->attributeURN == $this->id)
@@ -153,13 +153,13 @@ abstract class Field extends BusinessModel
   final protected function get_errors() : iCollection
   {
     return (isset($this->errorCollection)) ? $this->errorCollection :
-      new Collection(Str::set('\svelte\core\Str'));
+      new Collection(Str::set('\ramp\core\Str'));
   }
 
   /**
    * Template method for use in validation.
    * @param mixed $value Value to be processed
-   * @throws \svelte\validation\FailedValidationException When test fails.
+   * @throws \ramp\validation\FailedValidationException When test fails.
    */
   abstract protected function processValidationRule($value);
 }

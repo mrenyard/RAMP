@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,35 +16,35 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\condition;
+namespace ramp\condition;
 
-use svelte\core\Str;
+use ramp\core\Str;
 
 /**
  * Single representation of a verified 'attribute (record:key:property) value pair' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Extend BusinessCondition to hold additional value for primaryKey,
  *    alone with record and property as component parts of attribute.
  * - Enforce assignment operator as the primary operation.
- * - Set defaults target environment as {@link \svelte\condition\URNQueryEnvironment}
+ * - Set defaults target environment as {@link \ramp\condition\URNQueryEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within SVELTE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - {@link \svelte\condition\BusinessCondition}
- * - {@link \svelte\condition\iEnvironment}
- * - {@link \svelte\condition\URNQueryEnvironment} (Default)
- * - {@link \svelte\condition\Operator} (Operator::ASSIGNMENT Enforced)
+ * - {@link \ramp\condition\BusinessCondition}
+ * - {@link \ramp\condition\iEnvironment}
+ * - {@link \ramp\condition\URNQueryEnvironment} (Default)
+ * - {@link \ramp\condition\Operator} (Operator::ASSIGNMENT Enforced)
  *
- * @property-read \svelte\core\Str $primaryKeyValue Returns primary key of target business record.
+ * @property-read \ramp\core\Str $primaryKeyValue Returns primary key of target business record.
  * @property-read mixed $value Returns value to be evaluated (synonym for comparable).
- * @property-read \svelte\core\Str $attributeURN Returns name of attribute as URN to be restricted, evaluated or modified.
+ * @property-read \ramp\core\Str $attributeURN Returns name of attribute as URN to be restricted, evaluated or modified.
  */
 final class InputDataCondition extends BusinessCondition
 {
@@ -52,12 +52,12 @@ final class InputDataCondition extends BusinessCondition
 
   /**
    * Constructs a single verified representation of a 'attribute–value pair'.
-   * @param \svelte\core\Str $record Name of target business record
-   * @param \svelte\core\Str $primaryKeyValue Primary Key value of target business record
-   * @param \svelte\core\Str $property Name of target property
+   * @param \ramp\core\Str $record Name of target business record
+   * @param \ramp\core\Str $primaryKeyValue Primary Key value of target business record
+   * @param \ramp\core\Str $property Name of target property
    * @param mixed $value Value to be evaluated
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model within (SVELTE_BUSINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model within (RAMPE_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct(Str $record, Str $primaryKeyValue, Str $property, $value)
   {
@@ -68,7 +68,7 @@ final class InputDataCondition extends BusinessCondition
   /**
    * Returns primary key of target business record.
    * **DO NOT CALL DIRECTLY, USE this->primaryKey;**
-   * @return \svelte\core\Str Primary key of target record
+   * @return \ramp\core\Str Primary key of target record
    */
   protected function get_primaryKeyValue() : Str
   {
@@ -78,7 +78,7 @@ final class InputDataCondition extends BusinessCondition
   /**
    * returns value to be evaluated (synonym for $this->comparable).
    * **DO NOT CALL DIRECTLY, USE this->value;**
-   * @see svelte.condition.InputDataCondition.html#method_get_comparable
+   * @see ramp.condition.InputDataCondition.html#method_get_comparable
    * @return mixed Value to be evaluated
    */
   protected function get_value()
@@ -89,8 +89,8 @@ final class InputDataCondition extends BusinessCondition
    /**
    * Returns name of attribute as URN.
    * **DO NOT CALL DIRECTLY, USE this->attributeAsURN;**
-   * @param \svelte\condition\Environment $targetEnvironment Environment to target, default URN Query.
-   * @return \svelte\core\Str Name of attribute to be restricted, evaluated or modified
+   * @param \ramp\condition\Environment $targetEnvironment Environment to target, default URN Query.
+   * @return \ramp\core\Str Name of attribute to be restricted, evaluated or modified
    */
   protected function get_attributeURN() : Str
   {
@@ -104,7 +104,7 @@ final class InputDataCondition extends BusinessCondition
 
   /**
    * Returns string representation of input data statement (attribute–value pair) based on target environment.
-   * @param \svelte\condition\Environment $targetEnvironment Environment to target, default URN Query.
+   * @param \ramp\condition\Environment $targetEnvironment Environment to target, default URN Query.
    * @param mixed $value Value to be compared with attribute by operation.
    * @throws \DomainException when second argument ($value) does Not validate against its
    *  associated property's processValidationRules()

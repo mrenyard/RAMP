@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,14 +16,14 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace ramp\view;
 
-use svelte\core\SvelteObject;
-use svelte\core\BadPropertyCallException;
-use svelte\model\Model;
+use ramp\core\RAMPObject;
+use ramp\core\BadPropertyCallException;
+use ramp\model\Model;
 
 /**
  * Abstract View.
@@ -32,9 +32,9 @@ use svelte\model\Model;
  * - Define generalized methods for setting and holding a Model referance and rendering output.
  *
  * COLLABORATORS
- * - Collection of {@link \svelte\model\Model}s
+ * - Collection of {@link \ramp\model\Model}s
  */
-abstract class View extends SvelteObject
+abstract class View extends RAMPObject
 {
   private $model;
 
@@ -62,7 +62,7 @@ abstract class View extends SvelteObject
    *
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
-   * @throws \svelte\core\BadPropertyCallException Undefined or inaccessible property called
+   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
   {
@@ -76,7 +76,7 @@ abstract class View extends SvelteObject
 
   /**
    * Set model.
-   * @param \svelte\model\Model $model Model to be used when rendering view.
+   * @param \ramp\model\Model $model Model to be used when rendering view.
    */
   public function setModel(Model $model)
   {

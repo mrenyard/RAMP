@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,23 +18,23 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\core\mocks\OptionListTest;
+namespace tests\ramp\core\mocks\OptionListTest;
 
-use svelte\core\SvelteObject;
-use svelte\core\iOption;
-use svelte\core\Str;
+use ramp\core\RAMPObject;
+use ramp\core\iOption;
+use ramp\core\Str;
 
 /**
- * Concrete implementation of \svelte\core\iOption for testing against.
+ * Concrete implementation of \ramp\core\iOption for testing against.
  * .
  * TODO:mrenyard: remove exasive code?
  */
-class ConcreteOption extends SvelteObject implements iOption
+class ConcreteOption extends RAMPObject implements iOption
 {
   /**
    * Constructor for new instance of SimpleOption.
    * @param int $key String value to be set for id.
-   * @param \svelte\core\Str $description String value to be set for description.
+   * @param \ramp\core\Str $description String value to be set for description.
    */
   public function __construct(int $key, Str $description)
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,26 +16,26 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view;
+namespace ramp\view;
 
-use svelte\core\Str;
+use ramp\core\Str;
 
 /**
  * Manages a set of Views related to authentication.
  * 
  * RESPONSIBILITIES
  * - Manages definition of Template to be used as view (fragment) for presentation.  
- * - Enable read access to associated {@link \svelte\model\business\BusinessModel} and {@link \svelte\model\document\DocumentModel}
+ * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
  * - Template used to define view to render (.tpl.php)
- *   - (Svelte\code|local\svelte)\view\document\template\(text|html|pdf)\[...].tpl.php
- * - {@link \svelte\model\business\BusinessModel}
+ *   - (RAMP\code|local\ramp)\view\document\template\(text|html|pdf)\[...].tpl.php
+ * - {@link \ramp\model\business\BusinessModel}
  */
 class AuthenticationForm extends document\Templated
 {
@@ -51,7 +51,7 @@ class AuthenticationForm extends document\Templated
       RootView::getInstance(),
       Str::set('body')
     );
-    $body->title = Str::set('Login ' . \svelte\SETTING::$SVELTE_DOMAIN);
+    $body->title = Str::set('Login ' . \ramp\SETTING::$RAMPE_DOMAIN);
     parent::__construct($body, Str::set('authentication-form'));
     $this->title = Str::set($errorMessage);
     $this->style = Str::set('dialogue-only');

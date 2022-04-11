@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ViewTest;
 
-use svelte\core\Str;
-use svelte\model\business\BusinessModel;
+use ramp\core\Str;
+use ramp\model\business\BusinessModel;
 
 /**
- * Mock Concreate implementation of \svelte\model\Model for testing against.
+ * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
 class MockModel extends BusinessModel
 {
@@ -35,7 +35,7 @@ class MockModel extends BusinessModel
   /**
    * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
+   * @return \ramp\core\Str Unique identifier for *this*
    */
   protected function get_id() : Str
   {

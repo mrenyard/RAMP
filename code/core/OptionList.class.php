@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace ramp\core;
 
 /**
  * Collection for iOption.
@@ -28,22 +28,22 @@ namespace svelte\core;
  * - Implements the functionality of {@link iCollection}.
  *
  * COLLABORATORS
- * - {@link \svelte\core\Collection}
- * - {@link \svelte\core\iOption}
+ * - {@link \ramp\core\Collection}
+ * - {@link \ramp\core\iOption}
  */
 class OptionList extends Collection
 {
   /**
    * Constructor for new instance of OptionList.
    * POSTCONDITIONS
-   * - New collection containing provided {@link \svelte\core\iOption}s from $optionCastableCollection or Empty.
-   * @param \svelte\core\iCollection $iOptionCastableCollection Collection of iOptions to be stored in *this*.
-   * @param \svelte\core\Str $iOptionCastableType Full class name for Type of objects to be stored in this collection.
+   * - New collection containing provided {@link \ramp\core\iOption}s from $optionCastableCollection or Empty.
+   * @param \ramp\core\iCollection $iOptionCastableCollection Collection of iOptions to be stored in *this*.
+   * @param \ramp\core\Str $iOptionCastableType Full class name for Type of objects to be stored in this collection.
    * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to provided $iOptionCastableType or iOption.
    */
   public function __construct(iCollection $iOptionCastableCollection = null, Str $iOptionCastableType = null)
   {
-    $compositeType = ($iOptionCastableType == null)? Str::set('svelte\core\iOption') : $iOptionCastableType;
+    $compositeType = ($iOptionCastableType == null)? Str::set('ramp\core\iOption') : $iOptionCastableType;
     parent::__construct($compositeType);
     if (isset($iOptionCastableCollection)) {
       foreach ($iOptionCastableCollection as $option) {

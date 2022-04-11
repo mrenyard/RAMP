@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,13 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\field\mocks\RecordAsOptionTest;
+namespace tests\ramp\model\business\field\mocks\RecordAsOptionTest;
 
-use svelte\core\Str;
-use svelte\model\business\Record;
+use ramp\core\Str;
+use ramp\model\business\Record;
 
 /**
- * Mock Concreate implementation of \svelte\model\business\BusinessModel for testing against.
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
 class MockRecord extends Record
 {

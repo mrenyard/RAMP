@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,18 +18,18 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business;
+namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 
-use svelte\core\Str;
-use svelte\model\business\SimpleBusinessModelDefinition;
+use ramp\core\Str;
+use ramp\model\business\SimpleBusinessModelDefinition;
 
 /**
- * Collection of tests for \svelte\model\business\SimpleBusinessModelDefinition.
+ * Collection of tests for \ramp\model\business\SimpleBusinessModelDefinition.
  */
 class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
 
@@ -48,14 +48,14 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Collection of assertions for svelte\model\business\SimpleBusinessModelDefinition::__construct().
-   * - assert is instance of {@link \svelte\model\iBusinessModelDefinition}.
-   * @link svelte.model.business.SimpleBusinessModelDefinition svelte\model\business\SimpleBusinessModelDefinition
+   * Collection of assertions for ramp\model\business\SimpleBusinessModelDefinition::__construct().
+   * - assert is instance of {@link \ramp\model\iBusinessModelDefinition}.
+   * @link ramp.model.business.SimpleBusinessModelDefinition ramp\model\business\SimpleBusinessModelDefinition
    */
   public function test__Construct()
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName);
-    $this->assertInstanceOf('svelte\model\business\iBusinessModelDefinition', $testObject);
+    $this->assertInstanceOf('ramp\model\business\iBusinessModelDefinition', $testObject);
   }
 
   /**
@@ -63,9 +63,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals null
    * - getPropertyName() equals null
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordName svelte\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordKey svelte\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getPropertyName svelte\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordOnly()
   {
@@ -80,9 +80,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals null
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordName svelte\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordKey svelte\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getPropertyName svelte\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordWithKey()
   {
@@ -97,9 +97,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals Str with the value 'property'
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordName svelte\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getRecordKey svelte\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @link svelte.model.business.SimpleBusinessModelDefinition#method_getPropertyName svelte\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @link ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordKeyProperty()
   {

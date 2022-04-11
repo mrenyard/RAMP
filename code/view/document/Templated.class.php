@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,15 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\view\document;
+namespace ramp\view\document;
 
-use svelte\core\Str;
-use svelte\core\PropertyNotSetException;
-use svelte\view\View;
-use svelte\view\document\DocumentView;
+use ramp\core\Str;
+use ramp\core\PropertyNotSetException;
+use ramp\view\View;
+use ramp\view\document\DocumentView;
 
 /**
  * Templated view (presentation) includes composite DocumentModel and path (location)
@@ -32,16 +32,16 @@ use svelte\view\document\DocumentView;
  * 
  * RESPONSIBILITIES
  * - Manages definition of Template to be used as view (fragment) for presentation.  
- * - Enable read access to associated {@link \svelte\model\business\BusinessModel} and {@link \svelte\model\document\DocumentModel}
+ * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \svelte\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
  * - Template used to define view to render (.tpl.php)
- *   - (Svelte\code|local\svelte)\view\document\template\(text|html|pdf)\[...].tpl.php
- * - {@link \svelte\view\View}
- * - {@link \svelte\model\business\BusinessModel}
- * - {@link \svelte\model\document\DocumentModel}
+ *   - (RAMP\code|local\ramp)\view\document\template\(text|html|pdf)\[...].tpl.php
+ * - {@link \ramp\view\View}
+ * - {@link \ramp\model\business\BusinessModel}
+ * - {@link \ramp\model\document\DocumentModel}
  */
 class Templated extends DocumentView
 {
@@ -54,8 +54,8 @@ class Templated extends DocumentView
    * Uses $templateName and $templateType to locate template file (.tpl.php) as view definition on render().
    * 
    * @param View $parent Parent of this child
-   * @param \svelte\core\Str $templateName Name of template (file) used as view definition on render().
-   * @param \svelte\core\Str $templateType Type of template (text|html|pdf) used as part of path to definite view to render().
+   * @param \ramp\core\Str $templateName Name of template (file) used as view definition on render().
+   * @param \ramp\core\Str $templateType Type of template (text|html|pdf) used as part of path to definite view to render().
    * @throws \InvalidArgumentException When provided arguments do NOT translate to a valid file path.
    */
   public function __construct(View $parent, Str $templateName, Str $templateType = null)
@@ -72,7 +72,7 @@ class Templated extends DocumentView
 
   private function updateTemplatePath()
   {
-    $template  = 'svelte/view/document/template';
+    $template  = 'ramp/view/document/template';
     $template .= '/' . $this->templateType . '/' . $this->templateName . '.tpl.php';
     foreach (explode(PATH_SEPARATOR, get_include_path()) as $path) {
       $path = trim($path, "'"); $fullPath = $path . '/' . $template;
@@ -88,8 +88,8 @@ class Templated extends DocumentView
 
   /**
    * Set/Change type of template (text|html|pdf) used as part of path to definite view to render()
-   * @param \svelte\coreStr $value Str representing template type (text|html|pdf).
-   * @throws \svelte\core\PropertyNotSetException When provided template type value does NOT translate to a valid file path.
+   * @param \ramp\coreStr $value Str representing template type (text|html|pdf).
+   * @throws \ramp\core\PropertyNotSetException When provided template type value does NOT translate to a valid file path.
    */
   protected function set_templateType(Str $value)
   {
@@ -115,7 +115,7 @@ class Templated extends DocumentView
 
   /**
    * Render relevant output.
-   * Combining data (@link \svelte\model\business\BusinessModel) and (@link \svelte\model\document\DocumentModel)
+   * Combining data (@link \ramp\model\business\BusinessModel) and (@link \ramp\model\document\DocumentModel)
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
   public function render()

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,16 +18,16 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ViewTest;
 
-use svelte\core\SvelteObject;
-use svelte\core\Str;
-use svelte\core\iCollection;
-use svelte\core\Collection;
-use svelte\model\business\BusinessModel;
+use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\model\business\BusinessModel;
 
 /**
- * Mock Concreate implementation of \svelte\model\Model for testing against.
+ * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
 class MockModelCollection extends BusinessModel implements iCollection
 {
@@ -35,9 +35,9 @@ class MockModelCollection extends BusinessModel implements iCollection
   private $bProperty;
 
   /**
-   * Default constructor for collection of \svelte\model\business\Records.
+   * Default constructor for collection of \ramp\model\business\Records.
    * - Sets composite type for this collection as <i>this</i> class-name with string <i>Collection</i> truncated:
-   *  - e.g. {@link \svelte\model\business\UserCollection} would expect to referance only {@link \svelte\model\business\User}s.
+   *  - e.g. {@link \ramp\model\business\UserCollection} would expect to referance only {@link \ramp\model\business\User}s.
    */
   final public function __construct()
   {
@@ -47,7 +47,7 @@ class MockModelCollection extends BusinessModel implements iCollection
   /**
    * Get ID (URN)
    * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \svelte\core\Str Unique identifier for *this*
+   * @return \ramp\core\Str Unique identifier for *this*
    */
   final public function get_id() : Str
   {
@@ -72,10 +72,10 @@ class MockModelCollection extends BusinessModel implements iCollection
 
   /**
    * Add a reference (Record), to this collection.
-   * @param \svelte\core\SvelteObject $object SvelteObject reference to be added (Record)
+   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
    * @throws \InvalidArgumentException When provided object NOT expected type (Record)
    */
-  final public function add(SvelteObject $object)
+  final public function add(RAMPObject $object)
   {
     parent::offsetSet($this->count, $object);
   }
@@ -83,7 +83,7 @@ class MockModelCollection extends BusinessModel implements iCollection
   /**
    * ArrayAccess method offsetSet, DO NOT USE.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access setting is not allowed.
    */
   public function offsetSet($offset, $object)

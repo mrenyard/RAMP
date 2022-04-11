@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,79 +18,79 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\core;
+namespace tests\ramp\core;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
-require_once '/usr/share/php/tests/svelte/core/mocks/ObjectTest/AnObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/mocks/ObjectTest/AnObject.class.php';
 
-use svelte\core\SvelteObject;
-use svelte\core\BadPropertyCallException;
-use svelte\core\PropertyNotSetException;
+use ramp\core\RAMPObject;
+use ramp\core\BadPropertyCallException;
+use ramp\core\PropertyNotSetException;
 
-use tests\svelte\core\mocks\ObjectTest\AnObject;
+use tests\ramp\core\mocks\ObjectTest\AnObject;
 
 /**
- * Collection of tests for \svelte\core\SvelteObject.
+ * Collection of tests for \ramp\core\RAMPObject.
  *
  * COLLABORATORS
- * - {@link \tests\svelte\condition\mocks\ObjectTest\AnObject}
+ * - {@link \tests\ramp\condition\mocks\ObjectTest\AnObject}
  */
-class SvelteObjectTest extends \PHPUnit\Framework\TestCase
+class RAMPObjectTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for svelte\core\SvelteObject::__construct().
-   * - assert child SvelteObject is instance of the parent
-   * @link svelte.core.SvelteObject \svelte\core\SvelteObject
+   * Collection of assertions for ramp\core\RAMPObject::__construct().
+   * - assert child RAMPObject is instance of the parent
+   * @link ramp.core.RAMPObject \ramp\core\RAMPObject
    */
   public function test__construct()
   {
-    $testSvelteObject = new AnObject();
-    $this->assertInstanceOf('svelte\core\SvelteObject', $testSvelteObject);
-    return $testSvelteObject;
+    $testRAMPObject = new AnObject();
+    $this->assertInstanceOf('ramp\core\RAMPObject', $testRAMPObject);
+    return $testRAMPObject;
   }
 
   /**
-   * Collection of assertions for svelte\core\SvelteObject::__set() and \svelte\core\SvelteObject::__get().
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * - assert {@link \svelte\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * - assert get <i>SvelteObject->aProperty</i> returns same as set <i>SvelteObject->aProperty = $value</i>
-   * @param \svelte\core\SvelteObject $testSvelteObject Instance of MockSvelteObject for testing
+   * Collection of assertions for ramp\core\RAMPObject::__set() and \ramp\core\RAMPObject::__get().
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
+   * @param \ramp\core\RAMPObject $testRAMPObject Instance of MockRAMPObject for testing
    * @depends test__construct
-   * @link svelte.core.SvelteObject#method___set \svelte\core\SvelteObject::__set()
-   * @link svelte.core.SvelteObject#method___get \svelte\core\SvelteObject::__get()
+   * @link ramp.core.RAMPObject#method___set \ramp\core\RAMPObject::__set()
+   * @link ramp.core.RAMPObject#method___get \ramp\core\RAMPObject::__get()
    */
-  public function testSetGet(SvelteObject $testSvelteObject)
+  public function testSetGet(RAMPObject $testRAMPObject)
   {
     $value = new AnObject();
     try {
-      $testSvelteObject->noProperty = $value;
+      $testRAMPObject->noProperty = $value;
     } catch (PropertyNotSetException $expected) {
       try {
-        $value = $testSvelteObject->noProperty;
+        $value = $testRAMPObject->noProperty;
       } catch (BadPropertyCallException $expecrted) {
-        $testSvelteObject->aProperty = $value;
-        $this->assertSame($value, $testSvelteObject->aProperty);
+        $testRAMPObject->aProperty = $value;
+        $this->assertSame($value, $testRAMPObject->aProperty);
         return;
       }
-      $this->fail('An expected \svelte\core\BadPropertyCallException has NOT been raised.');
+      $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised.');
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for svelte\core\SvelteObject::__toString().
-   * - assert {@link \svelte\core\SvelteObject::__toString()} returns string 'class name'
-   * @param \svelte\core\SvelteObject $testSvelteObject Instance of MockSvelteObject for testing
+   * Collection of assertions for ramp\core\RAMPObject::__toString().
+   * - assert {@link \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @param \ramp\core\RAMPObject $testRAMPObject Instance of MockRAMPObject for testing
    * @depends test__construct
-   * @link svelte.core.SvelteObject#method___toString \svelte\core\SvelteObject::__toString()
+   * @link ramp.core.RAMPObject#method___toString \ramp\core\RAMPObject::__toString()
    */
-  public function testToString(SvelteObject $testSvelteObject)
+  public function testToString(RAMPObject $testRAMPObject)
   {
-    $this->assertSame('tests\svelte\core\mocks\ObjectTest\AnObject', (string)$testSvelteObject);
+    $this->assertSame('tests\ramp\core\mocks\ObjectTest\AnObject', (string)$testRAMPObject);
   }
 }

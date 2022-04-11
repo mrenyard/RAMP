@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,14 +15,14 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\core\Str;
-use svelte\core\OptionList;
-use svelte\model\business\field\Option;
+use ramp\core\Str;
+use ramp\core\OptionList;
+use ramp\model\business\field\Option;
 
 /**
  * Pre defined enum/list for use as Login Account Types.
@@ -35,7 +35,7 @@ class LoginAccountType extends OptionList
    */
   public function __construct()
   {
-    parent::__construct(null, Str::set('\svelte\model\business\field\Option'));
+    parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
     $this->add(new Option(0, Str::set('Please choose:')));
     $this->add(new Option(LoginAccountType::REGISTERED(), Str::set('Registered')));
     $this->add(new Option(LoginAccountType::USER(), Str::set('User')));

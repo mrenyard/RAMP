@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,15 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\model\business;
+namespace ramp\model\business;
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\condition\Filter;
-use svelte\condition\SQLEnvironment;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\condition\Filter;
+use ramp\condition\SQLEnvironment;
 
 /**
  * Manage all models within systems business domain, uses SQL for permanat storage.
@@ -33,9 +33,9 @@ use svelte\condition\SQLEnvironment;
  * - Cache already retrieved Records
  *
  * COLLABORATORS
- * - {@link \svelte\model\business\RecordCollection}
- * - {@link \svelte\model\business\Record}
- * - {@link \svelte\model\business\field\Field}
+ * - {@link \ramp\model\business\RecordCollection}
+ * - {@link \ramp\model\business\Record}
+ * - {@link \ramp\model\business\field\Field}
  */
 final class SQLBusinessModelManager extends BusinessModelManager
 {
@@ -60,15 +60,15 @@ final class SQLBusinessModelManager extends BusinessModelManager
    *
    * PRECONDITIONS
    * - Requires the following global constants to be set
-   *  (depending on data storage type) (usually via svelte.ini):
-   *  - \svelte\SETTING::$DATABASE_CONNECTION
-   *  - \svelte\SETTING::$DATABASE_USER
-   *  - \svelte\SETTING::$DATABASE_PASSWORD
-   *  - \svelte\SETTING::$DATABASE_MAX_RESULTS
-   *  - \svelte\SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE
+   *  (depending on data storage type) (usually via ramp.ini):
+   *  - \ramp\SETTING::$DATABASE_CONNECTION
+   *  - \ramp\SETTING::$DATABASE_USER
+   *  - \ramp\SETTING::$DATABASE_PASSWORD
+   *  - \ramp\SETTING::$DATABASE_MAX_RESULTS
+   *  - \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE
    * POSTCONDITIONS
    * - ensures default values set on relavant properties
-   * @return \svelte\model\business\BusinessModelManager Single instance of BusinessModelManager
+   * @return \ramp\model\business\BusinessModelManager Single instance of BusinessModelManager
    */
   public static function getInstance() : BusinessModelManager
   {
@@ -108,7 +108,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function getRecordIfCached(Str $recordName, Str $recordPrimaryKey) : ?Record
   {
-    $class = SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
+    $class = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $pkName = (string)$class::primaryKeyName();
     foreach ($this->recordCollection as $record)
     {
@@ -122,12 +122,12 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns requested Model.
-   * @param \svelte\model\business\iBusinessModelDefinition $definition Definition of requested Model
-   * @param \svelte\condition\Filter $filter Optional filter to be apply to BusinessModel
+   * @param \ramp\model\business\iBusinessModelDefinition $definition Definition of requested Model
+   * @param \ramp\condition\Filter $filter Optional filter to be apply to BusinessModel
    * @param int $fromIndex Optional index of first entry in a collection
-   * @return \svelte\model\business\BusinessModel Relevant requested BusinessModel
-   * @throws \DomainException When {@link \svelte\model\business\BusinessModel}(s) NOT found
-   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
+   * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
+   * @throws \DomainException When {@link \ramp\model\business\BusinessModel}(s) NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
@@ -141,15 +141,15 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns requested Record.
-   * @param \svelte\core\Str $name Record type to be returned
-   * @param \svelte\core\Str $key Primary key of record
-   * @return \svelte\model\business\Record Relevant requested Record
-   * @throws \DomainException When {@link \svelte\model\business\Record} of type with $key NOT found
-   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
+   * @param \ramp\core\Str $name Record type to be returned
+   * @param \ramp\core\Str $key Primary key of record
+   * @return \ramp\model\business\Record Relevant requested Record
+   * @throws \DomainException When {@link \ramp\model\business\Record} of type with $key NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   private function getRecord(Str $name, Str $key) : Record
   {
-    $recordFullName = SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
+    $recordFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
     $pkName = $recordFullName::primaryKeyName();
     if ((string)$key == 'new')
     {
@@ -193,17 +193,17 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns requested RecordCollection.
-   * @param \svelte\core\Str $name Record type to be returned
-   * @param \svelte\condition\Filter $filter Optional Filter critera of collection
+   * @param \ramp\core\Str $name Record type to be returned
+   * @param \ramp\condition\Filter $filter Optional Filter critera of collection
    * @param int $fromIndex Optional index for first entry of collection
-   * @return \svelte\model\business\RecordCollection Relevant requested RecordCollection
-   * @throws \DomainException When {@link \svelte\model\business\RecordCollection} of type NOT found
-   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
+   * @return \ramp\model\business\RecordCollection Relevant requested RecordCollection
+   * @throws \DomainException When {@link \ramp\model\business\RecordCollection} of type NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
   {
-    $classFullName = SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
-    $recordFullName = SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
+    $classFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
+    $recordFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $pkName = $recordFullName::primaryKeyName();
     $sql = 'SELECT * FROM '. $recordName;
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
@@ -243,20 +243,20 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Update {@link BusinessModel} to permanent data store
-   * @param \svelte\model\business\BusinessModel $model BusinessModel object to be updated
-   * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
+   * @param \ramp\model\business\BusinessModel $model BusinessModel object to be updated
+   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
-   * @throws \svelte\model\business\DataWriteException When unable to write to data store
+   * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   public function update(BusinessModel $model)
   {
-    if ($model instanceof \svelte\model\business\RecordCollection) {
+    if ($model instanceof \ramp\model\business\RecordCollection) {
       foreach ($model as $record) {
         $this->updateRecord($record);
       }
       return;
     }
-    elseif ($model instanceof \svelte\model\business\field\Field)
+    elseif ($model instanceof \ramp\model\business\field\Field)
     {
       $model = $model->containingRecord;
     }
@@ -265,7 +265,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns reference for easy access to dataObject (stdClass) of provided Record.
-   * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
+   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
    */
   private function getDataObject(Record $record) : \stdClass
@@ -283,10 +283,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Update {@link Record} to permanent data store
-   * @param \svelte\model\business\Record $record Record to be updated
-   * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
+   * @param \ramp\model\business\Record $record Record to be updated
+   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
-   * @throws \svelte\model\business\DataWriteException When unable to write to data store
+   * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   private function updateRecord(Record $record)
   {
@@ -307,7 +307,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $updateSet = $updateSet->trimEnd($comma);
     if ($properties === $empty) { return; }
     $recordName = substr_replace(
-      (string)$record, '', 0, strlen(SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE . '\\')
+      (string)$record, '', 0, strlen(SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')
     );
     $preparedStatement = ($record->isNew)?
       'INSERT INTO '.$recordName.' ('.$properties.') VALUES ('.$placeholders.')':
@@ -338,10 +338,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   /**
    * Ensure update of any out of sync Records.
-   * Uses the following properties of {@link \svelte\model\business\Record} for varification:
-   * - {@link \svelte\model\business\Record::isValid}
-   * - {@link \svelte\model\business\Record::isModified}
-   * @throws \svelte\model\business\DataWriteException When unable to write to data store
+   * Uses the following properties of {@link \ramp\model\business\Record} for varification:
+   * - {@link \ramp\model\business\Record::isValid}
+   * - {@link \ramp\model\business\Record::isModified}
+   * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   public function updateAny()
   {

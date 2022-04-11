@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,66 +18,66 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business;
+namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/svelte/SETTING.class.php';
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/iOption.class.php';
-require_once '/usr/share/php/svelte/core/OptionList.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/condition/Operator.class.php';
-require_once '/usr/share/php/svelte/condition/Condition.class.php';
-require_once '/usr/share/php/svelte/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/svelte/condition/InputDataCondition.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/PostData.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/model/business/FailedValidationException.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/svelte/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/SimpleBusinessModelDefinition.class.php';
-require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/svelte/model/business/Record.class.php';
-require_once '/usr/share/php/svelte/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Input.class.php';
-require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
-require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
-require_once '/usr/share/php/svelte/model/business/AuthenticatableUnit.class.php';
-require_once '/usr/share/php/svelte/model/business/LoginAccountType.class.php';
-require_once '/usr/share/php/svelte/model/business/LoginAccount.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/Alphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/LowerCaseAlphanumeric.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/RegexEmail.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/svelte/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/AuthenticatableUnit.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
-require_once '/usr/share/php/tests/svelte/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
 
-use svelte\SETTING;
-use svelte\core\Str;
-use svelte\core\PropertyNotSetException;
-use svelte\condition\PostData;
-use svelte\model\business\LoginAccountCollection;
-use svelte\model\business\LoginAccount;
-use svelte\model\business\LoginAccountType;
-use svelte\model\business\field\Input;
-use svelte\model\business\validation\dbtype\VarChar;
-use svelte\model\business\validation\LowerCaseAlphanumeric;
-use svelte\model\business\validation\RegexEmail;
+use ramp\SETTING;
+use ramp\core\Str;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
+use ramp\model\business\LoginAccountCollection;
+use ramp\model\business\LoginAccount;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\dbtype\VarChar;
+use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\RegexEmail;
 
-use tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager;
+use tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager;
 
 /**
- * Collection of tests for svelte\model\business\LoginAccount.
+ * Collection of tests for ramp\model\business\LoginAccount.
  */
 class LoginAccountTest extends \PHPUnit\Framework\TestCase
 {
@@ -90,54 +90,54 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$SVELTE_BUSINESS_MODEL_NAMESPACE='svelte\model\business';
-    SETTING::$SVELTE_BUSINESS_MODEL_MANAGER = 'tests\svelte\http\mocks\SessionTest\model\business\MockBusinessModelManager';
+    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
+    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
-    SETTING::$SVELTE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
+    SETTING::$RAMPE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     $this->dataObject = new \stdClass();
     $this->testObject = new LoginAccount($this->dataObject);
     $this->testObjectCollection = new LoginAccountCollection();
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccountCollection::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\business\BusinessModel}
-   * - assert is instance of {@link \svelte\model\business\RecordCollection}
-   * - assert is instance of {@link \svelte\model\business\LoginAccountCollection}
-   * @link svelte.model.business.LoginAccountCollection svelte\model\business\LoginAccountCollection
+   * Collection of assertions for \ramp\model\business\LoginAccountCollection::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert is instance of {@link \ramp\model\business\RecordCollection}
+   * - assert is instance of {@link \ramp\model\business\LoginAccountCollection}
+   * @link ramp.model.business.LoginAccountCollection ramp\model\business\LoginAccountCollection
    */
   public function testGetCollectionInstance()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObjectCollection);
-    $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObjectCollection);
-    $this->assertInstanceOf('\svelte\model\business\RecordCollection', $this->testObjectCollection);
-    $this->assertInstanceOf('\svelte\model\business\LoginAccountCollection', $this->testObjectCollection);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObjectCollection);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObjectCollection);
+    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObjectCollection);
+    $this->assertInstanceOf('\ramp\model\business\LoginAccountCollection', $this->testObjectCollection);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::__construct().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\model\business\BusinessModel}
-   * - assert is instance of {@link \svelte\model\business\Record}
-   * - assert is instance of {@link \svelte\model\business\LoginAccount}
-   * @link svelte.model.business.LoginAccount svelte\model\business\LoginAccount
+   * Collection of assertions for \ramp\model\business\LoginAccount::__construct().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert is instance of {@link \ramp\model\business\Record}
+   * - assert is instance of {@link \ramp\model\business\LoginAccount}
+   * @link ramp.model.business.LoginAccount ramp\model\business\LoginAccount
    */
   public function testGetInstance()
   {
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\BusinessModel', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\Record', $this->testObject);
-    $this->assertInstanceOf('\svelte\model\business\LoginAccount', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\LoginAccount', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::auPK.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'auPK'
+   * Collection of assertions for \ramp\model\business\LoginAccount::auPK.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'auPK'
    * - assert property 'auPK' is gettable.
-   * - assert returned value instance of {@link \svelte\model\business\field\Field}.
+   * - assert returned value instance of {@link \ramp\model\business\field\Field}.
    * - assert returned value property of Field matches expected result.
-   * @link svelte.model.business.LoginAccount#method_get_auPK svelte\model\business\LoginAccount::auPK
+   * @link ramp.model.business.LoginAccount#method_get_auPK ramp\model\business\LoginAccount::auPK
    */
   public function testGet_auPK()
   {
@@ -147,22 +147,22 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(
         get_class($this->testObject) . '->auPK is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->auPK);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->auPK);
       $this->assertNull($this->testObject->auPK->value);
       $this->dataObject->auPK = 'user';
       $this->assertEquals('user', $this->testObject->auPK->value);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::email.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'email'
+   * Collection of assertions for \ramp\model\business\LoginAccount::email.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'email'
    * - assert property 'email' is gettable.
-   * - assert returned value instance of {@link \svelte\model\business\field\Field}.
+   * - assert returned value instance of {@link \ramp\model\business\field\Field}.
    * - assert returned value property of Field matches expected result.
-   * @link svelte.model.business.LoginAccount#method_get_email svelte\model\business\LoginAccount::email
+   * @link ramp.model.business.LoginAccount#method_get_email ramp\model\business\LoginAccount::email
    */
   public function testGet_email()
   {
@@ -172,22 +172,22 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(
         get_class($this->testObject) . '->email is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->email);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->email);
       $this->assertNull($this->testObject->email->value);
       $this->dataObject->email = 'a.person@email.com';
       $this->assertEquals('a.person@email.com', $this->testObject->email->value);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::accountType.
-   * - assert {@link \svelte\core\PropertyNotSetException} thrown when trying to set property 'accountType'
+   * Collection of assertions for \ramp\model\business\LoginAccount::accountType.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'accountType'
    * - assert property 'accountType' is gettable.
-   * - assert returned value instance of {@link \svelte\model\business\field\Field}.
+   * - assert returned value instance of {@link \ramp\model\business\field\Field}.
    * - assert returned value property of Field matches expected result (LoginAccoutTypeOption)
-   * @link svelte.model.business.LoginAccount#method_get_accountType svelte\model\business\LoginAccount::accountType
+   * @link ramp.model.business.LoginAccount#method_get_accountType ramp\model\business\LoginAccount::accountType
    */
   public function testGet_accountType()
   {
@@ -197,20 +197,20 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(
         get_class($this->testObject) . '->accountType is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\model\business\field\Field', $this->testObject->accountType);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->accountType);
       $this->assertEquals(0, $this->testObject->accountType->value->key);
       $this->dataObject->accountType = LoginAccountType::ADMINISTRATOR();
       $this->assertEquals(LoginAccountType::ADMINISTRATOR(), $this->testObject->accountType->value->key);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised.');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::validatePassword.
+   * Collection of assertions for \ramp\model\business\LoginAccount::validatePassword.
    * - assert invalid password returns FALSE
    * - assert valid password returns TRUE
-   * @link svelte.model.business.LoginAccount#method_validatePassword svelte\model\business\LoginAccount::validatePassword
+   * @link ramp.model.business.LoginAccount#method_validatePassword ramp\model\business\LoginAccount::validatePassword
    */
   public function testValidatePassword()
   {
@@ -220,14 +220,14 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::setPassword() and
-   * \svelte\model\business\LoginAccount::getUnencryptedPassword().
+   * Collection of assertions for \ramp\model\business\LoginAccount::setPassword() and
+   * \ramp\model\business\LoginAccount::getUnencryptedPassword().
    * - assert throws {@link \BadMethodCallException} when trying to get prior to setting
    *  - with massage *'Unencrypted password only available on same http request as set'*
    * - assert void returned on setting with setPassword() method
    * - assert getUnencryptedPassword() returns expected value post setPassword()
-   * @link svelte.model.business.LoginAccount#method_setPassword svelte\model\business\LoginAccount::setPassword()
-   * @link svelte.model.business.LoginAccount#method_getUnencryptedPassword svelte\model\business\LoginAccount::getUnencryptedPassword()
+   * @link ramp.model.business.LoginAccount#method_setPassword ramp\model\business\LoginAccount::setPassword()
+   * @link ramp.model.business.LoginAccount#method_getUnencryptedPassword ramp\model\business\LoginAccount::getUnencryptedPassword()
    */
   public function testSetPasswordGetUnencryptedPassword()
   {
@@ -245,7 +245,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\model\business\LoginAccount::populateAsNew().
+   * Collection of assertions for \ramp\model\business\LoginAccount::populateAsNew().
    * - assert void returned on calling
    * - assert 'auPK' present child pre calling
    * - assert removes 'auPK' as child (property) post calling
@@ -257,8 +257,8 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager
    * - assert throws {@link \BadMethodCallException} when called on existing (NOT isNew) LoginAccount
    *  - with massage *'Method NOT allowed on existing LoginAccount!'*
-   * @link svelte.model.business.LoginAccount#method_populateAsNew svelte\model\business\LoginAccount::populateAsNew()
-   */
+   * @link ramp.model.business.LoginAccount#method_populateAsNew ramp\model\business\LoginAccount::populateAsNew()
+   *
   public function testPopulateAsNew()
   {
     $_POST = array(
@@ -278,15 +278,15 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->testObject->getUnencryptedPassword()
     );
     $this->assertSame(
-      crypt((string)$this->testObject->getUnencryptedPassword(), \svelte\SETTING::$SECURITY_PASSWORD_SALT),
+      crypt((string)$this->testObject->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       $this->dataObject->encryptedPassword
     );
     $this->assertEquals('aperson', $this->testObject->uname->value);
     $this->assertEquals('a.person@domain.com', $this->testObject->email->value);
     $this->assertEquals('Person', $this->testObject->familyName->value);
     $this->assertEquals('Ann', $this->testObject->givenName->value);
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\AnAuthenticatableUnit:aperson']));
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['svelte\model\business\LoginAccount:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
     $this->assertFalse($this->testObject->isNew);
     try {
       $this->testObject->populateAsNew(PostData::build($_POST));
@@ -295,5 +295,5 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised.');
-  }
+  }*/
 }

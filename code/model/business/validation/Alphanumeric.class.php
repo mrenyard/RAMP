@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -17,9 +17,9 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation;
+namespace ramp\model\business\validation;
 
-use svelte\model\business\FailedValidationException;
+use ramp\model\business\FailedValidationException;
 
 /**
  * Alphanumeric validation.

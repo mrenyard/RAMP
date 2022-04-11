@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development using best practice.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -17,11 +17,11 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace svelte\model\business\validation\dbtype;
+namespace ramp\model\business\validation\dbtype;
 
-use svelte\core\Str;
-use svelte\model\business\FailedValidationException;
-use svelte\model\business\validation\ValidationRule;
+use ramp\core\Str;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
 
 /**
  * Interger database type validation rule, a number which is not a decimal a whole number.
@@ -31,7 +31,7 @@ class Interger extends DbTypeValidation
 {
   /**
    * Default constructor for a validation rule of database type Interger.
-   * @param \svelte\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
   public function __construct(Str $errorMessage)
   {

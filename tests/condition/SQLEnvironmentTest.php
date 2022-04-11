@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,21 +18,21 @@
  * @author mrenyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\condition;
+namespace tests\ramp\condition;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/svelte/condition/iEnvironment.class.php';
-require_once '/usr/share/php/svelte/condition/Environment.class.php';
-require_once '/usr/share/php/svelte/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 
-use \svelte\core\Str;
-use \svelte\core\PropertyNotSetException;
-use \svelte\condition\SQLEnvironment;
+use \ramp\core\Str;
+use \ramp\core\PropertyNotSetException;
+use \ramp\condition\SQLEnvironment;
 
 /**
- * Collection of tests for \svelte\condition\Environment.
+ * Collection of tests for \ramp\condition\Environment.
  * .
  */
 class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
@@ -48,22 +48,22 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::getInstance().
+   * Collection of assertions for \ramp\condition\Environment::getInstance().
    * - assert __constructor inaccessible (protected).
-   * - assert is instance of {@link \svelte\condition\Environment}
-   * - assert is instance of {@link \svelte\condition\iEnvironment}
-   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert is instance of {@link \ramp\condition\Environment}
+   * - assert is instance of {@link \ramp\condition\iEnvironment}
+   * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every call.
-   * @link svelte.condition.Environment#method_getInstance svelte\condition\Environment\getInstance()
+   * @link ramp.condition.Environment#method_getInstance ramp\condition\Environment\getInstance()
    */
   public function testGetInstance()
   {
     try {
       $testObject = new SQLEnvironment();
     } catch (\Error $expected) {
-      $this->assertInstanceOf('\svelte\condition\Environment', $this->testInstance);
-      $this->assertInstanceOf('\svelte\condition\iEnvironment', $this->testInstance);
-      $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testInstance);
+      $this->assertInstanceOf('\ramp\condition\Environment', $this->testInstance);
+      $this->assertInstanceOf('\ramp\condition\iEnvironment', $this->testInstance);
+      $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testInstance);
       $this->assertSame(SQLEnvironment::getInstance(), $this->testInstance);
       return;
     }
@@ -71,34 +71,34 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::memberAccess.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'memberAccess'
+   * Collection of assertions for \ramp\condition\Environment::memberAccess.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'memberAccess'
    *   - with message: <em>'[className]->memberAccess is NOT settable'</em>.
    * - assert allows retrieval of 'memberAccess'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (.).
-   * @link svelte.condition.Environment#method_get_memberAccess svelte\condition\Condition::memberAccess.
+   * @link ramp.condition.Environment#method_get_memberAccess ramp\condition\Condition::memberAccess.
    */
   public function testMemberAccess()
   {
     try {
       $this->testInstance->memberAccess = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->memberAccess);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->memberAccess);
       $this->assertSame('.', (string)$this->testInstance->memberAccess);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::assignment.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'assignment'
+   * Collection of assertions for \ramp\condition\Environment::assignment.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'assignment'
    *   - with message: <em>'[className]->assignment is NOT settable'</em>.
    * - assert allows retrieval of 'assignment'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (=).
-   * @link svelte.condition.Environment#method_get_assignment svelte\condition\Condition::assignment.
+   * @link ramp.condition.Environment#method_get_assignment ramp\condition\Condition::assignment.
    */
   public function testAssignment()
   {
@@ -106,24 +106,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->assignment = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->assignment is NOT settable',
+        'ramp\condition\SQLEnvironment->assignment is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->assignment);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->assignment);
       $this->assertSame('=', (string)$this->testInstance->assignment);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::equalTo.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'equalTo'
+   * Collection of assertions for \ramp\condition\Environment::equalTo.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'equalTo'
    *   - with message: <em>'[className]->equalTo is NOT settable'</em>.
    * - assert allows retrieval of 'equalTo'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (=).
-   * @link svelte.condition.Environment#method_get_equalTo svelte\condition\Condition::equalTo.
+   * @link ramp.condition.Environment#method_get_equalTo ramp\condition\Condition::equalTo.
    */
   public function testEqualTo()
   {
@@ -131,24 +131,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->equalTo = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->equalTo is NOT settable',
+        'ramp\condition\SQLEnvironment->equalTo is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->equalTo);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->equalTo);
       $this->assertSame(' = ', (string)$this->testInstance->equalTo);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::notEqualTo.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'notEqualTo'
+   * Collection of assertions for \ramp\condition\Environment::notEqualTo.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'notEqualTo'
    *   - with message: <em>'[className]->notEqualTo is NOT settable'</em>.
    * - assert allows retrieval of 'notEqualTo'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (<>).
-   * @link svelte.condition.Environment#method_get_notEqualTo svelte\condition\Condition::notEqualTo.
+   * @link ramp.condition.Environment#method_get_notEqualTo ramp\condition\Condition::notEqualTo.
    */
   public function testNotEqualTo()
   {
@@ -156,24 +156,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->notEqualTo = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->notEqualTo is NOT settable',
+        'ramp\condition\SQLEnvironment->notEqualTo is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->notEqualTo);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->notEqualTo);
       $this->assertSame(' <> ', (string)$this->testInstance->notEqualTo);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::lessThan.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'lessThan'
+   * Collection of assertions for \ramp\condition\Environment::lessThan.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'lessThan'
    *   - with message: <em>'[className]->lessThan is NOT settable'</em>.
    * - assert allows retrieval of 'lessThan'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( < ).
-   * @link svelte.condition.Environment#method_get_lessThan svelte\condition\Condition::lessThan.
+   * @link ramp.condition.Environment#method_get_lessThan ramp\condition\Condition::lessThan.
    */
   public function testLessThan()
   {
@@ -181,24 +181,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->lessThan = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->lessThan is NOT settable',
+        'ramp\condition\SQLEnvironment->lessThan is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->lessThan);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->lessThan);
       $this->assertSame(' < ', (string)$this->testInstance->lessThan);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::greaterThan.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'greaterThan'
+   * Collection of assertions for \ramp\condition\Environment::greaterThan.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'greaterThan'
    *   - with message: <em>'[className]->greaterThan is NOT settable'</em>.
    * - assert allows retrieval of 'greaterThan'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( > ).
-   * @link svelte.condition.Environment#method_get_greaterThan svelte\condition\Condition::greaterThan.
+   * @link ramp.condition.Environment#method_get_greaterThan ramp\condition\Condition::greaterThan.
    */
   public function testGreaterThan()
   {
@@ -206,24 +206,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->greaterThan = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->greaterThan is NOT settable',
+        'ramp\condition\SQLEnvironment->greaterThan is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->greaterThan);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->greaterThan);
       $this->assertSame(' > ', (string)$this->testInstance->greaterThan);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::and.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'and'
+   * Collection of assertions for \ramp\condition\Environment::and.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'and'
    *   - with message: <em>'[className]->and is NOT settable'</em>.
    * - assert allows retrieval of 'and'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( AND ).
-   * @link svelte.condition.Environment#method_get_and svelte\condition\Condition::and.
+   * @link ramp.condition.Environment#method_get_and ramp\condition\Condition::and.
    */
   public function testAnd()
   {
@@ -231,24 +231,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->and = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->and is NOT settable',
+        'ramp\condition\SQLEnvironment->and is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->and);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->and);
       $this->assertSame(' AND ', (string)$this->testInstance->and);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::or.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'or'
+   * Collection of assertions for \ramp\condition\Environment::or.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'or'
    *   - with message: <em>'[className]->or is NOT settable'</em>.
    * - assert allows retrieval of 'or'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( OR ).
-   * @link svelte.condition.Environment#method_get_or svelte\condition\Condition::or.
+   * @link ramp.condition.Environment#method_get_or ramp\condition\Condition::or.
    */
   public function testOr()
   {
@@ -256,24 +256,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->or = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->or is NOT settable',
+        'ramp\condition\SQLEnvironment->or is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->or);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->or);
       $this->assertSame(' OR ', (string)$this->testInstance->or);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::openingParenthesis.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'openingParenthesis'
+   * Collection of assertions for \ramp\condition\Environment::openingParenthesis.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'openingParenthesis'
    *   - with message: <em>'[className]->memberAccess is NOT settable'</em>.
    * - assert allows retrieval of 'openingParenthesis'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (").
-   * @link svelte.condition.Environment#method_get_openingParenthesis svelte\condition\Condition::openingParenthesis.
+   * @link ramp.condition.Environment#method_get_openingParenthesis ramp\condition\Condition::openingParenthesis.
    */
   public function testOpeningParenthesis()
   {
@@ -281,24 +281,24 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->openingParenthesis = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->openingParenthesis is NOT settable',
+        'ramp\condition\SQLEnvironment->openingParenthesis is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->openingParenthesis);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->openingParenthesis);
       $this->assertSame('"', (string)$this->testInstance->openingParenthesis);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
-   * Collection of assertions for \svelte\condition\Environment::closingParenthesis.
-   * - assert throws {@link \svelte\core\PropertyNotSetException} when trying to set 'closingParenthesis'
+   * Collection of assertions for \ramp\condition\Environment::closingParenthesis.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'closingParenthesis'
    *   - with message: <em>'[className]->closingParenthesis is NOT settable'</em>.
    * - assert allows retrieval of 'closingParenthesis'.
-   * - assert retreved is an instance of {@link \svelte\core\Str}.
+   * - assert retreved is an instance of {@link \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (").
-   * @link svelte.condition.Environment#method_get_closingParenthesis svelte\condition\Condition::closingParenthesis.
+   * @link ramp.condition.Environment#method_get_closingParenthesis ramp\condition\Condition::closingParenthesis.
    */
   public function testClosingParenthesis()
   {
@@ -306,13 +306,13 @@ class SQLEnvironmentTest extends \PHPUnit\Framework\TestCase
       $this->testInstance->closingParenthesis = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(
-        'svelte\condition\SQLEnvironment->closingParenthesis is NOT settable',
+        'ramp\condition\SQLEnvironment->closingParenthesis is NOT settable',
         $expected->getMessage()
       );
-      $this->assertInstanceOf('\svelte\core\Str', $this->testInstance->closingParenthesis);
+      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->closingParenthesis);
       $this->assertSame('"', (string)$this->testInstance->closingParenthesis);
       return;
     }
-    $this->fail('An expected \svelte\core\PropertyNotSetException has NOT been raised');
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
 }

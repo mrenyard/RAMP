@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,40 +18,40 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\view;
+namespace tests\ramp\view;
 
-require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
-require_once '/usr/share/php/svelte/core/Str.class.php';
-require_once '/usr/share/php/svelte/core/iCollection.class.php';
-require_once '/usr/share/php/svelte/core/Collection.class.php';
-require_once '/usr/share/php/svelte/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/svelte/model/Model.class.php';
-require_once '/usr/share/php/svelte/view/View.class.php';
-require_once '/usr/share/php/svelte/view/RootView.class.php';
+require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/RootView.class.php';
 
-require_once '/usr/share/php/tests/svelte/view/mocks/RootViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/svelte/view/mocks/RootViewTest/MockModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/RootViewTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/RootViewTest/MockModel.class.php';
 
-use tests\svelte\view\mocks\RootViewTest\MockView;
-use tests\svelte\view\mocks\RootViewTest\MockViewA;
-use tests\svelte\view\mocks\RootViewTest\MockViewB;
-use tests\svelte\view\mocks\RootViewTest\MockViewC;
-use tests\svelte\view\mocks\RootViewTest\MockModel;
+use tests\ramp\view\mocks\RootViewTest\MockView;
+use tests\ramp\view\mocks\RootViewTest\MockViewA;
+use tests\ramp\view\mocks\RootViewTest\MockViewB;
+use tests\ramp\view\mocks\RootViewTest\MockViewC;
+use tests\ramp\view\mocks\RootViewTest\MockModel;
 
-use svelte\view\View;
-use svelte\view\RootView;
-use svelte\model\Model;
-use svelte\core\BadPropertyCallException;
+use ramp\view\View;
+use ramp\view\RootView;
+use ramp\model\Model;
+use ramp\core\BadPropertyCallException;
 
 /**
- * Collection of tests for \svelte\view\RootView.
+ * Collection of tests for \ramp\view\RootView.
  */
 class RootViewTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for \svelte\view\RootView::__construct().
+   * Collection of assertions for \ramp\view\RootView::__construct().
    * - assert constructor inaccessible
-   * @link svelte.view.RootView svelte\view\RootView
+   * @link ramp.view.RootView ramp\view\RootView
    */
   public function test__construct()
   {
@@ -60,26 +60,26 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\RootView::getInstance().
-   * - assert is instance of {@link \svelte\core\SvelteObject}
-   * - assert is instance of {@link \svelte\view\View}
-   * - assert is instance of {@link \svelte\view\RootView}
+   * Collection of assertions for \ramp\view\RootView::getInstance().
+   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@link \ramp\view\View}
+   * - assert is instance of {@link \ramp\view\RootView}
    * - assert is same instance on every call (Singleton)
-   * @link svelte.view.RootView#method_getInstance svelte\view\RootView::getInstance()
+   * @link ramp.view.RootView#method_getInstance ramp\view\RootView::getInstance()
    */
   public function testGetInstance()
   {
     $testObject = RootView::getInstance();
-    $this->assertInstanceOf('\svelte\core\SvelteObject', $testObject);
-    $this->assertInstanceOf('\svelte\view\View', $testObject);
-    $this->assertInstanceOf('\svelte\view\RootView', $testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
+    $this->assertInstanceOf('\ramp\view\View', $testObject);
+    $this->assertInstanceOf('\ramp\view\RootView', $testObject);
     $this->assertSame(RootView::getInstance(), $testObject);
   }
 
   /**
-   * Collection of assertions for \svelte\view\RootView::setModel.
+   * Collection of assertions for \ramp\view\RootView::setModel.
    * - assert BadMethodCallException thrown when calling setModel().
-   * @link svelte.view.RootView#method_setModel svelte\view\RootView::setModel()
+   * @link ramp.view.RootView#method_setModel ramp\view\RootView::setModel()
    */
   public function testSetModel()
   {
@@ -90,12 +90,12 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\RootView::render()
-   * and \svelte\view\RootView::add().
+   * Collection of assertions for \ramp\view\RootView::render()
+   * and \ramp\view\RootView::add().
    * - assert each child view added sequentially
    * - assert render() output maintains sequance and format
-   * @link svelte.view.RootView#method_add svelte\view\RootView::add()
-   * @link svelte.view.RootView#method_render svelte\view\RootView::render()
+   * @link ramp.view.RootView#method_add ramp\view\RootView::add()
+   * @link ramp.view.RootView#method_render ramp\view\RootView::render()
    */
   public function testAddRender()
   {
@@ -118,24 +118,24 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
       if ($i === 1)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\RootViewTest\MockViewA ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA ',
           $output
         );
       }
       if ($i === 2)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\RootViewTest\MockViewA '.
-          'tests\svelte\view\mocks\RootViewTest\MockViewB ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA '.
+          'tests\ramp\view\mocks\RootViewTest\MockViewB ',
           $output
         );
       }
       if ($i === 3)
       {
         $this->assertEquals(
-          'tests\svelte\view\mocks\RootViewTest\MockViewA '.
-          'tests\svelte\view\mocks\RootViewTest\MockViewB '.
-          'tests\svelte\view\mocks\RootViewTest\MockViewC ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA '.
+          'tests\ramp\view\mocks\RootViewTest\MockViewB '.
+          'tests\ramp\view\mocks\RootViewTest\MockViewC ',
           $output
         );
       }
@@ -143,10 +143,10 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \svelte\view\RootView::__clone.
+   * Collection of assertions for \ramp\view\RootView::__clone.
    * - assert cannot be cloned, throwing \BadMethodCallException
    *   - with message *Cloning is not allowed*
-   * @link svelte.view.RootView#method__clone svelte\view\RootView::__clone()
+   * @link ramp.view.RootView#method__clone ramp\view\RootView::__clone()
    */
   public function test__clone()
   {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,25 +16,25 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
-namespace svelte\core;
+namespace ramp\core;
 
 /**
  * Generic collection for encapsulation or inheritance.
  *
  * RESPONSIBILITIES
  * - Provide base implementation of iCollection.
- * - Allows checking of a specified 'Type' of any added/contained {@link SvelteObject}s.
+ * - Allows checking of a specified 'Type' of any added/contained {@link RAMPObject}s.
  * - Configure and manage shallow or deep cloning.
  *
  * COLLABORATORS
- * - {@link \svelte\core\SvelteObject}
+ * - {@link \ramp\core\RAMPObject}
  *
  * @property-read int $count Returns the number of items currently stored in this collection.
  */
-class Collection extends SvelteObject implements iCollection
+class Collection extends RAMPObject implements iCollection
 {
   private $compositeType;
   private $deepClone;
@@ -46,13 +46,13 @@ class Collection extends SvelteObject implements iCollection
    * - New empty collection
    * - Defined and verified composite type
    * - Defined value for deep cloning
-   * @param \svelte\core\Str $compositeType Full class name for Type of objects to be stored in this collection.
+   * @param \ramp\core\Str $compositeType Full class name for Type of objects to be stored in this collection.
    * @param bool $deepClone Optional deep cloning (default value = FALSE).
    * @throws \InvalidArgumentException When $compositeType is NOT an accessible class name.
    */
   public function __construct(Str $compositeType = null, bool $deepClone = null)
   {
-    $compositeType = (isset($compositeType)) ? (string)$compositeType : '\svelte\core\SvelteObject';
+    $compositeType = (isset($compositeType)) ? (string)$compositeType : '\ramp\core\RAMPObject';
     if (!class_exists($compositeType) && !interface_exists($compositeType)) {
       throw new \InvalidArgumentException(
         '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'
@@ -65,7 +65,7 @@ class Collection extends SvelteObject implements iCollection
 
   /**
    * Confirms this compositeType same as provided name.
-   * @param \svelte\core\Str $expectedTypeName Full path name of expected type.
+   * @param \ramp\core\Str $expectedTypeName Full path name of expected type.
    * @return boolean Composite type is/not same as provided name.
    */
   public function isCompositeType(string $expectedTypeName) : bool
@@ -77,10 +77,10 @@ class Collection extends SvelteObject implements iCollection
    * Add a reference to object (of defined type), to this collection.
    * POSTCONDITIONS
    * - new object reference appended to this collection
-   * @param \svelte\core\SvelteObject $object reference to be added
+   * @param \ramp\core\RAMPObject $object reference to be added
    * @throws \InvalidArgumentException When provided object NOT of expected type
    */
-  public function add(SvelteObject $object)
+  public function add(RAMPObject $object)
   {
     if (!($object instanceof $this->compositeType)) {
       throw new \InvalidArgumentException(
@@ -131,8 +131,8 @@ class Collection extends SvelteObject implements iCollection
 
   /**
    * ArrayAccess method offsetGet.
-   * @param mixed $offset Index of requested {@link \svelte\core\SvelteObject}.
-   * @return \svelte\core\SvelteObject Object located at provided index.
+   * @param mixed $offset Index of requested {@link \ramp\core\RAMPObject}.
+   * @return \ramp\core\RAMPObject Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
   public function offsetGet($offset)
@@ -146,7 +146,7 @@ class Collection extends SvelteObject implements iCollection
   /**
    * ArrayAccess method offsetSet.
    * @param mixed $offset Index to place provided object.
-   * @param mixed $object SvelteObject to be placed at provided index.
+   * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException When provided object NOT of expected type
    */
   public function offsetSet($offset, $object)

@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,15 +18,15 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest;
+namespace tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest;
 
-use svelte\SETTING;
-use svelte\core\SvelteObject;
-use svelte\model\business\BusinessModel;
-use svelte\model\business\iBusinessModelDefinition;
-use svelte\model\business\BusinessModelManager;
-use svelte\model\business\DataWriteException;
-use svelte\condition\Filter;
+use ramp\SETTING;
+use ramp\core\RAMPObject;
+use ramp\model\business\BusinessModel;
+use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\BusinessModelManager;
+use ramp\model\business\DataWriteException;
+use ramp\condition\Filter;
 
 /**
  * Defined abstract for business model managers that manage all models within systems business domain.
@@ -79,12 +79,12 @@ final class UniquePrimaryKeyBusinessModelManager extends BusinessModelManager
 
   /**
    * Returns requested Model.
-   * @param \svelte\model\business\iBusinessModelDefinition $definition Definition of requested Model
-   * @param \svelte\condition\Filter $filter Optional Filter to be apply to BusinessModel
+   * @param \ramp\model\business\iBusinessModelDefinition $definition Definition of requested Model
+   * @param \ramp\condition\Filter $filter Optional Filter to be apply to BusinessModel
    * @param int $fromIndex Optional index of first entry in a collection
-   * @return \svelte\model\business\BusinessModel Relevant requested BusinessModel
-   * @throws \DomainException When {@link \svelte\model\business\BusinessModel}(s) NOT found
-   * @throws \svelte\model\business\DataFetchException When unable to fetch from data store
+   * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
+   * @throws \DomainException When {@link \ramp\model\business\BusinessModel}(s) NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
@@ -119,10 +119,10 @@ final class UniquePrimaryKeyBusinessModelManager extends BusinessModelManager
 
   /**
    * Update {@link BusinessModel} to any permanent data store
-   * @param \svelte\model\business\BusinessModel $model BusinessModel object to be updated
-   * @throws \InvalidArgumentException when {@link \svelte\model\business\BusinessModel}
+   * @param \ramp\model\business\BusinessModel $model BusinessModel object to be updated
+   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
-   * @throws \svelte\model\business\DataWriteException When unable to write to data store
+   * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   public function update(BusinessModel $model)
   {
@@ -152,10 +152,10 @@ final class UniquePrimaryKeyBusinessModelManager extends BusinessModelManager
 
   /**
    * Ensure update of any out of sync Records with any permanent data store.
-   * Uses the following properties of {@link \svelte\model\business\Record} for varification:
-   * - {@link \svelte\model\business\Record::isValid}
-   * - {@link \svelte\model\business\Record::isModified}
-   * @throws \svelte\model\business\DataWriteException When unable to write to data store
+   * Uses the following properties of {@link \ramp\model\business\Record} for varification:
+   * - {@link \ramp\model\business\Record::isValid}
+   * - {@link \ramp\model\business\Record::isModified}
+   * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   public function updateAny()
   {

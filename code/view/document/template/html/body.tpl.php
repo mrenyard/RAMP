@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development enviroment for building
+ * RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -16,7 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package svelte
+ * @package ramp
  * @version 0.0.9;
  */
 ?>
@@ -32,7 +32,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- ?php include("head.php"); ? -->
   </head>
-  <body id="<?=str_replace('.', '-', \svelte\SETTING::$SVELTE_DOMAIN) ?>" class="<?=$this->style; ?>">
+  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMPE_DOMAIN) ?>" class="<?=$this->style; ?>">
 <?=$this->children ?>
 <!-- ?php include("scripts.php"); ? -->
   </body>

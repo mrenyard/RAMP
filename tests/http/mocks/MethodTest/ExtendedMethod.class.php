@@ -1,6 +1,6 @@
 <?php
 /**
- * Testing - Svelte - Rapid web application development enviroment for building
+ * Testing - RAMP - Rapid web application development enviroment for building
  *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -18,10 +18,10 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\svelte\http\mocks\MethodTest;
+namespace tests\ramp\http\mocks\MethodTest;
 
-use svelte\core\Str;
-use svelte\http\Method;
+use ramp\core\Str;
+use ramp\http\Method;
 
 /**
  * Method for testing against.
@@ -33,7 +33,7 @@ final class ExtendedMethod extends Method {
   /**
    * Constructor for new instance of ExtendedMethod.
    * @param int $index Number to be assigned to this Verb
-   * @param \svelte\core\Str $verb Name of Method (verb/action) that this object is to represent
+   * @param \ramp\core\Str $verb Name of Method (verb/action) that this object is to represent
    * @throws \InvalidArgumentException When $index is NOT an int
    */
   protected function __construct($index, Str $verb)
@@ -54,7 +54,7 @@ final class ExtendedMethod extends Method {
   /**
    * Test successful creation of new Method (used exclusivly for testing).
    * Nonsence method (for testing) proper use on constructor (first argument is an int)
-   * @return \svelte\Method Method evaluating to 'VERB' at index 8
+   * @return \ramp\Method Method evaluating to 'VERB' at index 8
    */
   public static function SUCCEED()
   {
