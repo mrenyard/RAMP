@@ -81,7 +81,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->errorMessage = 'MyValidationRule has error due to $value of BAD!';
     $this->myValidationRule = new VarChar(10, new MyValidationRule(), Str::set($this->errorMessage));
     $this->testObject = new Input(Str::set('aProperty'), $this->mockRecord, $this->myValidationRule);
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }
 
   /**

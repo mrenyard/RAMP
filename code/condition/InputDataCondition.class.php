@@ -26,7 +26,7 @@ use ramp\core\Str;
 /**
  * Single representation of a verified 'attribute (record:key:property) value pair' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Extend BusinessCondition to hold additional value for primaryKey,
@@ -34,7 +34,7 @@ use ramp\core\Str;
  * - Enforce assignment operator as the primary operation.
  * - Set defaults target environment as {@link \ramp\condition\URNQueryEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
  * - {@link \ramp\condition\BusinessCondition}
@@ -57,7 +57,7 @@ final class InputDataCondition extends BusinessCondition
    * @param \ramp\core\Str $property Name of target property
    * @param mixed $value Value to be evaluated
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model within (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct(Str $record, Str $primaryKeyValue, Str $property, $value)
   {

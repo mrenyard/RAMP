@@ -32,7 +32,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- ?php include("head.php"); ? -->
   </head>
-  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMPE_DOMAIN) ?>" class="<?=$this->style; ?>">
+  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="<?=$this->style; ?>">
 <?=$this->children ?>
 <!-- ?php include("scripts.php"); ? -->
   </body>

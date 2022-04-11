@@ -88,7 +88,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $this->children->add($this->testChild2);
     $this->children->add($this->testChild3);
     $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }
 
   /**

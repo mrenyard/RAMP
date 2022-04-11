@@ -64,7 +64,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\http\mocks\RequestTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\http\mocks\RequestTest';
 
     $_GET = array();
     $_POST = array();
@@ -98,7 +98,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
    * - $_GET['property-not'] = 'valueOK';
    * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
-   *   limits as defined by local business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
+   *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
    */
   public function testDomainException()
   {

@@ -27,7 +27,7 @@ use ramp\core\Collection;
 /**
  * Collection of verified 'property value pairs' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * COLLABORATORS
  * - {@link \ramp\core\Str}
@@ -38,7 +38,7 @@ final class PostData extends Collection
   /**
    * Constructs an empty collection for \ramp\condition\InputDataCondition.
    * A collection of verified property value pairs restricted and evaluated by the constraints of
-   * your business model as defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+   * your business model as defined within RAMP_BUSINESS_MODEL_NAMESPACE.
    */
   public function __construct()
   {
@@ -50,7 +50,7 @@ final class PostData extends Collection
    * @param array $postdata Simple array containing name value pairs for processing into PostData Object
    * @return PostData Collection of verified 'property value pairs' based on provided array.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model within RAMPE_BUSINESS_MODEL_NAMESPACE.
+   * as defined by your locally defined business model within RAMP_BUSINESS_MODEL_NAMESPACE.
    */
   static public function build(array $postdata) : PostData
   {

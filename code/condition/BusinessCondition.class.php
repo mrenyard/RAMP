@@ -27,12 +27,12 @@ use ramp\model\business\Property;
 
 /**
  * Code defined statement restricted and evaluated by the constraints of your local business model
- * as defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+ * as defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * RESPONSIBILITIES
  * - Extend Condition to hold additional values for record and property as component parts of attribute.
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *   defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+ *   defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
  * - {@link \ramp\condition\Condition}
@@ -53,17 +53,17 @@ abstract class BusinessCondition extends Condition
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via ramp.ini):
-   *  - {@link \ramp\SETTING}::$RAMPE_BUSINESS_MODEL_NAMESPACE
+   *  - {@link \ramp\SETTING}::$RAMP_BUSINESS_MODEL_NAMESPACE
    * @param \ramp\core\Str $record Name of business record containing property to evaluate
    * @param \ramp\core\Str $property Name of property to be evaluated
    * @param \ramp\condition\Operator $operator Operator to perform operation
    * @param mixed $comparable Value to be compared
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (RAMPE_BUSINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct(Str $record, Str $property, Operator $operator, $comparable = null)
   {
-    $recordClassName = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
+    $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
     if (!class_exists($recordClassName) || !method_exists(new $recordClassName(), 'get_' . $property)) {
       throw new \DomainException('Invalid: ' . $record . '->' . $property . ', does NOT match business model');
     }

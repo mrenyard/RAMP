@@ -65,7 +65,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    *  - \ramp\SETTING::$DATABASE_USER
    *  - \ramp\SETTING::$DATABASE_PASSWORD
    *  - \ramp\SETTING::$DATABASE_MAX_RESULTS
-   *  - \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE
+   *  - \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE
    * POSTCONDITIONS
    * - ensures default values set on relavant properties
    * @return \ramp\model\business\BusinessModelManager Single instance of BusinessModelManager
@@ -108,7 +108,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function getRecordIfCached(Str $recordName, Str $recordPrimaryKey) : ?Record
   {
-    $class = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
+    $class = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $pkName = (string)$class::primaryKeyName();
     foreach ($this->recordCollection as $record)
     {
@@ -149,7 +149,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function getRecord(Str $name, Str $key) : Record
   {
-    $recordFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
+    $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
     $pkName = $recordFullName::primaryKeyName();
     if ((string)$key == 'new')
     {
@@ -202,8 +202,8 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
   {
-    $classFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
-    $recordFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
+    $classFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
+    $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $pkName = $recordFullName::primaryKeyName();
     $sql = 'SELECT * FROM '. $recordName;
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
@@ -307,7 +307,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $updateSet = $updateSet->trimEnd($comma);
     if ($properties === $empty) { return; }
     $recordName = substr_replace(
-      (string)$record, '', 0, strlen(SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')
+      (string)$record, '', 0, strlen(SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')
     );
     $preparedStatement = ($record->isNew)?
       'INSERT INTO '.$recordName.' ('.$properties.') VALUES ('.$placeholders.')':

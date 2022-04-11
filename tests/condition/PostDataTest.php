@@ -54,7 +54,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\PostDataTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\PostDataTest';
   }
 
   /**

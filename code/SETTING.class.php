@@ -43,31 +43,31 @@ class SETTING
   /**
    * Domain under which this application is run.
    */
-  public static $RAMPE_DOMAIN;
+  public static $RAMP_DOMAIN;
 
   /**
    * Directory from which to locate application specific code
    * related only to this particular project.
    */
-  public static $RAMPE_LOCAL_DIR;
+  public static $RAMP_LOCAL_DIR;
 
   /**
    * Concrete BusinessModelManager used to handle data layer
    * (fully qualified namespace and class name).
    * - e.g. \ramp\model\business\SQLBusinessModelManager
    */
-  public static $RAMPE_BUSINESS_MODEL_MANAGER;
+  public static $RAMP_BUSINESS_MODEL_MANAGER;
 
   /**
    * Fully qualified namespace for business model classes.
    * - e.g. \ramp\model\business
    */
-  public static $RAMPE_BUSINESS_MODEL_NAMESPACE;
+  public static $RAMP_BUSINESS_MODEL_NAMESPACE;
 
   /**
    * Authenticatable Unit of specific business model Record.
    */
-  public static $RAMPE_AUTHENTICATABLE_UNIT;
+  public static $RAMP_AUTHENTICATABLE_UNIT;
 
   /**
    * Database connection string.

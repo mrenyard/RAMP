@@ -71,7 +71,7 @@ final class Session extends RAMPObject
   private function __construct()
   {
     @session_start();
-    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
       $this->modelManager->getBusinessModel(
@@ -88,7 +88,7 @@ final class Session extends RAMPObject
    * browser, ideally the first thing at the top of any controller page.**
    *
    * PRECONDITIONS
-   * - SETTING::$RAMPE_BUSINESS_MODEL_MANAGER MUST be set.
+   * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
    *
    * COLLABORATORS
    * - $_SESSION
@@ -133,8 +133,8 @@ final class Session extends RAMPObject
    * and if successful just returns, otherwise throws an Unauthorized401Exception.
    *
    * PRECONDITIONS
-   * - SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE MUST be set
-   * - SETTING::$RAMPE_AUTHENTICATIBLE_UNIT MUST be set
+   * - SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE MUST be set
+   * - SETTING::$RAMP_AUTHENTICATIBLE_UNIT MUST be set
    * - Session::getInstance() MUST have been called at least once.
    * - $_SESSION['loginAccount'] MAY already be set, following proir succesfully authentication
    * - $_POST data MAY be sent for submission
@@ -150,7 +150,7 @@ final class Session extends RAMPObject
    * - $_SESSION
    * - {@link \ramp\SETTING}
    * - {@link \ramp\condition\Filter}
-   * - {@link \svette\condition\FiltetCondition}
+   * - {@link \ramp\condition\FiltetCondition}
    * - {@link \ramp\model\business\iBusinessModelManager}
    * - {@link \ramp\model\business\SimpleBusinessModelDefinition}
    * - {@link \ramp\model\business\LoginAccountType}
@@ -230,7 +230,7 @@ final class Session extends RAMPObject
       return;
     }
     $auEmailPropertyID = (string)Str::hyphenate(
-      Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
+      Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
     );
     if (isset($_POST[$auEmailPropertyID]))
     {
@@ -263,7 +263,7 @@ final class Session extends RAMPObject
           {
             $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
             foreach ($_POST as $name => $value) {
-              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
+              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
                 unset($_POST[$name]);
               }
             }

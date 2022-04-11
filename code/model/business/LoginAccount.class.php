@@ -156,17 +156,17 @@ class LoginAccount extends Record
   private function getAuthenticatableUnit() : AuthenticatableUnit
   {
     $auPK = $this->getPropertyValue('auPK');
-    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     if (isset($auPK) && (!isset($this->authenticatableUnit) || $this->authenticatableUnit->isNew))
     {
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), Str::set($auPK))
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set($auPK))
       );
     }
     elseif (!isset($this->authenticatableUnit))
     {
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMPE_AUTHENTICATABLE_UNIT), Str::set('new'))
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set('new'))
       );
     }
     return $this->authenticatableUnit;
@@ -238,7 +238,7 @@ class LoginAccount extends Record
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
     /*if ($this->isValid && $au->isValid) {
-      $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+      $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       $modelManager->update($au);
       $modelManager->update($this);

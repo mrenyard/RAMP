@@ -61,7 +61,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\BusinessConditionTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\BusinessConditionTest';
     $this->record = Str::set('Record');
     $this->property = Str::set('property');
     $this->operator = Operator::EQUAL_TO();

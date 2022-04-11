@@ -140,7 +140,7 @@ class Person extends AuthenticatableUnit
   protected function get_country() : field\Field
   {
     if (!isset(self::$countryList)) {
-      $MODEL_MANAGER = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+      $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       self::$countryList = new OptionList($modelManager->getBusinessModel(
         new SimpleBusinessModelDefinition(Str::set('Country')))

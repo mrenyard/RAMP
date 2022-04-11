@@ -72,10 +72,10 @@ class UniquePrimaryKeyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest';
-    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest\UniquePrimaryKeyBusinessModelManager';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest\UniquePrimaryKeyBusinessModelManager';
     UniquePrimaryKeyBusinessModelManager::reset();
-    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->recordName = Str::set('SimpleRecord');
     $this->associatedRecord = $this->modelManager->getBusinessModel(

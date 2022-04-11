@@ -86,9 +86,9 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   /**
    * Interprets HTTP and constructs new Request based on current context.
    * PRECONDITIONS
-   * - SETTING::$RAMPE_BUSINESS_MODEL_MANAGER MUST be set.
+   * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and
-   * limits as defined by local business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
+   * limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
  */
   public function __construct()
   {

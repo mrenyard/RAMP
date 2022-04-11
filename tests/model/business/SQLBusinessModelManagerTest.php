@@ -88,19 +88,19 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
-    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
-    SETTING::$DATABASE_CONNECTION = 'sqlite:/usr/share/php/' . str_replace('\\', '/', SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE) . '/database.db';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
+    SETTING::$DATABASE_CONNECTION = 'sqlite:/usr/share/php/' . str_replace('\\', '/', SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE) . '/database.db';
     SETTING::$DATABASE_MAX_RESULTS = 4;
     $recordName = 'MockRecord';
-    $recordFullName = SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
+    $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $this->primaryKeyName = $recordFullName::primaryKeyName();
     $this->recordName = Str::set($recordName);
     $this->recordKey = Str::set('key');
     $this->collection = Str::set('Collection');
     $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
     copy($DIR . '/database_copy.db', $DIR . '/database.db') or die("Unable to copy database.");
-    $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->testObject = $MODEL_MANAGER::getInstance();
     \ChromePhp::clear();
   }
@@ -160,7 +160,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $newRecord);
     $this->assertInstanceOf('\ramp\model\business\Record', $newRecord);
     $this->assertInstanceOf(
-      (string)$this->recordName->prepend(Str::set('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')),
+      (string)$this->recordName->prepend(Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')),
       $newRecord
     );
     $this->assertTrue($newRecord->isNew);
@@ -251,7 +251,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $storedRecord);
     $this->assertInstanceOf('\ramp\model\business\Record', $storedRecord);
     $this->assertInstanceOf(
-      (string)$this->recordName->prepend(Str::set('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')),
+      (string)$this->recordName->prepend(Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')),
       $storedRecord
     );
     $this->assertFalse($storedRecord->isNew);
@@ -405,7 +405,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $all);
     $this->assertInstanceOf(
       (string)$this->recordName->prepend(
-        Str::set('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')
+        Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')
       )->append($this->collection),
       $all
     );
@@ -417,7 +417,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     foreach ($all as $record)
     {
       $i++;
-      $this->assertInstanceOf('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
+      $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . $i, $record->property->value);
       $expectedValueOfA = ($i != 1)? ($i % 2 != 0)? 'valueA' : 'Avalue' : 'newValue';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);
@@ -441,7 +441,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     foreach ($filtered as $record)
     {
       $i++;
-      $this->assertInstanceOf('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
+      $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . ($i * 2), $record->property->value);
       $this->assertSame('Avalue', $record->propertyA->value);
       $expectedValueOfB = ($i == 1)? 'newValueB' : 'valueB';
@@ -457,7 +457,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $allFrom);
     $this->assertInstanceOf(
       (string)$this->recordName->prepend(
-        Str::set('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\')
+        Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')
       )->append($this->collection),
       $allFrom
     );
@@ -469,7 +469,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     foreach ($allFrom as $record)
     {
       $i++;
-      $this->assertInstanceOf('\\' . SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
+      $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . $i, $record->property->value);
       $expectedValueOfA = ($i % 2 != 0)? 'valueA' : 'Avalue';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);

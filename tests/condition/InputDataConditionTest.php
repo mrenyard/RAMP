@@ -65,7 +65,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\InputDataConditionTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\InputDataConditionTest';
     $this->primaryKeyValue = Str::set('key');
     $this->record = Str::set('Record');
     $this->property = Str::set('property');

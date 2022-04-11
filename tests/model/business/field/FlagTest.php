@@ -81,7 +81,7 @@ class FlagTest extends \PHPUnit\Framework\TestCase
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
     $this->testObject = new Flag(Str::set('aProperty'), $this->mockRecord);
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FlagTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FlagTest';
   }
 
   /**

@@ -51,7 +51,7 @@ class AuthenticationForm extends document\Templated
       RootView::getInstance(),
       Str::set('body')
     );
-    $body->title = Str::set('Login ' . \ramp\SETTING::$RAMPE_DOMAIN);
+    $body->title = Str::set('Login ' . \ramp\SETTING::$RAMP_DOMAIN);
     parent::__construct($body, Str::set('authentication-form'));
     $this->title = Str::set($errorMessage);
     $this->style = Str::set('dialogue-only');

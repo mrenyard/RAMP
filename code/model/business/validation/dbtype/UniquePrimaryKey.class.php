@@ -76,7 +76,7 @@ class UniquePrimaryKey extends ValidationRule
   protected function test($value)
   {
     $pkName = (string)$this->associatedRecord->primaryKeyName();
-    $MODEL_MANAGER = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $modelManager = $MODEL_MANAGER::getInstance();
     $this->associatedRecord->setPropertyValue($pkName, $value);
     try {

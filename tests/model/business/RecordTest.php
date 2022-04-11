@@ -84,7 +84,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
     $this->testObjectPropertyCount = 3;
     $this->dataObject = new \stdClass();
     $this->testObject = new ConcreteRecord($this->dataObject);

@@ -64,7 +64,7 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterConditionTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterConditionTest';
     $this->record = Str::set('Record');
     $this->property = Str::set('property');
     $this->comparable = 'GOOD';

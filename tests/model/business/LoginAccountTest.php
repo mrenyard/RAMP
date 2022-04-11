@@ -90,10 +90,10 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
-    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
-    SETTING::$RAMPE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
+    SETTING::$RAMP_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     $this->dataObject = new \stdClass();
     $this->testObject = new LoginAccount($this->dataObject);
     $this->testObjectCollection = new LoginAccountCollection();

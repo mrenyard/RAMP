@@ -114,10 +114,10 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     SETTING::$TEST_ON = TRUE;
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
-    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
     SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
-    SETTING::$RAMPE_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
+    SETTING::$RAMP_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     self::$sessionLoginAccountEmail = 'a.person@domain.com';
     self::$unencryptedPassword = 'P@ssw0rd!';
     if (!isset(self::$ref))

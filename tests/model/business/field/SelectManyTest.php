@@ -79,8 +79,8 @@ class SelectManyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_LOCAL_DIR = '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/';
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
+    SETTING::$RAMP_LOCAL_DIR = '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
     $this->options = new Collection();
     $this->option0 = new Option(0, Str::set('Select from:'));
     $this->option1 = new Option(1, Str::set('First child'));

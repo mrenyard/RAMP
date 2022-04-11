@@ -59,14 +59,14 @@ class BadPDOConnectionTest extends \PHPUnit\Framework\TestCase
   public function testBadConnection()
   {
     \ChromePhp::clear();
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
-    SETTING::$RAMPE_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
     SETTING::$DATABASE_CONNECTION = 'mysql:host=localhost;dbname=notDB';
     SETTING::$DATABASE_PASSWORD = 'notpassword';
     SETTING::$DATABASE_USER = 'notroot';
     SETTING::$DATABASE_MAX_RESULTS = 4;
     try {
-      $MODEL_MANAGER = SETTING::$RAMPE_BUSINESS_MODEL_MANAGER;
+      $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
       $testObject = $MODEL_MANAGER::getInstance();
       $testObject->getBusinessModel(new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('key1')));
     } catch (\PDOException $expected) {

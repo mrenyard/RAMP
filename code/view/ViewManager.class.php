@@ -33,7 +33,7 @@ class ViewManager extends RAMPObject {
    */
   public static function getView(Request $request)
   {
-    //require_once(RAMPE_LOCAL_DIR . RAMPE_SITE_VIEWS . '.php');
+    //require_once(RAMP_LOCAL_DIR . RAMP_SITE_VIEWS . '.php');
 
     /*$viewFunc = str_replace('/', '_', trim((string)$request->resourceIdentifier, '/'));
     \FB::log($viewFunc, 'VIEW');

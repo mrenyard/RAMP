@@ -63,7 +63,7 @@ class MockBusinessModelManager extends BusinessModelManager
    *  - \ramp\SETTING::$DATABASE_USER
    *  - \ramp\SETTING::$DATABASE_PASSWORD
    *  - \ramp\SETTING::$DATABASE_MAX_RESULTS
-   *  - \ramp\SETTING::$RAMPE_MODEL_NAMESPACE
+   *  - \ramp\SETTING::$RAMP_MODEL_NAMESPACE
    * POSTCONDITIONS
    * - ensures default values set on relavant properties
    * @return \ramp\model\business\BusinessModelManager Single instance of BusinessModelManager

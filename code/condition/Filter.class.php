@@ -29,11 +29,11 @@ use ramp\condition\SQLEnvironment;
 /**
  * Collection of verified filters for filtering collections of \ramp\model\business\Records.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
  * - Collection of {@link \ramp\condition\FilterCondition}s
@@ -48,7 +48,7 @@ final class Filter extends Collection
    * Constructs an empty collection for \ramp\condition\FilterCondition.
    * A collection of verified filters for filtering collections of {@link \ramp\model\business\Record}s
    * - restricted and evaluated by the constraints of your business model
-   *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+   *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct()
   {
@@ -62,7 +62,7 @@ final class Filter extends Collection
    * against RecordCollection
    * @throws \LengthException when $filters is empty
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (RAMPE_BUESINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMP_BUESINESS_MODEL_NAMESPACE)
    */
   public static function build(Str $recordName, array $filters) : Filter
   {

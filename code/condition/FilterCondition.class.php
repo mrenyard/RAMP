@@ -27,13 +27,13 @@ use ramp\core\PropertyNotSetException;
 /**
  * Single representation of a verified filter for filtering \ramp\model\business\Records.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMPE_BUSINESS_MODEL_NAMESPACE)
+ *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Enforce 'equal to' operator as the primary operation.
  * - Set defaults target environment as {@link \ramp\condition\SQLEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
- *    defined within RAMPE_BUSINESS_MODEL_NAMESPACE.
+ *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
  * - {@link \ramp\condition\BusinessCondition}
@@ -52,7 +52,7 @@ final class FilterCondition extends BusinessCondition
    * @param mixed $comparable Value to be compared
    * @param \ramp\condition\Operator $operator Operation to perform, default EQUAL_TO
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (RAMPE_BUSINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct(Str $record, Str $property, $comparable = null, Operator $operator = null)
   {
@@ -70,14 +70,14 @@ final class FilterCondition extends BusinessCondition
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via ramp.ini):
-   *  - SETTING::RAMPE_BUSINESS_MODEL_NAMESPACE
+   *  - SETTING::RAMP_BUSINESS_MODEL_NAMESPACE
    * @param mixed $value Value to be compared
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
    * @link ramp.model.business.Property#method_processValidationRules \ramp\model\business\Property::processValidationRules()
    */
   protected function set_comparable($value)
   {
-    $recordClassName = \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
+    $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
     $recordClass = new $recordClassName();
     $propertyName = (string)$this->property;
     $propertyClass = $recordClass->$propertyName;

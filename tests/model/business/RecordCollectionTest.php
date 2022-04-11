@@ -80,7 +80,7 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordCollectionTest';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordCollectionTest';
     $this->children = new Collection();
     $this->testObject = new TestRecordCollection();
     $this->child1Data = new \stdClass();

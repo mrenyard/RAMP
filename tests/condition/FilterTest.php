@@ -67,7 +67,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
-    \ramp\SETTING::$RAMPE_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterTest';
     $this->record = Str::set('Record');
     $this->goodArray = array(
       'property-a' => 'valueA',
