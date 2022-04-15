@@ -606,14 +606,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert a password has been auto generated for loginAccount.
    * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager.
    * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
-   *
+   */
   public function testAuthorizeAsNewLoginAccount()
   {
     $postArray = array(
-      'an-authenticatable-unit:new:uname' => 'user',
-      'an-authenticatable-unit:new:email' => 'correct@email.com',
-      'an-authenticatable-unit:new:family-name' => 'surname',
-      'an-authenticatable-unit:new:given-name' => 'name'
+      'an-authenticatable-unit:new:uname' => 'aperson',
+      'an-authenticatable-unit:new:email' => 'aperson@domain.com',
+      'an-authenticatable-unit:new:family-name' => 'Person', 
+      'an-authenticatable-unit:new:given-name' => 'Ann'
     );
     $additionalPostdata = array (
       'record-name:key:property-a' => 'valueA',
@@ -623,7 +623,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION = array();
     $_POST = $postArray;
     $_POST += $additionalPostdata;
-    $_POST['login-email'] = 'correct@email.com';
+    $_POST['login-email'] = 'aperson@domain.com';
     SETTING::$TEST_RESET_SESSION = TRUE;
     $testObject = Session::getInstance();
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
@@ -632,17 +632,17 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($_SESSION['post_array']));
     $this->assertTrue(isset($_SESSION['loginAccount']));
     $this->assertTrue($_SESSION['loginAccount']->isValid);
-    $this->assertSame('correct@email.com', $_SESSION['loginAccount']->email->value);
-    $this->assertSame('user', $_SESSION['loginAccount']->auPK->value);
-    $this->assertSame('user', $_SESSION['loginAccount']->uname->value);
-    $this->assertSame('surname', $_SESSION['loginAccount']->familyName->value);
-    $this->assertSame('name', $_SESSION['loginAccount']->givenName->value);
+    $this->assertSame('aperson@domain.com', $_SESSION['loginAccount']->email->value);
+    $this->assertSame('aperson', $_SESSION['loginAccount']->auPK->value);
+    $this->assertSame('aperson', $_SESSION['loginAccount']->uname->value);
+    $this->assertSame('Person', $_SESSION['loginAccount']->familyName->value);
+    $this->assertSame('Ann', $_SESSION['loginAccount']->givenName->value);
     $this->assertSame(
       crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:user']));
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:user']));
-  }*/
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
+  }
 }

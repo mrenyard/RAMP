@@ -237,12 +237,12 @@ class LoginAccount extends Record
     $this->setPropertyValue('email', $au->getPropertyValue('email'));
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
-    /*if ($this->isValid && $au->isValid) {
+    if ($this->isValid && $au->isValid) {
       $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
       $modelManager->update($au);
       $modelManager->update($this);
-    }*/
+    }
   }
 
   /**

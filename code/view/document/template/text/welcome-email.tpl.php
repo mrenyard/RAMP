@@ -20,7 +20,7 @@
  * @version 0.0.9;
  */
 ?>
-Dear <?=$this->honorificPrefix->value; ?> <?=$this->givenName->value; ?> <?=$this->familyName->value; ?>,
+Dear <?=$this->givenName->value; ?> <?=$this->familyName->value; ?>,
 
 Welcome to RAMP the Rapid web application development environment for building accessible, flexible, customisable web systems using the LAMP development Stack.
 

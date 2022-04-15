@@ -71,7 +71,7 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   public function testGetSet_id()
   {
     $value = $this->testObject->id;
-    $this->assertEquals('uid' . self::$NEXT_ID, (string)$value);
+    $this->assertEquals('uid' . self::$NEXT_ID, $value);
     $this->assertInstanceOf('\ramp\core\Str', $value);
     $testObject2 = new DocumentModel();
     self::$NEXT_ID++;

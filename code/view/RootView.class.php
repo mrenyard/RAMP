@@ -43,6 +43,11 @@ final class RootView extends View
     return self::$instance;
   }
 
+  public static function clear()
+  {
+    if (isset(self:: $instance)) { unset(self:: $instance); }
+  }
+
   /**
    * Prevent setting of Model.
    * @throws \BadMethodCallException SHOULD NOT USE THIS METHOD

@@ -40,7 +40,7 @@ use ramp\model\Model;
  */
 class DocumentModel extends Model
 {
-  private static $NEXT_ID = 1;
+  private static $NEXT_ID = 0;
 
   private $id;
   private $title;

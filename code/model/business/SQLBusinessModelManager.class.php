@@ -97,7 +97,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       } catch (\PDOException $pdoException) {
         $count++;
         sleep($count);
-        \ChromePhp::log('Database Connection FAILED - Retryed after '.$count.'second(s)');
+        if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::log('Database Connection FAILED - Retryed after '.$count.'second(s)'); }
       }
     } while ($count < 3);
     throw $pdoException; // @codeCoverageIgnoreEnd
