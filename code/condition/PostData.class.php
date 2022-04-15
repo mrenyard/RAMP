@@ -57,7 +57,6 @@ final class PostData extends Collection
     $postData = new PostData();
     foreach ($postdata as $name => $value)
     {
-      \ChromePhp::log('$name: ' . $name);
       $URN = explode(':', $name);
       if (count($URN) !== 3) {
         throw new \DomainException(
