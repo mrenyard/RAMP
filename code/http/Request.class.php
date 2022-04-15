@@ -16,7 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package ramp
+ * @package RAMP
  * @version 0.0.9;
  */
 namespace ramp\http;
@@ -181,8 +181,11 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    */
   public function get_recordKey() : ?Str
   {
-    if (($this->recordKey == '~') && $_SESSION['loginAccount']->isValid) {
-      return Str::set($_SESSION['loginAccount']->auPK->value);
+    if ($this->recordKey == '~') {
+      if (isset($_SESSION['loginAccount']) && $_SESSION['loginAccount']->isValid) {
+        return Str::set($_SESSION['loginAccount']->auPK->value);
+      }
+      return Str::set('new');
     }
     return $this->recordKey;
   }

@@ -16,7 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package ramp
+ * @package RAMP
  * @version 0.0.9;
  */
 namespace ramp\condition;
@@ -57,6 +57,7 @@ final class PostData extends Collection
     $postData = new PostData();
     foreach ($postdata as $name => $value)
     {
+      \ChromePhp::log('$name: ' . $name);
       $URN = explode(':', $name);
       if (count($URN) !== 3) {
         throw new \DomainException(

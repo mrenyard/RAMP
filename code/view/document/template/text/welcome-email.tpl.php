@@ -16,17 +16,17 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package ramp
+ * @package RAMP
  * @version 0.0.9;
  */
 ?>
 Dear <?=$this->honorificPrefix->value; ?> <?=$this->givenName->value; ?> <?=$this->familyName->value; ?>,
 
-Welcome to RAMP the CMS with get up and go.
+Welcome to RAMP the Rapid web application development environment for building accessible, flexible, customisable web systems using the LAMP development Stack.
 
  - Your password is: <?=$this->unencryptedPassword; ?>
 
 
-Yours,
+We hope you enjoy using our framwork.
 
 The RAMP Admin Team.

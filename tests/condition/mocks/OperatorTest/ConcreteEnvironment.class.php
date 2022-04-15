@@ -4,7 +4,7 @@
  *  flexible, customisable web systems.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package ramp
+ * @package RAMP
  * @version 0.0.9;
  */
 namespace tests\ramp\condition\mocks\OperatorTest;

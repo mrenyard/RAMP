@@ -27,8 +27,8 @@ use ramp\http\Request;
 
 /**
  */
-class ViewManager extends RAMPObject {
-
+class ViewManager extends RAMPObject 
+{
   /**
    */
   public static function getView(Request $request)

@@ -31,6 +31,16 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`AccountType` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Data for table `AccountType`
+-- -----------------------------------------------------
+INSERT INTO `AccountType` (`key`, `description`) VALUES
+(1, 'Registered'),
+(2, 'User'),
+(3, 'Affiliate'),
+(4, 'Administrator'),
+(5, 'Administrator Manager'),
+(6, 'System Administrator');
 
 -- -----------------------------------------------------
 -- Table `ramp_db`.`LoginAccount`
@@ -40,14 +50,14 @@ DROP TABLE IF EXISTS `ramp_db`.`LoginAccount` ;
 CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
   `auPK` VARCHAR(45) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
-  `typeID` INT(11) NOT NULL DEFAULT '1',
+  `accountType` INT(11) NOT NULL DEFAULT '1',
   `encryptedPassword` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`auPK`),
   UNIQUE INDEX `email` (`email` ASC) VISIBLE,
-  INDEX `fk_Account_typeID` (`typeID` ASC) VISIBLE,
+  INDEX `fk_Account_typeID` (`accountType` ASC) VISIBLE,
   UNIQUE INDEX `auPK_UNIQUE` (`auPK` ASC) VISIBLE,
   CONSTRAINT `fk_Account_typeID`
-    FOREIGN KEY (`typeID`)
+    FOREIGN KEY (`accountType`)
     REFERENCES `ramp_db`.`AccountType` (`key`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

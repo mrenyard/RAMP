@@ -16,7 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package ramp
+ * @package RAMP
  * @version 0.0.9;
  */
 namespace ramp\http;
@@ -213,12 +213,12 @@ final class Session extends RAMPObject
         $this->loginAccount = $this->modelManager->getBusinessModel(
           new SimpleBusinessModelDefinition(Str::set('LoginAccount')), $this->accountEmailFilter
         )[0];
-      } catch (\OutOfBoundsException $emailNotInDatabase) {
+      } catch (\DomainException | \OutOfBoundsException $emailNotInDatabase) {
         throw new Unauthorized401Exception('Account (email) NOT in database');
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
-        ($this->loginAccount->accountType->value->key <= $authorizationLevel)
+        ((int)$this->loginAccount->accountType->value->key < $authorizationLevel)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -256,7 +256,7 @@ final class Session extends RAMPObject
           $view = new Email(RootView::getInstance(), Str::set('welcome-email'), Str::set('text'));
           $view->title = Str::set('Welcome to RAMP - All you need, login and more...');
           $view->setModel($this->loginAccount);
-          // if (defined('DEV_MODE') && DEV_MODE) { \ChromePhp::log('Password is: ' . $this->loginAccount->getUnencryptedPassword()); }
+          if (defined('DEV_MODE') && DEV_MODE) { \ChromePhp::log('Password is: ' . $this->loginAccount->getUnencryptedPassword()); }
           $this->modelManager->updateAny();
           $_SESSION['loginAccount'] = $this->loginAccount;
           if (isset($_SESSION['post_array'])) // reset $_POST
