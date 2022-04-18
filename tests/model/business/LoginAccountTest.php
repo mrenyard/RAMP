@@ -258,7 +258,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    * - assert throws {@link \BadMethodCallException} when called on existing (NOT isNew) LoginAccount
    *  - with massage *'Method NOT allowed on existing LoginAccount!'*
    * @link ramp.model.business.LoginAccount#method_populateAsNew ramp\model\business\LoginAccount::populateAsNew()
-   *
+   */
   public function testPopulateAsNew()
   {
     $_POST = array(
@@ -274,7 +274,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('a.person@domain.com', $this->dataObject->email);
     $this->assertEquals(1, $this->dataObject->accountType);
     $this->assertRegExp(
-      "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{8}$/",
+      "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{12}$/",
       $this->testObject->getUnencryptedPassword()
     );
     $this->assertSame(
@@ -295,5 +295,5 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised.');
-  }*/
+  }
 }
