@@ -25,10 +25,29 @@ use ramp\core\Str;
 use ramp\view\View;
 
 /**
+ * Email like Templated view includes composite DocumentModel and path (location)
+ * with template (file name) used as view definition on render() and send.
+ * 
+ * RESPONSIBILITIES
+ * - Sends an email to provided recipient.  
+ * - Manages definition of Template to be used as view (fragment) for presentation.  
+ * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+ * - Provide Decorator pattern implementation
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
+ * 
+ * COLLABORATORS
+ * - Template used to define view to render and send (.tpl.php)
+ *   - (RAMP\code|local\ramp)\view\document\template\(text|html|pdf)\[...].tpl.php
+ * - {@link \ramp\view\View}
+ * - {@link \ramp\model\business\BusinessModel}
+ * - {@link \ramp\model\document\DocumentModel}
  */
-final class Email extends Templated {
-
+final class Email extends Templated
+{
   /**
+   * Render and send via email relevant output.
+   * Combining data (@link \ramp\model\business\BusinessModel) and (@link \ramp\model\document\DocumentModel)
+   * with defined presentation as defined in referenced template file (.tpl.php).
    */
   final public function render()
   {
