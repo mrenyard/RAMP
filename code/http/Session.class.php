@@ -253,9 +253,12 @@ final class Session extends RAMPObject
         if ($authorizationLevel == LoginAccountType::REGISTERED())
         {
           $this->loginAccount->populateAsNew(PostData::build($_POST));
-          // TODO:mrenyard: SETTING for welcome email and Title
-          $view = new Email(RootView::getInstance(), Str::set('welcome-email'), Str::set('text'));
-          $view->title = Str::set('Welcome to RAMP - All you need, login and more...');
+          $view = new Email(
+            RootView::getInstance(),
+            Str::set(SETTING::$EMAIL_WELCOME_TEMPLATE),
+            Str::set(SETTING::$EMAIL_WELCOME_TEMPLATE_TYPE)
+          );
+          $view->title = Str::set(SETTING::$EMAIL_WELCOME_SUBJECT_LINE);
           $view->setModel($this->loginAccount);
           $_SESSION['loginAccount'] = $this->loginAccount;
           if (isset($_SESSION['post_array'])) // reset $_POST

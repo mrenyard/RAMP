@@ -71,7 +71,6 @@ require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
 require_once '/usr/share/php/ramp/view/document/Email.class.php';
 
-require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/HeaderFunctions.php';
 require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
 require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/RecordName.class.php';
@@ -114,10 +113,15 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     SETTING::$TEST_ON = TRUE;
+    SETTING::$RAMP_LOCAL_DIR='/home/mrenyard/Projects/RAMP/tests/http/mocks/SessionTest/';
+    set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path() );
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='ramp\model\business';
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\http\mocks\SessionTest\model\business\MockBusinessModelManager';
-    SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
     SETTING::$RAMP_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
+    SETTING::$SECURITY_PASSWORD_SALT = 'A hard days night!';
+    SETTING::$EMAIL_WELCOME_TEMPLATE = 'welcome-email';
+    SETTING::$EMAIL_WELCOME_TEMPLATE_TYPE = 'text';
+    SETTING::$EMAIL_WELCOME_SUBJECT_LINE = 'Welcome to RAMP - All you need, login and more...';
     self::$sessionLoginAccountEmail = 'a.person@domain.com';
     self::$unencryptedPassword = 'P@ssw0rd!';
     if (!isset(self::$ref))

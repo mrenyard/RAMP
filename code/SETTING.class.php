@@ -118,6 +118,25 @@ class SETTING
   public static $EMAIL_REPLY_ADDRESS;
 
   /**
+   * Templete for the welcome email.
+   * Sent at regisitration includes login details and
+   * enencripted auto generated password
+   */
+  public static $EMAIL_WELCOME_TEMPLATE;
+
+  /**
+   * Welcome email template type.
+   * one of (html | text)
+   */
+  public static $EMAIL_WELCOME_TEMPLATE_TYPE;
+
+  /**
+   * Welcome email subject line.
+   * The single line of text people see when they receive your email.
+   */
+  public static $EMAIL_WELCOME_SUBJECT_LINE;
+
+  /**
    * Boolean flag for testing mode.
    */
   public static $TEST_ON;

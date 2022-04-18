@@ -51,6 +51,7 @@
 ; e.g. Person or Organisation
 ;authenticatible_unit =
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Model Manager Database Setting
 [database]
@@ -100,3 +101,19 @@
 ; 'Reply' to e-mail address
 ; e.g. enquires@domain.com
 ;reply_address =
+
+; Templete for the welcome email
+; sent at regisitration
+; includes login details and
+; enencripted auto generated password
+;welcome_template =
+
+; Welcome email template type
+; one of (html | text) 
+;welcome_template_type =
+
+; Welcome email subject line.
+; The single line of text people see when they receive your email.
+; This one line of text can often determine whether an email is opened
+; or sent straight to trash, so make sure it's optimized toward your audience.
+;welcome_subject_line =
