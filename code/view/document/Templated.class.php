@@ -115,7 +115,7 @@ class Templated extends DocumentView
 
   /**
    * Render relevant output.
-   * Combining data (@link \ramp\model\business\BusinessModel) and (@link \ramp\model\document\DocumentModel)
+   * Combining data {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
   public function render()
