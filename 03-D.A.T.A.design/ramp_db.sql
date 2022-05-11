@@ -21,9 +21,9 @@ USE `ramp_db` ;
 -- -----------------------------------------------------
 -- Table `ramp_db`.`AccountType`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ramp_db`.`AccountType` ;
+DROP TABLE IF EXISTS `ramp_db`.`LoginAccountType` ;
 
-CREATE TABLE IF NOT EXISTS `ramp_db`.`AccountType` (
+CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccountType` (
   `key` INT(11) NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`key`),
@@ -34,7 +34,7 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Data for table `AccountType`
 -- -----------------------------------------------------
-INSERT INTO `AccountType` (`key`, `description`) VALUES
+INSERT INTO `LoginAccountType` (`key`, `description`) VALUES
 (1, 'Registered'),
 (2, 'User'),
 (3, 'Affiliate'),
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
   `encryptedPassword` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`auPK`),
   UNIQUE INDEX `email` (`email` ASC) VISIBLE,
-  INDEX `fk_Account_typeID` (`accountType` ASC) VISIBLE,
   UNIQUE INDEX `auPK_UNIQUE` (`auPK` ASC) VISIBLE,
+  INDEX `fk_Account_typeID` (`accountType` ASC) VISIBLE,
   CONSTRAINT `fk_Account_typeID`
     FOREIGN KEY (`accountType`)
     REFERENCES `ramp_db`.`AccountType` (`key`)
@@ -71,15 +71,44 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `ramp_db`.`Country` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`Country` (
-  `nid` INT(3) NOT NULL,
   `code` VARCHAR(2) NOT NULL,
   `name` VARCHAR(45) NOT NULL,
-  `sageCode` VARCHAR(5) NULL DEFAULT NULL,
   PRIMARY KEY (`code`),
-  UNIQUE INDEX `code` (`code` ASC) VISIBLE,
-  UNIQUE INDEX `nid` (`nid` ASC) VISIBLE)
+  UNIQUE INDEX `code` (`code` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Data for table `Country`
+-- -----------------------------------------------------
+INSERT INTO `Country` (`code`, `name`) VALUES
+('AT', 'AUSTRIA'),
+('BE', 'BELGIUM'),
+('HR', 'CROATIA'),
+('CY', 'CYPRUS'),
+('CZ', 'CZECH REPUBLIC'),
+('DK', 'DENMARK'),
+('EE', 'ESTONIA'),
+('FI', 'FINLAND'),
+('FR', 'FRANCE'),
+('DE', 'GERMANY'),
+('GR', 'GREECE'),
+('HU', 'HUNGARY'),
+('IS', 'ICELAND'),
+('IE', 'IRELAND'),
+('IT', 'ITALY'),
+('LV', 'LATVIA'),
+('LT', 'LITHUANIA'),
+('LU', 'LUXEMBOURG'),
+('MT', 'MALTA'),
+('NL', 'NETHERLANDS'),
+('PL', 'POLAND'),
+('SK', 'SLOVAKIA'),
+('SI', 'SLOVENIA'),
+('ES', 'SPAIN'),
+('SE', 'SWEDEN'),
+('TR', 'TURKEY'),
+('UK', 'UNITED KINGDOM');
 
 
 -- -----------------------------------------------------
@@ -94,22 +123,39 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `givenName` VARCHAR(45) NULL DEFAULT NULL,
   `additionalNames` VARCHAR(45) NULL DEFAULT NULL,
   `familyName` VARCHAR(45) NULL DEFAULT NULL,
+  `honorificSuffix` VARCHAR(45) NULL DEFAULT NULL,
+  `postalAddressCode` VARCHAR(45) NULL DEFAULT NULL,
+  `primaryPhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`uname`),
+  UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Table `ramp_db`.`Address`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ramp_db`.`Address` ;
+
+CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
   `postOfficeBox` VARCHAR(45) NULL DEFAULT NULL,
+  `extendedAddress` VARCHAR(45) NOT NULL,
   `streetAddress` VARCHAR(45) NULL DEFAULT NULL,
-  `extendedAddress` VARCHAR(45) NULL DEFAULT NULL,
   `locality` VARCHAR(45) NULL DEFAULT NULL,
   `region` VARCHAR(45) NULL DEFAULT NULL,
-  `postalCode` VARCHAR(45) NULL DEFAULT NULL,
-  `country` VARCHAR(2) NULL DEFAULT NULL,
-  `telephone` VARCHAR(45) NULL DEFAULT NULL,
-  `mobile` VARCHAR(45) NULL DEFAULT NULL,
-  `fax` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`uname`),
-  INDEX `fk_Person_country` (`country` ASC) VISIBLE,
-  UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  CONSTRAINT `fk_Person_country`
-    FOREIGN KEY (`country`)
+  `postalCode` VARCHAR(45) NOT NULL,
+  `countryCode` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`countryCode`,`postalCode`,`extendedAddress`),
+  INDEX `fk_address_countryCode` (`countryCode` ASC) VISIBLE,
+  INDEX `fk__address_postalCode` (`postalCode` ASC) VISIBLE,
+  INDEX `fk__address_extendedAddress` (`extendedAddress` ASC) VISIBLE,
+  CONSTRAINT `fk_Address_country`
+    FOREIGN KEY (`countryCode`)
     REFERENCES `ramp_db`.`Country` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
