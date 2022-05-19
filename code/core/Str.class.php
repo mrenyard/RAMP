@@ -27,6 +27,7 @@ namespace ramp\core;
  * RESPONSIBILITIES
  * - Act as strongly typed Str class for type checking.
  * - Keep single referance to a set of simple regularly used strings.
+ * - Provide an API for set of simple Str based functions.
  *
  * INVARIANT
  * - State of *this* is always unchanged (all operations return an existing or new Str)
@@ -218,7 +219,7 @@ final class Str extends RAMPObject
       // cannot hyphenate an empty string
       return $value;
     }
-    $value = preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0 ', $value);
+    $value = preg_replace('/(([A-Z])[a-z]+)/', ' $0 ', $value);
     $value = strtolower(trim(preg_replace('/\s+/', '-', $value), '-'));
     return Str::set($value);
   }
