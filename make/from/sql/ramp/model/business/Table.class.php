@@ -15,65 +15,68 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.make
  * @version 0.0.9;
  */
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\iOption;
+use ramp\core\Collection;
 use ramp\core\StrCollection;
-use ramp\model\business\RecordCollection;
 use ramp\model\business\Record;
+use ramp\model\business\RecordCollection;
 
 /**
- * Collection of Coutry.
+ * Collection of Table.
  */
-class CountryCollection extends RecordCollection { }
+class TableCollection extends RecordCollection { }
 
 /**
- * Concrete Record for Country.
+ * Concrete Record for Table.
  */
-class Country extends Record
+class Table extends Record
 {
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('code'); }
+  static public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
 
-  protected function get_code() : field\Input
-  {
-    if (!isset($this['code']))
-    {
-      $this['code'] = new field\Input(
-        Str::set('code'),
-        $this,
-        new validation\dbtype\VarChar(
-          2,
-          new validation\Alphanumeric(),
-          Str::set('Please provide a valid 2 digit country code')
-        )
-      );
+  protected function get_primaryKeyName() : string
+  { 
+    $a = array();
+    foreach ($this as $property) {
+      if ($property->key == 'PRI') {
+        $a[] = $property->name;
+      }
     }
-    return $this['code'];
+    return implode('|', $a);
   }
 
-  protected function get_name() : field\Input
+  protected function get_name() : string
   {
-    if (!isset($this['name']))
-    {
-       $this['name'] = new field\Input(
-          Str::set('name'),
-          $this,
-          new validation\dbtype\VarChar(
-            45,
-            new validation\Alphanumeric(),
-            Str::set('Please provide a country name!')
-          )
-      );
+    return $this->getPropertyValue('TABLE_NAME');
+  }
+
+  protected function get_requiered() : ColumnCollection
+  {
+    $oCollection = new ColumnCollection();
+    foreach ($this as $property) {
+      if (!$property->isNullable) {
+        $oCollection->add($property);
+      }
     }
-    return $this['name'];
+    return $oCollection;
+  }
+
+  /**
+   * ArrayAccess method offsetSet, SPECIAL PASS.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object RAMPObject to be placed at provided index.
+   */
+  public function offsetSet($offset, $object)
+  {
+    @parent::offsetSet($offset, $object);
   }
 
   /**
@@ -84,8 +87,7 @@ class Country extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->code) &&
-      isset($dataObject->name)
+      isset($dataObject->TABLE_NAME)
     );
   }
 }

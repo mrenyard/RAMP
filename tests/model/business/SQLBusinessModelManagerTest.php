@@ -25,6 +25,7 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
@@ -46,6 +47,7 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/MultiPartPrimary.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
@@ -54,13 +56,13 @@ require_once '/usr/share/php/ramp/model/business/FailedValidationException.class
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/UniquePrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
 
 require_once '/usr/share/php/tests/ramp/ChromePhp.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest/BadRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest/MockRecordMultiKey.class.php';
 
 use ramp\SETTING;
 use ramp\core\Str;
@@ -68,15 +70,18 @@ use ramp\condition\Filter;
 use ramp\condition\PostData;
 use ramp\model\business\SQLBusinessModelManager;
 use ramp\model\business\SimpleBusinessModelDefinition;
+use ramp\model\business\DataWriteException;
 
 use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\BadRecord;
 use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\MockRecord;
+use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\MockRecordMultiKey;
 
 /**
  * Collection of tests for \ramp\model\business\SQLBusinessModelManager.
  */
 class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
 {
+  // private static $LOCK = FALSE;
   private $testObject;
   private $recordName;
   private $recordKey;
@@ -88,18 +93,17 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
+    $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
+    \copy($DIR . '/copy_database.db', $DIR . '/database.db');
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\SQLBusinessModelManagerTest';
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'ramp\model\business\SQLBusinessModelManager';
     SETTING::$DATABASE_CONNECTION = 'sqlite:/usr/share/php/' . str_replace('\\', '/', SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE) . '/database.db';
     SETTING::$DATABASE_MAX_RESULTS = 4;
     $recordName = 'MockRecord';
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    $this->primaryKeyName = $recordFullName::primaryKeyName();
     $this->recordName = Str::set($recordName);
     $this->recordKey = Str::set('key');
     $this->collection = Str::set('Collection');
-    $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
-    copy($DIR . '/database_copy.db', $DIR . '/database.db') or die("Unable to copy database.");
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->testObject = $MODEL_MANAGER::getInstance();
     \ChromePhp::clear();
@@ -186,15 +190,20 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       'mock-record:new:propertyC' => 'valueC'
     );
     $newRecord->validate(PostData::build($_POST));
+    $this->assertTrue($newRecord->isValid);
+    $this->assertTrue($newRecord->isModified);
+    $this->assertTrue($newRecord->isNew);
+    \ChromePhp::clear();
+    $this->testObject->update($newRecord);
     $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $this->recordName .
       ' (property, propertyA, propertyB, propertyC) ' .
       'VALUES (:property, :propertyA, :propertyB, :propertyC)';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
     $expectedLog2 = 'LOG:values: key, valueA, valueB, valueC';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
-    $this->assertFalse($newRecord->isNew);
     $this->assertTrue($newRecord->isValid);
     $this->assertFalse($newRecord->isModified);
+    $this->assertFalse($newRecord->isNew);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->property);
     $this->assertSame('key', $newRecord->property->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyA);
@@ -213,6 +222,98 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       'WHERE property=:property';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
     $expectedLog2 = 'LOG:values: key, valueA, valueB, valueC';
+    $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
+   * where provided iBusinessModelDefinition::$recordKey equals 'new'.
+   * - assert no SQL statement logged with \ChromePhp (Logger) as is 'new'
+   * - assert returned is instance of {@link \ramp\model\Model}
+   * - assert returned is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert returned is instance of {@link \ramp\model\business\Record}
+   * - assert returned record is instance of provided argument iBusinessModelDefinition::$recordName
+   * - assert returns fresh Record is instance of provided argument iBusinessModelDefinition::$recordName
+   * - assert state of returned Record (isNew, isValid and isModified) is as expected
+   * - assert properties of record are instance of {@link \ramp\model\business\field\Field}
+   * - assert each property's field\Field::$value returns NULL
+   * - assert state of Record its properties, as well as hasErrors, isNew, isValid and
+   *   isModified have changed as expected following population via Record::validate(PostData)
+   * - assert expected INSERT SQL statements logged with \ChromePhp (Logger) following
+   *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
+   * - assert state of Record (isNew, isValid and isModified) is as expected following
+   *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
+   * @link ramp.model.business.SQLBusinessModelManager#method_getBusinessModel ramp\model\business\SQLBusinessModelManager::getBusinessModel()
+   */
+  public function testGetBusinessModelNewRecordMultipartPrimaryKey()
+  {
+    $recordName = Str::set('MockRecordMultiKey');
+    $newRecord = $this->testObject->getBusinessModel(
+      new SimpleBusinessModelDefinition($recordName, Str::set('new'))
+    );
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    $this->assertInstanceOf('\ramp\model\Model', $newRecord);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $newRecord);
+    $this->assertInstanceOf('\ramp\model\business\Record', $newRecord);
+    $this->assertInstanceOf(
+      (string)$recordName->prepend(Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')),
+      $newRecord
+    );
+    $this->assertTrue($newRecord->isNew);
+    $this->assertFalse($newRecord->isValid);
+    $this->assertFalse($newRecord->isModified);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyA);
+    $this->assertNull($newRecord->propertyA->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyB);
+    $this->assertNull($newRecord->propertyB->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyC);
+    $this->assertNull($newRecord->propertyC->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyD);
+    $this->assertNull($newRecord->propertyD->value);
+    $this->testObject->updateAny();
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    $this->assertTrue($newRecord->isNew);
+    $this->assertFalse($newRecord->isValid);
+    $this->assertFalse($newRecord->isModified);
+    $_POST = array(
+      'mock-record-multi-key:new:property-a' => 'value1',
+      'mock-record-multi-key:new:property-b' => 'value2',
+      'mock-record-multi-key:new:property-c' => 'value3',
+      'mock-record-multi-key:new:property-d' => 'valueABC'
+    );
+    $newRecord->validate(PostData::build($_POST));
+    $this->assertTrue($newRecord->isModified);
+    $this->assertTrue($newRecord->isValid);
+    $this->assertTrue($newRecord->isNew);
+    \ChromePhp::clear();
+    $this->testObject->updateAny();
+    $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $recordName .
+      ' (propertyA, propertyB, propertyC, propertyD) ' .
+      'VALUES (:propertyA, :propertyB, :propertyC, :propertyD)';
+    $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
+    $expectedLog2 = 'LOG:values: value1, value2, value3, valueABC';
+    $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
+    $this->assertTrue($newRecord->isValid);
+    $this->assertFalse($newRecord->isModified);
+    $this->assertFalse($newRecord->isNew);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyA);
+    $this->assertSame('value1', $newRecord->propertyA->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyB);
+    $this->assertSame('value2', $newRecord->propertyB->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyC);
+    $this->assertSame('value3', $newRecord->propertyC->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyD);
+    $this->assertSame('valueABC', $newRecord->propertyD->value);
+    \ChromePhp::clear();
+    $this->testObject->updateAny();
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    \ChromePhp::clear();
+    $this->testObject->update($newRecord);
+    $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $recordName .' SET ' .
+      'propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC, propertyD=:propertyD ' .
+      'WHERE propertyA=:propertyA AND propertyB=:propertyB AND propertyC=:propertyC';
+    $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
+    $expectedLog2 = 'LOG:values: value1, value2, value3, valueABC';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
   }
 
@@ -244,8 +345,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $storedRecord = $this->testObject->getBusinessModel(
       new SimpleBusinessModelDefinition($this->recordName, $recordKey)
     );
-    $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName . ' WHERE ' .
-      $this->recordName . '.' . $this->primaryKeyName . ' = "' . $recordKey . '";';
+    $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName .
+      ' WHERE property' . ' = "' . $recordKey . '";';
     $this->assertSame($expectedLog, (string)\ChromePhp::getMessages()[0]);
     $this->assertInstanceOf('\ramp\model\Model', $storedRecord);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $storedRecord);
@@ -297,6 +398,88 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($storedRecord, $cachedRecord);
   }
 
+
+  /**
+   * Collection of assertions for \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
+   * where iBusinessModelDefinition::$recordKey references existing stored Record with a multipart PrimaryKey.
+   * - assert makes successful connection with data store
+   * - assert SELECT SQL statement logged with \ChromePhp (Logger) on first request as expected
+   * - assert returned is instance of {@link \ramp\model\Model}
+   * - assert returned is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert returned is instance of {@link \ramp\model\business\Record}
+   * - assert returned record is instance of provided argument iBusinessModelDefinition::$recordName
+   * - assert state of returned Record (isNew, isValid and isModified) is as expected
+   * - assert properties of Record are instance of {@link \ramp\model\business\field\Field}
+   * - assert each property's field\Field::$value of stored Record returns as stored
+   * - assert state of Record its properties, as well as hasErrors, isNew, isValid and
+   *   isModified have changed as expected following population via Record::validate(PostData).
+   * - assert expected UPDATE SQL statements logged with \ChromePhp (Logger) following
+   *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
+   * - assert state of Record (isNew, isValid and isModified) is as expected following
+   *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
+   * - assert duplicate requests (same iBusinessModelDefinition::$recordName and $recordKey)
+   *   returns referance to same Record without contacting data store
+   * @link ramp.model.business.SQLBusinessModelManager#method_getBusinessModel ramp\model\business\SQLBusinessModelManager::getBusinessModel()
+   */
+  public function testGetBusinessModelStoredRecordMultipartPrimaryKey()
+  {
+    $recordKey = Str::set('a|b|c');
+    $recordName = Str::set('MockRecordMultiKey');
+    $storedRecord = $this->testObject->getBusinessModel(
+      new SimpleBusinessModelDefinition($recordName, $recordKey)
+    );
+    $expectedLog = 'LOG:SQL: SELECT * FROM ' . $recordName .
+      ' WHERE propertyA = "a" AND propertyB = "b" AND propertyC = "c";';
+    $this->assertSame($expectedLog, (string)\ChromePhp::getMessages()[0]);
+    $this->assertInstanceOf('\ramp\model\Model', $storedRecord);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $storedRecord);
+    $this->assertInstanceOf('\ramp\model\business\Record', $storedRecord);
+    $this->assertInstanceOf(
+      (string)$recordName->prepend(Str::set('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')),
+      $storedRecord
+    );
+    $this->assertFalse($storedRecord->isNew);
+    $this->assertTrue($storedRecord->isValid);
+    $this->assertFalse($storedRecord->isModified);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyA);
+    $this->assertSame('a', $storedRecord->propertyA->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyB);
+    $this->assertSame('b', $storedRecord->propertyB->value);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyC);
+    $this->assertSame('c', $storedRecord->propertyC->value);
+    $this->assertSame('mock-record-multi-key:a|b|c', (string)$storedRecord->id);
+    \ChromePhp::clear();
+    $this->testObject->updateAny();
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    $this->assertFalse($storedRecord->isNew);
+    $this->assertTrue($storedRecord->isValid);
+    $this->assertFalse($storedRecord->isModified);
+    $_POST = array('mock-record-multi-Key:a|b|c:propertyD' => 'newValue');
+    $storedRecord->validate(PostData::build($_POST));
+    $this->assertFalse($storedRecord->isNew);
+    $this->assertTrue($storedRecord->isValid);
+    $this->assertTrue($storedRecord->isModified);
+    \ChromePhp::clear();
+    $this->testObject->updateAny();
+    $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $recordName .' SET ' .
+      'propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC, propertyD=:propertyD ' .
+      'WHERE propertyA=:propertyA AND propertyB=:propertyB AND propertyC=:propertyC';
+    $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
+    $expectedLog2 = 'LOG:values: a, b, c, newValue';
+    $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
+    $this->assertFalse($storedRecord->isNew);
+    $this->assertTrue($storedRecord->isValid);
+    $this->assertFalse($storedRecord->isModified);
+    $this->assertSame($storedRecord->propertyD->value, 'newValue');
+    $this->testObject = SQLBusinessModelManager::getInstance();
+    \ChromePhp::clear();
+    $cachedRecord = $this->testObject->getBusinessModel(
+      new SimpleBusinessModelDefinition($recordName, $recordKey)
+    );
+    $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    $this->assertSame($storedRecord, $cachedRecord);
+  }
+
   /**
    * Collection of assertions for \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    * where provided iBusinessModelDefinition::$recordKey is NOT in data store.
@@ -314,8 +497,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       );
     } catch (\DomainException $expected) {
       $this->assertSame('No matching Record found in data storage!', $expected->getMessage());
-      $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName . ' WHERE ' .
-        $this->recordName . '.' . $this->primaryKeyName . ' = "badkey";';
+      $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName .
+        ' WHERE property' . ' = "badkey";';
       $this->assertSame($expectedLog, (string)\ChromePhp::getMessages()[0]);
       return;
     }
@@ -345,8 +528,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $property = $this->testObject->getBusinessModel(
       new SimpleBusinessModelDefinition($this->recordName, $recordKey, $propertyName)
     );
-    $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName . ' WHERE ' .
-      $this->recordName . '.' . $this->primaryKeyName . ' = "' . $recordKey . '";';
+    $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName .
+      ' WHERE property' . ' = "' . $recordKey . '";';
     $this->assertSame($expectedLog, (string)\ChromePhp::getMessages()[0]);
     $this->assertInstanceOf('\ramp\model\Model', $property);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $property);
@@ -369,6 +552,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     );
     $this->assertSame($property, $propertySecondRequest);
     $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
+    return;
   }
 
   /**
@@ -395,7 +579,6 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
    * - assert throws \DomainException when query returns NO results
    *   - with message: *'No matching Record(s) found in data storage!'*
-   * @depends testGetBusinessModelProperty
    * @link ramp.model.business.SQLBusinessModelManager#method_getBusinessModel ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
   public function testGetBusinessModelCollection()
@@ -419,10 +602,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $i++;
       $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . $i, $record->property->value);
-      $expectedValueOfA = ($i != 1)? ($i % 2 != 0)? 'valueA' : 'Avalue' : 'newValue';
+      $expectedValueOfA = ($i % 2 != 0)? 'valueA' : 'Avalue';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);
-      $expectedValueOfB = ($i == 2)? 'newValueB' : 'valueB';
-      $this->assertSame($expectedValueOfB, $record->propertyB->value);
+      $this->assertSame('valueB', $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     \ChromePhp::clear();
@@ -444,8 +626,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . ($i * 2), $record->property->value);
       $this->assertSame('Avalue', $record->propertyA->value);
-      $expectedValueOfB = ($i == 1)? 'newValueB' : 'valueB';
-      $this->assertSame($expectedValueOfB, $record->propertyB->value);
+      $this->assertSame('valueB', $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     \ChromePhp::clear();
@@ -473,8 +654,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('key' . $i, $record->property->value);
       $expectedValueOfA = ($i % 2 != 0)? 'valueA' : 'Avalue';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);
-      $expectedValueOfB = ($i == 2)? 'newValueB' : 'valueB';
-      $this->assertSame($expectedValueOfB, $record->propertyB->value);
+      $this->assertSame('valueB', $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     $this->assertSame($filtered[0], $all[1]);
@@ -496,7 +676,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
           'WHERE property=:property';
       $this->assertEquals($expectedLogStatement, \ChromePhp::getMessages()[$i++]);
       $c = ($i == 1) ? 'valueC' : 'newValueC';
-      $expectedLogValues = 'LOG:values: ' . $record->primaryKey . ', ' .
+      $expectedLogValues = 'LOG:values: ' . $record->primaryKey->value . ', ' .
         $record->propertyA->value . ', ' . $record->propertyB->value . ', ' . $c;
       $this->assertEquals($expectedLogValues, \ChromePhp::getMessages()[$i++]);
     }
@@ -550,7 +730,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    * **THIS EXTRA TEST HAS BEEN RENAMED TO PREVENT EXECUTION AS SLOW RUNNING
    * RENAME *EXTRADataWriteException* TO *testDataWriteException* TO RUN**
    *
-   * - assert throws \PDOException when Record type NOT found in data storage
+   * - assert throws DataWriteException when Record type NOT found in data storage
    * - assert expected INSERT SQL statements logged with \ChromePhp (Logger) following
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
    * - assert logged error reports and delayed atempts reported in \ChromePhp (Logger)
@@ -575,7 +755,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($badRecord->isModified);
     try {
       $this->testObject->updateAny();
-    } catch (\PDOException $expected) {
+    } catch (DataWriteException $expected) {
       $i = 0; $j = 0;
       $this->assertSame(
         'LOG:$preparedStatement: INSERT INTO BadRecord (property, propertyA, propertyB, propertyC)' .
@@ -604,5 +784,5 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \PDOException has NOT been raised.');
-  }
+  } 
 }

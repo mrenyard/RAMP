@@ -55,6 +55,11 @@ final class Str extends RAMPObject
   private static $SEMICOLON;
 
   /**
+   * Singleton reference to {@link Str} with value '|'.
+   */
+  private static $BAR;
+
+  /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
   private $value;
@@ -90,6 +95,9 @@ final class Str extends RAMPObject
         break;
       case ';':
         $s = self::SEMICOLON();
+        break;
+      case '|':
+        $s = self::BAR();
         break;
       default:
         $s = new Str((string)$value);
@@ -146,6 +154,18 @@ final class Str extends RAMPObject
   }
 
   /**
+   * Returns Bar Str ('|')
+   * @return \ramp\core\Str Str object composed semicolon ('|')
+   */
+  public static function BAR() : Str
+  {
+    if (!isset(self::$BAR)) {
+      self::$BAR = new Str('|');
+    }
+    return self::$BAR;
+  }
+
+  /**
    * Appends provided Str to 'this' and returns new appended Str.
    * @param \ramp\core\Str $value Str to be appended to *this*
    * @return \ramp\core\Str Concatenation of *this* with provided appended
@@ -180,7 +200,7 @@ final class Str extends RAMPObject
    */
   public function trimEnd(Str $value) : Str
   {
-    if ($this === self::_EMPTY()){
+    if ($this === self::_EMPTY() || $value == self::_EMPTY()){
       // cannot remove from an empty string
       return $this;
     }
@@ -219,7 +239,7 @@ final class Str extends RAMPObject
       // cannot hyphenate an empty string
       return $value;
     }
-    $value = preg_replace('/(([A-Z])[a-z]+)/', ' $0 ', $value);
+    $value = preg_replace('/(([A-Z])[a-z|]+)/', ' $0 ', $value);
     $value = strtolower(trim(preg_replace('/\s+/', '-', $value), '-'));
     return Str::set($value);
   }

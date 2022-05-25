@@ -21,6 +21,7 @@
 namespace tests\ramp\model\business\field\mocks\OptionTest;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 
 /**
@@ -28,9 +29,9 @@ use ramp\model\business\Record;
  */
 class MockRecord extends Record
 {
-  public static function primaryKeyName() : Str
+  public function primaryKeyNames() : StrCollection
   {
-    return Str::set('pk');
+    return StrCollection::set('pk');
   }
   
   protected function get_aProperty()

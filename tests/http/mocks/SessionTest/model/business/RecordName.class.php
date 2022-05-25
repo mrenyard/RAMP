@@ -21,6 +21,7 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 
 /**
@@ -45,7 +46,7 @@ class RecordName extends Record
     // return $this->propertyA;
   }
 
-  public static function primaryKeyName() : Str { return Str::set('propertyA'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('propertyA'); }
 
   /**
    * Test getter for Record::propertyB

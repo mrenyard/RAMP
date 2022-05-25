@@ -21,6 +21,7 @@
 namespace tests\ramp\model\business\validation\dbtype\mocks\UniquePrimaryKeyTest;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\field\Field;
@@ -51,7 +52,7 @@ class SimpleRecord extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public static function primaryKeyName() : Str { return Str::set('uniqueKey'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('uniqueKey'); }
 
   /**
    * Get field containing uniqueKey
@@ -60,11 +61,12 @@ class SimpleRecord extends Record
    */
   protected function get_uniqueKey() : Field
   {
+    // $propertyName = Str::set('uniqueKey');
     self::$uniquePrimaryKeyTest = new UniquePrimaryKey($this);
     if (!isset($this->primaryProperty))
     {
       $this->primaryProperty = new Input(
-        Str::set('uniqueKey'),
+        $propertyName,
         $this,
         new VarChar(
           15,
@@ -74,8 +76,8 @@ class SimpleRecord extends Record
           Str::set('My error message HERE!')
         )
       );
-      if ($this->isNew) { $this['uniqueKey'] = $this->primaryProperty; }
     }
+    if ($this->isNew) { $this['uniqueKey'] = $this->primaryProperty; }
     return $this->primaryProperty;
   }
 

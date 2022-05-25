@@ -15,65 +15,55 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.make
  * @version 0.0.9;
  */
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\iOption;
-use ramp\core\StrCollection;
-use ramp\model\business\RecordCollection;
 use ramp\model\business\Record;
 
 /**
- * Collection of Coutry.
+ * Collection of Column.
  */
-class CountryCollection extends RecordCollection { }
+class ColumnCollection extends RecordCollection { }
 
 /**
- * Concrete Record for Country.
+ * Concrete Record for Column.
  */
-class Country extends Record
+class Column extends Record
 {
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('code'); }
+  static public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
 
-  protected function get_code() : field\Input
+  protected function get_name() : string
   {
-    if (!isset($this['code']))
-    {
-      $this['code'] = new field\Input(
-        Str::set('code'),
-        $this,
-        new validation\dbtype\VarChar(
-          2,
-          new validation\Alphanumeric(),
-          Str::set('Please provide a valid 2 digit country code')
-        )
-      );
-    }
-    return $this['code'];
+    return $this->getPropertyValue('COLUMN_NAME');
   }
-
-  protected function get_name() : field\Input
+  
+  protected function get_key() : string
   {
-    if (!isset($this['name']))
-    {
-       $this['name'] = new field\Input(
-          Str::set('name'),
-          $this,
-          new validation\dbtype\VarChar(
-            45,
-            new validation\Alphanumeric(),
-            Str::set('Please provide a country name!')
-          )
-      );
+    return $this->getPropertyValue('COLUMN_KEY');
+  }
+        
+  protected function get_dataType() : string
+  {
+    $message = "Str::set('My error message HERE!')";
+    $values = \explode('(', trim($this->getPropertyValue('COLUMN_TYPE'), ')'));
+    switch ($values[0]) {
+      case 'varchar':
+        return "VarChar(\n          " . $values[1] . ",\n          new validation\Alphanumeric(),\n          " . $message . "\n        )";
+      default:
+        return $values[0];
     }
-    return $this['name'];
+  }
+ 
+  protected function get_isNullable() : bool
+  {
+    return ($this->getPropertyValue('IS_NULLABLE') == 'YES');
   }
 
   /**
@@ -84,8 +74,8 @@ class Country extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->code) &&
-      isset($dataObject->name)
+      isset($dataObject->COLUMN_NAME) &&
+      isset($dataObject->COLUMN_TYPE)
     );
   }
 }

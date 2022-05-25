@@ -18,65 +18,71 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\mocks\RecordCollectionTest;
+namespace tests\ramp\model\business\mocks\RecordTest;
 
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
+use ramp\core\OptionList;
 use ramp\core\StrCollection;
-use ramp\condition\PostData;
+use ramp\core\PropertyNotSetException;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
-use tests\ramp\model\business\mocks\RecordCollectionTest\ConcreteValidationRule2;
-
-/**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
- * .
- */
-class TestRecord extends Record
+class ConcreteRecordMultiKey extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('keyProperty');
+    return StrCollection::set('property1','property2','property3');
   }
 
-  protected function get_keyProperty()
+  public function get_property1()
   {
-    if (!isset($this['keyProperty'])) {
-      $this['keyProperty'] = new Input(
-        Str::set('keyProperty'),
+    if (!isset($this['property1'])) {
+      $this['property1'] = new Input(
+        Str::set('property1'),
         $this,
         new VarChar(
           10,
           new ConcreteValidationRule(),
-          Str::set('My error message HERE!')
+          Str::set('$value does NOT evaluate to KEY')
         )
       );
     }
-    return $this['keyProperty'];
+    return $this['property1'];
   }
 
-  protected function get_aProperty()
+  public function get_property2()
   {
-    if (!isset($this['aProperty'])) {
-      $this['aProperty'] = new Input(
-        Str::set('aProperty'),
+    if (!isset($this['property2'])) {
+      $this['property2'] = new SelectOne(
+        Str::set('property2'),
         $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule2(),
-          Str::set('$value does NOT evaluate to GOOD')
-        )
+        new ConcreteOptionList()
       );
     }
-    return $this['aProperty'];
+    return $this['property2'];
   }
 
- protected static function checkRequired($dataObject) : bool
+  public function get_property3()
   {
-    return isset($dataObject->keyProperty);
+    if (!isset($this['property3'])) {
+      $this['property3'] = new SelectMany(
+        Str::set('property3'),
+        $this,
+        new ConcreteOptionList()
+      );
+    }
+    return $this['property3'];
+  }
+
+  protected static function checkRequired($dataObject) : bool
+  {
+    return (
+      isset($dataObject->property1) &&
+      isset($dataObject->property2) &&
+      isset($dataObject->property3) 
+    );
   }
 }

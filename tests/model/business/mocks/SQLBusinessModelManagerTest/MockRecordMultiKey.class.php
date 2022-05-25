@@ -26,49 +26,26 @@ use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
+use ramp\model\business\field\MultiPartPrimary;
 use ramp\model\business\validation\Alphanumeric;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\dbtype\VarChar;
-use ramp\model\business\validation\dbtype\UniquePrimaryKey;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\RecordCollection for testing against.
  */
-class MockRecordCollection extends RecordCollection { }
+class MockRecordMultiKeyCollection extends RecordCollection { }
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
- *
- * @property-read \ramp\model\business\field\Field $property Returns field containing value of property.
- * @property-read \ramp\model\business\field\Field $propertyA Returns field containing value of propertyA.
- * @property-read \ramp\model\business\field\Field $propertyB Returns field containing value of propertyB.
- * @property-read \ramp\model\business\field\Field $propertyC Returns field containing value of propertyC.
  */
-class MockRecord extends Record
+class MockRecordMultiKey extends Record
 {
-
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('property'); }
-
-  protected function get_property() : Field
-  {
-    if (!isset($this['property']))
-    {
-      $this['property'] = new Input(
-        Str::set('property'),
-        $this,
-        new VarChar(
-          10,
-          new LowerCaseAlphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['property'];
-  }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('propertyA','propertyB','propertyC'); }
 
   protected function get_propertyA() : Field
   {
@@ -121,6 +98,23 @@ class MockRecord extends Record
     return $this['propertyC'];
   }
 
+  protected function get_propertyD() : Field
+  {
+    if (!isset($this['propertyD']))
+    {
+      $this['propertyD'] = new Input(
+        Str::set('propertyD'),
+        $this,
+        new VarChar(
+          15,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['propertyD'];
+  }
+
   /**
    * Check requeried properties have value or not.
    * @param DataObject to be checked for requiered property values
@@ -129,7 +123,9 @@ class MockRecord extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->property)
+      isset($dataObject->propertyA) &&
+      isset($dataObject->propertyB) &&
+      isset($dataObject->propertyC)
     );
   }
 }

@@ -26,6 +26,7 @@ require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';

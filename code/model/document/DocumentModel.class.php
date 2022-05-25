@@ -41,6 +41,7 @@ use ramp\model\Model;
 class DocumentModel extends Model
 {
   private static $NEXT_ID = 0;
+  public static function reset() { self:: $NEXT_ID = 0; }
 
   private $id;
   private $title;
@@ -53,7 +54,7 @@ class DocumentModel extends Model
    */
   public function __construct()
   {
-    $this->id = Str::set('uid' . self::$NEXT_ID++);
+    $this->id = Str::set('uid' . ++self::$NEXT_ID);
   }
 
   /**
@@ -243,6 +244,6 @@ class DocumentModel extends Model
    */
   public function __clone()
   {
-    $this->id = Str::set('uid' . self::$NEXT_ID++);
+    $this->id = Str::set('uid' . ++self::$NEXT_ID);
   }
 }

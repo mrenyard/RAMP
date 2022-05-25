@@ -21,13 +21,14 @@
 namespace tests\ramp\model\business\mocks\SQLBusinessModelManagerTest;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
-use ramp\model\business\validation\VarChar;
 use ramp\model\business\validation\Alphanumeric;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\dbtype\VarChar;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\RecordCollection for testing against.
@@ -48,7 +49,7 @@ class BadRecord extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public static function primaryKeyName() : Str { return Str::set('property'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('property'); }
 
   /**
    * Get field containing property
@@ -62,7 +63,11 @@ class BadRecord extends Record
       $this['property'] = new Input(
         Str::set('property'),
         $this,
-        new VarChar(10, new LowerCaseAlphanumeric())
+        new VarChar(
+          10,
+          new LowerCaseAlphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['property'];
@@ -80,7 +85,11 @@ class BadRecord extends Record
       $this['propertyA'] = new Input(
         Str::set('propertyA'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyA'];
@@ -98,7 +107,11 @@ class BadRecord extends Record
       $this['propertyB'] = new Input(
         Str::set('propertyB'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyB'];
@@ -116,7 +129,11 @@ class BadRecord extends Record
       $this['propertyC'] = new Input(
         Str::set('propertyC'),
         $this,
-        new VarChar(10, new Alphanumeric())
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['propertyC'];
@@ -130,6 +147,7 @@ class BadRecord extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
+      isset($dataObject->property) &&
       isset($dataObject->propertyA) &&
       isset($dataObject->propertyB) &&
       isset($dataObject->propertyC)

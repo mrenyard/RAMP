@@ -64,7 +64,7 @@ final class StrCollection extends Collection
     $glue = (isset($glue))? $glue : $value;
     foreach ($this as $part)
     {
-      $value = $value->append(Str::hyphenate($part))->append($glue);
+      $value = $value->append($part)->append($glue);
     }
     return $value->trimEnd($glue);
   }

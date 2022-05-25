@@ -33,7 +33,7 @@ use ramp\model\document\DocumentModel;
  */
 class DocumentModelTest extends \PHPUnit\Framework\TestCase
 {
-  private static $NEXT_ID = 0;
+  private static $NEXT_ID = 1;
   private $testObject;
 
   /**
@@ -41,8 +41,9 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
+    self::$NEXT_ID = 1;
+    DocumentModel::reset();
     $this->testObject = new DocumentModel();
-    self::$NEXT_ID++;
   }
 
   /**
@@ -71,8 +72,8 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   public function testGetSet_id()
   {
     $value = $this->testObject->id;
-    $this->assertEquals('uid' . self::$NEXT_ID, $value);
     $this->assertInstanceOf('\ramp\core\Str', $value);
+    $this->assertEquals('uid' . self::$NEXT_ID, (string)$value);
     $testObject2 = new DocumentModel();
     self::$NEXT_ID++;
     $this->assertEquals('uid' . self::$NEXT_ID, (string)$testObject2->id);
@@ -191,8 +192,8 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
     $cloneObject = clone $this->testObject;
     $this->assertInstanceOf('\ramp\model\document\DocumentModel', $cloneObject);
     $this->assertInstanceOf('\ramp\core\Str', $cloneObject->id);
-    $this->assertNotEquals((string)$this->testObject->id, (string)$cloneObject);
-    // $this->assertEquals('uid' . ++self::$NEXT_ID, (string)$cloneObject->id);
+    $this->assertNotEquals((string)$this->testObject->id, (string)$cloneObject->id);
+    $this->assertEquals('uid' . ++self::$NEXT_ID, (string)$cloneObject->id);
     $this->assertInstanceOf('\ramp\core\Str', $cloneObject->title);
     $this->assertSame($this->testObject->title, $cloneObject->title);
     $this->assertEquals((string)$expectedTitle, (string)$cloneObject->title);

@@ -22,6 +22,7 @@ namespace tests\ramp\model\business\mocks\RecordTest;
 
 use ramp\core\Str;
 use ramp\core\OptionList;
+use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
@@ -31,9 +32,9 @@ use ramp\model\business\validation\dbtype\VarChar;
 
 class ConcreteRecord extends Record
 {
-  public static function primaryKeyName() : Str
+  public function primaryKeyNames() : StrCollection
   {
-    return Str::set('property1');
+    return StrCollection::set('property1');
   }
 
   public function get_property1()

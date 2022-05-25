@@ -26,6 +26,7 @@ require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/OptionList.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
@@ -44,6 +45,7 @@ require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/model/business/field/MultiPartPrimary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
@@ -51,6 +53,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidat
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecordMultiKey.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteOptionList.class.php';
 
@@ -65,6 +68,7 @@ use ramp\model\business\field\SelectMany;
 use ramp\model\business\validation\dbtype\VarChar;
 
 use tests\ramp\model\business\mocks\RecordTest\ConcreteRecord;
+use tests\ramp\model\business\mocks\RecordTest\ConcreteRecordMultiKey;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteOptionList;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteOption;
@@ -154,6 +158,47 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame('concrete-record:new', (string)$this->testObject->id);
+
+      $this->dataObject->property1 = 'id';
+      $this->assertSame('concrete-record:new', (string)$this->testObject->id);
+
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\Record::primarykey.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'primarykey'
+   * - assert property 'primarykey' is gettable.
+   * - assert returned value instance of {@link \ramp\core\Str}.
+   * - assert returned value matches expected result value of 'new' when new.
+   * - assert returned value matches expected result of relevant property.
+   * - assert returned value matches expected result of relevant multiple properties
+   *   bar [|] seperated when Object has a multipart primary key.
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
+   */
+  public function testGet_primaryKey()
+  {
+    try {
+      $this->testObject->primarykey = "KEY";
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->primarykey is NOT settable', $expected->getMessage());
+
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->primarykey);
+      $this->assertNull($this->testObject->primarykey->value);
+
+      $testObjectMultiKey = new ConcreteRecordMultiKey($this->dataObject);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
+      $this->assertNull($testObjectMultiKey->primaryKey->value);
+
+      $this->dataObject->property1 = 'a';
+      $this->dataObject->property2 = 'b';
+      $this->dataObject->property3 = 'c';
+      $this->assertSame(
+        $this->dataObject->property1 . '|' . $this->dataObject->property2 . '|' . $this->dataObject->property3,
+        $testObjectMultiKey->primarykey->value
+      );
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -196,7 +241,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     foreach ($this->testObject as $child)
     {
       $this->assertSame($child, $iterator->current());
-      $this->assertEquals('concrete-record:new:property-' . ++$i, (string)$child->id);
+      $this->assertEquals('concrete-record:new:property' . ++$i, (string)$child->id);
       $this->assertInstanceOf('\ramp\model\business\field\Field', $child);
       $iterator->next();
     }
@@ -288,7 +333,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
           Str::set('My error message HERE!')
         )
       );
-      } catch (\BadMethodCallException $expected) {
+    } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!',
         $expected->getMessage()
@@ -441,7 +486,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $selection = array('1','2','6');
     $_POST3 = array(
       'concrete-record:new:property-1' => 'key',
-      'concrete-record:new:property-2' => '7', // BAD - Beyond index
+      'concrete-record:new:property-2' => 7, // BAD - Beyond index
       'concrete-record:new:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST3)));
@@ -464,8 +509,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $_POST4 = array(
-      'concrete-record:key:property-2' => '8', // BAD - Beyond index
-      'concrete-record:key:property-3' => $selection
+      'concrete-record:new:property-2' => '8', // BAD - Beyond index
+      'concrete-record:new:property-3' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -516,8 +561,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($dataObjectProperties['property3']);
     $this->assertSame(0, $this->testObject->property3->value->count);
     $_POST6 = array(
-      'concrete-record:key:property-2' => '5',
-      'concrete-record:key:property-3' => $selection // BAD - Second argument beyond index
+      'concrete-record:new:property-2' => '5',
+      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST6)));
     $this->assertTrue($this->testObject->hasErrors);

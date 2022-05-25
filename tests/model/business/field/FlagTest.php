@@ -25,8 +25,7 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
-// require_once '/usr/share/php/ramp/core/iOption.class.php';
-// require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
@@ -40,24 +39,20 @@ require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/Flag.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FlagTest/MockRecord.class.php';
-// require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockField.class.php';
 
-// use ramp\SETTING;
 use ramp\core\Str;
-// use ramp\core\Collection;
-// use ramp\core\OptionList;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
-// use ramp\model\business\Record;
-// use ramp\model\business\field\Option;
 use ramp\model\business\field\Flag;
 
 use tests\ramp\model\business\field\mocks\FlagTest\MockRecord;

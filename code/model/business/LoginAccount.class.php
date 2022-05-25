@@ -22,6 +22,7 @@ namespace ramp\model\business;
 
 use ramp\SETTING;
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\core\BadPropertyCallException;
 use ramp\condition\PostData;
 use ramp\model\business\RecordCollection;
@@ -82,7 +83,7 @@ class LoginAccount extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public static function primaryKeyName() : Str { return Str::set('auPK'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('auPK'); }
 
   /**
    * Get field containing authenticatable unit's primary key
@@ -126,7 +127,6 @@ class LoginAccount extends Record
           Str::set('My error message HERE!')
         )
       );
-      // if ($this->isNew) { $this['email'] = $this->email; }
     }
     return $this->email;
   }
@@ -233,7 +233,9 @@ class LoginAccount extends Record
     }
     $au = $this->getAuthenticatableUnit();
     $au->validate($postdata);
-    $this->setPropertyValue('auPK', $au->getPropertyValue((string)$au->primaryKeyName()));
+    // TODO:mrenyard: fix for multi prime
+    $pkName = (string)$au->primaryKeyNames()->implode(Str::BAR());
+    $this->setPropertyValue('auPK', $au->getPropertyValue($pkName));
     $this->setPropertyValue('email', $au->getPropertyValue('email'));
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
@@ -297,6 +299,7 @@ class LoginAccount extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
+      isset($dataObject->auPK) &&
       isset($dataObject->email) &&
       isset($dataObject->encryptedPassword) &&
       isset($dataObject->accountType)

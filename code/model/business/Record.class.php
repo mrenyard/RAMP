@@ -27,6 +27,7 @@ namespace ramp\model\business;
 use ramp\core\Str;
 use ramp\core\iOption;
 use ramp\core\Collection;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\core\PropertyNotSetException;
@@ -54,12 +55,13 @@ abstract class Record extends BusinessModel
   private $dataObject;
   private $validFromSource;
   private $modified;
+  private $primaryKeyField;
 
   /**
-   * Returns property name of concrete classes primary key.
-   * @return \ramp\core\Str Name of property that is concrete classes primary key
+   * Returns property name/s of concrete classes primary key.
+   * @return \ramp\core\StrCollection Primary Key Name/s
    */
-  abstract public static function primaryKeyName() : Str;
+  abstract public function primaryKeyNames() : StrCollection;
 
   /**
    * Creates record, new or with encapsulated source data contained.
@@ -92,9 +94,11 @@ abstract class Record extends BusinessModel
    */
   final protected function get_id() : Str
   {
+    $primaryKeyValue = ($this->isNew || $this->primaryKey->value == NULL) ?
+      Str::set('new') : Str::set((string)$this->primaryKey->value);
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
-    )->append($this->get_primarykey());
+    )->append($primaryKeyValue);
   }
 
   /**
@@ -102,18 +106,29 @@ abstract class Record extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \ramp\core\Str Value of primary key
    */
-  final protected function get_primarykey() : Str
+  final protected function get_primaryKey() : field\Field
   {
-    $pkName = (string)$this->primaryKeyName();
-    return Str::set((isset($this->dataObject->$pkName))? $this->dataObject->$pkName : 'new');
+    if (!isset($this->primaryKeyField))
+    {
+      $primaryKeyNames = $this->primaryKeyNames();
+      if ($primaryKeyNames->count == 1)
+      {
+        $pkName = (string)$primaryKeyNames[0];
+        $this->primaryKeyField = $this->$pkName;
+      } else {
+        $this->primaryKeyField = new field\MultiPartPrimary($primaryKeyNames, $this);
+      }
+    }
+    return $this->primaryKeyField;
   }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
+   * @throws \BadMethosCallException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
-  final public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object)
   {
     if (is_numeric($offset) || (!($object instanceof \ramp\model\business\field\Field)))
     {
@@ -147,19 +162,19 @@ abstract class Record extends BusinessModel
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   */
+   *
   final public function validate(PostData $postdata)
   {
     $this->errorCollection = new Collection(Str::set('ramp\core\Str'));
-    $pk = (isset($this[(string)$this->primaryKeyName()])) ?
-      $this[(string)$this->primaryKeyName()] : NULL;
+    // $pkName = (string)$this->primaryKeyNames()->implode(Str::BAR());
+    // $pk = (isset($this[$pkName])) ? $this[$pkName] : NULL;
     foreach ($this as $child)
     {
-      if ($child === $pk) { continue; }
+      // if ($child === $pk) { continue; }
       $child->validate($postdata);
     }
-    if ($pk) { $pk->validate($postdata); }
-  }
+    // if ($pk) { $pk->validate($postdata); }
+  }*/
 
   /**
    * Gets the value of a given property.
@@ -169,7 +184,6 @@ abstract class Record extends BusinessModel
    */
   public function getPropertyValue(string $propertyName)
   {
-    $propertyName = (string)$propertyName;
     return (isset($this->dataObject->$propertyName)) ? $this->dataObject->$propertyName : NULL;
   }
 
@@ -183,7 +197,7 @@ abstract class Record extends BusinessModel
   {
     if ($this->getPropertyValue($propertyName) == $value) { return; }
     $this->dataObject->$propertyName = $value;
-    $this->modified = true;
+    $this->modified = TRUE;
   }
 
   /**
@@ -203,11 +217,7 @@ abstract class Record extends BusinessModel
    */
   protected function get_isValid() : bool
   {
-    $pkName = (string)$this->primaryKeyName();
-    return ($this->validFromSource || (
-        isset($this->dataObject->$pkName) && $this->checkRequired($this->dataObject)
-      )
-    );
+    return ($this->validFromSource || $this->checkRequired($this->dataObject));
   }
 
   /**
@@ -226,10 +236,16 @@ abstract class Record extends BusinessModel
    */
   public function updated()
   {
-    $pkName = (string)$this->primaryKeyName();
-    if (isset($this[$pkName])) { unset($this[$pkName]); }
-    $this->validFromSource = (isset($this->dataObject->$pkName) && $this->checkRequired($this->dataObject));
-    $this->modified = false;
+    $this->modified = FALSE;
+    foreach ($this->primaryKeyNames() as $primaryKeyName) {
+      $pkName = (string)$primaryKeyName;
+      if (isset($this[$pkName])) { unset($this[$pkName]); }
+      if (!isset($this->dataObject->$pkName)) {
+        $this->validFromSource = FALSE;
+        return;
+      }
+    }
+    $this->validFromSource = ($this->checkRequired($this->dataObject));
   }
 
   /**

@@ -106,14 +106,11 @@ final class SQLBusinessModelManager extends BusinessModelManager
   /**
    * Return cached record if avalible.
    */
-  private function getRecordIfCached(Str $recordName, Str $recordPrimaryKey) : ?Record
+  private function getRecordIfCached(Str $recordName, Str $primaryKey) : ?Record
   {
     $class = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    $pkName = (string)$class::primaryKeyName();
-    foreach ($this->recordCollection as $record)
-    {
-      if ((get_class($record) == $class) && ($record->$pkName->value == (string)$recordPrimaryKey))
-      {
+    foreach ($this->recordCollection as $record) {
+      if ((get_class($record) == $class) && ($record->primaryKey->value == (string)$primaryKey)) {
         return $record;
       }
     }
@@ -147,10 +144,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @throws \DomainException When {@link \ramp\model\business\Record} of type with $key NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  private function getRecord(Str $name, Str $key) : Record
+  private function getRecord(Str $name, Str $key) // : Record
   {
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
-    $pkName = $recordFullName::primaryKeyName();
+    $pkNames = $recordFullName::primaryKeyNames();
     if ((string)$key == 'new')
     {
       $dataObject = new \stdClass();
@@ -160,14 +157,18 @@ final class SQLBusinessModelManager extends BusinessModelManager
     }
     else
     {
-      if ($record = $this->getRecordIfCached($name, $key))
-      {
+      if ($record = $this->getRecordIfCached($name, $key)) {
         // Empty
-      }
-      else
-      {
+      } else {
+        $whereClause = '';
+        $keys = explode('|', \str_replace('+', ' ', $key));
+        foreach ($pkNames as $pkName) {
+          $key = array_shift($keys);
+          $whereClause .= $pkName . ' = "' . $key . '" AND ';
+        }
+        $whereClause = trim($whereClause, ' AND ');
         $sql = 'SELECT * FROM ' . $name;
-        $sql.= ' WHERE ' . $name . '.' . $pkName . ' = "' . $key . '"' . ';';
+        $sql.= ' WHERE ' . $whereClause . ';';
         \ChromePhp::log('SQL:', $sql);
         try {
           $this->connect();
@@ -204,7 +205,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
   {
     $classFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    $pkName = $recordFullName::primaryKeyName();
+    $recordClass =  new $recordFullName();
     $sql = 'SELECT * FROM '. $recordName;
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
     $limit = ($fromIndex)? $fromIndex . ', ' .($this->maxResults + $fromIndex) : '0, '.$this->maxResults;
@@ -221,12 +222,13 @@ final class SQLBusinessModelManager extends BusinessModelManager
       }
       $collection = new $classFullName();
       do {
-        if ($record = $this->getRecordIfCached($recordName, Str::set($dataObject->$pkName)))
-        {
-          // Empty
+        $key = Str::_EMPTY();
+        foreach ($recordClass->primaryKeyNames() as $primaryKeyName) {
+          $key = $key->append(Str::set($dataObject->$primaryKeyName))->append(Str::BAR());
         }
-        else
-        {
+        if ($record = $this->getRecordIfCached($recordName, $key->trimEnd(Str::BAR()))) {
+          // Empty
+        } else {
           $record = new $recordFullName($dataObject);
           $this->recordCollection->attach($record);
           $this->dataObjectCollection->attach($dataObject);
@@ -293,6 +295,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $dataObject = $this->getDataObject($record);
     $empty = Str::_EMPTY(); $comma = Str::set(', ');
     $colon = Str::set(':'); $eqColon = Str::set('=:');
+    $and = Str::set(' AND ');
     $properties = $empty; $placeholders = $empty; $updateSet = $empty;
     foreach ($dataObject as $propertyName => $value)
     {
@@ -309,9 +312,16 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $recordName = substr_replace(
       (string)$record, '', 0, strlen(SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')
     );
+    $whereClause = $empty;
+    $primaryKeys = $record->primaryKeyNames();
+    foreach ($primaryKeys as $primaryKey) {
+      $key = Str::set($primaryKey);
+      $whereClause = $whereClause->append($key)->append($eqColon)->append($key)->append($and);
+    }
+    $whereClause = $whereClause->trimEnd($and);
     $preparedStatement = ($record->isNew)?
       'INSERT INTO '.$recordName.' ('.$properties.') VALUES ('.$placeholders.')':
-      'UPDATE '.$recordName.' SET '.$updateSet.' WHERE '.$record->primaryKeyName().'=:'.$record->primaryKeyName();
+      'UPDATE '.$recordName.' SET '.$updateSet.' WHERE ' . $whereClause;
     \ChromePhp::log('$preparedStatement:', $preparedStatement);
     \ChromePhp::log('values:', (array)$dataObject);
     $count=0;

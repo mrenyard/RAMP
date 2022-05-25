@@ -67,9 +67,8 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
    */
   public function testTest()
   {
-    $this->assertNull($this->testObject->process(
-      'aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ1234567890'
-    ));
+    $this->assertNull($this->testObject->process('aAbBcCdDeEf FgGhHiIjJkKlLmMnNo_OpPqQrRsStTuUvVwWxXyYzZ 1234567890'));
+    $this->assertNull($this->testObject->process('1234567890'));
     try {
       $this->testObject->process('Not-Alphanumeric');
     } catch (FailedValidationException $expected) {

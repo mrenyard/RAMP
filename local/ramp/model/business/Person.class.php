@@ -21,6 +21,7 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\core\OptionList;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\AuthenticatableUnit;
@@ -35,21 +36,17 @@ class PersonCollection extends RecordCollection { }
  */
 class Person extends AuthenticatableUnit
 {
-  private $primaryProperty;
-  // private static $countryList;
-  // private $country;
-
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  static public function primaryKeyName() : Str { return Str::set('uname'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('uname'); }
 
   protected function get_uname() : field\Field
   {
-    if (!isset($this->primaryProperty))
+    if (!isset($this['uname']))
     {
-      $this->primaryProperty = new field\Input(
+      $this['uname'] = new field\Input(
         Str::set('uname'),
         $this,
         new validation\dbtype\VarChar(
@@ -58,9 +55,8 @@ class Person extends AuthenticatableUnit
           Str::set('My error message HERE!')
         )
       );
-      if ($this->isNew) { $this['uname'] = $this->primaryProperty; }
     }
-    return $this->primaryProperty;
+    return $this['uname'];
   }
 
   protected function get_honorificPrefix() : field\Field

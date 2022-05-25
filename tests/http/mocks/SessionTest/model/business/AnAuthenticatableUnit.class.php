@@ -22,6 +22,7 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\AuthenticatableUnit;
 use ramp\model\business\field\Field;
@@ -45,14 +46,13 @@ class AnAuthenticatibleUnitCollection extends RecordCollection
  */
 class AnAuthenticatableUnit extends AuthenticatableUnit
 {
-  private $primaryProperty;
-
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public static function primaryKeyName() : Str { return Str::set('uname'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('uname'); }
 
+  private $primaryProperty;
   protected function get_uname() : Field
   {
     if (!isset($this->primaryProperty))

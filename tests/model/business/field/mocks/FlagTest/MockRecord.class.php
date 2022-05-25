@@ -21,7 +21,12 @@
 namespace tests\ramp\model\business\field\mocks\FlagTest;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
+use ramp\model\business\field\Flag;
+use ramp\model\business\field\Input;
+use ramp\model\business\validation\Alphanumeric;
+use ramp\model\business\validation\dbtype\VarChar;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
@@ -36,9 +41,25 @@ class MockRecord extends Record
     parent::setPropertyValue($propertyName, $value);
   }
 
-  public static function primaryKeyName() : Str
+  public function primaryKeyNames() : StrCollection
   {
-    return Str::set('pk');
+    return StrCollection::set('key');
+  }
+
+  public function get_key()
+  {
+    if (!isset($this['key'])) {
+      $this['key'] = new Input(
+        Str::set('key'),
+        $this,
+        new VarChar(
+          10,
+          new Alphanumeric(),
+          Str::set('$value does NOT evaluate to KEY')
+        )
+      );
+    }
+    return $this['key'];
   }
 
   protected function get_aProperty()
