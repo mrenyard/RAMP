@@ -81,7 +81,8 @@ use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\MockRecordMultiK
  */
 class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
 {
-  // private static $LOCK = FALSE;
+  private static $NEW_VALUE = FALSE;
+  private static $NEW_VALUE_B = FALSE;
   private $testObject;
   private $recordName;
   private $recordKey;
@@ -379,6 +380,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($storedRecord->isModified);
     \ChromePhp::clear();
     $this->testObject->updateAny();
+    self::$NEW_VALUE = TRUE;
     $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
       'property=:property, propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC ' .
       'WHERE property=:property';
@@ -491,6 +493,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    */
   public function testGetBusinessModelRecordNotStored()
   {
+    $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
+    \copy($DIR . '/copy_database.db', $DIR . '/database.db');
+
     try {
       $recordWithBadKey = $this->testObject->getBusinessModel(
         new SimpleBusinessModelDefinition($this->recordName, Str::set('badkey'))
@@ -540,6 +545,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $_POST = array('mock-record:key2:propertyB' => 'newValueB');
     $property->validate(PostData::build($_POST));
     $this->testObject->update($property);
+    self::$NEW_VALUE_B = TRUE;
     $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
       'property=:property, propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC ' .
       'WHERE property=:property';
@@ -603,8 +609,10 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . $i, $record->property->value);
       $expectedValueOfA = ($i % 2 != 0)? 'valueA' : 'Avalue';
+      $expectedValueOfA = ($i == 1 && self::$NEW_VALUE === TRUE)? 'newValue' : $expectedValueOfA;
+      $expectedValueOfB = ($i == 2 && self::$NEW_VALUE_B === TRUE)? 'newValueB' : 'valueB';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);
-      $this->assertSame('valueB', $record->propertyB->value);
+      $this->assertSame($expectedValueOfB, $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     \ChromePhp::clear();
@@ -626,7 +634,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . ($i * 2), $record->property->value);
       $this->assertSame('Avalue', $record->propertyA->value);
-      $this->assertSame('valueB', $record->propertyB->value);
+      // $expectedValueOfB = ($i == 3 && self::$NEW_VALUE_B === TRUE)? 'newValueB' : 'valueB';
+      // $this->assertSame($expectedValueOfB, $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     \ChromePhp::clear();
@@ -653,8 +662,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertInstanceOf('\\' . SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName, $record);
       $this->assertSame('key' . $i, $record->property->value);
       $expectedValueOfA = ($i % 2 != 0)? 'valueA' : 'Avalue';
+      $expectedValueOfB = ($i == 2 && self::$NEW_VALUE_B == TRUE)? 'newValueB' : 'valueB';
       $this->assertSame($expectedValueOfA, $record->propertyA->value);
-      $this->assertSame('valueB', $record->propertyB->value);
+      $this->assertSame($expectedValueOfB, $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     $this->assertSame($filtered[0], $all[1]);
@@ -709,6 +719,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    */
   public function testUpdateInvalidArgumentException()
   {
+    $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
+    \copy($DIR . '/copy_database.db', $DIR . '/database.db');
+
     $this->testObject = SQLBusinessModelManager::getInstance();
     try {
       $this->testObject->update(new MockRecord());
@@ -739,6 +752,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    */
   public function EXTRADataWriteException()
   {
+    $DIR = '/usr/share/php/tests/ramp/model/business/mocks/SQLBusinessModelManagerTest';
+    \copy($DIR . '/copy_database.db', $DIR . '/database.db');
+
     defined('DEV_MODE') || define('DEV_MODE', TRUE);
     $badRecord = $this->testObject->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('BadRecord'), Str::set('new'))
