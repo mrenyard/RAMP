@@ -86,7 +86,7 @@ class MultiPartPrimary extends Field
       if (!isset($partValue)) { return NULL; }
       $value = $value->append(Str::set($partValue))->append(Str::BAR());
     }
-    return rtrim($value, Str::BAR());
+    return (string)$value->trimEnd(Str::BAR())->replace(Str::SPACE(), Str::set('+'));
   }
 
   /**

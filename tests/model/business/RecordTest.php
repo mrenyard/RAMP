@@ -219,7 +219,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertSame(' concrete-record record', (string)$this->testObject->type);
+      $this->assertSame('concrete-record record', (string)$this->testObject->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

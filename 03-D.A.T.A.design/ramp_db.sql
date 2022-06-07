@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
   INDEX `fk_Account_typeID` (`accountType` ASC) VISIBLE,
   CONSTRAINT `fk_Account_typeID`
     FOREIGN KEY (`accountType`)
-    REFERENCES `ramp_db`.`AccountType` (`key`)
+    REFERENCES `ramp_db`.`LoginAccountType` (`key`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

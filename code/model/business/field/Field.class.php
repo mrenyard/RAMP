@@ -25,6 +25,7 @@ use ramp\core\Str;
 use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\core\OptionList;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
@@ -117,7 +118,7 @@ abstract class Field extends BusinessModel
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = new Collection(Str::set('\ramp\core\Str'));
+    $this->errorCollection = new StrCollection();
     foreach ($postdata as $inputdata)
     {
       if ($inputdata->attributeURN == $this->id)
@@ -148,12 +149,11 @@ abstract class Field extends BusinessModel
   /**
    * Gets collection of recorded errors.
    * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return iCollection List of recorded errors.
+   * @return StrCollection List of recorded errors.
    */
-  final protected function get_errors() : iCollection
+  final protected function get_errors() : StrCollection
   {
-    return (isset($this->errorCollection)) ? $this->errorCollection :
-      new Collection(Str::set('\ramp\core\Str'));
+    return (isset($this->errorCollection)) ? $this->errorCollection : new StrCollection();
   }
 
   /**

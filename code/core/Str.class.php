@@ -172,10 +172,7 @@ final class Str extends RAMPObject
    */
   public function append(Str $value) : Str
   {
-    if ($this === self::_EMPTY()){
-      // cannot append to an empty string
-      return $value;
-    }
+    if ($this === self::_EMPTY()){ return $value; } // cannot append to an empty string
     return Str::set(($this->value . $value));
   }
 
@@ -186,10 +183,7 @@ final class Str extends RAMPObject
    */
   public function prepend(Str $value) : Str
   {
-    if ($this === self::_EMPTY()){
-      // cannot prepend to an empty string
-      return $value;
-    }
+    if ($this === self::_EMPTY()){ return $value; } // cannot prepend to an empty string
     return Str::set(($value . $this->value));
   }
 
@@ -198,15 +192,33 @@ final class Str extends RAMPObject
    * @param \ramp\core\Str $value Str to be removed from end
    * @return \ramp\core\Str New Str with provided value removed from end
    */
-  public function trimEnd(Str $value) : Str
+  public function trimEnd(Str $value = NULL) : Str
   {
-    if ($this === self::_EMPTY() || $value == self::_EMPTY()){
-      // cannot remove from an empty string
-      return $this;
-    }
-    return Str::set(
-      substr_replace((string)$this, '', strrpos((string)$this, (string)$value))
-    );
+    // cannot remove from an empty string
+    if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
+    $value = ($value === NULL)? Str::SPACE() : $value;
+    $rtn =  Str::set(substr_replace((string)$this, '', strrpos((string)$this, (string)$value),));
+    return ((string)$rtn == (string)$this)? $this : $rtn;
+  }
+
+
+  /**
+   * Returns a new Str 'this' with provided removed from start.
+   * @param \ramp\core\Str $value Str to be removed from start
+   * @return \ramp\core\Str New Str with provided value removed from start
+   */
+  public function trimStart(Str $value = NULL) : Str
+  {
+    // cannot remove from an empty string
+    if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
+    $value = ($value === NULL)? Str::SPACE() : $value;
+    $rtn = Str::set(substr_replace((string)$this, '', 0, strlen((string)$value)));
+    return ((string)$rtn == (string)$this)? $this : $rtn;
+  }
+
+  public function replace(Str $search, Str $replace)
+  {
+    return Str::set(\str_replace((string)$search, (string)$replace, (string)$this));
   }
 
   /**
@@ -217,10 +229,7 @@ final class Str extends RAMPObject
    */
   public static function camelCase(Str $value, bool $lowerCaseFirstLetter = \NULL) : Str
   {
-    if ($value === self::_EMPTY()){
-      // cannot camelCase an empty string
-      return $value;
-    }
+    if ($value === self::_EMPTY()){ return $value; } // cannot camelCase an empty string
     $value = ucwords(str_replace('-', ' ', $value));
     if ($lowerCaseFirstLetter !== \NULL && $lowerCaseFirstLetter) {
       $value = lcfirst($value);
@@ -235,10 +244,7 @@ final class Str extends RAMPObject
    */
   public static function hyphenate(Str $value) : Str
   {
-    if ($value === self::_EMPTY()){
-      // cannot hyphenate an empty string
-      return $value;
-    }
+    if ($value === self::_EMPTY()){ return $value; } // cannot hyphenate an empty string
     $value = preg_replace('/(([A-Z])[a-z|]+)/', ' $0 ', $value);
     $value = strtolower(trim(preg_replace('/\s+/', '-', $value), '-'));
     return Str::set($value);

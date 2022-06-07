@@ -263,6 +263,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($newRecord->isNew);
     $this->assertFalse($newRecord->isValid);
     $this->assertFalse($newRecord->isModified);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->primaryKey);
+    $this->assertNull($newRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyA);
     $this->assertNull($newRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyB);
@@ -278,7 +280,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($newRecord->isModified);
     $_POST = array(
       'mock-record-multi-key:new:property-a' => 'value1',
-      'mock-record-multi-key:new:property-b' => 'value2',
+      'mock-record-multi-key:new:property-b' => 'value 2',
       'mock-record-multi-key:new:property-c' => 'value3',
       'mock-record-multi-key:new:property-d' => 'valueABC'
     );
@@ -292,15 +294,17 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       ' (propertyA, propertyB, propertyC, propertyD) ' .
       'VALUES (:propertyA, :propertyB, :propertyC, :propertyD)';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: value1, value2, value3, valueABC';
+    $expectedLog2 = 'LOG:values: value1, value 2, value3, valueABC';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
     $this->assertTrue($newRecord->isValid);
     $this->assertFalse($newRecord->isModified);
     $this->assertFalse($newRecord->isNew);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->primaryKey);
+    $this->assertSame('value1|value+2|value3', $newRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyA);
     $this->assertSame('value1', $newRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyB);
-    $this->assertSame('value2', $newRecord->propertyB->value);
+    $this->assertSame('value 2', $newRecord->propertyB->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyC);
     $this->assertSame('value3', $newRecord->propertyC->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->propertyD);
@@ -314,7 +318,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       'propertyA=:propertyA, propertyB=:propertyB, propertyC=:propertyC, propertyD=:propertyD ' .
       'WHERE propertyA=:propertyA AND propertyB=:propertyB AND propertyC=:propertyC';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: value1, value2, value3, valueABC';
+    $expectedLog2 = 'LOG:values: value1, value 2, value3, valueABC';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
   }
 
@@ -359,6 +363,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($storedRecord->isNew);
     $this->assertTrue($storedRecord->isValid);
     $this->assertFalse($storedRecord->isModified);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->primaryKey);
+    $this->assertSame((string)$recordKey, $storedRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->property);
     $this->assertSame((string)$recordKey, $storedRecord->property->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyA);
@@ -443,6 +449,8 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($storedRecord->isNew);
     $this->assertTrue($storedRecord->isValid);
     $this->assertFalse($storedRecord->isModified);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->primaryKey);
+    $this->assertSame('a|b|c', $storedRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyA);
     $this->assertSame('a', $storedRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $storedRecord->propertyB);
@@ -635,7 +643,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('key' . ($i * 2), $record->property->value);
       $this->assertSame('Avalue', $record->propertyA->value);
       // $expectedValueOfB = ($i == 3 && self::$NEW_VALUE_B === TRUE)? 'newValueB' : 'valueB';
-      // $this->assertSame($expectedValueOfB, $record->propertyB->value);
+      // $this->assertEquals($expectedValueOfB, $record->propertyB->value);
       $this->assertSame('valueC', $record->propertyC->value);
     }
     \ChromePhp::clear();

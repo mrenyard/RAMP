@@ -34,10 +34,6 @@ class MockRecord extends Record
     return StrCollection::set('aProperty','bProperty','cProperty');
   }
 
-  protected function get_aProperty_bProperty_cProperty()
-  {
-  }
-
   protected function get_aProperty()
   {
   }

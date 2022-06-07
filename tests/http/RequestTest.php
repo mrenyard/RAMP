@@ -92,6 +92,46 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->assertInstanceOf('ramp\http\Request', $testObject);
   }
 
+
+  /**
+   * Collection of assertions based on Property NOT defined in business model.
+   * - $_SERVER['REQUEST_URI'] equals '/bad-record'
+   * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
+   *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   */
+  public function testDomainExceptionBadRecord()
+  {
+    $this->expectException(\DomainException::class);
+    $_SERVER['REQUEST_URI'] = '/bad-record';
+    $testObject = new Request();
+  }
+
+  /**
+   * Collection of assertions based on Property NOT defined in business model.
+   * - $_SERVER['REQUEST_URI'] equals '/mock-record/bad-key'
+   * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
+   *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   */
+  public function testDomainExceptionBadKey()
+  {
+    $this->expectException(\DomainException::class);
+    $_SERVER['REQUEST_URI'] = '/mock-record/bad-key';
+    $testObject = new Request();
+  }
+
+  /**
+   * Collection of assertions based on Property NOT defined in business model.
+   * - $_SERVER['REQUEST_URI'] equals '/mock-record/key/bad-property'
+   * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
+   *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   */
+  public function testDomainExceptionBadProperty()
+  {
+    $this->expectException(\DomainException::class);
+    $_SERVER['REQUEST_URI'] = '/mock-record/key/bad-property';
+    $testObject = new Request();
+  }
+
   /**
    * Collection of assertions based on Property NOT defined in business model.
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/?property-not=valueOK'
@@ -100,7 +140,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
    *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
    */
-  public function testDomainException()
+  public function testDomainExceptionBadFilter()
   {
     $this->expectException(\DomainException::class);
     $_SERVER['REQUEST_URI'] = '/mock-record/?property-not=valueOK';

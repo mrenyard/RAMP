@@ -647,8 +647,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);
-    // TODO:mrenyard: FIX LOG
-    // $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
-    // $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
   }
 }

@@ -41,41 +41,7 @@ class Address extends Record
    */
   public function primaryKeyNames() : StrCollection { return StrCollection::set('countryCode','postalCode','extendedAddress'); }
 
-  protected function get_countryCode() : field\Input
-  {
-    if (!isset($this['countryCode']))
-    {
-      $this['countryCode'] = new field\Input(
-        Str::set('countryCode'),
-        $this,
-        new validation\dbtype\VarChar(
-          2,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['countryCode'];
-  }
-
-  protected function get_postalCode() : field\Input
-  {
-    if (!isset($this['postalCode']))
-    {
-      $this['postalCode'] = new field\Input(
-        Str::set('postalCode'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['postalCode'];
-  }
-
-  protected function get_extendedAddress() : field\Input
+  protected function get_extendedAddress() : field\Field
   {
     if (!isset($this['extendedAddress']))
     {
@@ -92,7 +58,7 @@ class Address extends Record
     return $this['extendedAddress'];
   }
 
-  protected function get_streetAddress() : field\Input
+  protected function get_streetAddress() : field\Field
   {
     if (!isset($this['streetAddress']))
     {
@@ -109,7 +75,7 @@ class Address extends Record
     return $this['streetAddress'];
   }
 
-  protected function get_locality() : field\Input
+  protected function get_locality() : field\Field
   {
     if (!isset($this['locality']))
     {
@@ -126,7 +92,7 @@ class Address extends Record
     return $this['locality'];
   }
 
-  protected function get_region() : field\Input
+  protected function get_region() : field\Field
   {
     if (!isset($this['region']))
     {
@@ -141,6 +107,46 @@ class Address extends Record
       );
     }
     return $this['region'];
+  }
+
+  protected function get_postalCode() : field\Field
+  {
+    if (!isset($this['postalCode']))
+    {
+      $this['postalCode'] = new field\Input(
+        Str::set('postalCode'),
+        $this,
+        new validation\dbtype\VarChar(
+          45,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['postalCode'];
+  }
+
+  protected function get_countryCode() : field\Field
+  {
+    if (!isset($this['countryCode']))
+    {
+      // $this['countryCode'] = new field\SelectOne(
+      //   Str::set('countryCode'),
+      //   $this,
+      //   new LoginAccountType()
+      // );
+      
+      $this['countryCode'] = new field\Input(
+        Str::set('countryCode'),
+        $this,
+        new validation\dbtype\VarChar(
+          2,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['countryCode'];
   }
 
   /**

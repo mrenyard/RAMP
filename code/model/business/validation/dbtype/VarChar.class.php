@@ -63,7 +63,7 @@ class VarChar extends DbTypeValidation
    */
   protected function test($value)
   {
-    if (is_string($value) && strlen($value) <= $this->maxLength) { return; }
+    if (is_string((string)$value) && strlen($value) <= $this->maxLength) { return; }
     throw new FailedValidationException();
   }
 }

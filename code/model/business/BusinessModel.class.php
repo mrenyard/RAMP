@@ -25,6 +25,7 @@ use ramp\core\Str;
 use ramp\core\iOption;
 use ramp\core\iCollection;
 use ramp\core\Collection;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\Model;
 
@@ -40,7 +41,7 @@ use ramp\model\Model;
  * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
  * resulting values.
  * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
- * @property-read iCollection $errors Returns a collection of recorded error messages.
+ * @property-read StrCollection $errors Returns a StrCollection of recorded error messages.
  * @property-read int $count Returns the number of children currently parented by *this*.
  */
 abstract class BusinessModel extends Model implements \IteratorAggregate, \Countable, \ArrayAccess
@@ -48,8 +49,8 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   private $children;
 
   /**
-   * Collection of error messages ( \ramp\core\Str ).
-   * @var \ramp\core\iCollection
+   * SrtCollection of error messages.
+   * @var \ramp\core\StrCollection
    */
   protected $errorCollection;
 
@@ -80,9 +81,9 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
     $type = Str::_EMPTY();
     $o = $this;
     do {
-      $type = $type->append($this->processType((string)$o, TRUE)->prepend(Str::set(' ')));
+      $type = $type->append($this->processType((string)$o, TRUE)->prepend(Str::SPACE()));
     } while (is_object($o) && ($o = get_parent_class($o)));
-    return $type;
+    return $type->trimStart();
   }
 
   /**
@@ -156,7 +157,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    */
   public function validate(PostData $postdata)
   {
-    $this->errorCollection = new Collection(Str::set('ramp\core\Str'));
+    $this->errorCollection = new StrCollection();
     foreach ($this->children as $child) {
       $child->validate($postdata);
     }
@@ -179,9 +180,9 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
   /**
    * Gets collection of recorded errors.
    * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return iCollection List of recorded errors.
+   * @return StrCollection List of recorded errors.
    */
-  protected function get_errors() : iCollection
+  protected function get_errors() : StrCollection
   {
     $errors = clone $this->errorCollection;
     foreach ($this->children as $child) {

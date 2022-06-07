@@ -24,6 +24,7 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
@@ -164,11 +165,11 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->testObject->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->testChild1->type);
-      $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->testChild2->type);
-      $this->assertSame(' mock-business-model business-model', (string)$this->testChild3->type);
-      $this->assertSame(' mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
+      $this->assertSame('mock-business-model business-model', (string)$this->testObject->type);
+      $this->assertSame('mock-business-model business-model', (string)$this->testChild1->type);
+      $this->assertSame('mock-business-model-with-errors mock-business-model', (string)$this->testChild2->type);
+      $this->assertSame('mock-business-model business-model', (string)$this->testChild3->type);
+      $this->assertSame('mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

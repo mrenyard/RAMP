@@ -244,16 +244,15 @@ class StrTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Str::append().
+   * Collection of assertions for ramp\core\Str::trimEnd().
    * - assert provided value removed from end on returned {@link \ramp\core\Str}
    * - assert original {@link \ramp\core\Str}'s state in unchanged
    * - assert only last occurrence of provided value removed from Str
    * - assert returned object is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_append \ramp\core\Str::append()
+   * @link ramp.core.Str#method_trimEnd \ramp\core\Str::trimEnd()
    */
   public function testTrimEnd()
   {
-
     $s1 = 'And the beast reborn spread over the earth';
     $s2 = 'And the beast reborn spread over the';
     $s3 = 'And the beast reborn spread over';
@@ -275,6 +274,42 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
     $o5 = Str::_EMPTY();
     $rtn = $o5->trimEnd($test);
+    $this->assertSame($rtn, $oEmpty);
+    $this->assertSame($o5, $oEmpty);
+    $this->assertSame('', (string) $o5);
+  }
+
+  /**
+   * Collection of assertions for ramp\core\Str::trimStart().
+   * - assert provided value removed from end on returned {@link \ramp\core\Str}
+   * - assert original {@link \ramp\core\Str}'s state in unchanged
+   * - assert only last occurrence of provided value removed from Str
+   * - assert returned object is instance of {@link \ramp\core\Str}
+   * @link ramp.core.Str#method_trimStart \ramp\core\Str::trimStart()
+   */
+  public function testTrimStart()
+  {
+    $s1 = 'And the beast reborn spread over the earth';
+    $s2 = 'the beast reborn spread over the earth';
+    $s3 = 'beast reborn spread over the earth';
+
+    $o1 = Str::set($s1);
+    $o2 = $o1->trimStart(Str::set('And '));
+    $o3 = $o2->trimStart(Str::set('the '));
+
+    $this->assertSame($s1, (string)$o1);
+    $this->assertSame($s2, (string)$o2);
+    $this->assertSame($s3, (string)$o3);
+
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+
+    $oEmpty = Str::_EMPTY();
+    $test = Str::set('test');
+
+    $o5 = Str::_EMPTY();
+    $rtn = $o5->trimStart($test);
     $this->assertSame($rtn, $oEmpty);
     $this->assertSame($o5, $oEmpty);
     $this->assertSame('', (string) $o5);

@@ -22,7 +22,7 @@
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 $type = (isset($this->type))? strtolower($this->type) : '';
 ?>
-        <form method="post" id="<?=$this->id; ?>" class="<?=$type; ?>" >
+        <form method="post" id="<?=$this->id; ?>" class="<?=$this->type; ?>" >
 <?=$this->children; ?>
           <input type="submit" value="<?=(strpos((string)$this->id, ':new'))? 'add':'update'; ?>" tabindex="<?=$tabindex; ?>" />
         </form>
