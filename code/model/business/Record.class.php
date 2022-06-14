@@ -117,7 +117,7 @@ abstract class Record extends BusinessModel
       //   $this->primaryKeyField = $this->$pkName;
       // } else {
         // $this->primaryKeyField = new field\MultiPartPrimary($primaryKeyNames, $this);
-        $this->primaryKeyField = new field\MultiPartPrimary($this->primaryKeyNames(), $this);
+        $this->primaryKeyField = new field\PrimaryKey($this->primaryKeyNames(), $this);
       // }
     }
     return $this->primaryKeyField;
