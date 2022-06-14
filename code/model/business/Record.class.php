@@ -110,14 +110,15 @@ abstract class Record extends BusinessModel
   {
     if (!isset($this->primaryKeyField))
     {
-      $primaryKeyNames = $this->primaryKeyNames();
-      if ($primaryKeyNames->count == 1)
-      {
-        $pkName = (string)$primaryKeyNames[0];
-        $this->primaryKeyField = $this->$pkName;
-      } else {
-        $this->primaryKeyField = new field\MultiPartPrimary($primaryKeyNames, $this);
-      }
+      // $primaryKeyNames = $this->primaryKeyNames();
+      // if ($primaryKeyNames->count == 1)
+      // {
+      //   $pkName = (string)$primaryKeyNames[0];
+      //   $this->primaryKeyField = $this->$pkName;
+      // } else {
+        // $this->primaryKeyField = new field\MultiPartPrimary($primaryKeyNames, $this);
+        $this->primaryKeyField = new field\MultiPartPrimary($this->primaryKeyNames(), $this);
+      // }
     }
     return $this->primaryKeyField;
   }

@@ -38,7 +38,7 @@ use ramp\model\business\FailedValidationException;
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
  */
-class MultiPartPrimary extends Field
+class PrimaryKey extends Field
 {
   private $dataObjectPropertyNames;
 
