@@ -44,8 +44,7 @@ echo "<?php";
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\model\business\Record;
-use ramp\model\business\RecordCollection;
+use ramp\core\StrCollection;
 
 /**
  * Collection of <?=$this->name; ?>.
@@ -61,9 +60,9 @@ class <?=$this->name; ?> extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  static public function primaryKeyNames() : StrCollection
+  public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('<?=$this->primaryKeyName; ?>');
+    return StrCollection::set(<?=$this->primaryKeys; ?>);
   }
 <?=$this->children ?>
 

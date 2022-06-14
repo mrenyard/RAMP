@@ -27,7 +27,7 @@ if ($this->key == 'PRI') {
   {
     if (!isset($this-><?=$this->name; ?>))
     {
-      $this['<?=$this->name; ?>'] = new field\Input(
+      $this-><?=$this->name; ?> = new field\Input(
         Str::set('<?=$this->name; ?>'),
         $this,
         new validation\dbtype\<?=$this->dataType; ?>

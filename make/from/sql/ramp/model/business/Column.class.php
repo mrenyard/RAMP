@@ -21,6 +21,7 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 
 /**
@@ -37,7 +38,7 @@ class Column extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  static public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
 
   protected function get_name() : string
   {

@@ -40,17 +40,17 @@ class Table extends Record
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  static public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
 
-  protected function get_primaryKeyName() : string
+  protected function get_primaryKeys() : string
   { 
     $a = array();
     foreach ($this as $property) {
       if ($property->key == 'PRI') {
-        $a[] = $property->name;
+        $a[] = "'" . $property->name . "'";
       }
     }
-    return implode('|', $a);
+    return implode(', ', $a);
   }
 
   protected function get_name() : string
@@ -58,9 +58,9 @@ class Table extends Record
     return $this->getPropertyValue('TABLE_NAME');
   }
 
-  protected function get_requiered() : ColumnCollection
+  protected function get_requiered() : Collection
   {
-    $oCollection = new ColumnCollection();
+    $oCollection = new Collection();
     foreach ($this as $property) {
       if (!$property->isNullable) {
         $oCollection->add($property);
