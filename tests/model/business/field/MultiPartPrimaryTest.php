@@ -41,7 +41,7 @@ require_once '/usr/share/php/ramp/model/business/FailedValidationException.class
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/field/MultiPartPrimary.class.php';
+require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
@@ -52,15 +52,15 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
-use ramp\model\business\field\MultiPartPrimary;
+use ramp\model\business\field\PrimaryKey;
 use ramp\model\business\validation\dbtype\VarChar;
 
 use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
 
 /**
- * Collection of tests for \ramp\model\business\field\MultiPartPrimary.
+ * Collection of tests for \ramp\model\business\field\PrimaryKey.
  */
-class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
+class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $mockRecord;
@@ -80,12 +80,12 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
     $this->propertyNames->add(Str::set('aProperty'));
     $this->propertyNames->add(Str::set('bProperty'));
     $this->propertyNames->add(Str::set('cProperty'));
-    $this->testObject = new MultiPartPrimary($this->propertyNames, $this->mockRecord);
+    $this->testObject = new PrimaryKey($this->propertyNames, $this->mockRecord);
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::__construct().
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
@@ -93,8 +93,8 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
    * - assert is instance of {@link \ramp\model\field\Field}
-   * - assert is instance of {@link \ramp\model\field\MultiPartPrimary}
-   * @link ramp.model.business.field.MultiPartPrimary ramp\model\business\field\MultiPartPrimary
+   * - assert is instance of {@link \ramp\model\field\PrimaryKey}
+   * @link ramp.model.business.field.PrimaryKey ramp\model\business\field\PrimaryKey
    */
   public function test__construct()
   {
@@ -105,16 +105,16 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\field\MultiPartPrimary', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\PrimaryKey', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::id.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::id.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
    * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.MultiPartPrimary#method_get_id ramp\model\business\field\MultiPartPrimary::id
+   * @link ramp.model.business.field.PrimaryKey#method_get_id ramp\model\business\field\PrimaryKey::id
    */
   public function testGet_id()
   {
@@ -130,12 +130,12 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::value.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::value.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
    * - assert returned same as provided records getPropertyValue() method.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.MultiPartPrimary#method_get_value ramp\model\business\field\MultiPartPrimary::value
+   * @link ramp.model.business.field.PrimaryKey#method_get_value ramp\model\business\field\PrimaryKey::value
    */
   public function testGet_value()
   {
@@ -152,12 +152,12 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::type.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::type.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
    * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.MultiPartPrimary#method_get_type ramp\model\business\field\MultiPartPrimary::type
+   * @link ramp.model.business.field.PrimaryKey#method_get_type ramp\model\business\field\PrimaryKey::type
    */
   public function testGet_type()
   {
@@ -166,17 +166,17 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertEquals('multi-part-primary field', (string)$this->testObject->type);
+      $this->assertEquals('primary-key field', (string)$this->testObject->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::getIterator().
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through NO objects, as there are NO children.
-   * @link ramp.model.business.field.MultiPartPrimary#method_getIterator ramp\model\business\field\MultiPartPrimary::getIterator()
+   * @link ramp.model.business.field.PrimaryKey#method_getIterator ramp\model\business\field\PrimaryKey::getIterator()
    */
   public function testGetIterator()
   {
@@ -189,9 +189,9 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::offsetGet.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds as NO children
-   * @link ramp.model.business.field.MultiPartPrimary#method_offsetGet ramp\model\business\field\MultiPartPrimary::offsetGet()
+   * @link ramp.model.business.field.PrimaryKey#method_offsetGet ramp\model\business\field\PrimaryKey::offsetGet()
    */
   public function testOffsetGet()
   {
@@ -200,9 +200,9 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::offsetExists.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetExists.
    * - assert False returned on isset() NO children outside expected bounds.
-   * @link ramp.model.business.field.MultiPartPrimary#method_offsetExists ramp\model\business\field\MultiPartPrimary::offsetExists()
+   * @link ramp.model.business.field.PrimaryKey#method_offsetExists ramp\model\business\field\PrimaryKey::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -210,10 +210,10 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\model\business\field\MultiPartPrimary::offsetSet().
+   * Collection of assertions for ramp\model\business\field\PrimaryKey::offsetSet().
    * - assert throws BadMethodCallException as this method should be inaccessible
    *   - with message: <em>'Array access setting is not allowed, please use add.'</em>
-   * @link ramp.model.business.field.MultiPartPrimary#method_offsetSet \ramp\model\business\field\MultiPartPrimary::offsetSet()
+   * @link ramp.model.business.field.PrimaryKey#method_offsetSet \ramp\model\business\field\PrimaryKey::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -223,10 +223,10 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::offsetUnset.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetUnset.
    * - assert throws BadMethodCallException whenever offsetUnset is called
    *  - with message *Array access unsetting is not allowed.*
-   * @link ramp.model.business.field.MultiPartPrimary#method_offsetUnset ramp\model\business\field\MultiPartPrimary::offsetUnset()
+   * @link ramp.model.business.field.PrimaryKey#method_offsetUnset ramp\model\business\field\PrimaryKey::offsetUnset()
    */
   public function testOffsetUnset()
   {
@@ -236,12 +236,12 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::validate() where PostData
-   * does NOT contain an MultiPartPrimaryDataCondition with an attribute that matches the testObject's id.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::validate() where PostData
+   * does NOT contain an PrimaryKeyDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
-   * - assert if provided PostData does NOT contain an MultiPartPrimaryDataCondition with an attribute that
+   * - assert if provided PostData does NOT contain an PrimaryKeyDataCondition with an attribute that
    *   matches the testObject's id, then its associated ValidationRule test() method, is NOT called.
-   * @link ramp.model.business.field.MultiPartPrimary#method_validate ramp\model\business\field\MultiPartPrimary::validate()
+   * @link ramp.model.business.field.PrimaryKey#method_validate ramp\model\business\field\PrimaryKey::validate()
    */
   public function testValidateValidationRuleTestNotCalled()
   {
@@ -249,9 +249,9 @@ class MultiPartPrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\MultiPartPrimary::count.
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::count.
    * - assert return expected int value related to the number of children (NO children).
-   * @link ramp.model.business.field.MultiPartPrimary#method_count ramp\model\business\field\MultiPartPrimary::count
+   * @link ramp.model.business.field.PrimaryKey#method_count ramp\model\business\field\PrimaryKey::count
    */
   public function testCount()
   {
