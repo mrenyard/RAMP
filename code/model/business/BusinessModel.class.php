@@ -157,7 +157,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    */
   public function validate(PostData $postdata)
   {
-    $this->errorCollection = new StrCollection();
+    $this->errorCollection = StrCollection::set();
     foreach ($this->children as $child) {
       $child->validate($postdata);
     }

@@ -216,7 +216,7 @@ final class Str extends RAMPObject
     return ((string)$rtn == (string)$this)? $this : $rtn;
   }
 
-  public function replace(Str $search, Str $replace)
+  public function replace(Str $search, Str $replace) : Str
   {
     return Str::set(\str_replace((string)$search, (string)$replace, (string)$this));
   }
@@ -251,21 +251,20 @@ final class Str extends RAMPObject
   }
 
   /**
-   * Ascertain if 'this' Str contains any of provided Strs within a Collection.
-   * @param \ramp\core\Collection $stringCollection Collection of Strs to be checked
-   * @return \ramp\core\Boolean *This* does/not contain any of Strs in provided Collection
-   * @throws InvalidArgumentException When Collection NOT a composite of \ramp\core\Strs
-   *
-  public function contains(Collection $stringCollection) : Boolean
+   * Ascertain if 'this' Str contains any of provided Strs provided in StrCollection.
+   * @param \ramp\core\StrCollection $searchSubstrings Collection of Strs to be checked
+   * @return bool *This* does/not contain any of Strs in provided Collection
+   */
+  public function contains(StrCollection $searchSubstrings) : bool
   {
-    if (!($stringCollection->isComposedOf($this)->get())) {
-      throw new \InvalidArgumentException('Provided Collection MUST be a composite of \ramp\core\Strs');
+    if ($this === self::_EMPTY()){ return FALSE; } // cannot search an empty string
+    print_r('outer');
+    foreach($searchSubstrings as $searchSubstring) {
+        print_r('LOOP');
+        if (stripos((string)$this, (string)$searchSubstring) != FALSE) { return TRUE; }
     }
-    foreach($stringCollection as $value) {
-        if (stripos($this->value, (string)$value) !== false) { return Boolean::TRUE(); }
-    }
-    return Boolean::FALSE();
-  }*/
+    return FALSE;
+  }
 
   /**
    * Returns value of 'this' as string literal

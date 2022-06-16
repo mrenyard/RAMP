@@ -76,10 +76,7 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     $this->dataObject = new \stdClass();
     $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
-    $this->propertyNames = new StrCollection();
-    $this->propertyNames->add(Str::set('aProperty'));
-    $this->propertyNames->add(Str::set('bProperty'));
-    $this->propertyNames->add(Str::set('cProperty'));
+    $this->propertyNames = StrCollection::set('aProperty', 'bProperty', 'cProperty');
     $this->testObject = new PrimaryKey($this->propertyNames, $this->mockRecord);
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }

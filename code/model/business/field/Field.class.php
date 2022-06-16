@@ -118,7 +118,7 @@ abstract class Field extends BusinessModel
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = new StrCollection();
+    $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
       if ($inputdata->attributeURN == $this->id)
@@ -153,7 +153,7 @@ abstract class Field extends BusinessModel
    */
   final protected function get_errors() : StrCollection
   {
-    return (isset($this->errorCollection)) ? $this->errorCollection : new StrCollection();
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
   }
 
   /**

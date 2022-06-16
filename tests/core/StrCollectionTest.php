@@ -98,11 +98,12 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
       $this->assertSame((string)$strValue, $strArray[$i]);
       $i++;
     }
-    $testObject = StrCollection::set('',' ',':',';');
+    $testObject = StrCollection::set('',' ',':',';','|');
     $this->assertSame($testObject[0], Str::_EMPTY());
     $this->assertSame($testObject[1], Str::SPACE());
     $this->assertSame($testObject[2], Str::COLON());
     $this->assertSame($testObject[3], Str::SEMICOLON());
+    $this->assertSame($testObject[4], Str::BAR());
   }
 
   /**

@@ -37,7 +37,7 @@ final class StrCollection extends Collection
    * Default constructor for collection of \ramp\core\Str.
    * - Sets composite type for this collection as \ramp\core\Str
    */
-  final public function __construct() { parent::__construct(Str::set('ramp\core\Str')); }
+  final private function __construct() { parent::__construct(Str::set('ramp\core\Str')); }
 
   /**
    * Instantiate a new StrCollection - Can take a (comma seperated (args)) list of string literals.

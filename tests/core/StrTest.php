@@ -22,10 +22,13 @@ namespace tests\ramp\core;
 
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\Boolean;
+use ramp\core\StrCollection;
 
 /**
  * Collection of tests for \ramp\core\Str.
@@ -383,44 +386,18 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::contains().
-   * - assert returns {@link \ramp\core\Boolean::TRUE()} when {@link \ramp\core\Str}
-   *   - contains at least one maching {@link \ramp\core\Str} within provided {@link \ramp\core\Collection}
-   * - assert evaluates true when {@link \ramp\core\Boolean::get()} called on result from {@link \ramp\core\Str}
-   *   - containing at least one {@link \ramp\core\Str} within provided {@link \ramp\core\Collection}
-   * - assert returns {@link \ramp\core\Boolean::FALSE()} when {@link \ramp\core\Str}
-   *   - does NOT contains at least one maching {@link \ramp\core\Str} within provided {@link \ramp\core\Collection}
-   * - assert evaluates false when {@link \ramp\core\Boolean::get()} called on result from {@link \ramp\core\Str}
-   *   - NOT containing at least one {@link \ramp\core\Str} within provided {@link \ramp\core\Collection}
-   * - assert throws InvalidArgumentException When Collection NOT a composite of {@link \ramp\core\Str}s
-   *   - with message: <em>'Provided Collection MUST be a composite of \ramp\core\Strs'</em>
+   * - assert returns FALSE when this _EMPTY().
+   * - assert returns TRUE when this contains at least one maching substring from provided {@link \ramp\core\StrCollection}
+   * - assert returns FALSE when thisdoes NOT contains maching substring from provided {@link \ramp\core\StrCollection}
    * @link ramp.core.Str#method_contains \ramp\core\Str::contains()
-   *
+   */
   public function testContains()
   {
-    $testRAMPObject = Str::set('My name is Tom Thumb');
-    $testRAMPObject2 = Str::set('Marry had a little lamb');
-
-    $stringCollection = new Collection(Str::set('ramp\core\Str'));
-    $stringCollection->add(Str::set('Jack'));
-    $stringCollection->add(Str::set('Georgie'));
-    $stringCollection->add(Str::set('Tom'));
-    $stringCollection->add(Str::set('Bill'));
-
-    $this->assertSame(Boolean::TRUE(), $testRAMPObject->contains($stringCollection));
-    $this->assertTrue($testRAMPObject->contains($stringCollection)->get());
-
-    $this->assertSame(Boolean::FALSE(), $testRAMPObject2->contains($stringCollection));
-    $this->assertFalse($testRAMPObject2->contains($stringCollection)->get());
-
-    $mockRAMPObjectCollection = new Collection(Str::set('\tests\ramp\core\MockRAMPObject'));
-    try {
-      $testRAMPObject->contains($mockRAMPObjectCollection);
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertSame(
-        'Provided Collection MUST be a composite of \ramp\core\Strs', $expected->getMessage()
-      );
-      return;
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised');
-  }*/
+    $testObject = Str::set('My name is Tom Thumb');
+    $testObject2 = Str::set('Marry had a little lamb');
+    $searchSubstrings = StrCollection::set('Jack', 'Georgie', 'Tom', 'Bill');
+    $this->assertFalse(Str::_EMPTY()->contains($searchSubstrings));
+    $this->assertTrue($testObject->contains($searchSubstrings));
+    $this->assertFalse($testObject2->contains($searchSubstrings));
+  }
 }
