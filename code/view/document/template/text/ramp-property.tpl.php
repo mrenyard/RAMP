@@ -16,7 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.make
  * @version 0.0.9;
  */
 if ($this->key == 'PRI') {

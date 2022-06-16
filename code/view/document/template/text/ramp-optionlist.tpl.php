@@ -44,42 +44,33 @@ echo "<?php";
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\StrCollection;
+use ramp\core\OptionList;
+use ramp\model\business\field\Option;
 
 /**
- * Collection of <?=$this->name; ?>.
+ * Pre defined enum/list for <?=$this->name; ?>.
+ * .
  */
-class <?=$this->name; ?>Collection extends RecordCollection { }
-
-/**
- * Concrete Record for <?=$this->name; ?>.
- */
-class <?=$this->name; ?> extends Record
+class <?=$this->name; ?> extends OptionList
 {
   /**
-   * Returns property name of concrete classes primary key.
-   * @return \ramp\core\Str Name of property that is concrete classes primary key
+   * Creates <?=$this->name; ?> option list.
    */
-  public function primaryKeyNames() : StrCollection
+  public function __construct()
   {
-    return StrCollection::set(<?=$this->primaryKeys; ?>);
-  }
-<?=$this->children; ?>
-
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (
-<?php
-  $requiered = $this->requiered; $i = 0;
-  foreach ($this->requiered as $property) { $i++; ?>
-      isset($dataObject-><?=$property->name; ?>) <?=($requiered->count > $i)? '&&' : ''; ?>
-
+    parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
+    $this->add(new Option(0, Str::set('Please choose:')));
+<?php foreach($this->options as $option) { ?>
+    $this->add(new Option(<?=$this->name; ?>::<?=$option->ucDescription; ?>(), Str::set('<?=$option->description; ?>')));
 <?php } ?>
-    );
   }
+<?php foreach($this->options as $option) { ?>
+
+    /**
+     * Returns the <?=$option->ucDescription; ?> enum of <?=$this->name; ?>.
+     * @return int <?=$this->name; ?> '<?=$option->ucDescription; ?>' enum <?=$option->key; ?>
+
+     */
+    public static function <?=$option->ucDescription; ?>() : int { return <?=$option->key; ?>; }
+<?php } ?>
 }
