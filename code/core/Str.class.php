@@ -258,9 +258,7 @@ final class Str extends RAMPObject
   public function contains(StrCollection $searchSubstrings) : bool
   {
     if ($this === self::_EMPTY()){ return FALSE; } // cannot search an empty string
-    print_r('outer');
     foreach($searchSubstrings as $searchSubstring) {
-        print_r('LOOP');
         if (stripos((string)$this, (string)$searchSubstring) != FALSE) { return TRUE; }
     }
     return FALSE;
