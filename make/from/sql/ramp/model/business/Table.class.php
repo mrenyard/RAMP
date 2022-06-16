@@ -21,6 +21,7 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
@@ -58,13 +59,22 @@ class Table extends Record
     return $this->getPropertyValue('TABLE_NAME');
   }
 
-  protected function get_requiered() : Collection
+  protected function get_requiered() : iCollection
   {
     $oCollection = new Collection();
     foreach ($this as $property) {
       if (!$property->isNullable) {
         $oCollection->add($property);
       }
+    }
+    return $oCollection;
+  }
+
+  protected function get_options() : iCollection
+  {
+    $oCollection = new Collection();
+    foreach ($this as $option) {
+      $oCollection->add($option);
     }
     return $oCollection;
   }

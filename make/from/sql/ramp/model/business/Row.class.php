@@ -27,45 +27,40 @@ use ramp\model\business\Record;
 /**
  * Collection of Column.
  */
-class ColumnCollection extends RecordCollection { }
+class RowCollection extends RecordCollection { }
 
 /**
- * Concrete Record for Column.
+ * Concrete Record for Row.
  */
-class Column extends Record
+class Row extends Record
 {
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('name'); }
+  public function primaryKeyNames() : StrCollection { return StrCollection::set('key'); }
 
-  protected function get_name() : string
-  {
-    return $this->getPropertyValue('COLUMN_NAME');
-  }
-  
   protected function get_key() : string
   {
-    return $this->getPropertyValue('COLUMN_KEY');
+    return $this->getPropertyValue('key');
   }
-        
-  protected function get_dataType() : string
+  
+  protected function get_description() : string
   {
-    $message = "Str::set('My error message HERE!')";
-    $values = \explode('(', trim($this->getPropertyValue('COLUMN_TYPE'), ')'));
-    switch ($values[0]) {
-      case 'varchar':
-        return "VarChar(\n          " . $values[1] . ",\n          new validation\Alphanumeric(),\n          " . $message . "\n        )";
-      case 'int':
-      default:
-        return $values[0];
+    return $this->getPropertyValue('description');
+  }
+
+  protected function get_ucDescription() : string
+  {
+    return str_replace(' ', '_', \strtoupper($this->description));
+  }
+
+  protected function get_option() : void
+  {
+    foreach ($this as $option) {
+      echo "  $this->add(new Option(" . $this->name . "::" . $option->ucDescription . "(), Str::set('" . $option->description . "')));
+      ";
     }
-  }
- 
-  protected function get_isNullable() : bool
-  {
-    return ($this->getPropertyValue('IS_NULLABLE') == 'YES');
   }
 
   /**
@@ -76,8 +71,8 @@ class Column extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->COLUMN_NAME) &&
-      isset($dataObject->COLUMN_TYPE)
+      isset($dataObject->key) &&
+      isset($dataObject->description)
     );
   }
 }
