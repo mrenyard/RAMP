@@ -31,7 +31,7 @@ use ramp\model\business\LoginAccountType;
 use ramp\model\business\AuthenticatibleUnit;
 
 /**
- * Referance and maintain a collection of \ramp\model\business\LoginAccounts.
+ * Referance and maintain a collection of \ramp\model\business\LoginAccount.
  *
  * RESPONSIBILITIES
  * - Implement methods for property access
