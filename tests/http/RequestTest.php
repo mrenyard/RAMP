@@ -132,6 +132,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function testDomainExceptionBadFilter()
   {
     $this->expectException(\DomainException::class);
+    $this->expectExceptionMessage('Invalid: MockRecord->propertyNot, does NOT match business model');
     $_SERVER['REQUEST_URI'] = '/mock-record/?property-not=valueOK';
     $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
     $_GET['property-not'] = 'valueOK';
