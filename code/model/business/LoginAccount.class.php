@@ -25,6 +25,7 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\core\BadPropertyCallException;
 use ramp\condition\PostData;
+use ramp\condition\Filter;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\LoginAccountType;
@@ -68,10 +69,10 @@ class LoginAccountCollection extends RecordCollection
  */
 class LoginAccount extends Record
 {
-  private $primaryProperty;
   private $email;
   private $authenticatableUnit;
   private $unencryptedPassword;
+  private $primaryProperty;
 
   /**
    * Flag for assiciated View expressing wish to show password field.
@@ -153,21 +154,15 @@ class LoginAccount extends Record
    * Get the associated Authenticatable Unit as defined with \ramp\SETTING and $this->auPK.
    * @return AuthenticatableUnit Authenticatable Unit associated with *this*.
    */
-  private function getAuthenticatableUnit() : AuthenticatableUnit
+  private function getAuthenticatableUnit(string $byAuEmail = NULL) : AuthenticatableUnit
   {
-    $auPK = $this->getPropertyValue('auPK');
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    if (isset($auPK) && (!isset($this->authenticatableUnit) || $this->authenticatableUnit->isNew))
-    {
+    $auPK = $this->getPropertyValue('auPK');
+    if (!isset($this->authenticatableUnit)) {
+      $key = Str::set((isset($auPK))? $auPK : 'new');
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set($auPK))
-      );
-    }
-    elseif (!isset($this->authenticatableUnit))
-    {
-      $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set('new'))
-      );
+        new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), $key)
+      );  
     }
     return $this->authenticatableUnit;
   }
@@ -226,23 +221,20 @@ class LoginAccount extends Record
    * to be assessed for validity and imposed on associated authenticatable unit or *this*
    * @throws \BadMethodCallException When NOT new
    */
-  public function populateAsNew(PostData $postdata)
+  // public function populateAsNew(PostData $postdata, string $auEmail = NULL)
+  public function createFor(AuthenticatableUnit $authenticatableUnit)
   {
-    if (!$this->isNew) {
-      throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!');
-    }
-    $au = $this->getAuthenticatableUnit();
-    $au->validate($postdata);
-    // TODO:mrenyard: fix for multi prime
-    $pkName = (string)$au->primaryKeyNames()->implode(Str::BAR());
-    $this->setPropertyValue('auPK', $au->getPropertyValue($pkName));
-    $this->setPropertyValue('email', $au->getPropertyValue('email'));
+    if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
+    if (!$authenticatableUnit->isValid) { throw new Exception(); }
+    $this->setPropertyValue('auPK', $authenticatableUnit->getPropertyValue(
+      (string)$authenticatableUnit->primaryKeyNames()->implode(Str::BAR())
+    ));
+    $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
     $this->setPropertyValue('accountType', 1);
     $this->setPassword($this->generateRandomPassword());
-    if ($this->isValid && $au->isValid) {
+    if ($this->isValid) {
       $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
       $modelManager = $MODEL_MANAGER::getInstance();
-      $modelManager->update($au);
       $modelManager->update($this);
     }
   }

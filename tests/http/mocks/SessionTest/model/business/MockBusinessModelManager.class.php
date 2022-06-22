@@ -34,6 +34,7 @@ use ramp\condition\SQLEnvironment;
 
 use tests\ramp\http\SessionTest;
 use ramp\model\business\AnAuthenticatableUnit;
+use ramp\model\business\AnAuthenticatableUnitCollection;
 
 /**
  * Mock business model managers for testing \ramp\http\Session
@@ -133,11 +134,30 @@ class MockBusinessModelManager extends BusinessModelManager
       }
       if ($definition->recordKey == 'aperson')
       {
-        // valid
         $dataObject = new \stdClass();
         $dataObject->uname = 'aperson';
         $dataObject->email = 'aperson@domain.com';
         $dataObject->givenName = 'Ann';
+        $dataObject->familyName = 'Person';
+        return new AnAuthenticatableUnit($dataObject);
+      }
+      if (isset($filter) && $filter[0](SQLEnvironment::getInstance()) == 'AnAuthenticatableUnit.email = "existing.person@domain.com"') {
+        $dataObject = new \stdClass();
+        $o = new AnAuthenticatableUnit($dataObject);
+        $collection = new AnAuthenticatableUnitCollection();
+        $dataObject->uname = 'existing';
+        $dataObject->email = 'existing.person@domain.com';
+        $dataObject->givenName = 'Exist';
+        $dataObject->familyName = 'Person';
+        $collection->add($o);
+        return $collection;
+      }
+      if ($definition->recordKey == 'existing')
+      {
+        $dataObject = new \stdClass();
+        $dataObject->uname = 'existing';
+        $dataObject->email = 'existing.person@domain.com';
+        $dataObject->givenName = 'Exist';
         $dataObject->familyName = 'Person';
         return new AnAuthenticatableUnit($dataObject);
       }

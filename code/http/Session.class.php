@@ -27,9 +27,9 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\condition\Filter;
 use ramp\condition\FilterCondition;
-use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\LoginAccount;
+use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\view\View;
 use ramp\view\RootView;
@@ -62,8 +62,6 @@ final class Session extends RAMPObject
   private $loginAccount;
   private $accountEmailFilter;
   private $accountEmailCondition;
-  private $userEmailFilter;
-  private $userEmailCondition;
 
   /**
    * Constuct the instance.
@@ -211,9 +209,10 @@ final class Session extends RAMPObject
     {
       try {
         $this->loginAccount = $this->modelManager->getBusinessModel(
-          new SimpleBusinessModelDefinition(Str::set('LoginAccount')), $this->accountEmailFilter
+          new SimpleBusinessModelDefinition(Str::set('LoginAccount')),
+          $this->accountEmailFilter
         )[0];
-      } catch (\DomainException | \OutOfBoundsException $emailNotInDatabase) {
+      } catch (\DomainException | \OutOfBoundsException $loginAccountNotInDatabase) {
         throw new Unauthorized401Exception('Account (email) NOT in database');
       }
       if (
@@ -243,7 +242,8 @@ final class Session extends RAMPObject
       try {
         // check login account NOT already exist
         $this->modelManager->getBusinessModel(
-          new SimpleBusinessModelDefinition(Str::set('LoginAccount')), $this->accountEmailFilter
+          new SimpleBusinessModelDefinition(Str::set('LoginAccount')),
+          $this->accountEmailFilter
         )[0];
         unset($_POST[$auEmailPropertyID]);
         throw new Unauthorized401Exception(
@@ -252,7 +252,19 @@ final class Session extends RAMPObject
       } catch (\DomainException | \OutOfBoundsException $confirmedEmailNew) { // new login details successfully confirmed
         if ($authorizationLevel == LoginAccountType::REGISTERED())
         {
-          $this->loginAccount->populateAsNew(PostData::build($_POST));
+          try {
+            $authenticatableUnit = $this->modelManager->getBusinessModel(
+              new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)),
+              Filter::build(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), array('email' => $_POST[$auEmailPropertyID]))
+            )[0];
+          } catch (\DomainException | \OutOfBoundsException $authenticatableUnitNotInDatabase) {
+            $authenticatableUnit = $this->modelManager->getBusinessModel(
+              new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set('new'))
+            );  
+            $authenticatableUnit->validate(PostData::build($_POST));
+            $this->modelManager->update($authenticatableUnit);
+          }
+          $this->loginAccount->createFor($authenticatableUnit);
           $view = new Email(
             RootView::getInstance(),
             Str::set(SETTING::$EMAIL_WELCOME_TEMPLATE),

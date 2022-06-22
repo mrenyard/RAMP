@@ -23,7 +23,6 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
-use ramp\model\business\RecordCollection;
 use ramp\model\business\AuthenticatableUnit;
 use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
@@ -31,15 +30,6 @@ use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\Alphanumeric;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\RegexEmail;
-
-
-/**
- * Mock Collection of Person for testing \ramp\http\Session
- * .
- */
-class AnAuthenticatibleUnitCollection extends RecordCollection
-{
-}
 
 /**
  * Mock AuthenticatableUnit for testing \ramp\http\Session

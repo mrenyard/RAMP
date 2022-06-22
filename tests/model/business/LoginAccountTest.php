@@ -37,7 +37,10 @@ require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
@@ -50,6 +53,7 @@ require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/AuthenticatableUnit.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
@@ -62,14 +66,17 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class
 
 require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/AnAuthenticatableUnit.class.php';
+require_once '/usr/share/php/tests/ramp/http/mocks/SessionTest/model/business/AnAuthenticatableUnitCollection.class.php';
 
 use ramp\SETTING;
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
+use ramp\condition\Filter;
 use ramp\model\business\LoginAccountCollection;
 use ramp\model\business\LoginAccount;
 use ramp\model\business\LoginAccountType;
+use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
@@ -246,10 +253,8 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\LoginAccount::populateAsNew().
+   * Collection of assertions for \ramp\model\business\LoginAccount::createFor() new AuthenticatableUnit.
    * - assert void returned on calling
-   * - assert 'auPK' present child pre calling
-   * - assert removes 'auPK' as child (property) post calling
    * - assert contained dataObject populated as expected
    * - assert property accountType is set to level one
    * - assert password auto generated, accessible through getUnencryptedPassword(), in expected format.
@@ -258,18 +263,26 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager
    * - assert throws {@link \BadMethodCallException} when called on existing (NOT isNew) LoginAccount
    *  - with massage *'Method NOT allowed on existing LoginAccount!'*
-   * @link ramp.model.business.LoginAccount#method_populateAsNew ramp\model\business\LoginAccount::populateAsNew()
+   * @link ramp.model.business.LoginAccount#method_createFor ramp\model\business\LoginAccount::createFor()
    */
-  public function testPopulateAsNew()
+  public function testCreateForNewAuthenticatableUnit()
   {
+    $modelManager = SETTING::$RAMP_BUSINESS_MODEL_MANAGER::getInstance();
+    $authenticatableUnitType = Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT);
+    $authenticatableUnit = $modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition($authenticatableUnitType, Str::set('new'))
+    );  
     $_POST = array(
       'an-authenticatable-unit:new:uname' => 'aperson',
       'an-authenticatable-unit:new:email' => 'a.person@domain.com',
       'an-authenticatable-unit:new:family-name' => 'Person',
       'an-authenticatable-unit:new:given-name' => 'Ann',
     );
-    $this->assertArrayHasKey('auPK', $this->testObject);
-    $this->assertNull($this->testObject->populateAsNew(PostData::build($_POST)));
+    $authenticatableUnit->validate(PostData::build($_POST));
+    $modelManager->update($authenticatableUnit);
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
+    $this->assertNull($this->testObject->createFor($authenticatableUnit));
+
     $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('aperson', $this->dataObject->auPK);
     $this->assertEquals('a.person@domain.com', $this->dataObject->email);
@@ -286,12 +299,57 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('a.person@domain.com', $this->testObject->email->value);
     $this->assertEquals('Person', $this->testObject->familyName->value);
     $this->assertEquals('Ann', $this->testObject->givenName->value);
-    // TODO:mrenyard: FIX
-    // $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
-    // $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
     $this->assertFalse($this->testObject->isNew);
     try {
-      $this->testObject->populateAsNew(PostData::build($_POST));
+      $this->testObject->createFor($authenticatableUnit);
+    } catch (\BadMethodCallException $expected) {
+      $this->assertEquals('Method NOT allowed on existing LoginAccount!', $expected->getMessage());
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised.');
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\LoginAccount::createFor() existing AuthenticatableUnit.
+   * - assert void returned on calling
+   * - assert contained dataObject populated as expected
+   * - assert property accountType is set to level one
+   * - assert password auto generated, accessible through getUnencryptedPassword(), in expected format.
+   * - assert encryptedPassword set and matches provided crypt with SALT
+   * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager
+   * - assert throws {@link \BadMethodCallException} when called on existing (NOT isNew) LoginAccount
+   *  - with massage *'Method NOT allowed on existing LoginAccount!'*
+   * @link ramp.model.business.LoginAccount#method_createFor ramp\model\business\LoginAccount::createFor()
+   */
+  public function testCreateForExistingAuthenticatableUnit()
+  {
+    $modelManager = SETTING::$RAMP_BUSINESS_MODEL_MANAGER::getInstance();
+    $authenticatableUnitType = Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT);
+    $authenticatableUnit = $modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition($authenticatableUnitType),
+      Filter::build($authenticatableUnitType, array('email' => 'existing.person@domain.com'))
+    )[0];
+    $this->assertNull($this->testObject->createFor($authenticatableUnit));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:existing']));
+    $this->assertArrayNotHasKey('auPK', $this->testObject);
+    $this->assertEquals('existing', $this->dataObject->auPK);
+    $this->assertEquals('existing.person@domain.com', $this->dataObject->email);
+    $this->assertEquals(1, $this->dataObject->accountType);
+    $this->assertRegExp(
+      "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{12}$/",
+      $this->testObject->getUnencryptedPassword()
+    );
+    $this->assertSame(
+      crypt((string)$this->testObject->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
+      $this->dataObject->encryptedPassword
+    );
+    $this->assertEquals('existing.person@domain.com', $this->testObject->email->value);
+    $this->assertEquals('Person', $this->testObject->familyName->value);
+    $this->assertEquals('Exist', $this->testObject->givenName->value);
+    $this->assertFalse($this->testObject->isNew);
+    try {
+      $this->testObject->createFor($authenticatableUnit);
     } catch (\BadMethodCallException $expected) {
       $this->assertEquals('Method NOT allowed on existing LoginAccount!', $expected->getMessage());
       return;
