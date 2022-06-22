@@ -102,20 +102,8 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function testDomainExceptionBadRecord()
   {
     $this->expectException(\DomainException::class);
+    $this->expectExceptionMessage('Invalid: BadRecord, does NOT match business model');
     $_SERVER['REQUEST_URI'] = '/bad-record';
-    $testObject = new Request();
-  }
-
-  /**
-   * Collection of assertions based on Property NOT defined in business model.
-   * - $_SERVER['REQUEST_URI'] equals '/mock-record/bad-key'
-   * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
-   *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
-   */
-  public function testDomainExceptionBadKey()
-  {
-    $this->expectException(\DomainException::class);
-    $_SERVER['REQUEST_URI'] = '/mock-record/bad-key';
     $testObject = new Request();
   }
 
@@ -128,6 +116,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function testDomainExceptionBadProperty()
   {
     $this->expectException(\DomainException::class);
+    $this->expectExceptionMessage('Invalid: MockRecord->badProperty, does NOT match business model');
     $_SERVER['REQUEST_URI'] = '/mock-record/key/bad-property';
     $testObject = new Request();
   }

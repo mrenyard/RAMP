@@ -110,6 +110,11 @@ class Request extends RAMPObject implements iBusinessModelDefinition
       $view = $model;
       $this->modelURN = Str::set(implode(':', $model));
       $this->recordName = Str::camelCase(Str::set($model[0]));
+
+      $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->recordName;
+      if (!class_exists($recordClassName)) {
+        throw new \DomainException('Invalid: ' . $this->recordName . ', does NOT match business model');
+      }
       $n = count($model);
       if ($n == 1)
       {
@@ -121,7 +126,12 @@ class Request extends RAMPObject implements iBusinessModelDefinition
         }
       }
       if ($n > 1) { $this->recordKey = Str::set($model[1]); $view[1] = '~'; }
-      if ($n > 2) { $this->propertyName = Str::camelCase(Str::set($model[2]), TRUE); }
+      if ($n > 2) {
+        $this->propertyName = Str::camelCase(Str::set($model[2]), TRUE);
+        if (!method_exists(new $recordClassName(), 'get_' . $this->propertyName)) {
+          throw new \DomainException('Invalid: ' . $this->recordName . '->' . $this->propertyName . ', does NOT match business model');
+        }
+      }
       array_unshift($view, $controller);
     } // END if (($modelURL != '') && ($modelURL != '/'))
     $strView = (isset($view))? implode('/', $view) : $controller;
