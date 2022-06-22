@@ -259,7 +259,7 @@ final class Str extends RAMPObject
   {
     if ($this === self::_EMPTY()){ return FALSE; } // cannot search an empty string
     foreach($searchSubstrings as $searchSubstring) {
-        if (stripos((string)$this, (string)$searchSubstring) != FALSE) { return TRUE; }
+        if (stripos((string)$this, (string)$searchSubstring) !== FALSE) { return TRUE; }
     }
     return FALSE;
   }
