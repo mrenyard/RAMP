@@ -1,0 +1,49 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en-GB"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-GB"> <!--<![endif]-->
+  <head>
+
+  </head>
+  <body id="[site-domain]" class="[this-page-type]">
+    <header role="banner">
+<!-- include header -->
+    </header>
+    <div id="main" role="main">
+      <h1>Register as New User</h1>
+      <form action="/person/~" method="post">
+        <div class="input text field" title="User Name">
+          <label for="person:new:uname">User Name</label>
+          <input id="person:new:uname" name="person:new:uname" type="text" placeholder="HINT" />
+        </div>
+        <label class=" input field" for="person:new:honorific-prefix" title="" >
+          <span class="name" data-error-message="Error message">Honorific Prefix:</span>
+          <input id="person:new:honorific-prefix" name="person:new:honorific-prefix" type="text" placeholder="" value="" tabindex="0" />
+        </label>
+        <div class="input text field" title="givenName">
+          <label for="person:new:given-name">givenName</label>
+          <input id="person:new:given-name" name="person:new:given-name" type="text" placeholder="HINT" />
+        </div>
+        <div class="input text field" title="familyName">
+          <label for="person:new:family-name">familyName</label>
+          <input id="person:new:family-name" name="person:new:family-name" type="text" placeholder="HINT" />
+        </div>
+        <div class="input text field" title="e-mail address to associate with your account">
+          <label for="person:new:email">e-mail address</label>
+          <input id="person:new:email" name="person:new:email" type="text" placeholder="HINT" />
+        </div>
+        <div class="input text field" title="confirm previously supplied e-mail address">
+          <label for="login-email">Confirm e-mail</label>
+          <input id="login-email" name="login-email" type="text" />
+        </div>
+        <div class="input submit" title="submit">
+          <input type="submit" value="Submit" />
+        </div>
+      </form>
+    </div>
+    <footer role="contentinfo">
+<!-- include footer -->
+    </footer>
+  </body>
+</html>

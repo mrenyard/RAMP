@@ -1,0 +1,43 @@
+/* the humans responsible & colophon */
+/* humanstxt_org */
+
+
+/* TEAM */
+  <your title>: <your name>
+  Site: 
+  Twitter: 
+  Location: 
+
+/* THANKS */
+  Names (& URL): 
+
+/* SITE */
+  Standards: HTML5, CSS3, JavaScript, PHP, MySQL
+  Components: RAMP.js
+  Software: RAMP
+________________________________________________
+_______________JJJJJJJJ_________________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ_______________________
+_______________JJJJJJJJJJ____JJJJJJJJJJJJJJJJ___
+__JJJJJJJJJJJJJJJJJJJJJJJ__JJ_0__J_0___JJJ JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__JJJJJJJJJJJJJJ__JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__________________JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__________________JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__________________JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__________________JJJ__
+__JJJJJJJJJJJJJJJJJJJJJJJ__________________JJJ__
+___JJJJJJJJJJJJJJJJJJJJJJJJJ_______________JJJ__
+___________________________________________JJJ__
+___________________________JJJJJJJJJJJJJJJJJJ___
+___________________________ JJJJJJJJJJJJJJJ_____
+_________________________________JJJJJJJ________
+________________________________J_JJJJ_J________
+_______________________________J__JJJJ__J_______
+__________________________________J_J___________
+__________________________________J__J__________
+__________________________________J__J__________
