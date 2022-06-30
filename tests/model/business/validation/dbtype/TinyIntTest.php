@@ -26,20 +26,20 @@ require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Interger.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
 use ramp\model\business\FailedValidationException;
-use ramp\model\business\validation\dbtype\Interger;
+use ramp\model\business\validation\dbtype\TinyInt;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\Interger.
  */
-class IntergerTest extends \PHPUnit\Framework\TestCase
+class TinyIntTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $maxLength;
@@ -51,7 +51,7 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->errorMessage = Str::set('My error message HERE!');
-    $this->testObject = new Interger($this->errorMessage);
+    $this->testObject = new TinyInt($this->errorMessage);
   }
 
   /**
@@ -66,7 +66,7 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\dbtype\Interger', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\dbtype\TinyInt', $this->testObject);
   }
 
   /**
@@ -79,6 +79,7 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertNull($this->testObject->process(0));
     $this->assertNull($this->testObject->process(1));
+    $this->assertNull($this->testObject->process(255));
     try {
       $this->testObject->process('1');
     } catch (FailedValidationException $expected) {
@@ -87,7 +88,17 @@ class IntergerTest extends \PHPUnit\Framework\TestCase
         $this->testObject->process(10.55);
       } catch (FailedValidationException $expected) {
         $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
-        return;
+        try {
+          $this->testObject->process(-1);
+        } catch (FailedValidationException $expected) {
+          $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+          try {
+            $this->testObject->process(256);
+          } catch (FailedValidationException $expected) {
+            $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+            return;
+          }
+        }
       }
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');

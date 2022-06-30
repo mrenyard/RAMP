@@ -24,10 +24,10 @@ use ramp\model\business\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
- * Interger database type validation rule, a number which is not a decimal a whole number.
+ * Tiny Interger database type validation rule, whole number (not decimal) from 0 to 255.
  * Runs code defined test against provided value.
  */
-class Interger extends DbTypeValidation
+class TinyInt extends DbTypeValidation
 {
   /**
    * Default constructor for a validation rule of database type Interger.
@@ -45,7 +45,7 @@ class Interger extends DbTypeValidation
    */
   protected function test($value)
   {
-    if (is_int($value)) { return; }
+    if (is_int($value) && $value <= 255 && $value >= 0) { return; }
     throw new FailedValidationException();
   }
 }
