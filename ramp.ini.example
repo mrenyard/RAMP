@@ -14,12 +14,13 @@
 ; public website root folder. i.e.: -- ~/                    (secure ftp folder)
 ;                                    |
 ;                                    +-- public_html         (website root folder)
+;                                    | |-- 404.php           (404 symlink to controller.php)
 ;                                    | |-- index.html        (static homepage)?
 ;                                    | |-- robots.txt
 ;                                    | |-- humans.txt
 ;                                    | |-- controller.php    (RAMP controller file)
 ;                                    |
-;                                    +-- RAMP.ini          (local initialization file)
+;                                    +-- ramp.ini          (local initialization file)
 ;
 ; The syntax of the file follows the same conventions as 'php.ini' and therefore is extremely
 ; simple.  Whitespace and Lines beginning with a semicolon are silently ignored. Section headers
@@ -108,8 +109,7 @@
 ; enencripted auto generated password
 ;welcome_template =
 
-; Welcome email template type
-; one of (html | text) 
+; Welcome email template type one of (html | text) 
 ;welcome_template_type =
 
 ; Welcome email subject line.
