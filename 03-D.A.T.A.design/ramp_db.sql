@@ -16,7 +16,7 @@ DROP SCHEMA IF EXISTS `ramp_db` ;
 -- Schema ramp_db
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `ramp_db` DEFAULT CHARACTER SET utf8 ;
-USE `ramp_db` ;
+USE `ramp_db`;
 
 -- -----------------------------------------------------
 -- Table `ramp_db`.`AccountType`
@@ -24,17 +24,17 @@ USE `ramp_db` ;
 DROP TABLE IF EXISTS `ramp_db`.`LoginAccountType` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccountType` (
-  `key` INT(11) NOT NULL AUTO_INCREMENT,
-  `description` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`key`),
-  UNIQUE INDEX `key_UNIQUE` (`key` ASC) VISIBLE)
+  `id` TINYINT NOT NULL AUTO_INCREMENT,
+  `value` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
 -- Data for table `AccountType`
 -- -----------------------------------------------------
-INSERT INTO `LoginAccountType` (`key`, `description`) VALUES
+INSERT INTO `LoginAccountType` (`id`, `value`) VALUES
 (1, 'Registered'),
 (2, 'User'),
 (3, 'Affiliate'),
@@ -50,15 +50,15 @@ DROP TABLE IF EXISTS `ramp_db`.`LoginAccount` ;
 CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
   `auPK` VARCHAR(45) NOT NULL,
   `email` VARCHAR(150) NOT NULL,
-  `accountType` INT(11) NOT NULL DEFAULT '1',
+  `loginAccountTypeID` TINYINT NOT NULL DEFAULT '1',
   `encryptedPassword` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`auPK`),
   UNIQUE INDEX `email` (`email` ASC) VISIBLE,
   UNIQUE INDEX `auPK_UNIQUE` (`auPK` ASC) VISIBLE,
-  INDEX `fk_Account_typeID` (`accountType` ASC) VISIBLE,
-  CONSTRAINT `fk_Account_typeID`
-    FOREIGN KEY (`accountType`)
-    REFERENCES `ramp_db`.`LoginAccountType` (`key`)
+  INDEX `fk_account_typeID` (`loginAccountTypeID` ASC) VISIBLE,
+  CONSTRAINT `fk_Account_type`
+    FOREIGN KEY (`loginAccountTypeID`)
+    REFERENCES `ramp_db`.`LoginAccountType` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -108,7 +108,7 @@ INSERT INTO `Country` (`code`, `name`) VALUES
 ('ES', 'SPAIN'),
 ('SE', 'SWEDEN'),
 ('TR', 'TURKEY'),
-('UK', 'UNITED KINGDOM');
+('GB', 'UNITED KINGDOM');
 
 
 -- -----------------------------------------------------
@@ -124,8 +124,8 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `additionalNames` VARCHAR(45) NULL DEFAULT NULL,
   `familyName` VARCHAR(45) NULL DEFAULT NULL,
   `honorificSuffix` VARCHAR(45) NULL DEFAULT NULL,
-  `postalAddressCode` VARCHAR(45) NULL DEFAULT NULL,
-  `primaryPhoneNumber` VARCHAR(45) NULL DEFAULT NULL,
+  `primaryAddressID` VARCHAR(15) NULL DEFAULT NULL,
+  `primaryPhoneNumberID` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`uname`),
   UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
@@ -143,22 +143,71 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 DROP TABLE IF EXISTS `ramp_db`.`Address` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
-  `postOfficeBox` VARCHAR(45) NULL DEFAULT NULL,
-  `extendedAddress` VARCHAR(45) NOT NULL,
-  `streetAddress` VARCHAR(45) NULL DEFAULT NULL,
-  `locality` VARCHAR(45) NULL DEFAULT NULL,
-  `region` VARCHAR(45) NULL DEFAULT NULL,
-  `postalCode` VARCHAR(45) NOT NULL,
-  `countryCode` VARCHAR(2) NOT NULL,
-  PRIMARY KEY (`countryCode`,`postalCode`,`extendedAddress`),
+  `countryCode` VARCHAR(2) NOT NULL, -- (GB)
+  `postalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
+    -- UK PostCode REGEX max 8chars | US ZIP+4 10chars
+    -- ^(?![QVX])[A-Z]{1}(?![I])[A-Y0-9]{1}[0-9]{1}[ABCDEFGHJKPSTUVWX0-9]{0,1}\s[0-9]{1}(?![CIKMOV])[A-Z]{2}$
+  `deliveryPointSuffix` VARCHAR(2) NOT NULL,
+  `addressFileID` VARCHAR(15) NOT NULL,
+  -- `extendedAddress` VARCHAR(45) NOT NULL, -- PremisesElements (157)
+  `subBuildingName` VARCHAR(30) NULL DEFAULT NULL,
+  `buildingName` VARCHAR(50) NULL DEFAULT NULL,
+  `buildingNumber` TINYINT NULL DEFAULT NULL,
+  `organisationName` VARCHAR(60) NULL DEFAULT NULL,
+  `departmentName` VARCHAR(60) NULL DEFAULT NULL,
+  -- `postOfficeBox` VARCHAR(13) NULL DEFAULT NULL,
+  `PoBoxNumber` TINYINT NULL DEFAULT 0,
+  -- `streetAddress` VARCHAR(45) NULL DEFAULT NULL, -- ThoroughfareElements (Oakwood Drive)
+  `dependentThoroughfare` VARCHAR(80) NULL DEFAULT NULL,
+  `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,
+  -- `locality` VARCHAR(45) NULL DEFAULT NULL, -- LocalityElements (SOUTHAMPTON)
+  `doubleDependentLocality` VARCHAR(35) NULL DEFAULT NULL,
+  `dependentLocality` VARCHAR(35) NULL DEFAULT NULL,
+
+  `PostTown` VARCHAR(30) NOT NULL, -- UPPERCASE
+  -- `region` VARCHAR(30) NULL DEFAULT NULL, -- County
+
+  -- latitude decimal(9,6) NOT NULL -- (50.944221)
+  -- longitude decimal(9,6) NOT NULL -- (-1.427960)
+
+  PRIMARY KEY (`countryCode`,`postalCode`,`deliveryPointSuffix`),
   INDEX `fk_address_countryCode` (`countryCode` ASC) VISIBLE,
   INDEX `fk__address_postalCode` (`postalCode` ASC) VISIBLE,
-  INDEX `fk__address_extendedAddress` (`extendedAddress` ASC) VISIBLE,
+  INDEX `fk__address_deliveryPointSuffix` (`deliveryPointSuffix` ASC) VISIBLE,
   CONSTRAINT `fk_Address_country`
     FOREIGN KEY (`countryCode`)
     REFERENCES `ramp_db`.`Country` (`code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `ramp_db`.`GB_Addresses`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ramp_db`.`GB_Addresses` ;
+
+CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
+  `id` VARCHAR(15) NOT NULL, -- (UDPRN:60720866)
+  `postalCode` VARCHAR(8) NOT NULL,
+  `PostTown` VARCHAR(30) NOT NULL,
+  `dependentLocality` VARCHAR(35) NULL DEFAULT NULL,
+  `doubleDependentLocality` VARCHAR(35) NULL DEFAULT NULL,
+  `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,
+  `dependentThoroughfare` VARCHAR(80) NULL DEFAULT NULL,
+  `buildingNumber` SMALLINT NULL DEFAULT NULL,
+  `buildingName` VARCHAR(50) NULL DEFAULT NULL,
+  `subBuildingName` VARCHAR(30) NULL DEFAULT NULL,
+  `PoBoxNumber` SMALLINT NULL DEFAULT NULL,
+  `departmentName` VARCHAR(60) NULL DEFAULT NULL,
+  `organisationName` VARCHAR(60) NULL DEFAULT NULL,
+  `SUOrgFLAG` TINYINT NOT NULL DEFAULT 0,
+  `deliveryPointSuffix` VARCHAR(2) NOT NULL,
+  -- addressKey,organisationKey,numberOfHouseholds,localityKey
+  -- (page 22) at https://www.poweredbypaf.com/wp-content/uploads/2017/07/Latest-Programmers_guide_Edition-7-Version-6.pdf 
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
