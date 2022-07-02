@@ -34,7 +34,11 @@ class RegexEmail extends ValidationRule
    */
   protected function test($value)
   {
-    if (filter_var($value, FILTER_VALIDATE_EMAIL)) { return; }
-    throw new FailedValidationException();
+    if (\filter_var($value, FILTER_VALIDATE_EMAIL)) {
+      // if (\checkdnsrr(explode('@', $value)[1], 'MX')) { return; }
+      // throw new FailedValidationException('Provided email domain does NOT exist!');
+      return;
+    }
+    throw new FailedValidationException('Incorrectly formed email address!');
   }
 }

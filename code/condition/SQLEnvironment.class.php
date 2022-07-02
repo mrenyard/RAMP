@@ -1,7 +1,6 @@
 <?php
 /**
- * RAMP - Rapid web application development enviroment for building
- *  flexible, customisable web systems.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP

@@ -1,7 +1,6 @@
 <?php
 /**
- * RAMP - Rapid web application development enviroment for building
- *  flexible, customisable web systems.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
