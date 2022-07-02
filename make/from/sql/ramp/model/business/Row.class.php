@@ -42,12 +42,12 @@ class Row extends Record
 
   protected function get_key() : string
   {
-    return $this->getPropertyValue('key');
+    return $this->getPropertyValue('id');
   }
   
   protected function get_description() : string
   {
-    return $this->getPropertyValue('description');
+    return $this->getPropertyValue('value');
   }
 
   protected function get_ucDescription() : string
@@ -71,8 +71,8 @@ class Row extends Record
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->key) &&
-      isset($dataObject->description)
+      isset($dataObject->id) &&
+      isset($dataObject->value)
     );
   }
 }

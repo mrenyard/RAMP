@@ -34,6 +34,8 @@ class ColumnCollection extends RecordCollection { }
  */
 class Column extends Record
 {
+  private $isForeignKeyColumn;
+
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
@@ -42,7 +44,22 @@ class Column extends Record
 
   protected function get_name() : string
   {
-    return $this->getPropertyValue('COLUMN_NAME');
+    $value = Str::set($this->getPropertyValue('COLUMN_NAME'));
+    $this->isForeignKeyColumn = $value->contains(StrCollection::set('ID'));
+    return (string)$value;
+  }
+
+  protected function get_selectType() : string
+  {
+    $tableName = Str::set($this->name);
+    return ($tableName->contains(StrCollection::set('Collection', 'List')))? 2 : 
+      ($tableName->contains(StrCollection::set('Type', 'Status','Code')))? 1 : 0;
+  }
+
+  protected function get_isForeignKey()
+  {
+    if (!isset($this->isForeignKeyColumn)) { $this->name; }
+    return $this->isForeignKeyColumn; 
   }
   
   protected function get_key() : string
@@ -57,9 +74,12 @@ class Column extends Record
     switch ($values[0]) {
       case 'varchar':
         return "VarChar(\n          " . $values[1] . ",\n          new validation\Alphanumeric(),\n          " . $message . "\n        )";
-      case 'int':
+      case 'tinyint':
+        return (Str::set($this->name)->contains(StrCollection::set('FLAG'))) ?
+          "Flag(\n          " . $message . "\n        )" :
+            "TinyInt(\n          " . $message . "\n        )";
       default:
-        return $values[0];
+        return $values[0] . "(\n          " . $message . "\n        )";
     }
   }
  
