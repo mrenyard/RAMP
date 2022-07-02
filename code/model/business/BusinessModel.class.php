@@ -81,18 +81,18 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
     $type = Str::_EMPTY();
     $o = $this;
     do {
-      $type = $type->append($this->processType((string)$o, TRUE)->prepend(Str::SPACE()));
+      $type = $type->append(BusinessModel::processType((string)$o, TRUE)->prepend(Str::SPACE()));
     } while (is_object($o) && ($o = get_parent_class($o)));
     return $type->trimStart();
   }
 
   /**
-   * Returns this Business model type without namespace.
+   * Returns Business model type without namespace from full class name.
    * @param string $classFullName Full class name including path/namespace
    * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
    * @return \ramp\core\Str *This* business model type (without namespace)
    */
-  final protected function processType($classFullName, bool $hyphenate = null) : Str
+  static protected function processType($classFullName, bool $hyphenate = null) : Str
   {
     $pathNode = explode('\\', $classFullName);
     $modelName = explode('_', array_pop($pathNode));
