@@ -37,7 +37,46 @@ if ($this->key == 'PRI') {
     }
     return $this-><?=$this->name; ?>;
   }
-<?php } else { ?>
+<?php } elseif ($this->isForeignKey) {
+  switch ($this->selectType) {
+    case 0:
+?>
+
+  /*
+  protected function get_<?=$this->name; ?>() : field\Field
+  {
+    if (!isset($this['<?=$this->name; ?>']))
+    {
+      $this['<?=$this->name; ?>'] = new field\Relation(
+        Str::set('<?=$this->name; ?>'),
+        $this
+        // Get Business Model From Data Store.
+      );
+    }
+    return $this['<?=$this->name; ?>'];
+  }*/
+<?php   break;
+    case 1:
+    case 2:
+      $fieldSelect = ($this->selectType = 2)? 'SelectOne' : 'SelectMany';
+?>
+
+  protected function get_<?=$this->name; ?> () : field\Field
+  {
+    if (!isset($this['<?=$this->name; ?>']))
+    {
+      $this['<?=$this->name; ?>'] = new field\<?=$fieldSelect; ?>(
+        Str::set('<?=$this->name; ?>'),
+        $this,
+        new <?=ucfirst($this->name); ?>()
+      );
+    }
+    return $this['<?=$this->name; ?>'];
+  }
+<?php   break;
+  }
+} else {
+?>
 
   protected function get_<?=$this->name; ?>() : field\Input
   {
