@@ -47,7 +47,21 @@ $view = view\ViewManager::getView($request);
 if ((string)$request->modelURN !== '') {
   $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
   $modelManager = $MODEL_MANAGER::getInstance();
-  $model = $modelManager->getBusinessModel($request, $request->filter, $request->fromIndex);
+  try {
+    $model = $modelManager->getBusinessModel($request, $request->filter, $request->fromIndex);
+  } catch (\DomainException $e) {
+    if ($request->recordKey != NULL) { // No matching Record found in data storage 
+      header('HTTP/1.1 404 Not Found');
+      print_r('<h1>Render view - Not Found.</h1>');
+      print_r('<pre>' . $e . '</pre>');
+      return;
+    } elseif ($request->recordName != NULL)  { // No Records found in data storage redirect to new
+      header('HTTP/1.1 307 Temporary Redirect');
+      header('Location: /' . $request->modelURN . '/new');
+      return;
+    }
+    throw $e;
+  }
   if ($request->method === http\Method::POST()) {
     $model->validate($request->postData);
     $modelManager->updateAny();
