@@ -122,7 +122,7 @@ final class Session extends RAMPObject
     return (
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid) &&
-      (self::$instance->loginAccount->accountType->value->key >= $authorizationLevel)
+      (self::$instance->loginAccount->loginAccountTypeID->value->key >= $authorizationLevel)
     );
   }
 
@@ -217,7 +217,7 @@ final class Session extends RAMPObject
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
-        ((int)$this->loginAccount->accountType->value->key < $authorizationLevel)
+        ((int)$this->loginAccount->loginAccountTypeID->value->key < $authorizationLevel)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges');
       }
@@ -229,8 +229,8 @@ final class Session extends RAMPObject
       return;
     }
     $auEmailPropertyID = (string)Str::hyphenate(
-      Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), TRUE)->append(Str::set(':new:email')
-    );
+      Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)
+    )->append(Str::set(':new:email'));
     if (isset($_POST[$auEmailPropertyID]))
     {
       if ($loginEmail !== $_POST[$auEmailPropertyID])

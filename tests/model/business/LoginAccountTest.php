@@ -205,10 +205,10 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(
         get_class($this->testObject) . '->accountType is NOT settable', $expected->getMessage()
       );
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->accountType);
-      $this->assertEquals(0, $this->testObject->accountType->value->key);
-      $this->dataObject->accountType = LoginAccountType::ADMINISTRATOR();
-      $this->assertEquals(LoginAccountType::ADMINISTRATOR(), $this->testObject->accountType->value->key);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->loginAccountTypeID);
+      $this->assertEquals(0, $this->testObject->loginAccountTypeID->value->key);
+      $this->dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR();
+      $this->assertEquals(LoginAccountType::ADMINISTRATOR(), $this->testObject->loginAccountTypeID->value->key);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -286,7 +286,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('aperson', $this->dataObject->auPK);
     $this->assertEquals('a.person@domain.com', $this->dataObject->email);
-    $this->assertEquals(1, $this->dataObject->accountType);
+    $this->assertEquals(1, $this->dataObject->loginAccountTypeID);
     $this->assertRegExp(
       "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{12}$/",
       $this->testObject->getUnencryptedPassword()
@@ -335,7 +335,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('existing', $this->dataObject->auPK);
     $this->assertEquals('existing.person@domain.com', $this->dataObject->email);
-    $this->assertEquals(1, $this->dataObject->accountType);
+    $this->assertEquals(1, $this->dataObject->loginAccountTypeID);
     $this->assertRegExp(
       "/^[a-zA-Z0-9!\"#$%&()+,-.\/:;<=>?@[\]^_{|`{|}~]{12}$/",
       $this->testObject->getUnencryptedPassword()

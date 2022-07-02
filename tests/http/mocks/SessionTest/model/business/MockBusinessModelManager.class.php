@@ -108,7 +108,7 @@ class MockBusinessModelManager extends BusinessModelManager
           $dataObject->auPK = 'aperson';
           $dataObject->email = SessionTest::$sessionLoginAccountEmail;
           $dataObject->encryptedPassword = crypt(SessionTest::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT);
-          $dataObject->accountType = 4;
+          $dataObject->loginAccountTypeID = 4;
           $collection->add(new LoginAccount($dataObject));
         }
         return $collection;
@@ -120,7 +120,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $dataObject->auPK = 'aperson';
         $dataObject->email = SessionTest::$sessionLoginAccountEmail;
         $dataObject->encryptedPassword = crypt(SessionTest::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT);
-        $dataObject->accountType = 4;
+        $dataObject->loginAccountTypeID = 4;
         return new LoginAccount($dataObject);
       }
     }

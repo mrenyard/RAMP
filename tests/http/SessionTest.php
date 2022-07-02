@@ -185,7 +185,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \ramp\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
+    $dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
@@ -224,7 +224,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $dataObject->encryptedPassword = crypt(
       self::$unencryptedPassword, \ramp\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->accountType = LoginAccountType::ADMINISTRATOR();
+    $dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR();
     $dataObject->auPK = 'aperson';
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;

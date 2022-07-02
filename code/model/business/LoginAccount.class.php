@@ -132,22 +132,22 @@ class LoginAccount extends Record
     return $this->email;
   }
 
-  /**
+  /*
    * Get field containing login account type
    * **DO NOT CALL DIRECTLY, USE this->accountType;**
    * @return \ramp\model\business\field\Field Returns field containing value (LoginAccountType)
    */
-  protected function get_accountType() : field\Field
+  protected function get_loginAccountTypeID() : field\Field
   {
-    if (!isset($this['accountType']))
+    if (!isset($this['loginAccountTypeID']))
     {
-      $this['accountType'] = new field\SelectOne(
-        Str::set('accountType'),
+      $this['loginAccountTypeID'] = new field\SelectOne(
+        Str::set('loginAccountTypeID'),
         $this,
         new LoginAccountType()
       );
     }
-    return $this['accountType'];
+    return $this['loginAccountTypeID'];
   }
 
   /**
@@ -226,16 +226,15 @@ class LoginAccount extends Record
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
     if (!$authenticatableUnit->isValid) { throw new Exception(); }
     $this->setPropertyValue('auPK', $authenticatableUnit->getPropertyValue(
-      (string)$authenticatableUnit->primaryKeyNames()->implode(Str::BAR())
+      (string)$authenticatableUnit->primaryKeyNames()[0] // ->implode(Str::BAR())
     ));
     $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
-    $this->setPropertyValue('accountType', 1);
+    $this->setPropertyValue('loginAccountTypeID', 1);
     $this->setPassword($this->generateRandomPassword());
-    if ($this->isValid) {
-      $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-      $modelManager = $MODEL_MANAGER::getInstance();
-      $modelManager->update($this);
-    }
+    if (!$this->isValid) { throw new Exception('Unable to add Login Account'); }
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $modelManager = $MODEL_MANAGER::getInstance();
+    $modelManager->update($this);
   }
 
   /**
@@ -293,7 +292,7 @@ class LoginAccount extends Record
       isset($dataObject->auPK) &&
       isset($dataObject->email) &&
       isset($dataObject->encryptedPassword) &&
-      isset($dataObject->accountType)
+      isset($dataObject->loginAccountTypeID)
     );
   }
 }
