@@ -22,9 +22,6 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
-use ramp\core\OptionList;
-use ramp\model\business\RecordCollection;
-use ramp\model\business\AuthenticatableUnit;
 
 /**
  * Collection of Person.
@@ -34,59 +31,53 @@ class PersonCollection extends RecordCollection { }
 /**
  * Concrete Record for Person.
  */
-class Person extends AuthenticatableUnit
-{
+class Person extends AuthenticatableUnit{
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('uname'); }
-
-  protected function get_uname() : field\Field
+  public function primaryKeyNames() : StrCollection
   {
-    if (!isset($this['uname']))
+    return StrCollection::set('uname');
+  }
+
+  private $uname;
+  protected function get_uname() : field\Input
+  {
+    if (!isset($this->uname))
     {
-      $this['uname'] = new field\Input(
+      $this->uname = new field\Input(
         Str::set('uname'),
         $this,
         new validation\dbtype\VarChar(
-          15,
+          45,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+      if ($this->isNew) { $this['uname'] = $this->uname; }
+    }
+    return $this->uname;
+  }
+
+  protected function get_honorificPrefix() : field\Input
+  {
+    if (!isset($this['honorificPrefix']))
+    {
+      $this['honorificPrefix'] = new field\Input(
+        Str::set('honorificPrefix'),
+        $this,
+        new validation\dbtype\VarChar(
+          45,
           new validation\Alphanumeric(),
           Str::set('My error message HERE!')
         )
       );
     }
-    return $this['uname'];
-  }
-
-  protected function get_honorificPrefix() : field\Field
-  {
-    if (!isset($this['honorificPrefix']))
-    {
-      $this['honorificPrefix'] = new field\Input(
-      Str::set('honorificPrefix'),
-      $this,
-      new validation\dbtype\VarChar(
-        15,
-        new validation\Alphanumeric(), //CapitalizedFirstLetter
-        Str::set('My error message HERE!')
-        )
-      );
-    }
     return $this['honorificPrefix'];
   }
- 
-  /**
-   * Get given name also known as personal, first, forename, or Christian name.
-   * <b>DO NOT CALL DIRECTLY, USE this->givenName;</b>
-   *
-   * Identifies a specific person, and differentiates that person from other members of a group,
-   * such as a family or clan, with whom that person shares a common surname. The term given name
-   * refers to the fact that the name is bestowed upon, or given to a child, usually by its
-   * parents, at or near the time of birth.
-   * @return field\Field Containing value for given name.
-   */
-  protected function get_givenName() : field\Field
+
+  protected function get_givenName() : field\Input
   {
     if (!isset($this['givenName']))
     {
@@ -94,8 +85,8 @@ class Person extends AuthenticatableUnit
         Str::set('givenName'),
         $this,
         new validation\dbtype\VarChar(
-          15,
-          new validation\Alphanumeric(), //CapitalizedFirstLetter
+          45,
+          new validation\Alphanumeric(),
           Str::set('My error message HERE!')
         )
       );
@@ -103,17 +94,24 @@ class Person extends AuthenticatableUnit
     return $this['givenName'];
   }
 
-  /**
-   * Get family name sometimes referred to as surname or last name.
-   * <b>DO NOT CALL DIRECTLY, USE this->familyName;</b>
-   *
-   * Typically a part of a person's personal name which, according to law or custom, is passed or
-   * given to children from one or both of their parents' family names. The use of family names is
-   * common in most cultures around the world, with each culture having its own rules as to how
-   * these names are formed, passed and used.
-   * @return Field Containing value for family name.
-   */
-  protected function get_familyName() : field\Field
+  protected function get_additionalNames() : field\Input
+  {
+    if (!isset($this['additionalNames']))
+    {
+      $this['additionalNames'] = new field\Input(
+        Str::set('additionalNames'),
+        $this,
+        new validation\dbtype\VarChar(
+          45,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['additionalNames'];
+  }
+
+  protected function get_familyName() : field\Input
   {
     if (!isset($this['familyName']))
     {
@@ -121,7 +119,7 @@ class Person extends AuthenticatableUnit
         Str::set('familyName'),
         $this,
         new validation\dbtype\VarChar(
-          15,
+          45,
           new validation\Alphanumeric(),
           Str::set('My error message HERE!')
         )
@@ -130,36 +128,49 @@ class Person extends AuthenticatableUnit
     return $this['familyName'];
   }
 
-  /**
-   *
-   *
-  protected function get_country() : field\Field
+  protected function get_honorificSuffix() : field\Input
   {
-    if (!isset(self::$countryList)) {
-      $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-      $modelManager = $MODEL_MANAGER::getInstance();
-      self::$countryList = new OptionList($modelManager->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set('Country')))
-      );
-    }
-    if (!isset($this->country)) {
-      $this->country = new field\SelectOne(
-        Str::set('country'),
+    if (!isset($this['honorificSuffix']))
+    {
+      $this['honorificSuffix'] = new field\Input(
+        Str::set('honorificSuffix'),
         $this,
-        self::$countryList
+        new validation\dbtype\VarChar(
+          45,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
-    //if ($this->isNew) {
-      $this['country'] = $this->country;
-    //}
-    return $this->country;
+    return $this['honorificSuffix'];
+  }
+
+  /*
+  protected function get_primaryAddressID() : field\Field
+  {
+    if (!isset($this['primaryAddressID']))
+    {
+      $this['primaryAddressID'] = new field\Relation(
+        Str::set('primaryAddressID'),
+        $this
+        // Get Business Model From Data Store.
+      );
+    }
+    return $this['primaryAddressID'];
   }*/
 
-  /**
-   *
-  protected function set_country($value)
+  /*
+  protected function get_primaryPhoneNumberID() : field\Field
   {
-    $this->setPropertyValue('country', $value);
+    if (!isset($this['primaryPhoneNumberID']))
+    {
+      $this['primaryPhoneNumberID'] = new field\Relation(
+        Str::set('primaryPhoneNumberID'),
+        $this
+        // Get Business Model From Data Store.
+      );
+    }
+    return $this['primaryPhoneNumberID'];
   }*/
 
   /**
@@ -170,8 +181,7 @@ class Person extends AuthenticatableUnit
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->uname) &&
-      isset($dataObject->email)
+      isset($dataObject->uname) 
     );
   }
 }

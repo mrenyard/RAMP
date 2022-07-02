@@ -21,56 +21,57 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\iOption;
 use ramp\core\StrCollection;
-use ramp\model\business\RecordCollection;
-use ramp\model\business\Record;
 
 /**
- * Collection of Coutry.
+ * Collection of Country.
  */
 class CountryCollection extends RecordCollection { }
 
 /**
  * Concrete Record for Country.
  */
-class Country extends Record
-{
+class Country extends Record{
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('code'); }
+  public function primaryKeyNames() : StrCollection
+  {
+    return StrCollection::set('code');
+  }
 
+  private $code;
   protected function get_code() : field\Input
   {
-    if (!isset($this['code']))
+    if (!isset($this->code))
     {
-      $this['code'] = new field\Input(
+      $this->code = new field\Input(
         Str::set('code'),
         $this,
         new validation\dbtype\VarChar(
           2,
           new validation\Alphanumeric(),
-          Str::set('Please provide a valid 2 digit country code')
+          Str::set('My error message HERE!')
         )
       );
+      if ($this->isNew) { $this['code'] = $this->code; }
     }
-    return $this['code'];
+    return $this->code;
   }
 
   protected function get_name() : field\Input
   {
     if (!isset($this['name']))
     {
-       $this['name'] = new field\Input(
-          Str::set('name'),
-          $this,
-          new validation\dbtype\VarChar(
-            45,
-            new validation\Alphanumeric(),
-            Str::set('Please provide a country name!')
-          )
+      $this['name'] = new field\Input(
+        Str::set('name'),
+        $this,
+        new validation\dbtype\VarChar(
+          45,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
       );
     }
     return $this['name'];
@@ -85,7 +86,7 @@ class Country extends Record
   {
     return (
       isset($dataObject->code) &&
-      isset($dataObject->name)
+      isset($dataObject->name) 
     );
   }
 }

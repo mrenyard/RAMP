@@ -22,8 +22,6 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
-use ramp\model\business\Record;
-use ramp\model\business\RecordCollection;
 
 /**
  * Collection of Address.
@@ -33,110 +31,22 @@ class AddressCollection extends RecordCollection { }
 /**
  * Concrete Record for Address.
  */
-class Address extends Record
-{
+class Address extends Record{
   /**
    * Returns property name of concrete classes primary key.
    * @return \ramp\core\Str Name of property that is concrete classes primary key
    */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('countryCode','postalCode','extendedAddress'); }
-
-  protected function get_extendedAddress() : field\Field
+  public function primaryKeyNames() : StrCollection
   {
-    if (!isset($this['extendedAddress']))
-    {
-      $this['extendedAddress'] = new field\Input(
-        Str::set('extendedAddress'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['extendedAddress'];
+    return StrCollection::set('countryCode', 'postalCode', 'deliveryPointSuffix');
   }
 
-  protected function get_streetAddress() : field\Field
+  private $countryCode;
+  protected function get_countryCode() : field\Input
   {
-    if (!isset($this['streetAddress']))
+    if (!isset($this->countryCode))
     {
-      $this['streetAddress'] = new field\Input(
-        Str::set('streetAddress'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['streetAddress'];
-  }
-
-  protected function get_locality() : field\Field
-  {
-    if (!isset($this['locality']))
-    {
-      $this['locality'] = new field\Input(
-        Str::set('locality'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['locality'];
-  }
-
-  protected function get_region() : field\Field
-  {
-    if (!isset($this['region']))
-    {
-      $this['region'] = new field\Input(
-        Str::set('region'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['region'];
-  }
-
-  protected function get_postalCode() : field\Field
-  {
-    if (!isset($this['postalCode']))
-    {
-      $this['postalCode'] = new field\Input(
-        Str::set('postalCode'),
-        $this,
-        new validation\dbtype\VarChar(
-          45,
-          new validation\Alphanumeric(),
-          Str::set('My error message HERE!')
-        )
-      );
-    }
-    return $this['postalCode'];
-  }
-
-  protected function get_countryCode() : field\Field
-  {
-    if (!isset($this['countryCode']))
-    {
-      // $this['countryCode'] = new field\SelectOne(
-      //   Str::set('countryCode'),
-      //   $this,
-      //   new LoginAccountType()
-      // );
-      
-      $this['countryCode'] = new field\Input(
+      $this->countryCode = new field\Input(
         Str::set('countryCode'),
         $this,
         new validation\dbtype\VarChar(
@@ -145,8 +55,244 @@ class Address extends Record
           Str::set('My error message HERE!')
         )
       );
+      if ($this->isNew) { $this['countryCode'] = $this->countryCode; }
     }
-    return $this['countryCode'];
+    return $this->countryCode;
+  }
+
+  private $postalCode;
+  protected function get_postalCode() : field\Input
+  {
+    if (!isset($this->postalCode))
+    {
+      $this->postalCode = new field\Input(
+        Str::set('postalCode'),
+        $this,
+        new validation\dbtype\VarChar(
+          15,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+      if ($this->isNew) { $this['postalCode'] = $this->postalCode; }
+    }
+    return $this->postalCode;
+  }
+
+  private $deliveryPointSuffix;
+  protected function get_deliveryPointSuffix() : field\Input
+  {
+    if (!isset($this->deliveryPointSuffix))
+    {
+      $this->deliveryPointSuffix = new field\Input(
+        Str::set('deliveryPointSuffix'),
+        $this,
+        new validation\dbtype\VarChar(
+          2,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+      if ($this->isNew) { $this['deliveryPointSuffix'] = $this->deliveryPointSuffix; }
+    }
+    return $this->deliveryPointSuffix;
+  }
+
+  /*
+  protected function get_addressFileID() : field\Field
+  {
+    if (!isset($this['addressFileID']))
+    {
+      $this['addressFileID'] = new field\Relation(
+        Str::set('addressFileID'),
+        $this
+        // Get Business Model From Data Store.
+      );
+    }
+    return $this['addressFileID'];
+  }*/
+
+  protected function get_subBuildingName() : field\Input
+  {
+    if (!isset($this['subBuildingName']))
+    {
+      $this['subBuildingName'] = new field\Input(
+        Str::set('subBuildingName'),
+        $this,
+        new validation\dbtype\VarChar(
+          30,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['subBuildingName'];
+  }
+
+  protected function get_buildingName() : field\Input
+  {
+    if (!isset($this['buildingName']))
+    {
+      $this['buildingName'] = new field\Input(
+        Str::set('buildingName'),
+        $this,
+        new validation\dbtype\VarChar(
+          50,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['buildingName'];
+  }
+
+  protected function get_buildingNumber() : field\Input
+  {
+    if (!isset($this['buildingNumber']))
+    {
+      $this['buildingNumber'] = new field\Input(
+        Str::set('buildingNumber'),
+        $this,
+        new validation\dbtype\TinyInt(
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['buildingNumber'];
+  }
+
+  protected function get_organisationName() : field\Input
+  {
+    if (!isset($this['organisationName']))
+    {
+      $this['organisationName'] = new field\Input(
+        Str::set('organisationName'),
+        $this,
+        new validation\dbtype\VarChar(
+          60,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['organisationName'];
+  }
+
+  protected function get_departmentName() : field\Input
+  {
+    if (!isset($this['departmentName']))
+    {
+      $this['departmentName'] = new field\Input(
+        Str::set('departmentName'),
+        $this,
+        new validation\dbtype\VarChar(
+          60,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['departmentName'];
+  }
+
+  protected function get_PoBoxNumber() : field\Input
+  {
+    if (!isset($this['PoBoxNumber']))
+    {
+      $this['PoBoxNumber'] = new field\Input(
+        Str::set('PoBoxNumber'),
+        $this,
+        new validation\dbtype\TinyInt(
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['PoBoxNumber'];
+  }
+
+  protected function get_dependentThoroughfare() : field\Input
+  {
+    if (!isset($this['dependentThoroughfare']))
+    {
+      $this['dependentThoroughfare'] = new field\Input(
+        Str::set('dependentThoroughfare'),
+        $this,
+        new validation\dbtype\VarChar(
+          80,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['dependentThoroughfare'];
+  }
+
+  protected function get_thoroughfare() : field\Input
+  {
+    if (!isset($this['thoroughfare']))
+    {
+      $this['thoroughfare'] = new field\Input(
+        Str::set('thoroughfare'),
+        $this,
+        new validation\dbtype\VarChar(
+          80,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['thoroughfare'];
+  }
+
+  protected function get_doubleDependentLocality() : field\Input
+  {
+    if (!isset($this['doubleDependentLocality']))
+    {
+      $this['doubleDependentLocality'] = new field\Input(
+        Str::set('doubleDependentLocality'),
+        $this,
+        new validation\dbtype\VarChar(
+          35,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['doubleDependentLocality'];
+  }
+
+  protected function get_dependentLocality() : field\Input
+  {
+    if (!isset($this['dependentLocality']))
+    {
+      $this['dependentLocality'] = new field\Input(
+        Str::set('dependentLocality'),
+        $this,
+        new validation\dbtype\VarChar(
+          35,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['dependentLocality'];
+  }
+
+  protected function get_PostTown() : field\Input
+  {
+    if (!isset($this['PostTown']))
+    {
+      $this['PostTown'] = new field\Input(
+        Str::set('PostTown'),
+        $this,
+        new validation\dbtype\VarChar(
+          30,
+          new validation\Alphanumeric(),
+          Str::set('My error message HERE!')
+        )
+      );
+    }
+    return $this['PostTown'];
   }
 
   /**
@@ -158,8 +304,10 @@ class Address extends Record
   {
     return (
       isset($dataObject->countryCode) &&
-      isset($dataObject->extendedAddress) &&
-      isset($dataObject->postalCode)
+      isset($dataObject->postalCode) &&
+      isset($dataObject->deliveryPointSuffix) &&
+      isset($dataObject->addressFileID) &&
+      isset($dataObject->PostTown) 
     );
   }
 }

@@ -67,11 +67,15 @@ class RegexEmailTest extends \PHPUnit\Framework\TestCase
    */
   public function testProcess()
   {
-    $this->assertNull($this->testObject->process('a.person@domain.co.uk'));
+    $this->assertNull($this->testObject->process('a.person@gmail.com'));
     try {
       $this->testObject->process('not.email.address');
     } catch (FailedValidationException $expected) {
-      return;
+      // try {
+      //   $this->testObject->process('a.person@baddomain.co.uk');
+      // } catch (FailedValidationException $expected) {
+        return;
+      // }
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }

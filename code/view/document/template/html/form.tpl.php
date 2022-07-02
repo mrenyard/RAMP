@@ -1,7 +1,6 @@
 <?php
 /**
- * RAMP - Rapid web application development enviroment for building
- *  flexible, customisable web systems.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -22,7 +21,7 @@
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 $type = (isset($this->type))? strtolower($this->type) : '';
 ?>
-        <form method="post" id="<?=$this->id; ?>" class="<?=$this->type; ?>" >
+        <form method="post" id="<?=$this->id; ?>" class="<?=$this->type; ?>">
 <?=$this->children; ?>
           <input type="submit" value="<?=(strpos((string)$this->id, ':new'))? 'add':'update'; ?>" tabindex="<?=$tabindex; ?>" />
         </form>

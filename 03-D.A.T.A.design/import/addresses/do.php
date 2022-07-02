@@ -91,4 +91,4 @@ fclose($writeSQL);
 echo "]\n";
 echo "Updating database...\n Please wait..\n";
 echo shell_exec('sudo mysql < ' . $IMPORT_FOLDER . $TODAY . '.sql 2>&1');
-echo "...Done";
+echo "...Done\n";
