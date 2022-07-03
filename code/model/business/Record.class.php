@@ -143,7 +143,7 @@ abstract class Record extends BusinessModel
     parent::offsetSet($offset, $object);
   }
 
-  /**
+  /*
    * ArrayAccess method offsetUnset, USES DISCOURAGED.
    * @param mixed $offset API to match \ArrayAccess interface
    *
@@ -158,7 +158,7 @@ abstract class Record extends BusinessModel
     parent::offsetUnset($offset);
   }*/
 
-  /**
+  /*
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
