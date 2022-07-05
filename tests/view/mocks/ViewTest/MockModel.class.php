@@ -43,7 +43,7 @@ class MockModel extends BusinessModel
 
   protected function get_aProperty()
   {
-    return $this->aProperty;
+    return (isset($this->aProperty))? $this->aProperty : NULL;
   }
 
   protected function set_aProperty($value)
@@ -53,7 +53,7 @@ class MockModel extends BusinessModel
 
   protected function get_bProperty()
   {
-    return $this->bProperty;
+    return (isset($this->bProperty))? $this->bProperty : NULL;
   }
 
   protected function set_bProperty($value)

@@ -139,24 +139,24 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       if ($i === 1)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: ',
           $output
         );
       }
       if ($i === 2)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA '.
-          'tests\ramp\view\mocks\ViewTest\MockViewB ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: '.
+          'tests\ramp\view\mocks\ViewTest\MockViewB:YES: ',
           $output
         );
       }
       if ($i === 3)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA '.
-          'tests\ramp\view\mocks\ViewTest\MockViewB '.
-          'tests\ramp\view\mocks\ViewTest\MockViewC ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: '.
+          'tests\ramp\view\mocks\ViewTest\MockViewB:YES: '.
+          'tests\ramp\view\mocks\ViewTest\MockViewC:YES: ',
           $output
         );
       }
@@ -189,7 +189,50 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
+   * - assert each view added sequentially and hieratically as expected
+   * - assert output from View->render() maintains sequance and hieratically format
+   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   */
+  public function testSetModelNoCascade()
+  {
+    foreach ($this->mockViewCollection as $view) {
+      $this->testObject->add($view);
+    }
+
+    $model = new MockModelCollection();
+    $model->bProperty = 'this';
+    $subModel1 = new MockModel();
+    $subModel1->bProperty = 'one';
+    $model->add($subModel1);
+    $subModel2 = new MockModel();
+    $subModel2->bProperty = 'two';
+    $model->add($subModel2);
+    $subModel3 = new MockModel();
+    $subModel3->bProperty = 'three';
+    $model->add($subModel3);
+
+    $this->assertFalse($this->testObject->hasModel);
+    $this->testObject->setModel($model, FALSE);
+    $this->assertTrue($this->testObject->hasModel);
+
+    ob_start();
+    $this->testObject->render();
+    $output = ob_get_clean();
+
+    $this->assertSame(
+      'tests\ramp\view\mocks\ViewTest\MockView:YES:this '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:NO '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:NO '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:NO ',
+      $output
+    );
+  }
+
+  /**
    * Collection of assertions for \ramp\view\View::setModel().
+   * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
@@ -219,16 +262,17 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\ramp\view\mocks\ViewTest\MockView:parent '.
-      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:three ',
+      'tests\ramp\view\mocks\ViewTest\MockView:YES:parent '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:YES:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:three ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \ramp\view\View::setModel().
+   * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
@@ -268,19 +312,20 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\ramp\view\mocks\ViewTest\MockView:parent '.
-      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
-      'tests\ramp\view\mocks\ViewTest\MockViewA:four '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:six ',
+      'tests\ramp\view\mocks\ViewTest\MockView:YES:parent '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:YES:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewA:YES:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:six ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \ramp\view\View::setModel().
+   * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
@@ -319,18 +364,19 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:four '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:six ',
+      'tests\ramp\view\mocks\ViewTest\MockViewA:YES:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:six ',
       $output
     );
   }
 
   /**
-   * Collection of assertions for \ramp\view\View::setModel.
+   * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
@@ -390,18 +436,18 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $output = ob_get_clean();
 
     $this->assertSame(
-      'tests\ramp\view\mocks\ViewTest\MockViewA:one '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:two '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:three '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:seven '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:ten '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:four '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:eight '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:eleven '.
-      'tests\ramp\view\mocks\ViewTest\MockViewB:five '.
-      'tests\ramp\view\mocks\ViewTest\MockViewC:six '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:nine '.
-      'tests\ramp\view\mocks\ViewTest\MockViewD:twelve ',
+      'tests\ramp\view\mocks\ViewTest\MockViewA:YES:one '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:two '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:three '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:seven '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:ten '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:four '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:eight '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:eleven '.
+      'tests\ramp\view\mocks\ViewTest\MockViewB:YES:five '.
+      'tests\ramp\view\mocks\ViewTest\MockViewC:YES:six '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:nine '.
+      'tests\ramp\view\mocks\ViewTest\MockViewD:YES:twelve ',
       $output
     );
   }

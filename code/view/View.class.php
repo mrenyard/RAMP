@@ -101,7 +101,7 @@ abstract class View extends RAMPObject
    *  </section>
    * ```
    */
-  final public function get_children()
+  final public function get_children() : void
   {
     if (!isset($this->viewCollection)) { return; }
     foreach ($this->viewCollection as $view) {
@@ -110,17 +110,30 @@ abstract class View extends RAMPObject
   }
 
   /**
+   * Returns whether this has a model set against it.
+   * **DO NOT CALL DIRECTLY, USE this->isModified;**
+   * @return bool Value of hasModel
+   */
+  protected function get_hasModel()
+  {
+    return isset($this->model);
+  }
+
+  /**
    * Set associated Model.
    * Model can be a complex hierarchical ordered tree or a simple one level object,
-   * either way it will be interlaced appropriately with *this* View up to the
-   * same depth of structure.
+   * either way it will be interlaced appropriately with *this* View up to the same
+   * depth of structure unless specified cascade FALSE.
    * @param \ramp\model\Model $model Model containing data used in View
+   * @param bool $cascade Set model for child views.
+   * @throws \BadMethodCallException Model already set violation.
    */
-  public function setModel(Model $model)
+  public function setModel(Model $model, bool $cascade = TRUE)
   {
-    if (isset($this->model)) { throw new \Exception('model already set violation'); }
-
+    if (isset($this->model)) { throw new \BadMethodCallException('model already set violation'); }
     $this->model = $model;
+
+    if (!$cascade) { return; }
 
     if ($model instanceof \Traversable) {
       if (!($model instanceof \Countable)) {
@@ -149,7 +162,6 @@ abstract class View extends RAMPObject
         if (!$viewIterator->valid()) { throw new \LengthException('SHOULD NEVER REACH HERE!'); }
         $view = $viewIterator->current();
         $view->setModel($subModel);
-
         $viewIterator->next();
       } // END foreach
     } // END if

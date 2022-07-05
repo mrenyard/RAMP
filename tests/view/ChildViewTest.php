@@ -24,17 +24,32 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
+require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 
 require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockChildView.class.php';
 require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockView.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockRecordModel.class.php';
+require_once '/usr/share/php/tests/ramp/view/mocks/ChildViewTest/MockFieldModel.class.php';
 
 use tests\ramp\view\mocks\ChildViewTest\MockChildView;
 use tests\ramp\view\mocks\ChildViewTest\MockView;
+use tests\ramp\view\mocks\ChildViewTest\MockFieldModel;
+use tests\ramp\view\mocks\ChildViewTest\MockRecordModel;
+use tests\ramp\view\mocks\ChildViewTest\MockRecordModelCollection;
 
+use ramp\core\Str;
 use ramp\view\View;
+use ramp\view\RootView;
 use ramp\view\ChildView;
+use ramp\model\business\RecordCollection;
 
 /**
  * Collection of tests for \ramp\view\ChildView.
@@ -74,5 +89,79 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ChildViewTest\MockChildView ',
       $output
     );
+  }
+
+  /**
+   * Collection of assertions for \ramp\view\document\ChildView::setModel() and
+   * \ramp\view\document\ChildView::hasModel with cascade.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
+   * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
+   * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
+   */
+  public function testSetModelWithCascade()
+  {
+    $subModel1 = new MockRecordModel();
+    $parentModel = new MockRecordModelCollection();
+    $parentModel->add($subModel1);
+
+    $parentView = new MockView(RootView::getINstance());
+    $childView = new MockChildView($parentView);
+    $this->assertFalse($parentView->hasModel);
+    $this->assertFalse($childView->hasModel);
+    $parentView->setModel($parentModel);
+    $this->assertTrue($parentView->hasModel);
+    $this->assertTrue($childView->hasModel);
+  }
+
+  /**
+   * Collection of assertions for \ramp\view\document\ChildView::setModel() and
+   * \ramp\view\document\ChildView::hasModel no cascade.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
+   * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
+   * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
+   */
+  public function testSetModelNoCascade()
+  {
+    // $subField = new MockFieldModel();
+    $recordModel = new MockRecordModel();
+    $parentModel = new MockRecordModelCollection();
+    $parentModel->add($recordModel);
+    // $recordModel->add($subField);
+
+    $parentView = new MockView(RootView::getINstance());
+    $childView = new MockChildView($parentView);
+    $this->assertFalse($parentView->hasModel);
+    $this->assertFalse($childView->hasModel);
+    $parentView->setModel($parentModel, FALSE);
+    $this->assertTrue($parentView->hasModel);
+    $this->assertFalse($childView->hasModel);
+  }
+
+  /**
+   * Collection of assertions for \ramp\view\document\ChildView::setModel() and
+   * \ramp\view\document\ChildView::hasModel traverse upward.
+   * - Prior to model set hasModel returns FALSE and post set TRUE
+   * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
+   * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
+   */
+  public function testUpwardTraverseOnSetModelIsField()
+  {
+    $parentModel = new MockRecordModelCollection();
+    $recordModel = new MockRecordModel();
+
+    $parentModel->add($recordModel);
+    $subField = new MockFieldModel(Str::set(''), $recordModel);
+
+    $parentView = new MockView(RootView::getInstance());
+    $recordView = new MockChildView($parentView);
+    $subFieldView = new MockChildView($recordView);
+
+    $this->assertFalse($parentView->hasModel);
+    $this->assertFalse($recordView->hasModel);
+    $this->assertFalse($subFieldView->hasModel);
+    $subFieldView->setModel($subField);
+    $this->assertTrue($subFieldView->hasModel);
+    $this->assertTrue($recordView->hasModel);
+    $this->assertFalse($parentView->hasModel);
   }
 }

@@ -45,9 +45,10 @@ final class RootView extends View
   /**
    * Prevent setting of Model.
    * @throws \BadMethodCallException SHOULD NOT USE THIS METHOD
-   * @param \ramp\model\Model $model Model NOT to be set
+   * @param \ramp\model\Model $model Only present to match parent signiture.
+   * @param bool $cascade Only present to match parent signiture.
    */
-  public function setModel(Model $model)
+  public function setModel(Model $model, bool $cascade = TRUE)
   {
     throw new \BadMethodCallException('SHOULD NOT USE THIS METHOD');
   }

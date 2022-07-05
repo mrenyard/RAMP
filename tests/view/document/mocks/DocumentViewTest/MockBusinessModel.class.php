@@ -21,22 +21,22 @@
 namespace tests\ramp\view\document\mocks\DocumentViewTest;
 
 use ramp\core\Str;
-use ramp\model\business\BusinessModel;
+use ramp\core\StrCollection;
+use ramp\model\business\Record;
+use ramp\model\business\RecordCollection;
+
+class MockBusinessModelCollection extends RecordCollection {}
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
-class MockBusinessModel extends BusinessModel
+class MockBusinessModel extends Record
 {
   private $aProperty;
 
-  /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
+  public function primaryKeyNames() : StrCollection
   {
+    return StrCollection::set('id');
   }
 
   protected function get_aProperty()
@@ -47,5 +47,10 @@ class MockBusinessModel extends BusinessModel
   protected function set_aProperty($value)
   {
     $this->aProperty = $value;
+  }
+
+  protected static function checkRequired($dataObject) : bool
+  {
+    // STUB
   }
 }

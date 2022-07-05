@@ -18,31 +18,13 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ChildViewTest;
 
-use ramp\core\Str;
-use ramp\view\View;
+use ramp\model\Model;
 
 /**
- * Mock Concreate implementation of \ramp\view\View for testing login against.
+ * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
-class MockView extends View
+class MockModel extends Model
 {
-  /**
-   */
-  public function render()
-  {
-    print($this);
-    if ($this->hasModel) {
-      print(':YES:' . $this->bProperty . ' ');
-      $this->get_children();
-    } else {
-      print(':NO ');
-    }
-  }
 }
-
-class MockViewA extends MockView {}
-class MockViewB extends MockView {}
-class MockViewC extends MockView {}
-class MockViewD extends MockView {}
