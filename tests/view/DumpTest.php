@@ -58,14 +58,9 @@ class DumpTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\view\Dump', $testObject);
 
     $expectedRegEx = '#^<pre>[A-Za-z0-9 _/]*code/view/Dump.class.php:[0-9]*:'.PHP_EOL.
-    'class ramp\\\view\\\Dump\#[0-9]* \([0-9]*\) {'.PHP_EOL.
-    '  private \$viewCollection =>'.PHP_EOL.
-    '  NULL'.PHP_EOL.
-    '  private \$model =>'.PHP_EOL.
-    '  NULL'.PHP_EOL.
-    '}'.PHP_EOL.
-    '</pre>$#i';
-
+      'class ramp\\\\view\\\\Dump\#[0-9]* \([0-9]*\) {'.PHP_EOL.
+        '((.|\n)*)}'.PHP_EOL.'</pre>$#';
+  
     ob_start();
     $rootView->children;
     $output = ob_get_clean();
