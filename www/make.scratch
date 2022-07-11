@@ -1,0 +1,116 @@
+<?php
+/**
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @package RAMP.make
+ * @version 0.0.9;
+ */
+namespace ramp;
+
+require_once('load.ini.php');
+$TYPE = (isset($_SERVER["PATH_INFO"])) ? trim($_SERVER["PATH_INFO"], '/') : 'from/sql';
+$BASE_PATH = str_replace('www', '', __DIR__) . 'make/' . $TYPE;
+require_once $BASE_PATH . '/ramp/model/business/Row.class.php';
+require_once $BASE_PATH . '/ramp/model/business/Table.class.php';
+require_once $BASE_PATH . '/ramp/model/business/Column.class.php';
+require_once $BASE_PATH . '/ramp/model/business/field/AdapterForRecord.class.php';
+
+/*
+$session = http\Session::getInstance();
+try {
+  $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
+} catch (http\Unauthorized401Exception $e) {
+  header('HTTP/1.1 401 Unauthorized');
+  $authenticationForm = new view\AuthenticationForm($e->getMessage());
+  $authenticationForm->setModel($session->loginAccount);
+  view\RootView::getInstance()->render();
+  return;
+}*/
+
+// GET_MODEL_DATA_FOR_TYPE
+$tablesDatabaseHandle = new \PDO('mysql:host=localhost;dbname=information_schema', SETTING::$DATABASE_USER, SETTING::$DATABASE_PASSWORD);
+$tablesDatabaseHandle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+$tablesStatementHandle = $tablesDatabaseHandle->query('SELECT TABLE_NAME FROM tables WHERE tables.TABLE_SCHEMA = "ramp_db";');
+$tablesStatementHandle->setFetchMode(\PDO::FETCH_OBJ);
+$nextTable = $tablesStatementHandle->fetch();
+if (!($nextTable instanceof \stdClass)) { throw new \DomainException('No tables found in ramp_db!'); }
+$tableCollection = new model\business\TableCollection();
+do {
+  $table = new model\business\Table($nextTable);
+  $tableCollection->add($table); 
+  if (\strrpos($table->name, 'Type') > 0) {
+    $rowsDatabaseHandle = new \PDO(SETTING::$DATABASE_CONNECTION, SETTING::$DATABASE_USER, SETTING::$DATABASE_PASSWORD);
+    $rowsDatabaseHandle->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    $rowsStatementHandle = $rowsDatabaseHandle->query('SELECT * FROM ' . $nextTable->TABLE_NAME . ';');
+    $rowsStatementHandle->setFetchMode(\PDO::FETCH_OBJ);
+    $nextRow = $rowsStatementHandle->fetch();
+    if (!($nextRow instanceof \stdClass)) { throw new \DomainException('No rows found in ' . $nextTable->TABLE_NAME . '!'); }
+    do {
+      $table[$nextRow->value] = new model\business\field\AdapterForRecord(new model\business\Row($nextRow));
+    } while ($nextRow = $rowsStatementHandle->fetch()); 
+    continue;
+  }
+  $columnStatementHandle = $tablesDatabaseHandle->query('SELECT COLUMN_KEY, COLUMN_NAME, COLUMN_TYPE, IS_NULLABLE FROM information_schema.COLUMNS WHERE TABLE_NAME = "' . $nextTable->TABLE_NAME . '";');
+  $columnStatementHandle->setFetchMode(\PDO::FETCH_OBJ);
+  $nextColumn = $columnStatementHandle->fetch();
+  if (!($nextColumn instanceof \stdClass)) { throw new \DomainException('No columns found in ' . $nextTable->TABLE_NAME . '!'); }
+  do {
+    if (
+      ($table->name == SETTING::$RAMP_AUTHENTICATABLE_UNIT && $nextColumn->COLUMN_NAME == 'email') ||
+      (strtolower($nextColumn->COLUMN_NAME) == 'id')
+    ) { continue; }
+    
+    $table[$nextColumn->COLUMN_NAME] = new model\business\field\AdapterForRecord(new model\business\Column($nextColumn));
+  } while ($nextColumn = $columnStatementHandle->fetch());
+
+} while ($nextTable = $tablesStatementHandle->fetch());
+
+foreach ($tableCollection as $table)
+{
+  $fullFileName = SETTING::$RAMP_LOCAL_DIR . '/' . 
+    str_replace('\\','/', SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE) . 
+      '/' . $table->name . '.class.php';
+
+  $tableName = core\Str::set($table->name);
+  if ($tableName->contains(core\StrCollection::set('LoginAccount'))) { continue; }
+  if ($tableName->contains(core\StrCollection::set('Type', 'Status', 'Code'))) {
+    $classView = new view\document\FileCreate(
+      view\RootView::getInstance(),
+      core\Str::set('ramp-optionlist'),
+      core\Str::set('text'),
+      core\Str::set($fullFileName)
+    );
+    $classView->setModel($table);
+  } elseif (!file_exists($fullFileName)) {
+    $classView = new view\document\FileCreate(
+      view\RootView::getInstance(),
+      core\Str::set('ramp-record'),
+      core\Str::set('text'),
+      core\Str::set($fullFileName)
+    );
+    new view\document\Templated(
+      $classView,
+      core\Str::set('ramp-property'),
+      core\Str::set('text')
+    );
+    $classView->setModel($table);
+  } else {
+    continue;
+  }
+  print_r('<h3>' . $table->name . '</h3>');
+}
+
+$view = view\RootView::getInstance()->render();
