@@ -56,6 +56,7 @@ class <?=$this->name; ?>Collection extends RecordCollection { }
  * Concrete Record for <?=$this->name; ?>.
  */
 class <?=$this->name; ?> extends <?=($this->name == \ramp\SETTING::$RAMP_AUTHENTICATABLE_UNIT)? 'AuthenticatableUnit' : 'Record'; ?>
+
 {
   /**
    * Returns property name of concrete classes primary key.

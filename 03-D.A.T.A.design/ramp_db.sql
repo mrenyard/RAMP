@@ -189,7 +189,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `ramp_db`.`GB_Addresses` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
-  `id` VARCHAR(15) NOT NULL, -- (UDPRN:60720866)
+  `UDPRN` VARCHAR(15) NOT NULL, -- (UDPRN:60720866)
   `postalCode` VARCHAR(8) NOT NULL,
   `PostTown` VARCHAR(30) NOT NULL,
   `dependentLocality` VARCHAR(35) NULL DEFAULT NULL,
@@ -206,8 +206,8 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
   `deliveryPointSuffix` VARCHAR(2) NOT NULL,
   -- addressKey,organisationKey,numberOfHouseholds,localityKey
   -- (page 22) at https://www.poweredbypaf.com/wp-content/uploads/2017/07/Latest-Programmers_guide_Edition-7-Version-6.pdf 
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+  PRIMARY KEY (`UDPRN`),
+  UNIQUE INDEX `UDPRN_UNIQUE` (`UDPRN` ASC) VISIBLE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
