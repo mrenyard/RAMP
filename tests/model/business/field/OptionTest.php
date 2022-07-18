@@ -96,6 +96,27 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for \ramp\model\business\field\Option::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * - assert property 'type' is gettable.
+   * - assert returned value is of type {@link \ramp\core\Str}.
+   * - assert returned value matches expected result.
+   * @link ramp.model.business.field.Option#method_get_type ramp\model\business\field\Option::type
+   */
+  public function testGet_type()
+  {
+    try {
+      $this->testObject->type = "TYPE";
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
+      $this->assertEquals('option business-model', (string)$this->testObject->type);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
    * Collection of assertions for \ramp\model\business\field\Option::get_isSelected and
    *  \ramp\model\business\field\Option::setParentField with setParentField correctly set.
    * - assert isSelected returns FALSE by default.
