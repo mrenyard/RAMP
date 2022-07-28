@@ -19,9 +19,22 @@
  * @version 0.0.9;
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
-$type = (isset($this->type))? strtolower($this->type) : '';
 ?>
-        <form method="post" id="<?=$this->id; ?>" class="<?=$this->type; ?>">
+      <section id="<?=$this->id; ?>" class="<?=$this->style; ?>"><form method="post">
+        <header>
+          <h2><a href="#<?=$this->id; ?>" title="<?=$this->title; ?>">#</a><?=$this->heading; ?></h2>
+          <p class="note"><?=$this->summary; ?></p>
+<?php if (isset($this->hasErrors) && $this->hasErors) { ?>
+          <ol class="error">
+<?php foreach ($this->errors as $error) { ?>            
+            <li><?=$error; ?></p>
+<?php } ?>
+          </ol>
+<?php } ?>
+        </header>
 <?=$this->children; ?>
-          <input type="submit" value="<?=(strpos((string)$this->id, ':new'))? 'add':'update'; ?>" tabindex="<?=$tabindex; ?>" />
-        </form>
+        <footer>
+          <p><?=$this->summary; ?></p>
+        </footer>
+        <div class="controls"><input type="submit" value="Update" /></div>
+      </form></section><!-- #<?=$this->id; ?> -->

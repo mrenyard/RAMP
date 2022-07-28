@@ -17,28 +17,23 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
  * @version 0.0.9;
- * 
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 switch ($this->type) {
-  case 'select-one field': ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
-            <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required">
-<?=$this->children; ?>
-            </select>
-            <span class="name"><?=$this->label; ?></span>
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
-            <span class="error"><?=$error; ?></span>
-<?php } } ?>
-          </label>
+  case 'option business-model': ?>
+              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
 <?php break;
-  default: ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
-            <span class="name"><?=$this->label; ?>:</span>
-            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
-            <span class="error"><?=$error; ?></span>
-<?php } } ?>
-          </label>
+  case 'relation field': ?>
+              <label class="<?=$this->type; ?>" title="<?=$this->title; ?>" >
+                <a href="<?=$this->value; ?>"><?=$this->id; ?></a>
+              </label>
 <?php break;
-} ?>
+  case 'input field': ?>
+              <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+                <span class="name"><?=$this->label; ?>:</span>
+                <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
+<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
+                <span class="error"><?=$error; ?></span>
+<?php } } ?>
+              </label>
+<?php break; } ?>

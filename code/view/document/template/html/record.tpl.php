@@ -19,10 +19,7 @@
  * @version 0.0.9;
  */
 ?>
-      <section id="<?=$this->id; ?>" class="<?=$this->style; ?>">
-        <header>
-          <h2><a href="#<?=$this->id; ?>" title="<?=$this->title; ?>"><?=$this->heading; ?></a></h2>
-          <p><?=$this->summary; ?></p>
-        </header>
+        <fieldset id="<?=$this->id; ?>" title="<?=$this->title; ?>">
+          <legend><?=$this->heading; ?></legend>
 <?=$this->children; ?>
-      </section><!-- #<?=$this->id; ?> -->
+        </fieldset><!-- #<?=$this->id; ?> -->

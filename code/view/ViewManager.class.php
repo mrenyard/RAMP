@@ -41,17 +41,18 @@ class ViewManager extends RAMPObject
     // DEFAULT VIEW IF NON DEFINED
     $body = new document\Templated(RootView::getInstance(), Str::set('body'));
     $page = new document\Templated($body, Str::set('page'));
-    $section = new document\Templated($page, Str::set('section'));
-    $form = new document\Templated($section, Str::set('form'));
-    $formfield = new document\Templated($form, Str::set('formfield'));
-    $option = new document\Templated($formfield, Str::set('option'));
+    $sectionForm = new document\Templated($page, Str::set('section-form'));
+    $record = new document\Templated($sectionForm, Str::set('record'));
+    $fieldRelation = new document\Templated($record, Str::set('field-relation'));
+    $relationfieldOption = new document\Templated($fieldRelation, Str::set('relationfield-option'));
+    $option = new document\Templated($relationfieldOption, Str::set('option'));
 
     if ($request->get_propertyName()) {
-      return $formfield;
+      return $fieldRelation;
     } elseif ($request->get_recordKey()) {
-      return $form;
+      return $record;
     } elseif ($request->get_recordName()) {
-      return $section;
+      return $sectionForm;
     }
   }
 }
