@@ -1,0 +1,26 @@
+field/Flag ( checkbox(BOOL) )
+field/Input ( freeform(CHAR|VARCHAR), time(TIME), date-time(DATETIME), date(DATE), text(TINYTEXT), number(INT|FLOAT), tel(CHAR|VARCHAR), email(VARCHAR),  textarea(TEXT), range(min:INT,max:INT) ) + datalist:SUGESTIONS
+field/SelectOne ( type(URN:VARCHAR), status(enum:INT), list(iOption:id:VARCHAR), rating(INT) )
+field/SelectMany ( iOption(REVERSE_LOOKUP, LOOKUP_TABLE) list )
+
+field/AddMany?
+
+Database:
+--------
+CHAR(length) Fixed length  as Char
+VARCHAR(maxlength)         as VarChar
+TINYTEXT Upto 255 chars    as TinyText
+TEXT(size)                 as Text
+BOOL or BOOLEAN            as Flag
+INT or INTEGER             as Integer
+FLOAT(p)                   as DecimalPointNumber
+DATE                       as Date
+TIME                       as Time
+DATETIME                   as DateTime
+YEAR                       as Year
+
+UNIQUE                     as UniquePrimaryKey
+
+<<abstract>> ValidationRule
+<<abstract>> DBTypeValidation
+Unique
