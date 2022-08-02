@@ -19,7 +19,7 @@
  * @version 0.0.9;
  */
 ?>
-        <fieldset id="<?=$this->id; ?>" title="<?=$this->title; ?>">
+        <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
           <legend><?=$this->heading; ?></legend>
 <?=$this->children; ?>
         </fieldset><!-- #<?=$this->id; ?> -->

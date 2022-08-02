@@ -24,12 +24,12 @@ switch ($this->type) {
               <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
 <?php break;
   case 'relation field': ?>
-              <label class="<?=$this->type; ?>" title="<?=$this->title; ?>" >
+              <label class="<?=$this->type; ?>"<?=$this->attribute('title'); ?>>
                 <a href="<?=$this->value; ?>"><?=$this->id; ?></a>
               </label>
 <?php break;
   case 'input field': ?>
-              <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+              <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
                 <span class="name"><?=$this->label; ?>:</span>
                 <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            

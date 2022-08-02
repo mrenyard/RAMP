@@ -30,7 +30,6 @@ use ramp\core\Str;
  * - Provide base implementation of iEnvironment.
  * - Hold full set of properties and there accessors.
  * - Simplify code base of inherited specalized environment classes.
- * @example ./PHPEnvironment.class.php Example specilized implemetation for the PHP environment.
  *
  * @property-read \ramp\core\Str $memberAccess Returns Str repesentation of environment specific 'member access' operator.
  * @property-read \ramp\core\Str $assignment   Returns Str repesentation of environment specific 'assignment' operator.

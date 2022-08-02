@@ -22,7 +22,7 @@
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 switch ($this->type) {
   case 'relation field': ?>
-          <fieldset id="<?=$this->id; ?>" title="<?=$this->title; ?>">
+          <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <legend><?=$this->heading; ?></legend>
             <p class="note"><?=$this->summary; ?></p>
 <?php if ($this->hasErrors) { ?>
@@ -36,7 +36,7 @@ switch ($this->type) {
           </fieldset><!-- #<?=$this->id; ?> -->
 <?php break; 
   case 'select-one field': ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required" tabindex="<?=$tabindex; ?>">
 <?=$this->children; ?>
             </select>
@@ -47,7 +47,7 @@ switch ($this->type) {
           </label>
 <?php break;
   case 'input field': ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>" title="<?=$this->title; ?>" >
+          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <span class="name"><?=$this->label; ?>:</span>
             <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            

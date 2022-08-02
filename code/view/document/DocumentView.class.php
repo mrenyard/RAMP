@@ -20,6 +20,7 @@
  */
 namespace ramp\view\document;
 
+use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
 use ramp\core\BadPropertyCallException;
 use ramp\view\View;
@@ -52,6 +53,19 @@ abstract class DocumentView extends ComplexView
   {
     parent::__construct($parent);
     $this->documentModel = new DocumentModel();
+  }
+  
+  /**
+   * Returns complete attbibute and value.
+   * @param string $propertyName Attribute Property Name 
+   * @return \ramp\core\Str Attribute and value of requested property 
+   * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
+   */
+  public function attribute($propertyName) : ?Str
+  {
+     return ($value = $this->__get($propertyName))? 
+      $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')):
+      NULL;
   }
 
   /**
@@ -115,9 +129,17 @@ abstract class DocumentView extends ComplexView
    * @return mixed|void The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
-  public function __get($propertyName)
+  final public function __get($propertyName)
   {
-    if ($propertyName == 'children') { return $this->get_children(); }
+    if ($propertyName == 'children') {
+      $this->get_children();
+      return;
+    }
+    if ($propertyName == 'class' || $propertyName == 'style') {
+      $value = ($this->documentModel->style)? $this->documentModel->style : Str::_EMPTY();
+      if ($this->hasModel) { $value = $value->prepend(parent::__get('type')); }
+      return ($value === Str::_EMPTY())? NULL : $value;
+    }
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $e) {

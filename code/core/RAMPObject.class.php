@@ -35,8 +35,8 @@ namespace ramp\core;
  *
  * - Define default `_toString()` method.
  */
-abstract class RAMPObject {
-
+abstract class RAMPObject
+{
   /**
    * Allows C# type access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**

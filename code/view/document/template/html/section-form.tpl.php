@@ -20,9 +20,9 @@
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 ?>
-      <section id="<?=$this->id; ?>" class="<?=$this->style; ?>"><form method="post">
+      <section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><form method="post">
         <header>
-          <h2><a href="#<?=$this->id; ?>" title="<?=$this->title; ?>">#</a><?=$this->heading; ?></h2>
+          <h2><a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a><?=$this->heading; ?></h2>
           <p class="note"><?=$this->summary; ?></p>
 <?php if (isset($this->hasErrors) && $this->hasErors) { ?>
           <ol class="error">
