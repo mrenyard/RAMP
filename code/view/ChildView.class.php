@@ -41,22 +41,4 @@ abstract class ChildView extends View
     $this->parent = $parent;
     $parent->add($this);
   }
-
-  /**
-   * Set associated Model.
-   * Model can be a complex hierarchical ordered tree or a simple one level object,
-   * either way it will be interlaced appropriately with *this* View up to the same
-   * depth of structure unless specified cascade FALSE as well as upward to containing
-   * {@link \ramp\model\business\Record} from {@link \ramp\model\business\field\Field}.
-   * @param \ramp\model\Model $model Model containing data used in View
-   * @param bool $cascade Set model for child views.
-   * @throws \BadMethodCallException Model already set violation.
-   *
-  public function setModel(Model $model, bool $cascade = TRUE)
-  {
-    parent::setModel($model, $cascade);
-    if ((!$this->parent->hasModel) && ($model instanceof \ramp\model\business\field\Field)) {
-      $this->parent->setModel($model->get_containingRecord(), FALSE);
-    }
-  }*/
 }

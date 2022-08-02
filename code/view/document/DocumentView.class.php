@@ -24,9 +24,7 @@ use ramp\core\PropertyNotSetException;
 use ramp\core\BadPropertyCallException;
 use ramp\view\View;
 use ramp\view\ComplexView;
-use ramp\model\Model;
 use ramp\model\document\DocumentModel;
-use ramp\model\business\BusinessModel;
 
 /**
  * Abstract specialist document view (presentation) includes composite DocumentModel.
@@ -128,17 +126,4 @@ abstract class DocumentView extends ComplexView
       } catch (BadPropertyCallException $f) { throw $e; }
     }
   }
-
-  /**
-   * Set associated Model.
-   * Model can be a complex hierarchical ordered tree or a simple one level object,
-   * either way it will be interlaced appropriately with *this* View up to the
-   * same depth of structure.
-   * @param \ramp\model\business\BusinessModel $model Model containing data used in View.
-   * @param bool $cascade Set model for child views.
-   *
-  final public function setModel(BusinessModel $model, bool $cascade = TRUE)
-  {
-    parent::setModel($model, $cascade);
-  }*/
 }

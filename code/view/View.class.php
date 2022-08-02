@@ -42,38 +42,6 @@ use ramp\core\Collection;
 abstract class View extends RAMPObject
 {
   protected $viewCollection;
-  // private $model;
-
-  /**
-   * Provide read access to associated Model's properties.
-   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
-   *
-   * **Passes:** `$this->aProperty;` **to:** `$this->model->get_aProperty();`
-   * 
-   * Called within Render() method
-   * ```php
-   *   public function render()
-   *   {
-   *      print_r($this->aProperty);
-   *   }
-   * ```
-   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
-   * ```php
-   *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
-   * ```
-   * @param string $propertyName Name of property (handled internally)
-   * @return mixed|void The value of requested property
-   * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
-   *
-  public function __get($propertyName)
-  {
-    try {
-      return parent::__get($propertyName);
-    } catch (BadPropertyCallException $e) {
-      if (!isset($this->model)) { throw $e; }
-      return $this->model->$propertyName;
-    }
-  }*/
 
   /**
    * Render children, child view collection of this.
@@ -110,64 +78,6 @@ abstract class View extends RAMPObject
   }
 
   /**
-   * Returns whether this has a model set against it.
-   * **DO NOT CALL DIRECTLY, USE this->isModified;**
-   * @return bool Value of hasModel
-   *
-  protected function get_hasModel()
-  {
-    return isset($this->model);
-  }*/
-
-  /**
-   * Set associated Model.
-   * Model can be a complex hierarchical ordered tree or a simple one level object,
-   * either way it will be interlaced appropriately with *this* View up to the same
-   * depth of structure unless specified cascade FALSE.
-   * @param \ramp\model\business\BusinessModel $model BusinessModel containing data used in View
-   * @param bool $cascade Set model for child views.
-   * @throws \BadMethodCallException Model already set violation.
-   *
-  public function setModel(BusinessModel $model, bool $cascade = TRUE)
-  {
-    if (isset($this->model)) { throw new \BadMethodCallException('model already set violation'); }
-    $this->model = $model;
-
-    if (!$cascade) { return; }
-
-    if ($model instanceof \Traversable) {
-      if (!($model instanceof \Countable)) {
-        throw new \LogicException('All Traversable Model(s) MUST also implement Countable');
-      }
-      if (!isset($this->viewCollection)) { return; }
-
-      $viewTemplate = clone $this->viewCollection;
-      $viewTemplateIterator = $viewTemplate->getIterator();
-      $i = $model->count();
-
-      // increase number of subView(s) sequentially to match number of subModel(s).
-      $viewTemplateIterator->rewind();
-      while ($this->viewCollection->count() < $i) {
-        $view = clone $viewTemplateIterator->current();
-        $this->add($view);
-        $viewTemplateIterator->next();
-        if (!$viewTemplateIterator->valid()) { $viewTemplateIterator->rewind(); }
-      }
-
-      // set position subModel to same position subView
-      $viewIterator = $this->viewCollection->getIterator();
-      $viewIterator->rewind();
-      $i=0;
-      foreach ($model as $subModel) {
-        if (!$viewIterator->valid()) { throw new \LengthException('SHOULD NEVER REACH HERE!'); }
-        $view = $viewIterator->current();
-        $view->setModel($subModel);
-        $viewIterator->next();
-      } // END foreach
-    } // END if
-  }*/
-
-  /**
    * Add a child View
    * @param View $view Child View to be sequentially added to this. 
    */
@@ -193,7 +103,6 @@ abstract class View extends RAMPObject
    */
   public function __clone()
   {
-    // $this->model = null;
     if (isset($this->viewCollection)) { $this->viewCollection = clone $this->viewCollection; }
   }
 }
