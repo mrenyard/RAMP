@@ -27,25 +27,25 @@ require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+// require_once '/usr/share/php/ramp/model/Model.class.php';
+// require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+// require_once '/usr/share/php/ramp/model/business/Record.class.php';
+// require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 
 require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModel.class.php';
-require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockNoCountModel.class.php';
-require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModelCollection.class.php';
+// require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModel.class.php';
+// require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockNoCountModel.class.php';
+// require_once '/usr/share/php/tests/ramp/view/mocks/ViewTest/MockModelCollection.class.php';
 
-use tests\ramp\view\mocks\ViewTest\MockModel;
+// use tests\ramp\view\mocks\ViewTest\MockModel;
 use tests\ramp\view\mocks\ViewTest\MockView;
 use tests\ramp\view\mocks\ViewTest\MockViewA;
 use tests\ramp\view\mocks\ViewTest\MockViewB;
 use tests\ramp\view\mocks\ViewTest\MockViewC;
 use tests\ramp\view\mocks\ViewTest\MockViewD;
-use tests\ramp\view\mocks\ViewTest\MockNoCountModel;
-use tests\ramp\view\mocks\ViewTest\MockModelCollection;
+// use tests\ramp\view\mocks\ViewTest\MockNoCountModel;
+// use tests\ramp\view\mocks\ViewTest\MockModelCollection;
 
 use ramp\view\View;
 use ramp\core\PropertyNotSetException; 
@@ -58,7 +58,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $mockViewCollection;
-  private $mockModel;
+  // private $mockModel;
 
   /**
    * Setup test articles
@@ -70,7 +70,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $this->mockViewCollection->attach(new MockViewA());
     $this->mockViewCollection->attach(new MockViewB());
     $this->mockViewCollection->attach(new MockViewC());
-    $this->mockModel = new MockModel();
+    // $this->mockModel = new MockModel();
   }
 
   /**
@@ -93,7 +93,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert that property calls are passes to its component (contained) \ramp\model\Model
    * @link ramp.view.View#method__get ramp\view\View::__get()
    * @link ramp.view.View#method__set ramp\view\View::__set()
-   */
+   *
   public function test__get__set()
   {
     try {
@@ -116,10 +116,10 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       }
     }
     $this->fail('An expected PropertyNotSetException has NOT been raised.');
-  }
+  }*/
 
   /**
-   * Collection of assertions for \ramp\view\View::children and \ramp\view\View::add(Model $model).
+   * Collection of assertions for \ramp\view\View::children.
    * - assert each child view added sequentially
    * - assert View->children output maintains sequance and format
    * @link ramp.view.View#method_add ramp\view\View::add()
@@ -130,7 +130,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $i=0;
     foreach ($this->mockViewCollection as $view)
     {
-      $view->setModel(new MockModel());
+      // $view->setModel(new MockModel());
       $this->testObject->add($view);
       $i++;
       ob_start();
@@ -139,24 +139,24 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       if ($i === 1)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA',
           $output
         );
       }
       if ($i === 2)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: '.
-          'tests\ramp\view\mocks\ViewTest\MockViewB:YES: ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA'.
+          'tests\ramp\view\mocks\ViewTest\MockViewB',
           $output
         );
       }
       if ($i === 3)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\ViewTest\MockViewA:YES: '.
-          'tests\ramp\view\mocks\ViewTest\MockViewB:YES: '.
-          'tests\ramp\view\mocks\ViewTest\MockViewC:YES: ',
+          'tests\ramp\view\mocks\ViewTest\MockViewA'.
+          'tests\ramp\view\mocks\ViewTest\MockViewB'.
+          'tests\ramp\view\mocks\ViewTest\MockViewC',
           $output
         );
       }
@@ -167,26 +167,26 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\View::setModel}.
    * - assert Exception thrown when model already set.
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelAlreadySet()
   {
     $this->testObject->setModel($this->mockModel);
     $this->expectException('\Exception');
     $this->expectExceptionMessage('model already set violation');
     $this->testObject->setModel($this->mockModel);
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel}.
    * - assert LogicException thrown when model \Traversable but NOT \Countable.
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelNoCount()
   {
     $this->expectException('\LogicException');
     $this->expectExceptionMessage('All Traversable Model(s) MUST also implement Countable');
     $this->testObject->setModel(new MockNoCountModel());
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
@@ -194,7 +194,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelNoCascade()
   {
     foreach ($this->mockViewCollection as $view) {
@@ -228,7 +228,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ViewTest\MockViewC:NO ',
       $output
     );
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel().
@@ -236,7 +236,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelComplex1()
   {
     foreach ($this->mockViewCollection as $view) {
@@ -268,7 +268,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ViewTest\MockViewC:YES:three ',
       $output
     );
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
@@ -276,7 +276,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelComplex2()
   {
 
@@ -321,7 +321,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ViewTest\MockViewC:YES:six ',
       $output
     );
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
@@ -329,7 +329,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelHierarchy1()
   {
     $viewA = new MockViewA();
@@ -372,7 +372,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ViewTest\MockViewC:YES:six ',
       $output
     );
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::setModel() and \ramp\view\View::hasModel.
@@ -380,7 +380,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
    * @link ramp.view.View#method_setModel ramp\view\View::setModel()
-   */
+   *
   public function testSetModelHierarchy2()
   {
     $viewA = new MockViewA();
@@ -450,7 +450,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
       'tests\ramp\view\mocks\ViewTest\MockViewD:YES:twelve ',
       $output
     );
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\View::__clone.
@@ -466,11 +466,10 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($this->testObject, $clone);
     unset($clone);
 
-    $this->testObject->setModel($this->mockModel);
+    // $this->testObject->setModel($this->mockModel);
     $clone = clone $this->testObject;
     $this->assertNotSame($this->testObject, $clone);
-    $this->assertNotEquals($this->testObject, $clone);
-    $clone->setModel($this->mockModel);
+    // $clone->setModel($this->mockModel);
     $this->assertEquals($this->testObject, $clone);
     $this->assertNotSame($this->testObject, $clone);
     unset($clone);

@@ -21,12 +21,12 @@
 namespace tests\ramp\view\document\mocks\DocumentViewTest;
 
 use ramp\core\Str;
-use ramp\view\View;
+use ramp\view\ChildView;
 
 /**
  * Mock Concreate implementation of \ramp\view\View for testing login against.
  */
-class MockView extends View
+class MockView extends ChildView
 {
   /**
    */

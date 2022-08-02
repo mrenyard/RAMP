@@ -29,6 +29,7 @@ require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
@@ -136,8 +137,6 @@ class TemplatedTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\document\Templated::setModel()
    *  and \ramp\view\document\Templated::__get().
-   * - assert throws {@link \InvalidArgumentException} when not presented with {@link \ramp\model\business\BusinessModel}
-   *  - with message 'Expecting instanceof BusinessModel'
    * - assert that property calls are passes to its component (contained) {@link \ramp\model\business\BusinessModel}
    * @link ramp.view.document.Templated#method_setModel ramp\view\document\Templated::setModel()
    * @link ramp.view.document.Templated#method__get ramp\view\document\Templated::__get()
@@ -145,19 +144,12 @@ class TemplatedTest extends \PHPUnit\Framework\TestCase
   public function testSetModel()
   {
     $this->testObject = new Templated(RootView::getInstance(), $this->templateName);
-    try {
-      $this->testObject->setModel(new MockModel());
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertEquals('Expecting instanceof BusinessModel', $expected->getMessage());
-      $businessModel = new MockBusinessModel();
-      $this->testObject->setModel($businessModel);
-      $value = 'aValue';
-      $businessModel->aProperty = $value;
-      $this->assertSame($this->testObject->aProperty, $value);
-      $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
-      return;
-    }
-    $this->fail('An expected InvalidArgumentException has NOT been raised.');
+    $businessModel = new MockBusinessModel();
+    $this->testObject->setModel($businessModel);
+    $value = 'aValue';
+    $businessModel->aProperty = $value;
+    $this->assertSame($this->testObject->aProperty, $value);
+    $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
   }
 
   /**

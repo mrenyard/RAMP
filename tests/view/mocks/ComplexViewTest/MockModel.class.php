@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ComplexViewTest;
 
 use ramp\core\Str;
 use ramp\model\business\BusinessModel;
@@ -32,11 +32,6 @@ class MockModel extends BusinessModel
   private $aProperty;
   private $bProperty;
 
-  /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
   protected function get_id() : Str
   {
   }

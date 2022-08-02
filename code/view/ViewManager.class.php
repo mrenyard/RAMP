@@ -23,6 +23,7 @@ namespace ramp\view;
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\http\Request;
+use ramp\view\View;
 
 /**
  */
@@ -30,7 +31,7 @@ class ViewManager extends RAMPObject
 {
   /**
    */
-  public static function getView(Request $request)
+  public static function getView(Request $request) : View
   {
     //require_once(RAMP_LOCAL_DIR . RAMP_SITE_VIEWS . '.php');
 

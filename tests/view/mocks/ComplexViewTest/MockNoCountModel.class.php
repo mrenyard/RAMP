@@ -18,18 +18,22 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ComplexViewTest;
 
 use ramp\core\Str;
-use ramp\model\Model;
+use ramp\model\business\BusinessModel;
 
 /**
  * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
-class MockNoCountModel extends Model implements \IteratorAggregate
+class MockNoCountModel extends BusinessModel
 {
-  private $aProperty;
+  protected function get_id() : Str
+  {
+    return Str::__EMPTY();
+  }
 
+  private $aProperty;
   protected function get_aProperty()
   {
     return $this->aProperty;
@@ -38,9 +42,5 @@ class MockNoCountModel extends Model implements \IteratorAggregate
   protected function set_aProperty($value)
   {
     $this->aProperty = $value;
-  }
-
-  public function getIterator() : Traversable
-  {
   }
 }

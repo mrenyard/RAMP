@@ -25,22 +25,22 @@ require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
+// require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/ramp/view/RootView.class.php';
 
 require_once '/usr/share/php/tests/ramp/view/mocks/RootViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/ramp/view/mocks/RootViewTest/MockModel.class.php';
+// require_once '/usr/share/php/tests/ramp/view/mocks/RootViewTest/MockModel.class.php';
 
 use tests\ramp\view\mocks\RootViewTest\MockView;
 use tests\ramp\view\mocks\RootViewTest\MockViewA;
 use tests\ramp\view\mocks\RootViewTest\MockViewB;
 use tests\ramp\view\mocks\RootViewTest\MockViewC;
-use tests\ramp\view\mocks\RootViewTest\MockModel;
+// use tests\ramp\view\mocks\RootViewTest\MockModel;
 
 use ramp\view\View;
 use ramp\view\RootView;
-use ramp\model\Model;
+// use ramp\model\Model;
 use ramp\core\BadPropertyCallException;
 
 /**
@@ -48,6 +48,15 @@ use ramp\core\BadPropertyCallException;
  */
 class RootViewTest extends \PHPUnit\Framework\TestCase
 {
+  
+  /**
+   * Setup test articles
+   */
+  public function setUp() : void
+  {
+    RootView::reset();
+  }
+
   /**
    * Collection of assertions for \ramp\view\RootView::__construct().
    * - assert constructor inaccessible
@@ -80,14 +89,14 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\RootView::setModel.
    * - assert BadMethodCallException thrown when calling setModel().
    * @link ramp.view.RootView#method_setModel ramp\view\RootView::setModel()
-   */
+   *
   public function testSetModel()
   {
     $testObject = RootView::getInstance();
     $this->expectException('\BadMethodCallException');
     $this->expectExceptionMessage('SHOULD NOT USE THIS METHOD');
     $testObject->setModel(new MockModel());
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\RootView::render()
@@ -109,7 +118,7 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
     $i=0;
     foreach ($mockViewCollection as $view)
     {
-      $view->setModel(new MockModel());
+      // $view->setModel(new MockModel());
       $testObject->add($view);
       $i++;
       ob_start();
@@ -118,24 +127,24 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
       if ($i === 1)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\RootViewTest\MockViewA ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA',
           $output
         );
       }
       if ($i === 2)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\RootViewTest\MockViewA '.
-          'tests\ramp\view\mocks\RootViewTest\MockViewB ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA'.
+          'tests\ramp\view\mocks\RootViewTest\MockViewB',
           $output
         );
       }
       if ($i === 3)
       {
         $this->assertEquals(
-          'tests\ramp\view\mocks\RootViewTest\MockViewA '.
-          'tests\ramp\view\mocks\RootViewTest\MockViewB '.
-          'tests\ramp\view\mocks\RootViewTest\MockViewC ',
+          'tests\ramp\view\mocks\RootViewTest\MockViewA'.
+          'tests\ramp\view\mocks\RootViewTest\MockViewB'.
+          'tests\ramp\view\mocks\RootViewTest\MockViewC',
           $output
         );
       }

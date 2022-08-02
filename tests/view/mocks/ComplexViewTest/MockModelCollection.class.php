@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\view\mocks\ViewTest;
+namespace tests\ramp\view\mocks\ComplexViewTest;
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

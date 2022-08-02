@@ -20,11 +20,15 @@
  */
 namespace tests\ramp\view\document\mocks\TemplatedTest;
 
-use ramp\model\Model;
+use ramp\core\Str;
+use ramp\model\business\BusinessModel;
 
 /**
  * Mock Concreate implementation of \ramp\model\Model for testing against.
  */
-class MockModel extends Model
+class MockModel extends BusinessModel
 {
+  protected function get_id() : Str
+  {
+  }
 }

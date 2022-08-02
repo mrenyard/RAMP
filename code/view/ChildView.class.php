@@ -20,7 +20,6 @@
  */
 namespace ramp\view;
 
-use ramp\view\View;
 use ramp\model\Model;
 
 /**
@@ -52,12 +51,12 @@ abstract class ChildView extends View
    * @param \ramp\model\Model $model Model containing data used in View
    * @param bool $cascade Set model for child views.
    * @throws \BadMethodCallException Model already set violation.
-   */
+   *
   public function setModel(Model $model, bool $cascade = TRUE)
   {
     parent::setModel($model, $cascade);
     if ((!$this->parent->hasModel) && ($model instanceof \ramp\model\business\field\Field)) {
       $this->parent->setModel($model->get_containingRecord(), FALSE);
     }
-  }
+  }*/
 }

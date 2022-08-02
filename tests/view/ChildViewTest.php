@@ -97,7 +97,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
-   */
+   *
   public function testSetModelWithCascade()
   {
     $subModel1 = new MockRecordModel();
@@ -111,7 +111,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
     $parentView->setModel($parentModel);
     $this->assertTrue($parentView->hasModel);
     $this->assertTrue($childView->hasModel);
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\document\ChildView::setModel() and
@@ -119,7 +119,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
-   */
+   *
   public function testSetModelNoCascade()
   {
     // $subField = new MockFieldModel();
@@ -135,7 +135,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
     $parentView->setModel($parentModel, FALSE);
     $this->assertTrue($parentView->hasModel);
     $this->assertFalse($childView->hasModel);
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\view\document\ChildView::setModel() and
@@ -143,7 +143,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * @link \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @link \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
-   */
+   *
   public function testUpwardTraverseOnSetModelIsField()
   {
     $parentModel = new MockRecordModelCollection();
@@ -163,5 +163,5 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($subFieldView->hasModel);
     $this->assertTrue($recordView->hasModel);
     $this->assertFalse($parentView->hasModel);
-  }
+  }*/
 }

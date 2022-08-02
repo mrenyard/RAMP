@@ -20,11 +20,11 @@
  */
 namespace ramp\view;
 
-use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\Collection;
-// use ramp\core\BadPropertyCallException;
-// use ramp\model\business\BusinessModel;
+use ramp\core\BadPropertyCallException;
+use ramp\model\business\BusinessModel;
+use ramp\view\ChildView;
 
 /**
  * Definition of presentation format and type to be associated with a given Model.
@@ -39,10 +39,9 @@ use ramp\core\Collection;
  * - {@link \ramp\view\View}
  * - {@link \ramp\model\Model}
  */
-abstract class View extends RAMPObject
+abstract class ComplexView extends ChildView
 {
-  protected $viewCollection;
-  // private $model;
+  private $model;
 
   /**
    * Provide read access to associated Model's properties.
@@ -64,7 +63,7 @@ abstract class View extends RAMPObject
    * @param string $propertyName Name of property (handled internally)
    * @return mixed|void The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
-   *
+   */
   public function __get($propertyName)
   {
     try {
@@ -73,51 +72,17 @@ abstract class View extends RAMPObject
       if (!isset($this->model)) { throw $e; }
       return $this->model->$propertyName;
     }
-  }*/
-
-  /**
-   * Render children, child view collection of this.
-   * 
-   * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
-   * 
-   * **Call:** `$this->children;`
-   * 
-   * Called within Render() method
-   * ```php
-   *   public function render()
-   *   {
-   *      $this->children;
-   *   }
-   * ```
-   * 
-   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
-   * ```php
-   *  <section>
-   *    <header>
-   *      <h1><?=$this->heading; ?></h1>
-   *      <p><?=$this->summary; ?></p>
-   *    </header>
-   *<?=$this->children; ?>
-   *  </section>
-   * ```
-   */
-  final public function get_children() : void
-  {
-    if (!isset($this->viewCollection)) { return; }
-    foreach ($this->viewCollection as $view) {
-      $view->render();
-    }
   }
 
   /**
    * Returns whether this has a model set against it.
    * **DO NOT CALL DIRECTLY, USE this->isModified;**
    * @return bool Value of hasModel
-   *
+   */
   protected function get_hasModel()
   {
     return isset($this->model);
-  }*/
+  }
 
   /**
    * Set associated Model.
@@ -127,8 +92,8 @@ abstract class View extends RAMPObject
    * @param \ramp\model\business\BusinessModel $model BusinessModel containing data used in View
    * @param bool $cascade Set model for child views.
    * @throws \BadMethodCallException Model already set violation.
-   *
-  public function setModel(BusinessModel $model, bool $cascade = TRUE)
+   */
+  final public function setModel(BusinessModel $model, bool $cascade = TRUE)
   {
     if (isset($this->model)) { throw new \BadMethodCallException('model already set violation'); }
     $this->model = $model;
@@ -165,19 +130,6 @@ abstract class View extends RAMPObject
         $viewIterator->next();
       } // END foreach
     } // END if
-  }*/
-
-  /**
-   * Add a child View
-   * @param View $view Child View to be sequentially added to this. 
-   */
-  final public function add(View $view)
-  {
-    if (!isset($this->viewCollection)) {
-      $this->viewCollection = new Collection(Str::set('ramp\view\View'), TRUE);
-    }
-    // todo:Matt Renyard: compatibleDescendantCheck()
-    $this->viewCollection->add($view);
   }
 
   /**
@@ -189,11 +141,12 @@ abstract class View extends RAMPObject
   /**
    * Defines amendments post copy, cloning.
    * POSTCONDITIONS
+   *  - unset associated {@link \ramp\model\Model}
    *  - copy child views
    */
   public function __clone()
   {
-    // $this->model = null;
-    if (isset($this->viewCollection)) { $this->viewCollection = clone $this->viewCollection; }
+    $this->model = null;
+    parent::__clone();
   }
 }

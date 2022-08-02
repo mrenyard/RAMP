@@ -43,6 +43,14 @@ final class RootView extends View
   }
 
   /**
+   * TODO:mrenyard: Add documentation and test
+   */
+  public static function reset()
+  {
+    RootView::getInstance()->viewCollection = NULL;
+  }
+
+  /**
    * Prevent setting of Model.
    * @throws \BadMethodCallException SHOULD NOT USE THIS METHOD
    * @param \ramp\model\Model $model Only present to match parent signiture.

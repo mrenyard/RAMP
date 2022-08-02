@@ -30,6 +30,7 @@ require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
@@ -67,7 +68,8 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->parentView = new MockView();
+    RootView::reset();
+    $this->parentView = new MockView(RootView::getInstance());
     $this->testObject = new MockDocumentView($this->parentView);
   }
 
@@ -128,29 +130,20 @@ class DocumentViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\document\DocumentView::setModel(), and 
    * \ramp\view\document\DocumentView::hasModel and \ramp\view\document\DocumentView::__get().
    * - Prior to model set hasModel returns FALSE and post set TRUE.
-   * - assert throws InvalidArgumentException when not presented with {@link \ramp\model\business\BusinessModel} 
-   *  - with message 'Expecting instanceof BusinessModel'
    * - assert that property calls are passes to its component (contained) {@link \ramp\model\business\BusinessModel}
    * @link ramp.view.document.DocumentView#method_setModel ramp\view\document\DocumentView::setModel()
    * @link ramp.view.document.DocumentView#method__get ramp\view\document\DocumentView::__get()
    */
   public function testSetModel()
   {
-    try {
-      $this->testObject->setModel(new MockModel());
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertEquals('Expecting instanceof BusinessModel', $expected->getMessage());
-      $businessModel = new MockBusinessModel();
-      $this->assertFalse($this->testObject->hasModel);
-      $this->testObject->setModel($businessModel);
-      $this->assertTrue($this->testObject->hasModel);
-      $value = 'aValue';
-      $businessModel->aProperty = $value;
-      $this->assertSame($this->testObject->aProperty, $value);
-      $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
-      return;
-    }
-    $this->fail('An expected InvalidArgumentException has NOT been raised.');
+    $businessModel = new MockBusinessModel();
+    $this->assertFalse($this->testObject->hasModel);
+    $this->testObject->setModel($businessModel);
+    $this->assertTrue($this->testObject->hasModel);
+    $value = 'aValue';
+    $businessModel->aProperty = $value;
+    $this->assertSame($this->testObject->aProperty, $value);
+    $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
   }
 
   /**

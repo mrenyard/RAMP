@@ -18,24 +18,30 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\view\mocks\RootViewTest;
+namespace tests\ramp\view\mocks\ComplexViewTest;
 
-use ramp\model\Model;
+use ramp\view\ComplexView;
 
 /**
- * Mock Concreate implementation of \ramp\model\Model for testing against.
+ * Mock Concreate implementation of \ramp\view\View for testing login against.
  */
-class MockModel extends Model
+class MockView extends ComplexView
 {
-  private $bProperty;
-
-  protected function get_bProperty()
+  /**
+   */
+  public function render()
   {
-    return $this->bProperty;
-  }
-
-  protected function set_bProperty($value)
-  {
-    $this->bProperty = $value;
+    print($this);
+    if ($this->hasModel) {
+      print(':YES:' . $this->bProperty . ' ');
+      $this->get_children();
+    } else {
+      print(':NO ');
+    }
   }
 }
+
+class MockViewA extends MockView {}
+class MockViewB extends MockView {}
+class MockViewC extends MockView {}
+class MockViewD extends MockView {}

@@ -32,10 +32,10 @@ class MockView extends View
   public function render()
   {
     print($this);
-    if ($this->bProperty != NULL) {
+    /*if ($this->bProperty != NULL) {
       print(':' . $this->bProperty);
     }
-    print(' ');
+    print(' ');*/
     $this->children;
   }
 }

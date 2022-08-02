@@ -69,6 +69,7 @@ require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
 require_once '/usr/share/php/ramp/view/document/Email.class.php';

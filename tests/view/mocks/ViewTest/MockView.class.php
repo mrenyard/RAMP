@@ -33,12 +33,12 @@ class MockView extends View
   public function render()
   {
     print($this);
-    if ($this->hasModel) {
-      print(':YES:' . $this->bProperty . ' ');
+    /*if ($this->hasModel) {
+      print(':YES:' . $this->bProperty . ' ');*/
       $this->get_children();
-    } else {
+    /*} else {
       print(':NO ');
-    }
+    }*/
   }
 }
 
