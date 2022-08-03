@@ -54,6 +54,7 @@ class DocumentModel extends Model
   public function __construct()
   {
     $this->id = Str::set('uid' . ++self::$NEXT_ID);
+    $this->heading = Str::set('[Heading/Label]');
   }
 
   /**
@@ -129,7 +130,7 @@ class DocumentModel extends Model
    * ```
    * @return \svetle\core\Str Value of the property *heading*
    */
-  protected function get_heading() : ?Str
+  protected function get_heading() : Str
   {
     return $this->heading;
   }
@@ -155,7 +156,7 @@ class DocumentModel extends Model
    * ```
    * @param \svetle\core\Str Value of the property *label*
    */
-  protected function get_label() : ?Str
+  protected function get_label() : Str
   {
     return $this->get_heading();
   }

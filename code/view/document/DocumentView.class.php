@@ -135,7 +135,7 @@ abstract class DocumentView extends ComplexView
       $this->get_children();
       return;
     }
-    if ($propertyName == 'class' || $propertyName == 'style') {
+    if ($propertyName == 'class') {
       $value = ($this->documentModel->style)? $this->documentModel->style : Str::_EMPTY();
       if ($this->hasModel) { $value = $value->prepend(parent::__get('type')); }
       return ($value === Str::_EMPTY())? NULL : $value;

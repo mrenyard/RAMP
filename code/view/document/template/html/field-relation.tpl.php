@@ -37,10 +37,10 @@ switch ($this->type) {
 <?php break; 
   case 'select-one field': ?>
           <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
+            <span class="name"><?=$this->label; ?></span>
             <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required" tabindex="<?=$tabindex; ?>">
 <?=$this->children; ?>
             </select>
-            <span class="name"><?=$this->label; ?></span>
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
             <span class="error"><?=$error; ?></span>
 <?php } } ?>
