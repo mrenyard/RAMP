@@ -109,15 +109,7 @@ abstract class Record extends BusinessModel
   {
     if (!isset($this->primaryKeyField))
     {
-      // $primaryKeyNames = $this->primaryKeyNames();
-      // if ($primaryKeyNames->count == 1)
-      // {
-      //   $pkName = (string)$primaryKeyNames[0];
-      //   $this->primaryKeyField = $this->$pkName;
-      // } else {
-        // $this->primaryKeyField = new field\MultiPartPrimary($primaryKeyNames, $this);
-        $this->primaryKeyField = new field\PrimaryKey($this->primaryKeyNames(), $this);
-      // }
+      $this->primaryKeyField = new field\PrimaryKey($this->primaryKeyNames(), $this);
     }
     return $this->primaryKeyField;
   }
@@ -162,19 +154,19 @@ abstract class Record extends BusinessModel
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   *
+   */
   final public function validate(PostData $postdata)
   {
-    $this->errorCollection = new Collection(Str::set('ramp\core\Str'));
-    // $pkName = (string)$this->primaryKeyNames()->implode(Str::BAR());
-    // $pk = (isset($this[$pkName])) ? $this[$pkName] : NULL;
+    $this->errorCollection = StrCollection::set();
+    $pkName = (string)$this->primaryKeyNames()->implode(Str::BAR());
+    $pk = (isset($this[$pkName])) ? $this[$pkName] : NULL;
     foreach ($this as $child)
     {
-      // if ($child === $pk) { continue; }
+      if ($child === $pk) { continue; }
       $child->validate($postdata);
     }
-    // if ($pk) { $pk->validate($postdata); }
-  }*/
+    if ($pk) { $pk->validate($postdata); }
+  }
 
   /**
    * Gets the value of a given property.

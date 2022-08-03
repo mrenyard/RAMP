@@ -9,11 +9,11 @@ object relationships
 --------------------
 one-to-one i.e. homeAddress -> Address
                 uniAddress -> Address
-  <fieldset id="address:id">
+  <fieldset id="address:id" class="record">
     <legend>Home Address</legend>
 
 one-to-many i.e. oranisation.employees (org-person-lookup) (many-to-many)
-  <section id="oranisation:id:employees" class="collection">
+  <section id="oranisation:id:employees" class="record-collection">
     <header><h3>Employees</h3></header>
     <fieldset id="person:id1" ...>
     <fieldset id="person:id2" ...>

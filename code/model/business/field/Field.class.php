@@ -75,7 +75,7 @@ abstract class Field extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str Unique identifier for *this*
    */
-  final public function get_id() : Str
+  public function get_id() : Str
   {
     return Str::COLON()->prepend(
       $this->containingRecord->id
