@@ -21,31 +21,11 @@
 namespace ramp\core;
 
 /**
- * Interface for collections.
+ * Interface for list.
  *
  * RESPONSIBILITIES
- * - Enforce base api of \IteratorAggregate, \Countable and \ArrayAccess.
- * - Describe base api mechanism for adding to a collection.
- *
- * COLLABORATORS
- * - {@link \ramp\core\RAMPObject}
- *
- * @property-read int $count Returns the number of items currently stored in this collection.
+ * - Enforce base api of \IteratorAggregate and \ArrayAccess.
  */
-interface iCollection extends iList, \Countable
+interface iList extends \IteratorAggregate, \ArrayAccess
 {
-  /**
-   * Add a reference to object (of defined type), to this collection.
-   * POSTCONDITIONS
-   * - new object reference appended to this collection
-   * @param \ramp\core\RAMPObject $object reference to be added
-   */
-  public function add(RAMPObject $object);
-
-  /**
-   * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
-   */
-  public function get_count() : int;
 }

@@ -33,11 +33,9 @@ namespace ramp\core;
  *
  * @property-read int $count Returns the number of items currently stored in this collection.
  */
-class Collection extends RAMPObject implements iCollection
+class Collection extends oList implements iCollection
 {
-  private $compositeType;
   private $deepClone;
-  private $collection;
 
   /**
    * Constructor for new instance of Collection.
@@ -51,25 +49,8 @@ class Collection extends RAMPObject implements iCollection
    */
   public function __construct(Str $compositeType = null, bool $deepClone = null)
   {
-    $compositeType = (isset($compositeType)) ? (string)$compositeType : '\ramp\core\RAMPObject';
-    if (!class_exists($compositeType) && !interface_exists($compositeType)) {
-      throw new \InvalidArgumentException(
-        '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'
-      );
-    }
-    $this->compositeType = $compositeType;
-    $this->collection = array();
+    parent::__construct($compositeType);
     $this->deepClone = ($deepClone === null)? false : $deepClone;
-  }
-
-  /**
-   * Confirms this compositeType same as provided name.
-   * @param \ramp\core\Str $expectedTypeName Full path name of expected type.
-   * @return boolean Composite type is/not same as provided name.
-   */
-  public function isCompositeType(string $expectedTypeName) : bool
-  {
-    return ((string)$expectedTypeName === $this->compositeType);
   }
 
   /**
@@ -81,12 +62,7 @@ class Collection extends RAMPObject implements iCollection
    */
   public function add(RAMPObject $object)
   {
-    if (!($object instanceof $this->compositeType)) {
-      throw new \InvalidArgumentException(
-        get_class($object) . ' NOT instanceof ' . $this->compositeType
-      );
-    }
-    $this->collection[count($this->collection)] = $object;
+    parent::offsetSet(count($this->list), $object);
   }
 
   /**
@@ -106,65 +82,7 @@ class Collection extends RAMPObject implements iCollection
    */
   final public function get_count() : int
   {
-    return count($this->collection);
-  }
-
-  /**
-   * Implementation of \IteratorAggregate method for use with foreach etc.
-   * @return \Traversable Iterator to iterate over *this* traversable using foreach.
-   */
-  final public function getIterator() : \Traversable
-  {
-    return new \ArrayIterator($this->collection);
-  }
-
-  /**
-   * ArrayAccess method offsetExists.
-   * @param mixed $offset Index to be checked for existence.
-   * @return bool It does / not exist.
-   */
-  public function offsetExists($offset) : bool
-  {
-    return isset($this->collection[$offset]);
-  }
-
-  /**
-   * ArrayAccess method offsetGet.
-   * @param mixed $offset Index of requested {@link \ramp\core\RAMPObject}.
-   * @return \ramp\core\RAMPObject Object located at provided index.
-   * @throws \OutOfBoundsException When nothing located at provided index.
-   */
-  public function offsetGet($offset)
-  {
-    if (!isset($this->collection[$offset])) {
-      throw new \OutOfBoundsException('Offset out of bounds');
-    }
-    return $this->collection[$offset];
-  }
-
-  /**
-   * ArrayAccess method offsetSet.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \InvalidArgumentException When provided object NOT of expected type
-   */
-  public function offsetSet($offset, $object)
-  {
-    if (!($object instanceof $this->compositeType)) {
-      throw new \InvalidArgumentException(
-        $object . ' NOT instanceof ' . $this->compositeType
-      );
-    }
-    $this->collection[$offset] = $object;
-  }
-
-  /**
-   * ArrayAccess method offsetUnset.
-   * @param mixed $offset API to match \ArrayAccess interface
-   */
-  public function offsetUnset($offset)
-  {
-    unset($this->collection[$offset]);
+    return count($this->list);
   }
 
   /**
@@ -178,7 +96,7 @@ class Collection extends RAMPObject implements iCollection
       foreach ($this as $key => $value) {
         $new[$key] = clone $value;
       }
-      $this->collection = $new;
+      $this->list = $new;
     }
   }
 }
