@@ -42,6 +42,7 @@ require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';

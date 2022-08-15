@@ -43,15 +43,14 @@ class oList extends RAMPObject implements iList
    * @param \ramp\core\Str $compositeType Full class name for Type of objects to be stored in this list.
    * @throws \InvalidArgumentException When $compositeType is NOT an accessible class name.
    */
-  public function __construct(Str $compositeType = null)
+  public function __construct(Str $compositeType = NULL)
   {
-    $compositeType = (isset($compositeType)) ? (string)$compositeType : '\ramp\core\RAMPObject';
-    if (!class_exists($compositeType) && !interface_exists($compositeType)) {
+    $this->compositeType = ($compositeType === NULL) ? '\ramp\core\RAMPObject' : (string)$compositeType;
+    if (!class_exists($this->compositeType) && !interface_exists($this->compositeType)) {
       throw new \InvalidArgumentException(
         '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'
       );
     }
-    $this->compositeType = (string)$compositeType;
     $this->list = array();
   }
 

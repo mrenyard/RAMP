@@ -43,9 +43,7 @@ use ramp\model\business\AuthenticatibleUnit;
  * COLLABORATORS
  * - Collection of {@link \ramp\model\business\LoginAccount}s
  */
-class LoginAccountCollection extends RecordCollection
-{
-}
+class LoginAccountCollection extends RecordCollection { }
 
 /**
  * LoginAccount for authentication and authorization.
@@ -82,7 +80,7 @@ class LoginAccount extends Record
 
   /**
    * Returns property name of concrete classes primary key.
-   * @return \ramp\core\Str Name of property that is concrete classes primary key
+   * @return \ramp\core\StrCollection Name of property that is concrete classes primary key
    */
   public function primaryKeyNames() : StrCollection { return StrCollection::set('auPK'); }
 

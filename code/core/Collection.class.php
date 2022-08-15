@@ -47,10 +47,10 @@ class Collection extends oList implements iCollection
    * @param bool $deepClone Optional deep cloning (default value = FALSE).
    * @throws \InvalidArgumentException When $compositeType is NOT an accessible class name.
    */
-  public function __construct(Str $compositeType = null, bool $deepClone = null)
+  public function __construct(Str $compositeType = NULL, bool $deepClone = NULL)
   {
     parent::__construct($compositeType);
-    $this->deepClone = ($deepClone === null)? false : $deepClone;
+    $this->deepClone = ($deepClone === NULL)? false : $deepClone;
   }
 
   /**

@@ -40,9 +40,9 @@ class OptionList extends Collection
    * @param \ramp\core\Str $iOptionCastableType Full class name for Type of objects to be stored in this collection.
    * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to provided $iOptionCastableType or iOption.
    */
-  public function __construct(iCollection $iOptionCastableCollection = null, Str $iOptionCastableType = null)
+  public function __construct(iCollection $iOptionCastableCollection = NULL, Str $iOptionCastableType = NULL)
   {
-    $compositeType = ($iOptionCastableType == null)? Str::set('ramp\core\iOption') : $iOptionCastableType;
+    $compositeType = ($iOptionCastableType == NULL)? Str::set('ramp\core\iOption') : $iOptionCastableType;
     parent::__construct($compositeType);
     if (isset($iOptionCastableCollection)) {
       foreach ($iOptionCastableCollection as $option) {

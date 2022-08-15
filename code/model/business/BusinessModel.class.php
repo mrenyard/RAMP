@@ -139,7 +139,7 @@ abstract class BusinessModel extends Model implements iList
    */
   public function offsetSet($offset, $object)
   {
-    $this->children[$offset] = $object;
+    $this->children->offsetSet($offset, $object);
   }
 
   /**
