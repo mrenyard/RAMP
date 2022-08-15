@@ -51,7 +51,7 @@ class oList extends RAMPObject implements iList
         '$compositeType (' . $compositeType . ') MUST be an accessible class name or interface.'
       );
     }
-    $this->compositeType = $compositeType;
+    $this->compositeType = (string)$compositeType;
     $this->list = array();
   }
 
@@ -64,43 +64,6 @@ class oList extends RAMPObject implements iList
   {
     return ((string)$expectedTypeName === $this->compositeType);
   }
-
-  /**
-   * Add a reference to object (of defined type), to this list.
-   * POSTCONDITIONS
-   * - new object reference appended to this list
-   * @param \ramp\core\RAMPObject $object reference to be added
-   * @throws \InvalidArgumentException When provided object NOT of expected type
-   *
-  public function add(RAMPObject $object)
-  {
-    if (!($object instanceof $this->compositeType)) {
-      throw new \InvalidArgumentException(
-        get_class($object) . ' NOT instanceof ' . $this->compositeType
-      );
-    }
-    $this->list[count($this->list)] = $object;
-  }*/
-
-  /**
-   * Returns the number of items currently stored in this list.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this list
-   *
-  final public function count() : int
-  {
-    return $this->count;
-  }*/
-
-  /**
-   * Returns the number of items currently stored in this list.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this list
-   *
-  final public function get_count() : int
-  {
-    return count($this->list);
-  }*/
 
   /**
    * Implementation of \IteratorAggregate method for use with foreach etc.
@@ -143,8 +106,7 @@ class oList extends RAMPObject implements iList
    */
   public function offsetSet($offset, $object)
   {
-    // if (!($object instanceof $this->compositeType)) {
-    if (!$this->isCompositeType(get_class($object))) {
+    if (!($object instanceof $this->compositeType)) {
       throw new \InvalidArgumentException(
         $object . ' NOT instanceof ' . $this->compositeType
       );
@@ -162,17 +124,22 @@ class oList extends RAMPObject implements iList
   }
 
   /**
-   * Ensures when in Deep Cloning Mode that composite list is cloned or in
-   * Shallow Cloning Mode (default) composite list is referenced only.
-   *
-  public function __clone()
+   * Returns the number of items currently stored in this collection.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of items in this collection
+   */
+  final public function count() : int
   {
-    if ($this->deepClone) {
-      $new = array();
-      foreach ($this as $key => $value) {
-        $new[$key] = clone $value;
-      }
-      $this->list = $new;
-    }
-  }*/
+    return $this->count;
+  }
+
+  /**
+   * Returns the number of items currently stored in this collection.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of items in this collection
+   */
+  final public function get_count() : int
+  {
+    return count($this->list);
+  }
 }

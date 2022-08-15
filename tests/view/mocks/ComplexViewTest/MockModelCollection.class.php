@@ -35,16 +35,6 @@ class MockModelCollection extends BusinessModel implements iCollection
   private $bProperty;
 
   /**
-   * Default constructor for collection of \ramp\model\business\Records.
-   * - Sets composite type for this collection as <i>this</i> class-name with string <i>Collection</i> truncated:
-   *  - e.g. {@link \ramp\model\business\UserCollection} would expect to referance only {@link \ramp\model\business\User}s.
-   */
-  final public function __construct()
-  {
-    parent::__construct(new Collection());
-  }
-
-  /**
    * Get ID (URN)
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str Unique identifier for *this*

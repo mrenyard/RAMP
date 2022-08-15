@@ -23,6 +23,8 @@ namespace tests\ramp\model\business\field;
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/core/iList.class.php';
+require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
@@ -33,11 +35,11 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/OptionTest/MockRecord.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/OptionTest/MockField.class.php';
 
 use ramp\core\Str;
 use ramp\core\OptionList;
@@ -46,7 +48,6 @@ use ramp\model\business\field\Option;
 use ramp\model\business\field\SelectOne;
 use ramp\model\business\field\SelectMany;
 
-use tests\ramp\model\business\field\mocks\OptionTest\MockField;
 use tests\ramp\model\business\field\mocks\OptionTest\MockRecord;
 
 /**
@@ -96,27 +97,6 @@ class OptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\Option::type.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \ramp\core\Str}.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.field.Option#method_get_type ramp\model\business\field\Option::type
-   */
-  public function testGet_type()
-  {
-    try {
-      $this->testObject->type = "TYPE";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertEquals('option business-model', (string)$this->testObject->type);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }
-
-  /**
    * Collection of assertions for \ramp\model\business\field\Option::get_isSelected and
    *  \ramp\model\business\field\Option::setParentField with setParentField correctly set.
    * - assert isSelected returns FALSE by default.
@@ -138,9 +118,6 @@ class OptionTest extends \PHPUnit\Framework\TestCase
     $options->add(new Option(1, Str::set('First child')));
     $options->add($this->testObject);
     $options->add(new Option(3, Str::set('Third child')));
-
-    $this->testObject->setParentField(new MockField(Str::set('aProperty'), $mockRecord, $options));
-    $this->assertFalse($this->testObject->isSelected);
 
     $dataObject->aProperty = 2;
     $this->testObject->setParentField(new SelectOne(Str::set('aProperty'), $mockRecord, $options));

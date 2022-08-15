@@ -41,11 +41,4 @@ interface iCollection extends iList, \Countable
    * @param \ramp\core\RAMPObject $object reference to be added
    */
   public function add(RAMPObject $object);
-
-  /**
-   * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
-   */
-  public function get_count() : int;
 }

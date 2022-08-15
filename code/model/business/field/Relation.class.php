@@ -22,7 +22,11 @@ namespace ramp\model\business\field;
 
 use ramp\SETTING;
 use ramp\core\Str;
+use ramp\core\StrCollection;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\DataFetchException;
+use ramp\model\business\FailedValidationException;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
@@ -40,9 +44,9 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Relation extends Field
 {
-  private $relatedObject;
-  private $validationRule;
+  private $modelManager;
   private $relationObjectTableName;
+  private $relatedObject;
 
   /**
    * Creates input field related to a single property of containing record.
@@ -51,59 +55,95 @@ class Relation extends Field
    * @param \ramp\core\Str $relationObjectTableName Name of DataTable for linked Object
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, DbTypeValidation $validationRule, Str $relationObjectTableName)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectTableName)
   {
-    $this->validationRule = $validationRule;
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->relationObjectTableName = $relationObjectTableName;
-    parent::__construct($dataObjectPropertyName, $containingRecord);
+    $this->update($containingRecord->getPropertyValue((string)$dataObjectPropertyName));
+    parent::__construct($dataObjectPropertyName, $containingRecord, $this->value);
   }
 
   /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   *
-  public function offsetSet($offset, $object)
-  {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
-  }*/
-
-  /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
-   * @param mixed $offset API to match \ArrayAccess interface
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   *
-  public function offsetUnset($offset)
-  {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }*/
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   * Update relation base on changed key.
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store.
    */
-  final protected function get_value()
+  private function update($key)
   {
-    if (!isset($this->relatedObject) || $this->containingRecord->isModified) {
-      $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-      $this->relatedObject = $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition(
-          $this->relationObjectTableName,
-          Str::set($this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName))
-        )
-      );     
-    }
+    $this->relatedObject = (isset($key))?
+      $this->modelManager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->relationObjectTableName, Str::set($key))
+      ):
+      NULL;
+  }
+
+  /**
+   * Returns related BusinessModel.
+   * @return mixed Related BusinessModel (object).
+   */
+  protected function get_value() {
     return $this->relatedObject;
+  }
+
+  /**
+   * Get ID (URN) of related BusinessModel.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \ramp\core\Str Unique identifier for *this*
+   */
+  public function get_id() : Str
+  {
+    return $this->relatedObject->id;
+  }
+
+  /**
+   * Implementation of \IteratorAggregate method for use with foreach etc.
+   * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
+   */
+  public function getIterator() : \Traversable
+  {
+    return $this->relatedObject;
+  }
+
+
+  /**
+   * Validate postdata against this and update accordingly.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
+   */
+  public function validate(PostData $postdata) : void
+  {
+    $this->errorCollection = StrCollection::set();
+    if (isset($this->relatedObject)) { $this->relatedObject->validate($postdata); }
+    foreach ($postdata as $inputdata)
+    {
+      if ((string)$inputdata->attributeURN == (string)parent::get_id())
+      {
+        try {
+          $this->processValidationRule($inputdata->value);
+        } catch (FailedValidationException $e) {
+          $this->errorCollection->add(Str::set($e->getMessage()));
+          return;
+        }
+        $this->containingRecord->setPropertyValue(
+          (string)$this->dataObjectPropertyName, $inputdata->value
+        );
+      }
+    }
   }
 
   /**
    * Process provided validation rule.
    * @param mixed $value Value to be processed
-   * @throws \ramp\validation\FailedValidationException When test fails.
+   * @throws ramp\model\business\FailedValidationException When test fails.
    */
   public function processValidationRule($value) : void
   {
-    // $this->validationRule->process($value);
+    print_r($value);
+    if (!is_int($value)) { throw new FailedValidationException('Relation Key NOT valid!'); }
+    try {
+      $this->update($value);
+    } catch (DataFetchException $e) {
+      throw new FailedValidationException('Relation NOT found in data storage!');
+    }
   }
 }

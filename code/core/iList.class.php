@@ -26,6 +26,12 @@ namespace ramp\core;
  * RESPONSIBILITIES
  * - Enforce base api of \IteratorAggregate and \ArrayAccess.
  */
-interface iList extends \IteratorAggregate, \ArrayAccess
+interface iList extends \IteratorAggregate, \ArrayAccess, \Countable
 {
+  /**
+   * Returns the number of items currently stored in this collection.
+   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @return int Number of items in this collection
+   */
+  public function get_count() : int;
 }

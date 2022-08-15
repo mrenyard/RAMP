@@ -47,11 +47,7 @@ abstract class RecordCollection extends BusinessModel implements iCollection
    */
   final public function __construct()
   {
-    parent::__construct(
-      new Collection(
-        Str::set(preg_replace('/Collection$/', '', get_class($this)))
-      )
-    );
+    parent::__construct();
   }
 
   /**
@@ -72,26 +68,5 @@ abstract class RecordCollection extends BusinessModel implements iCollection
   final public function add(RAMPObject $object)
   {
     parent::offsetSet($this->count, $object);
-  }
-
-  /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access setting is not allowed.
-   */
-  public function offsetSet($offset, $object)
-  {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
-  }
-
-  /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
-   * @param mixed $offset API to match \ArrayAccess interface
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
-  public function offsetUnset($offset)
-  {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
   }
 }

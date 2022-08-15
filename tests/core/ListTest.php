@@ -24,27 +24,26 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
 
-require_once '/usr/share/php/tests/ramp/core/mocks/CollectionTest/AnObject.class.php';
-require_once '/usr/share/php/tests/ramp/core/mocks/CollectionTest/BadObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/mocks/ListTest/AnObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/mocks/ListTest/BadObject.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\Collection;
+use ramp\core\iList;
+use ramp\core\oList;
 
-use tests\ramp\core\mocks\CollectionTest\AnObject;
-use tests\ramp\core\mocks\CollectionTest\BadObject;
+use tests\ramp\core\mocks\ListTest\AnObject;
+use tests\ramp\core\mocks\ListTest\BadObject;
 
 /**
- * Collection of tests for \ramp\core\Collection.
+ * List of tests for \ramp\core\List.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\CollectionTest\AnObject}
- * - {@link \tests\ramp\condition\mocks\CollectionTest\BadObject}
+ * - {@link \tests\ramp\condition\mocks\ListTest\AnObject}
+ * - {@link \tests\ramp\condition\mocks\ListTest\BadObject}
  */
-class CollectionTest extends \PHPUnit\Framework\TestCase
+class ListTest extends \PHPUnit\Framework\TestCase
 {
   private $typeName;
   private $expectedAtNameIndex;
@@ -55,33 +54,31 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->typeName = Str::set('tests\ramp\core\mocks\CollectionTest\AnObject');
+    $this->typeName = Str::set('tests\ramp\core\mocks\ListTest\AnObject');
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::__construct().
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\core\iCollection}
+   * Collection of assertions for ramp\core\List::__construct().
+   * - assert is instance of {@link \ramp\core\List}
+   * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
-   * @link ramp.core.Collection \ramp\core\Collection
+   * @link ramp.core.List \ramp\core\List
    */
   public function test__Construct()
   {
-    $testObject = new Collection($this->typeName);
-    $this->assertInstanceOf('ramp\core\Collection', $testObject);
-    $this->assertInstanceOf('ramp\core\iCollection', $testObject);
+    $testObject = new oList($this->typeName);
+    $this->assertInstanceOf('ramp\core\oList', $testObject);
     $this->assertInstanceOf('ramp\core\iList', $testObject);
     $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
     $this->assertInstanceOf('\IteratorAggregate', $testObject);
-    $this->assertInstanceOf('\Countable', $testObject);
     $this->assertInstanceOf('\ArrayAccess', $testObject);
     try {
-      $testObject = new Collection(Str::set('\not\a\Class'));
+      $testObject = new oList(Str::set('\not\a\Class'));
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame('$compositeType (\not\a\Class) MUST be an accessible class name or interface.', $expected->getMessage());
       return;
@@ -90,7 +87,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::isCompositeType().
+   * Collection of assertions for ramp\core\List::isCompositeType().
    * - assert returns TRUE when $compositeType name provided to constructor is
    *    same as provided {@link \ramp\core\Str}
    * - assert evaluates TRUE where $compositeType name provided to constructor is
@@ -99,35 +96,35 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    *    NOT same as provided {@link \ramp\core\Str}
    * - assert evaluates FALSE where $compositeType name provided to constructor is
    *    NOT same as provided {@link \ramp\core\Str}
-   * @link ramp.core.Collection#method_isCompositeType \ramp\core\Collection::isCompositeType()
+   * @link ramp.core.List#method_isCompositeType \ramp\core\List::isCompositeType()
    */
   public function testIsCompositeType()
   {
-    $testObject = new Collection($this->typeName);
+    $testObject = new oList($this->typeName);
     $notAClass = Str::set('\not\a\Class');
     $this->assertTrue($testObject->isCompositeType($this->typeName));
     $this->assertFalse($testObject->isCompositeType($notAClass));
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
-   * - assert handle unpopulated {@link \ramp\core\Collection} iteration without fail
-   * - assert {@link \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   * Collection of assertions for ramp\core\List::getIterator(), add() and count.
+   * - assert handle unpopulated {@link \ramp\core\List} iteration without fail
+   * - assert {@link \ramp\core\List::add()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
-   * - assert {@link \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   * - assert {@link \ramp\core\List::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
    *   - with message: <em>'Offset out of bounds'</em>
-   * @link ramp.core.Collection#method_getIterator \ramp\core\Collection::getIterator()
-   * @link ramp.core.Collection#method_add \ramp\core\Collection::add()
-   * @link ramp.core.Collection#method_count \ramp\core\Collection::count
-   */
+   * @link ramp.core.List#method_getIterator \ramp\core\List::getIterator()
+   * @link ramp.core.List#method_add \ramp\core\List::add()
+   * @link ramp.core.List#method_count \ramp\core\List::count
+   *
   public function testIteratorAddCount()
   {
-    $testObject = new Collection($this->typeName);
+    $testObject = new oList($this->typeName);
     foreach ($testObject as $o)
     {
-      $this->fail('Unexpected iteration of empty Collection');
+      $this->fail('Unexpected iteration of empty List');
     }
     $this->assertEquals(0, $testObject->count);
     $this->assertEquals(0, $testObject->count());
@@ -135,7 +132,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       $testObject->add(new BadObject());
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
-        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof tests\ramp\core\mocks\CollectionTest\AnObject',
+        'tests\ramp\core\mocks\ListTest\BadObject NOT instanceof tests\ramp\core\mocks\ListTest\AnObject',
         $expected->getMessage()
       );
       $i = 0;
@@ -207,19 +204,19 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \InvalidArgumentException has NOT been raised.');
-  }
+  }*/
 
   /**
-   * Collection of assertions for ramp\core\Collection::offsetSet().
-   * - assert {@link \ramp\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   * Collection of assertions for ramp\core\List::offsetSet().
+   * - assert {@link \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
-   * @link ramp.core.Collection#method_offsetSet \ramp\core\mocks\CollectionTest\Collection::offsetSet()
+   * @link ramp.core.List#method_offsetSet \ramp\core\mocks\ListTest\List::offsetSet()
    */
   public function testOffsetSet()
   {
-    $testObject = new Collection($this->typeName);
+    $testObject = new oList($this->typeName);
     $expectedAtNameIndex = new AnObject();
     $expectedAt0Index = new AnObject();
     $testObject['name'] = $expectedAtNameIndex;
@@ -228,7 +225,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
       $testObject['name'] = new BadObject();
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
-        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof tests\ramp\core\mocks\CollectionTest\AnObject',
+        'tests\ramp\core\mocks\ListTest\BadObject NOT instanceof tests\ramp\core\mocks\ListTest\AnObject',
         $expected->getMessage()
       );
       $testObject[0] = $expectedAt0Index;
@@ -240,17 +237,17 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::offsetUnset().
+   * Collection of assertions for ramp\core\List::offsetUnset().
    * - assert value unset with name key is no longer retivable with same name key
    * - assert value set at index is no longer retivable at same index.
    * @depends testOffsetSet
-   * @param Collection The test object.
-   * @link ramp.core.Collection#method_offsetUnset \ramp\core\mocks\CollectionTest\Collection::offsetUnset()
+   * @param List The test object.
+   * @link ramp.core.List#method_offsetUnset \ramp\core\mocks\ListTest\List::offsetUnset()
    */
-  public function testOffsetUnset(Collection $testObject)
+  public function testOffsetUnset(oList $testObject)
   {
-    $this->assertInstanceOf('tests\ramp\core\mocks\CollectionTest\AnObject', $testObject['name']);
-    $this->assertInstanceOf('tests\ramp\core\mocks\CollectionTest\AnObject', $testObject[0]);
+    $this->assertInstanceOf('tests\ramp\core\mocks\ListTest\AnObject', $testObject['name']);
+    $this->assertInstanceOf('tests\ramp\core\mocks\ListTest\AnObject', $testObject[0]);
     unset($testObject['name']);
     unset($testObject[0]);
     $this->assertFalse(isset($testObject['name']));
@@ -258,11 +255,11 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::__clone().
+   * Collection of assertions for ramp\core\List::__clone().
    * - assert Shallow Cloning (default) composite collection is referenced only
    * - assert when Deep Cloning that NEW objects are formed with same values
-   * @link ramp.core.Collection#method__clone \ramp\core\mocks\CollectionTest\Collection::__clone()
-   */
+   * @link ramp.core.List#method__clone \ramp\core\mocks\ListTest\List::__clone()
+   *
   public function test__clone()
   {
     $o1 = new AnObject();
@@ -271,22 +268,22 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     $o2->property = 'value2';
     $o3 = new AnObject();
     $o3->property = 'value3';
-    $shallowCollection = new Collection($this->typeName);
-    $shallowCollection->add($o1);
-    $shallowCollection->add($o2);
-    $shallowCollection->add($o3);
-    $this->assertSame(3, $shallowCollection->count);
-    $deepCollection = new Collection($this->typeName, TRUE);
-    $deepCollection->add($o1);
-    $deepCollection->add($o2);
-    $deepCollection->add($o3);
-    $this->assertSame(3, $deepCollection->count);
-    $shallowClone = clone $shallowCollection;
+    $shallowList = new oList($this->typeName);
+    $shallowList->add($o1);
+    $shallowList->add($o2);
+    $shallowList->add($o3);
+    $this->assertSame(3, $shallowList->count);
+    $deepList = new oList($this->typeName, TRUE);
+    $deepList->add($o1);
+    $deepList->add($o2);
+    $deepList->add($o3);
+    $this->assertSame(3, $deepList->count);
+    $shallowClone = clone $shallowList;
     $this->assertSame(3, $shallowClone->count);
     $this->assertSame($shallowClone[0], $o1);
     $this->assertSame($shallowClone[1], $o2);
     $this->assertSame($shallowClone[2], $o3);
-    $deepClone = clone $deepCollection;
+    $deepClone = clone $deepList;
     $this->assertSame(3, $deepClone->count);
     $this->assertNotSame($deepClone[0], $o1);
     $this->assertNotSame($deepClone[1], $o2);
@@ -294,5 +291,5 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($deepClone[0]->property, 'value1');
     $this->assertEquals($deepClone[1]->property, 'value2');
     $this->assertEquals($deepClone[2]->property, 'value3');
-  }
+  }*/
 }

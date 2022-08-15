@@ -23,7 +23,7 @@ namespace ramp\model\business\field;
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\iOption;
-use ramp\model\business\BusinessModel;
+use ramp\model\Model;
 
 /**
  * A Single option.
@@ -34,7 +34,7 @@ use ramp\model\business\BusinessModel;
  * @property-read mixed $key Returns key (enum:int|URN:Str).
  * @property-read \ramp\core\Str $description Returns description.
  */
-class Option extends BusinessModel implements iOption
+class Option extends Model implements iOption
 {
   private $key;
   private $description;

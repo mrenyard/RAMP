@@ -26,6 +26,7 @@ use ramp\core\Str;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\BusinessModelManager;
 use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 
 use tests\ramp\model\business\field\mocks\RelationTest\MockRecord;
@@ -39,7 +40,9 @@ class MockBusinessModelManager extends BusinessModelManager
   private static $instance;
   public static $updateLog;
   public static $relatedObjectOne;
+  public static $relatedDataObjectOne;
   public static $relatedObjectTwo;
+  public static $relatedDataObjectTwo;
 
   /**
    * Constuct the instance.
@@ -78,6 +81,7 @@ class MockBusinessModelManager extends BusinessModelManager
    * @param int $fromIndex Optional index for first entry in a collection
    * @return \ramp\model\Model Relevant requested Model object
    * @throws \DomainException when {@link \ramp\model\Model}(s) NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
@@ -86,25 +90,26 @@ class MockBusinessModelManager extends BusinessModelManager
       if ((string)$definition->recordKey == '1')
       {
         if (!isset(self::$relatedObjectOne)) {
-          $relatedDataObjectOne = new \stdClass();
-          $relatedDataObjectOne->key = 1;
-          $relatedDataObjectOne->property = 'A Value';
-          self::$relatedObjectOne = new MockRecord($relatedDataObjectOne);
+          self::$relatedDataObjectOne = new \stdClass();
+          self::$relatedDataObjectOne->key = 1;
+          self::$relatedDataObjectOne->property = 'A Value';
+          self::$relatedObjectOne = new MockRecord(self::$relatedDataObjectOne);
         }
         return self::$relatedObjectOne;
       }
       elseif ((string)$definition->recordKey == '2')
       {
         if (!isset(self::$relatedObjectTwo)) {
-          $relatedDataObjectTwo = new \stdClass();
-          $relatedDataObjectTwo->key = 2;
-          $relatedDataObjectTwo->property = 'B Value';
-          self::$relatedObjectTwo = new MockRecord($relatedDataObjectTwo);
+          self::$relatedDataObjectTwo = new \stdClass();
+          self::$relatedDataObjectTwo->key = 2;
+          self::$relatedDataObjectTwo->property = 'B Value';
+          self::$relatedObjectTwo = new MockRecord(self::$relatedDataObjectTwo);
         }
         return self::$relatedObjectTwo;
       }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
-    throw new \DomainException('No matching Record(s) found in data storage!');
+    throw new \DomainException('Business Model(s) NOT found!');
   }
 
   /**

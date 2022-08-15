@@ -62,27 +62,7 @@ class Collection extends oList implements iCollection
    */
   public function add(RAMPObject $object)
   {
-    parent::offsetSet(count($this->list), $object);
-  }
-
-  /**
-   * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
-   */
-  final public function count() : int
-  {
-    return $this->count;
-  }
-
-  /**
-   * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
-   */
-  final public function get_count() : int
-  {
-    return count($this->list);
+    parent::offsetSet(count($this), $object);
   }
 
   /**

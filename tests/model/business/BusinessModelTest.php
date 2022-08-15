@@ -22,6 +22,9 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/iList.class.php';
+require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
@@ -33,6 +36,7 @@ require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModel.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModelWithErrors.class.php';
@@ -41,9 +45,11 @@ use ramp\core\Str;
 use ramp\core\Collection;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
+use ramp\model\business\field\Option;
 
-use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelWithErrors;
 use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModel;
+use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelCollection;
+use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelWithErrors;
 
 /**
  * Collection of tests for \ramp\model\business\BusinessModel.
@@ -64,15 +70,20 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     MockBusinessModel::reset();
-    $this->children = new Collection();
-    $this->grandchildren = new Collection();
+
+    $this->children = new MockBusinessModelCollection();
+    $this->grandchildren = new MockBusinessModelCollection();
     $this->testObject = new MockBusinessModel('Top object', $this->children);
+    $this->assertSame(0, $this->children->count);
     $this->testChild1 = new MockBusinessModel('First child');
     $this->children->add($this->testChild1);
+    $this->assertSame(1, $this->children->count);
     $this->testChild2 = new MockBusinessModelWithErrors('Second child');
     $this->children->add($this->testChild2);
+    $this->assertSame(2, $this->children->count);
     $this->testChild3 = new MockBusinessModel('Third child', $this->grandchildren);
     $this->children->add($this->testChild3);
+    $this->assertSame(3, $this->children->count);
     $this->grandchild = new MockBusinessModelWithErrors('First grandchild');
     $this->grandchildren->add($this->grandchild);
   }
@@ -91,6 +102,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   public function test__construction()
   {
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\iList', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
@@ -193,6 +205,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('uid-' . $i++, (string)$child->id);
       $iterator->next();
     }
+    $this->assertSame(3, $this->testObject->count);
     $this->assertSame('uid-0', (string)$this->testObject->id);
   }
 
@@ -245,11 +258,19 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetSetOffsetUnset()
   {
-    $object = new MockBusinessModel('Forth child');
-    $this->testObject[3] = $object;
-    $this->assertSame($object, $this->testObject[3]);
-    unset($this->testObject[3]);
-    $this->assertFalse(isset($this->testObject[3]));
+    try {
+      $this->testObject[3] = new Option(3, Str::set('No Option'));
+    } catch (\InvalidArgumentException $expected) {
+        $this->assertSame('ramp\model\business\field\Option NOT instanceof ramp\model\business\BusinessModel', $expected->getMessage());
+
+        $object = new MockBusinessModel('Forth child');
+        $this->testObject[3] = $object;
+        $this->assertSame($object, $this->testObject[3]);
+        unset($this->testObject[3]);
+        $this->assertFalse(isset($this->testObject[3]));
+        return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
   }
 
   /**

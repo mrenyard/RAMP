@@ -18,30 +18,33 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\OptionTest;
+namespace tests\ramp\model\business\field\mocks\RelationTest;
 
-use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\condition\PostData;
 use ramp\model\business\field\Field;
 use ramp\model\business\FailedValidationException;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\field\Field for testing against.
  */
 class MockField extends Field
 {
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  protected function get_value()
+  public static $processValidationRuleCount;
+
+  public static function reset()
   {
-    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+    self::$processValidationRuleCount = 0;
   }
 
-  public function processValidationRule($value)
+  protected function get_value()
   {
+    // STUB
+  }
+
+  protected function processValidationRule($value)
+  {
+    self::$processValidationRuleCount++;
+    if ($value == 'BAD') {
+      throw new FailedValidationException('MockField\'s has error due to $value of BAD!');
+    }
   }
 }

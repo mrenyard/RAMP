@@ -21,12 +21,13 @@
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 switch ($this->type) {
   case 'option business-model': ?>
-              <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+              <option value="<?=$this->key; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
 <?php break;
   case 'relation field': ?>
               <label class="<?=$this->type; ?>"<?=$this->attribute('title'); ?>>
                 <a href="<?=$this->value; ?>"><?=$this->id; ?></a>
               </label>
+<?=$this->children; ?>
 <?php break;
   case 'input field': ?>
               <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>

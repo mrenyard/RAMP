@@ -18,41 +18,48 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\FieldTest;
+namespace tests\ramp\model\business\field\mocks\RelationTest;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
-use ramp\model\business\RecordCollection;
-
-/**
- * Collection of MockRecord.
- */
-class MockRecordCollection extends RecordCollection { }
+use ramp\model\business\field\Relation;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
-class MockRecord extends Record
+class ContainingRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('aProperty','bProperty','cProperty');
+    return StrCollection::set('key');
   }
 
-  protected function get_aProperty()
+  protected function get_key()
   {
+    if (!isset($this['key'])) {
+      $this['key'] = new MockField(
+        Str::set('key'),
+        $this
+      );
+    }
+    return $this['key']; 
   }
 
-  protected function get_bProperty()
+  public function get_relationAlpha()
   {
-  }
-
-  protected function get_cProperty()
-  {
+    if (!isset($this['relationAlpha'])) {
+      $this['relationAlpha'] = new Relation(
+        Str::set('relationAlpha'),
+        $this,
+        Str::set('MockRecord')
+      );
+    }
+    return $this['relationAlpha'];
   }
   
   protected static function checkRequired($dataObject) : bool
   {
+    return (isset($dataObject->key));
   }
 }

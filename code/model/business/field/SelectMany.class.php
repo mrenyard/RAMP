@@ -39,40 +39,8 @@ use ramp\model\business\FailedValidationException;
  * - {@link \ramp\model\business\Record}
  * - {@link \ramp\core\OptionList}
  */
-final class SelectMany extends Field
+final class SelectMany extends SelectFrom
 {
-  /**
-   * Creates select many field type, tied to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
-   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
-   * @param \ramp\core\OptionList $options Collection of avalible iOptions
-   */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
-  {
-    parent::__construct($dataObjectPropertyName, $containingRecord, $options);
-  }
-
-  /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
-  public function offsetSet($offset, $object)
-  {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
-  }
-
-  /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
-   * @param mixed $offset API to match \ArrayAccess interface
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
-  public function offsetUnset($offset)
-  {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }
-
   /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
@@ -82,7 +50,7 @@ final class SelectMany extends Field
     $selection = new Collection();
     $selectionArray = (array)$this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
     foreach ($selectionArray as $index) {
-      $selection->add($this[$index]);
+      $selection->add($this->options[$index]);
     }
     return $selection;
   }
@@ -100,7 +68,7 @@ final class SelectMany extends Field
     }
     foreach ($value as $selected) {
       $valid = FALSE;
-      foreach ($this as $option) {
+      foreach ($this->options as $option) {
         if ((string)$selected == (string)$option->id) {
           $valid = TRUE;
           continue;

@@ -38,39 +38,39 @@ use ramp\model\business\FailedValidationException;
  * - {@link \ramp\model\business\Record}
  * - {@link \ramp\core\OptionList}
  */
-final class SelectOne extends Field
+final class SelectOne extends SelectFrom
 {
   /**
    * Creates select one field type, tied to a single property of containing record.
    * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    * @param \ramp\core\OptionList $options Collection of available field\Options
-   */
+   *
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
   {
     parent::__construct($dataObjectPropertyName, $containingRecord, $options);  
-  }
+  }*/
 
   /**
    * ArrayAccess method offsetSet, DO NOT USE.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
+   *
   public function offsetSet($offset, $object)
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
-  }
+  }*/
 
   /**
    * ArrayAccess method offsetUnset, DO NOT USE.
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
+   *
   public function offsetUnset($offset)
   {
     throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }
+  }*/
 
   /**
    * Returns value held by relevant property of containing record.
@@ -79,7 +79,7 @@ final class SelectOne extends Field
   final protected function get_value()
   {
     $index = $this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
-    return (isset($index))? $this[$index] : $this[0];
+    return (isset($index))? $this->options[$index] : $this->options[0];
   }
 
   /**
@@ -89,7 +89,7 @@ final class SelectOne extends Field
    */
   public function processValidationRule($value)
   {
-    foreach ($this as $option)
+    foreach ($this->options as $option)
     {
       if ((string)$value == (string)$option->id) { return; }
     }

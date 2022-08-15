@@ -18,47 +18,12 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\RelationTest;
+namespace tests\ramp\core\mocks\ListTest;
 
-use ramp\core\Str;
-use ramp\core\StrCollection;
-use ramp\model\business\Record;
-use ramp\model\business\field\Field;
+use ramp\core\RAMPObject;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
+ * Another Concreate implementation of \ramp\core\Object for testing against.
+ * .
  */
-class MockRecord extends Record
-{
-  public function primaryKeyNames() : StrCollection
-  {
-    return StrCollection::set('key');
-  }
-
-  protected function get_key()
-  {
-    if (!isset($this['key'])) {
-      $this['key'] = new MockField(
-        Str::set('key'),
-        $this
-      );
-    }
-    return $this['key']; 
-  }
-
-  protected function get_property()
-  {
-    if (!isset($this['property'])) {
-      $this['property'] = new MockField(
-        Str::set('property'),
-        $this
-      );
-    }
-    return $this['property']; 
-  }
-  
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (isset($dataObject->key));
-  }
-}
+class BadObject extends RAMPObject { }

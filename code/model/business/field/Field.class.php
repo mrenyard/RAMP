@@ -54,20 +54,14 @@ abstract class Field extends BusinessModel
    * Base constructor for Field related to a single property of containing record.
    * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
-   * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
+   * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options = null)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, BusinessModel $children = null)
   {
-    if ($options != null) {
-      if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
-        throw new \InvalidArgumentException('OptionList $options compositeType MUST be \ramp\model\business\field\Option'); 
-      }
-      foreach ($options as $option) { $option->setParentField($this); }
-    }
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
-    parent::__construct($options);
+    parent::__construct($children);
   }
 
   /**
@@ -120,7 +114,7 @@ abstract class Field extends BusinessModel
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
-      if ($inputdata->attributeURN == $this->id)
+      if ((string)$inputdata->attributeURN == (string)$this->id)
       {
         try {
           $this->processValidationRule($inputdata->value);

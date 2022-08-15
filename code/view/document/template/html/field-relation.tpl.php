@@ -39,7 +39,9 @@ switch ($this->type) {
           <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <span class="name"><?=$this->label; ?></span>
             <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required" tabindex="<?=$tabindex; ?>">
-<?=$this->children; ?>
+<?php foreach ($this->options as $option) { ?>            
+              <option value="<?=$option->key; ?>"<?=($option->isSelected)? ' selected':''; ?>><?=$option->description; ?></option>
+<?php } ?>
             </select>
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
             <span class="error"><?=$error; ?></span>

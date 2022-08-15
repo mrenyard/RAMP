@@ -24,6 +24,8 @@ require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/iList.class.php';
+require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
@@ -238,15 +240,15 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   public function testOffsetSetOffsetUnset()
   {
     try {
-      $this->testObject[3] = new TestRecord();
-    } catch (\BadMethodCallException $expected) {
-      $this->assertEquals('Array access setting is not allowed.', $expected->getMessage());
-      try {
-        unset($this->testObject[2]);
-      } catch (\BadMethodCallException $expected) {
-        $this->assertEquals('Array access unsetting is not allowed.', $expected->getMessage());
+      $this->testObject[3] = new Collection();
+    } catch (\InvalidArgumentException $expected) {
+        $this->assertSame('ramp\core\Collection NOT instanceof ramp\model\business\BusinessModel', $expected->getMessage());
+        $object = new TestRecord();
+        $this->testObject[3] = $object;
+        $this->assertSame($object, $this->testObject[3]);
+        unset($this->testObject[3]);
+        $this->assertFalse(isset($this->testObject[3]));
         return;
-      }
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised.');
   }

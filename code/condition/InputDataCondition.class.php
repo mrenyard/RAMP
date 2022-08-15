@@ -103,7 +103,7 @@ final class InputDataCondition extends BusinessCondition
 
   /**
    * Returns string representation of input data statement (attribute–value pair) based on target environment.
-   * @param \ramp\condition\Environment $targetEnvironment Environment to target, default URN Query.
+   * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target, default URN Query.
    * @param mixed $value Value to be compared with attribute by operation.
    * @throws \DomainException when second argument ($value) does Not validate against its
    *  associated property's processValidationRules()

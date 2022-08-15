@@ -22,7 +22,8 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\iOption;
-use ramp\core\iCollection;
+use ramp\core\iList;
+use ramp\core\oList;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
@@ -35,7 +36,6 @@ use ramp\model\Model;
  * - Define generalized methods for iteration, validity checking & error reporting.
  *
  * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).
- * @property-read \ramp\core\Str $description Returns description.
  * @property-read \ramp\core\Str $type Returns type definition as a short list, much like we
  * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
  * resulting values.
@@ -43,7 +43,7 @@ use ramp\model\Model;
  * @property-read StrCollection $errors Returns a StrCollection of recorded error messages.
  * @property-read int $count Returns the number of children currently parented by *this*.
  */
-abstract class BusinessModel extends Model implements \IteratorAggregate, \Countable, \ArrayAccess
+abstract class BusinessModel extends Model implements iList
 {
   private $children;
 
@@ -55,12 +55,15 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
 
   /**
    * Base constructor for Business Models.
-   * @param \ramp\core\iCollection $children Collection of child business models.
+   * @param \ramp\model\business\BusinessModel $children business models.
    */
-  public function __construct(iCollection $children = null)
+  public function __construct(BusinessModel $children = NULL)
   {
-    $this->children = ($children != null) ? $children :
-      new Collection(Str::set(__NAMESPACE__ . '\BusinessModel'));
+      $this->children = ($children === NULL)? 
+        (stripos(get_class($this), 'Collection') < 0) ?
+          new Collection(Str::set(preg_replace('/Collection$/', '', get_class($this)))):
+            new Collection(Str::set(__NAMESPACE__ . '\BusinessModel')):
+        $children;
   }
 
   /**
@@ -103,7 +106,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    * Implementation of \IteratorAggregate method for use with foreach etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
    */
-  final public function getIterator() : \Traversable
+  public function getIterator() : \Traversable
   {
     return $this->children->getIterator();
   }
@@ -124,7 +127,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    * @param mixed $offset Index to be checked for existence.
    * @return bool It does / not exist.
    */
-  final public function offsetExists($offset) : bool
+  public function offsetExists($offset) : bool
   {
     return $this->children->offsetExists($offset);
   }
@@ -199,7 +202,7 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    */
   final public function count() : int
   {
-    return $this->count;
+    return $this->get_count();
   }
 
   /**
@@ -209,6 +212,6 @@ abstract class BusinessModel extends Model implements \IteratorAggregate, \Count
    */
   final public function get_count() : int
   {
-    return $this->children->count;
+    return count($this->children);
   }
 }

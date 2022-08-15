@@ -18,58 +18,41 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\mocks\BusinessModelTest;
+namespace tests\ramp\model\business\field\mocks\SelectFromTest;
 
-use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 
-class MockBusinessModelCollection extends BusinessModel implements iCollection
-{
-  protected function get_id() : Str
-  {
-  }
-
-  /**
-   * Add a reference (Record), to this collection.
-   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
-   * @throws \InvalidArgumentException When provided object NOT expected type (Record)
-   */
-  public function add(RAMPObject $object)
-  {
-    self::offsetSet($this->get_count(), $object);
-  }
-}
-
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
+ * .
  */
 class MockBusinessModel extends BusinessModel
 {
-  private static $idCount;
+  private static $count;
   private $id;
 
-  public $label;
+  public  $label;
   public $validateCount;
   public $hasErrorsCount;
   public $isValidCount;
 
   public static function reset()
   {
-    self::$idCount = 0;
+    self::$count = 0;
   }
 
-  public function __construct(string $label, BusinessModel $children = null)
+  public function __construct(string $label, iCollection $children = null)
   {
-    parent::__construct($children);
-    $this->id = Str::set('uid-' . self::$idCount++);
+    $this->id = Str::set('uid-' . self::$count++);
     $this->label = $label;
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->isValidCount = 0;
+    parent::__construct($children);
   }
 
   /**

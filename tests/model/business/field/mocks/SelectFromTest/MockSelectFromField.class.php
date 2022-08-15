@@ -18,47 +18,46 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\RelationTest;
+namespace tests\ramp\model\business\field\mocks\SelectFromTest;
 
 use ramp\core\Str;
-use ramp\core\StrCollection;
+use ramp\core\OptionList;
+use ramp\core\iCollection;
+use ramp\core\Collection;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Field;
+use ramp\model\business\field\Option;
+use ramp\model\business\field\SelectFrom;
+use ramp\model\business\FailedValidationException;
+
+use tests\ramp\model\business\field\mocks\SelectFromTest\MockRecord;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
  */
-class MockRecord extends Record
+class MockSelectFromField extends SelectFrom
 {
-  public function primaryKeyNames() : StrCollection
+  public static $processValidationRuleCount;
+
+  public static function reset()
   {
-    return StrCollection::set('key');
+    self::$processValidationRuleCount = 0;
   }
 
-  protected function get_key()
+  /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
   {
-    if (!isset($this['key'])) {
-      $this['key'] = new MockField(
-        Str::set('key'),
-        $this
-      );
-    }
-    return $this['key']; 
   }
 
-  protected function get_property()
+  public function processValidationRule($value)
   {
-    if (!isset($this['property'])) {
-      $this['property'] = new MockField(
-        Str::set('property'),
-        $this
-      );
+    self::$processValidationRuleCount++;
+    if ($value == 'BAD') {
+      throw new FailedValidationException('MockField\'s has error due to $value of BAD!');
     }
-    return $this['property']; 
-  }
-  
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (isset($dataObject->key));
   }
 }
