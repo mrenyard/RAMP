@@ -136,21 +136,6 @@ abstract class Record extends BusinessModel
   }
 
   /*
-   * ArrayAccess method offsetUnset, USES DISCOURAGED.
-   * @param mixed $offset API to match \ArrayAccess interface
-   *
-  final public function offsetUnset($offset)
-  {
-    if (isset($this->dataObject->$offset))
-    {
-      throw new \BadMethodCallException(
-        'Unsetting properties already populated with a valid value NOT alowed!'
-      );
-    }
-    parent::offsetUnset($offset);
-  }*/
-
-  /*
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
@@ -158,14 +143,13 @@ abstract class Record extends BusinessModel
   final public function validate(PostData $postdata)
   {
     $this->errorCollection = StrCollection::set();
-    $pkName = (string)$this->primaryKeyNames()->implode(Str::BAR());
-    $pk = (isset($this[$pkName])) ? $this[$pkName] : NULL;
     foreach ($this as $child)
     {
-      if ($child === $pk) { continue; }
       $child->validate($postdata);
     }
-    if ($pk) { $pk->validate($postdata); }
+    /*if ($this->isNew && $this->checkRequired($this->dataObject)) {
+      $pk = $this->PrimaryKey->validate($postdata);
+    }*/
   }
 
   /**

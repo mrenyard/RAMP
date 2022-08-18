@@ -32,33 +32,45 @@ require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/ConcreteValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/MockRecord.class.php';
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
 use ramp\model\business\field\PrimaryKey;
+use ramp\model\business\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
+use tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockBusinessModelManager;
+use tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockRecord;
 
 /**
  * Collection of tests for \ramp\model\business\field\PrimaryKey.
@@ -76,12 +88,12 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void 
   {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\PrimaryKeyTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockBusinessModelManager';
     $this->dataObject = new \stdClass();
-    $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
     $this->propertyNames = StrCollection::set('aProperty', 'bProperty', 'cProperty');
     $this->testObject = new PrimaryKey($this->propertyNames, $this->mockRecord);
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
   }
 
   /**
@@ -123,7 +135,19 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-      $this->assertSame($this->mockRecord->id . ':a-property|b-property|c-property', (string)$this->testObject->id);
+      $this->assertSame('mock-record:new:primary-key', (string)$this->testObject->id);
+
+      $this->assertNull($this->mockRecord->validate(PostData::build(array(
+        'mock-record:new:a-property' => 1,
+        'mock-record:new:b-property' => 2,
+        'mock-record:new:c-property' => 3,
+      ))));
+      $this->assertTrue($this->mockRecord->isValid);
+      $this->assertTrue($this->mockRecord->isModified);
+      $this->assertSame('mock-record:new:primary-key', (string)$this->testObject->id);
+      $this->mockRecord->updated();
+      $this->assertSame('mock-record:1|2|3:primary-key', (string)$this->testObject->id);      
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -142,6 +166,11 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->value = 'VALUE';
     } catch (PropertyNotSetException $expected) {
+      $this->dataObject->aProperty = 'A';
+      $this->assertNull($this->testObject->value);
+      $this->dataObject->aProperty = 'A';
+      $this->dataObject->bProperty = 'B';
+      $this->assertNull($this->testObject->value);
       $this->dataObject->aProperty = 'A';
       $this->dataObject->bProperty = 'B';
       $this->dataObject->cProperty = 'C';
@@ -246,6 +275,80 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   public function testValidateValidationRuleTestNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::processValidationRule()
+   * coresponding PrimaryKey combined properties have been pre populated.
+   * - assert returns void (null) when called.
+   * - assert ValidationRule is called and executes test against data storage.
+   * - assert passes test when combined primaryKey unique (NOT already in data storage).
+   * - assert FailedValidationException thrown when combined primaryKey NOT unique (already in data storage).
+   * @link ramp.model.business.field.PrimaryKey#method_processValidationRule ramp\model\business\field\PrimaryKey::processValidationRule()
+   */
+  public function testProcessValidationRule()
+  {
+    $getBusinessModelCount = MockBusinessModelManager::$callCount;
+    $this->dataObject->aProperty = 1;
+    $this->dataObject->bProperty = 2;
+    $this->dataObject->cProperty = 3;
+    $this->assertTrue($this->mockRecord->isNew);
+    $this->assertTrue($this->mockRecord->isValid);
+    try {
+      $this->testObject->processValidationRule(NULL);
+    } catch (FailedValidationException $expected) {
+      $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
+
+      $this->dataObject->aProperty = 4;
+      $this->dataObject->bProperty = 5;
+      $this->dataObject->cProperty = 6;
+      $this->assertTrue($this->mockRecord->isNew);
+      $this->assertTrue($this->mockRecord->isValid);
+      $this->testObject->processValidationRule(NULL);
+      $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
+      $this->mockRecord->updated();
+      $this->assertSame('mock-record:4|5|6:primary-key', (string)$this->testObject->id);
+      return;
+    }
+    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
+  }
+
+    /**
+   * Collection of assertions for \ramp\model\business\field\PrimaryKey::validate() where PostData
+   * contains all PrimaryKeyDataConditions and is a new entry.
+   * - assert returns void (null) when called.
+   * - assert validate() passed to ValidationRule and executes test against data storage.
+   * - assert hasErrors() reports as expected.
+   * - assert error returns a StrCollection of one error message apon failing test. 
+   * - assert passes test when combined primaryKey unique (NOT already in data storage).
+   * @link ramp.model.business.field.PrimaryKey#method_validate ramp\model\business\field\PrimaryKey::validate()
+   */
+  public function testValidateValidationRuleExecuted()
+  {
+    $getBusinessModelCount = MockBusinessModelManager::$callCount;
+    $this->dataObject->aProperty = 1;
+    $this->dataObject->bProperty = 2;
+    $this->dataObject->cProperty = 3;
+    $this->assertTrue($this->mockRecord->isNew);
+    $this->assertTrue($this->mockRecord->isValid);
+    $this->testObject->Validate(new PostData());
+    $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
+    $this->assertTrue($this->testObject->hasErrors);
+    $errors = $this->testObject->errors;
+    $this->assertSame(1, $errors->count);
+    $this->assertSame('An entry already exists for this record!', (string)$errors[0]);
+
+    $getBusinessModelCount = MockBusinessModelManager::$callCount;
+    $this->dataObject->aProperty = 4;
+    $this->dataObject->bProperty = 5;
+    $this->dataObject->cProperty = 6;
+    $this->assertTrue($this->mockRecord->isNew);
+    $this->assertTrue($this->mockRecord->isValid);
+    $this->testObject->Validate(new PostData());
+    $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
+    $this->assertFalse($this->testObject->hasErrors);
+    $errors = $this->testObject->errors;
+    $this->assertSame(0, $errors->count);
   }
 
   /**

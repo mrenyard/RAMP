@@ -29,6 +29,7 @@ use ramp\model\business\BusinessModelManager;
 use ramp\model\business\iBusinessModelDefinition;
 use ramp\model\business\LoginAccount;
 use ramp\model\business\LoginAccountCollection;
+use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
@@ -83,22 +84,23 @@ class MockBusinessModelManager extends BusinessModelManager
    * @param \ramp\condition\Filter $filter Optional Filter to be apply to Model
    * @param int $fromIndex Optional index for first entry in a collection
    * @return \ramp\model\Model Relevant requested Model object
-   * @throws \DomainException when {@link \ramp\model\Model}(s) NOT found
+   * @throws \DomainException When {@link \ramp\model\business\BusinessModel}(s) NOT found
+   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
+  public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = NULL, $fromIndex = NULL) : BusinessModel
   {
     if ($definition->recordName == 'LoginAccount')
     {
       if ($definition->recordKey == 'new')
       {
         self::$loginAccountDataObject = new \stdClass();
-        self::$loginAccountDataObject->auPK = null;
-        self::$loginAccountDataObject->email = null;
-        self::$loginAccountDataObject->encryptedPassword = null;
-        self::$loginAccountDataObject->accountType = null;
+        self::$loginAccountDataObject->auPK = NULL;
+        self::$loginAccountDataObject->email = NULL;
+        self::$loginAccountDataObject->encryptedPassword = NULL;
+        self::$loginAccountDataObject->accountType = NULL;
         return new LoginAccount(self::$loginAccountDataObject);
       }
-      elseif (($definition->recordKey == null) && (isset($filter)))
+      elseif (($definition->recordKey == NULL) && (isset($filter)))
       {
         $collection = new LoginAccountCollection();
         if ($filter(SQLEnvironment::getInstance()) == 'LoginAccount.email = "a.person@domain.com"')
@@ -123,6 +125,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $dataObject->loginAccountTypeID = 4;
         return new LoginAccount($dataObject);
       }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if ((string)$definition->recordName == 'AnAuthenticatableUnit')
     {
@@ -161,9 +164,11 @@ class MockBusinessModelManager extends BusinessModelManager
         $dataObject->familyName = 'Person';
         return new AnAuthenticatableUnit($dataObject);
       }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
-    throw new \DomainException('No matching Record(s) found in data storage!');
+    throw new \DomainException('Business Model(s) NOT found!');
   }
+
 
   /**
    * Update {@link Model} to any permanent data store.

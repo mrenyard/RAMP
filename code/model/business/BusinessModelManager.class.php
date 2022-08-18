@@ -21,8 +21,6 @@
 namespace ramp\model\business;
 
 use ramp\core\RAMPObject;
-use ramp\model\business\BusinessModel;
-use ramp\model\business\iBusinessModelDefinition;
 use ramp\condition\Filter;
 
 /**

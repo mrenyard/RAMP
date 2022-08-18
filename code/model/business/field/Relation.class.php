@@ -45,21 +45,21 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
 class Relation extends Field
 {
   private $modelManager;
-  private $relationObjectTableName;
+  private $relationObjectRecordName;
   private $relatedObject;
 
   /**
    * Creates input field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\core\Str $dataObjectPropertyName Containing record's dataObject property name 
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
-   * @param \ramp\core\Str $relationObjectTableName Name of DataTable for linked Object
+   * @param \ramp\core\Str $relationObjectRecordName Record name of linked Object
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectTableName)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectRecordName)
   {
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
-    $this->relationObjectTableName = $relationObjectTableName;
+    $this->relationObjectRecordName = $relationObjectRecordName;
     $this->update($containingRecord->getPropertyValue((string)$dataObjectPropertyName));
     parent::__construct($dataObjectPropertyName, $containingRecord, $this->value);
   }
@@ -72,7 +72,7 @@ class Relation extends Field
   {
     $this->relatedObject = (isset($key))?
       $this->modelManager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->relationObjectTableName, Str::set($key))
+        new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::set($key))
       ):
       NULL;
   }
@@ -138,7 +138,6 @@ class Relation extends Field
    */
   public function processValidationRule($value) : void
   {
-    print_r($value);
     if (!is_int($value)) { throw new FailedValidationException('Relation Key NOT valid!'); }
     try {
       $this->update($value);

@@ -60,6 +60,7 @@ require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
@@ -620,10 +621,10 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   public function testAuthorizeAsNewLoginAccount()
   {
     $postArray = array(
-      'an-authenticatable-unit:new:uname' => 'aperson',
-      'an-authenticatable-unit:new:email' => 'aperson@domain.com',
+      'an-authenticatable-unit:new:uname' => 'newperson',
+      'an-authenticatable-unit:new:email' => 'new.person@domain.com',
       'an-authenticatable-unit:new:family-name' => 'Person', 
-      'an-authenticatable-unit:new:given-name' => 'Ann'
+      'an-authenticatable-unit:new:given-name' => 'New'
     );
     $additionalPostdata = array (
       'record-name:key:property-a' => 'valueA',
@@ -633,7 +634,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION = array();
     $_POST = $postArray;
     $_POST += $additionalPostdata;
-    $_POST['login-email'] = 'aperson@domain.com';
+    $_POST['login-email'] = 'new.person@domain.com';
     SETTING::$TEST_RESET_SESSION = TRUE;
     $testObject = Session::getInstance();
     $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED()));
@@ -642,17 +643,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($_SESSION['post_array']));
     $this->assertTrue(isset($_SESSION['loginAccount']));
     $this->assertTrue($_SESSION['loginAccount']->isValid);
-    $this->assertSame('aperson@domain.com', $_SESSION['loginAccount']->email->value);
-    $this->assertSame('aperson', $_SESSION['loginAccount']->auPK->value);
-    $this->assertSame('aperson', $_SESSION['loginAccount']->uname->value);
-    $this->assertSame('Person', $_SESSION['loginAccount']->familyName->value);
-    $this->assertSame('Ann', $_SESSION['loginAccount']->givenName->value);
+    $this->assertSame('new.person@domain.com', $_SESSION['loginAccount']->email->value);
+    $this->assertSame('newperson', $_SESSION['loginAccount']->auPK->value);
     $this->assertSame(
       crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
-    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:aperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:newperson']));
+    $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:newperson']));
   }
 }

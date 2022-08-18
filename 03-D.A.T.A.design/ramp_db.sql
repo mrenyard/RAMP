@@ -132,11 +132,6 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
 -- -----------------------------------------------------
 -- Table `ramp_db`.`Address`
 -- -----------------------------------------------------
@@ -148,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
     -- UK PostCode REGEX max 8chars | US ZIP+4 10chars
     -- ^(?![QVX])[A-Z]{1}(?![I])[A-Y0-9]{1}[0-9]{1}[ABCDEFGHJKPSTUVWX0-9]{0,1}\s[0-9]{1}(?![CIKMOV])[A-Z]{2}$
   `deliveryPointSuffix` VARCHAR(2) NOT NULL,
-  `addressFileID` VARCHAR(15) NOT NULL,
+  -- `addressFileID` VARCHAR(15) NOT NULL,
   -- `extendedAddress` VARCHAR(45) NOT NULL, -- PremisesElements (157)
   `subBuildingName` VARCHAR(30) NULL DEFAULT NULL,
   `buildingName` VARCHAR(50) NULL DEFAULT NULL,
@@ -211,7 +206,7 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+

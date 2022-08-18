@@ -58,8 +58,8 @@ use tests\ramp\condition\mocks\FilterTest\MockEnvironment;
  * - {@link \tests\ramp\condition\mocks\FilterTest\Property}
  * - {@link \tests\ramp\condition\mocks\FilterTest\Record}
  */
-class FilterTest extends \PHPUnit\Framework\TestCase {
-
+class FilterTest extends \PHPUnit\Framework\TestCase
+{
   private $record;
   private $goodArray;
   private $complexArray;

@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\mocks\RecordTest;
+namespace tests\ramp\model\business\field\mocks\PrimaryKeyTest;
 
 use ramp\model\business\validation\ValidationRule;
 use ramp\model\business\FailedValidationException;
@@ -27,9 +27,7 @@ class ConcreteValidationRule extends ValidationRule
 {
   protected function test($value)
   {
-    if (!is_int($value) && $value != 'key')
-    {
-      throw new FailedValidationException('$value of "' . $value . '" does NOT evaluate to KEY');
-    }
+    if (is_int((int)$value) || $value == 'key') { return; }
+    throw new FailedValidationException('$value of "' . $value . '" does NOT evaluate to KEY');
   }
 }

@@ -20,11 +20,16 @@
  */
 namespace ramp\model\business\field;
 
+use ramp\SETTING;
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\condition\Filter;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 use ramp\model\business\FailedValidationException;
+use ramp\model\business\DataFetchException;
 
 /**
  * MultiPartPrimary field related to a single property of its containing \ramp\model\business\Record.
@@ -39,6 +44,7 @@ use ramp\model\business\FailedValidationException;
  */
 class PrimaryKey extends Field
 {
+  private static $strPK;
   private $dataObjectPropertyNames;
 
   /**
@@ -48,8 +54,9 @@ class PrimaryKey extends Field
    */
   public function __construct(StrCollection $dataObjectPropertyNames, Record $containingRecord)
   {
+    if (!isset(self::$strPK)) { self::$strPK = Str::set('PrimaryKey'); }
     $this->dataObjectPropertyNames = $dataObjectPropertyNames;
-    parent::__construct($dataObjectPropertyNames->implode(Str::BAR()), $containingRecord);
+    parent::__construct(self::$strPK, $containingRecord);
   }
 
   /**
@@ -82,18 +89,54 @@ class PrimaryKey extends Field
     $value = Str::_EMPTY();
     foreach ($this->dataObjectPropertyNames as $propertyName) {
       $partValue = $this->containingRecord->getPropertyValue((string)$propertyName);
-      if (!isset($partValue)) { return NULL; }
+      if (!isset($partValue) || $partValue == '') { return NULL; }
       $value = $value->append(Str::set($partValue))->append(Str::BAR());
     }
     return (string)$value->trimEnd(Str::BAR())->replace(Str::SPACE(), Str::set('+'));
   }
 
   /**
-   * Process provided validation rule.
-   * @param mixed $value Value to be processed
+   * Validate uniqueness of combined primary key.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   */
+  public function validate(PostData $postdata) : void
+  {
+    $this->errorCollection = StrCollection::set();
+    if ($this->containingRecord->isNew &&
+      $this->containingRecord->isValid) {    
+      try {
+        $this->processValidationRule(NULL);
+      } catch (FailedValidationException $e) {
+        $this->errorCollection->add(Str::set($e->getMessage()));
+        return;
+      }
+    }
+  }
+
+  /**
+   * Validate that combined primaryKey unique, NOT already in data storage.
+   * @param mixed $value Value should be NULL
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value) : void
   {
+    if ($value !== NULL || !$this->containingRecord->isNew) {
+      throw new \BadMethodCallException('PrimaryKey::processValidationRule() SHOULD ONLY be called from within!');
+    }
+    $recordName = Str::camelCase($this->containingRecord->id->trimEnd(Str::set(':new')));
+    $filterValues = array();
+    foreach ($this->dataObjectPropertyNames as $propertyName) {
+      $filterValues[(string)Str::hyphenate($propertyName)] = $this->containingRecord->getPropertyValue((string)$propertyName);
+    }
+    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    try {
+      $MODEL_MANAGER::getInstance()->getBusinessModel(
+        new SimpleBusinessModelDefinition($recordName),
+        Filter::build($recordName, $filterValues)
+      );
+    } catch (DataFetchException $expected) {
+      return;
+    }
+    throw new FailedValidationException('An entry already exists for this record!');
   }
 }

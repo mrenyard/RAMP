@@ -18,16 +18,17 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\FieldTest;
+namespace tests\ramp\model\business\field\mocks\PrimaryKeyTest;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
+use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
+use tests\ramp\model\business\field\mocks\PrimaryKeyTest\ConcreteValidationRule;
 
 /**
  * Collection of MockRecord.
@@ -44,7 +45,7 @@ class MockRecord extends Record
     return StrCollection::set('aProperty','bProperty','cProperty');
   }
 
-  protected function get_aProperty()
+  protected function get_aProperty() : Field
   {
     if (!isset($this['aProperty'])) {
       $this['aProperty'] = new Input(
@@ -60,7 +61,7 @@ class MockRecord extends Record
     return $this['aProperty'];
   }
 
-  protected function get_bProperty()
+  protected function get_bProperty() : Field
   {
     if (!isset($this['bProperty'])) {
       $this['bProperty'] = new Input(
@@ -76,7 +77,7 @@ class MockRecord extends Record
     return $this['bProperty'];
   }
 
-  protected function get_cProperty()
+  protected function get_cProperty() : Field
   {
     if (!isset($this['cProperty'])) {
       $this['cProperty'] = new Input(
@@ -94,6 +95,10 @@ class MockRecord extends Record
   
   protected static function checkRequired($dataObject) : bool
   {
-    return TRUE;
+    return (
+      isset($dataObject->aProperty) &&
+      isset($dataObject->bProperty) &&
+      isset($dataObject->cProperty)
+    );
   }
 }

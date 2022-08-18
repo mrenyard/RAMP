@@ -194,7 +194,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $testObjectMultiKey = new ConcreteRecordMultiKey($this->dataObject);
       $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
       $this->assertNull($testObjectMultiKey->primaryKey->value);
-
       $this->dataObject->property1 = 'a';
       $this->dataObject->property2 = 'b';
       $this->dataObject->property3 = 'c';
@@ -375,6 +374,39 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions to check 'new', 'cpmplete' record validation 
+   * (\ramp\model\business\Record::validate()) of \ramp\model\business\Record::primarykey.
+   * - assert property 'primarykey' is gettable.
+   * - assert returned value instance of {@link \ramp\core\Str}.
+   * - assert returned value matches expected result value of 'new' when new.
+   * - assert returned value matches expected result of relevant property.
+   * - assert returned value matches expected result of relevant multiple properties
+   *   bar [|] seperated when Object has a multipart primary key.
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
+   */
+  public function testPrimaryKeyValidation()
+  {
+    $dataObject = new \stdClass();
+    $testObjectMultiKey = new ConcreteRecordMultiKey($dataObject);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
+    $this->assertNull($testObjectMultiKey->primaryKey->value);
+
+    $testObjectMultiKey->validate(PostData::build(array(
+      'concrete-record-multi-key:new:property-1' => 1,
+      'concrete-record-multi-key:new:property-2' => 2,
+      'concrete-record-multi-key:new:property-3' => 3,
+    )));
+    $this->assertTrue($testObjectMultiKey->isModified);
+    $this->assertTrue($testObjectMultiKey->isValid);
+    $testObjectMultiKey->updated();
+
+    $this->assertSame(1, $dataObject->property1);
+    $this->assertSame(2, $dataObject->property2);
+    $this->assertSame(3, $dataObject->property3);
+    $this->assertSame('1|2|3', $testObjectMultiKey->primarykey->value);
+  }
+
+  /**
    * Collection of assertions for \ramp\model\business\Record::validate(),
    * \ramp\model\business\Record::hasErrors() and \ramp\model\business\Record::getErrors().
    * - assert returns void (null) when called.
@@ -393,7 +425,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsNewAllGood()
   {
-    $selection = array(1,4,6);;
+    $selection = array(1,4,6);
     $_POST1 = array(
       'concrete-record:new:property-1' => 'key',
       'concrete-record:new:property-2' => 3,

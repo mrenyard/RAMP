@@ -40,7 +40,7 @@ class MockField extends Field
     // STUB
   }
 
-  protected function processValidationRule($value)
+  public function processValidationRule($value)
   {
     self::$processValidationRuleCount++;
     if ($value == 'BAD') {

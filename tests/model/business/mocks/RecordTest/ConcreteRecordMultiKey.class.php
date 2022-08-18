@@ -46,7 +46,7 @@ class ConcreteRecordMultiKey extends Record
         new VarChar(
           10,
           new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate to KEY')
+          Str::set('$value does NOT evaluate')
         )
       );
     }
@@ -56,10 +56,14 @@ class ConcreteRecordMultiKey extends Record
   public function get_property2()
   {
     if (!isset($this['property2'])) {
-      $this['property2'] = new SelectOne(
+      $this['property2'] = new Input(
         Str::set('property2'),
         $this,
-        new ConcreteOptionList()
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate')
+        )
       );
     }
     return $this['property2'];
@@ -68,10 +72,14 @@ class ConcreteRecordMultiKey extends Record
   public function get_property3()
   {
     if (!isset($this['property3'])) {
-      $this['property3'] = new SelectMany(
+      $this['property3'] = new Input(
         Str::set('property3'),
         $this,
-        new ConcreteOptionList()
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate')
+        )
       );
     }
     return $this['property3'];
@@ -79,10 +87,6 @@ class ConcreteRecordMultiKey extends Record
 
   protected static function checkRequired($dataObject) : bool
   {
-    return (
-      isset($dataObject->property1) &&
-      isset($dataObject->property2) &&
-      isset($dataObject->property3) 
-    );
+    return (TRUE);
   }
 }

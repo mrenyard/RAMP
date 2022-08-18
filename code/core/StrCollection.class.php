@@ -45,7 +45,7 @@ final class StrCollection extends Collection
    */
   public static function set(string ...$values) : StrCollection
   {
-    // NOTE: ...$value === func_get_args()
+    // NOTE: ...$values === func_get_args()
     $o = new StrCollection();
     foreach ($values as $value) {
       $o->add(Str::set($value));

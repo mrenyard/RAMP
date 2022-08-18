@@ -33,7 +33,7 @@ class MockFieldModel extends Field
     // STUB
   }
 
-  protected function processValidationRule($value)
+  public function processValidationRule($value)
   {
     // STUB
   }

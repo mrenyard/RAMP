@@ -29,6 +29,7 @@ use ramp\condition\FilterCondition;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\LoginAccount;
 use ramp\model\business\SimpleBusinessModelDefinition;
+use ramp\model\business\DataFetchException;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\view\View;
 use ramp\view\RootView;
@@ -227,9 +228,8 @@ final class Session extends RAMPObject
       $_SESSION['loginAccount'] = $this->loginAccount;
       return;
     }
-    $auEmailPropertyID = (string)Str::hyphenate(
-      Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)
-    )->append(Str::set(':new:email'));
+    $strAU = Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT);
+    $auEmailPropertyID = (string)Str::hyphenate($strAU)->append(Str::set(':new:email'));
     if (isset($_POST[$auEmailPropertyID]))
     {
       if ($loginEmail !== $_POST[$auEmailPropertyID])
@@ -245,20 +245,21 @@ final class Session extends RAMPObject
           $this->accountEmailFilter
         )[0];
         unset($_POST[$auEmailPropertyID]);
-        throw new Unauthorized401Exception(
-          'Trying to create new login where one already exists!'
-        );
-      } catch (\DomainException | \OutOfBoundsException $confirmedEmailNew) { // new login details successfully confirmed
+        throw new Unauthorized401Exception('Trying to create new login where one already exists!');
+      }
+       catch (\DomainException | \OutOfBoundsException $confirmedEmailNew)
+      {
+        // new login details successfully confirmed
         if ($authorizationLevel == LoginAccountType::REGISTERED())
         {
           try {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
-              new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)),
-              Filter::build(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), array('email' => $_POST[$auEmailPropertyID]))
+              new SimpleBusinessModelDefinition($strAU),
+              Filter::build($strAU, array('email' => $_POST[$auEmailPropertyID]))
             )[0];
-          } catch (\DomainException | \OutOfBoundsException $authenticatableUnitNotInDatabase) {
+          } catch (DataFetchException $authenticatableUnitNotInDatabase) {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
-              new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), Str::set('new'))
+              new SimpleBusinessModelDefinition($strAU, Str::set('new'))
             );  
             $authenticatableUnit->validate(PostData::build($_POST));
             $this->modelManager->update($authenticatableUnit);
@@ -276,7 +277,7 @@ final class Session extends RAMPObject
           {
             $_POST = $_SESSION['post_array']; unset($_SESSION['post_array']);
             foreach ($_POST as $name => $value) {
-              if (strpos($name, (string)Str::hyphenate(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT)) . ':new') !== FALSE) {
+              if (strpos($name, (string)Str::hyphenate($strAU) . ':new') !== FALSE) {
                 unset($_POST[$name]);
               }
             }

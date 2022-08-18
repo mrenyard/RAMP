@@ -154,5 +154,5 @@ abstract class Field extends BusinessModel
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
-  abstract protected function processValidationRule($value);
+  abstract public function processValidationRule($value);
 }
