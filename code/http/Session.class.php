@@ -247,7 +247,7 @@ final class Session extends RAMPObject
         unset($_POST[$auEmailPropertyID]);
         throw new Unauthorized401Exception('Trying to create new login where one already exists!');
       }
-       catch (\DomainException | \OutOfBoundsException $confirmedEmailNew)
+       catch (DataFetchException | \OutOfBoundsException $confirmedEmailNew)
       {
         // new login details successfully confirmed
         if ($authorizationLevel == LoginAccountType::REGISTERED())
