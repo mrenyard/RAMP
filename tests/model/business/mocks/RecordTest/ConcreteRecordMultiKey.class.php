@@ -87,6 +87,10 @@ class ConcreteRecordMultiKey extends Record
 
   protected static function checkRequired($dataObject) : bool
   {
-    return (TRUE);
+    return (
+      isset($dataObject->property1) &&
+      isset($dataObject->property2) &&
+      isset($dataObject->property3)
+    );
   }
 }

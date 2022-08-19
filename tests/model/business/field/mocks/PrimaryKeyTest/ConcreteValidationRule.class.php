@@ -27,7 +27,7 @@ class ConcreteValidationRule extends ValidationRule
 {
   protected function test($value)
   {
-    if (is_int((int)$value) || $value == 'key') { return; }
+    if ((string)$value == 'key' || (int)$value > 0) { return; }
     throw new FailedValidationException('$value of "' . $value . '" does NOT evaluate to KEY');
   }
 }

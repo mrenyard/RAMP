@@ -32,8 +32,14 @@ require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/OptionList.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
@@ -41,6 +47,10 @@ require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
@@ -55,6 +65,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecordMultiKey.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
@@ -70,6 +81,7 @@ use ramp\model\business\field\SelectOne;
 use ramp\model\business\field\SelectMany;
 use ramp\model\business\validation\dbtype\VarChar;
 
+use tests\ramp\model\business\mocks\RecordTest\MockBusinessModelManager;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteRecord;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteRecordMultiKey;
 use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
@@ -91,6 +103,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\mocks\RecordTest\MockBusinessModelManager';
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
     $this->testObjectPropertyCount = 3;
     $this->dataObject = new \stdClass();
@@ -388,22 +401,40 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $dataObject = new \stdClass();
     $testObjectMultiKey = new ConcreteRecordMultiKey($dataObject);
+    $this->assertSame(3, $testObjectMultiKey->count);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
     $this->assertNull($testObjectMultiKey->primaryKey->value);
-
     $testObjectMultiKey->validate(PostData::build(array(
       'concrete-record-multi-key:new:property-1' => 1,
       'concrete-record-multi-key:new:property-2' => 2,
-      'concrete-record-multi-key:new:property-3' => 3,
+      'concrete-record-multi-key:new:property-3' => 3
     )));
+    $this->assertSame(3, $testObjectMultiKey->count);
+    $this->assertSame(1, MockBusinessModelManager::$callCount);
     $this->assertTrue($testObjectMultiKey->isModified);
     $this->assertTrue($testObjectMultiKey->isValid);
+    $this->assertTrue($testObjectMultiKey->isNew);
+    $this->assertTrue($testObjectMultiKey->hasErrors);
+    $errors = $testObjectMultiKey->errors;
+    $this->assertSame(1, $errors->count);
+    $this->assertSame('An entry already exists for this record!', (string)$errors[0]);
+    $this->assertSame(3, $testObjectMultiKey->count);
     $testObjectMultiKey->updated();
+    $this->assertSame(0, $testObjectMultiKey->count);
+    $this->assertSame('concrete-record-multi-key:1|2|3', (string)$testObjectMultiKey->id);
+    // TODO:mrenyard: Add check ModelManager called from field\PrimaryKey
 
-    $this->assertSame(1, $dataObject->property1);
-    $this->assertSame(2, $dataObject->property2);
-    $this->assertSame(3, $dataObject->property3);
-    $this->assertSame('1|2|3', $testObjectMultiKey->primarykey->value);
+    // $getBusinessModelCount = MockBusinessModelManager::$callCount;
+    // $this->dataObject->aProperty = 4;
+    // $this->dataObject->bProperty = 5;
+    // $this->dataObject->cProperty = 6;
+    // $this->assertTrue($this->mockRecord->isNew);
+    // $this->assertTrue($this->mockRecord->isValid);
+    // $this->testObject->Validate(new PostData());
+    // $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
+    // $this->assertFalse($this->testObject->hasErrors);
+    // $errors = $this->testObject->errors;
+    // $this->assertSame(0, $errors->count);
   }
 
   /**
@@ -632,10 +663,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(3, $errorMessages->count);
-    $this->assertEquals('$value does NOT evaluate to KEY', $errorMessages[0]);
+    $this->assertEquals('$value does NOT evaluate to KEY', (string)$errorMessages[0]);
     $this->assertEquals(
       'Selected value NOT an avalible option!',
-      $errorMessages[1]
+      (string)$errorMessages[1]
     );
     $this->assertEquals(
       'At least one selected value is NOT an available option!',

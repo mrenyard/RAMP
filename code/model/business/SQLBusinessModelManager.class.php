@@ -217,7 +217,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       $dataObject = $statementHandle->fetch();
       if (!($dataObject instanceof \stdClass))
       {
-        throw new \DomainException('No matching Records found in data storage!');
+        throw new DataFetchException('No matching Records found in data storage!');
       }
       $collection = new $classFullName();
       do {

@@ -128,12 +128,11 @@ class PrimaryKey extends Field
     foreach ($this->dataObjectPropertyNames as $propertyName) {
       $filterValues[(string)Str::hyphenate($propertyName)] = $this->containingRecord->getPropertyValue((string)$propertyName);
     }
+    $filter = Filter::build($recordName, $filterValues);
+    $def = new SimpleBusinessModelDefinition($recordName);
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     try {
-      $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition($recordName),
-        Filter::build($recordName, $filterValues)
-      );
+      $MODEL_MANAGER::getInstance()->getBusinessModel($def, $filter);
     } catch (DataFetchException $expected) {
       return;
     }

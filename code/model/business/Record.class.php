@@ -142,14 +142,33 @@ abstract class Record extends BusinessModel
    */
   final public function validate(PostData $postdata)
   {
-    $this->errorCollection = StrCollection::set();
-    foreach ($this as $child)
-    {
-      $child->validate($postdata);
+    parent::validate($postdata);
+    if ($this->isNew && $this->isModified && $this->checkRequired($this->dataObject)) {
+      $this->PrimaryKey->validate($postdata);
     }
-    /*if ($this->isNew && $this->checkRequired($this->dataObject)) {
-      $pk = $this->PrimaryKey->validate($postdata);
-    }*/
+  }
+
+  /**
+   * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
+   * @return bool True if an error has been recorded
+   */
+  protected function get_hasErrors() : bool
+  {
+    return (parent::get_hasErrors())? TRUE : $this->primaryKey->hasErrors;
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
+   * @return StrCollection List of recorded errors.
+   */
+  protected function get_errors() : StrCollection
+  {
+    if ($this->primaryKey->hasErrors) {
+      $this->errorCollection->add($this->primaryKey->errors[0]);
+    }
+    return parent::get_errors();
   }
 
   /**

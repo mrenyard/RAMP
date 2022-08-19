@@ -73,6 +73,7 @@ use ramp\condition\PostData;
 use ramp\model\business\SQLBusinessModelManager;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\DataWriteException;
+use ramp\model\business\DataFetchException;
 
 use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\BadRecord;
 use tests\ramp\model\business\mocks\SQLBusinessModelManagerTest\MockRecord;
@@ -188,9 +189,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($newRecord->isModified);
     $_POST = array(
       'mock-record:new:property' => 'key',
-      'mock-record:new:propertyA' => 'valueA',
-      'mock-record:new:propertyB' => 'valueB',
-      'mock-record:new:propertyC' => 'valueC'
+      'mock-record:new:property-a' => 'valueA',
+      'mock-record:new:property-b' => 'valueB',
+      'mock-record:new:property-c' => 'valueC'
     );
     $newRecord->validate(PostData::build($_POST));
     $this->assertTrue($newRecord->isValid);
@@ -593,7 +594,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
    * - assert relavant Records are EXACT SAME OBJECT accross collections
    * - assert expected UPDATE SQL statements logged with \ChromePhp (Logger) following
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny()
-   * - assert throws \DomainException when query returns NO results
+   * - assert throws DataFetchException when query returns NO results
    *   - with message: *'No matching Record(s) found in data storage!'*
    * @link ramp.model.business.SQLBusinessModelManager#method_getBusinessModel ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
@@ -714,11 +715,11 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
         new SimpleBusinessModelDefinition($this->recordName),
         Filter::build($this->recordName, array('property-a' => 'valueB'))
       );
-    } catch (\DomainException $expected) {
+    } catch (DataFetchException $expected) {
       $this->assertSame('No matching Records found in data storage!', $expected->getMessage());
       return;
     }
-    $this->fail('An expected \DomainException has NOT been raised.');
+    $this->fail('An expected DataFetchException has NOT been raised.');
   }
 
   /**
