@@ -59,6 +59,11 @@ final class Str extends RAMPObject
   private static $BAR;
 
   /**
+   * Singleton reference to {@link Str} with value 'new'.
+   */
+  private static $NEW;
+
+  /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
   private $value;
@@ -98,6 +103,8 @@ final class Str extends RAMPObject
       case '|':
         $s = self::BAR();
         break;
+      case 'new':
+        $s = self::NEW();
       default:
         $s = new Str((string)$value);
     }
@@ -154,7 +161,7 @@ final class Str extends RAMPObject
 
   /**
    * Returns Bar Str ('|')
-   * @return \ramp\core\Str Str object composed semicolon ('|')
+   * @return \ramp\core\Str Str object composed bar ('|')
    */
   public static function BAR() : Str
   {
@@ -162,6 +169,18 @@ final class Str extends RAMPObject
       self::$BAR = new Str('|');
     }
     return self::$BAR;
+  }
+
+  /**
+   * Returns NEW Str ('new')
+   * @return \ramp\core\Str Str object composed new ('new')
+   */
+  public static function NEW() : Str
+  {
+    if (!isset(self::$NEW)) {
+      self::$NEW = new Str('new');
+    }
+    return self::$NEW;
   }
 
   /**
