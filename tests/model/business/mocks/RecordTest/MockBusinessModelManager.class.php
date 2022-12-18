@@ -91,12 +91,14 @@ class MockBusinessModelManager extends BusinessModelManager
     self::$callCount++;
     if ($definition->recordName == 'ConcreteRecordMultiKey')
     {
-      if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.property1 = "1" AND ConcreteRecordMultiKey.property2 = "2" AND ConcreteRecordMultiKey.property3 = "3"') {
+      // TODO:mrenyard: Fix Filter CamelCase of property
+      // if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.propertyA = "1" AND ConcreteRecordMultiKey.propertyB = "2" AND ConcreteRecordMultiKey.propertyC = "3"') {
+      if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.propertya = "1" AND ConcreteRecordMultiKey.propertyb = "2" AND ConcreteRecordMultiKey.propertyc = "3"') {
         if (!isset(self::$objectOne)) {
           self::$dataObjectOne = new \stdClass();
-          self::$dataObjectOne->property1 = 1;
-          self::$dataObjectOne->property2 = 2;
-          self::$dataObjectOne->property3 = 3;
+          self::$dataObjectOne->propertyA = 1;
+          self::$dataObjectOne->propertyB = 2;
+          self::$dataObjectOne->propertyC = 3;
           self::$objectOne = new ConcreteRecordMultiKey(self::$dataObjectOne);
         }
         return self::$objectOne;

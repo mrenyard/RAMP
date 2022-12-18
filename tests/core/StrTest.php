@@ -335,25 +335,25 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('ramp\core\Str', $o1);
     $this->assertSame(Str::_EMPTY(), $o1);
 
-    $o2 = Str::camelCase(Str::set('camel case this'));
+    $o2 = Str::camelCase(Str::set('camel case a'));
     $this->assertInstanceOf('ramp\core\Str', $o2);
-    $this->assertEquals(Str::set('CamelCaseThis'), $o2);
-    $this->assertSame((string)Str::set('CamelCaseThis'), (string)$o2);
+    $this->assertEquals(Str::set('CamelCaseA'), $o2);
+    $this->assertSame((string)Str::set('CamelCaseA'), (string)$o2);
 
-    $o3 = Str::camelCase(Str::set('camel case this'), TRUE);
+    $o3 = Str::camelCase(Str::set('camel case a'), TRUE);
     $this->assertInstanceOf('ramp\core\Str', $o3);
-    $this->assertEquals(Str::set('camelCaseThis'), $o3);
-    $this->assertSame((string)Str::set('camelCaseThis'), (string)$o3);
+    $this->assertEquals(Str::set('camelCaseA'), $o3);
+    $this->assertSame((string)Str::set('camelCaseA'), (string)$o3);
 
-    $o4 = Str::camelCase(Str::set('camel-case-this'));
+    $o4 = Str::camelCase(Str::set('camel-case-a'));
     $this->assertInstanceOf('ramp\core\Str', $o4);
-    $this->assertEquals(Str::set('CamelCaseThis'), $o4);
-    $this->assertSame((string)Str::set('CamelCaseThis'), (string)$o4);
+    $this->assertEquals(Str::set('CamelCaseA'), $o4);
+    $this->assertSame((string)Str::set('CamelCaseA'), (string)$o4);
 
-    $o5 = Str::camelCase(Str::set('camel-case-this'), TRUE);
+    $o5 = Str::camelCase(Str::set('camel-case-a'), TRUE);
     $this->assertInstanceOf('ramp\core\Str', $o5);
-    $this->assertEquals(Str::set('camelCaseThis'), $o5);
-    $this->assertSame((string)Str::set('camelCaseThis'), (string)$o5);
+    $this->assertEquals(Str::set('camelCaseA'), $o5);
+    $this->assertSame((string)Str::set('camelCaseA'), (string)$o5);
   }
 
   /**

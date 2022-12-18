@@ -71,6 +71,7 @@ use ramp\http\Method;
  */
 class Request extends RAMPObject implements iBusinessModelDefinition
 {
+  private static $current;
   private $expectsFragment;
   private $method;
   private $modelURN;
@@ -82,14 +83,29 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   private $filter;
   private $postData;
 
+  public static function reset() { self::$current = NULL; }
+
   /**
-   * Interprets HTTP and constructs new Request based on current context.
+   * Current active HTTP Request based on CURRENT context.
    * PRECONDITIONS
    * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and
    * limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
- */
-  public function __construct()
+   */
+  public static function current() : Request
+  {
+    if (!isset(self::$current)) { self::$current = new Request(); }
+    return self::$current;
+  }
+
+  /**
+   * Interprets HTTP and constructs new Request based on context.
+   * PRECONDITIONS
+   * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
+   * @throws \DomainException When supplied arguments do NOT meet the restrictions and
+   * limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   */
+  private function __construct()
   {
     $this->expectsFragment = \FALSE;
     if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {

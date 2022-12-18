@@ -286,8 +286,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $modelManager->update($authenticatableUnit);
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\AnAuthenticatableUnit:aperson']));
     $this->assertNull($this->testObject->createFor($authenticatableUnit));
-
-    $this->assertArrayNotHasKey('auPK', $this->testObject);
+    // $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('aperson', $this->dataObject->auPK);
     $this->assertEquals('a.person@domain.com', $this->dataObject->email);
     $this->assertEquals(1, $this->dataObject->loginAccountTypeID);
@@ -336,7 +335,7 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     )[0];
     $this->assertNull($this->testObject->createFor($authenticatableUnit));
     $this->assertTrue(isset(MockBusinessModelManager::$updateLog['ramp\model\business\LoginAccount:existing']));
-    $this->assertArrayNotHasKey('auPK', $this->testObject);
+    // $this->assertArrayNotHasKey('auPK', $this->testObject);
     $this->assertEquals('existing', $this->dataObject->auPK);
     $this->assertEquals('existing.person@domain.com', $this->dataObject->email);
     $this->assertEquals(1, $this->dataObject->loginAccountTypeID);

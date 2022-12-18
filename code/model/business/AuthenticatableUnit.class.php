@@ -58,7 +58,7 @@ abstract class AuthenticatableUnit extends Record
           Str::set('Please provide a correctly formated email address!')
         )
       );
-      if ($this->isNew) { $this['email'] = $this->email; }
+      if ($this->isNew) { $this[0] = $this->email; }
     }
     return $this->email;
   }
@@ -69,7 +69,7 @@ abstract class AuthenticatableUnit extends Record
    */
   final public function updated()
   {
-    if (isset($this['email'])) { unset($this['email']); }
+    if (isset($this[0])) { unset($this[0]); }
     parent::updated();
   }
 

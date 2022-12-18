@@ -122,15 +122,15 @@ abstract class Record extends BusinessModel
    */
   public function offsetSet($offset, $object)
   {
-    if (is_numeric($offset) || (!($object instanceof \ramp\model\business\field\Field)))
+    if (!($object instanceof \ramp\model\business\field\Field))
     {
       throw new \BadMethodCallException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
     }
-    if (!isset($this->dataObject->$offset))
-    {
-      $this->dataObject->$offset = NULL;
+    $dataObjectPropertyName = $object->dataObjectPropertyName;
+    if (!isset($this->dataObject->$dataObjectPropertyName)) {
+      $this->dataObject->$dataObjectPropertyName = NULL;
     }
     parent::offsetSet($offset, $object);
   }
@@ -190,7 +190,8 @@ abstract class Record extends BusinessModel
    */
   public function setPropertyValue(string $propertyName, $value)
   {
-    if ($this->getPropertyValue($propertyName) == $value) { return; }
+    $value = (\is_string($value) && $value === '')? NULL: $value;
+    if ($this->getPropertyValue($propertyName) === $value) { return; }
     $this->dataObject->$propertyName = $value;
     $this->modified = TRUE;
   }
@@ -232,14 +233,15 @@ abstract class Record extends BusinessModel
   public function updated()
   {
     $this->modified = FALSE;
-    foreach ($this->primaryKeyNames() as $primaryKeyName) {
+    $pkNames = $this->primaryKeyNames();
+    foreach ($pkNames as $primaryKeyName) {
       $pkName = (string)$primaryKeyName;
-      if (isset($this[$pkName])) { unset($this[$pkName]); }
       if (!isset($this->dataObject->$pkName)) {
         $this->validFromSource = FALSE;
         return;
       }
     }
+    for ($i=1, $j=$pkNames->count; $i <= $j; $i++) { unset($this['-' . $i]); }
     $this->validFromSource = ($this->checkRequired($this->dataObject));
   }
 

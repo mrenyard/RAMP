@@ -102,8 +102,7 @@ class PrimaryKey extends Field
   public function validate(PostData $postdata) : void
   {
     $this->errorCollection = StrCollection::set();
-    if ($this->containingRecord->isNew &&
-      $this->containingRecord->isValid) {    
+    if ($this->containingRecord->isNew && $this->containingRecord->isValid) {    
       try {
         $this->processValidationRule(NULL);
       } catch (FailedValidationException $e) {

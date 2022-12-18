@@ -93,10 +93,11 @@ use tests\ramp\model\business\mocks\RecordTest\ConcreteOption;
  */
 class RecordTest extends \PHPUnit\Framework\TestCase
 {
-  private $testObjectPropertyCount;
+  // private $testObjectPropertyCount;
   private $dataObject;
   private $testObject;
   private $testObjectProperties;
+  private $concreteRecordpropertyNames;
 
   /**
    * Setup - add variables
@@ -105,10 +106,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\mocks\RecordTest\MockBusinessModelManager';
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
-    $this->testObjectPropertyCount = 3;
     $this->dataObject = new \stdClass();
     $this->testObject = new ConcreteRecord($this->dataObject);
-    $this->testObjectProperties = new Collection(Str::set('ramp\model\business\field\Field'));
+    $this->concreteRecordPropertyCount = 3;
+    $this->concreteRecordPropertyNames = array(0 => 'propertyA', 1 => 'property1', 2 => 'property2');
+    $this->concreteRecordProperties = new Collection(Str::set('ramp\model\business\field\Field'));
     $className = __NAMESPACE__ . '\mocks\RecordTest\ConcreteRecord';
     foreach (get_class_methods($className) as $methodName)
     {
@@ -118,8 +120,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         {
           if ($methodName == $parentMethod) { continue 2; }
         }
-        $propertyName = str_replace('get_', '', $methodName);
-        $this->testObjectProperties[$propertyName] = $this->testObject->$propertyName;
+        $property = str_replace('get_', '', $methodName);
+        $this->concreteRecordProperties->add($this->testObject->$property);
       }
     }
   }
@@ -150,11 +152,13 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $properties = get_object_vars($this->dataObject);
     foreach ($properties as $name => $value)
     {
-      $this->assertEquals('property' . ++$i, $name);
+      // $j = ($i == 0) ? -1 : $i;
+      $this->assertEquals($this->concreteRecordPropertyNames[$i++], $name);
       $this->assertNull($value);
+      // $i++;
     }
     $this->assertEquals($i, count($properties));
-    $this->assertEquals($this->testObjectPropertyCount, $i);
+    $this->assertEquals($this->concreteRecordPropertyCount, $i);
   }
 
   /**
@@ -174,10 +178,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame('concrete-record:new', (string)$this->testObject->id);
-
-      $this->dataObject->property1 = 'id';
-      $this->assertSame('concrete-record:new', (string)$this->testObject->id);
-
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -207,11 +207,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $testObjectMultiKey = new ConcreteRecordMultiKey($this->dataObject);
       $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
       $this->assertNull($testObjectMultiKey->primaryKey->value);
-      $this->dataObject->property1 = 'a';
-      $this->dataObject->property2 = 'b';
-      $this->dataObject->property3 = 'c';
+      $this->dataObject->propertyA = '1';
+      $this->dataObject->propertyB = '2';
+      $this->dataObject->propertyC = '3';
       $this->assertSame(
-        $this->dataObject->property1 . '|' . $this->dataObject->property2 . '|' . $this->dataObject->property3,
+        $this->dataObject->propertyA . '|' . $this->dataObject->propertyB . '|' . $this->dataObject->propertyC,
         $testObjectMultiKey->primarykey->value
       );
       return;
@@ -251,19 +251,19 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0;
-    $iterator = $this->testObjectProperties->getIterator();
+    $iterator = $this->concreteRecordProperties->getIterator();
     $iterator->rewind();
     foreach ($this->testObject as $child)
     {
       $this->assertSame($child, $iterator->current());
-      $this->assertEquals('concrete-record:new:property' . ++$i, (string)$child->id);
+      $this->assertEquals(strtolower('concrete-record:new:' . $this->concreteRecordPropertyNames[$i++]), (string)$child->id);
       $this->assertInstanceOf('\ramp\model\business\field\Field', $child);
       $iterator->next();
     }
-    $this->assertEquals($this->testObjectProperties->count, $i);
+    $this->assertEquals($this->concreteRecordProperties->count, $i);
     $properties = get_object_vars($this->dataObject);
     $this->assertEquals($i, count($properties));
-    $this->assertEquals($this->testObjectPropertyCount, $i);
+    $this->assertEquals($this->concreteRecordPropertyCount, $i);
   }
 
   /**
@@ -277,19 +277,19 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[4];
     } catch (\OutOfBoundsException $expected) {
-      for ($i = 0; $i < $this->testObjectProperties->count; $i++)
+      for ($i=0; $i < $this->concreteRecordProperties->count; $i++)
       {
+        $j = ($i == 0) ? -1 : $i;
         $this->assertInstanceOf(
-          '\ramp\model\business\field\Field', $this->testObject['property' . ($i + 1)]
+          '\ramp\model\business\field\Field', $this->testObject[$j]
         );
         $this->assertSame(
-          $this->testObjectProperties['property' . ($i + 1)],
-          $this->testObject['property' . ($i + 1)]
+          $this->concreteRecordProperties[$i],
+          $this->testObject[$j]
         );
       }
       return;
-    }
-    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
+    }    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
   }
 
   /**
@@ -300,10 +300,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetExists()
   {
-    $this->assertTrue(isset($this->testObject['property1']));
-    $this->assertTrue(isset($this->testObject['property2']));
-    $this->assertTrue(isset($this->testObject['property3']));
-    $this->assertFalse(isset($this->testObject['property4']));
+    $this->assertTrue(isset($this->testObject[-1]));
+    $this->assertFalse(isset($this->testObject[0]));
+    $this->assertTrue(isset($this->testObject[1]));
+    $this->assertTrue(isset($this->testObject[2]));
+    $this->assertFalse(isset($this->testObject[3]));
   }
 
   /**
@@ -326,7 +327,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function testOffsetSetUnset()
   {
     $object = new Input(
-      Str::set('property4'),
+      Str::set('property3'),
       $this->testObject,
       new VarChar(
         10,
@@ -334,13 +335,19 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         Str::set('My error message HERE!')
       )
     );
-    $this->testObject['property4'] = $object;
-    $this->assertSame($object, $this->testObject['property4']);
-    unset($this->testObject['property4']);
-    $this->assertFalse(isset($this->testObject['property4']));
+    $this->testObject[3] = $object;
+    $this->assertSame($object, $this->testObject[3]);
+    unset($this->testObject[3]);
+    $this->assertFalse(isset($this->testObject[3]));
     try {
-      $this->testObject[0] = new Input(
-        Str::set('property5'),
+    $this->testObject[4] = new ConcreteValidationRule();
+    } catch (\BadMethodCallException $expected) {
+      $this->assertEquals(
+        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!',
+        $expected->getMessage()
+      );
+      $property4 = $this->testObject[4] = new Input(
+        Str::set('property4'),
         $this->testObject,
         new VarChar(
           10,
@@ -348,46 +355,24 @@ class RecordTest extends \PHPUnit\Framework\TestCase
           Str::set('My error message HERE!')
         )
       );
-    } catch (\BadMethodCallException $expected) {
-      $this->assertEquals(
-        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!',
-        $expected->getMessage()
-      );
+      $this->testObject->setPropertyValue('property4', 'GOOD');
+      $this->assertEquals('GOOD', $this->dataObject->property4);
       try {
-      $this->testObject['property5'] = new ConcreteValidationRule();
+        unset($this->testObject['property4']);
       } catch (\BadMethodCallException $expected) {
         $this->assertEquals(
-          'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!',
+          'Unsetting properties already populated with a valid value NOT alowed!',
           $expected->getMessage()
         );
-        $property5 = $this->testObject['property5'] = new Input(
-          Str::set('property5'),
-          $this->testObject,
-          new VarChar(
-            10,
-            new ConcreteValidationRule(),
-            Str::set('My error message HERE!')
-          )
-        );
-        $this->testObject->setPropertyValue('property5', 'GOOD');
-        $this->assertEquals('GOOD', $this->dataObject->property5);
-        try {
-          unset($this->testObject['property5']);
-        } catch (\BadMethodCallException $expected) {
-          $this->assertEquals(
-            'Unsetting properties already populated with a valid value NOT alowed!',
-            $expected->getMessage()
-          );
-          return;
-        }
         return;
       }
+      return;
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions to check 'new', 'cpmplete' record validation 
+   * Collection of assertions to check 'new', 'complete' record validation 
    * (\ramp\model\business\Record::validate()) of \ramp\model\business\Record::primarykey.
    * - assert property 'primarykey' is gettable.
    * - assert returned value instance of {@link \ramp\core\Str}.
@@ -401,15 +386,19 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $dataObject = new \stdClass();
     $testObjectMultiKey = new ConcreteRecordMultiKey($dataObject);
-    $this->assertSame(3, $testObjectMultiKey->count);
+    $this->assertSame(4, $testObjectMultiKey->count);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
     $this->assertNull($testObjectMultiKey->primaryKey->value);
+    $this->assertSame(4, $testObjectMultiKey->count);
     $testObjectMultiKey->validate(PostData::build(array(
-      'concrete-record-multi-key:new:property-1' => 1,
-      'concrete-record-multi-key:new:property-2' => 2,
-      'concrete-record-multi-key:new:property-3' => 3
+      'concrete-record-multi-key:new:property-a' => '1',
+      'concrete-record-multi-key:new:property-b' => '2',
+      'concrete-record-multi-key:new:property-c' => '3'
     )));
-    $this->assertSame(3, $testObjectMultiKey->count);
+    $this->assertSame(1, $testObjectMultiKey->propertyA->value);
+    $this->assertSame(2, $testObjectMultiKey->propertyB->value);
+    $this->assertSame(3, $testObjectMultiKey->propertyC->value);
+    $this->assertSame('1|2|3', $testObjectMultiKey->primaryKey->value);
     $this->assertSame(1, MockBusinessModelManager::$callCount);
     $this->assertTrue($testObjectMultiKey->isModified);
     $this->assertTrue($testObjectMultiKey->isValid);
@@ -418,9 +407,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $errors = $testObjectMultiKey->errors;
     $this->assertSame(1, $errors->count);
     $this->assertSame('An entry already exists for this record!', (string)$errors[0]);
-    $this->assertSame(3, $testObjectMultiKey->count);
+    $this->assertSame(4, $testObjectMultiKey->count);
     $testObjectMultiKey->updated();
-    $this->assertSame(0, $testObjectMultiKey->count);
+    $this->assertSame(1, $testObjectMultiKey->count);
     $this->assertSame('concrete-record-multi-key:1|2|3', (string)$testObjectMultiKey->id);
     // TODO:mrenyard: Add check ModelManager called from field\PrimaryKey
 
@@ -458,24 +447,24 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $selection = array(1,4,6);
     $_POST1 = array(
-      'concrete-record:new:property-1' => 'key',
-      'concrete-record:new:property-2' => 3,
-      'concrete-record:new:property-3' => $selection
+      'concrete-record:new:property-a' => 'key',
+      'concrete-record:new:property-1' => 3,
+      'concrete-record:new:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST1)));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertEquals(0, $this->testObject->errors->count);
+    $this->assertEquals(0, $this->testObject->propertyA->errors->count);
     $this->assertEquals(0, $this->testObject->property1->errors->count);
     $this->assertEquals(0, $this->testObject->property2->errors->count);
-    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('key', $dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertEquals(3, $dataObjectProperties['property2']);
-    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);    
-    $this->assertEquals($selection, $dataObjectProperties['property3']);
-    foreach ($this->testObject->property3->value as $item) {
+    $this->assertEquals('key', $dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
+    $this->assertEquals(3, $dataObjectProperties['property1']);
+    $this->assertSame((string)$dataObjectProperties['property1'], (string)$this->testObject->property1->value->id);    
+    $this->assertEquals($selection, $dataObjectProperties['property2']);
+    foreach ($this->testObject->property2->value as $item) {
       $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $this->assertTrue($this->testObject->isModified);
@@ -504,26 +493,26 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $selection = array(1,2,6);
     $_POST2 = array(
-      'concrete-record:new:property-1' => 'BAD',
-      'concrete-record:new:property-2' => 4,
-      'concrete-record:new:property-3' => $selection
+      'concrete-record:new:property-A' => 'BAD',
+      'concrete-record:new:property-1' => 4,
+      'concrete-record:new:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
     $this->assertTrue($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(1, $errorMessages->count);
     $this->assertEquals('$value does NOT evaluate to KEY', $errorMessages[0]);
-    $this->assertEquals(1, $this->testObject->property1->errors->count);
+    $this->assertEquals(1, $this->testObject->propertyA->errors->count);
+    $this->assertEquals(0, $this->testObject->property1->errors->count);
     $this->assertEquals(0, $this->testObject->property2->errors->count);
-    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertNull($dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertEquals('4', $dataObjectProperties['property2']);
-    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
-    $this->assertEquals($selection, $dataObjectProperties['property3']);
-    foreach ($this->testObject->property3->value as $item) {
+    $this->assertNull($dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
+    $this->assertEquals('4', $dataObjectProperties['property1']);
+    $this->assertSame((string)$dataObjectProperties['property1'], (string)$this->testObject->property1->value->id);
+    $this->assertEquals($selection, $dataObjectProperties['property2']);
+    foreach ($this->testObject->property2->value as $item) {
       $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
@@ -551,32 +540,32 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $selection = array('1','2','6');
     $_POST3 = array(
-      'concrete-record:new:property-1' => 'key',
-      'concrete-record:new:property-2' => 7, // BAD - Beyond index
-      'concrete-record:new:property-3' => $selection
+      'concrete-record:new:property-a' => 'key',
+      'concrete-record:new:property-1' => 7, // BAD - Beyond index
+      'concrete-record:new:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST3)));
     $this->assertTrue($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(1, $errorMessages->count);
     $this->assertEquals('Selected value NOT an avalible option!', $errorMessages[0]);
-    $this->assertEquals(0, $this->testObject->property1->errors->count);
-    $this->assertEquals(1, $this->testObject->property2->errors->count);
-    $this->assertEquals(0, $this->testObject->property3->errors->count);
+    $this->assertEquals(0, $this->testObject->propertyA->errors->count);
+    $this->assertEquals(1, $this->testObject->property1->errors->count);
+    $this->assertEquals(0, $this->testObject->property2->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('key', $dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame('0', (string)$this->testObject->property2->value->id);
-    $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
-    $this->assertEquals($selection, $dataObjectProperties['property3']);
-    foreach ($this->testObject->property3->value as $item) {
+    $this->assertEquals('key', $dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
+    $this->assertNull($dataObjectProperties['property1']);
+    $this->assertSame('0', (string)$this->testObject->property1->value->id);
+    $this->assertSame('Please choose:', (string)$this->testObject->property1->value->description);
+    $this->assertEquals($selection, $dataObjectProperties['property2']);
+    foreach ($this->testObject->property2->value as $item) {
       $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $_POST4 = array(
-      'concrete-record:new:property-2' => '8', // BAD - Beyond index
-      'concrete-record:new:property-3' => $selection
+      'concrete-record:new:property-1' => '8', // BAD - Beyond index
+      'concrete-record:new:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -603,9 +592,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $selection = array('1','8','6'); // BAD - Second argument beyond index
     $_POST5 = array(
-      'concrete-record:new:property-1' => 'key',
-      'concrete-record:new:property-2' => '5',
-      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
+      'concrete-record:new:property-a' => 'key',
+      'concrete-record:new:property-1' => '5',
+      'concrete-record:new:property-2' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST5)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -615,20 +604,20 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'At least one selected value is NOT an available option!',
       $errorMessages[0]
     );
+    $this->assertEquals(0, $this->testObject->propertyA->errors->count);
     $this->assertEquals(0, $this->testObject->property1->errors->count);
-    $this->assertEquals(0, $this->testObject->property2->errors->count);
-    $this->assertEquals(1, $this->testObject->property3->errors->count);
+    $this->assertEquals(1, $this->testObject->property2->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
-    $this->assertEquals('key', $dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
-    $this->assertNull($dataObjectProperties['property3']);
-    $this->assertSame(0, $this->testObject->property3->value->count);
+    $this->assertEquals('key', $dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
+    $this->assertEquals('5', $dataObjectProperties['property1']);
+    $this->assertSame((string)$dataObjectProperties['property1'], (string)$this->testObject->property1->value->id);
+    $this->assertNull($dataObjectProperties['property2']);
+    $this->assertSame(0, $this->testObject->property2->value->count);
     $_POST6 = array(
-      'concrete-record:new:property-2' => '5',
-      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
+      'concrete-record:new:property-1' => '5',
+      'concrete-record:new:property-2' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST6)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -655,9 +644,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   {
     $selection = array('1','8','6'); // BAD - Second argument beyond index
     $_POST7 = array(
-      'concrete-record:new:property-1' => 'BAD',
-      'concrete-record:new:property-2' => '7', // BAD - Beyond index
-      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
+      'concrete-record:new:property-a' => 'BAD',
+      'concrete-record:new:property-1' => '7', // BAD - Beyond index
+      'concrete-record:new:property-2' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST7)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -672,24 +661,24 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       'At least one selected value is NOT an available option!',
       $errorMessages[2]
     );
+    $this->assertEquals(1, $this->testObject->propertyA->errors->count);
     $this->assertEquals(1, $this->testObject->property1->errors->count);
     $this->assertEquals(1, $this->testObject->property2->errors->count);
-    $this->assertEquals(1, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
+    $this->assertNull($dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
     $this->assertNull($dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
+    $this->assertSame('0', (string)$this->testObject->property1->value->id);
+    $this->assertSame('Please choose:', (string)$this->testObject->property1->value->description);
     $this->assertNull($dataObjectProperties['property2']);
-    $this->assertSame('0', (string)$this->testObject->property2->value->id);
-    $this->assertSame('Please choose:', (string)$this->testObject->property2->value->description);
-    $this->assertNull($dataObjectProperties['property3']);
-    foreach ($this->testObject->property3->value as $item) {
+    foreach ($this->testObject->property2->value as $item) {
       $this->assertSame((int)array_shift($selection), (int)$item->key);
     }
     $_POST8 = array(
-      'concrete-record:new:property-1' => 'BAD',
-      'concrete-record:new:property-2' => '7', // BAD - Beyond index
-      'concrete-record:new:property-3' => $selection // BAD - Second argument beyond index
+      'concrete-record:new:property-a' => 'BAD',
+      'concrete-record:new:property-1' => '7', // BAD - Beyond index
+      'concrete-record:new:property-2' => $selection // BAD - Second argument beyond index
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST8)));
     $this->assertTrue($this->testObject->hasErrors);
@@ -716,40 +705,40 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateHasGetErrorsExistingAllGood()
   {
-    $this->dataObject->property1 = 'pkey';
-    $this->dataObject->property2 = 2;
-    $this->dataObject->property3 = array('1','2','6');
-    $this->assertArrayHasKey('property1', $this->testObject);
+    $this->dataObject->propertyA = 'pkey';
+    $this->dataObject->property1 = 2;
+    $this->dataObject->property2 = array('1','2','6');
+    $this->assertArrayHasKey(-1, $this->testObject);
     $this->assertNull($this->testObject->updated());
-    $this->assertArrayNotHasKey('property1', $this->testObject);
+    $this->assertArrayNotHasKey(-1, $this->testObject);
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
     $selection = array('3','4','5');
     $_POST9 = array(
-      'concrete-record:pkey:property-2' => '5',
-      'concrete-record:pkey:property-3' => $selection
+      'concrete-record:pkey:property-1' => '5',
+      'concrete-record:pkey:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST9)));
     $this->assertFalse($this->testObject->hasErrors);
     $errorMessages = $this->testObject->errors;
     $this->assertEquals(0, $errorMessages->count);
+    $this->assertEquals(0, $this->testObject->propertyA->errors->count);
     $this->assertEquals(0, $this->testObject->property1->errors->count);
     $this->assertEquals(0, $this->testObject->property2->errors->count);
-    $this->assertEquals(0, $this->testObject->property3->errors->count);
     $i = 1;
     $dataObjectProperties = get_object_vars($this->dataObject);
     // NOTE the primaryKey is NOT updated
-    $this->assertEquals('pkey', $dataObjectProperties['property1']);
-    $this->assertSame($dataObjectProperties['property1'], $this->testObject->property1->value);
-    $this->assertEquals('5', $dataObjectProperties['property2']);
-    $this->assertSame((string)$dataObjectProperties['property2'], (string)$this->testObject->property2->value->id);
-    $this->assertEquals($selection, $dataObjectProperties['property3']);
-    foreach ($this->testObject->property3->value as $item) {
+    $this->assertEquals('pkey', $dataObjectProperties['propertyA']);
+    $this->assertSame($dataObjectProperties['propertyA'], $this->testObject->propertyA->value);
+    $this->assertEquals('5', $dataObjectProperties['property1']);
+    $this->assertSame((string)$dataObjectProperties['property1'], (string)$this->testObject->property1->value->id);
+    $this->assertEquals($selection, $dataObjectProperties['property2']);
+    foreach ($this->testObject->property2->value as $item) {
       $this->assertSame((string)array_shift($selection), (string)$item->id);
     }
     $_POST10 = array(
-      'concrete-record:pkey:property-2' => '5',
-      'concrete-record:pkey:property-3' => $selection
+      'concrete-record:pkey:property-1' => '5',
+      'concrete-record:pkey:property-2' => $selection
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST10)));
     $this->assertFalse($this->testObject->hasErrors);
@@ -765,7 +754,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
   public function test__set()
   {
     $this->expectException(PropertyNotSetException::class);
-    $this->testObject->property2 = 1;
+    $this->testObject->propertyB = 1;
   }
 
    /**

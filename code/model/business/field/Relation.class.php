@@ -22,6 +22,7 @@ namespace ramp\model\business\field;
 
 use ramp\SETTING;
 use ramp\core\Str;
+use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
@@ -44,6 +45,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Relation extends Field
 {
+  private static $depthCheck;
   private $modelManager;
   private $relationObjectRecordName;
   private $relatedObject;
@@ -57,6 +59,7 @@ class Relation extends Field
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectRecordName)
   {
+    if (!isset(self::$depthCheck)) { self::$depthCheck = array(); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->relationObjectRecordName = $relationObjectRecordName;
@@ -70,7 +73,7 @@ class Relation extends Field
    */
   private function update($key)
   {
-    $this->relatedObject = (isset($key))?
+    $this->relatedObject = (isset($key)) ?
       $this->modelManager->getBusinessModel(
         new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::set($key))
       ):
@@ -92,7 +95,7 @@ class Relation extends Field
    */
   public function get_id() : Str
   {
-    return $this->relatedObject->id;
+    return (isset($this->relatedObject)) ? $this->relatedObject->id : parent::get_id();
   }
 
   /**
@@ -101,7 +104,22 @@ class Relation extends Field
    */
   public function getIterator() : \Traversable
   {
-    return $this->relatedObject;
+    if (isset($this->relatedObject)) { return $this->relatedObject; }
+    if (!isset(self::$depthCheck[(string)$this->id])) {
+      self::$depthCheck[(string)$this->id] = 1;
+      return $this->modelManager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::NEW())
+      );
+    }
+    return new field\Input(
+      $this->dataObjectPropertyName,
+      $this->containingRecord,
+      new validation\dbtype\VarChar(
+        45,
+        new validation\Alphanumeric(),
+        Str::set('My error message HERE!')
+      )
+    );
   }
 
 

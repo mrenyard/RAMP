@@ -61,7 +61,6 @@ class SimpleRecord extends Record
    */
   protected function get_uniqueKey() : Field
   {
-    // $propertyName = Str::set('uniqueKey');
     self::$uniquePrimaryKeyTest = new UniquePrimaryKey($this);
     if (!isset($this->primaryProperty))
     {
@@ -77,7 +76,7 @@ class SimpleRecord extends Record
         )
       );
     }
-    if ($this->isNew) { $this['uniqueKey'] = $this->primaryProperty; }
+    if ($this->isNew) { $this[-1] = $this->primaryProperty; }
     return $this->primaryProperty;
   }
 

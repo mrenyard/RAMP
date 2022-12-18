@@ -64,7 +64,6 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`LoginAccount` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-
 -- -----------------------------------------------------
 -- Table `ramp_db`.`Country`
 -- -----------------------------------------------------
@@ -110,7 +109,6 @@ INSERT INTO `Country` (`code`, `name`) VALUES
 ('TR', 'TURKEY'),
 ('GB', 'UNITED KINGDOM');
 
-
 -- -----------------------------------------------------
 -- Table `ramp_db`.`Person`
 -- -----------------------------------------------------
@@ -124,8 +122,8 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `additionalNames` VARCHAR(45) NULL DEFAULT NULL,
   `familyName` VARCHAR(45) NULL DEFAULT NULL,
   `honorificSuffix` VARCHAR(45) NULL DEFAULT NULL,
-  `primaryAddressID` VARCHAR(15) NULL DEFAULT NULL,
-  `primaryPhoneNumberID` VARCHAR(15) NULL DEFAULT NULL,
+  `primaryAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
+  `primaryPhoneNumberKEY` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`uname`),
   UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
@@ -147,11 +145,11 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
   -- `extendedAddress` VARCHAR(45) NOT NULL, -- PremisesElements (157)
   `subBuildingName` VARCHAR(30) NULL DEFAULT NULL,
   `buildingName` VARCHAR(50) NULL DEFAULT NULL,
-  `buildingNumber` TINYINT NULL DEFAULT NULL,
+  `buildingNumber` SMALLINTNULL DEFAULT NULL,
   `organisationName` VARCHAR(60) NULL DEFAULT NULL,
   `departmentName` VARCHAR(60) NULL DEFAULT NULL,
   -- `postOfficeBox` VARCHAR(13) NULL DEFAULT NULL,
-  `PoBoxNumber` TINYINT NULL DEFAULT 0,
+  `PoBoxNumber` SMALLINTNULL DEFAULT 0,
   -- `streetAddress` VARCHAR(45) NULL DEFAULT NULL, -- ThoroughfareElements (Oakwood Drive)
   `dependentThoroughfare` VARCHAR(80) NULL DEFAULT NULL,
   `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,

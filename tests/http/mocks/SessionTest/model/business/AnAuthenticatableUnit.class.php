@@ -42,12 +42,13 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   public function primaryKeyNames() : StrCollection { return StrCollection::set('uname'); }
 
-  private $primaryProperty;
+  // private $primaryProperty;
+  private $uname;
   protected function get_uname() : Field
   {
-    if (!isset($this->primaryProperty))
+    if (!isset($this->uname))
     {
-      $this->primaryProperty = new Input(
+      $this->uname = new Input(
         Str::set('uname'),
         $this,
         new VarChar(
@@ -56,9 +57,9 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
           Str::set('My error message HERE!')
         )
       );
-      if ($this->isNew) { $this['uname'] = $this->primaryProperty; }
+      if ($this->isNew) { $this[-1] = $this->uname; }
     }
-    return $this->primaryProperty;
+    return $this->uname;
   }
 
   /**
@@ -68,9 +69,9 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   protected function get_familyName() : Field
   {
-    if (!isset($this['familyName']))
+    if (!isset($this[1]))
     {
-      $this['familyName'] = new Input(
+      $this[1] = new Input(
         Str::set('familyName'),
         $this,
         new VarChar(
@@ -80,7 +81,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
         )
       );
     }
-    return $this['familyName'];
+    return $this[1];
   }
 
   /**
@@ -90,9 +91,9 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   protected function get_givenName() : Field
   {
-    if (!isset($this['givenName']))
+    if (!isset($this[2]))
     {
-      $this['givenName'] = new Input(
+      $this[2] = new Input(
         Str::set('givenName'),
         $this,
         new VarChar(
@@ -102,7 +103,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
         )
       );
     }
-    return $this['givenName'];
+    return $this[2];
   }
 
   /**

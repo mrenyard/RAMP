@@ -40,6 +40,7 @@ require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
@@ -51,6 +52,7 @@ require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.c
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
+require_once '/usr/share/php/ramp/http/Request.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/RelationTest/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/RelationTest/MockRecord.class.php';
@@ -178,8 +180,8 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $i = 0;
     foreach ($this->testObject as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
-      if ($i == 0) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne['key'], $property); }
-      if ($i == 1) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne['property'], $property); }
+      if ($i == 0) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne[-1], $property); }
+      if ($i == 1) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $property); }
       $i++;
     }
   }
@@ -213,10 +215,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[0];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject['key']);
-      $this->assertSame(MockBusinessModelManager::$relatedObjectOne['key'], $this->testObject['key']);
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject['property']);
-      $this->assertSame(MockBusinessModelManager::$relatedObjectOne['property'], $this->testObject['property']);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject[-1]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[-1], $this->testObject[-1]);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject[1]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $this->testObject[1]);
       return;
     }
     $this->fail('An expected \OutOfBoundsException has NOT been raised.');
@@ -231,9 +233,9 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testOffsetExists()
   {
     $this->assertFalse(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject['key']));
-    $this->assertTrue(isset($this->testObject['property']));
-    $this->assertFalse(isset($this->testObject['notproperty']));
+    $this->assertTrue(isset($this->testObject[-1]));
+    $this->assertTrue(isset($this->testObject[1]));
+    $this->assertFalse(isset($this->testObject[2])); // Not a property
   }
 
   /**
@@ -249,10 +251,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testOffsetSetOffsetUnset()
   {
     $object =  new MockField(Str::set('propertNew'), MockBusinessModelManager::$relatedObjectOne);
-    $this->testObject['propertyNew'] = $object;
-    $this->assertSame($object, $this->testObject['propertyNew']);
-    unset($this->testObject['propertyNew']);
-    $this->assertFalse(isset($this->testObject['propertyNew']));
+    $this->testObject[2] = $object; // New property
+    $this->assertSame($object, $this->testObject[2]);
+    unset($this->testObject[2]);
+    $this->assertFalse(isset($this->testObject[2]));
   }
 
   /**

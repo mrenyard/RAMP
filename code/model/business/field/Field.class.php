@@ -47,8 +47,8 @@ use ramp\model\business\FailedValidationException;
  */
 abstract class Field extends BusinessModel
 {
-  protected $dataObjectPropertyName;
-  protected $containingRecord;
+  private $dataObjectPropertyName;
+  private $containingRecord;
 
   /**
    * Base constructor for Field related to a single property of containing record.
@@ -69,7 +69,7 @@ abstract class Field extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str Unique identifier for *this*
    */
-  public function get_id() : Str
+  protected function get_id() : Str
   {
     return Str::COLON()->prepend(
       $this->containingRecord->id
@@ -95,11 +95,21 @@ abstract class Field extends BusinessModel
   abstract protected function get_value();
 
   /**
+   * Get dataobject property name
+   * **DO NOT CALL DIRECTLY, USE this->dataObjectPropertyName;**
+   * @return \ramp\core\Str Property name for dataobject of *this* containing record
+   */
+  final protected function get_dataObjectPropertyName() : Str
+  {
+    return $this->dataObjectPropertyName;
+  }
+
+  /**
    * Get containing record
    * **DO NOT CALL DIRECTLY, USE this->containingRecord;**
    * @return \ramp\model\business\Record Containing record of *this*
    */
-  final public function get_containingRecord() : Record
+  final protected function get_containingRecord() : Record
   {
     return $this->containingRecord;
   }

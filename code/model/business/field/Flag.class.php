@@ -21,6 +21,7 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\validation\dbtype\Flag as Rule;
 
@@ -65,6 +66,23 @@ class Flag extends Field
   final protected function get_value()
   {
     return ((bool)$this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName));
+  }
+
+  /**
+   * Validate postdata against this and update accordingly.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
+   */
+  public function validate(PostData $postdata) : void
+  {
+    parent::validate($postdata);
+    if ($this->containingRecord->isModified) {
+      $currentValue = $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+      if ($currentValue === TRUE || $currentValue === FALSE) {
+        $newValue = ($currentValue)? 1:0;
+        $this->containingRecord->setPropertyValue((string)$this->dataObjectPropertyName, $newValue);
+      }
+    }
   }
 
   /**

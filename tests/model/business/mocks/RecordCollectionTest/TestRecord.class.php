@@ -45,8 +45,8 @@ class TestRecord extends Record
 
   protected function get_keyProperty()
   {
-    if (!isset($this['keyProperty'])) {
-      $this['keyProperty'] = new Input(
+    if (!isset($this[0])) {
+      $this[0] = new Input(
         Str::set('keyProperty'),
         $this,
         new VarChar(
@@ -56,13 +56,13 @@ class TestRecord extends Record
         )
       );
     }
-    return $this['keyProperty'];
+    return $this[0];
   }
 
   protected function get_aProperty()
   {
-    if (!isset($this['aProperty'])) {
-      $this['aProperty'] = new Input(
+    if (!isset($this[1])) {
+      $this[1] = new Input(
         Str::set('aProperty'),
         $this,
         new VarChar(
@@ -72,7 +72,7 @@ class TestRecord extends Record
         )
       );
     }
-    return $this['aProperty'];
+    return $this[1];
   }
 
  protected static function checkRequired($dataObject) : bool

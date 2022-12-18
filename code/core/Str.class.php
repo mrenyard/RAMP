@@ -248,11 +248,9 @@ final class Str extends RAMPObject
   public static function camelCase(Str $value, bool $lowerCaseFirstLetter = \NULL) : Str
   {
     if ($value === self::_EMPTY()){ return $value; } // cannot camelCase an empty string
-    $value = ucwords(str_replace('-', ' ', $value));
-    if ($lowerCaseFirstLetter !== \NULL && $lowerCaseFirstLetter) {
-      $value = lcfirst($value);
-    }
-    return Str::set(str_replace(' ', '', $value));
+    $value = str_replace(' ', '', ucwords(str_replace('-', ' ', (string)$value)));
+    if ($lowerCaseFirstLetter !== \NULL && $lowerCaseFirstLetter) { $value = lcfirst($value); }
+    return Str::set($value);
   }
 
   /**

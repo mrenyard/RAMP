@@ -43,10 +43,15 @@ require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockField.class.php';
 
@@ -134,6 +139,27 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\field\Field::label.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
+   * - assert property 'label' is gettable.
+   * - assert returned value instance of {@link \ramp\core\Str}.
+   * - assert returned value matches expected result.
+   * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
+   */
+  public function testGet_labe()
+  {
+    try {
+      $this->testObject->label = "LABEL";
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->label is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
+      $this->assertSame('A Property', (string)$this->testObject->label);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

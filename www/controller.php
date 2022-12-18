@@ -32,7 +32,7 @@ try {
   return;
 }
 try {
-  $request = new http\Request();
+  $request = http\Request::current();
 } catch (\DomainException $e) {
   header('HTTP/1.1 404 Not Found');
   // TODO:mrenyard: Render view - Not Found.
@@ -48,7 +48,7 @@ if ((string)$request->modelURN !== '') {
   $modelManager = $MODEL_MANAGER::getInstance();
   try {
     $model = $modelManager->getBusinessModel($request, $request->filter, $request->fromIndex);
-  } catch (\DomainException $e) {
+  } catch (model\business\DataFetchException $e) {
     if ($request->recordKey != NULL) { // No matching Record found in data storage 
       header('HTTP/1.1 404 Not Found');
       print_r('<h1>Render view - Not Found.</h1>');

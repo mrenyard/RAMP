@@ -45,7 +45,7 @@ class Column extends Record
   protected function get_name() : string
   {
     $value = Str::set($this->getPropertyValue('COLUMN_NAME'));
-    $this->isForeignKeyColumn = $value->contains(StrCollection::set('ID'));
+    $this->isForeignKeyColumn = $value->contains(StrCollection::set('ID','KEY'));
     return (string)$value;
   }
 
@@ -75,10 +75,12 @@ class Column extends Record
       case 'varchar':
         return "VarChar(\n          " . $values[1] . ",\n          new validation\Alphanumeric(),\n          " . $message . "\n        )";
       case 'tinyint':
-        return (Str::set($this->name)->contains(StrCollection::set('FLAG'))) ?
+        return (Str::set($this->name)->contains(StrCollection::set('is', 'has', 'FLAG'))) ?
           "Flag(\n          " . $message . "\n        )" :
             "TinyInt(\n          " . $message . "\n        )";
-      default:
+      case 'smallint':
+          "SmallInt(\n          " . $message . "\n        )";
+        default:
         return $values[0] . "(\n          " . $message . "\n        )";
     }
   }

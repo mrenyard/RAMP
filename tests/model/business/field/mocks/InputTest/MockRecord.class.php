@@ -18,43 +18,41 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\FlagTest;
+namespace tests\ramp\model\business\field\mocks\InputTest;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
-use ramp\model\business\field\Flag;
+use ramp\model\business\RecordCollection;
 use ramp\model\business\field\Input;
-use ramp\model\business\validation\Alphanumeric;
 use ramp\model\business\validation\dbtype\VarChar;
+
+use tests\ramp\model\business\field\mocks\InputTest\ConcreteValidationRule;
+
+/**
+ * Collection of MockRecord.
+ */
+class MockRecordCollection extends RecordCollection { }
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
 class MockRecord extends Record
 {
-  public static $setPropertyCallCount = 0;
-  public static function reset() { self::$setPropertyCallCount = 0; }
-  public function setPropertyValue(string $propertyName, $value)
-  {
-    self::$setPropertyCallCount++;
-    parent::setPropertyValue($propertyName, $value);
-  }
-
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('key');
+    return StrCollection::set('aProperty');
   }
 
-  public function get_key()
+  protected function get_aProperty()
   {
     if (!isset($this[-1])) {
       $this[-1] = new Input(
-        Str::set('key'),
+        Str::set('aProperty'),
         $this,
         new VarChar(
           10,
-          new Alphanumeric(),
+          new ConcreteValidationRule(),
           Str::set('$value does NOT evaluate to KEY')
         )
       );
@@ -62,11 +60,8 @@ class MockRecord extends Record
     return $this[-1];
   }
 
-  protected function get_aProperty()
-  {
-  }
-  
   protected static function checkRequired($dataObject) : bool
   {
+    return TRUE;
   }
 }

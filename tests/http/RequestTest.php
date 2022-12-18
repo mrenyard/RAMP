@@ -66,6 +66,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function setUp() : void
   {
+    Request::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\http\mocks\RequestTest';
 
     $_GET = array();
@@ -88,7 +89,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function test__construct()
   {
     $_SERVER['REQUEST_URI'] = '/';
-    $testObject = new Request();
+    $testObject = Request::current();
     $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
     $this->assertInstanceOf('ramp\model\business\iBusinessModelDefinition', $testObject);
     $this->assertInstanceOf('ramp\http\Request', $testObject);
@@ -106,7 +107,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Invalid: BadRecord, does NOT match business model');
     $_SERVER['REQUEST_URI'] = '/bad-record';
-    $testObject = new Request();
+    $testObject = Request::current();
   }
 
   /**
@@ -120,7 +121,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Invalid: MockRecord->badProperty, does NOT match business model');
     $_SERVER['REQUEST_URI'] = '/mock-record/key/bad-property';
-    $testObject = new Request();
+    $testObject = Request::current();
   }
 
   /**
@@ -138,7 +139,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_SERVER['REQUEST_URI'] = '/mock-record/?property-not=valueOK';
     $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
     $_GET['property-not'] = 'valueOK';
-    $testObject = new Request();
+    $testObject = Request::current();
   }
 
   /**
@@ -182,7 +183,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_GET['property-b'] = 'valueB';
     $_GET['property-c'] = 'valueC';
     $_GET['from'] = '100';
-    $testObject = new Request();
+    $testObject = Request::current();
 
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::GET());
@@ -248,7 +249,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_POST['mock-record:key:property-a'] = 'valueA';
     $_POST['mock-record:key:property-b'] = 'valueB';
     $_POST['mock-record:key:property-c'] = 'valueC';
-    $testObject = new Request();
+    $testObject = Request::current();
 
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::POST());
@@ -319,7 +320,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_SERVER['REQUEST_METHOD'] = 'POST';
     $_SERVER['REQUEST_URI'] = '/mock-record/key/property-b/';
     $_POST['mock-record:key:property-b'] = 'valueB';
-    $testObject = new Request();
+    $testObject = Request::current();
 
     $this->assertTrue($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::POST());

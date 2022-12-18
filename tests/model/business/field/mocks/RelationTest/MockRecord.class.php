@@ -37,24 +37,24 @@ class MockRecord extends Record
 
   protected function get_key()
   {
-    if (!isset($this['key'])) {
-      $this['key'] = new MockField(
-        Str::set('key'),
+    if (!isset($this[-1])) {
+      $this[-1] = new MockField(
+        Str::set(-1),
         $this
       );
     }
-    return $this['key']; 
+    return $this[-1]; 
   }
 
   protected function get_property()
   {
-    if (!isset($this['property'])) {
-      $this['property'] = new MockField(
+    if (!isset($this[1])) {
+      $this[1] = new MockField(
         Str::set('property'),
         $this
       );
     }
-    return $this['property']; 
+    return $this[1]; 
   }
   
   protected static function checkRequired($dataObject) : bool

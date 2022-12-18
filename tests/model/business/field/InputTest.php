@@ -49,8 +49,9 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/InputTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/field/mocks/InputTest/MyValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/mocks/InputTest/ConcreteValidationRule.class.php';
 
 use ramp\core\Str;
 use ramp\core\Collection;
@@ -59,7 +60,7 @@ use ramp\condition\PostData;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
+use tests\ramp\model\business\field\mocks\InputTest\MockRecord;
 use tests\ramp\model\business\field\mocks\InputTest\MyValidationRule;
 
 /**
@@ -85,7 +86,7 @@ class InputTest extends \PHPUnit\Framework\TestCase
     $this->errorMessage = 'MyValidationRule has error due to $value of BAD!';
     $this->myValidationRule = new VarChar(10, new MyValidationRule(), Str::set($this->errorMessage));
     $this->testObject = new Input(Str::set('aProperty'), $this->mockRecord, $this->myValidationRule);
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\InputTest';
   }
 
   /**

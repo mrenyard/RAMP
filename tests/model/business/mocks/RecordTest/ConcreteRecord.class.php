@@ -34,14 +34,15 @@ class ConcreteRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('property1');
+    return StrCollection::set('propertyA');
   }
 
-  public function get_property1()
+  private $propertyA;
+  public function get_propertyA()
   {
-    if (!isset($this['property1'])) {
-      $this['property1'] = new Input(
-        Str::set('property1'),
+    if (!isset($this->propertyA)) {
+      $this->propertyA = new Input(
+        Str::set('propertyA'),
         $this,
         new VarChar(
           10,
@@ -49,36 +50,37 @@ class ConcreteRecord extends Record
           Str::set('$value does NOT evaluate to KEY')
         )
       );
+      if ($this->isNew) { $this[-1] = $this->propertyA; }
     }
-    return $this['property1'];
+    return $this->propertyA;
+  }
+
+  public function get_property1()
+  {
+    if (!isset($this[1])) {
+      $this[1] = new SelectOne(
+        Str::set('property1'),
+        $this,
+        new ConcreteOptionList()
+      );
+    }
+    return $this[1];
   }
 
   public function get_property2()
   {
-    if (!isset($this['property2'])) {
-      $this['property2'] = new SelectOne(
+    if (!isset($this[2])) {
+      $this[2] = new SelectMany(
         Str::set('property2'),
         $this,
         new ConcreteOptionList()
       );
     }
-    return $this['property2'];
-  }
-
-  public function get_property3()
-  {
-    if (!isset($this['property3'])) {
-      $this['property3'] = new SelectMany(
-        Str::set('property3'),
-        $this,
-        new ConcreteOptionList()
-      );
-    }
-    return $this['property3'];
+    return $this[2];
   }
 
   protected static function checkRequired($dataObject) : bool
   {
-    return isset($dataObject->property1);
+    return isset($dataObject->propertyA);
   }
 }

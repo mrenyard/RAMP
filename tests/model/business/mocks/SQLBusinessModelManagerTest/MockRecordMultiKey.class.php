@@ -49,9 +49,9 @@ class MockRecordMultiKey extends Record
 
   protected function get_propertyA() : Field
   {
-    if (!isset($this['propertyA']))
+    if (!isset($this[-1]))
     {
-      $this['propertyA'] = new Input(
+      $this[-1] = new Input(
         Str::set('propertyA'),
         $this,
         new VarChar(
@@ -61,14 +61,14 @@ class MockRecordMultiKey extends Record
         )
       );
     }
-    return $this['propertyA'];
+    return $this[-1];
   }
 
   protected function get_propertyB() : Field
   {
-    if (!isset($this['propertyB']))
+    if (!isset($this[-2]))
     {
-      $this['propertyB'] = new Input(
+      $this[-2] = new Input(
         Str::set('propertyB'),
         $this,
         new VarChar(
@@ -78,14 +78,14 @@ class MockRecordMultiKey extends Record
         )
       );
     }
-    return $this['propertyB'];
+    return $this[-2];
   }
 
   protected function get_propertyC() : Field
   {
-    if (!isset($this['propertyC']))
+    if (!isset($this[-3]))
     {
-      $this['propertyC'] = new Input(
+      $this[-3] = new Input(
         Str::set('propertyC'),
         $this,
         new VarChar(
@@ -95,14 +95,14 @@ class MockRecordMultiKey extends Record
         )
       );
     }
-    return $this['propertyC'];
+    return $this[-3];
   }
 
   protected function get_propertyD() : Field
   {
-    if (!isset($this['propertyD']))
+    if (!isset($this[1]))
     {
-      $this['propertyD'] = new Input(
+      $this[1] = new Input(
         Str::set('propertyD'),
         $this,
         new VarChar(
@@ -112,7 +112,7 @@ class MockRecordMultiKey extends Record
         )
       );
     }
-    return $this['propertyD'];
+    return $this[1];
   }
 
   /**

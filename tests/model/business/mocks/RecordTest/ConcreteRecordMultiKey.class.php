@@ -34,13 +34,67 @@ class ConcreteRecordMultiKey extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('property1','property2','property3');
+    return StrCollection::set('propertyA','propertyB','propertyC');
+  }
+
+  private $propertyA;
+  public function get_propertyA()
+  {
+    if (!isset($this->propertyA)) {
+      $this->propertyA = new Input(
+        Str::set('propertyA'),
+        $this,
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate')
+        )
+      );
+      if ($this->isNew) { $this[-1] = $this->propertyA; }
+    }
+    return $this->propertyA;
+  }
+
+  private $propertyB;
+  public function get_propertyB()
+  {
+    if (!isset($this->propertyB)) {
+      $this->propertyB = new Input(
+        Str::set('propertyB'),
+        $this,
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate')
+        )
+      );
+      if ($this->isNew) { $this[-2] = $this->propertyB; }
+    }
+    return $this->propertyB;
+  }
+
+  private $propertyC;
+  public function get_propertyC()
+  {
+    if (!isset($this->propertyC)) {
+      $this->propertyC = new Input(
+        Str::set('propertyC'),
+        $this,
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate')
+        )
+      );
+      if ($this->isNew) { $this[-3] = $this->propertyC; }
+    }
+    return $this->propertyC;
   }
 
   public function get_property1()
   {
-    if (!isset($this['property1'])) {
-      $this['property1'] = new Input(
+    if (!isset($this[1])) {
+      $this[1] = new Input(
         Str::set('property1'),
         $this,
         new VarChar(
@@ -50,47 +104,15 @@ class ConcreteRecordMultiKey extends Record
         )
       );
     }
-    return $this['property1'];
-  }
-
-  public function get_property2()
-  {
-    if (!isset($this['property2'])) {
-      $this['property2'] = new Input(
-        Str::set('property2'),
-        $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate')
-        )
-      );
-    }
-    return $this['property2'];
-  }
-
-  public function get_property3()
-  {
-    if (!isset($this['property3'])) {
-      $this['property3'] = new Input(
-        Str::set('property3'),
-        $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate')
-        )
-      );
-    }
-    return $this['property3'];
+    return $this[1];
   }
 
   protected static function checkRequired($dataObject) : bool
   {
     return (
-      isset($dataObject->property1) &&
-      isset($dataObject->property2) &&
-      isset($dataObject->property3)
+      isset($dataObject->propertyA) &&
+      isset($dataObject->propertyB) &&
+      isset($dataObject->propertyC)
     );
   }
 }

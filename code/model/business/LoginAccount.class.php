@@ -222,14 +222,14 @@ class LoginAccount extends Record
   public function createFor(AuthenticatableUnit $authenticatableUnit)
   {
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
-    if (!$authenticatableUnit->isValid) { throw new Exception(); }
+    if (!$authenticatableUnit->isValid) { throw new \Exception(); }
     $this->setPropertyValue('auPK', $authenticatableUnit->getPropertyValue(
       (string)$authenticatableUnit->primaryKeyNames()[0] // ->implode(Str::BAR())
     ));
     $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
     $this->setPropertyValue('loginAccountTypeID', 1);
     $this->setPassword($this->generateRandomPassword());
-    if (!$this->isValid) { throw new Exception('Unable to add Login Account'); }
+    if (!$this->isValid) { throw new \Exception('Unable to add Login Account'); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $modelManager = $MODEL_MANAGER::getInstance();
     $modelManager->update($this);

@@ -111,6 +111,7 @@ class oList extends RAMPObject implements iList
       );
     }
     $this->list[$offset] = $object;
+    ksort($this->list);
   }
 
   /**

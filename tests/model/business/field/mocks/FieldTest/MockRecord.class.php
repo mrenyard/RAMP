@@ -46,8 +46,8 @@ class MockRecord extends Record
 
   protected function get_aProperty()
   {
-    if (!isset($this['aProperty'])) {
-      $this['aProperty'] = new Input(
+    if (!isset($this[1])) {
+      $this[1] = new Input(
         Str::set('aProperty'),
         $this,
         new VarChar(
@@ -57,13 +57,13 @@ class MockRecord extends Record
         )
       );
     }
-    return $this['aProperty'];
+    return $this[1];
   }
 
   protected function get_bProperty()
   {
-    if (!isset($this['bProperty'])) {
-      $this['bProperty'] = new Input(
+    if (!isset($this[2])) {
+      $this[2] = new Input(
         Str::set('bProperty'),
         $this,
         new VarChar(
@@ -73,13 +73,13 @@ class MockRecord extends Record
         )
       );
     }
-    return $this['bProperty'];
+    return $this[2];
   }
 
   protected function get_cProperty()
   {
-    if (!isset($this['cProperty'])) {
-      $this['cProperty'] = new Input(
+    if (!isset($this[3])) {
+      $this[3] = new Input(
         Str::set('cProperty'),
         $this,
         new VarChar(
@@ -89,7 +89,7 @@ class MockRecord extends Record
         )
       );
     }
-    return $this['cProperty'];
+    return $this[3];
   }
   
   protected static function checkRequired($dataObject) : bool
