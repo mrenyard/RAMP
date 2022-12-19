@@ -125,7 +125,7 @@ class PrimaryKey extends Field
     $recordName = Str::camelCase($this->containingRecord->id->trimEnd(Str::set(':new')));
     $filterValues = array();
     foreach ($this->dataObjectPropertyNames as $propertyName) {
-      $filterValues[(string)Str::hyphenate($propertyName)] = $this->containingRecord->getPropertyValue((string)$propertyName);
+      $filterValues[(string)$propertyName] = $this->containingRecord->getPropertyValue((string)$propertyName);
     }
     $filter = Filter::build($recordName, $filterValues);
     $def = new SimpleBusinessModelDefinition($recordName);
