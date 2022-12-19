@@ -86,7 +86,7 @@ abstract class View extends RAMPObject
     if (!isset($this->viewCollection)) {
       $this->viewCollection = new Collection(Str::set('ramp\view\View'), TRUE);
     }
-    // todo:Matt Renyard: compatibleDescendantCheck()
+    // TODO:mrenyard: compatibleDescendantCheck()
     $this->viewCollection->add($view);
   }
 

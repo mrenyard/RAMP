@@ -77,7 +77,7 @@ header("HTTP/1.0 200 Ok");
 if($request->expectsFragment) {
   header('Content-Type: text/xml');
   // simulate response delay
-  sleep(rand(1,6)); // todo:mrenyard:Remove Line
+  sleep(rand(1,6)); // TODO:mrenyard:Remove Line
   $view->render();
 } else {
   view\RootView::getInstance()->render();

@@ -69,8 +69,8 @@ final class Email extends Templated
       if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::info('e-mail sent Succesfully to ' . $this->email->value); }
     } else {
       if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::error('Failed to send e-mail'); }
-      // todo:mrenyard: try fix sendmail and retry
-      // todo:mrenyard: else log error for admin
+      // TODO:mrenyard: try fix sendmail and retry
+      // TODO:mrenyard: else log error for admin
     }
   }
 }
