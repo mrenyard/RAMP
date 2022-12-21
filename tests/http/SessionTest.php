@@ -175,12 +175,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\http\Session::authorizedAs()
+   * Collection of assertions for \ramp\http\Session::authorizedAs() and for \ramp\http\Session::loginAccount,
    *  with already Authenticated $_SESSION['LoginAccount'].
    * - assert $_SESSION['loginAccount'] reference retained.
    * - assert returns TRUE when $_SESSION['LoginAccount'] has sufficient privileges
    * - assert returns FALSE when $_SESSION['LoginAccount'] has insufficient privileges
+   * - assert subsuquent calls to this->loginAccount return correct :LoginAccount
    * @link ramp.http.Session#method_authorizedAs ramp\http\Session::AuthorizedAs()
+   * @link ramp.http.session#method_get_loginAccount ramp\http\Session\::loginAccount
    */
   public function testAuthorizedAsAlreadyAuthenticated()
   {
@@ -203,6 +205,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR_MANAGER()));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::SYSTEM_ADMINISTRATOR()));
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
+    $this->assertSame($sessionLoginAccount, $testObject->loginAccount);
   }
 
   /**
@@ -214,7 +217,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert throws Unauthorized401Exception when $_SESSION['LoginAccount'] has insufficient privileges
    *   - with message: *'Unauthenticated or insufficient authority'*
    *   - or with $_POST data message: *'Attempting POST to resource REQUIRING authentication or insufficient authority'*
+   * - assert subsuquent calls to this->loginAccount return correct :LoginAccount
    * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
+   * @link ramp.http.session#method_get_loginAccount ramp\http\Session\::loginAccount
    */
   public function testAuthorizeAsAlreadyAuthenticated()
   {
@@ -262,6 +267,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       } catch (Unauthorized401Exception $expected) {
         $this->assertSame('Unauthenticated or insufficient authority', $expected->getMessage());
         $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
+        $this->assertSame($sessionLoginAccount, $testObject->loginAccount);
         return;
       }
     }
@@ -494,13 +500,14 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs() and \ramp\http\Session::loginAccount
    *  while logging-in with valid Credentials and holding $_SESSION['post_array'] from previous request.
    * - assert $_POST login related data expunged.
    * - assert $_SESSION['post_array'] passed back to $_POST
    * - assert returns without interruption as has sufficient privileges
    * - assert $_SESSION['loginAccount'] reference is successfully set.
    * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#method_get_loginAccount ramp\http\Session::loginAccount
    */
   public function testAuthorizeAsWithValidCredentials()
   {
@@ -524,8 +531,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertSame('aperson', $_SESSION['loginAccount']->uname->value);
     $this->assertSame('Person', $_SESSION['loginAccount']->familyName->value);
     $this->assertSame('Ann', $_SESSION['loginAccount']->givenName->value);
+    $this->assertSame($_SESSION['loginAccount'], $testObject->loginAccount);
     $this->assertSame(
-      $_SESSION['loginAccount']->getPropertyValue('encryptedPassword'),
+      $testObject->loginAccount->getPropertyValue('encryptedPassword'),
       crypt(self::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT)
     );
   }
@@ -605,7 +613,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\http\Session::authorizeAs()
+   * Collection of assertions for \ramp\http\Session::authorizeAs() and \ramp\http\Session::loginAccount
    *  with new authenticatible unit details to setup as a new login account.
    * - assert returns without interruption as has sufficient privileges.
    * - assert $_POST login related data expunged.
@@ -617,6 +625,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    * - assert a password has been auto generated for loginAccount.
    * - assert both loginAccount and associated AuthenticatableUnit are updated through relevant BusinessModelManager.
    * @link ramp.http.Session#method_authorizeAs ramp\http\Session::AuthorizeAs()
+   * @link ramp.http.Session#methos_get_loginAccount ramp\http\Session::loginAccount
    */
   public function testAuthorizeAsNewLoginAccount()
   {
@@ -642,11 +651,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($_POST['login-password']));
     $this->assertFalse(isset($_SESSION['post_array']));
     $this->assertTrue(isset($_SESSION['loginAccount']));
-    $this->assertTrue($_SESSION['loginAccount']->isValid);
-    $this->assertSame('new.person@domain.com', $_SESSION['loginAccount']->email->value);
-    $this->assertSame('newperson', $_SESSION['loginAccount']->auPK->value);
+    $this->assertSame($_SESSION['loginAccount'], $testObject->loginAccount);
+    $this->assertTrue($testObject->loginAccount->isValid);
+    $this->assertSame('new.person@domain.com', $testObject->loginAccount->email->value);
+    $this->assertSame('newperson', $testObject->loginAccount->auPK->value);
     $this->assertSame(
-      crypt((string)$_SESSION['loginAccount']->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
+      crypt((string)$testObject->loginAccount->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       MockBusinessModelManager::$loginAccountDataObject->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);

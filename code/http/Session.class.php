@@ -255,8 +255,7 @@ final class Session extends RAMPObject
           try {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
               new SimpleBusinessModelDefinition($strAU),
-              Filter::build($strAU, array('email' => $_POST[$auEmailPropertyID]))
-            )[0];
+              Filter::build($strAU, array('email' => $_POST[$auEmailPropertyID])))[0];
           } catch (DataFetchException $authenticatableUnitNotInDatabase) {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
               new SimpleBusinessModelDefinition($strAU, Str::set('new'))
