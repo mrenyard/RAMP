@@ -109,6 +109,25 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for ramp\core\StrCollection::implode().
+   * - assert returns instance of {@link \ramp\core\Str}.
+   * - assert returns expected concatenated string value of Str.
+   * - assert returns expected concatenated string value including provided glue.
+   * @link ramp.core.StrCollection#method_implode \ramp\core\StrCollection::implode()
+   */
+  public function testImplode()
+  {
+    $strArray = ['string one', 'string two', 'string tree'];
+    $testObject = StrCollection::set($strArray[0], $strArray[1], $strArray[2]);
+    $result = $testObject->implode();
+    $this->assertInstanceOf('ramp\core\Str', $result);
+    $this->assertSame("string onestring twostring tree", (string)$result);
+    $result = $testObject->implode(Str::set(' | '));
+    $this->assertInstanceOf('ramp\core\Str', $result);
+    $this->assertSame("string one | string two | string tree", (string)$result);
+  }
+
+  /**
    * Collection of assertions for ramp\core\StrCollection::isCompositeType().
    * - assert returns TRUE when $compositeType {@link \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided is NOT {@link \ramp\core\Str}
