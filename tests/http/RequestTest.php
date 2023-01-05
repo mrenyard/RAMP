@@ -27,6 +27,9 @@ require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
@@ -37,7 +40,24 @@ require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
+require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/ramp/http/Request.class.php';
 require_once '/usr/share/php/ramp/http/Method.class.php';
 
@@ -52,6 +72,8 @@ use ramp\condition\FilterCondition;
 use ramp\condition\PostData;
 use ramp\condition\InputDataCondition;
 use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\LoginAccount;
 
 /**
  * Collection of tests for \ramp\http\Request.
@@ -349,5 +371,31 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
       new InputDataCondition($this->record, $this->key, Str::set('propertyB'), 'valueB')
     );
     $this->assertEquals($expectedPostData, $testObject->postData);
+  }
+
+  /**
+   * Collection of assertions for \ramp\http\Request::recordKey based on (~) the current Session logged in account.
+   * - assert returns key value 'new' when Session not set.
+   * - assert returns key of relevant Session loginAccount when set.
+   * @link ramp.http.Request#methos_get_recordKey ramp\http\Request::recordKey
+   */
+  public function testRecordKeyLoggedinAccount()
+  {
+    $_SERVER['REQUEST_URI'] = '/mock-record/~/property-b/';    $dataObject = new \stdClass();
+
+    $testObject = Request::current();
+    $this->assertInstanceOf('ramp\core\Str', $testObject->recordKey);
+    $this->assertSame((string)$testObject->recordKey, 'new');
+
+    $dataObject->auPK = 'aperson';
+    $dataObject->id = 'login-account:aperson';
+    $dataObject->email = 'aperson@domain.com';
+    $dataObject->encryptedPassword = crypt(
+      'Pa55w0rd', \ramp\SETTING::$SECURITY_PASSWORD_SALT
+    );
+    $dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR();
+    $_SESSION['loginAccount'] = new LoginAccount($dataObject);
+    $this->assertTrue($_SESSION['loginAccount']->isValid);
+    $this->assertSame((string)$testObject->recordKey, 'aperson');
   }
 }
