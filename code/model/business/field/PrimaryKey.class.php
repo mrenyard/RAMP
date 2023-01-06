@@ -116,6 +116,7 @@ class PrimaryKey extends Field
    * Validate that combined primaryKey unique, NOT already in data storage.
    * @param mixed $value Value should be NULL
    * @throws \ramp\validation\FailedValidationException When test fails.
+   * @throws \BadMethodCallException If NOT called under valid constraints as set within Record::validate().
    */
   public function processValidationRule($value) : void
   {

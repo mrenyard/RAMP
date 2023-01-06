@@ -284,6 +284,8 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
    * - assert ValidationRule is called and executes test against data storage.
    * - assert passes test when combined primaryKey unique (NOT already in data storage).
    * - assert FailedValidationException thrown when combined primaryKey NOT unique (already in data storage).
+   * - assert throws BadMethodCallException when called following update (!= isNew)
+   *  - with message *PrimaryKey::processValidationRule() SHOULD ONLY be called from within!*
    * @link ramp.model.business.field.PrimaryKey#method_processValidationRule ramp\model\business\field\PrimaryKey::processValidationRule()
    */
   public function testProcessValidationRule()
@@ -308,6 +310,10 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(++$getBusinessModelCount, MockBusinessModelManager::$callCount);
       $this->mockRecord->updated();
       $this->assertSame('mock-record:4|5|6:primary-key', (string)$this->testObject->id);
+
+      $this->expectException(\BadMethodCallException::class);
+      $this->expectExceptionMessage = 'PrimaryKey::processValidationRule() SHOULD ONLY be called from within!';
+      $this->testObject->processValidationRule('4|5|6');
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
