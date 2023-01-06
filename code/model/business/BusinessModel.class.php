@@ -59,10 +59,10 @@ abstract class BusinessModel extends Model implements iList
    */
   public function __construct(BusinessModel $children = NULL)
   {
-      $this->children = ($children === NULL)? 
-        (stripos(get_class($this), 'Collection') < 0) ?
+      $this->children = ($children == NULL)?
+        (stripos(get_class($this), 'Collection') === (\strlen(get_class($this)) - \strlen('Collection'))) ?
           new Collection(Str::set(preg_replace('/Collection$/', '', get_class($this)))):
-            new Collection(Str::set(__NAMESPACE__ . '\BusinessModel')):
+          new Collection(Str::set(__NAMESPACE__ . '\BusinessModel')):
         $children;
   }
 

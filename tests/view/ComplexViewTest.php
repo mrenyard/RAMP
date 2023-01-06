@@ -181,6 +181,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    */
   public function testSetModelNoCascade()
   {
+    RootView::reset();
     $testObject = new MockView(RootView::getInstance());
     $viewA = new MockViewA($testObject);
     $viewB = new MockViewB($testObject);
@@ -218,12 +219,13 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\ComplexView::setModel().
    * - Prior to model set hasModel returns FALSE and post set TRUE
-   * - assert each view added sequentially and hieratically as expected
-   * - assert output from View->render() maintains sequance and hieratically format
+   * - assert each view added sequentially as expected
+   * - assert output from View->render() maintains sequance
    * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
-  public function testSetModelComplex1()
+  public function testSetModelSequentially1()
   {
+    RootView::reset();
     $testObject = new MockView(RootView::getInstance());
     $viewA = new MockViewA($testObject);
     $viewB = new MockViewB($testObject);
@@ -259,11 +261,11 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\ComplexView::setModel() and \ramp\view\ComplexView::hasModel.
    * - Prior to model set hasModel returns FALSE and post set TRUE
-   * - assert each view added sequentially and hieratically as expected
-   * - assert output from View->render() maintains sequance and hieratically format
+   * - assert each view added sequentially as expected
+   * - assert output from View->render() maintains sequance
    * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
-  public function testSetModelComplex2()
+  public function testSetModelSequentially2()
   {
     RootView::reset();
     $testObject = new MockView(RootView::getInstance());
@@ -323,39 +325,35 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
     $viewA = new MockViewA(RootView::getInstance());
     $viewB = new MockViewB($viewA);
     $viewC = new MockViewC($viewB);
+    $viewD = new MockViewD($viewC);
 
-    $model1 = new MockModelCollection();
+    $modelCollection1 = new MockModelCollection();
+    $modelCollection2 = new MockModelCollection();
+    $modelCollection3 = new MockModelCollection();
+
+    $model1 = new MockModel($modelCollection1);
     $model1->bProperty = 'one';
-    $model2 = new MockModelCollection();
+    $model2 = new MockModel($modelCollection2);
     $model2->bProperty = 'two';
-    $model3 = new MockModel();
+    $modelCollection1->add($model2);
+    $model3 = new MockModel($modelCollection3);
     $model3->bProperty = 'three';
+    $modelCollection2->add($model3);
     $model4 = new MockModel();
     $model4->bProperty = 'four';
-    $model5 = new MockModelCollection();
-    $model5->bProperty = 'five';
-    $model6 = new MockModel();
-    $model6->bProperty = 'six';
-
-      $model1->add($model2);
-        $model2->add($model3);
-        $model2->add($model4);
-      $model1->add($model5);
-        $model5->add($model6);
+    $modelCollection3->add($model4);
 
     $viewA->setModel($model1);
 
     ob_start();
-    $viewA->render();
+    RootView::getInstance()->render();
     $output = ob_get_clean();
 
     $this->assertSame(
       'tests\ramp\view\mocks\ComplexViewTest\MockViewA:YES:one '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewB:YES:two '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:three '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:four '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewB:YES:five '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:six ',
+      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:four ',
       $output
     );
   }
@@ -375,63 +373,51 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
     $viewC = new MockViewC($viewB);
     $viewD = new MockViewD($viewC);
 
-    $model1 = new MockModelCollection();
+    $modelCollectionA = new MockModelCollection();
+    $modelCollectionB1 = new MockModelCollection();
+    $modelCollectionB2 = new MockModelCollection();
+    $modelCollectionC1 = new MockModelCollection();
+    $modelCollectionC2 = new MockModelCollection();
+    
+    $model1 = new MockModel($modelCollectionA);
     $model1->bProperty = 'one';
-    $model2 = new MockModelCollection();
-    $model2->bProperty = 'two';
-    $model3 = new MockModelCollection();
-    $model3->bProperty = 'three';
-    $model4 = new MockModelCollection();
-    $model4->bProperty = 'four';
-    $model5 = new MockModelCollection();
-    $model5->bProperty = 'five';
-    $model6 = new MockModelCollection();
-    $model6->bProperty = 'six';
-
-    $model7 = new MockModel();
-    $model7->bProperty = 'seven';
-    $model8 = new MockModel();
-    $model8->bProperty = 'eight';
-    $model9 = new MockModel();
-    $model9->bProperty = 'nine';
-    $model10 = new MockModel();
-    $model10->bProperty = 'ten';
-    $model11 = new MockModel();
-    $model11->bProperty = 'eleven';
-    $model12 = new MockModel();
-    $model12->bProperty = 'twelve';
-
-      $model1->add($model2);
-        $model2->add($model3);
-          $model3->add($model7);
-          $model3->add($model10);
-        $model2->add($model4);
-          $model4->add($model8);
-          $model4->add($model11);
-      $model1->add($model5);
-        $model5->add($model6);
-          $model6->add($model9);
-          $model6->add($model12);
+      $model2 = new MockModel($modelCollectionB1);
+      $model2->bProperty = 'two';
+      $modelCollectionA->add($model2);
+        $model3 = new MockModel($modelCollectionC1);
+        $model3->bProperty = 'three';
+        $modelCollectionB1->add($model3);
+          $model4 = new MockModel();
+          $model4->bProperty = 'four';
+          $modelCollectionC1->add($model4);
+    $model5 = new MockModel($modelCollectionB2);
+      $model5->bProperty = 'five';
+      $modelCollectionA->add($model5);
+        $model6 = new MockModel($modelCollectionC2);
+        $model6->bProperty = 'six';
+        $modelCollectionB2->add($model6);
+          $model7 = new MockModel();
+          $model7->bProperty = 'seven';
+          $modelCollectionC2->add($model7);
+          $model8 = new MockModel();
+          $model8->bProperty = 'eight';
+          $modelCollectionC2->add($model8);
 
     $viewA->setModel($model1);
 
     ob_start();
-    $viewA->render();
+    RootView::getInstance()->render();
     $output = ob_get_clean();
 
     $this->assertSame(
       'tests\ramp\view\mocks\ComplexViewTest\MockViewA:YES:one '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewB:YES:two '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:three '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:seven '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:ten '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:four '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:eight '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:eleven '.
+      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:four '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewB:YES:five '.
       'tests\ramp\view\mocks\ComplexViewTest\MockViewC:YES:six '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:nine '.
-      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:twelve ',
+      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:seven '.
+      'tests\ramp\view\mocks\ComplexViewTest\MockViewD:YES:eight ',
       $output
     );
   }

@@ -275,7 +275,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject[3] = new Option(3, Str::set('No Option'));
     } catch (\InvalidArgumentException $expected) {
-        $this->assertSame('ramp\model\business\field\Option NOT instanceof ramp\model\business\BusinessModel', $expected->getMessage());
+        $this->assertSame('ramp\model\business\field\Option NOT instanceof tests\ramp\model\business\field\mocks\FieldTest\MockRecord', $expected->getMessage());
         $object = new MockRecord();
         $this->testObject[3] = $object;
         $this->assertSame($object, $this->testObject[3]);
