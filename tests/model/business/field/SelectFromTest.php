@@ -115,6 +115,8 @@ class SelectFromTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@link \ArrayAccess}
    * - assert is instance of {@link \ramp\model\field\Field}
    * - assert is instance of {@link \ramp\model\field\SelectFrom}
+   * - assert throws \InvalidArgumentException when Supplied $optionlist argument items DO NOT match requirements
+   *   - with message: <em>'OptionList $options compositeType MUST be \ramp\model\business\field\Option'</em>
    * @link ramp.model.business.field.SelectFrom ramp\model\business\field\SelectFrom
    */
   public function test__construct()
@@ -127,6 +129,15 @@ class SelectFromTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\field\SelectFrom', $this->testObject);
+    
+    $optionListNotOptions = new OptionList($this->children, Str::set('\ramp\model\business\BusinessModel'));
+    try {
+      $this->testObject = new MockSelectFromField(Str::set('aProperty'), $this->mockRecord, $optionListNotOptions);
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertSame('OptionList $options compositeType MUST be \ramp\model\business\field\Option', $expected->getMessage());
+      return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
   }
 
   /**
