@@ -145,11 +145,11 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
   -- `extendedAddress` VARCHAR(45) NOT NULL, -- PremisesElements (157)
   `subBuildingName` VARCHAR(30) NULL DEFAULT NULL,
   `buildingName` VARCHAR(50) NULL DEFAULT NULL,
-  `buildingNumber` SMALLINTNULL DEFAULT NULL,
+  `buildingNumber` SMALLINT NULL DEFAULT NULL,
   `organisationName` VARCHAR(60) NULL DEFAULT NULL,
   `departmentName` VARCHAR(60) NULL DEFAULT NULL,
   -- `postOfficeBox` VARCHAR(13) NULL DEFAULT NULL,
-  `PoBoxNumber` SMALLINTNULL DEFAULT 0,
+  `PoBoxNumber` SMALLINT NULL DEFAULT 0,
   -- `streetAddress` VARCHAR(45) NULL DEFAULT NULL, -- ThoroughfareElements (Oakwood Drive)
   `dependentThoroughfare` VARCHAR(80) NULL DEFAULT NULL,
   `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,
