@@ -57,6 +57,19 @@ class ContainingRecord extends Record
     }
     return $this[1];
   }
+
+  /*
+  public function get_nullRelation()
+  {
+    if (!isset($this[2])) {
+      $this[2] = new Relation(
+        Str::set('nullRelation'),
+        $this,
+        Str::set('MockRecord')
+      );
+    }
+    return $this[2];
+  }*/
   
   protected static function checkRequired($dataObject) : bool
   {

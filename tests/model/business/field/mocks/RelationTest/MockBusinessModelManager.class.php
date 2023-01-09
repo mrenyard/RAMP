@@ -87,7 +87,14 @@ class MockBusinessModelManager extends BusinessModelManager
   {
     if ($definition->recordName == 'MockRecord')
     {
-      if ((string)$definition->recordKey == '1')
+      if ((string)$definition->recordKey == 'new')
+      {
+        $dataObject = new \stdClass();
+        $dataObject->key = NULL;
+        $dataObject->property = NULL;
+        return new MockRecord($dataObject);
+      }
+      elseif ((string)$definition->recordKey == '1')
       {
         if (!isset(self::$relatedObjectOne)) {
           self::$relatedDataObjectOne = new \stdClass();

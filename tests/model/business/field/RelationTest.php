@@ -184,6 +184,19 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       if ($i == 1) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $property); }
       $i++;
     }
+
+    $this->dataObject->relationBeta = Str::NEW();
+    $testObjectBeta = new Relation(Str::set('relationBeta'), $this->containingRecord, Str::set('MockRecord'));
+    $relatedRecord = $testObjectBeta->getIterator();
+    $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $relatedRecord);
+    $this->assertSame('mock-record:new', (string)$relatedRecord->id);
+
+    $this->dataObject->relationGamma = NULL;
+    $testObjectGamma = new Relation(Str::set('relationGamma'), $this->containingRecord, Str::set('MockRecord'));
+    // $relatedField = $testObjectGamma->getIterator();
+    // $this->assertInstanceOf('ramp\model\business\field\RelationLink', $relatedRecord);
+    // $this->assertSame('mock-record:new', (string)$relatedRecord->id);
+    //$testObjectGamma->getIterator();
   }
 
   /**

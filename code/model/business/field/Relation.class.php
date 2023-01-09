@@ -45,7 +45,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Relation extends Field
 {
-  private static $depthCheck;
+  private static $singleNewRecordCheck;
   private $modelManager;
   private $relationObjectRecordName;
   private $relatedObject;
@@ -59,7 +59,7 @@ class Relation extends Field
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectRecordName)
   {
-    if (!isset(self::$depthCheck)) { self::$depthCheck = array(); }
+    if (!isset(self::$singleNewRecordCheck)) { self::$singleNewRecordCheck = array(); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->relationObjectRecordName = $relationObjectRecordName;
@@ -73,7 +73,7 @@ class Relation extends Field
    */
   private function update($key)
   {
-    $this->relatedObject = (isset($key)) ?
+    $this->relatedObject = (isset($key) && $key != 'new') ?
       $this->modelManager->getBusinessModel(
         new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::set($key))
       ):
@@ -93,7 +93,7 @@ class Relation extends Field
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str Unique identifier for *this*
    */
-  public function get_id() : Str
+  protected function get_id() : Str
   {
     return (isset($this->relatedObject)) ? $this->relatedObject->id : parent::get_id();
   }
@@ -105,21 +105,19 @@ class Relation extends Field
   public function getIterator() : \Traversable
   {
     if (isset($this->relatedObject)) { return $this->relatedObject; }
-    if (!isset(self::$depthCheck[(string)$this->id])) {
-      self::$depthCheck[(string)$this->id] = 1;
+    // On first request for a new record of type return record
+    if (!isset(self::$singleNewRecordCheck[(string)$this->relationObjectRecordName])) {
+      self::$singleNewRecordCheck[(string)$this->relationObjectRecordName] = 1;
       return $this->modelManager->getBusinessModel(
         new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::NEW())
       );
     }
-    return new field\Input(
+    // TODO:mrenyard: On all susuquent request for new record of type only return a link with relationship data.
+    /* return new RelationLink(
       $this->dataObjectPropertyName,
       $this->containingRecord,
-      new validation\dbtype\VarChar(
-        45,
-        new validation\Alphanumeric(),
-        Str::set('My error message HERE!')
-      )
-    );
+      $this->relationObjectRecordName
+    );*/
   }
 
 
