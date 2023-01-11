@@ -64,6 +64,7 @@ use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\FailedValidationException;
 use ramp\model\business\field\Relation;
 use ramp\model\business\validation\dbtype\TinyInt;
 
@@ -300,13 +301,15 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
+   * - assert throws \ramp\model\business\DataFetchException when provided value in NOT the key to a Valid BusinessModel in our data store.
+   *   - with message: <em>'Relation NOT found in data storage!'</em>
    * @link ramp.model.business.field.Relation#method_validate ramp\model\business\field\Relation::validate()
    */
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertSame(0, MockField::$processValidationRuleCount);
-  }
+ }
 
   /**
    * Further collection of assertions for \ramp\model\business\field\Relation::validate(), where
@@ -327,6 +330,31 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame('GOOD', MockBusinessModelManager::$relatedDataObjectOne->property);
+  }
+  
+  /**
+   * Collection of assertions for \ramp\model\business\field\Relation::processValidationRule() where PostData
+   * does NOT contain a valid key that relates to a BusinessModel entry in the data store.
+   * - assert throws \ramp\model\business\FailedValidationException when provided value of key is NOT an int.
+   *   - with message: <em>'Relation Key NOT valid!'</em>
+   * - assert throws \ramp\model\business\FailedValidationException when provided value in NOT the key to a Valid BusinessModel in our data store.
+   *   - with message: <em>'Relation NOT found in data storage!'</em>
+   * @link ramp.model.business.field.Relation#method_validate ramp\model\business\field\Relation::validate()
+   */
+  public function testValidateProcessFailedValidationException()
+  {
+    try {
+      $this->testObject->processValidationRule("string");
+    } catch (FailedValidationException $expected) {
+      $this->assertSame('Relation Key NOT valid!', $expected->getMessage());
+      try {
+        $this->testObject->processValidationRule(3);
+      } catch (FailedValidationException $expected) {
+        $this->assertSame('Relation NOT found in data storage!', $expected->getMessage());
+        return;
+      }
+    }
+    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }
 
   /**
