@@ -45,7 +45,6 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Relation extends Field
 {
-  private static $singleNewRecordCheck;
   private $modelManager;
   private $relationObjectRecordName;
   private $relatedObject;
@@ -59,12 +58,11 @@ class Relation extends Field
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, Str $relationObjectRecordName)
   {
-    if (!isset(self::$singleNewRecordCheck)) { self::$singleNewRecordCheck = array(); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->relationObjectRecordName = $relationObjectRecordName;
     $this->update($containingRecord->getPropertyValue((string)$dataObjectPropertyName));
-    parent::__construct($dataObjectPropertyName, $containingRecord, $this->value);
+    parent::__construct($dataObjectPropertyName, $containingRecord, $this->relatedObject);
   }
 
   /**
@@ -73,53 +71,20 @@ class Relation extends Field
    */
   private function update($key)
   {
-    $this->relatedObject = (isset($key) && $key != 'new') ?
-      $this->modelManager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::set($key))
-      ):
-      NULL;
+    $key = (isset($key)) ? Str::set($key) : Str::NEW();
+    $this->relatedObject = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
+    );
   }
 
   /**
-   * Returns related BusinessModel.
-   * @return mixed Related BusinessModel (object).
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
    */
-  protected function get_value() {
-    return $this->relatedObject;
-  }
-
-  /**
-   * Get ID (URN) of related BusinessModel.
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
+  final protected function get_value()
   {
-    return (isset($this->relatedObject)) ? $this->relatedObject->id : parent::get_id();
+    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
   }
-
-  /**
-   * Implementation of \IteratorAggregate method for use with foreach etc.
-   * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
-   */
-  public function getIterator() : \Traversable
-  {
-    if (isset($this->relatedObject)) { return $this->relatedObject; }
-    // On first request for a new record of type return record
-    if (!isset(self::$singleNewRecordCheck[(string)$this->relationObjectRecordName])) {
-      self::$singleNewRecordCheck[(string)$this->relationObjectRecordName] = 1;
-      return $this->modelManager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->relationObjectRecordName, Str::NEW())
-      );
-    }
-    // TODO:mrenyard: On all susuquent request for new record of type only return a link with relationship data.
-    /* return new RelationLink(
-      $this->dataObjectPropertyName,
-      $this->containingRecord,
-      $this->relationObjectRecordName
-    );*/
-  }
-
 
   /**
    * Validate postdata against this and update accordingly.
@@ -154,7 +119,6 @@ class Relation extends Field
    */
   public function processValidationRule($value) : void
   {
-    if (!is_int($value)) { throw new FailedValidationException('Relation Key NOT valid!'); }
     try {
       $this->update($value);
     } catch (DataFetchException $e) {

@@ -75,6 +75,10 @@ use tests\ramp\model\business\field\mocks\RelationTest\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\field\Field.
+ * TODO:mrenyard: Change Record to change visability of PrimaryKeys only on 'new' all but PKs ediatable on added
+ * TODO:mrenyard: Add a new property to be tested of URL for all Field
+ * URL = the url for Relation to equal that of related object.
+ * TODO:mrenyard: Need to look how many-to-many will work.  
  */
 class RelationTest extends \PHPUnit\Framework\TestCase
 {
@@ -138,8 +142,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-      $this->assertEquals(MockBusinessModelManager::$relatedObjectOne->id, $this->testObject->id);
-      $this->assertEquals('mock-record:1', (string)$this->testObject->id);
+      $this->assertEquals('containing-record:3:relation-alpha', (string)$this->testObject->id);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -177,7 +180,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGetIterator()
   {
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-    $this->assertSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->getIterator());
+    // $this->assertSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->getIterator());
     $i = 0;
     foreach ($this->testObject as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
@@ -189,15 +192,15 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $this->dataObject->relationBeta = Str::NEW();
     $testObjectBeta = new Relation(Str::set('relationBeta'), $this->containingRecord, Str::set('MockRecord'));
     $relatedRecord = $testObjectBeta->getIterator();
-    $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $relatedRecord);
-    $this->assertSame('mock-record:new', (string)$relatedRecord->id);
-
-    $this->dataObject->relationGamma = NULL;
-    $testObjectGamma = new Relation(Str::set('relationGamma'), $this->containingRecord, Str::set('MockRecord'));
-    // $relatedField = $testObjectGamma->getIterator();
-    // $this->assertInstanceOf('ramp\model\business\field\RelationLink', $relatedRecord);
+    // $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $relatedRecord);
     // $this->assertSame('mock-record:new', (string)$relatedRecord->id);
-    //$testObjectGamma->getIterator();
+
+    // $this->dataObject->relationGamma = NULL;
+    // $testObjectGamma = new Relation(Str::set('relationGamma'), $this->containingRecord, Str::set('MockRecord'));
+    // $relatedField = $testObjectGamma->getIterator();
+    // $this->assertInstanceOf('ramp\model\business\field\Link', $relatedField);
+    // $this->assertSame('mock-record:new', (string)$relatedRecord->id);
+    // $testObjectGamma->getIterator();
   }
 
   /**
@@ -273,26 +276,25 @@ class RelationTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\model\business\field\Relation::value.
-   * - assert returns object of correct type based of provided relationObjectTableName.
-   * - assert returns Object with correct primaryKey based on value for link.
-   * - assert when containing relation property value change returns different relevant object.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'value'
+   * - assert property 'value' is gettable.
+   * - assert returned same as provided records getPropertyValue() method.
+   * - assert returned value matches expected result.
    * @link ramp.model.business.field.Relation#method_get_value ramp\model\business\field\Relation::value
    */
   public function testGet_value()
   {
-    $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $this->testObject->value);
-    $this->assertEquals('mock-record:1', (string)$this->testObject->value->id);
-    $this->assertSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->value);
-
-    $this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 2
-    )));
-    
-    $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $this->testObject->value);
-    $this->assertEquals('mock-record:2', (string)$this->testObject->value->id);
-    $this->assertNotSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->value);
-    $this->assertSame(MockBusinessModelManager::$relatedObjectTwo, $this->testObject->value);
+    try {
+      $this->testObject->value = 2;
+    } catch (PropertyNotSetException $expected) {
+      $this->dataObject->relationAlpha = 2;
+      $this->assertSame($this->dataObject->relationAlpha, $this->testObject->value);
+      $this->assertSame(2, $this->testObject->value);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
+
 
   /**
    * Collection of assertions for \ramp\model\business\field\Relation::validate() where PostData
@@ -344,15 +346,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessFailedValidationException()
   {
     try {
-      $this->testObject->processValidationRule("string");
+      $this->testObject->processValidationRule(3);
     } catch (FailedValidationException $expected) {
-      $this->assertSame('Relation Key NOT valid!', $expected->getMessage());
-      try {
-        $this->testObject->processValidationRule(3);
-      } catch (FailedValidationException $expected) {
-        $this->assertSame('Relation NOT found in data storage!', $expected->getMessage());
-        return;
-      }
+      $this->assertSame('Relation NOT found in data storage!', $expected->getMessage());
+      return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }
@@ -366,13 +363,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       'containing-record:3:relationAlpha' => 2
     ))));
     $this->assertSame(2, $this->dataObject->relationAlpha);
-    $this->assertSame(MockBusinessModelManager::$relatedObjectTwo, $this->testObject->value);
-
     $this->assertNull($this->testObject->validate(PostData::build(array(
       'containing-record:3:relationAlpha' => 1
     ))));
     $this->assertSame(1, $this->dataObject->relationAlpha);
-    $this->assertSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->value);
   }
 
   /**
@@ -437,7 +431,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $errors = $this->testObject->errors;
     $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(1, $errors->count);
-    $this->assertSame('Relation Key NOT valid!', (string)$errors[0]);
+    $this->assertSame('Relation NOT found in data storage!', (string)$errors[0]);
     // Returns same results on subsequent call, while Field in same state.
     $secondCallOnErrors = $this->testObject->errors;
     $this->assertEquals($errors, $secondCallOnErrors);

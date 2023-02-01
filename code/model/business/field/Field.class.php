@@ -74,7 +74,7 @@ abstract class Field extends BusinessModel
     return Str::COLON()->prepend(
       $this->containingRecord->id
     )->append(
-      Str::hyphenate($this->dataObjectPropertyName)
+      Str::hyphenate($this->dataObjectPropertyName) //->replace(Str::set('KEY'), Str::_EMPTY()))
     );
   }
 
@@ -85,7 +85,7 @@ abstract class Field extends BusinessModel
    */
   protected function get_label() : Str
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->dataObjectPropertyName))));
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->dataObjectPropertyName)))));
   }
 
   /**
