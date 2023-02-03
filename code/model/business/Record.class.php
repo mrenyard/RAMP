@@ -109,7 +109,7 @@ abstract class Record extends BusinessModel
   {
     if (!isset($this->primaryKeyField))
     {
-      $this->primaryKeyField = new field\PrimaryKey($this->primaryKeyNames(), $this);
+      $this->primaryKeyField = new field\PrimaryKey($this);
     }
     return $this->primaryKeyField;
   }

@@ -92,8 +92,7 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockBusinessModelManager';
     $this->dataObject = new \stdClass();
     $this->mockRecord = new MockRecord($this->dataObject);
-    $this->propertyNames = StrCollection::set('aProperty', 'bProperty', 'cProperty');
-    $this->testObject = new PrimaryKey($this->propertyNames, $this->mockRecord);
+    $this->testObject = new PrimaryKey($this->mockRecord);
   }
 
   /**

@@ -49,13 +49,12 @@ class PrimaryKey extends Field
 
   /**
    * Creates a multiple part primary key field related to a collection of property of containing record.
-   * @param \ramp\core\StrCollection $dataObjectPropertyNames Related dataObject property name collection of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    */
-  public function __construct(StrCollection $dataObjectPropertyNames, Record $containingRecord)
+  public function __construct(Record $containingRecord)
   {
     if (!isset(self::$strPK)) { self::$strPK = Str::set('PrimaryKey'); }
-    $this->dataObjectPropertyNames = $dataObjectPropertyNames;
+    $this->dataObjectPropertyNames = $containingRecord->primaryKeyNames();
     parent::__construct(self::$strPK, $containingRecord);
   }
 
