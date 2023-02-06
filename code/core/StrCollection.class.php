@@ -61,10 +61,21 @@ final class StrCollection extends Collection
   {
     $value = Str::_EMPTY();
     $glue = (isset($glue))? $glue : $value;
-    foreach ($this as $part)
-    {
+    foreach ($this as $part) {
       $value = $value->append($part)->append($glue);
     }
     return $value->trimEnd($glue);
+  }
+
+  /**
+   * Confirms existance of existing Str with same value.
+   * @param \ramp\core\Str $value to check against.
+   */
+  public function contains(Str $value) : bool
+  {
+    foreach ($this as $check) {
+      if ((string)$check === (string)$value) { return TRUE; }
+    }
+    return FALSE;
   }
 }

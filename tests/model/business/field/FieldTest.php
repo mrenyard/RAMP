@@ -47,6 +47,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
@@ -89,7 +90,6 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     MockField::reset();
     $this->children = new MockRecordCollection();
     $this->dataObject = new \stdClass();
-    $this->dataObject->aProperty = NULL;
     $this->mockRecord = new MockRecord($this->dataObject);
     $this->testChild1 = new MockRecord();
     $this->testChild2 = new MockRecord();
@@ -163,6 +163,57 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
+   * Collection of tests for \ramp\model\business\field\Field::isEditable.
+   * - assert is NOT settable when primaryKey.
+   * - assert is settable when NOT primarykey
+   * - assert returns FALSE as primaryKey
+   * - assert returns TRUE as primaryKey of new
+   * - assert returns deafult TRUE non primaryKey
+   * - assert returns set value non primaryKey as set
+   * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
+   * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
+   */
+  public function testIsEditable()
+  {
+    $this->testObject->isEditable = TRUE;
+
+    $newPrimaryKeyField = new MockField(Str::set('aProperty'), new MockRecord());
+    $this->assertTrue($newPrimaryKeyField->isEditable);
+
+    $primaryFromNew = new MockField(Str::set('aProperty'), new MockRecord(), NULL, FALSE);
+    $this->assertTrue($primaryFromNew->isEditable);
+
+    $newNonPrimaryField = new MockField(Str::set('bProperty'), new MockRecord());
+    $this->assertTrue($newNonPrimaryField->isEditable);
+
+    $nonPrimaryFromNew = new MockField(Str::set('bProperty'), new MockRecord(), NULL, FALSE);
+    $this->assertTrue($nonPrimaryFromNew->isEditable);
+
+    $this->dataObject->aProperty = 'a';
+    $this->dataObject->bProperty = 'b';
+    $existingPrimaryKeyField = new MockField(Str::set('aProperty'), new MockRecord($this->dataObject));
+    $this->assertFalse($existingPrimaryKeyField->isEditable);
+
+    $existingPrimaryFromNew = new MockField(Str::set('aProperty'), new MockRecord($this->dataObject), NULL, TRUE);
+    $this->assertFalse($existingPrimaryKeyField->isEditable);
+
+    $existingNonPrimaryField = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject));
+    $this->assertTrue($existingNonPrimaryField->isEditable);
+
+    $existingNonPrimaryField->isEditable = FALSE;
+    $this->assertFalse($existingNonPrimaryField->isEditable);
+
+    $existingNonPrimaryField->isEditable = TRUE;
+    $this->assertTrue($existingNonPrimaryField->isEditable);
+
+    $existingNonPrimaryFromNew = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject), NULL, FALSE);
+    $this->AssertFalse($existingNonPrimaryFromNew->isEditable);
+
+    $existingNonPrimaryFromNew = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject), NULL, TRUE);
+    $this->AssertTrue($existingNonPrimaryFromNew->isEditable);
   }
 
   /**
@@ -320,6 +371,27 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame('GOOD', $this->dataObject->aProperty);
+  }
+
+  /**
+   * Further collection of assertions for \ramp\model\business\field\Field::validate(), where
+   * Field::isEditable = FALSE, preventing modification during validate.
+   * - assert returns void (null) when called.
+   * - assert even though provided PostData contains an InputDataCondition with an attribute that matches
+   *    the testObject's id and valid data its processValidationRule method is NOT called.
+   * - assert even though provided PostData contains an InputDataCondition with an attribute that matches
+   *    the testObject's id and valid data its containingRecord setPropertyMethod is NOT called.
+   */
+  public function testValidateNotSetOnUneditable()
+  {
+    $this->dataObject->aProperty = 'a';
+    $this->dataObject->bProperty = 'original';
+    $uneditable = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject), NULL, FALSE);
+    $this->assertNull($uneditable->validate(PostData::build(array(
+      'mock-record:a:b-property' => 'GOOD'
+    ))));
+    $this->assertSame(0, MockField::$processValidationRuleCount);
+    $this->assertSame('original', $this->dataObject->bProperty);
   }
 
   /**

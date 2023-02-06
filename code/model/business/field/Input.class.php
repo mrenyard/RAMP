@@ -47,10 +47,10 @@ class Input extends Field
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, DbTypeValidation $validationRule)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, DbTypeValidation $validationRule, bool $editable = NULL)
   {
     $this->validationRule = $validationRule;
-    parent::__construct($dataObjectPropertyName, $containingRecord);
+    parent::__construct($dataObjectPropertyName, $containingRecord, NULL, $editable);
   }
 
   /**

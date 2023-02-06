@@ -49,6 +49,7 @@ abstract class Field extends BusinessModel
 {
   private $dataObjectPropertyName;
   private $containingRecord;
+  public $editable;
 
   /**
    * Base constructor for Field related to a single property of containing record.
@@ -57,10 +58,11 @@ abstract class Field extends BusinessModel
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, BusinessModel $children = null)
+  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, BusinessModel $children = NULL, bool $editable = NULL)
   {
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
+    $this->editable = ($editable === FALSE) ? FALSE : $editable; 
     parent::__construct($children);
   }
 
@@ -74,7 +76,7 @@ abstract class Field extends BusinessModel
     return Str::COLON()->prepend(
       $this->containingRecord->id
     )->append(
-      Str::hyphenate($this->dataObjectPropertyName) //->replace(Str::set('KEY'), Str::_EMPTY()))
+      Str::hyphenate($this->dataObjectPropertyName)
     );
   }
 
@@ -86,6 +88,30 @@ abstract class Field extends BusinessModel
   protected function get_label() : Str
   {
     return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->dataObjectPropertyName)))));
+  }
+
+  /**
+   * Get isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable;**
+   * @return bool isEditable for *this*
+   */
+  protected function get_isEditable() : bool
+  {
+    return (
+      $this->containingRecord->isNew || 
+      (!$this->containingRecord->primaryKeyNames()->contains($this->dataObjectPropertyName) && $this->editable !== FALSE)
+    );
+  }
+
+  /**
+   * Set isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
+   * Use to request change of isEditable, some defaults are NOT overridable.
+   * @param bool $value of requested value.
+   */
+  protected function set_isEditable(bool $value)
+  {
+    $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
   }
 
   /**
@@ -126,6 +152,7 @@ abstract class Field extends BusinessModel
     {
       if ((string)$inputdata->attributeURN == (string)$this->id)
       {
+        if (!$this->isEditable) { return; }
         try {
           $this->processValidationRule($inputdata->value);
         } catch (FailedValidationException $e) {
@@ -135,6 +162,7 @@ abstract class Field extends BusinessModel
         $this->containingRecord->setPropertyValue(
           (string)$this->dataObjectPropertyName, $inputdata->value
         );
+        return;
       }
     }
   }

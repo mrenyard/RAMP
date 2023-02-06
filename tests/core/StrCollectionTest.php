@@ -128,6 +128,18 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for ramp\core\StrCollection::contains().
+   * - assert returns bool where anyone of the containd Str values matches the value of privide Str
+   * @link ramp.core.StrCollection#method_contains \ramp\core\StrCollection::contains()
+   */
+  public function testContains()
+  {
+    $testObject = StrCollection::set('car', 'van', 'motorbike');
+    $this->assertFalse($testObject->contains(Str::set('bicycle')));
+    $this->assertTrue($testObject->contains(Str::set('motorbike')));
+  }
+
+  /**
    * Collection of assertions for ramp\core\StrCollection::isCompositeType().
    * - assert returns TRUE when $compositeType {@link \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided is NOT {@link \ramp\core\Str}
