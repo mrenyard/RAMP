@@ -64,6 +64,11 @@ final class Str extends RAMPObject
   private static $NEW;
 
   /**
+   * Singleton reference to {@link Str} with value 'KEY'.
+   */
+  private static $KEY;
+
+  /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
   private $value;
@@ -181,6 +186,18 @@ final class Str extends RAMPObject
       self::$NEW = new Str('new');
     }
     return self::$NEW;
+  }
+
+  /**
+   * Returns NEW Str ('KEY')
+   * @return \ramp\core\Str Str object composed KEY ('KEY')
+   */
+  public static function KEY() : Str
+  {
+    if (!isset(self::$KEY)) {
+      self::$KEY = new Str('KEY');
+    }
+    return self::$KEY;
   }
 
   /**
