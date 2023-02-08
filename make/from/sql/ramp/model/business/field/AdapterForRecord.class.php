@@ -56,21 +56,11 @@ class AdapterForRecord extends Field
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
-   *
+   */
   public function offsetSet($offset, $object)
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
-  }*/
-
-  /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
-   * @param mixed $offset API to match \ArrayAccess interface
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   *
-  public function offsetUnset($offset)
-  {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }*/
+  }
 
   /**
    * Returns value held by relevant property of containing record.

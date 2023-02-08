@@ -253,8 +253,8 @@ class FlagTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetUnset()
   {
-    $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage = 'Array access unsetting is not allowed.';
+    $this->expectException(\OutOfBoundsException::class);
+    $this->expectExceptionMessage = 'Value is not a valid index.';
     unset($this->testObject[0]);
   }
 

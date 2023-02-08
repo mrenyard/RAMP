@@ -106,7 +106,7 @@ abstract class BusinessModel extends Model implements iList
    * Implementation of \IteratorAggregate method for use with foreach etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
    */
-  public function getIterator() : \Traversable
+  final public function getIterator() : \Traversable
   {
     return $this->children->getIterator();
   }
@@ -127,7 +127,7 @@ abstract class BusinessModel extends Model implements iList
    * @param mixed $offset Index to be checked for existence.
    * @return bool It does / not exist.
    */
-  public function offsetExists($offset) : bool
+  final public function offsetExists($offset) : bool
   {
     return $this->children->offsetExists($offset);
   }
@@ -147,7 +147,7 @@ abstract class BusinessModel extends Model implements iList
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  public function offsetUnset($offset)
+  final public function offsetUnset($offset)
   {
     unset($this->children[$offset]);
   }
