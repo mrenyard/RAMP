@@ -70,16 +70,6 @@ class PrimaryKey extends Field
   }
 
   /**
-   * ArrayAccess method offsetUnset, DO NOT USE.
-   * @param mixed $offset API to match \ArrayAccess interface
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
-  public function offsetUnset($offset)
-  {
-    throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }
-
-  /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */

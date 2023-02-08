@@ -251,19 +251,6 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetUnset.
-   * - assert throws BadMethodCallException whenever offsetUnset is called
-   *  - with message *Array access unsetting is not allowed.*
-   * @link ramp.model.business.field.PrimaryKey#method_offsetUnset ramp\model\business\field\PrimaryKey::offsetUnset()
-   */
-  public function testOffsetUnset()
-  {
-    $this->expectException(\BadMethodCallException::class);
-    $this->expectExceptionMessage = 'Array access unsetting is not allowed.';
-    unset($this->testObject[0]);
-  }
-
-  /**
    * Collection of assertions for \ramp\model\business\field\PrimaryKey::validate() where PostData
    * does NOT contain an PrimaryKeyDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.

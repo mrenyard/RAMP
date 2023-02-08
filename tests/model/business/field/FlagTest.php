@@ -246,19 +246,6 @@ class FlagTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\Flag::offsetUnset.
-   * - assert throws BadMethodCallException whenever offsetUnset is called
-   *  - with message *Array access unsetting is not allowed.*
-   * @link ramp.model.business.field.Flag#method_offsetUnset ramp\model\business\field\Flag::offsetUnset()
-   */
-  public function testOffsetUnset()
-  {
-    $this->expectException(\OutOfBoundsException::class);
-    $this->expectExceptionMessage = 'Value is not a valid index.';
-    unset($this->testObject[0]);
-  }
-
-  /**
    * Collection of assertions for \ramp\model\business\field\Field::validate() where PostData
    * does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.

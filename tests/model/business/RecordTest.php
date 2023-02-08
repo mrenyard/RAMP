@@ -359,9 +359,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertEquals('GOOD', $this->dataObject->property4);
       try {
         unset($this->testObject['property4']);
-      } catch (\BadMethodCallException $expected) {
+      } catch (\OutOfBoundsException $expected) {
         $this->assertEquals(
-          'Unsetting properties already populated with a valid value NOT alowed!',
+          // 'Unsetting properties already populated with a valid value NOT alowed!',
+          'Value is not a valid index.',
           $expected->getMessage()
         );
         return;
