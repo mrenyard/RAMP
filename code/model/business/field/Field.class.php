@@ -168,26 +168,6 @@ abstract class Field extends BusinessModel
   }
 
   /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
-   */
-  final protected function get_hasErrors() : bool
-  {
-    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
-  }
-
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
-  final protected function get_errors() : StrCollection
-  {
-    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
-  }
-
-  /**
    * Template method for use in validation.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
