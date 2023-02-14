@@ -1,0 +1,7 @@
+- functional driven development
+  -- write unit test code
+  -- test & fail
+  -- write code to pass
+  -- repeat
+- refactor excess within API set buy test framework
+  -- ? and look for any slow process
