@@ -45,8 +45,6 @@ class Flag extends DbTypeValidation
    */
   protected function test($value)
   {
-    // if ($value === 1) { $value = TRUE; }
-    // if ($value === 0) { $value = FALSE; }
     if ($value === TRUE || $value === FALSE) { return; }
     throw new FailedValidationException();
   }
