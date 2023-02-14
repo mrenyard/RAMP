@@ -158,7 +158,7 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
   `doubleDependentLocality` VARCHAR(35) NULL DEFAULT NULL,
   `dependentLocality` VARCHAR(35) NULL DEFAULT NULL,
 
-  `PostTown` VARCHAR(30) NOT NULL, -- UPPERCASE
+  `postTown` VARCHAR(30) NULL DEFAULT NULL, -- UPPERCASE
   -- `region` VARCHAR(30) NULL DEFAULT NULL, -- County
 
   -- latitude decimal(9,6) NOT NULL -- (50.944221)
