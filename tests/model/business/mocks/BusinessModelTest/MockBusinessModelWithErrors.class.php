@@ -21,7 +21,7 @@
 namespace tests\ramp\model\business\mocks\BusinessModelTest;
 
 use ramp\core\Str;
-use ramp\core\Collection;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 
 /**
@@ -32,15 +32,24 @@ use ramp\condition\PostData;
 class MockBusinessModelWithErrors extends MockBusinessModel
 {
   /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
+   * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
+   * @return bool True if an error has been recorded
    */
-  public function validate(PostData $postdata)
+  public function get_hasErrors() : bool
   {
-    parent::validate($postdata);
-    $this->errorCollection->add(Str::set($this->label . '\'s first error occurred during validation!'));
-    $this->errorCollection->add(Str::set($this->label . '\'s second error occurred during validation!'));
-    $this->errorCollection->add(Str::set($this->label . '\'s third error occurred during validation!'));
+    $this->validateCount++;
+    return TRUE;
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
+   * @return StrCollection List of recorded errors.
+   */
+  public function get_errors() : StrCollection
+  {
+    $this->hasErrorsCount++;
+    return StrCollection::set($this->label . ' error message');
   }
 }

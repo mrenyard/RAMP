@@ -165,8 +165,10 @@ abstract class Record extends BusinessModel
    */
   protected function get_errors() : StrCollection
   {
+    $errors = StrCollection::set();
     if ($this->primaryKey->hasErrors) {
-      $this->errorCollection->add($this->primaryKey->errors[0]);
+      $errors->add($this->primaryKey->errors[0]);
+      return $errors;
     }
     return parent::get_errors();
   }
@@ -241,7 +243,6 @@ abstract class Record extends BusinessModel
         return;
       }
     }
-    for ($i=1, $j=$pkNames->count; $i <= $j; $i++) { unset($this['-' . $i]); }
     $this->validFromSource = ($this->checkRequired($this->dataObject));
   }
 

@@ -49,7 +49,9 @@ abstract class Field extends BusinessModel
 {
   private $dataObjectPropertyName;
   private $containingRecord;
-  public $editable;
+  private $editable;
+
+  protected $errorCollection;
 
   /**
    * Base constructor for Field related to a single property of containing record.
@@ -60,9 +62,10 @@ abstract class Field extends BusinessModel
    */
   public function __construct(Str $dataObjectPropertyName, Record $containingRecord, BusinessModel $children = NULL, bool $editable = NULL)
   {
+    $this->errorCollection = StrCollection::set();
     $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
-    $this->editable = ($editable === FALSE) ? FALSE : $editable; 
+    $this->editable = ($editable === FALSE) ? FALSE : $editable;
     parent::__construct($children);
   }
 
@@ -147,7 +150,6 @@ abstract class Field extends BusinessModel
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
       if ((string)$inputdata->attributeURN == (string)$this->id)
@@ -165,6 +167,26 @@ abstract class Field extends BusinessModel
         return;
       }
     }
+  }
+
+  /**
+   * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
+   * @return bool True if an error has been recorded
+   */
+  protected function get_hasErrors() : bool
+  {
+    return ($this->errorCollection->count > 0);
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
+   * @return StrCollection List of recorded errors.
+   */
+  protected function get_errors() : StrCollection
+  {
+    return $this->errorCollection;
   }
 
   /**

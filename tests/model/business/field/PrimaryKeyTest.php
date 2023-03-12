@@ -167,11 +167,8 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->dataObject->aProperty = 'A';
       $this->assertNull($this->testObject->value);
-      $this->dataObject->aProperty = 'A';
       $this->dataObject->bProperty = 'B';
       $this->assertNull($this->testObject->value);
-      $this->dataObject->aProperty = 'A';
-      $this->dataObject->bProperty = 'B';
       $this->dataObject->cProperty = 'C';
       $this->assertSame('A|B|C', $this->testObject->value);
       return;
@@ -277,10 +274,10 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   public function testProcessValidationRule()
   {
     $getBusinessModelCount = MockBusinessModelManager::$callCount;
+    $this->assertTrue($this->mockRecord->isNew);
     $this->dataObject->aProperty = 1;
     $this->dataObject->bProperty = 2;
     $this->dataObject->cProperty = 3;
-    $this->assertTrue($this->mockRecord->isNew);
     $this->assertTrue($this->mockRecord->isValid);
     try {
       $this->testObject->processValidationRule(NULL);

@@ -152,7 +152,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert returned value matches expected result.
    * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
    */
-  public function testGet_labe()
+  public function testGet_label()
   {
     try {
       $this->testObject->label = "LABEL";
@@ -200,7 +200,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $existingPrimaryFromNew = new MockField(Str::set('aProperty'), new MockRecord($this->dataObject), NULL, TRUE);
     $this->assertFalse($existingPrimaryKeyField->isEditable);
 
-    $existingNonPrimaryField = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject));
+    $existingNonPrimaryField = new MockField(Str::set('cProperty'), new MockRecord($this->dataObject));
     $this->assertTrue($existingNonPrimaryField->isEditable);
 
     $existingNonPrimaryField->isEditable = FALSE;
@@ -209,10 +209,10 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     $existingNonPrimaryField->isEditable = TRUE;
     $this->assertTrue($existingNonPrimaryField->isEditable);
 
-    $existingNonPrimaryFromNew = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject), NULL, FALSE);
+    $existingNonPrimaryFromNew = new MockField(Str::set('cProperty'), new MockRecord($this->dataObject), NULL, FALSE);
     $this->AssertFalse($existingNonPrimaryFromNew->isEditable);
 
-    $existingNonPrimaryFromNew = new MockField(Str::set('bProperty'), new MockRecord($this->dataObject), NULL, TRUE);
+    $existingNonPrimaryFromNew = new MockField(Str::set('cProperty'), new MockRecord($this->dataObject), NULL, TRUE);
     $this->AssertTrue($existingNonPrimaryFromNew->isEditable);
   }
 

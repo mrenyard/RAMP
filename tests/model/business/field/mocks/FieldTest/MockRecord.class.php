@@ -41,7 +41,7 @@ class MockRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('aProperty','bProperty','cProperty');
+    return StrCollection::set('aProperty','bProperty');
   }
 
   protected function get_aProperty()

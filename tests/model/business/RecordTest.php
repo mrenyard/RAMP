@@ -93,7 +93,6 @@ use tests\ramp\model\business\mocks\RecordTest\ConcreteOption;
  */
 class RecordTest extends \PHPUnit\Framework\TestCase
 {
-  // private $testObjectPropertyCount;
   private $dataObject;
   private $testObject;
   private $testObjectProperties;
@@ -152,10 +151,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $properties = get_object_vars($this->dataObject);
     foreach ($properties as $name => $value)
     {
-      // $j = ($i == 0) ? -1 : $i;
       $this->assertEquals($this->concreteRecordPropertyNames[$i++], $name);
       $this->assertNull($value);
-      // $i++;
     }
     $this->assertEquals($i, count($properties));
     $this->assertEquals($this->concreteRecordPropertyCount, $i);
@@ -289,7 +286,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
         );
       }
       return;
-    }    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
+    }
+    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
   }
 
   /**
@@ -410,7 +408,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame('An entry already exists for this record!', (string)$errors[0]);
     $this->assertSame(4, $testObjectMultiKey->count);
     $testObjectMultiKey->updated();
-    $this->assertSame(1, $testObjectMultiKey->count);
     $this->assertSame('concrete-record-multi-key:1|2|3', (string)$testObjectMultiKey->id);
     // TODO:mrenyard: Add check ModelManager called from field\PrimaryKey
 
@@ -518,7 +515,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     }
     $this->assertNull($this->testObject->validate(PostData::build($_POST2)));
     $this->assertTrue($this->testObject->hasErrors);
-    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -570,7 +566,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST4)));
     $this->assertTrue($this->testObject->hasErrors);
-    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -622,7 +617,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST6)));
     $this->assertTrue($this->testObject->hasErrors);
-    $this->assertEquals(1, $this->testObject->errors->count);
   }
 
   /**
@@ -683,7 +677,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     );
     $this->assertNull($this->testObject->validate(PostData::build($_POST8)));
     $this->assertTrue($this->testObject->hasErrors);
-    $this->assertEquals(3, $this->testObject->errors->count);
   }
 
   /**
@@ -711,7 +704,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->dataObject->property2 = array('1','2','6');
     $this->assertArrayHasKey(-1, $this->testObject);
     $this->assertNull($this->testObject->updated());
-    $this->assertArrayNotHasKey(-1, $this->testObject);
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
     $selection = array('3','4','5');

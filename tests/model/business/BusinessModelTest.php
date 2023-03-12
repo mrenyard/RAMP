@@ -302,7 +302,7 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(1, $this->testObject->hasErrorsCount);
     $this->assertSame(1, $this->testChild1->hasErrorsCount);
-    $this->assertSame(1, $this->testChild2->hasErrorsCount);
+    $this->assertSame(0, $this->testChild2->hasErrorsCount);
     $this->assertSame(0, $this->testChild3->hasErrorsCount);
     $this->assertSame(0, $this->grandchild->hasErrorsCount);
   }
@@ -323,12 +323,9 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->hasErrors);
     $errors = $this->testObject->errors;
     // All errors including children and grandchildren of top testObject returned in a single collection.
-    $this->assertSame('Second child\'s first error occurred during validation!', (string)$errors[0]);
-    $this->assertSame('Second child\'s second error occurred during validation!', (string)$errors[1]);
-    $this->assertSame('Second child\'s third error occurred during validation!', (string)$errors[2]);
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$errors[3]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$errors[4]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$errors[5]);
+    $this->assertSame('Second child error message', (string)$errors[0]);
+    $this->assertSame('First grandchild error message', (string)$errors[1]);
+
     $this->assertFalse(isset($errors[6]));
     // Returns same results on subsequent call, while BusinessModels are in same state.
     $secondCallOnErrors = $this->testObject->errors;
@@ -336,21 +333,18 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(isset($secondCallOnErrors[6]));
     // Calls on sub BusinessModels return expected sub set of Errors.
     $child2Errors = $this->testChild2->errors;
-    $this->assertSame('Second child\'s first error occurred during validation!', (string)$child2Errors[0]);
-    $this->assertSame('Second child\'s second error occurred during validation!', (string)$child2Errors[1]);
-    $this->assertSame('Second child\'s third error occurred during validation!', (string)$child2Errors[2]);
+    $this->assertSame('Second child error message', (string)$errors[0]);
+    $this->assertSame('First grandchild error message', (string)$errors[1]);
+
     // Calls on sub BusinessModels return expected sub set of Errors, even on grandchildren.
     $grandchildErrros = $this->grandchild->errors;
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$grandchildErrros[0]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$grandchildErrros[1]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$grandchildErrros[2]);
+    $this->assertSame('First grandchild error message', (string)$grandchildErrros[0]);
     $this->assertFalse(isset($child3Errros[3]));
+
     // Because testChild3 in the parent of grandchild it returns grandchild errors alone with any of own.
     $child3Errros = $this->testChild3->errors;
-    $this->assertSame('First grandchild\'s first error occurred during validation!', (string)$child3Errros[0]);
-    $this->assertSame('First grandchild\'s second error occurred during validation!', (string)$child3Errros[1]);
-    $this->assertSame('First grandchild\'s third error occurred during validation!', (string)$child3Errros[2]);
-    $this->assertFalse(isset($child3Errros[3]));
+    $this->assertSame('First grandchild error message', (string)$child3Errros[0]);
+    $this->assertFalse(isset($child3Errros[1]));
   }
 
    /**

@@ -48,12 +48,6 @@ abstract class BusinessModel extends Model implements iList
   private $children;
 
   /**
-   * SrtCollection of error messages.
-   * @var \ramp\core\StrCollection
-   */
-  protected $errorCollection;
-
-  /**
    * Base constructor for Business Models.
    * @param \ramp\model\business\BusinessModel $children business models.
    */
@@ -159,7 +153,6 @@ abstract class BusinessModel extends Model implements iList
    */
   public function validate(PostData $postdata)
   {
-    $this->errorCollection = StrCollection::set();
     foreach ($this->children as $child) {
       $child->validate($postdata);
     }
@@ -172,7 +165,6 @@ abstract class BusinessModel extends Model implements iList
    */
   protected function get_hasErrors() : bool
   {
-    if (isset($this->errorCollection) && $this->errorCollection->count > 0) { return TRUE; }
     foreach ($this->children as $child) {
       if ($child->hasErrors) { return TRUE; }
     }
@@ -186,7 +178,7 @@ abstract class BusinessModel extends Model implements iList
    */
   protected function get_errors() : StrCollection
   {
-    $errors = clone $this->errorCollection;
+    $errors = StrCollection::set();
     foreach ($this->children as $child) {
       foreach ($child->errors as $error) {
         $errors->add($error);

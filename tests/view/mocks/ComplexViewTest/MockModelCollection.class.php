@@ -85,9 +85,9 @@ class MockModelCollection extends BusinessModel implements iCollection
    * ArrayAccess method offsetUnset, DO NOT USE.
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
+   *
   public function offsetUnset($offset)
   {
     throw new \BadMethodCallException('Array access unsetting is not allowed.');
-  }
+  }*/
 }
