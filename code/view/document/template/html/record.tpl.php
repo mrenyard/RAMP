@@ -21,5 +21,12 @@
 ?>
         <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
           <legend><?=$this->heading; ?></legend>
+<?php if (isset($this->hasErrors) && $this->hasErors) { ?>
+          <ol class="error">
+<?php foreach ($this->errors as $error) { ?>            
+            <li><?=$error; ?></p>
+<?php } ?>
+          </ol>
+<?php } ?>
 <?=$this->children; ?>
         </fieldset><!-- #<?=$this->id; ?> -->
