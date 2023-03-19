@@ -35,9 +35,11 @@ require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/URNQueryEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
@@ -66,7 +68,6 @@ use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\field\Relation;
-use ramp\model\business\validation\dbtype\TinyInt;
 
 use tests\ramp\model\business\field\mocks\RelationTest\MockField;
 use tests\ramp\model\business\field\mocks\RelationTest\MockRecord;
@@ -82,7 +83,8 @@ use tests\ramp\model\business\field\mocks\RelationTest\MockBusinessModelManager;
  */
 class RelationTest extends \PHPUnit\Framework\TestCase
 {
-  private $testObject;
+  private $testObjectAlpha;
+  private $testObjectBeta;
   private $dataObject;
   private $containingRecord;
   private $relationObjectTableName;
@@ -96,9 +98,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\field\mocks\RelationTest\MockBusinessModelManager';
     $this->dataObject = new \stdClass();
     $this->dataObject->key = 3;
-    $this->dataObject->relationAlpha = 1;
+    $this->dataObject->relationAlphaKEY = '1|1|1';
     $this->containingRecord = new ContainingRecord($this->dataObject);
-    $this->testObject = $this->containingRecord->relationAlpha;
+    $this->testObjectAlpha = $this->containingRecord->relationAlpha;
+    $this->testObjectBeta = $this->containingRecord->relationBeta;
     MockField::reset();
   }
 
@@ -116,14 +119,22 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function test__construct()
   {
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
-    $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
-    $this->assertInstanceOf('\Countable', $this->testObject);
-    $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\field\Relation', $this->testObject);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObjectBeta);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObjectBeta);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObjectBeta);
+    $this->assertInstanceOf('\IteratorAggregate', $this->testObjectAlpha);
+    $this->assertInstanceOf('\IteratorAggregate', $this->testObjectBeta);
+    $this->assertInstanceOf('\Countable', $this->testObjectAlpha);
+    $this->assertInstanceOf('\Countable', $this->testObjectBeta);
+    $this->assertInstanceOf('\ArrayAccess', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ArrayAccess', $this->testObjectBeta);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta);
+    $this->assertInstanceOf('\ramp\model\business\field\Relation', $this->testObjectAlpha);
+    $this->assertInstanceOf('\ramp\model\business\field\Relation', $this->testObjectBeta);
   }
 
   /**
@@ -138,12 +149,20 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGet_id()
   {
     try {
-      $this->testObject->id = "ID";
+      $this->testObjectAlpha->id = "ID";
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-      $this->assertEquals('containing-record:3:relation-alpha', (string)$this->testObject->id);
-      return;
+      $this->assertSame(get_class($this->testObjectAlpha) . '->id is NOT settable', $expected->getMessage());
+      try {
+        $this->testObjectBeta->id = "ID";
+      } catch (PropertyNotSetException $expected) {
+        $this->assertSame(get_class($this->testObjectBeta) . '->id is NOT settable', $expected->getMessage());
+      
+        $this->assertInstanceOf('\ramp\core\Str', $this->testObjectAlpha->id);
+        $this->assertInstanceOf('\ramp\core\Str', $this->testObjectBeta->id);
+        $this->assertEquals('containing-record:3:relation-alpha', (string)$this->testObjectAlpha->id);
+        $this->assertEquals('containing-record:3:relation-beta', (string)$this->testObjectBeta->id);
+        return;
+      }
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
@@ -159,12 +178,20 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGet_type()
   {
     try {
-      $this->testObject->type = "TYPE";
+      $this->testObjectAlpha->type = "TYPE";
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertEquals('relation field', (string)$this->testObject->type);
-      return;
+      $this->assertSame(get_class($this->testObjectAlpha) . '->type is NOT settable', $expected->getMessage());
+      try {
+        $this->testObjectBeta->type = "TYPE";
+      } catch (PropertyNotSetException $expected) {
+        $this->assertSame(get_class($this->testObjectBeta) . '->type is NOT settable', $expected->getMessage());
+
+        $this->assertInstanceOf('\ramp\core\Str', $this->testObjectAlpha->type);
+        $this->assertInstanceOf('\ramp\core\Str', $this->testObjectBeta->type);
+        $this->assertEquals('relation field', (string)$this->testObjectAlpha->type);
+        $this->assertEquals('relation field', (string)$this->testObjectBeta->type);
+        return;
+      }
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
@@ -172,35 +199,41 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\model\business\field\Relation::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
-   * - assert returned object is {@link \Traversable} relatedObject.
-   * - assert foreach loop, iterates through each expected object.
-   * - assert foreach returned object matches expected.
+   * - assert foreach loop, iterates through expected fields of either related record
+   *   or primaryKey fields where a link is yet to be established.
    * @link ramp.model.business.field.Relation#method_getIterator ramp\model\business\field\Relation::getIterator()
    */
   public function testGetIterator()
   {
-    $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-    // $this->assertSame(MockBusinessModelManager::$relatedObjectOne, $this->testObject->getIterator());
+    $this->assertInstanceOf('\Traversable', $this->testObjectAlpha->getIterator());
     $i = 0;
-    foreach ($this->testObject as $property) {
+    foreach ($this->testObjectAlpha as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
-      if ($i == 0) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne[-1], $property); }
-      if ($i == 1) { $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $property); }
+      $this->assertSame('mock-record:1|1|1', (string)$property->containingRecord->id);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[$i], $property);
       $i++;
     }
 
-    $this->dataObject->relationBeta = Str::NEW();
-    $testObjectBeta = new Relation(Str::set('relationBeta'), $this->containingRecord, Str::set('MockRecord'));
-    $relatedRecord = $testObjectBeta->getIterator();
-    // $this->assertInstanceOf('tests\ramp\model\business\field\mocks\RelationTest\MockRecord', $relatedRecord);
-    // $this->assertSame('mock-record:new', (string)$relatedRecord->id);
+    $this->assertInstanceOf('\Traversable', $this->testObjectBeta->getIterator());
+    $i = 0;
+    foreach ($this->testObjectBeta as $property) {
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
+      $this->assertSame('mock-record:new', (string)$property->containingRecord->id);
+      $i++;
+    }
 
-    // $this->dataObject->relationGamma = NULL;
-    // $testObjectGamma = new Relation(Str::set('relationGamma'), $this->containingRecord, Str::set('MockRecord'));
-    // $relatedField = $testObjectGamma->getIterator();
-    // $this->assertInstanceOf('ramp\model\business\field\Link', $relatedField);
-    // $this->assertSame('mock-record:new', (string)$relatedRecord->id);
-    // $testObjectGamma->getIterator();
+    $this->containingRecord->validate(PostData::build(array(
+      'containing-record:3:relation-beta' => array('keyC' => 3, 'keyB' => 2, 'keyA' => 1)
+    )));
+    $this->assertSame('1|2|3', $this->dataObject->relationBetaKEY);
+    $this->assertInstanceOf('\Traversable', $this->testObjectBeta->getIterator());
+    $i = 0;
+    foreach ($this->testObjectBeta as $property) {
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
+      $this->assertSame('mock-record:1|2|3', (string)$property->containingRecord->id);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[$i], $property);
+      $i++;
+    }
   }
 
   /**
@@ -213,10 +246,15 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGet_containingRecord()
   {
     try {
-      $this->testObject->containingRecord = $this->containingRecord;
+      $this->testObjectAlpha->containingRecord = $this->containingRecord;
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame($this->containingRecord, $this->testObject->containingRecord);
-      return;
+      try {
+        $this->testObjectBeta->containingRecord = $this->containingRecord;
+      } catch (PropertyNotSetException $expected) {
+        $this->assertSame($this->containingRecord, $this->testObjectAlpha->containingRecord);
+        $this->assertSame($this->containingRecord, $this->testObjectBeta->containingRecord);
+        return;
+      }
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
@@ -230,13 +268,45 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testOffsetGet()
   {
     try {
-      $this->testObject[0];
+      $this->testObjectAlpha[4];
     } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject[-1]);
-      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[-1], $this->testObject[-1]);
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject[1]);
-      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $this->testObject[1]);
-      return;
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[0]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[0], $this->testObjectAlpha[0]);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[1]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[1], $this->testObjectAlpha[1]);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[2]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[2], $this->testObjectAlpha[2]);
+      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[3]);
+      $this->assertSame(MockBusinessModelManager::$relatedObjectOne[3], $this->testObjectAlpha[3]);
+      try {
+        $this->testObjectBeta[4];
+      } catch (\OutOfBoundsException $expected) {
+        $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[0]);
+        $this->assertNull($this->testObjectBeta[0]->value);
+        $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[1]);
+        $this->assertNull($this->testObjectBeta[1]->value);
+        $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[2]);
+        $this->assertNull($this->testObjectBeta[2]->value);
+        $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[3]);
+        $this->assertNull($this->testObjectBeta[3]->value);
+
+        $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
+          'containing-record:3:relationBeta' => array('keyC' => 3, 'keyB' => 2, 'keyA' => 1)
+        ))));
+        try {
+          $this->testObjectBeta[4];
+        } catch (\OutOfBoundsException $expected) {
+          $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[0]);
+          $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[0], $this->testObjectBeta[0]);
+          $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[1]);
+          $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[1], $this->testObjectBeta[1]);
+          $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[2]);
+          $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[2], $this->testObjectBeta[2]);
+          $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[3]);
+          $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[3], $this->testObjectBeta[3]);
+          return;
+        }
+      }
     }
     $this->fail('An expected \OutOfBoundsException has NOT been raised.');
   }
@@ -249,10 +319,17 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetExists()
   {
-    $this->assertFalse(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject[-1]));
-    $this->assertTrue(isset($this->testObject[1]));
-    $this->assertFalse(isset($this->testObject[2])); // Not a property
+    $this->assertTrue(isset($this->testObjectAlpha[0]));
+    $this->assertTrue(isset($this->testObjectAlpha[1]));
+    $this->assertTrue(isset($this->testObjectAlpha[2]));
+    $this->assertTrue(isset($this->testObjectAlpha[3]));
+    $this->assertFalse(isset($this->testObjectAlpha[4])); // Not a property
+
+    $this->assertTrue(isset($this->testObjectBeta[0]));
+    $this->assertTrue(isset($this->testObjectBeta[1]));
+    $this->assertTrue(isset($this->testObjectBeta[2]));
+    $this->assertTrue(isset($this->testObjectBeta[3]));
+    $this->assertFalse(isset($this->testObjectBeta[4])); // Not a property
   }
 
   /**
@@ -268,10 +345,10 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testOffsetSetOffsetUnset()
   {
     $object =  new MockField(Str::set('propertNew'), MockBusinessModelManager::$relatedObjectOne);
-    $this->testObject[2] = $object; // New property
-    $this->assertSame($object, $this->testObject[2]);
-    unset($this->testObject[2]);
-    $this->assertFalse(isset($this->testObject[2]));
+    $this->testObjectAlpha[2] = $object; // New property
+    $this->assertSame($object, $this->testObjectAlpha[2]);
+    unset($this->testObjectAlpha[2]);
+    $this->assertFalse(isset($this->testObjectAlpha[2]));
   }
 
   /**
@@ -285,11 +362,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGet_value()
   {
     try {
-      $this->testObject->value = 2;
+      $this->testObjectAlpha->value = '2|2|2';
     } catch (PropertyNotSetException $expected) {
-      $this->dataObject->relationAlpha = 2;
-      $this->assertSame($this->dataObject->relationAlpha, $this->testObject->value);
-      $this->assertSame(2, $this->testObject->value);
+      $this->dataObject->relationAlphaKEY = '2|2|2';
+      $this->assertSame($this->dataObject->relationAlphaKEY, $this->testObjectAlpha->value);
+      $this->assertSame('2|2|2', $this->testObjectAlpha->value);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -309,7 +386,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleNotCalled()
   {
-    $this->assertNull($this->testObject->validate(new PostData()));
+    $this->assertNull($this->testObjectAlpha->validate(new PostData()));
     $this->assertSame(0, MockField::$processValidationRuleCount);
  }
 
@@ -327,8 +404,8 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateProcessValidationRuleCalled()
   {
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'mock-record:1:property' => 'GOOD'
+    $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
+      'mock-record:1|1|1:property' => 'GOOD'
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame('GOOD', MockBusinessModelManager::$relatedDataObjectOne->property);
@@ -346,7 +423,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testValidateProcessFailedValidationException()
   {
     try {
-      $this->testObject->processValidationRule(3);
+      $this->testObjectAlpha->processValidationRule(3);
     } catch (FailedValidationException $expected) {
       $this->assertSame('Relation NOT found in data storage!', $expected->getMessage());
       return;
@@ -359,14 +436,14 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationUpdated()
   {
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 2
+    $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
+      'containing-record:3:relationAlpha' => array('keyC' => 3, 'keyB' => 2, 'keyA' => 1)
     ))));
-    $this->assertSame(2, $this->dataObject->relationAlpha);
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 1
+    $this->assertSame('1|2|3', $this->dataObject->relationAlphaKEY);
+    $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
+      'containing-record:3:relationAlpha' => array('keyC' => 1, 'keyB' => 1, 'keyA' => 1)
     ))));
-    $this->assertSame(1, $this->dataObject->relationAlpha);
+    $this->assertSame('1|1|1', $this->dataObject->relationAlphaKEY);
   }
 
   /**
@@ -380,8 +457,8 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testHasErrors()
   {
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors);
+    $this->assertNull($this->testObjectAlpha->validate(new PostData()));
+    $this->assertFalse($this->testObjectAlpha->hasErrors);
     $this->assertSame(0, MockField::$processValidationRuleCount);
   }
 
@@ -410,53 +487,49 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGetErrors()
   {
     // PostData does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors);
-    $errors = $this->testObject->errors;
+    $this->assertNull($this->testObjectAlpha->validate(new PostData()));
+    $this->assertFalse($this->testObjectAlpha->hasErrors);
+    $errors = $this->testObjectAlpha->errors;
     $this->assertSame(0, MockField::$processValidationRuleCount);
     $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
     // Returns same results on subsequent call, while Field in same state.
-    $secondCallOnErrors = $this->testObject->errors;
+    $secondCallOnErrors = $this->testObjectAlpha->errors;
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
 
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 'BAD'
+    $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
+      'containing-record:3:relationAlpha' => array('keyC' => 3, 'keyB' => 2, 'keyA' => 'BAD')
     ))));
     // $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(1, $this->dataObject->relationAlpha);
-    $errors = $this->testObject->errors;
+    $this->assertSame('1|1|1', $this->dataObject->relationAlphaKEY);
+    $errors = $this->testObjectAlpha->errors;
     $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(1, $errors->count);
     $this->assertSame('Relation NOT found in data storage!', (string)$errors[0]);
     // Returns same results on subsequent call, while Field in same state.
-    $secondCallOnErrors = $this->testObject->errors;
+    $secondCallOnErrors = $this->testObjectAlpha->errors;
     $this->assertEquals($errors, $secondCallOnErrors);
     $this->assertTrue(isset($secondCallOnErrors[0]));
 
     // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 2
+    $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
+      'containing-record:3:relationAlpha' => array('keyC' => 3, 'keyB' => 2, 'keyA' => 1)
     ))));
     // $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame(2, $this->dataObject->relationAlpha);
-    $this->assertFalse($this->testObject->hasErrors);
-    $errors = $this->testObject->errors;
+    $this->assertSame('1|2|3', $this->dataObject->relationAlphaKEY);
+    $this->assertFalse($this->testObjectAlpha->hasErrors);
+    $errors = $this->testObjectAlpha->errors;
     $this->assertSame(0, MockField::$processValidationRuleCount);
     $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(0, $errors->count);
     $this->assertFalse(isset($errors[0]));
     // Returns same results on subsequent call, while Field in same state.
-    $secondCallOnErrors = $this->testObject->errors;
+    $secondCallOnErrors = $this->testObjectAlpha->errors;
     $this->assertEquals($secondCallOnErrors, $errors);
     $this->assertFalse(isset($secondCallOnErrors[0]));
-
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'containing-record:3:relationAlpha' => 1
-    ))));
   }
 
   /**
@@ -466,6 +539,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testCount()
   {
-    $this->assertSame(2 ,$this->testObject->count);
+    $this->assertSame(4 ,$this->testObjectAlpha->count);
+    $this->assertSame(4 ,$this->testObjectBeta->count);
   }
 }

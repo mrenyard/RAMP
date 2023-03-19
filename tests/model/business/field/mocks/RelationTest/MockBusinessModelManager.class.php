@@ -28,6 +28,7 @@ use ramp\model\business\BusinessModelManager;
 use ramp\model\business\iBusinessModelDefinition;
 use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
+use ramp\condition\SQLEnvironment;
 
 use tests\ramp\model\business\field\mocks\RelationTest\MockRecord;
 
@@ -87,32 +88,38 @@ class MockBusinessModelManager extends BusinessModelManager
   {
     if ($definition->recordName == 'MockRecord')
     {
-      if ((string)$definition->recordKey == 'new')
-      {
-        $dataObject = new \stdClass();
-        $dataObject->key = NULL;
-        $dataObject->property = NULL;
-        return new MockRecord($dataObject);
-      }
-      elseif ((string)$definition->recordKey == '1')
+      if ($definition->recordKey == '1|1|1')
       {
         if (!isset(self::$relatedObjectOne)) {
           self::$relatedDataObjectOne = new \stdClass();
-          self::$relatedDataObjectOne->key = 1;
+          self::$relatedDataObjectOne->keyA = 1;
+          self::$relatedDataObjectOne->keyB = 1;
+          self::$relatedDataObjectOne->keyC = 1;
           self::$relatedDataObjectOne->property = 'A Value';
           self::$relatedObjectOne = new MockRecord(self::$relatedDataObjectOne);
         }
         return self::$relatedObjectOne;
       }
-      elseif ((string)$definition->recordKey == '2')
+      elseif ($definition->recordKey == '1|2|3')
       {
         if (!isset(self::$relatedObjectTwo)) {
           self::$relatedDataObjectTwo = new \stdClass();
-          self::$relatedDataObjectTwo->key = 2;
+          self::$relatedDataObjectTwo->keyA = 1;
+          self::$relatedDataObjectTwo->keyB = 2;
+          self::$relatedDataObjectTwo->keyC = 3;
           self::$relatedDataObjectTwo->property = 'B Value';
           self::$relatedObjectTwo = new MockRecord(self::$relatedDataObjectTwo);
         }
         return self::$relatedObjectTwo;
+      }
+      elseif ((string)$definition->recordKey == 'new')
+      {
+        $dataObject = new \stdClass();
+        $dataObject->keyA = NULL;
+        $dataObject->keyB = NULL;
+        $dataObject->keyC = NULL;
+        $dataObject->property = NULL;
+        return new MockRecord($dataObject);
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }

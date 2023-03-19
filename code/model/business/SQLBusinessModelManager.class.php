@@ -143,7 +143,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @throws \DomainException When {@link \ramp\model\business\Record} of type with $key NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  private function getRecord(Str $name, Str $key) // : Record
+  private function getRecord(Str $name, Str $key) : Record
   {
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $name;
     $pkNames = $recordFullName::primaryKeyNames();

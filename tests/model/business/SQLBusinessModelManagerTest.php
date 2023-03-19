@@ -253,7 +253,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
   {
     $recordName = Str::set('MockRecordMultiKey');
     $newRecord = $this->testObject->getBusinessModel(
-      new SimpleBusinessModelDefinition($recordName, Str::set('new'))
+      new SimpleBusinessModelDefinition($recordName, Str::NEW())
     );
     $this->assertFalse(isset(\ChromePhp::getMessages()[0])); // No SQL statement logged
     $this->assertInstanceOf('\ramp\model\Model', $newRecord);

@@ -47,7 +47,6 @@ class Relation extends Field
 {
   private $modelManager;
   private $relationObjectRecordName;
-  private $relatedObject;
 
   /**
    * Creates input field related to a single property of containing record.
@@ -61,8 +60,8 @@ class Relation extends Field
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->relationObjectRecordName = $relationObjectRecordName;
-    $this->update($containingRecord->getPropertyValue((string)$dataObjectPropertyName));
-    parent::__construct($dataObjectPropertyName, $containingRecord, $this->relatedObject);
+    parent::__construct($dataObjectPropertyName, $containingRecord);
+    $this->update($this->value);
   }
 
   /**
@@ -72,9 +71,12 @@ class Relation extends Field
   private function update($key)
   {
     $key = (isset($key)) ? Str::set($key) : Str::NEW();
-    $this->relatedObject = $this->modelManager->getBusinessModel(
+    // \ChromePhp::log((string)$key);
+    $record = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
     );
+    // \ChromePhp::log((string)$record->id);
+    $this->setChildren($record);
   }
 
   /**
@@ -83,7 +85,7 @@ class Relation extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName->append(Str::KEY()));
   }
 
   /**
@@ -94,20 +96,31 @@ class Relation extends Field
   public function validate(PostData $postdata) : void
   {
     $this->errorCollection = StrCollection::set();
-    if (isset($this->relatedObject)) { $this->relatedObject->validate($postdata); }
+    foreach ($this as $child) { $child->validate($postdata); }
     foreach ($postdata as $inputdata)
     {
       if ((string)$inputdata->attributeURN == (string)parent::get_id())
       {
-        try {
-          $this->processValidationRule($inputdata->value);
-        } catch (FailedValidationException $e) {
-          $this->errorCollection->add(Str::set($e->getMessage()));
-          return;
+        if (is_array($inputdata->value))
+        {
+          $values = $inputdata->value;
+          $key = StrCollection::set();
+          foreach ($this[0]->containingRecord->primaryKeyNames() as $primaryKeyName) {
+            $key->add(Str::set($values[(string)$primaryKeyName]));
+          }
+          $value = (string)$key->implode(Str::BAR());
+          print_r($value);
+          try {
+            $this->processValidationRule($value);
+          } catch (FailedValidationException $e) {
+            $this->errorCollection->add(Str::set($e->getMessage()));
+            return;
+          }
+          $this->containingRecord->setPropertyValue(
+            (string)$this->dataObjectPropertyName->append(Str::KEY()), $value
+          );
         }
-        $this->containingRecord->setPropertyValue(
-          (string)$this->dataObjectPropertyName, $inputdata->value
-        );
+        return;
       }
     }
   }

@@ -37,13 +37,13 @@ class ContainingRecord extends Record
 
   protected function get_key()
   {
-    if (!isset($this[-1])) {
-      $this[-1] = new MockField(
+    if (!isset($this[0])) {
+      $this[0] = new MockField(
         Str::set('key'),
         $this
       );
     }
-    return $this[-1]; 
+    return $this[0]; 
   }
 
   public function get_relationAlpha()
@@ -58,18 +58,17 @@ class ContainingRecord extends Record
     return $this[1];
   }
 
-  /*
-  public function get_nullRelation()
+  public function get_relationBeta()
   {
     if (!isset($this[2])) {
       $this[2] = new Relation(
-        Str::set('nullRelation'),
+        Str::set('relationBeta'),
         $this,
         Str::set('MockRecord')
       );
     }
     return $this[2];
-  }*/
+  }
   
   protected static function checkRequired($dataObject) : bool
   {

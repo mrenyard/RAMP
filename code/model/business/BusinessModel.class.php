@@ -60,6 +60,11 @@ abstract class BusinessModel extends Model implements iList
         $children;
   }
 
+  protected function setChildren(BusinessModel $value)
+  {
+    $this->children = $value;
+  }
+
   /**
    * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
@@ -100,7 +105,7 @@ abstract class BusinessModel extends Model implements iList
    * Implementation of \IteratorAggregate method for use with foreach etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
    */
-  final public function getIterator() : \Traversable
+  public function getIterator() : \Traversable
   {
     return $this->children->getIterator();
   }
