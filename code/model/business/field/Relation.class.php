@@ -71,11 +71,9 @@ class Relation extends Field
   private function update($key)
   {
     $key = (isset($key)) ? Str::set($key) : Str::NEW();
-    // \ChromePhp::log((string)$key);
     $record = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
     );
-    // \ChromePhp::log((string)$record->id);
     $this->setChildren($record);
   }
 
