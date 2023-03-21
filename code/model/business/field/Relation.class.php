@@ -107,7 +107,6 @@ class Relation extends Field
             $key->add(Str::set($values[(string)$primaryKeyName]));
           }
           $value = (string)$key->implode(Str::BAR());
-          print_r($value);
           try {
             $this->processValidationRule($value);
           } catch (FailedValidationException $e) {

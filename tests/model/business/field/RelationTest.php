@@ -94,6 +94,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
+    MockBusinessModelManager::reset();
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\RelationTest';
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\field\mocks\RelationTest\MockBusinessModelManager';
     $this->dataObject = new \stdClass();

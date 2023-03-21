@@ -52,6 +52,14 @@ class MockBusinessModelManager extends BusinessModelManager
   {
   }
 
+  public static function reset()
+  {
+    self::$relatedObjectOne = NULL;
+    self::$relatedDataObjectOne = NULL;
+    self::$relatedObjectTwo = NULL;
+    self::$relatedDataObjectTwo = NULL;
+  }
+
   /**
    * Get instance - same instance on every request (singlton)
    *
