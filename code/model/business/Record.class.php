@@ -130,6 +130,9 @@ abstract class Record extends BusinessModel
     }
     $dataObjectPropertyName = $object->dataObjectPropertyName;
     if (!isset($this->dataObject->$dataObjectPropertyName)) {
+      if ($object instanceof \ramp\model\business\field\Relation) {
+        $dataObjectPropertyName->append(Str::KEY());
+      }
       $this->dataObject->$dataObjectPropertyName = NULL;
     }
     parent::offsetSet($offset, $object);
