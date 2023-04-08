@@ -64,16 +64,6 @@ abstract class AuthenticatableUnit extends Record
   }
 
   /**
-   * Set this as updated.
-   * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
-   */
-  final public function updated()
-  {
-    if (isset($this[0])) { unset($this[0]); }
-    parent::updated();
-  }
-
-  /**
    * Returns whether data is in a valid/complete state from data store or as new.
    * **DO NOT CALL DIRECTLY, USE this->isValid;**
    * @return bool Value of isValid
