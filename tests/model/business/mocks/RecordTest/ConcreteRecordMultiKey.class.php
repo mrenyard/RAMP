@@ -34,7 +34,7 @@ class ConcreteRecordMultiKey extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('propertyA','propertyB','propertyC');
+    return StrCollection::set('propertyA', 'propertyB', 'propertyC');
   }
 
   private $propertyA;

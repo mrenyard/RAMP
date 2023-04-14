@@ -129,10 +129,10 @@ abstract class Record extends BusinessModel
       );
     }
     $dataObjectPropertyName = $object->dataObjectPropertyName;
+    if ($object instanceof \ramp\model\business\field\Relation) {
+      $dataObjectPropertyName = $dataObjectPropertyName->append(Str::KEY());
+    }
     if (!isset($this->dataObject->$dataObjectPropertyName)) {
-      if ($object instanceof \ramp\model\business\field\Relation) {
-        $dataObjectPropertyName->append(Str::KEY());
-      }
       $this->dataObject->$dataObjectPropertyName = NULL;
     }
     parent::offsetSet($offset, $object);

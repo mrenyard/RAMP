@@ -28,6 +28,7 @@ use ramp\model\business\Record;
 use ramp\model\business\field\Input;
 use ramp\model\business\field\SelectOne;
 use ramp\model\business\field\SelectMany;
+use ramp\model\business\field\Relation;
 use ramp\model\business\validation\dbtype\VarChar;
 
 class ConcreteRecord extends Record
@@ -37,11 +38,10 @@ class ConcreteRecord extends Record
     return StrCollection::set('propertyA');
   }
 
-  private $propertyA;
   public function get_propertyA()
   {
-    if (!isset($this->propertyA)) {
-      $this->propertyA = new Input(
+    if (!isset($this[0])) {
+      $this[0] = new Input(
         Str::set('propertyA'),
         $this,
         new VarChar(
@@ -50,9 +50,8 @@ class ConcreteRecord extends Record
           Str::set('$value does NOT evaluate to KEY')
         )
       );
-      if ($this->isNew) { $this[-1] = $this->propertyA; }
     }
-    return $this->propertyA;
+    return $this[0];
   }
 
   public function get_property1()
@@ -77,6 +76,18 @@ class ConcreteRecord extends Record
       );
     }
     return $this[2];
+  }
+
+  public function get_alphRelation()
+  {
+    if (!isset($this[3])) {
+      $this[3] = new Relation(
+        Str::set('alphRelation'),
+        $this,
+        Str::set('MockRecord')
+      );
+    }
+    return $this[3];
   }
 
   protected static function checkRequired($dataObject) : bool

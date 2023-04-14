@@ -43,8 +43,6 @@ class MockBusinessModelManager extends BusinessModelManager
   public static $updateLog;
   public static $objectOne;
   public static $dataObjectOne;
-  public static $objectTwo;
-  public static $dataObjectTwo;
 
   /**
    * Constuct the instance.
@@ -106,8 +104,14 @@ class MockBusinessModelManager extends BusinessModelManager
     if ($definition->recordName == 'ConcreteRecord')
     {
       if ($definition->recordKey == 'new') {
-          $dataObject = new \stdClass();
-          return new ConcreteRecord(self::$dataObjectTwo);
+          return new ConcreteRecord();
+      }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
+    if ($definition->recordName == 'MockRecord')
+    {
+      if ($definition->recordKey == 'new') {
+        return new MockRecord();
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }

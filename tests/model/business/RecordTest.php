@@ -55,6 +55,7 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
@@ -66,6 +67,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidat
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteRecordMultiKey.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
@@ -107,8 +109,8 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
     $this->dataObject = new \stdClass();
     $this->testObject = new ConcreteRecord($this->dataObject);
-    $this->concreteRecordPropertyCount = 3;
-    $this->concreteRecordPropertyNames = array(0 => 'propertyA', 1 => 'property1', 2 => 'property2');
+    $this->concreteRecordPropertyCount = 4;
+    $this->concreteRecordPropertyNames = array(0 => 'propertyA', 1 => 'property1', 2 => 'property2', 3 => 'alphRelation');
     $this->concreteRecordProperties = new Collection(Str::set('ramp\model\business\field\Field'));
     $className = __NAMESPACE__ . '\mocks\RecordTest\ConcreteRecord';
     foreach (get_class_methods($className) as $methodName)
@@ -151,6 +153,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $properties = get_object_vars($this->dataObject);
     foreach ($properties as $name => $value)
     {
+      if ($i == 3) {
+        $this->assertEquals($this->concreteRecordPropertyNames[$i++] . 'KEY', $name);
+        $this->assertNull($value);
+        continue;
+      }
       $this->assertEquals($this->concreteRecordPropertyNames[$i++], $name);
       $this->assertNull($value);
     }
@@ -253,7 +260,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     foreach ($this->testObject as $child)
     {
       $this->assertSame($child, $iterator->current());
-      $this->assertEquals(strtolower('concrete-record:new:' . $this->concreteRecordPropertyNames[$i++]), (string)$child->id);
+      $this->assertEquals(Str::hyphenate(Str::set('concrete-record:new:' . $this->concreteRecordPropertyNames[$i++])), (string)$child->id);
       $this->assertInstanceOf('\ramp\model\business\field\Field', $child);
       $iterator->next();
     }
@@ -276,13 +283,12 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     } catch (\OutOfBoundsException $expected) {
       for ($i=0; $i < $this->concreteRecordProperties->count; $i++)
       {
-        $j = ($i == 0) ? -1 : $i;
         $this->assertInstanceOf(
-          '\ramp\model\business\field\Field', $this->testObject[$j]
+          '\ramp\model\business\field\Field', $this->testObject[$i]
         );
         $this->assertSame(
           $this->concreteRecordProperties[$i],
-          $this->testObject[$j]
+          $this->testObject[$i]
         );
       }
       return;
@@ -298,11 +304,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testOffsetExists()
   {
-    $this->assertTrue(isset($this->testObject[-1]));
-    $this->assertFalse(isset($this->testObject[0]));
+    $this->assertTrue(isset($this->testObject[0]));
     $this->assertTrue(isset($this->testObject[1]));
     $this->assertTrue(isset($this->testObject[2]));
-    $this->assertFalse(isset($this->testObject[3]));
+    $this->assertTrue(isset($this->testObject[3]));
+    $this->assertFalse(isset($this->testObject[4]));
   }
 
   /**
@@ -389,6 +395,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
     $this->assertNull($testObjectMultiKey->primaryKey->value);
     $this->assertSame(4, $testObjectMultiKey->count);
+    $currentCallCount = MockBusinessModelManager::$callCount;
     $testObjectMultiKey->validate(PostData::build(array(
       'concrete-record-multi-key:new:property-a' => '1',
       'concrete-record-multi-key:new:property-b' => '2',
@@ -398,7 +405,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(2, $testObjectMultiKey->propertyB->value);
     $this->assertSame(3, $testObjectMultiKey->propertyC->value);
     $this->assertSame('1|2|3', $testObjectMultiKey->primaryKey->value);
-    $this->assertSame(1, MockBusinessModelManager::$callCount);
+    $this->assertSame(($currentCallCount + 1), MockBusinessModelManager::$callCount);
     $this->assertTrue($testObjectMultiKey->isModified);
     $this->assertTrue($testObjectMultiKey->isValid);
     $this->assertTrue($testObjectMultiKey->isNew);
@@ -683,7 +690,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\model\business\Record::validate(),
    * \ramp\model\business\Record::hasErrors() and \ramp\model\business\Record::getErrors().
    * - assert PrimaryKey is NOT updated.
-   * - assert removes PrimaryProperty as child after first updated()
    * - assert validate returns void (null) when called.
    * - assert validate method is propagated through each property of testsObject
    * - assert returns True when any property has recorded errors.
@@ -702,7 +708,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->dataObject->propertyA = 'pkey';
     $this->dataObject->property1 = 2;
     $this->dataObject->property2 = array('1','2','6');
-    $this->assertArrayHasKey(-1, $this->testObject);
     $this->assertNull($this->testObject->updated());
     $this->assertFalse($this->testObject->isNew);
     $this->assertTrue($this->testObject->isValid);
@@ -757,6 +762,6 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count);
+    $this->assertSame(4 ,$this->testObject->count);
   }
 }
