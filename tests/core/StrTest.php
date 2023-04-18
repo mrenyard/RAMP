@@ -384,6 +384,16 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('ramp\core\Str', $o4);
     $this->assertEquals(Str::set('hyphe-nate-me'), $o4);
     $this->assertSame((string)Str::set('hyphe-nate-me'), (string)$o4);
+
+    $o5 = Str::hyphenate(Str::set('TestA'));
+    $this->assertInstanceOf('ramp\core\Str', $o5);
+    $this->assertEquals(Str::set('test-a'), $o5);
+    $this->assertSame((string)Str::set('test-a'), (string)$o5);
+
+    $o6 = Str::hyphenate(Str::set('testB'));
+    $this->assertInstanceOf('ramp\core\Str', $o6);
+    $this->assertEquals(Str::set('test-b'), $o6);
+    $this->assertSame((string)Str::set('test-b'), (string)$o6);
   }
 
   /**

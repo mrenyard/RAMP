@@ -278,7 +278,7 @@ final class Str extends RAMPObject
   public static function hyphenate(Str $value) : Str
   {
     if ($value === self::_EMPTY()){ return $value; } // cannot hyphenate an empty string
-    $value = preg_replace('/(([A-Z])[a-z|]+)/', ' $0 ', $value);
+    $value = preg_replace('/(([A-Z]{1})+)/', ' $0', $value);
     $value = strtolower(trim(preg_replace('/\s+/', '-', $value), '-'));
     return Str::set($value);
   }
