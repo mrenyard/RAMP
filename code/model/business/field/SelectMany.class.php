@@ -61,7 +61,7 @@ final class SelectMany extends SelectFrom
    * @throws \BadMethodCallException When $value parameter in NOT an array.
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
-  public function processValidationRule($value)
+  public function processValidationRule($value) : void
   {
     if (!is_array($value)) {
       throw new \BadMethodCallException('$value parameter must be an array');

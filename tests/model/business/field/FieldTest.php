@@ -312,14 +312,14 @@ class FieldTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\BusinessModel::offsetSet and
+   * Collection of assertions for \ramp\model\business\field\Field::offsetSet and
    * for \ramp\model\business\BusinessModel::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
-   * @link ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
+   * @link ramp.model.business.field.Field#method_offsetSet ramp\model\business\field\Field::offsetSet()
+   * @link ramp.model.business.field.Field#method_offsetUnset ramp\model\business\field\Field::offsetUnset()
    */
   public function testOffsetSetOffsetUnset()
   {

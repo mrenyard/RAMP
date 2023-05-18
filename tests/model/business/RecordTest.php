@@ -60,6 +60,7 @@ require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
 require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/field/ForeignKeyPart.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';

@@ -55,7 +55,7 @@ final class SelectOne extends SelectFrom
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
-  public function processValidationRule($value)
+  public function processValidationRule($value) : void
   {
     foreach ($this->options as $option)
     {

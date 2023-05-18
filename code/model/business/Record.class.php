@@ -66,7 +66,7 @@ abstract class Record extends BusinessModel
    * Creates record, new or with encapsulated source data contained.
    * @param \stdClass $dataObject Simple data container
    */
-  final public function __construct(\stdClass $dataObject = null)
+  public function __construct(\stdClass $dataObject = null)
   {
     parent::__construct();
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();

@@ -47,7 +47,7 @@ class MockField extends Field
   {
   }
 
-  public function processValidationRule($value)
+  public function processValidationRule($value) : void
   {
     self::$processValidationRuleCount++;
     if ($value == 'BAD') {

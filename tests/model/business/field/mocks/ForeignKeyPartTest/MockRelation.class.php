@@ -18,25 +18,15 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\SelectFromTest;
+namespace tests\ramp\model\business\field\mocks\ForeignKeyPartTest;
 
-use ramp\core\Str;
-use ramp\core\OptionList;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\condition\PostData;
-use ramp\model\business\Record;
-use ramp\model\business\field\Field;
-use ramp\model\business\field\Option;
-use ramp\model\business\field\SelectFrom;
+use ramp\model\business\field\Relation;
 use ramp\model\business\FailedValidationException;
 
-use tests\ramp\model\business\field\mocks\SelectFromTest\MockRecord;
-
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\field\Field for testing against.
  */
-class MockSelectFromField extends SelectFrom
+class MockRelation extends Relation
 {
   public static $processValidationRuleCount;
 
@@ -45,19 +35,14 @@ class MockSelectFromField extends SelectFrom
     self::$processValidationRuleCount = 0;
   }
 
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final protected function get_value()
-  {
-  }
+  // protected function get_value()
+  // {
+  //   // STUB
+  // }
 
   public function processValidationRule($value) : void
   {
     self::$processValidationRuleCount++;
-    if ($value == 'BAD') {
-      throw new FailedValidationException('MockField\'s has error due to $value of BAD!');
-    }
+    parent::processValidationRule($value);
   }
 }

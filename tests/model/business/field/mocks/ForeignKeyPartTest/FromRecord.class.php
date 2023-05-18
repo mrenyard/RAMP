@@ -18,46 +18,50 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\SelectFromTest;
+namespace tests\ramp\model\business\field\mocks\ForeignKeyPartTest;
 
 use ramp\core\Str;
-use ramp\core\OptionList;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\condition\PostData;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\field\Field;
-use ramp\model\business\field\Option;
-use ramp\model\business\field\SelectFrom;
-use ramp\model\business\FailedValidationException;
-
-use tests\ramp\model\business\field\mocks\SelectFromTest\MockRecord;
+use ramp\model\business\field\Relation;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
-class MockSelectFromField extends SelectFrom
+class FromRecord extends Record
 {
-  public static $processValidationRuleCount;
-
-  public static function reset()
+  public function primaryKeyNames() : StrCollection
   {
-    self::$processValidationRuleCount = 0;
+    return StrCollection::set('key');
   }
 
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final protected function get_value()
+  protected function get_key()
   {
-  }
-
-  public function processValidationRule($value) : void
-  {
-    self::$processValidationRuleCount++;
-    if ($value == 'BAD') {
-      throw new FailedValidationException('MockField\'s has error due to $value of BAD!');
+    if (!isset($this[0])) {
+      $this[0] = new MockField(
+        Str::set('key'),
+        $this
+      );
     }
+    return $this[0]; 
+  }
+
+  protected function get_relation()
+  {
+    if (!isset($this[1])) {
+      $this[1] = new MockRelation(
+        Str::set('Relation'),
+        $this,
+        Str::set('ToRecord')
+      );
+    }
+  }
+  
+  protected static function checkRequired($dataObject) : bool
+  {
+    return (
+      isset($dataObject->key)
+    );
   }
 }

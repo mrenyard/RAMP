@@ -37,4 +37,13 @@ switch ($this->type) {
                 <span class="error"><?=$error; ?></span>
 <?php } } ?>
               </label>
-<?php break; } ?>
+<?php break;
+  case 'foreign-key-part field': ?>
+              <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
+                <span class="name"><?=$this->label; ?>:</span>
+                <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
+<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
+                <span class="error"><?=$error; ?></span>
+<?php } } ?>
+              </label>
+  <?php break; } ?>
