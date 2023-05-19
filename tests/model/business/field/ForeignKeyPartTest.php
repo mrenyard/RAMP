@@ -160,7 +160,7 @@ class ForeignKeyPartTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->label is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
-      $this->assertSame('Relation', (string)$this->testObject->label);
+      $this->assertSame('Key A', (string)$this->testObject->label);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

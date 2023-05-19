@@ -63,6 +63,17 @@ class ForeignKeyPart extends Field
   }
 
   /**
+   * Get Label
+   * **DO NOT CALL DIRECTLY, USE this->label;**
+   * @return \ramp\core\Str Label for *this*
+   */
+  protected function get_label() : Str
+  {
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', '$0 ', str_replace('KEY', '', $this->key)))));
+  }
+
+
+  /**
    * Set isEditable
    * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
    * Use to request change of isEditable, some defaults are NOT overridable.
