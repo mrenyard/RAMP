@@ -25,10 +25,13 @@ use ramp\core\Str;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
+use ramp\model\business\ForeignKey;
 use ramp\model\business\DataFetchException;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\SimpleBusinessModelDefinition;
+use ramp\model\business\field\Field;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
@@ -42,11 +45,13 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
  * - {@link \ramp\validation\ValidationRule}
+ * - {@link \ramp\model\business\BusinessModelManager}
  */
 class Relation extends Field
 {
   private $modelManager;
   private $relationObjectRecordName;
+  private $record;
 
   /**
    * Creates input field related to a single property of containing record.
@@ -68,13 +73,17 @@ class Relation extends Field
    * Update relation base on changed key.
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store.
    */
-  private function update($key)
+  private function update($key = NULL)
   {
     $key = (isset($key)) ? Str::set($key) : Str::NEW();
-    $record = $this->modelManager->getBusinessModel(
+    $this->record = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
     );
-    $this->setChildren($record);
+    $children = $this->record;
+    if ($key === Str::NEW()) {
+      $children = new ForeignKey($this->containingRecord, $this->dataObjectPropertyName, $this->record);
+    }
+    $this->setChildren($children);
   }
 
   /**
@@ -99,25 +108,40 @@ class Relation extends Field
     {
       if ((string)$inputdata->attributeURN == (string)parent::get_id())
       {
-        if (is_array($inputdata->value))
+        $values = $inputdata->value;
+        $primaryKeyNames = $this->record->primaryKeyNames();
+        if (is_array($values))
         {
-          $values = $inputdata->value;
-          $key = StrCollection::set();
-          foreach ($this[0]->containingRecord->primaryKeyNames() as $primaryKeyName) {
-            $key->add(Str::set($values[(string)$primaryKeyName]));
+          if (isset($values['unset']) && $values['unset'] == 'on')
+          {
+            $this->containingRecord->setPropertyValue(
+              (string)$this->dataObjectPropertyName->append(Str::KEY()), NULL
+            );
+            $this->update();
           }
-          $value = (string)$key->implode(Str::BAR());
-          try {
-            $this->processValidationRule($value);
-          } catch (FailedValidationException $e) {
-            $this->errorCollection->add(Str::set($e->getMessage()));
-            return;
+          else if (count($values) === $primaryKeyNames->count)
+          {
+            $key = StrCollection::set();
+            foreach ($primaryKeyNames as $primaryKeyName) {
+              if (
+                !isset($values[(string)Str::hyphenate($primaryKeyName)]) ||
+                $values[(string)Str::hyphenate($primaryKeyName)] == ''
+              ) { return; }
+              $key->add(Str::set($values[(string)Str::hyphenate($primaryKeyName)]));
+            }
+            $value = (string)$key->implode(Str::BAR());
+            try {
+              $this->processValidationRule($value);
+            } catch (FailedValidationException $e) {
+              $this->errorCollection->add(Str::set($e->getMessage()));
+              return;
+            }
+            $this->containingRecord->setPropertyValue(
+              (string)$this->dataObjectPropertyName->append(Str::KEY()), $value
+            );
           }
-          $this->containingRecord->setPropertyValue(
-            (string)$this->dataObjectPropertyName->append(Str::KEY()), $value
-          );
+          return;
         }
-        return;
       }
     }
   }

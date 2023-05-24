@@ -30,6 +30,7 @@ switch ($this->type) {
               <li><?=$error; ?></p><?php } ?>
             </ol>
 <?php } ?>
+<input type="checkbox" id="<?=$this->id; ?>[unset]" name="<?=$this->id; ?>[unset]" />
 <?=$this->children; ?>
           </fieldset><!-- #<?=$this->id; ?> -->
 <?php break; 

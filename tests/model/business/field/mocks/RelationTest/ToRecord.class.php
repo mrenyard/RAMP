@@ -28,7 +28,7 @@ use ramp\model\business\field\Field;
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
-class MockRecord extends Record
+class ToRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {

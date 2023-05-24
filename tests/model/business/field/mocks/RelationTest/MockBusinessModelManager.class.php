@@ -30,7 +30,8 @@ use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
-use tests\ramp\model\business\field\mocks\RelationTest\MockRecord;
+use tests\ramp\model\business\field\mocks\RelationTest\FromRecord;
+use tests\ramp\model\business\field\mocks\RelationTest\ToRecord;
 
 /**
  * Mock business model managers for testing \ramp\http\Session
@@ -39,7 +40,10 @@ use tests\ramp\model\business\field\mocks\RelationTest\MockRecord;
 class MockBusinessModelManager extends BusinessModelManager
 {
   private static $instance;
+  private static $fromRecord;
+
   public static $updateLog;
+  public static $fromDataObject;
   public static $relatedObjectOne;
   public static $relatedDataObjectOne;
   public static $relatedObjectTwo;
@@ -54,6 +58,9 @@ class MockBusinessModelManager extends BusinessModelManager
 
   public static function reset()
   {
+    self::$updateLog = [];
+    self::$fromRecord = NULL;
+    self::$fromDataObject = NULL;
     self::$relatedObjectOne = NULL;
     self::$relatedDataObjectOne = NULL;
     self::$relatedObjectTwo = NULL;
@@ -94,7 +101,20 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
-    if ($definition->recordName == 'MockRecord')
+    if ($definition->recordName == 'FromRecord') {
+      if ($definition->recordKey == '3') {
+        if (!isset(self::$fromRecord)) {
+          self::$fromDataObject = new \stdClass();
+          self::$fromDataObject->key = 3;
+          self::$fromDataObject->relationAlphaKEY = '1|1|1';
+          self::$fromDataObject->relationBetaKEY = NULL;
+          self::$fromRecord = new FromRecord(self::$fromDataObject);
+        }
+        return self::$fromRecord;
+      }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
+    if ($definition->recordName == 'ToRecord')
     {
       if ($definition->recordKey == '1|1|1')
       {
@@ -104,7 +124,7 @@ class MockBusinessModelManager extends BusinessModelManager
           self::$relatedDataObjectOne->keyB = 1;
           self::$relatedDataObjectOne->keyC = 1;
           self::$relatedDataObjectOne->property = 'A Value';
-          self::$relatedObjectOne = new MockRecord(self::$relatedDataObjectOne);
+          self::$relatedObjectOne = new ToRecord(self::$relatedDataObjectOne);
         }
         return self::$relatedObjectOne;
       }
@@ -116,7 +136,7 @@ class MockBusinessModelManager extends BusinessModelManager
           self::$relatedDataObjectTwo->keyB = 2;
           self::$relatedDataObjectTwo->keyC = 3;
           self::$relatedDataObjectTwo->property = 'B Value';
-          self::$relatedObjectTwo = new MockRecord(self::$relatedDataObjectTwo);
+          self::$relatedObjectTwo = new ToRecord(self::$relatedDataObjectTwo);
         }
         return self::$relatedObjectTwo;
       }
@@ -127,7 +147,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $dataObject->keyB = NULL;
         $dataObject->keyC = NULL;
         $dataObject->property = NULL;
-        return new MockRecord($dataObject);
+        return new ToRecord($dataObject);
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
@@ -151,6 +171,7 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function updateAny()
   {
+    if (isset(self::$fromRecord) && self::$fromRecord->isModified && self::$fromRecord->isValid) { $this->update(self::$fromRecord); }
     if (isset(self::$relatedObjectOne) && self::$relatedObjectOne->isModified && self::$relatedObjectOne->isValid) { $this->update(self::$relatedObjectOne); }
     if (isset(self::$relatedObjectTwo) && self::$relatedObjectTwo->isModified && self::$relatedObjectTwo->isValid) { $this->update(self::$relatedObjectTwo); }
   }

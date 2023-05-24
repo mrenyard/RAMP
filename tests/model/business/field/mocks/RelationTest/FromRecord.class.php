@@ -28,7 +28,7 @@ use ramp\model\business\field\Relation;
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
-class ContainingRecord extends Record
+class FromRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
@@ -52,7 +52,7 @@ class ContainingRecord extends Record
       $this[1] = new Relation(
         Str::set('relationAlpha'),
         $this,
-        Str::set('MockRecord')
+        Str::set('ToRecord')
       );
     }
     return $this[1];
@@ -64,7 +64,7 @@ class ContainingRecord extends Record
       $this[2] = new Relation(
         Str::set('relationBeta'),
         $this,
-        Str::set('MockRecord')
+        Str::set('ToRecord')
       );
     }
     return $this[2];
