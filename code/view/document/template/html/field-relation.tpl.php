@@ -30,7 +30,7 @@ switch ($this->type) {
               <li><?=$error; ?></p><?php } ?>
             </ol>
 <?php } ?>
-<input type="checkbox" id="<?=$this->id; ?>[unset]" name="<?=$this->id; ?>[unset]" />
+            <input type="checkbox" id="<?=$this->id; ?>[unset]" name="<?=$this->id; ?>[unset]" />
 <?=$this->children; ?>
           </fieldset><!-- #<?=$this->id; ?> -->
 <?php break; 
@@ -52,5 +52,4 @@ switch ($this->type) {
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>
             <span class="error"><?=$error; ?></span><?php } } ?>
           </label>
-<?php break;
-} ?>
+<?php break; } ?>
