@@ -30,13 +30,13 @@ switch ($this->type) {
 <?=$this->children; ?>
 <?php break;
   case 'input field': ?>
-              <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
-                <span class="name"><?=$this->label; ?>:</span>
-                <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
+            <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
+              <span class="name"><?=$this->label; ?>:</span>
+              <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>            
-                <span class="error"><?=$error; ?></span>
+              <span class="error"><?=$error; ?></span>
 <?php } } ?>
-              </label>
+            </label>
 <?php break;
   case 'foreign-key-part field': ?>
             <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
