@@ -123,8 +123,8 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `familyName` VARCHAR(45) NULL DEFAULT NULL,
   `honorificSuffix` VARCHAR(45) NULL DEFAULT NULL,
   `homeAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
-  `uniAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
-  `primaryPhoneNumberKEY` VARCHAR(15) NULL DEFAULT NULL,
+-- `uniAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
+-- `primaryPhoneNumberKEY` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`uname`),
   UNIQUE INDEX `uname_UNIQUE` (`uname` ASC) VISIBLE,
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
@@ -202,6 +202,30 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
   -- (page 22) at https://www.poweredbypaf.com/wp-content/uploads/2017/07/Latest-Programmers_guide_Edition-7-Version-6.pdf 
   PRIMARY KEY (`UDPRN`),
   UNIQUE INDEX `UDPRN_UNIQUE` (`UDPRN` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+-- -----------------------------------------------------
+-- Table `ramp_db`.`person_address_LOOKUP`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ramp_db`.`person_address_LOOKUP` ;
+
+CREATE TABLE IF NOT EXISTS `ramp_db`.`person_address_LOOKUP` (
+  `personUname` VARCHAR(45) NOT NULL,
+  `addressCountryCode` VARCHAR(2) NOT NULL, -- (GB)
+  `addressPostalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
+  `addressDeliveryPointSuffix` VARCHAR(2) NOT NULL
+--  CONSTRAINT `fk_Address`
+--    FOREIGN KEY (`addressCountryCode`,`addressPostalCode`,`addressDeliveryPointSuffix`)
+--    REFERENCES `ramp_db`.`Address` (`countryCode`,`postalCode`,`deliveryPointSuffix`)
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION
+--  CONSTRAINT `fk_Person`
+--    FOREIGN KEY (`personUname`)
+--    REFERENCES `ramp_db`.`Person` (`uname`)
+--    ON DELETE NO ACTION
+--    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
