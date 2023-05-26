@@ -185,7 +185,7 @@ DROP TABLE IF EXISTS `ramp_db`.`GB_Addresses` ;
 CREATE TABLE IF NOT EXISTS `ramp_db`.`GB_Addresses` (
   `UDPRN` VARCHAR(15) NOT NULL, -- (UDPRN:60720866)
   `postalCode` VARCHAR(8) NOT NULL,
-  `PostTown` VARCHAR(30) NOT NULL,
+  `postTown` VARCHAR(30) NOT NULL,
   `dependentLocality` VARCHAR(35) NULL DEFAULT NULL,
   `doubleDependentLocality` VARCHAR(35) NULL DEFAULT NULL,
   `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,
@@ -212,6 +212,7 @@ DROP TABLE IF EXISTS `ramp_db`.`person_address_LOOKUP` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`person_address_LOOKUP` (
   `personUname` VARCHAR(45) NOT NULL,
+-- `addressType` VARCHAR(10) NOT NULL, -- (HOME)
   `addressCountryCode` VARCHAR(2) NOT NULL, -- (GB)
   `addressPostalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
   `addressDeliveryPointSuffix` VARCHAR(2) NOT NULL
