@@ -34,6 +34,15 @@ class Record extends RAMPObject
   private $propertyInt;
 
   /**
+   * Returns property name/s of concrete classes primary key.
+   * @return \ramp\core\StrCollection Primary Key Name/s
+   */
+  public function primaryKeyNames() : StrCollection
+  {
+    return StrCollection('propertyA', 'propertyB', 'propertyC');
+  }
+
+  /**
    * Test getter for Record::propertyA
    */
   protected function get_propertyA()
