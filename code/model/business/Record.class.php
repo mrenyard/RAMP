@@ -106,10 +106,10 @@ abstract class Record extends Relatable
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \ramp\core\Str Value of primary key
    */
-  final protected function get_primaryKey() : field\Field
+  final protected function get_primaryKey() : key\Primary
   {
     if (!isset($this->primaryKeyField)) {
-      $this->primaryKeyField = new field\PrimaryKey($this);
+      $this->primaryKeyField = new key\Primary($this);
     }
     return $this->primaryKeyField;
   }

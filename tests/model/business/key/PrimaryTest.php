@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field;
+namespace tests\ramp\model\business\key;
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
@@ -54,30 +54,30 @@ require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.c
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/MockBusinessModelManager.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/ConcreteValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/PrimaryKeyTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/PrimaryTest/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/PrimaryTest/ConcreteValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/PrimaryTest/MockRecord.class.php';
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
-use ramp\model\business\field\PrimaryKey;
+use ramp\model\business\key\Primary;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockBusinessModelManager;
-use tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockRecord;
+use tests\ramp\model\business\key\mocks\PrimaryTest\MockBusinessModelManager;
+use tests\ramp\model\business\key\mocks\PrimaryTest\MockRecord;
 
 /**
- * Collection of tests for \ramp\model\business\field\PrimaryKey.
+ * Collection of tests for \ramp\model\business\field\Primary.
  */
-class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
+class PrimaryTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $mockRecord;
@@ -90,15 +90,15 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void 
   {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\PrimaryKeyTest';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\key\mocks\PrimaryTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\key\mocks\PrimaryTest\MockBusinessModelManager';
     $this->dataObject = new \stdClass();
     $this->mockRecord = new MockRecord($this->dataObject);
-    $this->testObject = new PrimaryKey($this->mockRecord);
+    $this->testObject = new Primary($this->mockRecord);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::__construct().
+   * Collection of assertions for \ramp\model\business\field\Primary::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
@@ -106,8 +106,8 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
    * - assert is instance of {@link \ramp\model\field\Field}
-   * - assert is instance of {@link \ramp\model\field\PrimaryKey}
-   * @link ramp.model.business.field.PrimaryKey ramp\model\business\field\PrimaryKey
+   * - assert is instance of {@link \ramp\model\field\Primary}
+   * @link ramp.model.business.field.Primary ramp\model\business\field\Primary
    */
   public function test__construct()
   {
@@ -117,17 +117,17 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\field\PrimaryKey', $this->testObject);
+    // $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\key\Primary', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::id.
+   * Collection of assertions for \ramp\model\business\field\Primary::id.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
    * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.PrimaryKey#method_get_id ramp\model\business\field\PrimaryKey::id
+   * @link ramp.model.business.field.Primary#method_get_id ramp\model\business\field\Primary::id
    */
   public function testGet_id()
   {
@@ -155,12 +155,12 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::value.
+   * Collection of assertions for \ramp\model\business\field\Primary::value.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
    * - assert returned same as provided records getPropertyValue() method.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.PrimaryKey#method_get_value ramp\model\business\field\PrimaryKey::value
+   * @link ramp.model.business.field.Primary#method_get_value ramp\model\business\field\Primary::value
    */
   public function testGet_value()
   {
@@ -179,12 +179,12 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::type.
+   * Collection of assertions for \ramp\model\business\field\Primary::type.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
    * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.PrimaryKey#method_get_type ramp\model\business\field\PrimaryKey::type
+   * @link ramp.model.business.field.Primary#method_get_type ramp\model\business\field\Primary::type
    */
   public function testGet_type()
   {
@@ -193,17 +193,18 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertEquals('primary-key field', (string)$this->testObject->type);
+      // $this->assertEquals('primary key', (string)$this->testObject->type);
+      $this->assertEquals('primary record-component', (string)$this->testObject->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::getIterator().
+   * Collection of assertions for \ramp\model\business\field\Primary::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
    * - assert foreach loop, iterates through NO objects, as there are NO children.
-   * @link ramp.model.business.field.PrimaryKey#method_getIterator ramp\model\business\field\PrimaryKey::getIterator()
+   * @link ramp.model.business.field.Primary#method_getIterator ramp\model\business\field\Primary::getIterator()
    */
   public function testGetIterator()
   {
@@ -216,9 +217,9 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetGet.
+   * Collection of assertions for \ramp\model\business\field\Primary::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds as NO children
-   * @link ramp.model.business.field.PrimaryKey#method_offsetGet ramp\model\business\field\PrimaryKey::offsetGet()
+   * @link ramp.model.business.field.Primary#method_offsetGet ramp\model\business\field\Primary::offsetGet()
    */
   public function testOffsetGet()
   {
@@ -227,9 +228,9 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::offsetExists.
+   * Collection of assertions for \ramp\model\business\field\Primary::offsetExists.
    * - assert False returned on isset() NO children outside expected bounds.
-   * @link ramp.model.business.field.PrimaryKey#method_offsetExists ramp\model\business\field\PrimaryKey::offsetExists()
+   * @link ramp.model.business.field.Primary#method_offsetExists ramp\model\business\field\Primary::offsetExists()
    */
   public function testOffsetExists()
   {
@@ -237,10 +238,10 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\model\business\field\PrimaryKey::offsetSet().
+   * Collection of assertions for ramp\model\business\field\Primary::offsetSet().
    * - assert throws BadMethodCallException as this method should be inaccessible
    *   - with message: <em>'Array access setting is not allowed, please use add.'</em>
-   * @link ramp.model.business.field.PrimaryKey#method_offsetSet \ramp\model\business\field\PrimaryKey::offsetSet()
+   * @link ramp.model.business.field.Primary#method_offsetSet \ramp\model\business\field\Primary::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -250,12 +251,12 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::validate() where PostData
-   * does NOT contain an PrimaryKeyDataCondition with an attribute that matches the testObject's id.
+   * Collection of assertions for \ramp\model\business\field\Primary::validate() where PostData
+   * does NOT contain an PrimaryDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
-   * - assert if provided PostData does NOT contain an PrimaryKeyDataCondition with an attribute that
+   * - assert if provided PostData does NOT contain an PrimaryDataCondition with an attribute that
    *   matches the testObject's id, then its associated ValidationRule test() method, is NOT called.
-   * @link ramp.model.business.field.PrimaryKey#method_validate ramp\model\business\field\PrimaryKey::validate()
+   * @link ramp.model.business.field.Primary#method_validate ramp\model\business\field\Primary::validate()
    */
   public function testValidateValidationRuleTestNotCalled()
   {
@@ -263,15 +264,15 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::processValidationRule()
-   * coresponding PrimaryKey combined properties have been pre populated.
+   * Collection of assertions for \ramp\model\business\field\Primary::processValidationRule()
+   * coresponding Primary combined properties have been pre populated.
    * - assert returns void (null) when called.
    * - assert ValidationRule is called and executes test against data storage.
    * - assert passes test when combined primaryKey unique (NOT already in data storage).
    * - assert FailedValidationException thrown when combined primaryKey NOT unique (already in data storage).
    * - assert throws BadMethodCallException when called following update (!= isNew)
-   *  - with message *PrimaryKey::processValidationRule() SHOULD ONLY be called from within!*
-   * @link ramp.model.business.field.PrimaryKey#method_processValidationRule ramp\model\business\field\PrimaryKey::processValidationRule()
+   *  - with message *Primary::processValidationRule() SHOULD ONLY be called from within!*
+   * @link ramp.model.business.field.Primary#method_processValidationRule ramp\model\business\field\Primary::processValidationRule()
    */
   public function testProcessValidationRule()
   {
@@ -297,22 +298,22 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('mock-record:4|5|6:primary-key', (string)$this->testObject->id);
 
       $this->expectException(\BadMethodCallException::class);
-      $this->expectExceptionMessage = 'PrimaryKey::processValidationRule() SHOULD ONLY be called from within!';
+      $this->expectExceptionMessage = 'Primary::processValidationRule() SHOULD ONLY be called from within!';
       $this->testObject->processValidationRule('4|5|6');
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
   }
 
-    /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::validate() where PostData
-   * contains all PrimaryKeyDataConditions and is a new entry.
+  /**
+   * Collection of assertions for \ramp\model\business\field\Primary::validate() where PostData
+   * contains all PrimaryDataConditions and is a new entry.
    * - assert returns void (null) when called.
    * - assert validate() passed to ValidationRule and executes test against data storage.
    * - assert hasErrors() reports as expected.
    * - assert error returns a StrCollection of one error message apon failing test. 
    * - assert passes test when combined primaryKey unique (NOT already in data storage).
-   * @link ramp.model.business.field.PrimaryKey#method_validate ramp\model\business\field\PrimaryKey::validate()
+   * @link ramp.model.business.field.Primary#method_validate ramp\model\business\field\Primary::validate()
    */
   public function testValidateValidationRuleExecuted()
   {
@@ -343,9 +344,9 @@ class PrimaryKeyTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\PrimaryKey::count.
+   * Collection of assertions for \ramp\model\business\field\Primary::count.
    * - assert return expected int value related to the number of children (NO children).
-   * @link ramp.model.business.field.PrimaryKey#method_count ramp\model\business\field\PrimaryKey::count
+   * @link ramp.model.business.field.Primary#method_count ramp\model\business\field\Primary::count
    */
   public function testCount()
   {

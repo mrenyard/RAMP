@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\PrimaryKeyTest;
+namespace tests\ramp\model\business\key\mocks\PrimaryTest;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
@@ -28,7 +28,7 @@ use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\field\mocks\PrimaryKeyTest\ConcreteValidationRule;
+use tests\ramp\model\business\key\mocks\PrimaryTest\ConcreteValidationRule;
 
 /**
  * Collection of MockRecord.

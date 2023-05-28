@@ -19,7 +19,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\PrimaryKeyTest;
+namespace tests\ramp\model\business\key\mocks\PrimaryTest;
 
 use ramp\SETTING;
 use ramp\core\Str;
@@ -30,7 +30,7 @@ use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
-use tests\ramp\model\business\field\mocks\PrimaryKeyTest\MockRecord;
+use tests\ramp\model\business\key\mocks\PrimaryTest\MockRecord;
 
 /**
  * Mock business model managers for testing \ramp\http\Session

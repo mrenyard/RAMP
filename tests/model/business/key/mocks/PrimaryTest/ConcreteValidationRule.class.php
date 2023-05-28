@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\PrimaryKeyTest;
+namespace tests\ramp\model\business\key\mocks\PrimaryTest;
 
 use ramp\model\business\validation\ValidationRule;
 use ramp\model\business\FailedValidationException;

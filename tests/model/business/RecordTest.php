@@ -62,7 +62,7 @@ require_once '/usr/share/php/ramp/model/business/field/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
-require_once '/usr/share/php/ramp/model/business/field/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/ForeignKeyPart.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
@@ -210,11 +210,11 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->primarykey is NOT settable', $expected->getMessage());
 
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject->primarykey);
+      $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject->primarykey);
       $this->assertNull($this->testObject->primarykey->value);
 
       $testObjectMultiKey = new ConcreteRecordMultiKey($this->dataObject);
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
+      $this->assertInstanceOf('\ramp\model\business\RecordComponent', $testObjectMultiKey->primarykey);
       $this->assertNull($testObjectMultiKey->primaryKey->value);
       $this->dataObject->propertyA = '1';
       $this->dataObject->propertyB = '2';
@@ -397,7 +397,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $dataObject = new \stdClass();
     $testObjectMultiKey = new ConcreteRecordMultiKey($dataObject);
     $this->assertSame(4, $testObjectMultiKey->count);
-    $this->assertInstanceOf('\ramp\model\business\field\Field', $testObjectMultiKey->primarykey);
+    $this->assertInstanceOf('\ramp\model\business\RecordComponent', $testObjectMultiKey->primarykey);
     $this->assertNull($testObjectMultiKey->primaryKey->value);
     $this->assertSame(4, $testObjectMultiKey->count);
     $currentCallCount = MockBusinessModelManager::$callCount;

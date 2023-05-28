@@ -18,18 +18,20 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\field;
+namespace ramp\model\business\key;
 
 use ramp\SETTING;
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\Filter;
 use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\DataFetchException;
+use ramp\model\business\RecordComponent;
 
 /**
  * MultiPartPrimary field related to a single property of its containing \ramp\model\business\Record.
@@ -42,18 +44,34 @@ use ramp\model\business\DataFetchException;
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
  */
-class PrimaryKey extends Field
+class Primary extends RecordComponent
 {
-  private static $strPK;
+  private $parentRecord;
+  private $errorCollection;
 
   /**
-   * Creates a multiple part primary key field related to a collection of property of containing record.
-   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
+   * Creates a multiple part primary key field related to a collection of property of parent record.
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
    */
-  public function __construct(Record $containingRecord)
+  public function __construct(Record $parentRecord)
   {
-    if (!isset(self::$strPK)) { self::$strPK = Str::set('PrimaryKey'); }
-    parent::__construct(self::$strPK, $containingRecord);
+    $this->errorCollection = StrCollection::set();
+    $this->parentRecord = $parentRecord;
+    parent::__construct();
+  }
+
+  /**
+   * Get ID (URN)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \ramp\core\Str Unique identifier for *this*
+   */
+  protected function get_id() : Str
+  {
+    return Str::COLON()->prepend(
+      $this->parentRecord->id
+    )->append(
+      Str::set('primary-key')
+    );
   }
 
   /**
@@ -74,12 +92,32 @@ class PrimaryKey extends Field
   final protected function get_value()
   {
     $value = Str::_EMPTY();
-    foreach ($this->containingRecord->primaryKeyNames() as $propertyName) {
-      $partValue = $this->containingRecord->getPropertyValue((string)$propertyName);
+    foreach ($this->parentRecord->primaryKeyNames() as $propertyName) {
+      $partValue = $this->parentRecord->getPropertyValue((string)$propertyName);
       if (!isset($partValue) || $partValue == '') { return NULL; }
       $value = $value->append(Str::set($partValue))->append(Str::BAR());
     }
     return (string)$value->trimEnd(Str::BAR())->replace(Str::SPACE(), Str::set('+'));
+  }
+
+  /**
+   * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
+   * @return bool True if an error has been recorded
+   */
+  protected function get_hasErrors() : bool
+  {
+    return ($this->errorCollection->count > 0);
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
+   * @return StrCollection List of recorded errors.
+   */
+  protected function get_errors() : StrCollection
+  {
+    return $this->errorCollection;
   }
 
   /**
@@ -89,7 +127,7 @@ class PrimaryKey extends Field
   public function validate(PostData $postdata) : void
   {
     $this->errorCollection = StrCollection::set();
-    if ($this->containingRecord->isNew && $this->containingRecord->isValid) {    
+    if ($this->parentRecord->isNew && $this->parentRecord->isValid) {    
       try {
         $this->processValidationRule(NULL);
       } catch (FailedValidationException $e) {
@@ -107,13 +145,13 @@ class PrimaryKey extends Field
    */
   public function processValidationRule($value) : void
   {
-    if ($value !== NULL || !$this->containingRecord->isNew) {
-      throw new \BadMethodCallException('PrimaryKey::processValidationRule() SHOULD ONLY be called from within!');
+    if ($value !== NULL || !$this->parentRecord->isNew) {
+      throw new \BadMethodCallException('Primary::processValidationRule() SHOULD ONLY be called from within!');
     }
-    $recordName = Str::camelCase($this->containingRecord->id->trimEnd(Str::set(':new')));
+    $recordName = Str::camelCase($this->parentRecord->id->trimEnd(Str::set(':new')));
     $filterValues = array();
-    foreach ($this->containingRecord->primaryKeyNames() as $propertyName) {
-      $filterValues[(string)$propertyName] = $this->containingRecord->getPropertyValue((string)$propertyName);
+    foreach ($this->parentRecord->primaryKeyNames() as $propertyName) {
+      $filterValues[(string)$propertyName] = $this->parentRecord->getPropertyValue((string)$propertyName);
     }
     $filter = Filter::build($recordName, $filterValues);
     $def = new SimpleBusinessModelDefinition($recordName);
