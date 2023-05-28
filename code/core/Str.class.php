@@ -65,8 +65,13 @@ final class Str extends RAMPObject
 
   /**
    * Singleton reference to {@link Str} with value 'KEY'.
+   *
+  private static $KEY;*/
+
+  /**
+   * Singleton reference to {@link Str} with value 'FK'.
    */
-  private static $KEY;
+  private static $FK;
 
   /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
@@ -110,6 +115,13 @@ final class Str extends RAMPObject
         break;
       case 'new':
         $s = self::NEW();
+        break;
+      // case 'KEY':
+      //   $s = self::KEY();
+      //   break;
+      case 'FK_':
+        $s = self::FK();
+        break;
       default:
         $s = new Str((string)$value);
     }
@@ -191,13 +203,25 @@ final class Str extends RAMPObject
   /**
    * Returns NEW Str ('KEY')
    * @return \ramp\core\Str Str object composed KEY ('KEY')
-   */
+   *
   public static function KEY() : Str
   {
     if (!isset(self::$KEY)) {
       self::$KEY = new Str('KEY');
     }
     return self::$KEY;
+  }*/
+
+  /**
+   * Returns NEW Str ('FK_')
+   * @return \ramp\core\Str Str object composed KEY ('FK_')
+   */
+  public static function FK() : Str
+  {
+    if (!isset(self::$FK)) {
+      self::$FK = new Str('FK_');
+    }
+    return self::$FK;
   }
 
   /**
