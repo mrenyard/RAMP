@@ -122,7 +122,10 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Person` (
   `additionalNames` VARCHAR(45) NULL DEFAULT NULL,
   `familyName` VARCHAR(45) NULL DEFAULT NULL,
   `honorificSuffix` VARCHAR(45) NULL DEFAULT NULL,
-  `homeAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
+-- `homeAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
+  `FK_homeAddress_countryCode` VARCHAR(2) DEFAULT NULL,
+  `FK_homeAddress_postalCode` VARCHAR(15) DEFAULT NULL,
+  `FK_homeAddress_deliveryPointSuffix` VARCHAR(2) DEFAULT NULL,
 -- `uniAddressKEY` VARCHAR(15) NULL DEFAULT NULL,
 -- `primaryPhoneNumberKEY` VARCHAR(15) NULL DEFAULT NULL,
   PRIMARY KEY (`uname`),
@@ -208,25 +211,19 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `ramp_db`.`person_address_LOOKUP`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ramp_db`.`person_address_LOOKUP` ;
+DROP TABLE IF EXISTS `ramp_db`.`LOOKUP_Person_Address` ;
 
-CREATE TABLE IF NOT EXISTS `ramp_db`.`person_address_LOOKUP` (
-  `personUname` VARCHAR(45) NOT NULL,
--- `addressType` VARCHAR(10) NOT NULL, -- (HOME)
-  `addressCountryCode` VARCHAR(2) NOT NULL, -- (GB)
-  `addressPostalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
-  `addressDeliveryPointSuffix` VARCHAR(2) NOT NULL
---  CONSTRAINT `fk_Address`
---    FOREIGN KEY (`addressCountryCode`,`addressPostalCode`,`addressDeliveryPointSuffix`)
---    REFERENCES `ramp_db`.`Address` (`countryCode`,`postalCode`,`deliveryPointSuffix`)
---    ON DELETE NO ACTION
---    ON UPDATE NO ACTION
---  CONSTRAINT `fk_Person`
---    FOREIGN KEY (`personUname`)
---    REFERENCES `ramp_db`.`Person` (`uname`)
---    ON DELETE NO ACTION
---    ON UPDATE NO ACTION
-)
+CREATE TABLE IF NOT EXISTS `ramp_db`.`LOOKUP_Person_Address` (
+  `FK_Person_uname` VARCHAR(45) NOT NULL,
+  `type` VARCHAR(20) NOT NULL, -- (HOME)
+  `FK_Address_countryCode` VARCHAR(2) NOT NULL, -- (GB)
+  `FK_Address_postalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
+  `FK_Address_deliveryPointSuffix` VARCHAR(2) NOT NULL,
+  PRIMARY KEY (`FK_Person_uname`,`FK_Address_countryCode`,`FK_Address_postalCode`,`FK_Address_deliveryPointSuffix`),
+  CONSTRAINT `fk_Address` FOREIGN KEY (`FK_Address_countryCode`,`FK_Address_postalCode`,`FK_Address_deliveryPointSuffix`)
+    REFERENCES `ramp_db`.`Address` (`countryCode`,`postalCode`,`deliveryPointSuffix`),
+  CONSTRAINT `fk_Person` FOREIGN KEY (`FK_Person_uname`)
+    REFERENCES `ramp_db`.`Person` (`uname`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
