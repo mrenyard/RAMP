@@ -53,6 +53,7 @@ require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.c
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/ForeignKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Relation.class.php';
@@ -155,7 +156,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     foreach ($properties as $name => $value)
     {
       if ($i == 3) {
-        $this->assertEquals($this->concreteRecordPropertyNames[$i++] . 'KEY', $name);
+        $this->assertEquals('FK_' . $this->concreteRecordPropertyNames[$i++], $name);
         $this->assertNull($value);
         continue;
       }

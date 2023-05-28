@@ -92,7 +92,7 @@ class Relation extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName->append(Str::KEY()));
+    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName->prepend(Str::FK()));
   }
 
   /**
@@ -115,7 +115,7 @@ class Relation extends Field
           if (isset($values['unset']) && $values['unset'] == 'on')
           {
             $this->containingRecord->setPropertyValue(
-              (string)$this->dataObjectPropertyName->append(Str::KEY()), NULL
+              (string)$this->dataObjectPropertyName->prepend(Str::FK()), NULL
             );
             $this->update();
           }
@@ -137,7 +137,7 @@ class Relation extends Field
               return;
             }
             $this->containingRecord->setPropertyValue(
-              (string)$this->dataObjectPropertyName->append(Str::KEY()), $value
+              (string)$this->dataObjectPropertyName->prepend(Str::FK()), $value
             );
           }
           return;

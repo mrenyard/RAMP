@@ -106,8 +106,14 @@ class MockBusinessModelManager extends BusinessModelManager
         if (!isset(self::$fromRecord)) {
           self::$fromDataObject = new \stdClass();
           self::$fromDataObject->key = 3;
-          self::$fromDataObject->relationAlphaKEY = '1|1|1';
-          self::$fromDataObject->relationBetaKEY = NULL;
+          // self::$fromDataObject->FK_relationAlpha_keyA = 1;
+          // self::$fromDataObject->FK_relationAlpha_keyB = 1;
+          // self::$fromDataObject->FK_relationAlpha_keyC = 1;
+          self::$fromDataObject->FK_relationAlpha = '1|1|1';
+          // self::$fromDataObject->FK_relationBeta_keyA = NULL;
+          // self::$fromDataObject->FK_relationBeta_keyB = NULL;
+          // self::$fromDataObject->FK_relationBeta_keyC = NULL;
+          self::$fromDataObject->FK_relationBeta = NULL;
           self::$fromRecord = new FromRecord(self::$fromDataObject);
         }
         return self::$fromRecord;

@@ -210,6 +210,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(MockBusinessModelManager::$relatedObjectOne[$i], $property);
       $i++;
     }
+    $this->assertSame(4, $i);
     $this->assertInstanceOf('\Traversable', $this->testObjectBeta->getIterator());
     $i = 0;
     foreach ($this->testObjectBeta as $property) {
@@ -218,10 +219,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       $this->assertSame('from-record:3', (string)$property->containingRecord->id);
       $i++;
     }
+    $this->assertSame(3, $i);
     $this->fromRecord->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-c' => 3, 'key-b' => 2, 'key-a' => 1)
     )));
-    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertInstanceOf('\Traversable', $this->testObjectBeta->getIterator());
     $i = 0;
     foreach ($this->testObjectBeta as $property) {
@@ -230,6 +232,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[$i], $property);
       $i++;
     }
+    $this->assertSame(4, $i);
   }
 
   /**
@@ -363,14 +366,15 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObjectAlpha->value = '2|2|2';
     } catch (PropertyNotSetException $expected) {
-      MockBusinessModelManager::$fromDataObject->relationAlphaKEY = '2|2|2';
-      $this->assertSame(MockBusinessModelManager::$fromDataObject->relationAlphaKEY, $this->testObjectAlpha->value);
+      $this->assertSame(MockBusinessModelManager::$fromDataObject->FK_relationAlpha, $this->testObjectAlpha->value);
+      $this->assertSame('1|1|1', $this->testObjectAlpha->value);
+      MockBusinessModelManager::$fromDataObject->FK_relationAlpha = '2|2|2';
+      $this->assertSame(MockBusinessModelManager::$fromDataObject->FK_relationAlpha, $this->testObjectAlpha->value);
       $this->assertSame('2|2|2', $this->testObjectAlpha->value);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }
-
 
   /**
    * Collection of assertions for \ramp\model\business\field\Relation::validate() where PostData
@@ -440,11 +444,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationUpdatedAlpha()
   {
-    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertNull($this->testObjectAlpha->validate(PostData::build(array(
       'from-record:3:relation-alpha' => array('key-c' => 3, 'key-b' => 2, 'key-a' => 1)
     ))));
-    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertTrue($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayHasKey(
@@ -464,11 +468,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationUpdatedBeta()
   {
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-c' => 1, 'key-b' => 1, 'key-a' => 1)
     ))));
-    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertTrue($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayHasKey(
@@ -488,11 +492,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationMismachedKeyCount()
   {
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-b' => 1, 'key-c' => 1)
     ))));
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertFalse($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayNotHasKey(
@@ -511,11 +515,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationEmptyKey()
   {
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-c', 'key-b' => 1, 'key-a' => 1)
     ))));
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertFalse($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayNotHasKey(
@@ -523,11 +527,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       MockBusinessModelManager::$updateLog
     );
 
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-c' => NULL, 'key-b' => 1, 'key-a' => 1)
     ))));
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertFalse($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayNotHasKey(
@@ -535,11 +539,11 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       MockBusinessModelManager::$updateLog
     );
 
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertNull($this->testObjectBeta->validate(PostData::build(array(
       'from-record:3:relation-beta' => array('key-c' => "", 'key-b' => 1, 'key-a' => 1)
     ))));
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationBetaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationBeta);
     $this->assertFalse($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayNotHasKey(
@@ -559,7 +563,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
    */
   public function testValidateRelationUnset()
   {
-    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertArrayNotHasKey(
       'tests\ramp\model\business\field\mocks\RelationTest\FromRecord:3',
       MockBusinessModelManager::$updateLog
@@ -567,7 +571,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->fromRecord->validate(PostData::build(array(
       'from-record:3:relation-alpha' => array('unset' => 'on', 'key-a' => 1, 'key-b' => 1, 'key-c' => 1)
     ))));
-    $this->assertNull(MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[0]);
     $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $this->testObjectAlpha[0]);
     $this->assertTrue($this->fromRecord->isModified);
@@ -637,7 +641,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       'from-record:3:relationAlpha' => array('key-c' => 3, 'key-b' => 2, 'key-a' => 'BAD')
     ))));
     // $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertSame('1|1|1', MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $errors = $this->testObjectAlpha->errors;
     $this->assertInstanceOf('\ramp\core\iCollection', $errors);
     $this->assertSame(1, $errors->count);
@@ -652,7 +656,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
       'from-record:3:relationAlpha' => array('key-c' => 3, 'key-b' => 2, 'key-a' => 1)
     ))));
     // $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->relationAlphaKEY);
+    $this->assertSame('1|2|3', MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertFalse($this->testObjectAlpha->hasErrors);
     $errors = $this->testObjectAlpha->errors;
     $this->assertSame(0, MockField::$processValidationRuleCount);

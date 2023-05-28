@@ -107,8 +107,7 @@ abstract class Record extends BusinessModel
    */
   final protected function get_primaryKey() : field\Field
   {
-    if (!isset($this->primaryKeyField))
-    {
+    if (!isset($this->primaryKeyField)) {
       $this->primaryKeyField = new field\PrimaryKey($this);
     }
     return $this->primaryKeyField;
@@ -122,15 +121,14 @@ abstract class Record extends BusinessModel
    */
   public function offsetSet($offset, $object)
   {
-    if (!($object instanceof \ramp\model\business\field\Field))
-    {
+    if (!($object instanceof \ramp\model\business\field\Field)) {
       throw new \BadMethodCallException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
     }
     $dataObjectPropertyName = $object->dataObjectPropertyName;
     if ($object instanceof \ramp\model\business\field\Relation) {
-      $dataObjectPropertyName = $dataObjectPropertyName->append(Str::KEY());
+      $dataObjectPropertyName = $dataObjectPropertyName->prepend(Str::FK());
     }
     if (!isset($this->dataObject->$dataObjectPropertyName)) {
       $this->dataObject->$dataObjectPropertyName = NULL;
