@@ -18,17 +18,17 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\document;
+namespace ramp\model;
 
 use ramp\core\Str;
 use ramp\model\Model;
 
 /**
- * Superclass for *DocumentModel*.
+ * Superclass for *Document*.
  *
  * RESPONSIBILITIES
  * - Inherit generalized methods for property access (from {@link \ramp\core\RAMPObject})
- * - Define generalized properties for DocumentModels
+ * - Define generalized properties for Documents
  * @property \svetle\core\Str $id Unique Identifier of document / fragment
  * @property \svetle\core\Str $title Title of document / fragment
  * @property \svetle\core\Str $heading Heading of document / fragment
@@ -37,7 +37,7 @@ use ramp\model\Model;
  * @property \svetle\core\Str $placeholder Synonym for summary (on form fields)
  * @property \svetle\core\Str $style Look, sub group or class.
  */
-class DocumentModel extends Model
+class Document extends Model
 {
   private static $NEXT_ID = 0;
   public static function reset() { self:: $NEXT_ID = 0; }
@@ -49,7 +49,7 @@ class DocumentModel extends Model
   private $style;
 
   /**
-   * Constructs a DocumentModel.
+   * Constructs a Document.
    */
   public function __construct()
   {

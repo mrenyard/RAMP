@@ -23,15 +23,15 @@ namespace tests\ramp\model;
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/model/Document.class.php';
 
 use ramp\core\Str;
-use ramp\model\document\DocumentModel;
+use ramp\model\Document;
 
 /**
- * Collection of tests for \ramp\model\document\DocumentModel.
+ * Collection of tests for \ramp\model\document\Document.
  */
-class DocumentModelTest extends \PHPUnit\Framework\TestCase
+class DocumentTest extends \PHPUnit\Framework\TestCase
 {
   private static $NEXT_ID = 1;
   private $testObject;
@@ -42,22 +42,22 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     self::$NEXT_ID = 1;
-    DocumentModel::reset();
-    $this->testObject = new DocumentModel();
+    Document::reset();
+    $this->testObject = new Document();
   }
 
   /**
-   * Collection of assertions for \ramp\model\document\DocumentModel::__construct().
+   * Collection of assertions for \ramp\model\document\Document::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\model\document\DocumentModel}
-   * @link ramp.model.Model ramp\model\document\DocumentModel
+   * - assert is instance of {@link \ramp\model\document\Document}
+   * @link ramp.model.Model ramp\model\document\Document
    */
   public function testConstruct()
   {
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\document\DocumentModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\Document', $this->testObject);
   }
 
   /**
@@ -74,7 +74,7 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
     $value = $this->testObject->id;
     $this->assertInstanceOf('\ramp\core\Str', $value);
     $this->assertEquals('uid' . self::$NEXT_ID, (string)$value);
-    $testObject2 = new DocumentModel();
+    $testObject2 = new Document();
     self::$NEXT_ID++;
     $this->assertEquals('uid' . self::$NEXT_ID, (string)$testObject2->id);
     $this->testObject->id = Str::set('newid');
@@ -173,7 +173,7 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\model\business\BusinessModel::clone().
-   * - assert clone is instance of {@link \ramp\model\document\DocumentModel}.
+   * - assert clone is instance of {@link \ramp\model\document\Document}.
    * - assert clone id has been set to next avalible uniqie id
    * - assert clone has same properties as cloned excluding id
    * - assert clone property values matches expected results.
@@ -190,7 +190,7 @@ class DocumentModelTest extends \PHPUnit\Framework\TestCase
     $this->testObject->summary = $expectedSummary;
     $this->testObject->style = $expectedStyle;
     $cloneObject = clone $this->testObject;
-    $this->assertInstanceOf('\ramp\model\document\DocumentModel', $cloneObject);
+    $this->assertInstanceOf('\ramp\model\Document', $cloneObject);
     $this->assertInstanceOf('\ramp\core\Str', $cloneObject->id);
     $this->assertNotEquals((string)$this->testObject->id, (string)$cloneObject->id);
     $this->assertEquals('uid' . ++self::$NEXT_ID, (string)$cloneObject->id);
