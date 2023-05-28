@@ -22,15 +22,15 @@ namespace ramp;
 
 require_once('load.ini.php');
 $session = http\Session::getInstance();
-try {
-  $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
-} catch (http\Unauthorized401Exception $e) {
-  header('HTTP/1.1 401 Unauthorized');
-  $authenticationForm = new view\AuthenticationForm($e->getMessage());
-  $authenticationForm->setModel($session->loginAccount);
-  view\RootView::getInstance()->render();
-  return;
-}
+// try {
+//   $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
+// } catch (http\Unauthorized401Exception $e) {
+//   header('HTTP/1.1 401 Unauthorized');
+//   $authenticationForm = new view\AuthenticationForm($e->getMessage());
+//   $authenticationForm->setModel($session->loginAccount);
+//   view\RootView::getInstance()->render();
+//   return;
+// }
 try {
   $request = http\Request::current();
 } catch (\DomainException $e) {
@@ -40,9 +40,7 @@ try {
   print_r('<pre>' . $e . '</pre>');
   return;
 }
-
 $view = view\ViewManager::getView($request);
-
 if ((string)$request->modelURN !== '') {
   $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
   $modelManager = $MODEL_MANAGER::getInstance();
@@ -72,7 +70,6 @@ if ((string)$request->modelURN !== '') {
   }
   $view->setModel($model);
 }
-
 header("HTTP/1.0 200 Ok");
 if($request->expectsFragment) {
   header('Content-Type: text/xml');

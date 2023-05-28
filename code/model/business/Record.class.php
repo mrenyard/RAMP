@@ -29,6 +29,7 @@ use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
+use ramp\model\business\Relatable;
 use ramp\core\PropertyNotSetException;
 
 /**
@@ -49,7 +50,7 @@ use ramp\core\PropertyNotSetException;
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
-abstract class Record extends BusinessModel
+abstract class Record extends Relatable
 {
   private $dataObject;
   private $validFromSource;

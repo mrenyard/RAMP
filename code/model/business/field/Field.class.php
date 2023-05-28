@@ -27,6 +27,7 @@ use ramp\core\OptionList;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
+use ramp\model\business\RecordComponent;
 use ramp\model\business\Record;
 use ramp\model\business\FailedValidationException;
 
@@ -45,7 +46,7 @@ use ramp\model\business\FailedValidationException;
  * @property-read mixed $value Returns value held by relevant property of containing record.
  * @property-read \ramp\model\business\Record $containingRecord Record containing property related to *this*.
  */
-abstract class Field extends BusinessModel
+abstract class Field extends RecordComponent
 {
   private $dataObjectPropertyName;
   private $containingRecord;

@@ -38,7 +38,7 @@ use ramp\model\business\BusinessModel;
  * COLLABORATORS
  * - Collection of {@link \ramp\model\business\Record}s
  */
-abstract class RecordCollection extends BusinessModel implements iCollection
+abstract class RecordCollection extends Relatable implements iCollection
 {
   /**
    * Default constructor for collection of \ramp\model\business\Records.

@@ -41,6 +41,8 @@ require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
@@ -120,6 +122,8 @@ class RecordCollectionTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);

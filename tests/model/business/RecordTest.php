@@ -52,6 +52,8 @@ require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/ForeignKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
@@ -147,6 +149,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
