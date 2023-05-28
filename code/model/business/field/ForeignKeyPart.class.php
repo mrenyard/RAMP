@@ -69,7 +69,7 @@ class ForeignKeyPart extends Field
    */
   protected function get_label() : Str
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', '$0 ', str_replace('KEY', '', $this->key)))));
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', '$0 ', $this->key))));
   }
 
 
@@ -81,6 +81,7 @@ class ForeignKeyPart extends Field
    */
   protected function set_isEditable(bool $value)
   {
+    // STUB
   }
 
   /**
@@ -89,6 +90,7 @@ class ForeignKeyPart extends Field
    */
   protected function get_value()
   {
+    // STUB
   }
 
   /**
