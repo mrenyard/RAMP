@@ -25,7 +25,7 @@ use ramp\core\PropertyNotSetException;
 use ramp\core\BadPropertyCallException;
 use ramp\view\View;
 use ramp\view\ComplexView;
-use ramp\model\document\DocumentModel;
+use ramp\model\Document;
 
 /**
  * Abstract specialist document view (presentation) includes composite DocumentModel.
@@ -52,7 +52,7 @@ abstract class DocumentView extends ComplexView
   public function __construct(View $parent)
   {
     parent::__construct($parent);
-    $this->documentModel = new DocumentModel();
+    $this->documentModel = new Document();
   }
   
   /**

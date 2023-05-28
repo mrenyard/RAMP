@@ -35,7 +35,7 @@ require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/model/Document.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 
 require_once '/usr/share/php/tests/ramp/view/document/mocks/TemplatedTest/MockBusinessModel.class.php';

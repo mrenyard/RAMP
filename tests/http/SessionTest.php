@@ -71,7 +71,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidat
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/http/Session.class.php';
 require_once '/usr/share/php/ramp/http/Unauthorized401Exception.class.php';
-require_once '/usr/share/php/ramp/model/document/DocumentModel.class.php';
+require_once '/usr/share/php/ramp/model/Document.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
