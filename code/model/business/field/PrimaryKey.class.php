@@ -45,7 +45,6 @@ use ramp\model\business\DataFetchException;
 class PrimaryKey extends Field
 {
   private static $strPK;
-  private $dataObjectPropertyNames;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of containing record.
@@ -54,7 +53,6 @@ class PrimaryKey extends Field
   public function __construct(Record $containingRecord)
   {
     if (!isset(self::$strPK)) { self::$strPK = Str::set('PrimaryKey'); }
-    $this->dataObjectPropertyNames = $containingRecord->primaryKeyNames();
     parent::__construct(self::$strPK, $containingRecord);
   }
 
@@ -76,7 +74,7 @@ class PrimaryKey extends Field
   final protected function get_value()
   {
     $value = Str::_EMPTY();
-    foreach ($this->dataObjectPropertyNames as $propertyName) {
+    foreach ($this->containingRecord->primaryKeyNames() as $propertyName) {
       $partValue = $this->containingRecord->getPropertyValue((string)$propertyName);
       if (!isset($partValue) || $partValue == '') { return NULL; }
       $value = $value->append(Str::set($partValue))->append(Str::BAR());
@@ -114,7 +112,7 @@ class PrimaryKey extends Field
     }
     $recordName = Str::camelCase($this->containingRecord->id->trimEnd(Str::set(':new')));
     $filterValues = array();
-    foreach ($this->dataObjectPropertyNames as $propertyName) {
+    foreach ($this->containingRecord->primaryKeyNames() as $propertyName) {
       $filterValues[(string)$propertyName] = $this->containingRecord->getPropertyValue((string)$propertyName);
     }
     $filter = Filter::build($recordName, $filterValues);
