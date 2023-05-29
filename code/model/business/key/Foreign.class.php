@@ -102,6 +102,9 @@ abstract class Composite extends Field
   }
 }
 
+/**
+ * ForeignKey
+ */
 class Foreign extends Key
 {
   public function __construct(Record $from, Str $propertyName, Record $to)
@@ -109,8 +112,13 @@ class Foreign extends Key
     $i = 0;
     parent::__construct($from);
     foreach ($to->primaryKeyNames() as $key) {
-      $this[$i++] = new class($from, $propertyName, $key) extends Composite {};
+      $this[$i++] = $this->make($from, $propertyName, $key);
     }
+  }
+
+  private function make(Record $from, Str $propertyName, Str $key) : Field
+  {
+    return new class($from, $propertyName, $key) extends Composite {};
   }
 
   /**
