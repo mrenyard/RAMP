@@ -17,6 +17,7 @@
  *
  * @author mrenyard (renyard.m@gmail.com)
  * @version 0.0.9;
+ * @package RAMP.test
  */
 namespace tests\ramp\condition;
 
