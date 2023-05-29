@@ -27,7 +27,7 @@ use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
-use ramp\model\business\ForeignKey;
+use ramp\model\business\key\Foreign;
 use ramp\model\business\DataFetchException;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\SimpleBusinessModelDefinition;
@@ -81,7 +81,7 @@ class Relation extends Field
     );
     $children = $this->record;
     if ($key === Str::NEW()) {
-      $children = new ForeignKey($this->parentRecord, $this->dataObjectPropertyName, $this->record);
+      $children = new Foreign($this->parentRecord, $this->dataObjectPropertyName, $this->record);
     }
     $this->setChildren($children);
   }

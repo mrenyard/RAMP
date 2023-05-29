@@ -44,12 +44,12 @@ require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/ramp/model/business/ForeignKey.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/field/ForeignKeyPart.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Foreign.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
@@ -217,7 +217,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $i = 0;
     foreach ($this->testObjectBeta as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
-      $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $property);
+      $this->assertInstanceOf('\ramp\model\business\key\Composite', $property);
       $this->assertSame('from-record:3', (string)$property->parentRecord->id);
       $i++;
     }
@@ -283,15 +283,15 @@ class RelationTest extends \PHPUnit\Framework\TestCase
         $this->testObjectBeta[4];
       } catch (\OutOfBoundsException $expected) {
         $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[0]);
-        $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $this->testObjectBeta[0]);
+        $this->assertInstanceOf('\ramp\model\business\key\Composite', $this->testObjectBeta[0]);
         $this->assertSame('from-record:3:relation-beta[key-a]', (string)$this->testObjectBeta[0]->id);
         $this->assertNull($this->testObjectBeta[0]->value);
         $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[1]);
-        $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $this->testObjectBeta[1]);
+        $this->assertInstanceOf('\ramp\model\business\key\Composite', $this->testObjectBeta[1]);
         $this->assertSame('from-record:3:relation-beta[key-b]', (string)$this->testObjectBeta[1]->id);
         $this->assertNull($this->testObjectBeta[1]->value);
         $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectBeta[2]);
-        $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $this->testObjectBeta[2]);
+        $this->assertInstanceOf('\ramp\model\business\key\Composite', $this->testObjectBeta[2]);
         $this->assertSame('from-record:3:relation-beta[key-c]', (string)$this->testObjectBeta[2]->id);
         $this->assertNull($this->testObjectBeta[2]->value);
 
@@ -575,7 +575,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertNull(MockBusinessModelManager::$fromDataObject->FK_relationAlpha);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObjectAlpha[0]);
-    $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $this->testObjectAlpha[0]);
+    $this->assertInstanceOf('\ramp\model\business\key\Composite', $this->testObjectAlpha[0]);
     $this->assertTrue($this->fromRecord->isModified);
     $this->modelManager->updateAny();
     $this->assertArrayHasKey(

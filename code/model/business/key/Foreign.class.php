@@ -24,6 +24,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Field;
+use ramp\model\business\key\Foreign;
 
 abstract class Composite extends Field
 {
