@@ -16,6 +16,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
+ * @package ChromePHP
  * @version 0.0.9;
  */
 
