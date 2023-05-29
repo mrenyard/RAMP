@@ -48,7 +48,7 @@ final class SelectMany extends SelectFrom
   final protected function get_value()
   {
     $selection = new Collection();
-    $selectionArray = (array)$this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
+    $selectionArray = (array)$this->parentRecord->getPropertyValue($this->dataObjectPropertyName);
     foreach ($selectionArray as $index) {
       $selection->add($this->options[$index]);
     }

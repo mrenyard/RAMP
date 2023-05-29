@@ -134,7 +134,7 @@ class ForeignKeyTest extends \PHPUnit\Framework\TestCase
     foreach ($this->testObject as $foreignKeyPart) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $foreignKeyPart);
       $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $foreignKeyPart);
-      // $this->assertSame('to-record:1|1|1', (string)$foreignKeyPart->containingRecord->id);
+      // $this->assertSame('to-record:1|1|1', (string)$foreignKeyPart->parentRecord->id);
       // $this->assertSame(MockBusinessModelManager::$relatedObjectOne[$i], $foreignKeyPart);
       $i++;
     }

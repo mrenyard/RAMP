@@ -70,7 +70,7 @@ class Input extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+    return $this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName);
   }
 
   /**

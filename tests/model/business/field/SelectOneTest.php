@@ -175,9 +175,9 @@ class SelectOneTest extends \PHPUnit\Framework\TestCase
   public function testGet_containingRecord()
   {
     try {
-      $this->testObject->containingRecord = $this->mockRecord;
+      $this->testObject->parentRecord = $this->mockRecord;
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame($this->mockRecord, $this->testObject->containingRecord);
+      $this->assertSame($this->mockRecord, $this->testObject->parentRecord);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

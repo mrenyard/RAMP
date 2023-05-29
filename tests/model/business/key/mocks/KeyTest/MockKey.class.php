@@ -20,56 +20,40 @@
  */
 namespace tests\ramp\model\business\key\mocks\KeyTest;
 
-use ramp\core\RAMPObject;
+// use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\condition\PostData;
+// use ramp\core\iCollection;
+// use ramp\core\Collection;
+// use ramp\condition\PostData;
+use ramp\model\business\Record;
 use ramp\model\business\key\Key;
 
-class MockKeyCollection extends Key implements iCollection
-{
-  protected function get_id() : Str
-  {
-  }
-
-  /**
-   * Add a reference (Record), to this collection.
-   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
-   * @throws \InvalidArgumentException When provided object NOT expected type (Record)
-   */
-  public function add(RAMPObject $object)
-  {
-    self::offsetSet($this->get_count(), $object);
-  }
-}
-
 /**
- * Mock Concreate implementation of \ramp\model\business\Key for testing against.
+ * Mock Concreate implementation of \ramp\model\business\key\Key for testing against.
  */
 class MockKey extends Key
 {
   private static $idCount;
   private $id;
 
-  public $label;
-  public $validateCount;
-  public $hasErrorsCount;
-  public $isValidCount;
+  // public $label;
+  // public $validateCount;
+  // public $hasErrorsCount;
+  // public $isValidCount;
 
   public static function reset()
   {
     self::$idCount = 0;
   }
 
-  public function __construct(string $label, Key $children = null)
+  public function __construct(Record $parentRecord, BusinessModel $children = null)
   {
-    parent::__construct($children);
+    parent::__construct($parentRecord, $children);
     $this->id = Str::set('uid-' . self::$idCount++);
-    $this->label = $label;
-    $this->validateCount = 0;
-    $this->hasErrorsCount = 0;
-    $this->isValidCount = 0;
+  //   $this->label = $label;
+  //   $this->validateCount = 0;
+  //   $this->hasErrorsCount = 0;
+  //   $this->isValidCount = 0;
   }
 
   /**
@@ -85,16 +69,17 @@ class MockKey extends Key
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   */
+   *
   public function validate(PostData $postdata)
   {
     $this->validateCount++;
     parent::validate($postdata);
-  }
+  }*/
 
+  /*
   public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
     return parent::get_hasErrors();
-  }
+  }*/
 }

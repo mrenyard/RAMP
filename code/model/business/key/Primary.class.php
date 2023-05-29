@@ -46,7 +46,6 @@ use ramp\model\business\RecordComponent;
  */
 class Primary extends RecordComponent
 {
-  private $parentRecord;
   private $errorCollection;
 
   /**
@@ -56,8 +55,7 @@ class Primary extends RecordComponent
   public function __construct(Record $parentRecord)
   {
     $this->errorCollection = StrCollection::set();
-    $this->parentRecord = $parentRecord;
-    parent::__construct();
+    parent::__construct($parentRecord);
   }
 
   /**

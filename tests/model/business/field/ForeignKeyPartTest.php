@@ -39,9 +39,9 @@ require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/ForeignKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
@@ -191,9 +191,9 @@ class ForeignKeyPartTest extends \PHPUnit\Framework\TestCase
   public function testGet_containingRecord()
   {
     try {
-      $this->testObject->containingRecord = $this->fromRecord;
+      $this->testObject->parentRecord = $this->fromRecord;
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame($this->fromRecord, $this->testObject->containingRecord);
+      $this->assertSame($this->fromRecord, $this->testObject->parentRecord);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

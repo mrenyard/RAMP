@@ -49,7 +49,6 @@ use ramp\model\business\FailedValidationException;
 abstract class Field extends RecordComponent
 {
   private $dataObjectPropertyName;
-  private $containingRecord;
   private $editable;
 
   protected $errorCollection;
@@ -57,17 +56,17 @@ abstract class Field extends RecordComponent
   /**
    * Base constructor for Field related to a single property of containing record.
    * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
-   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
+   * @param bool $editable 
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $dataObjectPropertyName, Record $parentRecord, BusinessModel $children = NULL, bool $editable = NULL)
   {
     $this->errorCollection = StrCollection::set();
-    $this->containingRecord = $containingRecord;
     $this->dataObjectPropertyName = $dataObjectPropertyName;
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($children);
+    parent::__construct($parentRecord, $children);
   }
 
   /**
@@ -78,7 +77,7 @@ abstract class Field extends RecordComponent
   protected function get_id() : Str
   {
     return Str::COLON()->prepend(
-      $this->containingRecord->id
+      $this->parentRecord->id
     )->append(
       Str::hyphenate($this->dataObjectPropertyName)
     );
@@ -102,8 +101,8 @@ abstract class Field extends RecordComponent
   protected function get_isEditable() : bool
   {
     return (
-      $this->containingRecord->isNew || 
-      (!$this->containingRecord->primaryKeyNames()->contains($this->dataObjectPropertyName) && $this->editable !== FALSE)
+      $this->parentRecord->isNew || 
+      (!$this->parentRecord->primaryKeyNames()->contains($this->dataObjectPropertyName) && $this->editable !== FALSE)
     );
   }
 
@@ -135,16 +134,6 @@ abstract class Field extends RecordComponent
   }
 
   /**
-   * Get containing record
-   * **DO NOT CALL DIRECTLY, USE this->containingRecord;**
-   * @return \ramp\model\business\Record Containing record of *this*
-   */
-  final protected function get_containingRecord() : Record
-  {
-    return $this->containingRecord;
-  }
-
-  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
@@ -162,7 +151,7 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($e->getMessage()));
           return;
         }
-        $this->containingRecord->setPropertyValue(
+        $this->parentRecord->setPropertyValue(
           (string)$this->dataObjectPropertyName, $inputdata->value
         );
         return;

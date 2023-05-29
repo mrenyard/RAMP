@@ -81,7 +81,7 @@ class Relation extends Field
     );
     $children = $this->record;
     if ($key === Str::NEW()) {
-      $children = new ForeignKey($this->containingRecord, $this->dataObjectPropertyName, $this->record);
+      $children = new ForeignKey($this->parentRecord, $this->dataObjectPropertyName, $this->record);
     }
     $this->setChildren($children);
   }
@@ -92,7 +92,7 @@ class Relation extends Field
    */
   final protected function get_value()
   {
-    return $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName->prepend(Str::FK()));
+    return $this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName->prepend(Str::FK()));
   }
 
   /**
@@ -114,7 +114,7 @@ class Relation extends Field
         {
           if (isset($values['unset']) && $values['unset'] == 'on')
           {
-            $this->containingRecord->setPropertyValue(
+            $this->parentRecord->setPropertyValue(
               (string)$this->dataObjectPropertyName->prepend(Str::FK()), NULL
             );
             $this->update();
@@ -136,7 +136,7 @@ class Relation extends Field
               $this->errorCollection->add(Str::set($e->getMessage()));
               return;
             }
-            $this->containingRecord->setPropertyValue(
+            $this->parentRecord->setPropertyValue(
               (string)$this->dataObjectPropertyName->prepend(Str::FK()), $value
             );
           }

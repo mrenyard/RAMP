@@ -36,4 +36,27 @@ namespace ramp\model\business;
  */
 abstract class RecordComponent extends BusinessModel
 {
+  private $parentRecord;
+
+  /**
+   * Creates a multiple part primary key field related to a collection of property of parent record.
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
+   * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
+   */
+  public function __construct(Record $parentRecord, BusinessModel $children = NULL)
+  {
+    $this->parentRecord = $parentRecord;
+    parent::__construct($children);
+  }
+
+  /**
+   * Get containing record
+   * **DO NOT CALL DIRECTLY, USE this->parentRecord;**
+   * @return \ramp\model\business\Record Containing record of *this*
+   */
+  final protected function get_parentRecord() : Record
+  {
+    return $this->parentRecord;
+  }
+
 }

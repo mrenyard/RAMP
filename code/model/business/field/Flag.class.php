@@ -55,7 +55,7 @@ class Flag extends Field
    */
   final protected function get_value()
   {
-    return ((bool)$this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName));
+    return ((bool)$this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName));
   }
 
   /**
@@ -66,11 +66,11 @@ class Flag extends Field
   public function validate(PostData $postdata) : void
   {
     parent::validate($postdata);
-    if ($this->containingRecord->isModified) {
-      $currentValue = $this->containingRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+    if ($this->parentRecord->isModified) {
+      $currentValue = $this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName);
       if ($currentValue === TRUE || $currentValue === FALSE) {
         $newValue = ($currentValue)? 1:0;
-        $this->containingRecord->setPropertyValue((string)$this->dataObjectPropertyName, $newValue);
+        $this->parentRecord->setPropertyValue((string)$this->dataObjectPropertyName, $newValue);
       }
     }
   }

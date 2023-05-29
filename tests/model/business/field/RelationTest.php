@@ -208,7 +208,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $i = 0;
     foreach ($this->testObjectAlpha as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
-      $this->assertSame('to-record:1|1|1', (string)$property->containingRecord->id);
+      $this->assertSame('to-record:1|1|1', (string)$property->parentRecord->id);
       $this->assertSame(MockBusinessModelManager::$relatedObjectOne[$i], $property);
       $i++;
     }
@@ -218,7 +218,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     foreach ($this->testObjectBeta as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
       $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $property);
-      $this->assertSame('from-record:3', (string)$property->containingRecord->id);
+      $this->assertSame('from-record:3', (string)$property->parentRecord->id);
       $i++;
     }
     $this->assertSame(3, $i);
@@ -230,7 +230,7 @@ class RelationTest extends \PHPUnit\Framework\TestCase
     $i = 0;
     foreach ($this->testObjectBeta as $property) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $property);
-      $this->assertSame('to-record:1|2|3', (string)$property->containingRecord->id);
+      $this->assertSame('to-record:1|2|3', (string)$property->parentRecord->id);
       $this->assertSame(MockBusinessModelManager::$relatedObjectTwo[$i], $property);
       $i++;
     }
@@ -247,13 +247,13 @@ class RelationTest extends \PHPUnit\Framework\TestCase
   public function testGet_containingRecord()
   {
     try {
-      $this->testObjectAlpha->containingRecord = $this->fromRecord;
+      $this->testObjectAlpha->parentRecord = $this->fromRecord;
     } catch (PropertyNotSetException $expected) {
       try {
-        $this->testObjectBeta->containingRecord = $this->fromRecord;
+        $this->testObjectBeta->parentRecord = $this->fromRecord;
       } catch (PropertyNotSetException $expected) {
-        $this->assertSame($this->fromRecord, $this->testObjectAlpha->containingRecord);
-        $this->assertSame($this->fromRecord, $this->testObjectBeta->containingRecord);
+        $this->assertSame($this->fromRecord, $this->testObjectAlpha->parentRecord);
+        $this->assertSame($this->fromRecord, $this->testObjectBeta->parentRecord);
         return;
       }
     }

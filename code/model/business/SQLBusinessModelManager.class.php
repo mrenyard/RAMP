@@ -259,7 +259,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     }
     elseif ($model instanceof \ramp\model\business\field\Field)
     {
-      $model = $model->containingRecord;
+      $model = $model->parentRecord;
     }
     $this->updateRecord($model);
   }

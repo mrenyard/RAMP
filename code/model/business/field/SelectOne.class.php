@@ -46,7 +46,7 @@ final class SelectOne extends SelectFrom
    */
   final protected function get_value()
   {
-    $index = $this->containingRecord->getPropertyValue($this->dataObjectPropertyName);
+    $index = $this->parentRecord->getPropertyValue($this->dataObjectPropertyName);
     return (isset($index))? $this->options[$index] : $this->options[0];
   }
 

@@ -40,7 +40,7 @@ class ForeignKey extends BusinessModel
    */
   protected function get_id() : Str
   {
-    return $this[0]->containingRecord->id->append(
+    return $this[0]->parentRecord->id->append(
       $this[0]->dataObjectPropertyName->prepend(Str::COLON())
     )->append(Str::set('[foreign-key]'));
   }
