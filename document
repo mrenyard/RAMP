@@ -1,2 +1,2 @@
-sudo -S phpDocumentor --ignore */mocks/* -d $HOME/Projects/RAMP/code/,$HOME/Projects/RAMP/tests/ -t $HOME/Code/Documentation/php
+sudo -S phpDocumentor --ignore */mocks/* -d $HOME/Projects/RAMP/code/,$HOME/Projects/RAMP/tests/,$HOME/Projects/RAMP/make -t $HOME/Code/Documentation/php
 sudo phpunit --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
