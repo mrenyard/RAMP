@@ -349,7 +349,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     unset($this->testObject[3]);
     $this->assertFalse(isset($this->testObject[3]));
     try {
-    $this->testObject[4] = new ConcreteValidationRule();
+      $this->testObject[4] = new ConcreteValidationRule();
     } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!',

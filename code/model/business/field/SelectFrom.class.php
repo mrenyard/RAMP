@@ -28,16 +28,17 @@ use \ramp\core\OptionList;
  * Abstract field related to a single property of its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Implement property specific methods for iteration, validity checking & error reporting
- * - Define template method, processValidationRule
- * - Hold referance back to its contining Record
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Implement property specific methods for iteration, validity checking & error reporting.
+ * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Implement template method, processValidationRule to process provided ValidationRule.
+ * - Manage and present list of Options avalible for selection.
  *
  * COLLABORATORS
+ * - {@link \ramp\core\OptionList}
  * - {@link \ramp\model\business\Record}
  *
- * @property-read \ramp\core\Str $id Returns unique identifier (id) for *this* (URN).
- * @property-read mixed $value Returns value held by relevant property of containing record.
- * @property-read \ramp\model\business\Record $containingRecord Record containing property related to *this*.
+ * @property-read \ramp\core\OptionList $options Return reference to list of Options avalible for selection.
  */
 abstract class SelectFrom extends Field
 {
@@ -67,7 +68,7 @@ abstract class SelectFrom extends Field
    * **DO NOT CALL DIRECTLY, USE this->label;**
    * @return \ramp\core\OptionList Collection of {@link Option}s.
    */
-  protected function get_options()
+  protected function get_options() : OptionList
   {
     return $this->options;
   }

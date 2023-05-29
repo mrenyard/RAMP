@@ -30,10 +30,10 @@ use ramp\model\business\BusinessModel;
  * Referance and maintain a collection of \ramp\model\business\Records.
  *
  * RESPONSIBILITIES
- * - Implement methods for property access
- * - Implement methods for validity checking & reporting
- * - Provide access to this Collection
- * - Provide methods to maintain a Collection of {@link Record}s
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Define generalized methods for iteration, validity checking & error reporting.
+ * - Define and restrict relational association to objects of this type ({@link \ramp\model\business\Relatable}). 
+ * - Provide methods to maintain and access a Collection of {@link Record}s
  *
  * COLLABORATORS
  * - Collection of {@link \ramp\model\business\Record}s

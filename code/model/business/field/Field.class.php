@@ -35,16 +35,17 @@ use ramp\model\business\FailedValidationException;
  * Abstract field related to a single property of its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Implement property specific methods for iteration, validity checking & error reporting
- * - Define template method, processValidationRule
- * - Hold referance back to its contining Record
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Implement property specific methods for iteration, validity checking & error reporting.
+ * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Define template method, processValidationRule.
  *
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
  *
  * @property-read \ramp\core\Str $id Returns unique identifier (id) for *this* (URN).
- * @property-read mixed $value Returns value held by relevant property of containing record.
- * @property-read \ramp\model\business\Record $containingRecord Record containing property related to *this*.
+ * @property-read mixed $value Returns value held by relevant property of parent record.
+ * @property-read \ramp\model\business\Record $parentRecord Record containing property related to *this* field.
  */
 abstract class Field extends RecordComponent
 {

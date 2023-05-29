@@ -24,15 +24,11 @@ namespace ramp\model\business;
  * Abstract Business Model Record Component.
  *
  * RESPONSIBILITIES
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  *
- * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).
- * @property-read \ramp\core\Str $type Returns type definition as a short list, much like we
- * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
- * resulting values.
- * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
- * @property-read StrCollection $errors Returns a StrCollection of recorded error messages.
- * @property-read int $count Returns the number of children currently parented by *this*.
+ * @property-read \ramp\model\business\Record $parentRecord Return parent Record reference to this component.
  */
 abstract class RecordComponent extends BusinessModel
 {
@@ -50,13 +46,12 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
-   * Get containing record
+   * Get parent record
    * **DO NOT CALL DIRECTLY, USE this->parentRecord;**
-   * @return \ramp\model\business\Record Containing record of *this*
+   * @return \ramp\model\business\Record Parent record of *this*
    */
   final protected function get_parentRecord() : Record
   {
     return $this->parentRecord;
   }
-
 }

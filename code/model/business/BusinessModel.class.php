@@ -33,6 +33,7 @@ use ramp\model\Model;
  * Abstract Business Model.
  *
  * RESPONSIBILITIES
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  *
  * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).

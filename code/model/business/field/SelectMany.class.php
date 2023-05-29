@@ -28,12 +28,13 @@ use ramp\model\business\FailedValidationException;
 
 /**
  * Specilised field for selecting zero or many from a collection of iOptions tied to a single
- * property of its containing \ramp\model\business\Record.
+ * property of its parent \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Implement property specific methods for iteration, validity checking & error reporting
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Implement property specific methods for iteration, validity checking & error reporting.
+ * - Hold referance back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to validate against avalible iOptions.
- * - Hold referance back to its contining Record
  *
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}

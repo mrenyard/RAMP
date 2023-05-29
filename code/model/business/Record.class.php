@@ -33,19 +33,19 @@ use ramp\model\business\Relatable;
 use ramp\core\PropertyNotSetException;
 
 /**
- * Abstract business model Record definition.
+ * A single Record (entry).
  *
  * RESPONSIBILITIES
- * - Implement methods for validity checking & reporting
- * - Implement methods for field/property managment and access
- * - Define API to maintain and/or assert valid state of dataObject
- * - Provide methods for linking Records through association
- * - Provide methods to expose to BusinessModelManager
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Define generalized methods for iteration, validity checking & error reporting.
+ * - Define and restrict relational association to objects of this type ({@link \ramp\model\business\Relatable}). 
+ * - Define API to maintain and/or assert valid state of dataObject and expose methods to BusinessModelManager.
+ * - Implement methods for field/property managment and access.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Field}s
+ * - {@link \ramp\model\business\RecordComponent}s
  *
- * @property-read \ramp\core\Str $key Returns value of primary key.
+ * @property-read \ramp\core\Str $primaryKey Returns value of primary key.
  * @property-read bool $isModified Returns whether data has been modified since last update.
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
@@ -122,7 +122,7 @@ abstract class Record extends Relatable
    */
   public function offsetSet($offset, $object)
   {
-    if (!($object instanceof \ramp\model\business\field\Field)) {
+    if (!($object instanceof \ramp\model\business\RecordComponent)) {
       throw new \BadMethodCallException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );

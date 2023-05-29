@@ -25,12 +25,13 @@ use ramp\model\business\Record;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Input field related to a single property of its containing \ramp\model\business\Record.
+ * Input field related to a single property of its parent \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Implement property specific methods for iteration, validity checking & error reporting
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Implement property specific methods for iteration, validity checking & error reporting.
+ * - Hold referance back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to process provided ValidationRule.
- * - Hold referance back to its contining Record
  *
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
