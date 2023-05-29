@@ -15,6 +15,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
+ * @package RAMP
  * @version 0.0.9;
  *
  * @property-read bool $isModified Returns whether data has been modified since last update.
