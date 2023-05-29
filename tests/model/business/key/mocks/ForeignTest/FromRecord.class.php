@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\mocks\ForeignKeyTest;
+namespace tests\ramp\model\business\key\mocks\ForeignTest;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;

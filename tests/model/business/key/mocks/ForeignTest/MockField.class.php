@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\ForeignKeyPartTest;
+namespace tests\ramp\model\business\key\mocks\ForeignTest;
 
 use ramp\model\business\field\Field;
 use ramp\model\business\FailedValidationException;
@@ -28,6 +28,13 @@ use ramp\model\business\FailedValidationException;
  */
 class MockField extends Field
 {
+  public static $processValidationRuleCount;
+
+  public static function reset()
+  {
+    self::$processValidationRuleCount = 0;
+  }
+
   protected function get_value()
   {
     // STUB

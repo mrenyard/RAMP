@@ -18,7 +18,7 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business;
+namespace tests\ramp\model\business\key;
 
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
@@ -33,27 +33,27 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/ForeignKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Foreign.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
-require_once '/usr/share/php/ramp/model/business/field/ForeignKeyPart.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/mocks/ForeignKeyTest/MockField.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/mocks/ForeignKeyTest/ToRecord.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/mocks/ForeignKeyTest/FromRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/ForeignTest/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/ForeignTest/ToRecord.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/ForeignTest/FromRecord.class.php';
 
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
-use ramp\model\business\ForeignKey;
+use ramp\model\business\key\Foreign;
 
-use tests\ramp\model\business\mocks\ForeignKeyTest\MockField;
-use tests\ramp\model\business\mocks\ForeignKeyTest\ToRecord;
-use tests\ramp\model\business\mocks\ForeignKeyTest\FromRecord;
+use tests\ramp\model\business\key\mocks\ForeignTest\MockField;
+use tests\ramp\model\business\key\mocks\ForeignTest\ToRecord;
+use tests\ramp\model\business\key\mocks\ForeignTest\FromRecord;
 
 /**
  * Collection of tests for \ramp\model\business\ForeignKey.
  */
-class ForeignKeyTest extends \PHPUnit\Framework\TestCase
+class ForeignTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $propertyName;
@@ -70,7 +70,7 @@ class ForeignKeyTest extends \PHPUnit\Framework\TestCase
     $this->from = new FromRecord($dataObject);
     $this->to = new ToRecord();
     $this->propertyName = Str::set('relation-alpha');
-    $this->testObject = new ForeignKey($this->from, $this->propertyName, $this->to);
+    $this->testObject = new Foreign($this->from, $this->propertyName, $this->to);
   }
 
   /**
@@ -92,7 +92,7 @@ class ForeignKeyTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\ForeignKey', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\key\Foreign', $this->testObject);
   }
 
   /**
@@ -133,7 +133,7 @@ class ForeignKeyTest extends \PHPUnit\Framework\TestCase
     $i = 0;
     foreach ($this->testObject as $foreignKeyPart) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $foreignKeyPart);
-      $this->assertInstanceOf('\ramp\model\business\field\ForeignKeyPart', $foreignKeyPart);
+      $this->assertInstanceOf('\ramp\model\business\key\Composite', $foreignKeyPart);
       // $this->assertSame('to-record:1|1|1', (string)$foreignKeyPart->parentRecord->id);
       // $this->assertSame(MockBusinessModelManager::$relatedObjectOne[$i], $foreignKeyPart);
       $i++;
