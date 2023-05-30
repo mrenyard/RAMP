@@ -26,15 +26,9 @@ use ramp\model\business\RecordComponent;
  * Abstract Business Model Record Component Key.
  *
  * RESPONSIBILITIES
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
- *
- * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).
- * @property-read \ramp\core\Str $type Returns type definition as a short list, much like we
- * might use in an HTML class tag (for CSS), we uses *this* and parent classnames to define the
- * resulting values.
- * @property-read bool $hasErrors Returns whether any errors have been recorded following validate().
- * @property-read StrCollection $errors Returns a StrCollection of recorded error messages.
- * @property-read int $count Returns the number of children currently parented by *this*.
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  */
 abstract class Key extends RecordComponent
 {

@@ -37,15 +37,15 @@ use ramp\model\business\FailedValidationException;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
- * - Define template method, processValidationRule.
+ * - Hold referance back to parent Record and restrict polymorphic composite association.
+ * - Provide access to relevent value based on parent record state.
+ * - Implement template method, processValidationRule to process provided ValidationRule.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- *
- * @property-read \ramp\core\Str $id Returns unique identifier (id) for *this* (URN).
- * @property-read mixed $value Returns value held by relevant property of parent record.
- * @property-read \ramp\model\business\Record $parentRecord Record containing property related to *this* field.
+ * - {@link \ramp\model\business\Record Record}
+ * 
+ * @property bool $isEditable Flag for setting or getting access to modify Field value.
+ * @property-read \ramp\core\Str $dataObjectPropertyName Related dataObject property name of parent record.
  */
 abstract class Field extends RecordComponent
 {
@@ -56,7 +56,7 @@ abstract class Field extends RecordComponent
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @param bool $editable 
@@ -117,12 +117,6 @@ abstract class Field extends RecordComponent
   {
     $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
   }
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  abstract protected function get_value();
 
   /**
    * Get dataobject property name

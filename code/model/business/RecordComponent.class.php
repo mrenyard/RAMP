@@ -27,8 +27,13 @@ namespace ramp\model\business;
  * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  * - Hold reference back to parent Record and restrict polymorphic composite association. 
+ * - Define access to relevent value based on parent record state.
+ * 
+ * COLLABORATORS
+ * - {@link \ramp\model\business\Record Record}
  *
  * @property-read \ramp\model\business\Record $parentRecord Return parent Record reference to this component.
+ * @property-read mixed $value Relevent value based on parent record state.
  */
 abstract class RecordComponent extends BusinessModel
 {
@@ -54,4 +59,11 @@ abstract class RecordComponent extends BusinessModel
   {
     return $this->parentRecord;
   }
+
+  /**
+   * Returns relevent value based on parent record state.
+   * **DO NOT CALL DIRECTLY, USE this->value;**
+   * @return mixed Relevent value based on parent record state
+   */
+  abstract protected function get_value();
 }

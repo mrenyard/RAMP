@@ -17,10 +17,6 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
  * @version 0.0.9;
- *
- * @property-read bool $isModified Returns whether data has been modified since last update.
- * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
- * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
  */
 namespace ramp\model\business;
 

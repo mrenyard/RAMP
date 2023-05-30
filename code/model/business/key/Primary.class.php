@@ -37,12 +37,13 @@ use ramp\model\business\RecordComponent;
  * MultiPartPrimary field related to a single property of its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Implement property specific methods for iteration, validity checking & error reporting
- * - Implement template method, processValidationRule to process provided ValidationRule.
- * - Hold referance back to its contining Record
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
+ * - Provide access to relevent value based on parent record state of its PrimaryKey.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
+ * - {@link \ramp\model\business\Record Record}
  */
 class Primary extends RecordComponent
 {
