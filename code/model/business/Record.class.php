@@ -25,8 +25,8 @@ use ramp\core\iOption;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
-use ramp\model\business\BusinessModel;
-use ramp\model\business\Relatable;
+// use ramp\model\business\BusinessModel;
+// use ramp\model\business\Relatable;
 use ramp\core\PropertyNotSetException;
 
 /**
@@ -91,8 +91,8 @@ abstract class Record extends Relatable
    */
   final protected function get_id() : Str
   {
-    $primaryKeyValue = ($this->isNew || $this->primaryKey->value == NULL) ?
-      Str::set('new') : Str::set((string)$this->primaryKey->value);
+    $primaryKeyValue = ($this->isNew || $this->primaryKey->values == NULL) ? Str::set('new') :
+      Str::set((string)$this->primaryKey->values->implode(Str::BAR())->replace(Str::SPACE(),Str::PLUS()));
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
     )->append($primaryKeyValue);
@@ -124,12 +124,12 @@ abstract class Record extends Relatable
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
     }
-    $dataObjectPropertyName = $object->dataObjectPropertyName;
+    $parentPropertyName = $object->parentPropertyName;
     if ($object instanceof \ramp\model\business\field\Relation) {
-      $dataObjectPropertyName = $dataObjectPropertyName->prepend(Str::FK());
+      $parentPropertyName = $parentPropertyName->prepend(Str::FK());
     }
-    if (!isset($this->dataObject->$dataObjectPropertyName)) {
-      $this->dataObject->$dataObjectPropertyName = NULL;
+    if (!isset($this->dataObject->$parentPropertyName)) {
+      $this->dataObject->$parentPropertyName = NULL;
     }
     parent::offsetSet($offset, $object);
   }

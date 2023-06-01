@@ -46,12 +46,12 @@ abstract class SelectFrom extends Field
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, OptionList $options)
+  public function __construct(Str $parentPropertyName, Record $containingRecord, OptionList $options)
   {
     if ($options != null) {
       if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
@@ -60,7 +60,7 @@ abstract class SelectFrom extends Field
       foreach ($options as $option) { $option->setParentField($this); }
     }
     $this->options = $options;
-    parent::__construct($dataObjectPropertyName ,$containingRecord);
+    parent::__construct($parentPropertyName ,$containingRecord);
   }
 
   /**

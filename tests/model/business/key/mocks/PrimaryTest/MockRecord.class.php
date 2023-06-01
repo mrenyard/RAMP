@@ -29,7 +29,7 @@ use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\key\mocks\PrimaryTest\ConcreteValidationRule;
+use tests\ramp\model\business\mocks\PrimaryTest\ConcreteValidationRule;
 
 /**
  * Collection of MockRecord.

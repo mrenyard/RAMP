@@ -24,9 +24,9 @@ namespace ramp\model\business;
  * Abstract Business Model Relatable.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject}).
  * - Define generalized methods for iteration, validity checking & error reporting.
- * - Define and restrict relational association to objects of this type ({@link \ramp\model\business\Relatable}). 
+ * - Define and restrict relational association to objects of this type ({@link \ramp\model\business\Relatable Relatable}). 
  */
 abstract class Relatable extends BusinessModel
 {

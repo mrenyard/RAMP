@@ -45,29 +45,25 @@ use ramp\model\business\FailedValidationException;
  * - {@link \ramp\model\business\Record Record}
  * 
  * @property bool $isEditable Flag for setting or getting access to modify Field value.
- * @property-read \ramp\core\Str $dataObjectPropertyName Related dataObject property name of parent record.
  */
 abstract class Field extends RecordComponent
 {
-  private $dataObjectPropertyName;
-  private $editable;
-
   protected $errorCollection;
+  private $editable;
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of parent record.
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @param bool $editable 
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $dataObjectPropertyName, Record $parentRecord, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL, bool $editable = NULL)
   {
     $this->errorCollection = StrCollection::set();
-    $this->dataObjectPropertyName = $dataObjectPropertyName;
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($parentRecord, $children);
+    parent::__construct($parentPropertyName, $parentRecord, $children);
   }
 
   /**
@@ -80,7 +76,7 @@ abstract class Field extends RecordComponent
     return Str::COLON()->prepend(
       $this->parentRecord->id
     )->append(
-      Str::hyphenate($this->dataObjectPropertyName)
+      Str::hyphenate($this->parentPropertyName)
     );
   }
 
@@ -91,7 +87,7 @@ abstract class Field extends RecordComponent
    */
   protected function get_label() : Str
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->dataObjectPropertyName)))));
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->parentPropertyName)))));
   }
 
   /**
@@ -103,7 +99,7 @@ abstract class Field extends RecordComponent
   {
     return (
       $this->parentRecord->isNew || 
-      (!$this->parentRecord->primaryKeyNames()->contains($this->dataObjectPropertyName) && $this->editable !== FALSE)
+      (!$this->parentRecord->primaryKeyNames()->contains($this->parentPropertyName) && $this->editable !== FALSE)
     );
   }
 
@@ -116,16 +112,6 @@ abstract class Field extends RecordComponent
   protected function set_isEditable(bool $value)
   {
     $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
-  }
-
-  /**
-   * Get dataobject property name
-   * **DO NOT CALL DIRECTLY, USE this->dataObjectPropertyName;**
-   * @return \ramp\core\Str Property name for dataobject of *this* containing record
-   */
-  final protected function get_dataObjectPropertyName() : Str
-  {
-    return $this->dataObjectPropertyName;
   }
 
   /**
@@ -147,7 +133,7 @@ abstract class Field extends RecordComponent
           return;
         }
         $this->parentRecord->setPropertyValue(
-          (string)$this->dataObjectPropertyName, $inputdata->value
+          (string)$this->parentPropertyName, $inputdata->value
         );
         return;
       }

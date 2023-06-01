@@ -20,32 +20,37 @@
  */
 namespace ramp\model\business;
 
+use ramp\core\Str;
+
 /**
  * Abstract Business Model Record Component.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  * - Hold reference back to parent Record and restrict polymorphic composite association. 
- * - Define access to relevent value based on parent record state.
  * 
  * COLLABORATORS
  * - {@link \ramp\model\business\Record Record}
  *
- * @property-read \ramp\model\business\Record $parentRecord Return parent Record reference to this component.
+ * @property-read \ramp\core\Str $parentPropertyName Related parent record associated property name.
+ * @property-read \ramp\model\business\Record $parentRecord Related parent Record associated with this component.
  * @property-read mixed $value Relevent value based on parent record state.
  */
 abstract class RecordComponent extends BusinessModel
 {
+  private $parentPropertyName;
   private $parentRecord;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Record $parentRecord, BusinessModel $children = NULL)
+  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL)
   {
+    $this->parentPropertyName = $parentPropertyName;
     $this->parentRecord = $parentRecord;
     parent::__construct($children);
   }
@@ -61,9 +66,19 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
+   * Get dataobject property name
+   * **DO NOT CALL DIRECTLY, USE this->parentPropertyName;**
+   * @return \ramp\core\Str Property name for dataobject of *this* containing record
+   */
+  final protected function get_parentPropertyName() : Str
+  {
+    return $this->parentPropertyName;
+  }
+
+  /**
    * Returns relevent value based on parent record state.
    * **DO NOT CALL DIRECTLY, USE this->value;**
    * @return mixed Relevent value based on parent record state
-   */
-  abstract protected function get_value();
+   *
+  abstract protected function get_value();*/
 }

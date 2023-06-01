@@ -50,6 +50,7 @@ require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
@@ -270,7 +271,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($newRecord->isValid);
     $this->assertFalse($newRecord->isModified);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->primaryKey);
-    $this->assertNull($newRecord->primaryKey->value);
+    $this->assertNull($newRecord->primaryKey->values);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->propertyA);
     $this->assertNull($newRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->propertyB);
@@ -306,7 +307,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($newRecord->isModified);
     $this->assertFalse($newRecord->isNew);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->primaryKey);
-    $this->assertSame('value1|value+2|value3', $newRecord->primaryKey->value);
+    $this->assertSame('value1|value+2|value3', (string)$newRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->propertyA);
     $this->assertSame('value1', $newRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $newRecord->propertyB);
@@ -370,9 +371,9 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($storedRecord->isValid);
     $this->assertFalse($storedRecord->isModified);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->primaryKey);
-    $this->assertSame((string)$recordKey, $storedRecord->primaryKey->value);
+    $this->assertSame((string)$recordKey, (string)$storedRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->property);
-    $this->assertSame((string)$recordKey, $storedRecord->property->value);
+    $this->assertSame((string)$recordKey, (string)$storedRecord->property->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->propertyA);
     $this->assertSame('valueA', $storedRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->propertyB);
@@ -456,7 +457,7 @@ class SQLBusinessModelManagerTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($storedRecord->isValid);
     $this->assertFalse($storedRecord->isModified);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->primaryKey);
-    $this->assertSame('a|b|c', $storedRecord->primaryKey->value);
+    $this->assertSame('a|b|c', (string)$storedRecord->primaryKey->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->propertyA);
     $this->assertSame('a', $storedRecord->propertyA->value);
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $storedRecord->propertyB);

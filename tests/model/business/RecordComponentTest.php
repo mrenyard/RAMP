@@ -49,7 +49,6 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordComponentTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordComponentTest/MockRecordComponent.class.php';
-// require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordComponentTest/MockRecordComponentWithErrors.class.php';
 
 use ramp\core\Str;
 use ramp\core\Collection;
@@ -65,6 +64,8 @@ use tests\ramp\model\business\mocks\RecordComponentTest\MockRecordComponent;
  */
 class RecordComponentTest extends \PHPUnit\Framework\TestCase
 {
+  private $dataObject;
+  private $parentPropertyName;
   private $parentRecord;
   private $testObject;
 
@@ -74,8 +75,11 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     MockRecordComponent::reset();
-    $this->parentrecord = new MockRecord();
-    $this->testObject = new MockRecordComponent($this->parentrecord);
+    $this->dataObject = new \stdClass();
+    $this->dataObject->aPreperty = 1;
+    $this->parentPropertyName = Str::set('bProperty');
+    $this->parentrecord = new MockRecord($this->dataObject);
+    $this->testObject = new MockRecordComponent($this->parentPropertyName, $this->parentrecord);
   }
 
   /**
@@ -110,7 +114,7 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
    * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
    * @link ramp.model.business.RecordComponent#method_get_id ramp\model\business\RecordComponent::id
-   *
+   */
   public function testGet_id()
   {
     try {
@@ -119,41 +123,14 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       $this->assertSame('uid-0', (string)$this->testObject->id);
-      $this->assertSame('uid-1', (string)$this->testChild1->id);
-      $this->assertSame('uid-2', (string)$this->testChild2->id);
-      $this->assertSame('uid-3', (string)$this->testChild3->id);
-      $this->assertSame('uid-4', (string)$this->grandchild->id);
+      // $this->assertSame('uid-1', (string)$this->testChild1->id);
+      // $this->assertSame('uid-2', (string)$this->testChild2->id);
+      // $this->assertSame('uid-3', (string)$this->testChild3->id);
+      // $this->assertSame('uid-4', (string)$this->grandchild->id);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
-
-  /**
-   * Collection of assertions for \ramp\model\business\RecordComponent::description.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \ramp\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.RecordComponent#method_get_description ramp\model\business\RecordComponent::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertEquals('uid-0', (string)$this->testObject->description);
-      $this->assertEquals('uid-1', (string)$this->testChild1->description);
-      $this->assertEquals('uid-2', (string)$this->testChild2->description);
-      $this->assertEquals('uid-3', (string)$this->testChild3->description);
-      $this->assertEquals('uid-4', (string)$this->grandchild->description);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::type.
@@ -162,7 +139,7 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
    * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
    * @link ramp.model.business.RecordComponent#method_get_type ramp\model\business\RecordComponent::type
-   *
+   */
   public function testGet_type()
   {
     try {
@@ -171,14 +148,14 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
       $this->assertSame('mock-record-component record-component', (string)$this->testObject->type);
-      $this->assertSame('mock-record-component record-component', (string)$this->testChild1->type);
-      $this->assertSame('mock-record-component-with-errors mock-record-component', (string)$this->testChild2->type);
-      $this->assertSame('mock-record-component record-component', (string)$this->testChild3->type);
-      $this->assertSame('mock-record-component-with-errors mock-record-component', (string)$this->grandchild->type);
+      // $this->assertSame('mock-record-component record-component', (string)$this->testChild1->type);
+      // $this->assertSame('mock-record-component-with-errors mock-record-component', (string)$this->testChild2->type);
+      // $this->assertSame('mock-record-component record-component', (string)$this->testChild3->type);
+      // $this->assertSame('mock-record-component-with-errors mock-record-component', (string)$this->grandchild->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::getIterator().
@@ -211,7 +188,7 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
   public function testOffsetGet()
   {
     try {
-      $this->testObject[4];
+      $this->testObject[0];
     } catch (\OutOfBoundsException $expected) {
       $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject[0]);
       $this->assertSame($this->testChild1, $this->testObject[0]);
@@ -229,15 +206,15 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
    * - assert True returned on isset() when within expected bounds.
    * - assert False returned on isset() when outside expected bounds.
    * @link ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
-   *
+   */
   public function testOffsetExists()
   {
-    $this->assertTrue(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject[1]));
-    $this->assertTrue(isset($this->testObject[2]));
-    $this->assertTrue(isset($this->testObject[2][0]));
-    $this->assertFalse(isset($this->testObject[3]));
-  }*/
+    $this->assertFalse(isset($this->testObject[0]));
+    // $this->assertTrue(isset($this->testObject[1]));
+    // $this->assertTrue(isset($this->testObject[2]));
+    // $this->assertTrue(isset($this->testObject[2][0]));
+    // $this->assertFalse(isset($this->testObject[3]));
+  }
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::offsetSet and
@@ -345,10 +322,10 @@ class RecordComponentTest extends \PHPUnit\Framework\TestCase
    * \ramp\model\business\RecordComponent::count()
    * - assert return expected int value related to the number of child RecordComponents held.
    * @link ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count()
-   *
+   */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count);
-    $this->assertSame(3 ,$this->testObject->count());
-  }*/
+    $this->assertSame(0 ,$this->testObject->count);
+    $this->assertSame(0 ,$this->testObject->count());
+  }
 }

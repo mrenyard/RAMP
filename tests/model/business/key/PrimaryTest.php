@@ -53,6 +53,7 @@ require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
@@ -118,7 +119,8 @@ class PrimaryTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
-    // $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\key\Primary', $this->testObject);
   }
 
@@ -156,24 +158,87 @@ class PrimaryTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for \ramp\model\business\field\Primary::indexes.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'indexes'
+   * - assert property 'indexes' is gettable.
+   * - assert returned equal to provided records primaryKeyNames() method.
+   * - assert returned value matches expected result.
+   * @link ramp.model.business.field.Primary#method_get_indexes ramp\model\business\field\Primary::indexes
+   */
+  public function testGet_indexes()
+  {
+    try {
+      $this->testObject->indexes = StrCollection::set('INDEX1', 'INDEX2');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->indexes is NOT settable', $expected->getMessage());
+
+      $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->indexes);
+      $this->assertSame((string)$this->mockRecord->primaryKeyNames(), (string)$this->testObject->indexes);
+
+      $properties = ['aProperty', 'bProperty', 'cProperty'];
+      $i =0;
+      foreach ($this->testObject->indexes as $index) {
+        $this->assertInstanceOf('\ramp\core\Str', $index);
+        $this->assertEquals(Str::set($properties[$i++]), $index);
+      }
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\field\Primary::values.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'values'
+   * - assert property 'values' is gettable.
+   * - assert return same as relevant Parent records getPropertyValue() method.
+   * - assert returned values matches expected results.
+   * @link ramp.model.business.field.Primary#method_get_value ramp\model\business\field\Primary::value
+   */
+  public function testGet_values()
+  {
+    try {
+      $this->testObject->values = StrCollection::set('C', 'D', 'E');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->values is NOT settable', $expected->getMessage());
+      $data = ['A', 'B', 'C D'];
+      $this->dataObject->aProperty = $data[0];
+      $this->assertNull($this->testObject->values);
+      $this->dataObject->bProperty = $data[1];
+      $this->assertNull($this->testObject->values);
+      $this->dataObject->cProperty = $data[2];
+      $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->values);
+      $i = 0;
+      foreach ($this->testObject->values as $value) {
+        $this->assertInstanceOf('\ramp\core\Str', $value);
+        $this->assertEquals(Str::set($data[$i++])->replace(Str::SPACE(), Str::PLUS()), $value);
+      }
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }
+
+  /**
    * Collection of assertions for \ramp\model\business\field\Primary::value.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'value'
    * - assert property 'value' is gettable.
-   * - assert returned same as provided records getPropertyValue() method.
-   * - assert returned value matches expected result.
+   * - assert return bar seperated concatenated relevant Parent record getPropertyValue() methods.
+   * - assert returned value matches expected results.
    * @link ramp.model.business.field.Primary#method_get_value ramp\model\business\field\Primary::value
    */
   public function testGet_value()
   {
     try {
-      $this->testObject->value = 'VALUE';
+      $this->testObject->value = Str::set('C');
     } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->value is NOT settable', $expected->getMessage());
+
       $this->dataObject->aProperty = 'A';
       $this->assertNull($this->testObject->value);
       $this->dataObject->bProperty = 'B';
       $this->assertNull($this->testObject->value);
-      $this->dataObject->cProperty = 'C';
-      $this->assertSame('A|B|C', $this->testObject->value);
+      $this->dataObject->cProperty = 'C D';
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->value);
+      $this->assertSame('A|B|C+D', (string)$this->testObject->value);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -194,8 +259,7 @@ class PrimaryTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      // $this->assertEquals('primary key', (string)$this->testObject->type);
-      $this->assertEquals('primary record-component', (string)$this->testObject->type);
+      $this->assertEquals('primary key', (string)$this->testObject->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');

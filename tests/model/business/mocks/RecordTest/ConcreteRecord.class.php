@@ -26,10 +26,10 @@ use ramp\core\OptionList;
 use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\model\business\Record;
+use ramp\model\business\Relation;
 use ramp\model\business\field\Input;
 use ramp\model\business\field\SelectOne;
 use ramp\model\business\field\SelectMany;
-use ramp\model\business\field\Relation;
 use ramp\model\business\validation\dbtype\VarChar;
 
 class ConcreteRecord extends Record
@@ -79,6 +79,7 @@ class ConcreteRecord extends Record
     return $this[2];
   }
 
+  /*
   public function get_alphRelation()
   {
     if (!isset($this[3])) {
@@ -89,7 +90,7 @@ class ConcreteRecord extends Record
       );
     }
     return $this[3];
-  }
+  }*/
 
   protected static function checkRequired($dataObject) : bool
   {

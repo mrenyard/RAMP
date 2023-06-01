@@ -21,66 +21,40 @@
  */
 namespace tests\ramp\model\business\key\mocks\KeyTest;
 
-// use ramp\core\RAMPObject;
 use ramp\core\Str;
-// use ramp\core\iCollection;
-// use ramp\core\Collection;
-// use ramp\condition\PostData;
+use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\key\Key;
 
-/**
- * Mock Concreate implementation of \ramp\model\business\key\Key for testing against.
- */
 class MockKey extends Key
 {
-  private static $idCount;
-  private $id;
-
-  // public $label;
-  // public $validateCount;
-  // public $hasErrorsCount;
-  // public $isValidCount;
-
-  public static function reset()
-  {
-    self::$idCount = 0;
-  }
-
-  public function __construct(Record $parentRecord, BusinessModel $children = null)
-  {
-    parent::__construct($parentRecord, $children);
-    $this->id = Str::set('uid-' . self::$idCount++);
-  //   $this->label = $label;
-  //   $this->validateCount = 0;
-  //   $this->hasErrorsCount = 0;
-  //   $this->isValidCount = 0;
-  }
+  private static $propertyName;
 
   /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Str('uid-1')
+   * Creates a multiple part primary key field related to a collection of property of parent record.
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
    */
-  public function get_id() : Str
+  public function __construct(Record $parentRecord)
   {
-    return $this->id;
+    if (!isset(self::$propertyName)) { self::$propertyName = Str::set('MockKey'); }
+    parent::__construct(self::$propertyName, $parentRecord);
   }
 
   /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   *
-  public function validate(PostData $postdata)
+   * Returns indexes for key.
+   * @return \ramp\core\StrCollection Indexes related to data fields for this key.
+   */
+  final protected function get_indexes() : StrCollection
   {
-    $this->validateCount++;
-    parent::validate($postdata);
-  }*/
+    // STUB
+  }
 
-  /*
-  public function get_hasErrors() : bool
+  /**
+   * Returns primarykey values held by relevant properties of parent record.
+   * @return \ramp\core\StrCollection Values held by relevant property of parent record
+   */
+  final protected function get_values() : ?StrCollection
   {
-    $this->hasErrorsCount++;
-    return parent::get_hasErrors();
-  }*/
+    // STUB
+  }
 }

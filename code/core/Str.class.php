@@ -64,9 +64,9 @@ final class Str extends RAMPObject
   private static $NEW;
 
   /**
-   * Singleton reference to {@link Str} with value 'KEY'.
-   *
-  private static $KEY;*/
+   * Singleton reference to {@link Str} with value '+'.
+   */
+  private static $PLUS;
 
   /**
    * Singleton reference to {@link Str} with value 'FK'.
@@ -116,9 +116,9 @@ final class Str extends RAMPObject
       case 'new':
         $s = self::NEW();
         break;
-      // case 'KEY':
-      //   $s = self::KEY();
-      //   break;
+      case '+':
+        $s = self::PLUS();
+        break;
       case 'FK_':
         $s = self::FK();
         break;
@@ -201,16 +201,16 @@ final class Str extends RAMPObject
   }
 
   /**
-   * Returns NEW Str ('KEY')
-   * @return \ramp\core\Str Str object composed KEY ('KEY')
-   *
-  public static function KEY() : Str
+   * Returns NEW Str ('+')
+   * @return \ramp\core\Str Str object composed PLUS ('+')
+   */
+  public static function PLUS() : Str
   {
-    if (!isset(self::$KEY)) {
-      self::$KEY = new Str('KEY');
+    if (!isset(self::$PLUS)) {
+      self::$PLUS = new Str('+');
     }
-    return self::$KEY;
-  }*/
+    return self::$PLUS;
+  }
 
   /**
    * Returns NEW Str ('FK_')
@@ -259,7 +259,6 @@ final class Str extends RAMPObject
     $rtn =  Str::set(substr_replace((string)$this, '', strrpos((string)$this, (string)$value),));
     return ((string)$rtn == (string)$this)? $this : $rtn;
   }
-
 
   /**
    * Returns a new Str 'this' with provided removed from start.

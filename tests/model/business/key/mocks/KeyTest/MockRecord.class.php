@@ -25,10 +25,11 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
+use ramp\model\business\field\Field;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
-use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
+use tests\ramp\model\business\key\mocks\KeyTest\ConcreteValidationRule;
 
 /**
  * Collection of MockRecord.
@@ -42,14 +43,30 @@ class MockRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('aProperty','bProperty');
+    return StrCollection::set('aProperty','bProperty','cProperty');
   }
 
-  protected function get_aProperty()
+  protected function get_aProperty() : Field
+  {
+    if (!isset($this[0])) {
+      $this[0] = new Input(
+        Str::set('aProperty'),
+        $this,
+        new VarChar(
+          10,
+          new ConcreteValidationRule(),
+          Str::set('$value does NOT evaluate to KEY')
+        )
+      );
+    }
+    return $this[0];
+  }
+
+  protected function get_bProperty() : Field
   {
     if (!isset($this[1])) {
       $this[1] = new Input(
-        Str::set('aProperty'),
+        Str::set('bProperty'),
         $this,
         new VarChar(
           10,
@@ -61,11 +78,11 @@ class MockRecord extends Record
     return $this[1];
   }
 
-  protected function get_bProperty()
+  protected function get_cProperty() : Field
   {
     if (!isset($this[2])) {
       $this[2] = new Input(
-        Str::set('bProperty'),
+        Str::set('cProperty'),
         $this,
         new VarChar(
           10,
@@ -76,25 +93,13 @@ class MockRecord extends Record
     }
     return $this[2];
   }
-
-  protected function get_cProperty()
-  {
-    if (!isset($this[3])) {
-      $this[3] = new Input(
-        Str::set('cProperty'),
-        $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate to KEY')
-        )
-      );
-    }
-    return $this[3];
-  }
   
   protected static function checkRequired($dataObject) : bool
   {
-    return TRUE;
+    return (
+      isset($dataObject->aProperty) &&
+      isset($dataObject->bProperty) &&
+      isset($dataObject->cProperty)
+    );
   }
 }

@@ -24,7 +24,7 @@ namespace tests\ramp\model\business\field\mocks\RelationTest;
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
-use ramp\model\business\field\Relation;
+use ramp\model\business\Relation;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.

@@ -25,13 +25,11 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\Filter;
 use ramp\condition\PostData;
-use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
+use ramp\model\business\DataFetchException;
+use ramp\model\business\FailedValidationException;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
-use ramp\model\business\FailedValidationException;
-use ramp\model\business\DataFetchException;
-use ramp\model\business\RecordComponent;
 
 /**
  * MultiPartPrimary field related to a single property of its containing \ramp\model\business\Record.
@@ -40,63 +38,58 @@ use ramp\model\business\RecordComponent;
  * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
  * - Implement property specific methods for iteration, validity checking & error reporting
  * - Hold reference back to parent Record and restrict polymorphic composite association. 
- * - Provide access to relevent value based on parent record state of its PrimaryKey.
+ * - Provide access to compound key indexes and values based on parent record state.
  *
  * COLLABORATORS
  * - {@link \ramp\model\business\Record Record}
  */
-class Primary extends RecordComponent
+class Primary extends Key
 {
+  private static $propertyName;
   private $errorCollection;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
    */
   public function __construct(Record $parentRecord)
   {
+    if (!isset(self::$propertyName)) { self::$propertyName = Str::set('PrimaryKey'); }
     $this->errorCollection = StrCollection::set();
-    parent::__construct($parentRecord);
+    parent::__construct(self::$propertyName, $parentRecord);
   }
 
   /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
+   * Returns indexes for key.
+   * @return \ramp\core\StrCollection Indexes related to data fields for this key.
    */
-  protected function get_id() : Str
+  final protected function get_indexes() : StrCollection
   {
-    return Str::COLON()->prepend(
-      $this->parentRecord->id
-    )->append(
-      Str::set('primary-key')
-    );
+    return $this->parentRecord->primaryKeyNames();
   }
 
   /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   * Returns primarykey values held by relevant properties of parent record.
+   * @return \ramp\core\StrCollection Values held by relevant property of parent record
    */
-  public function offsetSet($offset, $object)
+  final protected function get_values() : ?StrCollection
   {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
-  }
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final protected function get_value()
-  {
-    $value = Str::_EMPTY();
+    $value = StrCollection::set();
     foreach ($this->parentRecord->primaryKeyNames() as $propertyName) {
       $partValue = $this->parentRecord->getPropertyValue((string)$propertyName);
       if (!isset($partValue) || $partValue == '') { return NULL; }
-      $value = $value->append(Str::set($partValue))->append(Str::BAR());
+      $value->add(Str::set($partValue)->replace(Str::SPACE(), Str::PLUS()));
     }
-    return (string)$value->trimEnd(Str::BAR())->replace(Str::SPACE(), Str::set('+'));
+    return $value;
+  }
+
+  /**
+   * Returns primarykey bar seperated concatenated values held by relevant properties of parent record.
+   * @return \ramp\core\StrCollection Value Bar seperated concatenated key values.
+   */
+  final protected function get_value() : ?Str
+  {
+    return ($this->values === NULL) ? NULL : $this->values->implode(Str::BAR())->replace(Str::SPACE(), Str::PLUS());
   }
 
   /**
@@ -161,5 +154,16 @@ class Primary extends RecordComponent
       return;
     }
     throw new FailedValidationException('An entry already exists for this record!');
+  }
+  
+  /**
+   * ArrayAccess method offsetSet, DO NOT USE.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object RAMPObject to be placed at provided index.
+   * @throws \BadMethodCallException Array access unsetting is not allowed.
+   */
+  public function offsetSet($offset, $object)
+  {
+    throw new \BadMethodCallException('Array access setting is not allowed.');
   }
 }

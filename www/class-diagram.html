@@ -1,0 +1,190 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en-GB"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-GB"> <!--<![endif]-->
+  <head>
+    <style>
+body { background-color: rgb(100,100,100); }
+header[role="banner"] > h1 { width: 100%; text-align: center; }
+#main {
+  position: fixed; top: 2rem; right: 2rem; bottom: 2rem; left: 2rem;
+  margin: 2rem;
+  background-color: rgb(200,200,200);
+}
+
+#class1 { top: 5rem; left: 5rem; }
+#class2 { top: 5rem; left: 25rem; }
+#class3 { top: 5rem; left: 35rem; }
+#class4 { top: 8rem; left: 25rem; }
+#class5 { top: 11rem; left: 25rem; }
+#class6 { top: 14rem; left: 25rem; }
+#class1-class3 { top: 9.25rem; left: 18.4rem; width: 6.75rem; }
+#class4-class5 { top: 11.25rem; left: 39.5rem; }
+
+.class {
+  position: absolute;
+  min-height: 2.5rem; min-width: 8rem;
+  background-color: burlywood;
+  border: solid rgb(165, 42, 42) .125rem;
+  border-radius: .25rem;
+  box-shadow: .25rem .25rem .5rem rgba(0,0,0,.5);
+}
+.class > header,
+.class > .properties,
+.class > .methods {
+  padding: .25rem .25rem 0 .25rem;
+  margin-bottom: -.75rem;
+} .class > header {
+  padding-top: .25rem;
+  font-size: 1.25rem;
+  text-align: center;
+} .class > header:only-child {
+  padding: .5rem;
+}.class > ul {
+  list-style: none;
+  border-top: solid .05rem rgb(165, 42, 42);
+  padding-bottom: 0;
+} .class > ul:last-of-type {
+  margin-bottom: .25rem;
+}
+
+.class.abstract::before {
+  display: block;
+  content: "\00AB abstract\00BB";
+  text-align: center;
+  margin-bottom: -.125rem;
+  font-size: .8rem;
+  color: rgb(165, 42, 42);
+  background-color: rgb(255,255,255);
+  border-radius: .25rem .25rem 0 0;
+}
+
+.association {
+  position: absolute;
+} .association.composite {
+  min-width: 3rem; height: 0;
+  border-top: solid rgb(165, 42, 42) .125rem;
+} .association.inheritance {
+  width: 0; min-height: 3rem;
+  border-left: solid rgb(165, 42, 42) .125rem;
+}
+.composite::before {
+  content: ""; display: block;
+  position: absolute; top: -.45rem; left: 0;
+  background-color: rgb(165, 42, 42);
+  width: .75rem; height: .75rem;
+  transform: rotate(45deg);
+}
+.inheritance::before {
+  content: ""; display: block;
+  position: absolute; top: 0; left: -.45rem;
+  background-color: transparent;
+  width: 0; height: 0;
+  border-top: solid rgb(165, 42, 42) .4rem;
+  border-right: solid transparent .4rem;
+  border-bottom: solid transparent .4rem;
+  border-left: solid rgb(165, 42, 42) .4rem;
+  transform: rotate(45deg);
+}
+
+article.class:nth-of-type(n+1) { top: 2rem; left: 2rem; }
+article.class:nth-of-type(n+2) { top: 2rem; left: 15rem; }
+article.class:nth-of-type(n+3) { top: 2rem; left: 28rem; }
+article.class:nth-of-type(n+4) { top: 2rem; left: 41rem; }
+article.class:nth-of-type(n+5) { top: 2rem; left: 54rem; }
+article.class:nth-of-type(n+6) { top: 2rem; left: 67rem; }
+
+    </style>
+  </head>
+  <body id="[site-domain]" class="[this-page-type]">
+    <header role="banner">
+      <h1>Experimental Class Diagram</h1>
+    </header>
+    <div id="main" role="main" class="canvass">
+      <!--article id="class1" class="class">
+        <header contenteditable="true">Record</header>
+        <ul class="properties" contenteditable="true">
+          <li>Str: Name</li>
+          <li>Bool: isModified</li>
+          <li>StrCollection: Errors</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>validate(PostData: $data) : void</li>
+        </ul>
+      </article-->
+      <!--article id="class2" class="class">
+        <header contenteditable="true">Contact</header>
+      </article>
+      <article id="class4" class="class">
+        <header contenteditable="true">Person</header>
+      </article>
+      <article id="class5" class="class">
+        <header contenteditable="true">Organisation</header>
+      </article>
+      <article id="class3" class="class">
+        <header contenteditable="true">Address</header>
+        <ul class="properties" contenteditable="true">
+          <li>Str: Name</li>
+          <li>Bool: isModified</li>
+          <li>StrCollection: Errors</li>
+        </ul>
+      </article>
+      <article id="class1-class3" class="association composite"></article>
+      <article id="class4-class5" class="association inheritance"></article-->
+      <article id="class-a" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true"><li>...</li></ul>
+        <ul class="methods" contenteditable="true"><li>..()</li></ul>
+      </article>  
+      <article id="class-b" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+      </article>  
+      <article id="class-c" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+      </article>  
+      <article id="class-d" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+      </article>  
+      <article id="class-e" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+      </article>
+      <article id="class-f" class="class abstract">
+        <header contenteditable="true"></header>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+      </article>
+    </div>
+    <footer role="contentinfo">
+<!-- include footer -->
+    </footer>
+  </body>
+</html>

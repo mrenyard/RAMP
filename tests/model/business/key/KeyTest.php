@@ -21,6 +21,7 @@
  */
 namespace tests\ramp\model\business\key;
 
+require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
@@ -28,78 +29,110 @@ require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/KeyTest/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/key/mocks/KeyTest/ConcreteValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/key/mocks/KeyTest/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/key/mocks/KeyTest/MockKey.class.php';
 
-use tests\ramp\model\business\key\mocks\KeyTest\MockKey;
+use ramp\core\Str;
+use ramp\core\StrCollection;
+use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
+use ramp\model\business\Primary;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\dbtype\VarChar;
+
+use tests\ramp\model\business\key\mocks\KeyTest\MockBusinessModelManager;
 use tests\ramp\model\business\key\mocks\KeyTest\MockRecord;
+use tests\ramp\model\business\key\mocks\KeyTest\MockKey;
 
 /**
  * Collection of tests for \ramp\model\business\key\Key.
  */
 class KeyTest extends \PHPUnit\Framework\TestCase
 {
-  private $parentRecord;
   private $testObject;
+  private $mockRecord;
+  private $dataObject;
+  private $erroMessage;
+  private $propertNames;
 
   /**
    * Setup - add variables
    */
-  public function setUp() : void
+  public function setUp() : void 
   {
-    MockKey::reset();
-    $this->parentrecord = new MockRecord();
-    $this->testObject = new MockKey($this->parentrecord);
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\key\mocks\KeyTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\model\business\key\mocks\KeyTest\MockBusinessModelManager';
+    $this->dataObject = new \stdClass();
+    $this->mockRecord = new MockRecord($this->dataObject);
+    $this->testObject = new MockKey($this->mockRecord);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::__construct().
+   * Collection of assertions for \ramp\model\business\key\Key::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
-   * - assert is instance of {@link \ramp\model\business\RecordComponent}
-   * - assert is instance of {@link \ramp\model\business\Key}
-   * - assert is instance of {@link \ramp\core\iOption}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * @link ramp.model.business.Key ramp\model\business\Key
+   * - assert is instance of {@link \ramp\model\field\Field}
+   * - assert is instance of {@link \ramp\model\key\Key}
+   * @link ramp.model.business.key.Key ramp\model\business\key\Key
    */
-  public function test__construction()
+  public function test__construct()
   {
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\core\iList', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::id.
+   * Collection of assertions for \ramp\model\business\key\Key::id.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * - assert property 'id' is gettable.
    * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.Key#method_get_id ramp\model\business\Key::id
-   *
+   * @link ramp.model.business.key.Key#method_get_id ramp\model\business\key\Key::id
+   */
   public function testGet_id()
   {
     try {
@@ -107,51 +140,32 @@ class KeyTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-      $this->assertSame('uid-0', (string)$this->testObject->id);
-      $this->assertSame('uid-1', (string)$this->testChild1->id);
-      $this->assertSame('uid-2', (string)$this->testChild2->id);
-      $this->assertSame('uid-3', (string)$this->testChild3->id);
-      $this->assertSame('uid-4', (string)$this->grandchild->id);
+      $this->assertSame('mock-record:new:mock-key', (string)$this->testObject->id);
+
+      $this->assertNull($this->mockRecord->validate(PostData::build(array(
+        'mock-record:new:a-property' => 1,
+        'mock-record:new:b-property' => 2,
+        'mock-record:new:c-property' => 3,
+      ))));
+      $this->assertTrue($this->mockRecord->isValid);
+      $this->assertTrue($this->mockRecord->isModified);
+      $this->assertSame('mock-record:new:mock-key', (string)$this->testObject->id);
+      $this->mockRecord->updated();
+      $this->assertSame('mock-record:1|2|3:mock-key', (string)$this->testObject->id);      
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::description.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'description'
-   * - assert property 'description' is gettable.
-   * - assert returned value instance of {@link \ramp\core\Str}.
-   * - assert returned same as 'id'.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.Key#method_get_description ramp\model\business\Key::description
-   *
-  public function testGet_description()
-  {
-    try {
-      $this->testObject->description = "DESCRIPTION";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->description is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->description);
-      $this->assertEquals($this->testObject->id, $this->testObject->description);
-      $this->assertEquals('uid-0', (string)$this->testObject->description);
-      $this->assertEquals('uid-1', (string)$this->testChild1->description);
-      $this->assertEquals('uid-2', (string)$this->testChild2->description);
-      $this->assertEquals('uid-3', (string)$this->testChild3->description);
-      $this->assertEquals('uid-4', (string)$this->grandchild->description);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
-
-  /**
-   * Collection of assertions for \ramp\model\business\Key::type.
+   * Collection of assertions for \ramp\model\business\key\Key::type.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * - assert property 'type' is gettable.
    * - assert returned value is of type {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.Key#method_get_type ramp\model\business\Key::type
-   *
+   * @link ramp.model.business.key.Key#method_get_type ramp\model\business\key\Key::type
+   */
   public function testGet_type()
   {
     try {
@@ -159,185 +173,69 @@ class KeyTest extends \PHPUnit\Framework\TestCase
     } catch (PropertyNotSetException $expected) {
       $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertSame('mock-key key', (string)$this->testObject->type);
-      $this->assertSame('mock-key key', (string)$this->testChild1->type);
-      $this->assertSame('mock-key-with-errors mock-key', (string)$this->testChild2->type);
-      $this->assertSame('mock-key key', (string)$this->testChild3->type);
-      $this->assertSame('mock-key-with-errors mock-key', (string)$this->grandchild->type);
+      $this->assertEquals('mock-key key', (string)$this->testObject->type);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::getIterator().
+   * Collection of assertions for \ramp\model\business\key\Key::getIterator().
    * - assert returns object that is an instance of {@link \Traversable}
-   * - assert foreach loop, iterates through each expected object.
-   * - assert foreach returned object matches expected.
-   * @link ramp.model.business.Key#method_getIterator ramp\model\business\Key::getIterator()
-   *
+   * - assert foreach loop, iterates through NO objects, as there are NO children.
+   * @link ramp.model.business.key.Key#method_getIterator ramp\model\business\key\Key::getIterator()
+   */
   public function testGetIterator()
   {
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-    $i = 1;
-    $iterator = $this->children->getIterator();
-    $iterator->rewind();
+    $i = 0;
     foreach ($this->testObject as $child) {
-      $this->assertSame($child, $iterator->current());
-      $this->assertSame('uid-' . $i++, (string)$child->id);
-      $iterator->next();
+      $i++;
     }
-    $this->assertSame(3, $this->testObject->count);
-    $this->assertSame('uid-0', (string)$this->testObject->id);
-  }*/
+    $this->assertSame(0, $i);
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::offsetGet.
-   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * - assert expected object returned at its expected index.
-   * @link ramp.model.business.Key#method_offsetGet ramp\model\business\Key::offsetGet()
-   *
+   * Collection of assertions for \ramp\model\business\key\Key::offsetGet.
+   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds as NO children
+   * @link ramp.model.business.key.Key#method_offsetGet ramp\model\business\key\Key::offsetGet()
+   */
   public function testOffsetGet()
   {
-    try {
-      $this->testObject[4];
-    } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject[0]);
-      $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject[1]);
-      $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject[2]);
-      $this->assertSame($this->testChild3, $this->testObject[2]);
-      return;
-    }
-    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
-  }*/
+    $this->expectException(\OutOfBoundsException::class);
+    $this->testObject[0];
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::offsetExists.
-   * - assert True returned on isset() when within expected bounds.
-   * - assert False returned on isset() when outside expected bounds.
-   * @link ramp.model.business.Key#method_offsetExists ramp\model\business\Key::offsetExists()
-   *
+   * Collection of assertions for \ramp\model\business\key\Key::offsetExists.
+   * - assert False returned on isset() NO children outside expected bounds.
+   * @link ramp.model.business.key.Key#method_offsetExists ramp\model\business\key\Key::offsetExists()
+   */
   public function testOffsetExists()
   {
-    $this->assertTrue(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject[1]));
-    $this->assertTrue(isset($this->testObject[2]));
-    $this->assertTrue(isset($this->testObject[2][0]));
-    $this->assertFalse(isset($this->testObject[3]));
-  }*/
+    $this->assertFalse(isset($this->testObject[0]));
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::offsetSet and
-   * for \ramp\model\business\Key::offsetUnset.
-   * - assert successful use of offsetSet
-   * - assert returned object is the same object at same index (offset) as was set.
-   * - asser successful use of offsetUnset
-   * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.Key#method_offsetSet ramp\model\business\Key::offsetSet()
-   * @link ramp.model.business.Key#method_offsetUnset ramp\model\business\Key::offsetUnset()
-   *
-  public function testOffsetSetOffsetUnset()
-  {
-    try {
-      $this->testObject[3] = new Option(3, Str::set('No Option'));
-    } catch (\InvalidArgumentException $expected) {
-        $this->assertSame('ramp\model\business\field\Option NOT instanceof tests\ramp\model\business\key\mocks\KeyTest\MockKey', $expected->getMessage());
-
-        $object = new MockKey('Forth child');
-        $this->testObject[3] = $object;
-        $this->assertSame($object, $this->testObject[3]);
-        unset($this->testObject[3]);
-        $this->assertFalse(isset($this->testObject[3]));
-        return;
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
-  }*/
-
-  /**
-   * Collection of assertions for \ramp\model\business\Key::validate().
+   * Collection of assertions for \ramp\model\business\key\Key::validate() where PostData
+   * does NOT contain an PrimaryDataCondition with an attribute that matches the testObject's id.
    * - assert returns void (null) when called.
-   * - assert validate method is propagated through (touched on) testsObject and all of
-   *  its children and grandchildren.
-   * @link ramp.model.business.Key#method_validate ramp\model\business\Key::validate()
-   *
-  public function testValidate()
+   * - assert if provided PostData does NOT contain an PrimaryDataCondition with an attribute that
+   *   matches the testObject's id, then its associated ValidationRule test() method, is NOT called.
+   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
+   */
+  public function testValidateValidationRuleTestNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertSame(1, $this->testObject->validateCount);
-    $this->assertSame(1, $this->testChild1->validateCount);
-    $this->assertSame(1, $this->testChild2->validateCount);
-    $this->assertSame(1, $this->testChild3->validateCount);
-    $this->assertSame(1, $this->grandchild->validateCount);
-  }*/
+  }
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::hasErrors().
-   * - assert returns True when any child/grandchild has recorded errors.
-   * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @link ramp.model.business.Key#method_hasErrors ramp\model\business\Key::hasErrors()
-   *
-  public function testHasErrors()
-  {
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertTrue($this->testObject->hasErrors);
-    $this->assertSame(1, $this->testObject->hasErrorsCount);
-    $this->assertSame(1, $this->testChild1->hasErrorsCount);
-    $this->assertSame(0, $this->testChild2->hasErrorsCount);
-    $this->assertSame(0, $this->testChild3->hasErrorsCount);
-    $this->assertSame(0, $this->grandchild->hasErrorsCount);
-  }*/
-
-  /**
-   * Collection of assertions for \ramp\model\business\Key::getErrors().
-   * - assert following validate(), the expected iCollection of error messages returned from
-   * getErrors() are as expected, depending on which level they are called.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * - assert a single collection containing all errors including children and grandchildren
-   *  of top testObject returned when called on testObject.
-   * - assert a single collection containing relevent sub errors returned when called on sub Keys
-   * @link ramp.model.business.Key#method_getErrors ramp\model\business\Key::getErrors()
-   *
-  public function testGetErrors()
-  {
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertTrue($this->testObject->hasErrors);
-    $errors = $this->testObject->errors;
-    // All errors including children and grandchildren of top testObject returned in a single collection.
-    $this->assertSame('Second child error message', (string)$errors[0]);
-    $this->assertSame('First grandchild error message', (string)$errors[1]);
-
-    $this->assertFalse(isset($errors[6]));
-    // Returns same results on subsequent call, while Keys are in same state.
-    $secondCallOnErrors = $this->testObject->errors;
-    $this->assertEquals($secondCallOnErrors, $errors);
-    $this->assertFalse(isset($secondCallOnErrors[6]));
-    // Calls on sub Keys return expected sub set of Errors.
-    $child2Errors = $this->testChild2->errors;
-    $this->assertSame('Second child error message', (string)$errors[0]);
-    $this->assertSame('First grandchild error message', (string)$errors[1]);
-
-    // Calls on sub Keys return expected sub set of Errors, even on grandchildren.
-    $grandchildErrros = $this->grandchild->errors;
-    $this->assertSame('First grandchild error message', (string)$grandchildErrros[0]);
-    $this->assertFalse(isset($child3Errros[3]));
-
-    // Because testChild3 in the parent of grandchild it returns grandchild errors alone with any of own.
-    $child3Errros = $this->testChild3->errors;
-    $this->assertSame('First grandchild error message', (string)$child3Errros[0]);
-    $this->assertFalse(isset($child3Errros[1]));
-  }*/
-
-   /**
-   * Collection of assertions for \ramp\model\business\Key::count and
-   * \ramp\model\business\Key::count()
-   * - assert return expected int value related to the number of child Keys held.
-   * @link ramp.model.business.Key#method_count ramp\model\business\Key::count()
-   *
+   * Collection of assertions for \ramp\model\business\key\Key::count.
+   * - assert return expected int value related to the number of children (NO children).
+   * @link ramp.model.business.key.Key#method_count ramp\model\business\key\Key::count
+   */
   public function testCount()
   {
-    $this->assertSame(3 ,$this->testObject->count);
-    $this->assertSame(3 ,$this->testObject->count());
-  }*/
+    $this->assertSame(0 ,$this->testObject->count);
+  }
 }

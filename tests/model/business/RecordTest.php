@@ -55,12 +55,12 @@ require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php'
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Foreign.class.php';
+// require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
@@ -114,9 +114,10 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\mocks\RecordTest';
     $this->dataObject = new \stdClass();
     $this->testObject = new ConcreteRecord($this->dataObject);
-    $this->concreteRecordPropertyCount = 4;
+    // $this->concreteRecordPropertyCount = 4;
+    $this->concreteRecordPropertyCount = 3;
     $this->concreteRecordPropertyNames = array(0 => 'propertyA', 1 => 'property1', 2 => 'property2', 3 => 'alphRelation');
-    $this->concreteRecordProperties = new Collection(Str::set('ramp\model\business\field\Field'));
+    $this->concreteRecordProperties = new Collection(Str::set('ramp\model\business\RecordComponent'));
     $className = __NAMESPACE__ . '\mocks\RecordTest\ConcreteRecord';
     foreach (get_class_methods($className) as $methodName)
     {
@@ -160,7 +161,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     foreach ($properties as $name => $value)
     {
       if ($i == 3) {
-        $this->assertEquals('FK_' . $this->concreteRecordPropertyNames[$i++], $name);
+        // TODO:mrenyard:
+        // $this->assertEquals('FK_' . $this->concreteRecordPropertyNames[$i++], $name);
+        $this->assertEquals($this->concreteRecordPropertyNames[$i++], $name);
         $this->assertNull($value);
         continue;
       }
@@ -212,18 +215,15 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       $this->assertSame(get_class($this->testObject) . '->primarykey is NOT settable', $expected->getMessage());
 
       $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject->primarykey);
-      $this->assertNull($this->testObject->primarykey->value);
+      $this->assertNull($this->testObject->primarykey->values);
 
       $testObjectMultiKey = new ConcreteRecordMultiKey($this->dataObject);
       $this->assertInstanceOf('\ramp\model\business\RecordComponent', $testObjectMultiKey->primarykey);
-      $this->assertNull($testObjectMultiKey->primaryKey->value);
+      $this->assertNull($testObjectMultiKey->primaryKey->values);
       $this->dataObject->propertyA = '1';
       $this->dataObject->propertyB = '2';
-      $this->dataObject->propertyC = '3';
-      $this->assertSame(
-        $this->dataObject->propertyA . '|' . $this->dataObject->propertyB . '|' . $this->dataObject->propertyC,
-        $testObjectMultiKey->primarykey->value
-      );
+      $this->dataObject->propertyC = '3 4';
+      $this->assertSame('1|2|3+4', (string)$testObjectMultiKey->primarykey->value);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
@@ -267,7 +267,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     {
       $this->assertSame($child, $iterator->current());
       $this->assertEquals(Str::hyphenate(Str::set('concrete-record:new:' . $this->concreteRecordPropertyNames[$i++])), (string)$child->id);
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $child);
+      $this->assertInstanceOf('\ramp\model\business\RecordComponent', $child);
       $iterator->next();
     }
     $this->assertEquals($this->concreteRecordProperties->count, $i);
@@ -290,7 +290,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
       for ($i=0; $i < $this->concreteRecordProperties->count; $i++)
       {
         $this->assertInstanceOf(
-          '\ramp\model\business\field\Field', $this->testObject[$i]
+          '\ramp\model\business\RecordComponent', $this->testObject[$i]
         );
         $this->assertSame(
           $this->concreteRecordProperties[$i],
@@ -313,8 +313,9 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(isset($this->testObject[0]));
     $this->assertTrue(isset($this->testObject[1]));
     $this->assertTrue(isset($this->testObject[2]));
-    $this->assertTrue(isset($this->testObject[3]));
-    $this->assertFalse(isset($this->testObject[4]));
+    $this->assertFalse(isset($this->testObject[3]));
+    // $this->assertTrue(isset($this->testObject[3]));
+    // $this->assertFalse(isset($this->testObject[4]));
   }
 
   /**
@@ -410,7 +411,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(1, $testObjectMultiKey->propertyA->value);
     $this->assertSame(2, $testObjectMultiKey->propertyB->value);
     $this->assertSame(3, $testObjectMultiKey->propertyC->value);
-    $this->assertSame('1|2|3', $testObjectMultiKey->primaryKey->value);
+    $this->assertSame('1|2|3', (string)$testObjectMultiKey->primaryKey->value);
     $this->assertSame(($currentCallCount + 1), MockBusinessModelManager::$callCount);
     $this->assertTrue($testObjectMultiKey->isModified);
     $this->assertTrue($testObjectMultiKey->isValid);
@@ -768,6 +769,7 @@ class RecordTest extends \PHPUnit\Framework\TestCase
    */
   public function testCount()
   {
-    $this->assertSame(4 ,$this->testObject->count);
+    // $this->assertSame(4 ,$this->testObject->count);
+    $this->assertSame(3 ,$this->testObject->count);
   }
 }

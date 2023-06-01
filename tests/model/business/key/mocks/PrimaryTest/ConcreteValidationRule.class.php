@@ -19,7 +19,7 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\key\mocks\PrimaryTest;
+namespace tests\ramp\model\business\mocks\PrimaryTest;
 
 use ramp\model\business\validation\ValidationRule;
 use ramp\model\business\FailedValidationException;

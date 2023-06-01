@@ -43,15 +43,15 @@ class Input extends Field
 
   /**
    * Creates input field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord, DbTypeValidation $validationRule, bool $editable = NULL)
+  public function __construct(Str $parentPropertyName, Record $containingRecord, DbTypeValidation $validationRule, bool $editable = NULL)
   {
     $this->validationRule = $validationRule;
-    parent::__construct($dataObjectPropertyName, $containingRecord, NULL, $editable);
+    parent::__construct($parentPropertyName, $containingRecord, NULL, $editable);
   }
 
   /**
@@ -71,7 +71,7 @@ class Input extends Field
    */
   final protected function get_value()
   {
-    return $this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+    return $this->parentRecord->getPropertyValue((string)$this->parentPropertyName);
   }
 
   /**

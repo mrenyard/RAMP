@@ -21,36 +21,14 @@
  */
 namespace tests\ramp\model\business\key\mocks\KeyTest;
 
-use ramp\core\Str;
-use ramp\core\StrCollection;
-use ramp\condition\PostData;
+use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\FailedValidationException;
 
-/**
- * Mock Concreate implementation of \ramp\model\business\Key for testing against
- * than adds error messages to the errorCollection.
- * .
- */
-class MockKeyWithErrors extends MockKey
+class ConcreteValidationRule extends ValidationRule
 {
-  /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
-   */
-  public function get_hasErrors() : bool
+  protected function test($value)
   {
-    $this->validateCount++;
-    return TRUE;
-  }
-
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
-  public function get_errors() : StrCollection
-  {
-    $this->hasErrorsCount++;
-    return StrCollection::set($this->label . ' error message');
+    if ((string)$value == 'key' || (int)$value > 0) { return; }
+    throw new FailedValidationException('$value of "' . $value . '" does NOT evaluate to KEY');
   }
 }

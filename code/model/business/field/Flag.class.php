@@ -41,13 +41,13 @@ class Flag extends Field
 {
   /**
    * Creates boolean field related to a single property of containing record.
-   * @param \ramp\core\Str $dataObjectPropertyName Related dataObject property name of containing record
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of containing record
    * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
    * proir to allowing property value change
    */
-  public function __construct(Str $dataObjectPropertyName, Record $containingRecord)
+  public function __construct(Str $parentPropertyName, Record $containingRecord)
   {
-    parent::__construct($dataObjectPropertyName, $containingRecord);
+    parent::__construct($parentPropertyName, $containingRecord);
   }
 
   /**
@@ -67,7 +67,7 @@ class Flag extends Field
    */
   final protected function get_value()
   {
-    return ((bool)$this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName));
+    return ((bool)$this->parentRecord->getPropertyValue((string)$this->parentPropertyName));
   }
 
   /**
@@ -79,10 +79,10 @@ class Flag extends Field
   {
     parent::validate($postdata);
     if ($this->parentRecord->isModified) {
-      $currentValue = $this->parentRecord->getPropertyValue((string)$this->dataObjectPropertyName);
+      $currentValue = $this->parentRecord->getPropertyValue((string)$this->parentPropertyName);
       if ($currentValue === TRUE || $currentValue === FALSE) {
         $newValue = ($currentValue)? 1:0;
-        $this->parentRecord->setPropertyValue((string)$this->dataObjectPropertyName, $newValue);
+        $this->parentRecord->setPropertyValue((string)$this->parentPropertyName, $newValue);
       }
     }
   }

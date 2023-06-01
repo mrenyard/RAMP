@@ -24,16 +24,10 @@ namespace tests\ramp\model\business\mocks\RecordComponentTest;
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
-// use ramp\model\business\RecordCollection;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 
 use tests\ramp\model\business\mocks\RecordTest\ConcreteValidationRule;
-
-/**
- * Collection of MockRecord.
- *
-class MockRecordCollection extends RecordCollection { }*/
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
@@ -42,7 +36,7 @@ class MockRecord extends Record
 {
   public function primaryKeyNames() : StrCollection
   {
-    return StrCollection::set('aProperty','bProperty');
+    return StrCollection::set('aProperty');
   }
 
   protected function get_aProperty()
@@ -61,38 +55,6 @@ class MockRecord extends Record
     return $this[1];
   }
 
-  protected function get_bProperty()
-  {
-    if (!isset($this[2])) {
-      $this[2] = new Input(
-        Str::set('bProperty'),
-        $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate to KEY')
-        )
-      );
-    }
-    return $this[2];
-  }
-
-  protected function get_cProperty()
-  {
-    if (!isset($this[3])) {
-      $this[3] = new Input(
-        Str::set('cProperty'),
-        $this,
-        new VarChar(
-          10,
-          new ConcreteValidationRule(),
-          Str::set('$value does NOT evaluate to KEY')
-        )
-      );
-    }
-    return $this[3];
-  }
-  
   protected static function checkRequired($dataObject) : bool
   {
     return TRUE;

@@ -21,19 +21,59 @@
 namespace ramp\model\business\key;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\Relatable;
 use ramp\model\business\field\Field;
-use ramp\model\business\key\Foreign;
 
-abstract class Composite extends Field
+/**
+ * Foreign Key, used by {@link \ramp\model\business\Relation Relation} to connect {@link \ramp\model\business\Relatable Relatable}s.
+ * 
+ * RESPONSIBILITIES
+ * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
+ * - Define generalized methods for iteration, validity checking & error reporting.
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
+ * - Define access to relevent value based on parent record state.
+ * 
+ * COLLABORATORS
+ * - Composite Parent{@link \ramp\model\business\Record Record} and Target
+ * - Used by {@link \ramp\model\business\Relation Relation}
+ * - {@link \ramp\model\business\Record Record}
+ *
+ */
+class Foreign extends Key
 {
-  private $key;
-
-  public function __construct(Record $from, Str $property, Str $key)
+  /**
+   * Creates a foreignkey in multiple parts with special id for use by model\business\Relation for searching.
+   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
+   * @param \ramp\model\business\Relatable $target Next sub BusinessModel.
+   */
+  public function __construct(Str $parentPropertyName, Record $parentRecord, Primary $targetPrimaryKey)
   {
-    $this->key = $key;
-    parent::__construct($property, $from);
+    $i = 0;
+    parent::__construct($parentPropertyName, $parentRecord);
+    foreach ($targetPrimaryKey->indexes as $index)
+    {
+      $this[$i++] = new class($parentPropertyName, $parentRecord, $index) extends Field
+      {
+        private static $type;
+        private $index;
+        public function __construct(Str $parentPropertyName, Record $parentRecord, Str $index)
+        {
+          $this->index = $index;
+          if (!isset(self::$type)) { self::$type = Str::set('foreign-key-part field'); }
+          parent::__construct($parentPropertyName, $parentRecord);
+        }
+        protected function get_id() : Str { return parent::get_id()->append(Str::hyphenate($this->index)->prepend(Str::set('['))->append(Str::set(']'))); }
+        protected function get_type() : Str { return self::$type; }
+        protected function get_label() : Str { return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', '$0 ', $this->key)))); }
+        protected function get_value() { /* STUB */ }
+        public function validate(PostData $postdata) : void { /* STUB */ }
+        public function processValidationRule($value) : void { /* STUB */ }
+      };
+    }
   }
 
   /**
@@ -43,94 +83,24 @@ abstract class Composite extends Field
    */
   protected function get_id() : Str
   {
-    return parent::get_id()->append(
-      Str::hyphenate($this->key)->prepend(
-        Str::set('[')
-      )->append(
-        Str::set(']')
-      )
-    );
+    return parent::get_id()->append(Str::set('[foreign-key]'));
   }
 
   /**
-   * Get Label
-   * **DO NOT CALL DIRECTLY, USE this->label;**
-   * @return \ramp\core\Str Label for *this*
+   * Returns indexes for key.
+   * **DO NOT CALL DIRECTLY, USE this->indexes;**
+   * @return \ramp\core\StrCollection Indexes related to data fields for this key.
    */
-  protected function get_label() : Str
+  protected function get_indexes() : StrCollection
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', '$0 ', $this->key))));
   }
 
   /**
-   * Set isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
-   * Use to request change of isEditable, some defaults are NOT overridable.
-   * @param bool $value of requested value.
+   * Returns primarykey values held by relevant properties of parent record.
+   * **DO NOT CALL DIRECTLY, USE this->values;**
+   * @return \ramp\core\StrCollection Values held by relevant property of parent record
    */
-  protected function set_isEditable(bool $value)
+  protected function get_values() : ?StrCollection
   {
-    // STUB
-  }
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  protected function get_value()
-  {
-    // STUB
-  }
-
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
-  public function validate(PostData $postdata) : void
-  {
-    // STUB
-  }
-
-  /**
-   * Template method for use in validation.
-   * @param mixed $value Value to be processed
-   * @throws \ramp\validation\FailedValidationException When test fails.
-   */
-  public function processValidationRule($value) : void
-  {
-    // STUB
-  }
-}
-
-/**
- * ForeignKey
- */
-class Foreign extends Key
-{
-  public function __construct(Record $from, Str $propertyName, Record $to)
-  {
-    $i = 0;
-    parent::__construct($from);
-    foreach ($to->primaryKeyNames() as $key) {
-      $this[$i++] = $this->make($from, $propertyName, $key);
-    }
-  }
-
-  private function make(Record $from, Str $propertyName, Str $key) : Field
-  {
-    return new class($from, $propertyName, $key) extends Composite {};
-  }
-
-  /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
-  {
-    return $this[0]->parentRecord->id->append(
-      $this[0]->dataObjectPropertyName->prepend(Str::COLON())
-    )->append(Str::set('[foreign-key]'));
   }
 }

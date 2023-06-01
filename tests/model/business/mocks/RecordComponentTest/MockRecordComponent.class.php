@@ -48,9 +48,9 @@ class MockRecordComponent extends RecordComponent
     self::$idCount = 0;
   }
 
-  public function __construct(Record $parentRecord, BusinessModel $children = null)
+  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = null)
   {
-    parent::__construct($parentRecord, $children);
+    parent::__construct($parentPropertyName, $parentRecord, $children);
     $this->id = Str::set('uid-' . self::$idCount++);
   //   $this->label = $label;
   //   $this->validateCount = 0;
@@ -65,6 +65,15 @@ class MockRecordComponent extends RecordComponent
   public function get_id() : Str
   {
     return $this->id;
+  }
+
+  /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  protected function get_value()
+  {
+    // STUB
   }
 
   /**
