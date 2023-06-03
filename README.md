@@ -1,7 +1,7 @@
 RAMP
 ====
 
-**Rapid Application Minimal Production / Maximum Product
+**Rapid Application (Minimal Production) Maximum Product
 web application development environment for building
 accessible, flexible, customisable web systems using the
 LAMP development Stack**
