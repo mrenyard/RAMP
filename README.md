@@ -1,8 +1,10 @@
 RAMP
 ====
 
-**Rapid web application development environment for building accessible,
-flexible, customisable web systems using the LAMP development Stack**
+**Rapid Application Minimal Production / Maximum Product
+web application development environment for building
+accessible, flexible, customisable web systems using the
+LAMP development Stack**
 
 
 DESIGN PRINCIPLES FOR RAMP
