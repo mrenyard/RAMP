@@ -1,0 +1,70 @@
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-GB"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en-GB"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en-GB"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>[title]</title>
+    <meta name="description" content="[summary]">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="/assets/style/scratch/class-diagram.css">
+    <script src="/assets/func/libs/modernizr-2.0.6.js"></script>
+  </head>
+  <body id="[site-domain]" class="[this-page-type]">
+    <header role="banner">
+      <h1>Experimental Class Diagram</h1>
+    </header>
+    <div id="main" role="main" class="canvass">
+      <article id="class1" class="class" data-y="100" data-x="100">
+        <header contenteditable="true">Record</header>
+        <ul class="properties" contenteditable="true">
+          <li>label: Str</li>
+          <li>id: Str</li>
+          <li>type: Str</li>
+          <li>errors: ErrorCollection</li>
+          <li>hasErrors: boolean</li>
+          <li>children: BusinessModel</li>
+          <li>count: int</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>validate(PostData $data): void</li>
+        </ul>
+      </article>
+      <article id="class2" class="class abstract" data-y="" data-x="">
+        <header contenteditable="true">Contact</header>
+      </article>
+      <article id="class3" class="class" data-y="" data-x="">
+        <header contenteditable="true">Person</header>
+      </article>
+      <article id="class4" class="class" data-y="" data-x="">
+        <header contenteditable="true">Organisation</header>
+      </article>
+      <article id="class5" class="class" data-y="" data-x="">
+        <header contenteditable="true">ClassName</header>
+      </article>
+      <article id="class6" class="class abstract" data-y="" data-x="">
+        <header contenteditable="true">Address</header>
+        <ul class="properties" contenteditable="true">
+          <li>Str: Name</li>
+          <li>Bool: isModified</li>
+          <li>StrCollection: Errors</li>
+        </ul>
+      </article>
+      <article id="association-1" class="association composition" data-vflow="up"></article>
+      <article id="association-2" class="association aggregation" data-direction="rtl" data-vflow="up"></article>
+      <article id="association-3" class="association composition" data-direction="rtl"></article>
+      <article id="association-4" class="association"></article>
+      <article id="association-5" class="association inheritance"></article>
+      <article id="association-6" class="association inheritance"></article>
+      <article id="association-7" class="association inheritance"></article>
+      <article id="association-8" class="association inheritance"></article>
+    </div>
+    <footer role="contentinfo">
+      <!-- <script defer src="//dev.svelte.info.laptop.lan/assets/func/script.js"></script> -->
+      <script defer src="/assets/func/svelte/core.js"></script>
+      <script defer src="/assets/func/svelte/event.js"></script>
+      <script defer src="/assets/func/svelte/diagram.js"></script>
+    </footer>
+  </body>
+</html>

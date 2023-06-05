@@ -29,7 +29,7 @@ header[role="banner"] > h1 { width: 100%; text-align: center; }
   border: solid rgb(165, 42, 42) .125rem;
   border-radius: .25rem;
   box-shadow: .25rem .25rem .5rem rgba(0,0,0,.5);
-}
+} .class.abstract { min-height: 3rem; }
 .class > header,
 .class > .properties,
 .class > .methods {
@@ -41,7 +41,7 @@ header[role="banner"] > h1 { width: 100%; text-align: center; }
   text-align: center;
 } .class > header:only-child {
   padding: .5rem;
-}.class > ul {
+} .class > ul {
   list-style: none;
   border-top: solid .05rem rgb(165, 42, 42);
   padding-bottom: 0;
@@ -102,40 +102,14 @@ article.class:nth-of-type(n+6) { top: 2rem; left: 67rem; }
       <h1>Experimental Class Diagram</h1>
     </header>
     <div id="main" role="main" class="canvass">
-      <!--article id="class1" class="class">
-        <header contenteditable="true">Record</header>
-        <ul class="properties" contenteditable="true">
-          <li>Str: Name</li>
-          <li>Bool: isModified</li>
-          <li>StrCollection: Errors</li>
-        </ul>
-        <ul class="methods" contenteditable="true">
-          <li>validate(PostData: $data) : void</li>
-        </ul>
-      </article-->
-      <!--article id="class2" class="class">
-        <header contenteditable="true">Contact</header>
-      </article>
-      <article id="class4" class="class">
-        <header contenteditable="true">Person</header>
-      </article>
-      <article id="class5" class="class">
-        <header contenteditable="true">Organisation</header>
-      </article>
-      <article id="class3" class="class">
-        <header contenteditable="true">Address</header>
-        <ul class="properties" contenteditable="true">
-          <li>Str: Name</li>
-          <li>Bool: isModified</li>
-          <li>StrCollection: Errors</li>
-        </ul>
-      </article>
-      <article id="class1-class3" class="association composite"></article>
-      <article id="class4-class5" class="association inheritance"></article-->
       <article id="class-a" class="class abstract">
         <header contenteditable="true"></header>
-        <ul class="properties" contenteditable="true"><li>...</li></ul>
-        <ul class="methods" contenteditable="true"><li>..()</li></ul>
+        <ul class="properties" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
+        <ul class="methods" contenteditable="true">
+          <li>&nbsp;</li>
+        </ul>
       </article>  
       <article id="class-b" class="class abstract">
         <header contenteditable="true"></header>
