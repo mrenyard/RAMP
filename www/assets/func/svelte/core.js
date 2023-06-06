@@ -8,12 +8,56 @@ var FUNC = window.FUNC || {};
 FUNC.version = FUNC.version || .1;
 
 /**
+ * FUNC.init, Mechanism to register added functionality to a
+ * HTMLCollection (through a common .class-name) with a particular
+ * FUNC package. Registered Collections added to DOM under FUNC.my.package[i];
+ * @example FUNC.init.register('class-name', FUNC.package);
+ * @example ...
+ *     <script src="/assets/func/svelte/core.js"></script>
+ *     <script>FUNC.init.run();</script>
+ *   </body>
+ * </html>
+ */
+FUNC.init = function()
+{  
+  //- GLOBAL OBJECT
+  FUNC.my = {};
+  
+  //- LOCAL VARIBLES
+  var i=0, inits = [];
+  
+  //- LOCAL METHODS
+  /**
+   * 
+   * @param {*} className 
+   * @param {*} fn 
+   */
+  var register = function(className, fn) {
+    var e = document.getElementsByClassName(className)
+    if (e.length > 0) { inits[i++] = { name: className, instances: e, action: fn }; }
+  };
+
+  /**
+   * 
+   */
+  var run = function() {
+    inits.forEach((init) => {
+      FUNC.my[init.name] = [];
+      var insts = Array.prototype.slice.call(init.instances), j = 0;
+      insts.forEach((inst) => { FUNC.my[init.name][j++] = init.action(inst); });
+    });
+  };
+
+  //- PUBLIC ACCESS
+  return { register, run };
+}();
+
+/**
  * Enum Constructor.
  * Creates new Enum from provided arguments.
- * @example: pets = new Enum('Cat', 'Dog', 'Fish', 'Hamster', 'Cat Fish');
+ * @example pets = new Enum('Cat', 'Dog', 'Fish', 'Hamster', 'Cat Fish');
  */
-FUNC.Enum = function()
-{
+FUNC.Enum = function() {
   this.properties = {};
   for (var i=0, j=arguments.length; i < j; i++) {
     var _itm = arguments[i];
@@ -26,13 +70,33 @@ FUNC.Enum = function()
  * Exception Super Class and Type Enum
  */
 FUNC.exceptions = new FUNC.Enum('BadMethodCall', 'OutOfBounds', 'UnexpectedArgument');
-FUNC.Exception = function(type, message)
-{
-  this.toString = function()
-  {
+/**
+ * 
+ * @param {*} type 
+ * @param {*} message 
+ */
+FUNC.Exception = function(type, message) {
+  this.toString = function() {
     return FUNC.exceptions.properties[type].name + 'Exception: ' + message;
   }
 };
+
+/**
+ * Namespace for core libary.
+ */
+FUNC.core = function()
+{
+  //- METHODS
+  /**
+   * 
+   * @param {*} e 
+   * @returns 
+   */
+  var getDocRect = function(e) { return { x:(e.offsetLeft), y:(e.offsetTop), width:(e.offsetWidth), height:(e.offsetHeight), container: (e.offsetParent) }; };
+
+  //- PUBLIC ACCESS
+  return { getDocRect };
+}();
 
 /**
  * Create a Collection of Objects.
@@ -45,20 +109,16 @@ FUNC.createCollection = function(className, factory)
 
   thiz.type = 'FUNC.Collection';
   thiz.referers = [];
-  thiz.count = function()
-  {
+  thiz.count = function() {
     return _idList.length;
   };
 
-  thiz.current = function()
-  {
+  thiz.current = function() {
     return thiz[_idList[_currentIndex]];
   };
 
-  thiz.next = function()
-  {
-    if (thiz.count() == 0)
-    {
+  thiz.next = function() {
+    if (thiz.count() == 0) {
       throw new FUNC.Exception(
         FUNC.exceptions.OUTOFBOUNDS, 'Please check count() > 0 (line 63 cvt/core.js)'
       );
@@ -66,19 +126,16 @@ FUNC.createCollection = function(className, factory)
     return (_currentIndex++ < (thiz.count()-1));
   };
 
-  thiz.rewind = function()
-  {
+  thiz.rewind = function() {
     _currentIndex = -1;
   };
 
-  thiz.add = function(o)
-  {
+  thiz.add = function(o) {
     if (thiz[o.el[className + 'id']] == null) { _idList[_idList.length] = o.el[className + 'id']; }
     thiz[o.el[className + 'id']] = o;
   };
 
-  thiz.updateFromDom = function(elms)
-  {
+  thiz.updateFromDom = function(elms) {
     var id, el, hasData;
     for (var i=0,j=elms.length; i<j; i++) { el = elms[i];
       hasData = el.hasAttribute('data-' + className + 'id');

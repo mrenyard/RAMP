@@ -14,339 +14,337 @@
     </header>
     <div id="main" role="main" class="canvass">
       <section class="diagram uml-class view-detail"><!-- view-abstract view-compact -->
-        <article id="model" class="class abstract compact" data-column="3" data-offset="0">
-          <header contenteditable="true">Model</header>
-        </article>
-        <article id="business-model" class="class abstract" data-column="3" data-offset="0">
-          <header contenteditable="true"><h2>BusinessModel</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#model">Model</a></li>
-            <li class="composition"><a href="#business-model">BusinessModel</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>
-        <article id="relatable" class="class abstract" data-column="2" data-offset="0">
-          <header contenteditable="true"><h2>Relatable</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#business-model">BusinessSModel</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>  
-        <article id="record-component" class="class abstract" data-column="5"  data-offset="0">
-          <header contenteditable="true"><h2>RecordComponent</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#business-model">BusinessModel></a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>  
-        <article id="record" class="class abstract" data-column="1" data-offset="4">
-          <header contenteditable="true"><h2>Record</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#relatable">Relatable</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>
-        <article id="record-collection" class="class" data-column="2" data-offset="0">
-          <header contenteditable="true"><h2>RecordCollection</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#relatable">Relatable</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>
-        <article id="key" class="class abstract" data-column="3" data-offset="2">
-          <header contenteditable="true"><h2>Key</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>indexes: StrCollection</li>
-            <li>values: StrCollection</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>  
-        <article id="field" class="class abstract" data-column="5" data-offset="0">
-          <header contenteditable="true"><h2>Field</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article>
-        <article id="relation" class="class" data-column="6" data-offset="2">
-          <header contenteditable="true"><h2>Relation</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>
-        <article id="primary" class="class" data-column="2" data-offset="5">
-          <header contenteditable="true"><h2>Primary</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#key">Key</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>indexes: StrCollection</li>
-            <li>values: StrCollection</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>
-        <article id="foreign" class="class" data-column="3" data-offset="1">
-          <header contenteditable="true"><h2>Foreign</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#key">Key</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>indexes: StrCollection</li>
-            <li>values: StrCollection</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-          </ul>
-        </article>    
-        <article id="select-from" class="class abstract" data-column="4" data-offset="5">
-          <header contenteditable="true"><h2>SelectFrom</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#field">Field</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article>
-        <article id="input" class="class" data-column="5" data-offset="4">
-          <header contenteditable="true"><h2>Input</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#field">Field</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article>
-        <article id="flag" class="class" data-column="6" data-offset="0">
-          <header contenteditable="true"><h2>Flag</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#field">Field</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article>  
-        <article id="select-one" class="class" data-column="4" data-offset="4">
-          <header contenteditable="true"><h2>SelectOne</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#select-from">SelectFrom</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article>  
-        <article id="select-many" class="class">
-          <header contenteditable="true"><h2>SelectMany</h2></header>
-          <ul class="associations">
-            <li class="inheritance"><a href="#select-from">SelectFrom</a></li>
-          </ul>
-          <ul class="properties" contenteditable="true">
-            <li>label: Str</li>
-            <li>id: Str</li>
-            <li>type: Str</li>
-            <li>errors: ErrorCollection</li>
-            <li>hasErrors: boolean</li>
-            <li>children: BusinessModel</li>
-            <li>parentPropertyName: Str</li>
-            <li>parentRecord: Record</li>
-            <li>isEditable: boolean</li>
-            <li>value: mixed</li>
-            <li>count: int</li>
-          </ul>
-          <ul class="methods" contenteditable="true">
-            <li>validate(PostData $data): void</li>
-            <li>processValidationRule(mixed $value): void</li>
-          </ul>
-        </article> 
-      </section> 
+        <header>[Name of Diagram]</header>
+        <div class="canvas">
+          <article id="model" class="class abstract compact" data-column="3" data-offset="0">
+            <header contenteditable="true">Model</header>
+          </article>
+          <article id="business-model" class="class abstract" data-column="3" data-offset="0">
+            <header contenteditable="true"><h2>BusinessModel</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#model">Model</a></li>
+              <li class="composition"><a href="#business-model">BusinessModel</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>
+          <article id="relatable" class="class abstract" data-column="2" data-offset="0">
+            <header contenteditable="true"><h2>Relatable</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#business-model">BusinessSModel</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>  
+          <article id="record-component" class="class abstract" data-column="5"  data-offset="0">
+            <header contenteditable="true"><h2>RecordComponent</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#business-model">BusinessModel></a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>  
+          <article id="record" class="class abstract" data-column="1" data-offset="4">
+            <header contenteditable="true"><h2>Record</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#relatable">Relatable</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>
+          <article id="record-collection" class="class" data-column="2" data-offset="0">
+            <header contenteditable="true"><h2>RecordCollection</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#relatable">Relatable</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>
+          <article id="key" class="class abstract" data-column="3" data-offset="2">
+            <header contenteditable="true"><h2>Key</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>indexes: StrCollection</li>
+              <li>values: StrCollection</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>  
+          <article id="field" class="class abstract" data-column="5" data-offset="0">
+            <header contenteditable="true"><h2>Field</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article>
+          <article id="relation" class="class" data-column="6" data-offset="2">
+            <header contenteditable="true"><h2>Relation</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#record-component">RecordComponent</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>
+          <article id="primary" class="class" data-column="2" data-offset="5">
+            <header contenteditable="true"><h2>Primary</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#key">Key</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>indexes: StrCollection</li>
+              <li>values: StrCollection</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>
+          <article id="foreign" class="class" data-column="3" data-offset="1">
+            <header contenteditable="true"><h2>Foreign</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#key">Key</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>indexes: StrCollection</li>
+              <li>values: StrCollection</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+            </ul>
+          </article>    
+          <article id="select-from" class="class abstract" data-column="4" data-offset="5">
+            <header contenteditable="true"><h2>SelectFrom</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#field">Field</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article>
+          <article id="input" class="class" data-column="5" data-offset="4">
+            <header contenteditable="true"><h2>Input</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#field">Field</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article>
+          <article id="flag" class="class" data-column="6" data-offset="0">
+            <header contenteditable="true"><h2>Flag</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#field">Field</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article>  
+          <!--article id="select-one" class="class" data-column="4" data-offset="4">
+            <header contenteditable="true"><h2>SelectOne</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#select-from">SelectFrom</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article>  
+          <article id="select-many" class="class" data-column="4" data-offset="2">
+            <header contenteditable="true"><h2>SelectMany</h2></header>
+            <ul class="associations">
+              <li class="inheritance"><a href="#select-from">SelectFrom</a></li>
+            </ul>
+            <ul class="properties" contenteditable="true">
+              <li>label: Str</li>
+              <li>id: Str</li>
+              <li>type: Str</li>
+              <li>errors: ErrorCollection</li>
+              <li>hasErrors: boolean</li>
+              <li>children: BusinessModel</li>
+              <li>parentPropertyName: Str</li>
+              <li>parentRecord: Record</li>
+              <li>isEditable: boolean</li>
+              <li>value: mixed</li>
+              <li>count: int</li>
+            </ul>
+            <ul class="methods" contenteditable="true">
+              <li>validate(PostData $data): void</li>
+              <li>processValidationRule(mixed $value): void</li>
+            </ul>
+          </article-->
+        </div>
+      </section>
     </div>
     <footer role="contentinfo">
-      <!-- <script defer src="//dev.svelte.info.laptop.lan/assets/func/script.js"></script> -->
       <script src="/assets/func/svelte/core.js"></script>
-      <script src="/assets/func/svelte/event.js"></script>
+      <!--script src="/assets/func/svelte/event.js"></script-->
       <script src="/assets/func/svelte/diagram.js"></script>
-      <script>
-
-// FUNC.diagram.components.forEach((e) => { console.log(e.id +','+ e.description +','+ e.type); });
-// console.log(FUNC.diagram.components.find((e) => e.id == 'record-collection'));
-
-      </script>
+      <script>FUNC.init.run();</script>
+      <!-- <script defer src="//dev.svelte.info.laptop.lan/assets/func/script.js"></script> -->
     </footer>
   </body>
 </html>
