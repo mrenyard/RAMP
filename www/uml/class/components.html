@@ -9,62 +9,170 @@
     <meta name="description" content="[summary]">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="stylesheet" href="/assets/style/scratch/class-diagram.css">
-    <script src="/assets/func/libs/modernizr-2.0.6.js"></script>
+    <style>
+
+:root { font-size: 2.5rem; }
+
+h1, h2, h3 { text-align: center; }
+body > * { font-size: 40%; }
+
+#main section.diagram h2 { font-size: .6rem; }
+#main section.diagram > .canvas, section.diagram > ul.annotate { font-size: 1rem }
+
+#main section.diagram > .canvas {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 15rem);
+  align-items: center;
+  justify-items: center;
+  margin: 0;
+  width: 99%;
+}
+#main section.diagram > ul.annotate {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 6rem);
+  align-items: center;
+  justify-items: center;
+
+  gap: 1rem;
+  padding: 1rem;
+  font-size: .9rem;
+}
+
+#site-domain #main > section.diagram > ul.annotate > li { position: relative; }
+ul.annotate > li.association.v { width: 4rem; height: 6rem; }
+ul.annotate > li.association.h { width: 6rem; height: 4rem; }
+ul.annotate > li.association.v.straight { width: 0; }
+ul.annotate > li.association.h.straight { height: 0; }
+
+ul.annotate > li.association.h.loop.back { height: 4rem; width: 2rem; }
+ul.annotate > li.association.h.loop.ancestor { height: 4rem; width: 4rem; }
+/* .diagram li.association > em { display: none; } */
+
+</style>
   </head>
-  <body id="[site-domain]" class="[this-page-type]">
+  <body id="site-domain" class="[this-page-type]">
     <header role="banner">
-      <h1>Experimental Class Diagram</h1>
+      <h1>Experimental Class Diagrams</h1>
     </header>
-    <div id="main" role="main" class="canvass">
-      <article id="class1" class="class" data-y="100" data-x="100">
-        <header contenteditable="true">Record</header>
-        <ul class="properties" contenteditable="true">
-          <li>label: Str</li>
-          <li>id: Str</li>
-          <li>type: Str</li>
-          <li>errors: ErrorCollection</li>
-          <li>hasErrors: boolean</li>
-          <li>children: BusinessModel</li>
-          <li>count: int</li>
+    <div id="main" role="main">
+      <section class="diagram">
+        <header><h2><abbr title="Unified Modeling Language">UML</abbr> Components</h2></header>
+        <div class="canvas">
+          <article id="business-model" class="class abstract">
+            <header contenteditable="true"><h3 title="Class: BusinessModel">BusinessModel</h3></header>
+            <ol>
+              <li class="properties"><h4>Properties</h4>
+                <ul contenteditable="true">
+                  <li>label: Str</li>
+                  <li>id: Str</li>
+                  <li>type: Str</li>
+                  <li>errors: ErrorCollection</li>
+                  <li>hasErrors: boolean</li>
+                  <li>children: BusinessModel</li>
+                  <li>count: int</li>
+                </ul>
+              </li>
+              <li class="methods"><h4>Methods</h4>
+                <ul contenteditable="true">
+                  <li>validate(PostData $data): void</li>
+                </ul>
+              </li>
+              <li class="associations"><h4>Associations</h4>
+                <ul>
+                  <li class="inheritance"><a href="#model">Model (inheritance)</a></li>
+                  <li class="composition"><a href="#business-model">BusinessModel (composite)</a><em class="label">[iterable]</em></li>
+                </ul>
+              </li>
+            </ol>
+          </article>
+          <article id="record" class="class abstract">
+            <header contenteditable="true"><h3 title="Class: Record">Record</h3></header>
+            <ol>
+              <li class="properties"><h4>Properties</h4>
+                <ul contenteditable="true">
+                  <li>label: Str</li>
+                  <li>id: Str</li>
+                  <li>type: Str</li>
+                  <li>errors: ErrorCollection</li>
+                  <li>hasErrors: boolean</li>
+                  <li>children: BusinessModel</li>
+                  <li>count: int</li>
+                </ul>
+              </li>
+              <li class="methods"><h4>Methods</h4>
+                <ul contenteditable="true">
+                  <li>validate(PostData $data): void</li>
+                </ul>
+              </li>
+              <li class="associations"><h4>Associations</h4>
+                <ul>
+                  <li class="inheritance"><a href="#relatable">Relatable (inheritance)</a></li>
+                </ul>
+              </li>
+            </ol>
+          </article>
+        </div>
+        <ul class="annotate">
+          <li class="association composition h rtl up loop back" style="width:0; height: 1.5rem;"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association aggregation h ltr up loop back"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association composition h ltr down loop ancestor"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association aggregation h rtl down loop ancestor"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association h rtl up loop back"><a href="#model">Model</a><em class="label">Label</em></li>
+
+          <li class="association v ltr down straight"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association v rtl up"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association v ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association v rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association v ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association h rtl down straight"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association h rtl up"><a href="#model">Model (inheritance)</a><em class="label">Label</em></li>
+          <li class="association h ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association h rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association h ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association aggregation v ltr down straight"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association aggregation v rtl up"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association aggregation v ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association aggregation v rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association aggregation v ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association aggregation h ltr down straight"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association aggregation h rtl up"><a href="#model">Model (inheritance)</a><em class="label">Label</em></li>
+          <li class="association aggregation h ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association aggregation h rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association aggregation h ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association composition v ltr down straight"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association composition v rtl up"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association composition v ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association composition v rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association composition v ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association composition h rtl down straight"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association composition h rtl up"><a href="#model">Model (inheritance)</a><em class="label">Label</em></li>
+          <li class="association composition h ltr up"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+          <li class="association composition h rtl down"><a href="#model">Model</a><em class="label">Label</em></li>
+          <li class="association composition h ltr down"><a href="#business-model">BusinessModel</a><em class="label">Label</em></li>
+
+          <li class="association inheritance v rtl up straight"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance v ltr up"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance v rtl up"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance v ltr down"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance v rtl down"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+
+          <li class="association inheritance h ltr up straight"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance h rtl up"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance h ltr up"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance h rtl down"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
+          <li class="association inheritance h ltr down"><a href="#business-model">BusinessModel (inheritance)</a><em class="label">Label</em></li>
         </ul>
-        <ul class="methods" contenteditable="true">
-          <li>validate(PostData $data): void</li>
-        </ul>
-      </article>
-      <article id="class2" class="class abstract" data-y="" data-x="">
-        <header contenteditable="true">Contact</header>
-      </article>
-      <article id="class3" class="class" data-y="" data-x="">
-        <header contenteditable="true">Person</header>
-      </article>
-      <article id="class4" class="class" data-y="" data-x="">
-        <header contenteditable="true">Organisation</header>
-      </article>
-      <article id="class5" class="class" data-y="" data-x="">
-        <header contenteditable="true">ClassName</header>
-      </article>
-      <article id="class6" class="class abstract" data-y="" data-x="">
-        <header contenteditable="true">Address</header>
-        <ul class="properties" contenteditable="true">
-          <li>Str: Name</li>
-          <li>Bool: isModified</li>
-          <li>StrCollection: Errors</li>
-        </ul>
-      </article>
-      <article id="association-1" class="association composition" data-vflow="up"></article>
-      <article id="association-2" class="association aggregation" data-direction="rtl" data-vflow="up"></article>
-      <article id="association-3" class="association composition" data-direction="rtl"></article>
-      <article id="association-4" class="association"></article>
-      <article id="association-5" class="association inheritance"></article>
-      <article id="association-6" class="association inheritance"></article>
-      <article id="association-7" class="association inheritance"></article>
-      <article id="association-8" class="association inheritance"></article>
+      </section>
     </div>
     <footer role="contentinfo">
-      <!-- <script defer src="//dev.svelte.info.laptop.lan/assets/func/script.js"></script> -->
-      <script defer src="/assets/func/svelte/core.js"></script>
-      <script defer src="/assets/func/svelte/event.js"></script>
-      <script defer src="/assets/func/svelte/diagram.js"></script>
+      [SITE-FOOTER]
     </footer>
   </body>
 </html>
