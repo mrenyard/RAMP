@@ -81,9 +81,9 @@ FUNC.core = function()
    *   ['diagram', 'uml-class', 'view-detail'],
    *   FUNC.diagram
    * );
-   * @param {string} title - Heading title for new diagram section (= id attribute-name).
-   * @param {sting[]} type - Additional classList values (excluding module).
-   * @param {string} moduleName - Optional FUNC.[moduleName] to be executed on new HtmlElement:section.
+   * @param {string} title - Heading title for new diagram section (`id="attribute-name"`).
+   * @param {sting[]} type - Additional `[classList:values]` (excluding module).
+   * @param {string} moduleName - Optional `FUNC.[moduleName]` to be executed on new `[HtmlElement:section]`.
    */
   var addSection = function(title, type, moduleName)
   {
@@ -104,7 +104,7 @@ FUNC.core = function()
   /**
    * Appends a space to non trivial strings.
    * @param {string} v - Value to nominally append space 
-   * @returns String value with required appended space.
+   * @returns {string} - Value with required appended space.
    */
   var sp = function(v) { return (v === null || v === '' || v === 'undefined' ) ? '' : v + ' '; };
 

@@ -45,8 +45,8 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
 ```html
     <div id="main" role="main">
       ...
-      <section id="class-model" class="diagram uml-class view-compact">
-        <header><h2>Class Model (detail)</h2></header>
+      <section id="[attrabute-id:title]" class="[moduleName] [classList:values]">
+        <header><h2>[AttrabuteId:title]</h2></header>
         <div class="canvas">
           ...
         </div>
@@ -54,9 +54,9 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
       ...
     </div>
 ```
- * @param `{string}` `title` - Heading title for new diagram section (= id attribute-name).
- * @param `{sting[]}` `type` - Additional classList values (excluding module).
- * @param `{string}` `moduleName` - Optional FUNC.[moduleName] to be executed on new HtmlElement:section.
+ * @param `{string}` `title` - Heading title for new diagram section (`id="title"`).
+ * @param `{sting[]}` `type` - Additional `[classList:values]` (excluding module).
+ * @param `{string}` `moduleName` - Optional `FUNC.[moduleName]` to be executed on new `[HtmlElement:section]`.
 ```javascript
 FUNC.core.addSection(title, type, moduleName) : void
 ```
