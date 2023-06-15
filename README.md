@@ -36,10 +36,11 @@ encapsulation.
 
 Progressive Enhancement principles are promoted and used
 throughout. Designed with consideration for modern
-JavaScript and AJAX from the outset, with the server side
-capable of returning complete pages, HTML fragments or
-JSON dependant on request headers at the same resource
-address. i.e. It still works with JavaScript switched off.
+JavaScript and AJAX (Hijax methodology) from the outset,
+with the server side capable of returning complete pages,
+HTML fragments or JSON dependant on request headers at the
+same resource address.
+i.e. It still works with JavaScript switched off.
 
 Highly Customisable, with local code stored in a separate
 directory (local_dir), application specific components
@@ -51,6 +52,7 @@ Rapid Development, Clear Separation, Front-End Control,
 Server Side Independence, Coding Standards, Progressive
 Enhancement and Highly Customisable.
 
+The RAMP way to building better systems.
 
 SOME RULES OF THE WEB WE KEPT IN MIND
 ---------------------------------------------------------

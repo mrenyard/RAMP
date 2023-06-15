@@ -8,31 +8,58 @@ var FUNC = window.FUNC || {};
 FUNC.version = FUNC.version || .1;
 
 /**
+ * Base Class <<abstract>>.
+ */
+FUNC.Base = class
+{
+  abstract(s) {
+    if (eval(this[s]) !== undefined) { throw new Error('\"' + s + '()" METHOD' + ' is Abstract!'); }
+    if (this.constructor.name == s) { throw new Error('":' + s + '" CLASS is Abstract!'); }
+  }
+};
+
+/**
  * Enum Constructor.
  * Creates new Enum from provided arguments.
  * @example pets = new Enum('Cat', 'Dog', 'Fish', 'Hamster', 'Cat Fish');
  */
-FUNC.Enum = function() {
-  this.properties = {};
-  for (var i=0, j=arguments.length; i < j; i++) {
-    var _itm = arguments[i];
-    this[_itm.replace('-','_').replace(' ','_').toUpperCase()] = i;
-    this.properties[i] = { name:_itm, value:i };
+FUNC.Enum = class extends FUNC.Base
+{
+  #properties;
+  constructor() { super();
+    this.#properties = [];
+    for (var i=0, j=arguments.length; i < j; i++) {
+      var _itm = arguments[i];
+      this[_itm.replace('-','_').replace(' ','_').toUpperCase()] = i;
+      this.#properties[i] = { name:_itm, value:i };
+    } 
   }
-  this.length = i;
-};
+  at(v) { return (isNaN(v)) ? this.#properties.find((o) => o.name == v) : this.#properties[v]; }
+  get count() { return this.#properties.length; }
+}
 
 /**
- * Exception Super Class and Type Enum
- */
-FUNC.exceptions = new FUNC.Enum('BadMethodCall', 'OutOfBounds', 'UnexpectedArgument', 'UndeclaredClass');
-/**
  * 
- * @param {*} type 
- * @param {*} message 
+ * @param {number} typeN 
+ * @param {string} message 
  */
-FUNC.Exception = function(type, message, e) {
-  this.toString = function() { return FUNC.exceptions.properties[type].name + 'Exception: ' + message; }
+FUNC.Exception = class extends FUNC.Base
+{
+  static #n;
+  static get types() {
+    this.#n = this.#n || new FUNC.Enum('BadMethodCall', 'OutOfBounds', 'UnexpectedArgument', 'UndeclaredClass');
+    return this.#n;
+  }
+  
+  #typeN;
+  #message;
+  
+  constructor(typeN, message) { super();
+    this.#typeN = typeN;
+    this.#message = message;
+  }
+
+  toString() { return FUNC.Exception.types.at(this.#typeN).name + 'Exception: ' + this.#message; }
 };
 
 /**
@@ -55,22 +82,22 @@ FUNC.core = function()
    *   FUNC.diagram
    * );
    * @param {string} title - Heading title for new diagram section (= id attribute-name).
-   * @param {sting[]} type - Additional classList values beyond module.
+   * @param {sting[]} type - Additional classList values (excluding module).
    * @param {string} moduleName - Optional FUNC.[moduleName] to be executed on new HtmlElement:section.
    */
   var addSection = function(title, type, moduleName)
   {
     let i = 0, o = document.createElement('section'),
         h = document.createElement('header'),
-        h3 = document.createElement('h3');
+        h2 = document.createElement('h2');
     o.setAttribute('id', title.replace(' ','-').toLocaleLowerCase());
     o.classList.add(moduleName);
     while (type[i]) { o.classList.add(type[i++]); }
-    h3.append(title); h.appendChild(h3); o.appendChild(h);
+    h2.append(title); h.appendChild(h2); o.appendChild(h);
     FUNC.domMain.appendChild(o);
     if (moduleName !== undefined) {
-    fn = eval('FUNC.' + moduleName);
-    FUNC.my[moduleName][FUNC.my[moduleName].length] = fn(o);
+      fn = eval('FUNC.' + moduleName);
+      FUNC.my[moduleName][FUNC.my[moduleName].length] = fn(o);
     }
   }
 
@@ -102,7 +129,7 @@ FUNC.core = function()
 FUNC.init = function()
 {
   //- LOCAL VARIBLES
-  var i=0, inits = [], lock = true,
+  var inits = [], lock = true,
       dev = (window.location.hostname.split('.')[0] == 'dev');
 
   //- GLOBAL OBJECT
@@ -112,9 +139,9 @@ FUNC.init = function()
 
   //- LOCAL METHODS
   /**
-   * Register potentual FUNC modules needed site wide, only loads those scripts actually need per page
-   * @param {srting} className -
-   * @param {string} fn -  
+   * Register potentual FUNC modules needed site wide, only loads those scripts actually need per page.
+   * @param {srting} className - Identifing HtmlClass:name for modual use. 
+   * @param {string} fn - FUNC[function/module] as a string to be exacuted against each HtmlEntity (fragment).
    */
   var register = function(className, fn) {
     var e = document.getElementsByClassName(className)
@@ -126,7 +153,7 @@ FUNC.init = function()
         document.body.append(o);
         (function exists() {
           if (eval(fn) == undefined) { return setTimeout(exists, 100); }  
-          inits[i++] = { name: className, instances: e, action: eval(fn) };
+          inits[inits.length] = { name: className, instances: e, action: eval(fn) };
           lock = false;
         }());
     }
@@ -142,11 +169,7 @@ FUNC.init = function()
         FUNC.my[init.name] = [];
         var insts = Array.prototype.slice.call(init.instances), j = 0;
         insts.forEach((inst) => {
-          try {
-            FUNC.my[init.name][j++] = init.action(inst);
-          } catch (e) {
-            if (dev) { console.error(e.toString()); }
-          }
+          FUNC.my[init.name][j++] = init.action(inst);
         });
     });
   };
@@ -159,7 +182,7 @@ FUNC.init = function()
  * Create a Collection of Objects.
  * Uses provided constructor to create Objects based on corresponding
  * symantic class names within the Document Object Model
- */
+ *
 FUNC.createCollection = function(className, factory)
 {
   var thiz = {}, _idList = [], _currentIndex = -1;
@@ -209,3 +232,4 @@ FUNC.createCollection = function(className, factory)
 
   return thiz;
 };
+*/
