@@ -54,10 +54,10 @@ FUNC.diagram = function(elm)
   //- NAMESPACE METHODS
   /**
    * Create new diagram section within #main
-   * @param {string} title - Name/ID of new diagram section
    * @param {FUNC.Enum} typeN - Diagram Type (enum) of diagram section (.class-name) 
+   * @param {string} title - Name/ID of new diagram section
    */
-  _.add = function(title, typeN) {
+  _.add = function(typeN, title) {
     core.addSection(title, [_.types.at(typeN).name, 'view-' + _allViews[_type.name].at(0).name], 'diagram');
   };
 
@@ -93,6 +93,8 @@ FUNC.diagram = function(elm)
         case 1:
         case 2:
         case 3:
+          (() => { _s.forEach((s) => { s.makeConnections(); } )}),
+          (() => { _s.forEach((s) => { s.update(); } )}),
           this.draw = [(() => { alert('Step B1'); })];
           break;
       }
@@ -227,7 +229,7 @@ FUNC.diagram = function(elm)
     alert("TODO:mrenyard: SAVE to SERVER");
   };
 
-  var add = function(typeN, title) {
+  var addShape = function(typeN, title) {
     alert("TODO:mrenyard: ADD Shape");
   };
 

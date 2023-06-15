@@ -1,11 +1,11 @@
 FUNC.core.js
 ==================================================================
-Library of commonly used Functionality across FUNC modules
+Library of Commonly Used Functionality Across FUNC Modules
 ==================================================================
 
 **FUNCs core library includes definitions for its commonly used
-Base, Enum, and Exception Classes as well common functions such as
-`string` manipulation and Document Object Model (DOM) addition.**
+Base, Enum, and Exception Classes as well as common functions such
+as `string` manipulation and Document Object Model (DOM) addition.**
 
  * @author Matt Renyard (twitter: @mrenyard)
  * @package func.core
@@ -13,7 +13,49 @@ Base, Enum, and Exception Classes as well common functions such as
  * @package func.ENUM
  * @package func.Exception
 
-Using Namespaces within local namespace
+FUNC.Base
+--------------------------------------------------
+
+FUNC.Enum
+--------------------------------------------------
+
+FUNC.Exception
+--------------------------------------------------
+
+FUNC.core - String Formatting and Manipulation
+--------------------------------------------------
+
+### FUNC.core.sp
+Appends a space to non trivial strings.
+ * @param `{string}` `v` - Value to nominally append space.
+ * @returns `{string}` - Value with required appended space.
+```javascript
+  FUNC.core.sp(v);
+```
+
+FUNC.core - DOM Addition, Manipulation and Removal
+--------------------------------------------------
+
+### FUNC.core.addSection
+Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load dynamic `FUNC.[module]` on it.
+```html
+    <div id="main" role="main">
+      <header><h1>Page Main Heading</h1></header>
+      ...
+      <section id="[attrabute-id:title]" class="[moduleName] [class-list:values]">
+        <header><h2>[AttrabuteId:title]</h2></header>
+      </section>
+      ...
+    </div>
+```
+ * @param `{string}` `title` - Heading title for new diagram section (`id="title"`).
+ * @param `{sting[]}` `type` - Additional `[classList:values]` (excluding module).
+ * @param `{string}` `moduleName` - Optional `FUNC.[moduleName]` to be executed on new `[HtmlElement:section]`.
+```javascript
+FUNC.core.addSection(title, type, moduleName);
+```
+
+Using Namespaces within local your local namespace
 --------------------------------------------------
 ```javascript
 FUNC.[newModule] = function(elm)
@@ -29,61 +71,16 @@ FUNC.[newModule] = function(elm)
     ...
   }
 
-  var type = new N('[string]', '[string]', '[string]', '[string]')
+  var type = new N('[:string]', '[:string]', '[:string]', '[:string]')
 
   try {
     ...
   } catch () {
-    throw new Ex(Ex.BADMETHODCALL, '[string:message]')
+    throw new Ex(Ex.BADMETHODCALL, '[message:string]')
   }
 
-  core.addSection(string:[title], [[string:type], [string:type], ...], [string:moduleName]);
+  core.addSection([title:string], [[type:string], [type:string], ...], [string:moduleName]);
 
   ...
 }
-```
- - [Using Namspace placeholders](./my-code.md#namespace-placeholders).
-
-FUNC.Base
---------------------------------------------------
-
-FUNC.Enum
---------------------------------------------------
-
-FUNC.Exception
---------------------------------------------------
-
-FUNC.core - String Formating and Manipulation
---------------------------------------------------
-
-### FUNC.core.sp
-Appends a space to non trivial strings.
- * @param `{string}` `v` - Value to nominally append space.
- * @returns `{string}` - Value with required appended space.
-```javascript
-  FUNC.core.sp(value:string) : string
-```
-
-FUNC.core - DOM Addition, Manipulation and Removal
---------------------------------------------------
-
-### FUNC.core.addSection
-Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load dynamic `FUNC.[module]` on it.
-```html
-    <div id="main" role="main">
-      ...
-      <section id="[attrabute-id:title]" class="[moduleName] [class-list:values]">
-        <header><h2>[AttrabuteId:title]</h2></header>
-        <div class="canvas">
-          ...
-        </div>
-      </section>
-      ...
-    </div>
-```
- * @param `{string}` `title` - Heading title for new diagram section (`id="title"`).
- * @param `{sting[]}` `type` - Additional `[classList:values]` (excluding module).
- * @param `{string}` `moduleName` - Optional `FUNC.[moduleName]` to be executed on new `[HtmlElement:section]`.
-```javascript
-FUNC.core.addSection(title, type, moduleName) : void
 ```

@@ -6,7 +6,7 @@ with frontend interactive, immersive and dynamic
 content, through the use of RAMP's serverside
 Hijax-centric Platform. FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable
-of enhancing your web DOM.**
+of enhancing your web DOM (Document Object Model).**
 
  * @author Matt Renyard (twitter: @mrenyard)
  * @package func
@@ -39,7 +39,7 @@ template and any or all pages on your site.
 ```html
       ...
     </footer>
-    <script src="/assets/func/core-full.js"></script>
+    <script src="/assets/func/core.js"></script>
     <script defer>
 FUNC.init.register('diagram', 'FUNC.diagram');
 FUNC.init.run();
@@ -57,9 +57,9 @@ The default path being '/assets/func/mods/'
 FUNC.modsPath = '/assets/func/mods/';
 ```
 
-As you wish to use more modules accross your website/application
+As you wish to use more modules across your website/application
 you will want to register them by adding new `FUNC.init.resgister`
-statements above `FUNC.init.run()` and below any dependances.
+statements above `FUNC.init.run()` and below any dependancies.
 ```javascript
 FUNC.init.register([HtmlClassName:string], [FuncModule:string]);
 ```
@@ -101,14 +101,14 @@ FUNC.core.[...];
 As you continue to explore and register more modules
 you will begin to understand more about its API.
 
-Most packages will add content dependent on the
-pages DOM under `FUNC.my.[moduleName][index]`
-all will add a constructor function under
-`FUNC.[moduleName]` including some modules
-adding constants within the same space;
+Most packages will add content depending on the
+pages DOM under `FUNC.my.[moduleName][index]`,
+and all will add a constructor function under
+`FUNC.[moduleName][index]` with some modules
+adding module constants within the same space;
 
 ```javascript
-FUNC.my.[moduleName];
+FUNC.my.[moduleName][index];
 FUNC.[moduleName]();
 ```
 
