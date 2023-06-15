@@ -79,7 +79,7 @@ FUNC.[newModule] = function(elm)
     throw new Ex(Ex.BADMETHODCALL, '[message:string]')
   }
 
-  core.addSection([title:string], [[type:string], [type:string], ...], [string:moduleName]);
+  core.addSection([title:string], [[type:string], [type:string], ...], [moduleName:string]);
 
   ...
 }

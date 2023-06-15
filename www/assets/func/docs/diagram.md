@@ -66,13 +66,13 @@ Each Diagram boundry should appear as a `[HtmlElement:section]`
 within the `[HtmlElement:#main]` with varable values for the
 diagram 'Title', 'Type' and 'Veiw Variant'.
 
- * Type: ('uml-class','uml-sequance','uml-usecase','uml-action','erd-database')
+ * Type: ('uml-class', 'uml-sequance', 'uml-usecase', 'uml-action', 'erd-database')
  * Veiw Variants:
- *  - ['uml-class'] ('detail','comparison','abstract','compact')
- *  - ['uml-sequance'] ('detail')
- *  - ['uml-usecase'] ('detail')
- *  - ['uml-action'] ('detail')
- *  - ['erd-database'] ('detail')
+   - ['uml-class'] ('detail', 'comparison', 'abstract', 'compact')
+   - ['uml-sequance'] ('detail')
+   - ['uml-usecase'] ('detail')
+   - ['uml-action'] ('detail')
+   - ['erd-database'] ('detail')
 
 ```html
     <div id="main" role="main">
