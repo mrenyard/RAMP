@@ -157,25 +157,6 @@ FUNC.diagram = function(elm)
   };
 
   /**
-   * Representation of a connection from one Shape to another <<abstract>>.
-   * @param {string} id - Unque identifier of corresponding HTMLElement 
-   * @param {HTMLElement} e - Represention of this (Connection) on DOM
-   * @param {Shape} cF - Referance for 'from' object.
-   */
-  const Connection = class extends Component
-  {
-    #to; #from;
-    constructor(id, e, cF) { super(id, e); this.abstract('Connection');
-      this.variant = (this.e.classList && this.e.classList[0]) ? this.e.classList[0].trim() : null;
-      this.#to = _s.find((sT) => sT.id == this.e.childNodes[0].hash.replace('#', ''));
-      this.#from = cF;
-      this.orientation = this.e.dataset.orientation || 'h';
-    }
-    get to() { return this.#to; }
-    get from() { return this.#from; }
-  };
-
-  /**
    * Representation of a database Entity.
    * @param {string} id - Unque identifier of corresponding HTMLElement 
    * @param {HTMLElement} e - Represention of this (Entity (db)) on DOM
@@ -205,6 +186,25 @@ FUNC.diagram = function(elm)
     get parent() { return this.#parent; }
     get children() { return this.#children; }
     addChild(v) { this.#children[this.#children.length] = v; }
+  };
+
+  /**
+   * Representation of a connection from one Shape to another <<abstract>>.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Connection) on DOM
+   * @param {Shape} cF - Referance for 'from' object.
+   */
+  const Connection = class extends Component
+  {
+    #to; #from;
+    constructor(id, e, cF) { super(id, e); this.abstract('Connection');
+      this.variant = (this.e.classList && this.e.classList[0]) ? this.e.classList[0].trim() : null;
+      this.#to = _s.find((sT) => sT.id == this.e.childNodes[0].hash.replace('#', ''));
+      this.#from = cF;
+      this.orientation = this.e.dataset.orientation || 'h';
+    }
+    get to() { return this.#to; }
+    get from() { return this.#from; }
   };
 
   /**

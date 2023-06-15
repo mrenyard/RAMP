@@ -11,11 +11,11 @@ range of commonly used popular developer centric diagrams.**
  * @depends func.core
  * @depends CSS module-diagram.css
 
-Build, edit and arrange *[UML]: Unified Modeling Language diagram
-types such as Class, Sequence, Activity and Use Case as well as
-Entity Relationship Diagrams for databases.
+Build, edit and arrange Unified Modeling Language diagram
+types such as *Class*, *Sequence*, *Activity* and *Use Case*
+as well as *Entity Relationship Diagrams* for databases.
 
-Module *[API]:Application Programming Interface
+Module Application Programming Interface
 --------------------------------------------------
 ```javascript
 FUNC.diagram.types;
@@ -48,9 +48,19 @@ FUNC.my.diagram[i].addShape(typeN, title);
 FUNC.my.diagram[i].save();
 ```
 
+Instantiable Classes
+--------------------------------------------------
+### ClassDiagram
+### SequanceDiagram
+### DatabaseDiagram
+
+### Class
+### Entity
+
+### Association
+
 Expected DOM (HTML) Templates for Preloading Data
 --------------------------------------------------
-
 ### Diagram boundary
 Each Diagram boundry should appear as a `[HtmlElement:section]`
 within the `[HtmlElement:#main]` with varable values for the
@@ -77,7 +87,6 @@ diagram 'Title', 'Type' and 'Veiw Variant'.
       ...
     </div>
 ```
-
 ### Shapes
 Every [HtmlElement:article] represents a single 'Shape' on our diagram canvas.
 ```html
@@ -91,7 +100,6 @@ Every [HtmlElement:article] represents a single 'Shape' on our diagram canvas.
         </div>
       </section>
 ```
-
 ### UML Class
 UML Classes are formated as below 
 ```html
@@ -123,8 +131,6 @@ UML Classes are formated as below
           ...
         </div>
 ```
-
-
 Useful and Related Content
 --------------------------------------------------
  - [Using Namspace placeholders](./my-code.md#namespace-placeholders).
