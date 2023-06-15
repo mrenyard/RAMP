@@ -31,10 +31,10 @@ FUNC.core - String Formating and Manipulation
 
 ### FUNC.core.sp
 Appends a space to non trivial strings.
- * @param {string} `v` - Value to nominally append space.
- * @returns (string) - Value with required appended space.
+ * @param `{string}` `v` - Value to nominally append space.
+ * @returns `{string}` - Value with required appended space.
 ```javascript
-  FUNC.core.sp(value:string)
+  FUNC.core.sp(value:string) : string
 ```
 
 FUNC.core - DOM Addition, Manipulation and Removal
@@ -54,9 +54,9 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
       ...
     </div>
 ```
- * @param {string} title - Heading title for new diagram section (= id attribute-name).
- * @param {sting[]} type - Additional classList values (excluding module).
- * @param {string} moduleName - Optional FUNC.[moduleName] to be executed on new HtmlElement:section.
+ * @param `{string}` `title` - Heading title for new diagram section (= id attribute-name).
+ * @param `{sting[]}` `type` - Additional classList values (excluding module).
+ * @param `{string}` `moduleName` - Optional FUNC.[moduleName] to be executed on new HtmlElement:section.
 ```javascript
 FUNC.core.addSection(title, type, moduleName) : void
 ```
