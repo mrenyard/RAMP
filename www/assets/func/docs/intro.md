@@ -50,7 +50,7 @@ FUNC.init.run();
 Optionally if choosing to place in a different location
 within your site's root directory you may have to include
 a new value for 'modsPath' before the first use of
-FUNC.init.
+`FUNC.init`.
 
 The default path being '/assets/func/mods/'
 ```javascript
@@ -74,8 +74,8 @@ around with some of the exposed fuctionality.*
 Open up your web document in your favourite web browser
 and then its 'Web Developer Tools'.
 
-- Firefox:     menu -> More tools -> Web Developer Tools (F12)
-- Chrome/Edge: menu -> More tools -> Developer Tools (F12)
+- Firefox:     `menu -> More tools -> Web Developer Tools (F12)`
+- Chrome/Edge: `menu -> More tools -> Developer Tools (F12)`
 
 Now you can access FUNC under the Developer Tools Console tab!
 
