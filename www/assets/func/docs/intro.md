@@ -1,20 +1,20 @@
 FUNC.js - Frontend Utilities for Networked Client
 ==================================================
 
-**Writen originaly to complement The RAMP platform
-with fountend interactive, immersive and dynamic 
-content, throught the use of The RAMPs serverside
-Hijax centric Platform. FUNC.js brings a range of
+**Written originally to complement The RAMP platform
+with frontend interactive, immersive and dynamic 
+content, through the use of The RAMP's serverside
+Hijax-centric Platform. FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable
 of enhancing your web DOM.**
 
- * @author Matt Renyard (renyard.m@gmail.com)
+ * @author Matt Renyard (twitter: @mrenyard)
  * @package func.core
 
 GETTING STARTED WITH FUNC
 --------------------------------------------------
 
-To use FUNC simple place the package folder (func)
+To use FUNC simply place the package folder (func)
 within the root of your web directory, most commonly
 within an 'assets' folder.
 ```
@@ -47,8 +47,8 @@ FUNC.init.run();
   </body>
 </html>
 ```
-Optionally if chosing to place in a diferent location
-within your sites root directory you may have to include
+Optionally if choosing to place in a different location
+within your site's root directory you may have to include
 a new value for 'modsPath' before the first use of
 FUNC.init.
 
@@ -59,12 +59,7 @@ FUNC.modsPath = '/assets/func/mods/';
 
 As you wish to use more modules accross your website/application
 you will want to register them by adding new `FUNC.init.resgister`
-statments above `FUNC.init.run()` and below any dependances.
-
-  * Register potentual FUNC modules needed site wide, only loads those scripts actually need per page.
-  * @param {srting} className - Identifing HtmlClass:name for modual use. 
-  * @param {string} fn - FUNC[function/module] as a string to be exacuted against each HtmlEntity (fragment).
-
+statements above `FUNC.init.run()` and below any dependances.
 ```javascript
 FUNC.init.register([HtmlClassName:string], [FuncModule:string]);
 ```
@@ -73,10 +68,10 @@ EXPLORING FUNC.js APIs in Developer Tools Console
 --------------------------------------------------
 
 *Once you open a web document with FUNC.js loaded
-as discripebed above you are ready to start playing
+as described above you are ready to start playing
 around with some of the exposed fuctionality.*
 
-Open up your web document in you favourte web browser
+Open up your web document in your favourite web browser
 and then its 'Web Developer Tools'.
 
 - Firefox:     menu -> More tools -> Web Developer Tools (F12)
@@ -84,9 +79,9 @@ and then its 'Web Developer Tools'.
 
 Now you can access FUNC under the Developer Tools Console tab!
 
-Simple type: `FUNC;` to start exporing.
+Simply type: `FUNC;` to start exploring.
 
-The current package versin number.
+The current package version number.
 ```javascript
 FUNC.version;
 ```
@@ -103,10 +98,10 @@ The 'core' library
 FUNC.core;
 FUNC.core.[...];
 ```
-As you continue to expore and register more modules
-you will beging to understand more about its API.
+As you continue to explore and register more modules
+you will begin to understand more about its API.
 
-Most packages with add content dependent on the
+Most packages will add content dependent on the
 pages DOM under `FUNC.my.[moduleName][index]`
 all will add a constructor function under
 `FUNC.[moduleName]` including some modules
@@ -121,5 +116,3 @@ For more details on each module you will find API
 documentaion witin this folder as `[moduleName].md`.
 
 Matt Renyard.
-
-
