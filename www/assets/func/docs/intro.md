@@ -3,10 +3,10 @@ FUNC.js - Frontend Utilities for Networked Client
 
 **Writen originaly to complement The RAMP platform
 with fountend interactive, immersive and dynamic 
-content. Throught the use of The RAMPs serverside
-Hijax centric Platform, FUNC.js brings a range of
+content, throught the use of The RAMPs serverside
+Hijax centric Platform. FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable
-of enhancing any web DOM.**
+of enhancing your web DOM.**
 
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package func.core
