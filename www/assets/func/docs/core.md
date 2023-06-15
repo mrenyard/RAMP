@@ -13,7 +13,9 @@ Base, Enum, and Exception Classes as well common functions such as
  * @package func.ENUM
  * @package func.Exception
 
- *@see [Using Namspace placeholders](./my-code.md#namespace-placeholders).
+POSIBLE RELEVANT READING
+--------------------------------------------------
+ - [Using Namspace placeholders](./my-code.md#namespace-placeholders).
 
 FUNC.Base
 --------------------------------------------------
@@ -27,8 +29,8 @@ FUNC.Exception
 FUNC.core - String Formating and Manipulation
 --------------------------------------------------
 
-##FUNC.core.sp
- * Appends a space to non trivial strings.
+### FUNC.core.sp
+Appends a space to non trivial strings.
  * @param {string} `v` - Value to nominally append space.
  * @returns (string) - Value with required appended space.
 ```javascript
@@ -38,8 +40,8 @@ FUNC.core - String Formating and Manipulation
 FUNC.core - DOM Addition, Manipulation and Removal
 --------------------------------------------------
 
-##FUNC.core.addSection
-Create new HtmlElement:section within HtmlElement:#main optionally load dynamic `FUNC.[module]` on it.
+### FUNC.core.addSection
+Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load dynamic `FUNC.[module]` on it.
 ```html
     <div id="main" role="main">
       ...
