@@ -55,7 +55,7 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
 FUNC.core.addSection(title, type, moduleName);
 ```
 
-Using Namespaces within local your local namespace
+Using Namespaces within your local namespace
 --------------------------------------------------
 ```javascript
 FUNC.[newModule] = function(elm)
