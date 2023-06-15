@@ -5,7 +5,7 @@ Library of commonly used Functionality across FUNC modules
 
 **FUNCs core library includes definitions for its commonly used
 Base, Enum, and Exception Classes as well common functions such as
-`string` manipulation and *[DOM]: Document Object Model* addition.**
+`string` manipulation and Document Object Model (DOM) addition.**
 
  * @author Matt Renyard (twitter: @mrenyard)
  * @package func.core
@@ -13,14 +13,41 @@ Base, Enum, and Exception Classes as well common functions such as
  * @package func.ENUM
  * @package func.Exception
 
-POSIBLE RELEVANT READING
+Using Namespaces within local namespace
 --------------------------------------------------
+```javascript
+FUNC.[newModule] = function(elm)
+{
+  //- USE (dependant namespaces)
+  var _ = FUNC.[newModule:current],
+      N = FUNC.Enum,
+      Ex = FUNC.Exception,
+      core = FUNC.core;
+  ...
+
+  _.[globalNamespace:function] = function(param, ...) {
+    ...
+  }
+
+  var type = new N('[string]', '[string]', '[string]', '[string]')
+
+  try {
+    ...
+  } catch () {
+    throw new Ex(Ex.BADMETHODCALL, '[string:message]')
+  }
+
+  core.addSection(string:[title], [[string:type], [string:type], ...], [string:moduleName]);
+
+  ...
+}
+```
  - [Using Namspace placeholders](./my-code.md#namespace-placeholders).
 
 FUNC.Base
 --------------------------------------------------
 
-FUNC.ENUM
+FUNC.Enum
 --------------------------------------------------
 
 FUNC.Exception
@@ -45,7 +72,7 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
 ```html
     <div id="main" role="main">
       ...
-      <section id="[attrabute-id:title]" class="[moduleName] [classList:values]">
+      <section id="[attrabute-id:title]" class="[moduleName] [class-list:values]">
         <header><h2>[AttrabuteId:title]</h2></header>
         <div class="canvas">
           ...
