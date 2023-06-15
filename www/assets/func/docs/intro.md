@@ -8,12 +8,8 @@ Hijax centric Platform, FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable
 of enhancing any web DOM.**
 
-/**
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package func.diagram
- * @depends func.core
- * @version 0.1;
-**/
+ * @package func.core
 
 GETTING STARTED WITH FUNC
 --------------------------------------------------
@@ -21,7 +17,7 @@ GETTING STARTED WITH FUNC
 To use FUNC simple place the package folder (func)
 within the root of your web directory, most commonly
 within an 'assets' folder.
-
+```
   |
   +-- public_html       (website root folder)
   | |-- ...
@@ -36,7 +32,7 @@ within an 'assets' folder.
   |     +-- core-full.js
   |
   +-- ramp.ini          (local initialization file)
-
+```
 Then add the below code to the bottom of any relevant
 template and any or all pages on your site.
 
@@ -122,7 +118,7 @@ FUNC.[moduleName]();
 ```
 
 For more details on each module you will find API
-documentaion witin this folder as [moduleName].md.
+documentaion witin this folder as `[moduleName].md`.
 
 Matt Renyard.
 
