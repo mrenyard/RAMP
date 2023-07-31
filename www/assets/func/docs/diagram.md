@@ -88,7 +88,7 @@ diagram 'Title', 'Type' and 'Veiw Variant'.
     </div>
 ```
 ### Shapes
-Every [HtmlElement:article] represents a single 'Shape' on our diagram canvas.
+Every `[HtmlElement:article]` represents a single 'Shape' on our diagram canvas.
 ```html
       <section id="[diagram-id:title]" class="diagram [diagram-type] view-[view-type]">
         ...

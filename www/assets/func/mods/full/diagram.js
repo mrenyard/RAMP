@@ -29,25 +29,32 @@ FUNC.diagram = function(elm)
         'uml-class': new N('detail','comparison','abstract','compact'),
         'uml-sequance': new N('detail'),
         'uml-usecase': new N('detail'),
-        'uml-action': new N('detail'),
+        'uml-action': new N('general', 'swinlane'),
         'erd-database': new N('detail')
+      },
+      _allShapes = {
+        'uml-class': new N('class'),
+        'uml-sequance': new N('Object', 'Activation', 'Actor'), // Fragment('alt', 'opt', 'par', 'loop', 'region', 'neg', 'ref', 'sd');
+        'uml-usecase': new N('Actor', 'Task', 'Boundary'),
+        'uml-action': new N('Action', 'Decision', 'Fork', 'Merge', 'start', 'end'),
+        'erd-database': new N('Entity')
       },
       _type = _.types.at(elm.classList[1]),
       _view = _allViews[_type.name].at(elm.classList[2].replace('view-', '')),
       _annotate = document.createElement('ul');
 
-  if (elm.getElementsByClassName('canvas').length !== 1) {
+  if (elm.getElementsByClassName('sheet').length !== 1) {
     let o = document.createElement('div');
-    o.setAttribute('class', 'canvas');
+    o.setAttribute('class', 'sheet');
     elm.appendChild(o);
   }
-  var _canvas = elm.getElementsByClassName('canvas')[0];
+  var _sheet = elm.getElementsByClassName('sheet')[0];
 
   // Prepare annotation area.
   _annotate.className = 'annotate';
-  _annotate.style.top = (_canvas.offsetTop/16) + 'rem';
-  _annotate.style.left = (_canvas.offsetLeft/16) + 'rem';
-  _annotate.style.width = (_canvas.offsetWidth/16) + 'rem';
+  _annotate.style.top = (_sheet.offsetTop/16) + 'rem';
+  _annotate.style.left = (_sheet.offsetLeft/16) + 'rem';
+  _annotate.style.width = (_sheet.offsetWidth/16) + 'rem';
   _annotate.style.bottom = 0;
   elm.appendChild(_annotate);
 
@@ -64,8 +71,7 @@ FUNC.diagram = function(elm)
   //- LOCAL CLASSES.
   const Diagram = class extends FUNC.Base
   {
-    #i = 0;
-    #draw;
+    #i = 0; #draw;
     constructor() { super(); this.abstract('Diagram');
       this.#draw = [];
       this.updateDraw();
@@ -79,15 +85,64 @@ FUNC.diagram = function(elm)
 
   const ClassDiagram = class extends Diagram
   {
+    #j = 0;
+    #levels = [];
+    // get levelHasDown() { return (this.#j < (this.#levels.length - 1)); }
+    // get levelHasUp() { return (this.#j > 0); }
+    get levelCurrent() { return this.#levels[this.#j]; }
+    resetLevelMax() { 
+      this.resetLevelTop();
+      let o = this.levelCurrent;
+      while (this.levelDown()) {
+        o = (this.levelCurrent.shapes.length >= o.shapes.length) ? this.levelCurrent : o;
+      }
+      this.#j = (o.value - 1)
+     }
+    resetLevelTop() { this.#j = 0; }
+    levelDown() { let r = (this.#j < (this.#levels.length - 1)); if (r) { this.#j++; } return r; }
+    levelUp() { let r = (this.#j > 0); if (r) { this.#j--; } return r; }
+    getLevel(n) {
+      if (this.#levels[(n-1)] != undefined) { return this.#levels[(n-1)]; }
+      this.#levels[(n-1)] = { value:n, shapes:[] };
+      this.#levels[(n-1)].addToLevel = function(c) { return this.shapes[this.shapes.length] = c; };
+      return this.#levels[(n-1)];
+    }
     updateDraw() {
       switch (_view.value) {
         case 0:
           this.draw = [
             (() => { _s.forEach((s) => { s.makeConnections(); } )}),
-            (() => { _s.forEach((s) => { s.update(); } )}),
-            (() => { alert('Step A3'); }),
-            (() => { alert('Step A4'); }),
-            (() => { alert('Step A5'); })
+            (() => {
+              this.resetLevelMax(); let i = 1;
+              this.levelCurrent.shapes.forEach((s) => {
+                s.e.dataset.column = i++;
+                if (
+                  ((s.syblings.length % 2) === 0) &&
+                  (
+                    (s === s.syblings[((s.syblings.length/2) - 1)]) || 
+                    ((s === s.syblings[0]) || (i != 1))
+                  )
+                ) { i++; }
+              });
+              // while (this.levelUp()) {
+                this.levelUp();
+                this.levelCurrent.shapes.forEach((s) => {
+                  if (s.hasSyblings) {
+                    let sy = s.syblings, syF = parseInt(sy[0].e.dataset.column), syL = parseInt(sy[(sy.length-1)].e.dataset.column);
+                    console.log('first',syF);
+                    console.log('last',syL);
+                    let sum = (((syL - syF)%2) == 0) ? (((syL - syF)/2) + syF) : 1;
+                    console.log('sum', sum);
+                    s.e.dataset.column = sum;
+                    console.log(s.e);
+                    return;
+                  }
+                  if (!s.hasParent) { s.e.dataset.column = 1; return; }
+                  s.e.dataset.column = parseInt(s.parent.e.dataset.column);
+                });
+              // } 
+            })
+            // (() => { _s.forEach((s) => { console.log(s.e); } )}),
           ];
           break;
         case 1:
@@ -106,7 +161,44 @@ FUNC.diagram = function(elm)
     updateDraw() {
       switch (_view.value) {
         case 0:
-          return [(() => { alert('Step C1'); } )];
+          return [
+            (() => { _s.forEach((s) => { s.makeConnections(); } )}),
+            (() => { _s.forEach((s) => { s.update(); } )}),
+            (() => { alert('Step C1'); } )
+          ];
+          break;
+      }
+    }
+  }
+  
+  const UsecaseDiagram = class extends Diagram
+  {
+    updateDraw() {
+      switch (_view.value) {
+        case 0:
+          return [
+            (() => { _s.forEach((s) => { s.makeConnections(); } )}),
+            (() => { _s.forEach((s) => { s.update(); } )}),
+            (() => { alert('Step E1'); }),
+            (() => { alert('Step E2'); })
+          ];
+          break;
+      }
+    }
+  }
+
+  const ActionDiagram = class extends Diagram
+  {
+    updateDraw() {
+      switch (_view.value) {
+        case 0:
+        case 1:
+          return [
+            (() => { _s.forEach((s) => { s.makeConnections(); } )}),
+            (() => { _s.forEach((s) => { s.update(); } )}),
+            (() => { alert('Step F1'); }),
+            (() => { alert('Step F2'); })
+          ];
           break;
       }
     }
@@ -153,7 +245,7 @@ FUNC.diagram = function(elm)
       this.#variant = (this.e.classList && this.e.classList[1]) ? this.e.classList[1].trim() : null;
     }
     get variant() { return this.#variant; }
-    makeConnections() { throw Error('is Abstract Method!'); }
+    makeConnections() { this.abstract('makeConnections'); }
   };
 
   /**
@@ -166,7 +258,46 @@ FUNC.diagram = function(elm)
     constructor(id, e) { super(id, e); }
     makeConnections() { }
   };
-
+  /**
+  const Class = class extends Shape
+  {
+    // static #levels = [];
+    // #sI;
+    // #children = [];
+    // #parent;
+    constructor(id, e) { super(id, e);
+      // if (Class.#levels[0] == undefined) { Class.#levels[0] = { value: 1, count: 1 }; }
+      // this.siblings = { index: 0, count: 0 };
+      // this.update();
+    }
+    // setChild(value) {
+    //   this.#children[this.#children.length] = value;
+    //   return this.#children.length;
+    // }
+    // set parent(value) {
+    //   this.#parent = value;
+    //   this.#sI = value.setChild(this);
+    //   if (this.parent.e.dataset.level == undefined) { this.parent.e.dataset.level = 1; }
+    //   this.e.dataset.level = parseInt(this.parent.e.dataset.level) + 1
+    //   if (Class.#levels[parseInt(this.parent.e.dataset.level)] == undefined) {
+    //     Class.#levels[parseInt(this.parent.e.dataset.level)] = { value:parseInt(this.e.dataset.level), count:0 };
+    //   }
+    //   Class.#levels[this.parent.e.dataset.level].count++;
+    // }
+    // // static get levels() { return Class.#levels; }
+    // static get levelMax() {
+    //   var i=0, o = Class.#levels[i], max = Class.#levels[i];
+    //   do {
+    //     max = (o.count > max.count) ? o : max;
+    //   } while (o = Class.#levels[++i]);
+    //   return max;
+    // }
+    // get level() { return Class.#levels[this.e.dataset.level-1]; }
+    // get childrenCount() { return this.#children.length; }
+    // get siblingIndex() { return (this.parent === null) ? { i:1, of:1 } : { value:this.#sI, of:this.parent.childrenCount }; }
+    // get parent() { return this.#parent || null; }
+  };
+*/
   /**
    * Representation of Class in UML.
    * @param {string} id - Unque identifier of corresponding HTMLElement 
@@ -175,17 +306,145 @@ FUNC.diagram = function(elm)
   const Class = class extends Shape
   {
     #parent; #children = [];
-    constructor(id, e) { super(id, e); }
+    constructor(id, e) { super(id, e);
+      if (this.#parent == undefined && this.e.dataset.level == undefined) { this.e.dataset.level = 1; }
+    }
     makeConnections() { 
+      _diagram.resetLevelTop();
       Array.prototype.slice.call(this.e.getElementsByClassName('associations')[0].getElementsByTagName('li')).forEach((e) => {
         var i = _c.length, id = (e.id == '') ? 'association-' + (i) : e.id;
         _c[i] = new Association(id, e, this);
-        if (_c[i].variant == 'inheritance') { this.#parent = _c[i].to; this.#parent.addChild(_c[i].from); }
+        if (_c[i].variant == 'inheritance') {
+          this.#parent = _c[i].to;
+          this.#parent.addChild(_c[i].from);
+          this.e.dataset.level = (parseInt(this.#parent.e.dataset.level) + 1);
+          this.level.addToLevel(this);
+        }
       });
+      if (this.#parent == undefined) {
+        this.#parent = { children: [] };
+        _diagram.getLevel(1).addToLevel(this);
+      }
     }
+    get level() { return _diagram.getLevel(parseInt(this.e.dataset.level)); }
     get parent() { return this.#parent; }
+    get hasParent() { return (this.#parent instanceof Class); }
     get children() { return this.#children; }
+    get hasChildren() { return (this.children.length > 0); }
+    get syblings() { return this.parent.children; }
+    get hasSyblings() { return (this.syblings.length > 0); }
     addChild(v) { this.#children[this.#children.length] = v; }
+  };
+
+  /**
+   * Representation of an Object (Class:Object) ina Sequance Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Object (UML)) on DOM
+   */
+  const Object = class extends Shape
+  {
+    #activation; // (startup|runtime)
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of an Actor in a UML Use Case Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Actor (UML)) on DOM
+   */
+  const Actor = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Task in a UML Use Case Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Task (UML)) on DOM
+   */
+  const Task = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Subject, System Boundary in a UML Use Case Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (System Boundary (UML)) on DOM
+   */
+  const Boundary = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of an Action in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Action (UML)) on DOM
+   */
+  const Action = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Decision in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Decision (UML)) on DOM
+   */
+  const Decision = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Fork Node in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Fork (UML)) on DOM
+   */
+  const Fork = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Merge Node in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Merge (UML)) on DOM
+   */
+  const Merge = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of a Start Node in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (Start (UML)) on DOM
+   */
+  const Start = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
+  };
+
+  /**
+   * Representation of an End Node in a UML Action Diagram.
+   * @param {string} id - Unque identifier of corresponding HTMLElement 
+   * @param {HTMLElement} e - Represention of this (End (db)) on DOM
+   */
+  const End = class extends Shape
+  {
+    constructor(id, e) { super(id, e); }
+    makeConnections() { }
   };
 
   /**
@@ -196,17 +455,20 @@ FUNC.diagram = function(elm)
    */
   const Connection = class extends Component
   {
-    #to; #from;
+    #from; #to;
     constructor(id, e, cF) { super(id, e); this.abstract('Connection');
       this.variant = (this.e.classList && this.e.classList[0]) ? this.e.classList[0].trim() : null;
       this.#to = _s.find((sT) => sT.id == this.e.childNodes[0].hash.replace('#', ''));
       this.#from = cF;
-      this.orientation = this.e.dataset.orientation || 'h';
+      this.e.dataset.orientation = this.e.dataset.orientation || 'h';
     }
-    get to() { return this.#to; }
     get from() { return this.#from; }
+    get to() { return this.#to; }
+    get startPoint() { this.abstract('startPoint'); }
+    get endPoint(){ this.abstract('endPoint'); }
   };
 
+  // Association (inheritance, association, composition), Flow, EntityRelation, UsecaseRelation(Association, Include, Extend) Message (Call, Create, Return, Self, Recursive) 
   /**
    * Representation of an Association in UML.
    * @param {string} id - Unque identifier of corresponding HTMLElement 
@@ -216,8 +478,13 @@ FUNC.diagram = function(elm)
   const Association = class extends Connection
   {
     constructor(id, e, cF) { super(id, e, cF);
-      if (this.variant == 'inheritance') { this.orientation = this.e.dataset.orientation || 'v'; }
+      if (this.variant == 'inheritance') { this.e.dataset.orientation = this.e.dataset.orientation || 'v'; }
     }
+    get startPoint() { return {x: 0, y: 0}; }
+    get endPoint(){  return {x: 0, y: 0}; }
+    get orientation() { return; } // (h|v)
+    get direction() { return ((rF.x + (rF.width/2)) < (rW.y + (rW.width/2))) ? 'ltr' : 'rtl'; }
+    get vflow() { return (rF.y > rW.y) ? 'up' : 'down'; }
     get description() { return (core.sp(super.description) + core.sp(this.orientation) + core.sp(this.direction) + core.sp(this.vflow)).trim(); }
   };
 
@@ -229,7 +496,7 @@ FUNC.diagram = function(elm)
     alert("TODO:mrenyard: SAVE to SERVER");
   };
 
-  var addShape = function(typeN, title) {
+  var addShape = function(typeN, label) {
     alert("TODO:mrenyard: ADD Shape");
   };
 
@@ -238,14 +505,14 @@ FUNC.diagram = function(elm)
   // UML (Class, Object, Actor, Task, System, Action, Swimlane, Decision, Fork, Merge) ERD (Entity)
   Array.prototype.slice.call(elm.getElementsByTagName('article')).forEach((e) => { 
     let CLASS = eval(e.classList[0].charAt(0).toUpperCase() + e.classList[0].slice(1));
-    try {
+    // try {
       _s[_s.length] = new CLASS(e.id, e);
-    } catch {
-      throw new Ex(
-        Ex.types.UNDECLAREDCLASS,
-        'HtmlAttribute:classList @index 0 (' + className + ') does NOT match avalible Shapes. (diagram.js:216)'
-      );
-    }
+    // } catch {
+    //   throw new Ex(
+    //     Ex.types.UNDECLAREDCLASS,
+    //     'HtmlAttribute:classList @index 0 (' + CLASS.name + ') does NOT match avalible Shapes. (diagram.js:453)'
+    //   );
+    // }
   });
   // Read and add diagram from avalible diagram classes.
   let DIAGRAM = eval((((s = _type.name.split('-')[1]).charAt(0).toUpperCase() + s.slice(1))) + 'Diagram');
@@ -254,7 +521,7 @@ FUNC.diagram = function(elm)
   } catch {
     throw new Ex(
       Ex.types.UNDECLAREDCLASS,
-      'HtmlAttribute:classList @index 0 (' + className + ') does NOT match avalible Diagrams. (diagram.js:216)'
+      'HtmlAttribute:classList @index 0 (' + DIAGRAM.name + ') does NOT match avalible Diagrams. (diagram.js:464)'
     );
   }
 
@@ -265,11 +532,13 @@ FUNC.diagram = function(elm)
 
   //- PUBLIC ACCESS, (.my)
   return {
-    add,
+    addShape,
     save,
+    get o() { return _diagram; },
     get type() { return _type.name; },
     get view() { return _view.name; },
-    get views() { return _allViews[_type.name]; },
+    get viewTypes() { return _allViews[_type.name]; },
+    get shapeTypes() { return _allShapes[_type.name]; },
     get shapes() { return _s; },
     get connections() { return _c; },
     get components() { return _s.concat(_c); },
@@ -312,47 +581,4 @@ FUNC.diagram = function(elm)
               annotate.appendChild(this.e);
               this.update();
             }, 500);
-
-  /**
-   * 
-   * @param {*} id 
-   *
-  const Class = class extends Shape
-  {
-    // static #levels = [];
-    // #sI;
-    // #children = [];
-    // #parent;
-    constructor(id, e) { super(id, e);
-      // if (Class.#levels[0] == undefined) { Class.#levels[0] = { value: 1, count: 1 }; }
-      // this.siblings = { index: 0, count: 0 };
-      // this.update();
-    }
-    // setChild(value) {
-    //   this.#children[this.#children.length] = value;
-    //   return this.#children.length;
-    // }
-    // set parent(value) {
-    //   this.#parent = value;
-    //   this.#sI = value.setChild(this);
-    //   if (this.parent.e.dataset.level == undefined) { this.parent.e.dataset.level = 1; }
-    //   this.e.dataset.level = parseInt(this.parent.e.dataset.level) + 1
-    //   if (Class.#levels[parseInt(this.parent.e.dataset.level)] == undefined) {
-    //     Class.#levels[parseInt(this.parent.e.dataset.level)] = { value:parseInt(this.e.dataset.level), count:0 };
-    //   }
-    //   Class.#levels[this.parent.e.dataset.level].count++;
-    // }
-    // // static get levels() { return Class.#levels; }
-    // static get levelMax() {
-    //   var i=0, o = Class.#levels[i], max = Class.#levels[i];
-    //   do {
-    //     max = (o.count > max.count) ? o : max;
-    //   } while (o = Class.#levels[++i]);
-    //   return max;
-    // }
-    // get level() { return Class.#levels[this.e.dataset.level-1]; }
-    // get childrenCount() { return this.#children.length; }
-    // get siblingIndex() { return (this.parent === null) ? { i:1, of:1 } : { value:this.#sI, of:this.parent.childrenCount }; }
-    // get parent() { return this.#parent || null; }
-  };
 */

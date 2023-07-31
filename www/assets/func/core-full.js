@@ -91,10 +91,11 @@ FUNC.core = function()
         h = document.createElement('header'),
         h2 = document.createElement('h2');
     o.setAttribute('id', title.replace(' ','-').toLocaleLowerCase());
-    o.classList.add(moduleName);
+    if (moduleName !== undefined) { o.classList.add(moduleName); }
     while (type[i]) { o.classList.add(type[i++]); }
     h2.append(title); h.appendChild(h2); o.appendChild(h);
     FUNC.domMain.appendChild(o);
+    if (f = FUNC.domMain.getElementsByTagName('footer')[0]) { FUNC.domMain.appendChild(f); }
     if (moduleName !== undefined) {
       fn = eval('FUNC.' + moduleName);
       FUNC.my[moduleName][FUNC.my[moduleName].length] = fn(o);
