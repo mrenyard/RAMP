@@ -40,15 +40,16 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 
 require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModel.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/NotMockBusinessModel.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/mocks/BusinessModelTest/MockBusinessModelWithErrors.class.php';
 
 use ramp\core\Str;
 use ramp\core\Collection;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
-use ramp\model\business\field\Option;
 
 use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModel;
+use tests\ramp\model\business\mocks\BusinessModelTest\NotMockBusinessModel;
 use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelCollection;
 use tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModelWithErrors;
 
@@ -260,10 +261,14 @@ class BusinessModelTest extends \PHPUnit\Framework\TestCase
   public function testOffsetSetOffsetUnset()
   {
     try {
-      $this->testObject[3] = new Option(3, Str::set('No Option'));
+      // $this->testObject[3] = new Option(3, Str::set('No Option'));
+      $this->testObject[3] = new NotMockBusinessModel();
     } catch (\InvalidArgumentException $expected) {
-        $this->assertSame('ramp\model\business\field\Option NOT instanceof tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModel', $expected->getMessage());
-
+        $this->assertSame(
+          'tests\ramp\model\business\mocks\BusinessModelTest\NotMockBusinessModel NOT instanceof ' .
+            'tests\ramp\model\business\mocks\BusinessModelTest\MockBusinessModel',
+          $expected->getMessage()
+        );
         $object = new MockBusinessModel('Forth child');
         $this->testObject[3] = $object;
         $this->assertSame($object, $this->testObject[3]);
