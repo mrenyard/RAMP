@@ -38,6 +38,8 @@ use ramp\view\ChildView;
  * COLLABORATORS
  * - {@link \ramp\view\View}
  * - {@link \ramp\model\Model}
+ * 
+ * @property-read bool $hasModel Returns whether *this* has a model set against it.
  */
 abstract class ComplexView extends ChildView
 {

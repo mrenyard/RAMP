@@ -29,6 +29,8 @@ namespace ramp\core;
  *
  * COLLABORATORS
  * - {@link \ramp\core\RAMPObject}
+ * 
+ * @property-read int $count Returns number of items in list.
  */
 class oList extends RAMPObject implements iList
 {

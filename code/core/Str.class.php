@@ -30,6 +30,9 @@ namespace ramp\core;
  *
  * INVARIANT
  * - State of *this* is always unchanged (all operations return an existing or new Str)
+ * 
+ * @property-read \ramp\core\Str $lowercase Lowercase instance of *this*.
+ * @property-read \ramp\core\Str $uppercase Uppercase instance of *this*.
  */
 final class Str extends RAMPObject
 {

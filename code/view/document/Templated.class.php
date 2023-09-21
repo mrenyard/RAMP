@@ -41,6 +41,8 @@ use ramp\view\document\DocumentView;
  * - {@link \ramp\view\View}
  * - {@link \ramp\model\business\BusinessModel}
  * - {@link \ramp\model\document\DocumentModel}
+ * 
+ * @todo mrenyard:Add property-read/write for get_ methods 
  */
 class Templated extends DocumentView
 {

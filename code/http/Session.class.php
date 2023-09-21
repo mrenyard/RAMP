@@ -53,6 +53,8 @@ use ramp\view\document\Email;
  * }
  * ...
  * ```
+ * 
+ * @property-read \ramp\model\business\LoginAccount $loginAccount LoginAccount for authentication and authorization
  */
 final class Session extends RAMPObject
 {

@@ -45,6 +45,7 @@ use ramp\model\business\FailedValidationException;
  * - {@link \ramp\model\business\Record Record}
  * 
  * @property bool $isEditable Flag for setting or getting access to modify Field value.
+ * @property-read mixed $value Returns value held by relevant property of containing record.
  */
 abstract class Field extends RecordComponent
 {
@@ -159,6 +160,12 @@ abstract class Field extends RecordComponent
   {
     return $this->errorCollection;
   }
+
+  /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  abstract protected function get_value();
 
   /**
    * Template method for use in validation.

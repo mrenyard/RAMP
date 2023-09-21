@@ -35,6 +35,7 @@ use ramp\model\business\Record;
  * - used by {@link ramp\model\business\LoginAccount}
  *
  * @property-read \ramp\model\business\field\Field $email Returns an email address field.
+ * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  */
 abstract class AuthenticatableUnit extends Record
 {
