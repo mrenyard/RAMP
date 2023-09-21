@@ -74,11 +74,4 @@ abstract class RecordComponent extends BusinessModel
   {
     return $this->parentPropertyName;
   }
-
-  /**
-   * Returns relevent value based on parent record state.
-   * **DO NOT CALL DIRECTLY, USE this->value;**
-   * @return mixed Relevent value based on parent record state
-   *
-  abstract protected function get_value();*/
 }

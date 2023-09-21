@@ -24,6 +24,7 @@ namespace tests\ramp\model\business\field\mocks\RelationTest;
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
+use ramp\model\business\RecordComponent;
 use ramp\model\business\Relation;
 
 /**
@@ -36,7 +37,7 @@ class FromRecord extends Record
     return StrCollection::set('key');
   }
 
-  protected function get_key()
+  protected function get_key() : RecordComponent
   {
     if (!isset($this[0])) {
       $this[0] = new MockField(
@@ -47,7 +48,7 @@ class FromRecord extends Record
     return $this[0]; 
   }
 
-  public function get_relationAlpha()
+  public function get_relationAlpha() : RecordComponent
   {
     if (!isset($this[1])) {
       $this[1] = new Relation(
@@ -59,7 +60,7 @@ class FromRecord extends Record
     return $this[1];
   }
 
-  public function get_relationBeta()
+  public function get_relationBeta() : RecordComponent
   {
     if (!isset($this[2])) {
       $this[2] = new Relation(
