@@ -59,10 +59,7 @@ abstract class BusinessModelManager extends RAMPObject
   abstract public function update(BusinessModel $model);
 
   /**
-   * Ensure update of any out of sync Records with any permanent data store.
-   * Uses the following properties of {@link \ramp\model\business\Record} for varification:
-   * - {@link \ramp\model\business\Record::isValid}
-   * - {@link \ramp\model\business\Record::isModified}
+   * Ensure update of anything out of sync within data store.
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
   abstract public function updateAny();
