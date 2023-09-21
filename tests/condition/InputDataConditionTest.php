@@ -150,7 +150,6 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   public function testValue()
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
-
     try {
       $testObject->value = $this->value;
     } catch (PropertyNotSetException $expected) {
@@ -164,7 +163,42 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
       $testObject2 = new InputDataCondition(
         $this->record, $this->primaryKeyValue, $this->property, 'GOOD'
       );
-      $this->assertSame('GOOD', $testObject2->value);
+
+      $this->assertSame('GOOD', (string)$testObject2->value);
+      return;
+    }
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+  }
+
+    /**
+   * Collection of assertions for \ramp\condition\InputDataCondition::attributeURN.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'attributeURN'
+   *   - with message: <em>'[className]->attributeURN is NOT settable'</em>
+   * - assert allows retrieval of 'attributeURN'
+   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert 'attributeURN' equal to record:key:property
+   * @link ramp.condition.InputDataCondition#method_get_attributeURN ramp\condition\InputDataCondition::attributeURN
+   */
+  public function testAttributeURN()
+  {
+    $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
+    try {
+      $testObject->attributeURN = Str::set('U:R:N');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(
+        'ramp\condition\InputDataCondition->attributeURN is NOT settable',
+        $expected->getMessage()
+      );
+      $this->assertInstanceOf('\ramp\core\Str', $testObject->attributeURN);
+      $this->assertSame(
+        (string)$this->record
+          ->append(Str::COLON())
+          ->append($this->primaryKeyValue)
+          ->append(Str::COLON())
+          ->append($this->property)
+          ->lowercase,
+        (string)$testObject->attributeURN
+      );
       return;
     }
     $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
