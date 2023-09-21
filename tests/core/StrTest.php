@@ -28,10 +28,12 @@ require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\core\PropertyNotSetException;
 
 /**
  * Collection of tests for \ramp\core\Str.
@@ -46,12 +48,68 @@ class StrTest extends \PHPUnit\Framework\TestCase
   public function test__construct()
   {
     try {
-      $testRAMPObject = new Str();
+      $testObject = new Str();
     } catch (\Throwable $expected) {
       $this->assertTrue(true);
       return;
     }
     $this->fail('An expected Error: Call to private ramp\core\Str::__construct() has NOT been raised.');
+  }
+
+  /**
+   * Collection of assertions for ramp\core\Str::lowercase.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'lowercase'
+   *   - with message: <em>'[className]->lowercase is NOT settable'</em>
+   * - assert allows retrieval of 'lowercase'
+   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert each subsequent is same instance as first
+   * - assert retreved matches expected lowercase instance of original
+   * @link ramp.core.Str#method_get_lowercase \ramp\core\Str::lowercase
+   */
+  public function testLowercase()
+  {
+    $o1 = Str::set('Hello');
+    try {
+      $o1->lowercase = Str::set('goodbye');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(
+        'ramp\core\Str->lowercase is NOT settable',
+        $expected->getMessage()
+      );
+      $this->assertInstanceOf('\ramp\core\Str', $o1->lowercase);
+      $this->assertSame($o1->lowercase, $o1->lowercase);
+      $this->assertSame('hello', (string)$o1->lowercase);
+      return;
+    }
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+  }
+
+  /**
+   * Collection of assertions for ramp\core\Str::uppercase.
+   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'uppercase'
+   *   - with message: <em>'[className]->uppercase is NOT settable'</em>
+   * - assert allows retrieval of 'uppercase'
+   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert each subsequent is same instance as first
+   * - assert retreved matches expected lowercase instance of original
+   * @link ramp.core.Str#method_get_uppercase \ramp\core\Str::uppercase
+   */
+  public function testUppercase()
+  {
+    $o1 = Str::set('Hello');
+    try {
+      $o1->uppercase = Str::set('GOODBYE');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(
+        'ramp\core\Str->uppercase is NOT settable',
+        $expected->getMessage()
+      );
+      $this->assertInstanceOf('\ramp\core\Str', $o1->uppercase);
+      $this->assertSame($o1->uppercase, $o1->uppercase);
+      $this->assertSame('HELLO', (string)$o1->uppercase);
+      return;
+    }
+    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**

@@ -78,6 +78,9 @@ final class Str extends RAMPObject
    */
   private $value;
 
+  private $lower;
+  private $upper;
+
   /**
    * Constructor for new instance of Str.
    * Takes string for strong type Str
@@ -86,6 +89,26 @@ final class Str extends RAMPObject
   private function __construct($value)
   {
     $this->value = (string)$value;
+  }
+
+  /**
+   * Returns 'this' lowercase.
+   * @return \ramp\core\Str Lowercase instance of *this*.
+   */
+  public function get_lowercase() : Str
+  {
+    if (!isset($this->lower)) { $this->lower = Str::set(strtolower($this->value)); }
+    return $this->lower;
+  }
+
+  /**
+   * Returns 'this' uppercase.
+   * @return \ramp\core\Str Uppercase instance of *this*.
+   */
+  public function get_uppercase() : Str
+  {
+    if (!isset($this->upper)) { $this->upper = Str::set(strtoupper($this->value)); }
+    return $this->upper;
   }
 
   /**
