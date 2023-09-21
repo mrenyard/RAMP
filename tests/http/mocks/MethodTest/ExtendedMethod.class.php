@@ -27,10 +27,8 @@ use ramp\http\Method;
 /**
  * Method for testing against.
  */
-final class ExtendedMethod extends Method {
-
-  //private static $VERB;
-
+final class ExtendedMethod extends Method
+{
   /**
    * Constructor for new instance of ExtendedMethod.
    * @param int $index Number to be assigned to this Verb
