@@ -194,6 +194,107 @@ class StrTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for ramp\core\Str::BAR().
+   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::BAR()}
+   * - assert returns the SAME instance on calling set('|')
+   * - assert when cast to (string) returns (string literal '|')
+   * - assert that each is instance of {@link \ramp\core\Str}
+   * @link ramp.core.Str#method_BAR \ramp\core\Str::BAR()
+   */
+  public function testBAR()
+  {
+    $o1 = Str::BAR();
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+
+    $o2 = Str::BAR();
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertSame($o1, $o2);
+
+    $o3 = Str::set('|');
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertSame($o1, $o3);
+
+    $this->assertEquals($o1, $o2);
+    $this->assertSame('|', (string) $o1);
+  }
+
+  /**
+   * Collection of assertions for ramp\core\Str::NEW().
+   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::NEW()}
+   * - assert returns the SAME instance on calling set('new')
+   * - assert when cast to (string) returns (string literal 'new')
+   * - assert that each is instance of {@link \ramp\core\Str}
+   * @link ramp.core.Str#method_NEW \ramp\core\Str::NEW()
+   */
+  public function testNEW()
+  {
+    $o1 = Str::NEW();
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+
+    $o2 = Str::NEW();
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertSame($o1, $o2);
+
+    $o3 = Str::set('new');
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertSame($o1, $o3);
+
+    $this->assertEquals($o1, $o2);
+    $this->assertSame('new', (string) $o1);
+  }
+  
+  /**
+   * Collection of assertions for ramp\core\Str::PLUS().
+   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::PLUS()}
+   * - assert returns the SAME instance on calling set('+')
+   * - assert when cast to (string) returns (string literal '+')
+   * - assert that each is instance of {@link \ramp\core\Str}
+   * @link ramp.core.Str#method_PLUS \ramp\core\Str::PLUS()
+   */
+  public function testPLUS()
+  {
+    $o1 = Str::PLUS();
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+
+    $o2 = Str::PLUS();
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertSame($o1, $o2);
+
+    $o3 = Str::set('+');
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertSame($o1, $o3);
+
+    $this->assertEquals($o1, $o2);
+    $this->assertSame('+', (string) $o1);
+  }
+
+  
+  /**
+   * Collection of assertions for ramp\core\Str::FK().
+   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::FK()}
+   * - assert returns the SAME instance on calling set('FK_')
+   * - assert when cast to (string) returns (string literal 'FK_')
+   * - assert that each is instance of {@link \ramp\core\Str}
+   * @link ramp.core.Str#method_FK \ramp\core\Str::FK()
+   */
+  public function testFK()
+  {
+    $o1 = Str::FK();
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+
+    $o2 = Str::FK();
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertSame($o1, $o2);
+
+    $o3 = Str::set('FK_');
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertSame($o1, $o3);
+
+    $this->assertEquals($o1, $o2);
+    $this->assertSame('FK_', (string) $o1);
+  }
+
+  /**
    * Collection of assertions for ramp\core\Str::append().
    * - assert returns string same as handed to constructor + appended param
    * - assert returned {@link \ramp\core\Str} NOT same as original
