@@ -297,6 +297,11 @@ final class Str extends RAMPObject
     return ((string)$rtn == (string)$this)? $this : $rtn;
   }
 
+  /**
+   * Returns a new Str based on 'this' with all occurrences of $search:Str replaced as directed.
+   * @param \ramp\core\Str $search Sub string to be search and replaced.
+   * @param \ramp\core\Str $replace Replacement value.
+   */
   public function replace(Str $search, Str $replace) : Str
   {
     return Str::set(\str_replace((string)$search, (string)$replace, (string)$this));

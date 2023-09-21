@@ -481,6 +481,23 @@ class StrTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
+   * Collection of assertions for ramp\core\Str::replace().
+   * - assert correct replacement of searched sub string on all occurrences of sub string
+   * - assert original value remains unchanged.
+   * @link ramp.core.Str#method_replace \ramp\core\Str::replace()
+   */
+  public function testReplace()
+  {
+    $o1 = Str::set('Hello World!');
+    $o2 = $o1->replace(Str::set('Hello'), Str::set('Goodbye'));
+    $o3 = $o1->replace(Str::set('o'), Str::set('0'));
+    $this->assertSame('Goodbye World!', (string)$o2);
+    $this->assertSame('Hell0 W0rld!', (string)$o3);
+    $this->assertSame('G00dbye W0rld!', (string)$o2->replace(Str::set('o'), Str::set('0')));
+    $this->assertSame('Hello World!', (string)$o1);
+  }
+
+  /**
    * Collection of assertions for ramp\core\Str::camelCase().
    * - assert any attempt to camelCase {@link \ramp\core\Str::_EMPTY()} return _EMPTY()
    * - assert correct camelcasing of space seperated words
