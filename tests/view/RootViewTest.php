@@ -89,19 +89,6 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\view\RootView::setModel.
-   * - assert BadMethodCallException thrown when calling setModel().
-   * @link ramp.view.RootView#method_setModel ramp\view\RootView::setModel()
-   *
-  public function testSetModel()
-  {
-    $testObject = RootView::getInstance();
-    $this->expectException('\BadMethodCallException');
-    $this->expectExceptionMessage('SHOULD NOT USE THIS METHOD');
-    $testObject->setModel(new MockModel());
-  }*/
-
-  /**
    * Collection of assertions for \ramp\view\RootView::render()
    * and \ramp\view\RootView::add().
    * - assert each child view added sequentially

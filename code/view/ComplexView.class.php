@@ -103,8 +103,9 @@ abstract class ComplexView extends ChildView
     if (!$cascade) { return; }
 
     if ($model instanceof \Traversable) {
-      if (!($model instanceof \Countable)) {
+      if (!($model instanceof \Countable)) { // @codeCoverageIgnoreStart
         throw new \LogicException('All Traversable Model(s) MUST also implement Countable');
+        // @codeCoverageIgnoreEnd
       }
       if (!isset($this->viewCollection)) { return; }
 
