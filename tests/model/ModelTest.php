@@ -21,31 +21,42 @@
  */
 namespace tests\ramp\model;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+// require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+// require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
+// require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/MockModel.class.php';
+
+use ramp\core\RAMPObject;
 use ramp\model\Model;
 
-/**
- * Mock Concreate implementation of \ramp\model\Model for testing against.
- */
-class MockModel extends Model { }
+use tests\ramp\mocks\model\MockModel;
 
 /**
  * Collection of tests for \ramp\model\Model.
  */
-class ModelTest extends \PHPUnit\Framework\TestCase {
+class ModelTest extends \tests\ramp\core\ObjectTest {
 
   /**
-   * Collection of assertions for \ramp\model\Model::__construct().
+   * Template method inc. factory for TestObject instance.
+   */
+  protected function preSetup() : void { }
+  protected function getTestObject() : RAMPObject { return new MockModel(); }
+  protected function postSetup() : void { }
+
+  /**
+   * Default base constructor assertions \ramp\model\Model::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
    * @link ramp.model.Model ramp\model\Model
    */
   public function testConstruct()
   {
-    $testObject = new MockModel();
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\model\Model', $testObject);
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
   }
+
+  // public function testPropertyNotSetExceptionOn__set() { parent::testPropertyNotSetExceptionOn__set(); }
 }

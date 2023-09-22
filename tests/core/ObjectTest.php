@@ -21,18 +21,17 @@
  */
 namespace tests\ramp\core;
 
-require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
-require_once '/usr/share/php/tests/ramp/core/mocks/ObjectTest/AnObject.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/core/AnObject.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\BadPropertyCallException;
 use ramp\core\PropertyNotSetException;
 
-use tests\ramp\core\mocks\ObjectTest\AnObject;
+use tests\ramp\mocks\core\AnObject;
 
 /**
  * Collection of tests for \ramp\core\RAMPObject.
@@ -40,58 +39,75 @@ use tests\ramp\core\mocks\ObjectTest\AnObject;
  * COLLABORATORS
  * - {@link \tests\ramp\condition\mocks\ObjectTest\AnObject}
  */
-class RAMPObjectTest extends \PHPUnit\Framework\TestCase
+class ObjectTest extends \PHPUnit\Framework\TestCase
 {
+  protected $testObject;
+
+  /* Setup - template */
+  final public function setUp() : void { $this->preSetUp(); $this->testObject = $this->getTestObject(); $this->postSetup(); }
+
   /**
-   * Collection of assertions for ramp\core\RAMPObject::__construct().
+   * Template method inc. factory for TestObject instance.
+   */
+  protected function preSetup() : void { }
+  protected function getTestObject() : RAMPObject { return new AnObject(); }
+  protected function postSetup() : void { }
+
+  /**
+   * Default base constructor assertions \ramp\core\RAMPObject::__construct().
    * - assert child RAMPObject is instance of the parent
    * @link ramp.core.RAMPObject \ramp\core\RAMPObject
    */
-  public function test__construct()
+  public function testConstruct()
   {
-    $testRAMPObject = new AnObject();
-    $this->assertInstanceOf('ramp\core\RAMPObject', $testRAMPObject);
-    return $testRAMPObject;
+    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
   }
 
   /**
-   * Collection of assertions for ramp\core\RAMPObject::__set() and \ramp\core\RAMPObject::__get().
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @link ramp.core.RAMPObject#method__set ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set()
+  {
+    $this->expectException(PropertyNotSetException::class);
+    $this->expectExceptionMessage(get_class($this->testObject) . '->badProperty is NOT settable');
+    $this->testObject->badProperty = 1;
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
    * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @link ramp.core.RAMPObject#method__get ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get()
+  {
+    $this->expectException(BadPropertyCallException::class);
+    $this->expectExceptionMessage('Unable to locate badProperty of \'' . get_class($this->testObject) . '\'');
+    $o = $this->testObject->badProperty;
+  }
+
+  /**
+   * Good property is accessable on \ramp\core\RAMPObject::__get() and \ramp\core\RAMPObject::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @param \ramp\core\RAMPObject $testRAMPObject Instance of MockRAMPObject for testing
-   * @depends test__construct
    * @link ramp.core.RAMPObject#method___set \ramp\core\RAMPObject::__set()
    * @link ramp.core.RAMPObject#method___get \ramp\core\RAMPObject::__get()
    */
-  public function testSetGet(RAMPObject $testRAMPObject)
+  public function testAccessPropertyWith__set__get()
   {
-    $value = new AnObject();
-    try {
-      $testRAMPObject->noProperty = $value;
-    } catch (PropertyNotSetException $expected) {
-      try {
-        $value = $testRAMPObject->noProperty;
-      } catch (BadPropertyCallException $expecrted) {
-        $testRAMPObject->aProperty = $value;
-        $this->assertSame($value, $testRAMPObject->aProperty);
-        return;
-      }
-      $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised.');
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+    $localTestObject = new AnObject();
+    $value = 'VALUE';
+    $localTestObject->aProperty = $value;
+    $this->assertSame($localTestObject->aProperty, $value);
   }
 
   /**
-   * Collection of assertions for ramp\core\RAMPObject::__toString().
+   * Correct return of ramp\core\RAMPObject::__toString().
    * - assert {@link \ramp\core\RAMPObject::__toString()} returns string 'class name'
-   * @param \ramp\core\RAMPObject $testRAMPObject Instance of MockRAMPObject for testing
-   * @depends test__construct
    * @link ramp.core.RAMPObject#method___toString \ramp\core\RAMPObject::__toString()
    */
-  public function testToString(RAMPObject $testRAMPObject)
+  public function testToString()
   {
-    $this->assertSame('tests\ramp\core\mocks\ObjectTest\AnObject', (string)$testRAMPObject);
+    $this->assertSame(get_class($this->testObject), (string)$this->testObject);
   }
 }
