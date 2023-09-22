@@ -33,7 +33,6 @@ require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/Field.class.php';
 require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/Record.class.php';
 require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/ConcreteBusinessCondition.class.php';
 

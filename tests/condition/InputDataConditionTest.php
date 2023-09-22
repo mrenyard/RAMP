@@ -34,7 +34,6 @@ require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/URNQueryEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/InputDataConditionTest/Field.class.php';
 require_once '/usr/share/php/tests/ramp/condition/mocks/InputDataConditionTest/Record.class.php';
 require_once '/usr/share/php/tests/ramp/condition/mocks/InputDataConditionTest/MockEnvironment.class.php';
 
