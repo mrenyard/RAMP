@@ -107,9 +107,7 @@ Design Patterns: Elements of Reusable Object-Oriented Software
 
 Design Patterns Explained: A New Perspective on Object-Oriented Design  
 [https://www.amazon.co.uk/Design-Patterns-Explained-Perspective-Object-Oriented/dp/0321247140]  
-and Commonality Variability Analysis whitepaper  
-[http://www.netobjectives.net/files/pdfs/Introduction_CommonalityVariabilityAnalysis.pdf]  
-(NetObjectives).
+and Commonality Variability Analysis whitepaper (NetObjectives).
 
 Hijax  
 [https://domscripting.com/blog/display/41]  
