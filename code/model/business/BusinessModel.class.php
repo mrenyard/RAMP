@@ -61,7 +61,12 @@ abstract class BusinessModel extends Model implements iList
         $children;
   }
 
-  protected function setChildren(BusinessModel $value)
+  /**
+   * Set children.
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @param \ramp\model\business\BusinessModel $children business model.
+   */
+  public function set_children(BusinessModel $value)
   {
     $this->children = $value;
   }

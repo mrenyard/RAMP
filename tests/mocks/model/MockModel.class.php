@@ -28,5 +28,4 @@ use ramp\model\Model;
  */
 class MockModel extends Model
 {
-
 }

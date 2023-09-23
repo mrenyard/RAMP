@@ -22,11 +22,7 @@
 namespace tests\ramp\model;
 
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
-// require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-// require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-// require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
-
 require_once '/usr/share/php/tests/ramp/mocks/model/MockModel.class.php';
 
 use ramp\core\RAMPObject;
@@ -37,14 +33,12 @@ use tests\ramp\mocks\model\MockModel;
 /**
  * Collection of tests for \ramp\model\Model.
  */
-class ModelTest extends \tests\ramp\core\ObjectTest {
-
+class ModelTest extends \tests\ramp\core\ObjectTest
+{
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function preSetup() : void { }
   protected function getTestObject() : RAMPObject { return new MockModel(); }
-  protected function postSetup() : void { }
 
   /**
    * Default base constructor assertions \ramp\model\Model::__construct().
@@ -57,6 +51,4 @@ class ModelTest extends \tests\ramp\core\ObjectTest {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
   }
-
-  // public function testPropertyNotSetExceptionOn__set() { parent::testPropertyNotSetExceptionOn__set(); }
 }
