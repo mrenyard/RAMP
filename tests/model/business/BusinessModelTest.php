@@ -63,7 +63,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function preSetup() : void { MockBusinessModel::reset(); }
+  protected function preSetup() : void {  }
   protected function getTestObject() : RAMPObject { return new MockBusinessModel('Top object'); }
 
   /**
@@ -209,6 +209,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    */
   private function populateModelChildren()
   {
+    MockBusinessModel::reset();
     $children = new MockBusinessModelCollection();
     $grandchildren = new MockBusinessModelCollection();
     $this->testChild1 = new MockBusinessModel('First child');
@@ -257,7 +258,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame('mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
 
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-    $i = 1;
+    $i = 0;
     $iterator = $this->testObject->getIterator();
     $iterator->rewind();
     foreach ($this->testObject as $child) {
@@ -265,7 +266,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
       $this->assertSame('uid-' . $i++, (string)$child->id);
       $iterator->next();
     }
-    $this->assertSame(4, $i);
+    $this->assertSame(3, $i);
 
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[0]);
     $this->assertSame($this->testChild1, $this->testObject[0]);
@@ -325,7 +326,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @link ramp.model.business.BusinessModel#method_getErrors ramp\model\business\BusinessModel::getErrors()
    */
-  public function testGetErrors()
+  public function testErrorReportingPropagation()
   {
     $this->populateModelChildren();
 
