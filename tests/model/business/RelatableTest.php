@@ -39,18 +39,17 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function preSetup() : void { MockBusinessModel::reset(); }
-  protected function getTestObject() : RAMPObject { return new MockRelatable('Top object'); }
+  protected function getTestObject() : RAMPObject { return new MockRelatable(); }
 
   /**
    * Collection of assertions for \ramp\model\business\Relatable::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\model\business\Relatable}
    * - assert is instance of {@link \ramp\core\iOption}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
+   * - assert is instance of {@link \ramp\model\business\Relatable}
    * @link ramp.model.business.Relatable ramp\model\business\Relatable
    */
   public function testConstruct()

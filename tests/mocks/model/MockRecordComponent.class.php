@@ -26,12 +26,12 @@ use ramp\core\Str;
 use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\condition\PostData;
-use ramp\model\business\Relatable;
+use ramp\model\business\RecordComponent;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
+ * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
  */
-class MockRelatable extends Relatable
+class MockRecordComponent extends RecordComponent
 {
   public $validateCount;
   public $hasErrorsCount;
