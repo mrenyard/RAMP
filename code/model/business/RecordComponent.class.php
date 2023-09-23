@@ -48,11 +48,11 @@ abstract class RecordComponent extends BusinessModel
    * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL)
+  public function __construct() //Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL)
   {
-    $this->parentPropertyName = $parentPropertyName;
-    $this->parentRecord = $parentRecord;
-    parent::__construct($children);
+    // $this->parentPropertyName = $parentPropertyName;
+    // $this->parentRecord = $parentRecord;
+    parent::__construct(); //$children);
   }
 
   /**
