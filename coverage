@@ -1,0 +1,1 @@
+sudo phpunit --coverage-html /home/mrenyard/Code/Documentation/coverage /home/mrenyard/Projects/RAMP/tests --whitelist /home/mrenyard/Projects/RAMP/code
