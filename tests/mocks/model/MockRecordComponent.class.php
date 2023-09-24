@@ -21,11 +21,7 @@
  */
 namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\condition\PostData;
 use ramp\model\business\RecordComponent;
 
 /**
@@ -33,38 +29,11 @@ use ramp\model\business\RecordComponent;
  */
 class MockRecordComponent extends RecordComponent
 {
-  public $validateCount;
-  public $hasErrorsCount;
-
-  public function __construct(BusinessModel $children = null)
-  {
-    parent::__construct($children);
-    $this->validateCount = 0;
-    $this->hasErrorsCount = 0;
-  }
-
   /**
    * Mocked get_id method
    * @return \ramp\core\Str Str('uid-1')
    */
   public function get_id() : Str
   {
-  }
-
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
-  public function validate(PostData $postdata)
-  {
-    $this->validateCount++;
-    parent::validate($postdata);
-  }
-
-  public function get_hasErrors() : bool
-  {
-    $this->hasErrorsCount++;
-    return parent::get_hasErrors();
   }
 }

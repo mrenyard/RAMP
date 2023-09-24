@@ -27,7 +27,6 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';
 
 use ramp\core\RAMPObject;
 
-use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockRelatable;
 use tests\ramp\mocks\model\MockBusinessModel;
 
@@ -42,7 +41,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   protected function getTestObject() : RAMPObject { return new MockRelatable(); }
 
   /**
-   * Collection of assertions for \ramp\model\business\Relatable::__construct().
+   * Default base constructor assertions \ramp\model\business\Relatable::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
    * - assert is instance of {@link \ramp\core\iOption}

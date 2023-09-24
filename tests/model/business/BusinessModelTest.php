@@ -44,6 +44,7 @@ use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 use ramp\core\BadPropertyCallException;
 use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
 
 use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockBusinessModel;
@@ -55,6 +56,8 @@ use tests\ramp\mocks\model\MockBusinessModelWithErrors;
  */
 class BusinessModelTest extends \tests\ramp\model\ModelTest
 {
+  protected $expectedChildCount;
+
   private $testChild1;
   private $testChild2;
   private $testChild3;
@@ -63,8 +66,8 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function preSetup() : void {  }
   protected function getTestObject() : RAMPObject { return new MockBusinessModel('Top object'); }
+  protected function postSetup() : void { $this->expectedChildCount = 0; }
 
   /**
    * Default base constructor assertions \ramp\model\business\BusinessModel::__construct().
@@ -93,7 +96,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
    * @return \ramp\core\Str *This* business model type (without namespace)
    */
-  private function processType($classFullName, bool $hyphenate = null) : Str
+  protected function processType($classFullName, bool $hyphenate = null) : Str
   {
     $pathNode = explode('\\', $classFullName);
     $modelName = explode('_', array_pop($pathNode));
@@ -102,7 +105,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Minimum BusinessModel initial state assertions.
+   * Minimumal BusinessModel initial state.
    * - assert property 'type' is gettable:
    *   - assert returned value is of type {@link \ramp\core\Str}.
    *   - assert returned value matches expected result.
@@ -129,9 +132,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame($type1 . ' ' . $type2, (string)$this->testObject->type);
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0; foreach ($this->testObject as $child) { $i++; }
-    $this->assertSame($i, 0);
-    $this->assertFalse(isset($this->testObject[0]));
-    $this->assertSame(0, $this->testObject->count);
+    $this->assertSame($this->expectedChildCount, $i);
+    $this->assertFalse(isset($this->testObject[$this->expectedChildCount]));
+    $this->assertSame($this->expectedChildCount, $this->testObject->count);
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->errors);
     $this->assertSame(0, $this->testObject->errors->count);
@@ -182,7 +185,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   {
     $this->expectException(\OutOfBoundsException::class);
     $this->expectExceptionMessage('Offset out of bounds');
-    $o = $this->testObject[0];
+    $o = $this->testObject[$this->expectedChildCount];
   }
 
   /**
@@ -195,9 +198,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @link ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
    * @link ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset()
+  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
-    $o = new MockBusinessModel('Forth child');
+    $o = (isset($o)) ? $o : new MockBusinessModel('Forth child');
     $this->testObject[0] = $o;
     $this->assertSame($o, $this->testObject[0]);
     unset($this->testObject[0]);
@@ -302,14 +305,12 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->populateModelChildren();
 
     $this->assertNull($this->testObject->validate(new PostData())); // Call
-    $this->assertSame(1, $this->testObject->validateCount); // touched
     $this->assertSame(1, $this->testChild1->validateCount); // touched
     $this->assertSame(1, $this->testChild2->validateCount); // touched
     $this->assertSame(1, $this->testChild3->validateCount); // touched
     $this->assertSame(1, $this->grandchild->validateCount); // touched
 
     $this->assertTrue($this->testObject->hasErrors); // Call
-    $this->assertSame(1, $this->testObject->hasErrorsCount); // no errors
     $this->assertSame(1, $this->testChild1->hasErrorsCount); // no errors
     $this->assertSame(1, $this->testChild2->hasErrorsCount); // first with-errors (stops here)
     $this->assertSame(0, $this->testChild3->hasErrorsCount);

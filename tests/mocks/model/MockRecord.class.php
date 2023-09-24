@@ -22,19 +22,48 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
+use ramp\model\business\Record;
+use ramp\model\business\RecordComponent;
 
-use ramp\model\business\Relatable;
+use tests\ramp\mocks\model\MockRecordComponent;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
-class MockRelatable extends Relatable
+class MockRecord extends Record
 {
-  /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Str('uid-1')
-   */
-  public function get_id() : Str
+  public function primaryKeyNames() : StrCollection
   {
+    return StrCollection::set('keyA', 'KeyB', 'KeyC');
+  }
+
+  protected function get_keyA() : RecordComponent
+  {
+    if (!isset($this[0])) {
+      $this[0] = new MockRecordComponent(Str::set('keyA'), $this); // STUB
+    }
+    return $this[0]; 
+  }
+
+  protected function get_keyB() : RecordComponent
+  {
+    if (!isset($this[1])) {
+      $this[1] = new MockRecordComponent(Str::set('keyB'), $this); // STUB
+    }
+    return $this[1]; 
+  }
+
+  protected function get_keyC() : RecordComponent
+  {
+    if (!isset($this[2])) {
+      $this[2] = new MockRecordComponent(Str::set('keyC'), $this); // STUB
+    }
+    return $this[2]; 
+  }
+
+  protected static function checkRequired($dataObject) : bool
+  {
+    return TRUE;
   }
 }

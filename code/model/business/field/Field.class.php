@@ -164,8 +164,8 @@ abstract class Field extends RecordComponent
   /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
-   */
-  abstract protected function get_value();
+   *
+  abstract protected function get_value();*/
 
   /**
    * Template method for use in validation.

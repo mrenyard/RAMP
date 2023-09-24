@@ -21,13 +21,12 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\iOption;
-use ramp\core\Collection;
+// use ramp\core\iOption;
+// use ramp\core\Collection;
 use ramp\core\StrCollection;
-use ramp\condition\PostData;
-// use ramp\model\business\BusinessModel;
-// use ramp\model\business\Relatable;
-use ramp\core\PropertyNotSetException;
+// use ramp\condition\PostData;
+// use ramp\core\PropertyNotSetException;
+use ramp\model\business\Relatable;
 
 /**
  * A single Record (entry).
@@ -91,8 +90,9 @@ abstract class Record extends Relatable
    */
   final protected function get_id() : Str
   {
-    $primaryKeyValue = ($this->isNew || $this->primaryKey->values == NULL) ? Str::set('new') :
-      Str::set((string)$this->primaryKey->values->implode(Str::BAR())->replace(Str::SPACE(),Str::PLUS()));
+    $primaryKeyValue = ($this->isNew || !isset($this->primaryKey->value)) ?
+      Str::NEW() : Str::set($this->primaryKey->value); 
+    //s->implode(Str::BAR())->replace(Str::SPACE(),Str::PLUS()));
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
     )->append($primaryKeyValue);
@@ -125,43 +125,43 @@ abstract class Record extends Relatable
       );
     }
     $parentPropertyName = $object->parentPropertyName;
-    if ($object instanceof \ramp\model\business\field\Relation) {
-      $parentPropertyName = $parentPropertyName->prepend(Str::FK());
-    }
+    // if ($object instanceof \ramp\model\business\field\Relation) {
+    //   $parentPropertyName = $parentPropertyName->prepend(Str::FK());
+    // }
     if (!isset($this->dataObject->$parentPropertyName)) {
       $this->dataObject->$parentPropertyName = NULL;
     }
     parent::offsetSet($offset, $object);
   }
 
-  /*
+  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   */
+   *
   final public function validate(PostData $postdata)
   {
     parent::validate($postdata);
     if ($this->isNew && $this->isModified && $this->checkRequired($this->dataObject)) {
       $this->PrimaryKey->validate($postdata);
     }
-  }
+  }*/
 
   /**
    * Checks if any errors have been recorded following validate().
    * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
    * @return bool True if an error has been recorded
-   */
+   *
   protected function get_hasErrors() : bool
   {
     return (parent::get_hasErrors())? TRUE : $this->primaryKey->hasErrors;
-  }
+  }*/
 
   /**
    * Gets collection of recorded errors.
    * **DO NOT CALL DIRECTLY, USE this->errors;**
    * @return StrCollection List of recorded errors.
-   */
+   *
   protected function get_errors() : StrCollection
   {
     $errors = StrCollection::set();
@@ -170,7 +170,7 @@ abstract class Record extends Relatable
       return $errors;
     }
     return parent::get_errors();
-  }
+  }*/
 
   /**
    * Gets the value of a given property.
@@ -214,7 +214,7 @@ abstract class Record extends Relatable
    */
   protected function get_isValid() : bool
   {
-    return ($this->validFromSource || $this->checkRequired($this->dataObject));
+    return ($this->validFromSource || (isset($this->primaryKey->value) && $this->checkRequired($this->dataObject)));
   }
 
   /**
