@@ -44,18 +44,18 @@ use tests\ramp\mocks\model\MockRecord;
  */
 class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 {
-  private $parentPropertyName;
-  private $parentRecord;
+  private $propertyName;
+  private $record;
 
   /**
    * Template method inc. factory for TestObject instance.
    */
   protected function preSetup() : void {
-    $this->parentPropertyName = Str::set('aProperty');
-    $this->parentRecord = new MockRecord();
+    $this->propertyName = Str::set('aProperty');
+    $this->record = new MockRecord();
   }
   protected function getTestObject() : RAMPObject {
-    return new MockRecordComponent($this->parentPropertyName, $this->parentRecord);
+    return new MockRecordComponent($this->propertyName, $this->record);
   }
 
   /**
@@ -77,38 +77,38 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Hold reference back to associated parent Record and propertyName
-   * - assert parentRecord as passed to constructor.
-   * - assert parentPropertyName as passed to constructor.
-   * @link ramp.model.business.RecordComponent#method_get_parentRecord ramp\model\business\RecordComponent::parentRecord
+   * - assert record as passed to constructor.
+   * - assert propertyName as passed to constructor.
+   * @link ramp.model.business.RecordComponent#method_get_parentRecord ramp\model\business\RecordComponent::record
    * @link ramp.model.business.RecordComponent#method_get_parentProppertyName ramp\model\business\RecordComponent::parentProppertyName
    */
   public function testInitStateRecordComponentParent()
   {
-    $this->assertSame($this->parentRecord, $this->testObject->parentRecord);
-    $this->assertSame($this->parentPropertyName, $this->testObject->parentPropertyName);
+    $this->assertSame($this->propertyName, $this->testObject->propertyName);
+    $this->assertSame($this->record, $this->testObject->record);
   }
 
   /**
-   * Set 'parentRecord' NOT accessable ramp\model\business\RecordComponent::parentRecord.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'parentRecord'
-   * @link ramp.model.business.RecordComponent#method_set_parentRecord ramp\model\business\RecordComponent::parentRecord
+   * Set 'record' NOT accessable ramp\model\business\RecordComponent::record.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @link ramp.model.business.RecordComponent#method_set_parentRecord ramp\model\business\RecordComponent::record
    */
   public function testSetParentRecordPropertyNotSetException()
   {
     $this->expectException(PropertyNotSetException::class);
-    $this->expectExceptionMessage(get_class($this->testObject) . '->parentRecord is NOT settable');
-    $this->testObject->parentRecord = 'PARENTRECORD';
+    $this->expectExceptionMessage(get_class($this->testObject) . '->record is NOT settable');
+    $this->testObject->record = 'PARENTRECORD';
   }
 
   /**
-   * Set 'parentPropertyName' NOT accessable ramp\model\business\RecordComponent::parentPropertyName.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'parentPropertyName'
-   * @link ramp.model.business.RecordComponent#method_set_parentPropertyName ramp\model\business\RecordComponent::parentPropertyName
+   * Set 'propertyName' NOT accessable ramp\model\business\RecordComponent::propertyName.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @link ramp.model.business.RecordComponent#method_set_parentPropertyName ramp\model\business\RecordComponent::propertyName
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {
     $this->expectException(PropertyNotSetException::class);
-    $this->expectExceptionMessage(get_class($this->testObject) . '->parentPropertyName is NOT settable');
-    $this->testObject->parentPropertyName = 'PARENTPROPERTYNAME';
+    $this->expectExceptionMessage(get_class($this->testObject) . '->propertyName is NOT settable');
+    $this->testObject->propertyName = 'PARENTPROPERTYNAME';
   }
 }

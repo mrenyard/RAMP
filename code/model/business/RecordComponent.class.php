@@ -33,54 +33,54 @@ use ramp\core\Str;
  * COLLABORATORS
  * - {@link \ramp\model\business\Record Record}
  *
- * @property-read \ramp\core\Str $parentPropertyName Related parent record associated property name.
- * @property-read \ramp\model\business\Record $parentRecord Related parent Record associated with this component.
+ * @property-read \ramp\core\Str $propertyName Related parent record associated property name.
+ * @property-read \ramp\model\business\Record $record Related parent Record associated with this component.
  * @property-read mixed $value Relevent value based on parent record state.
  */
 abstract class RecordComponent extends BusinessModel
 {
-  private $parentPropertyName;
-  private $parentRecord;
+  private $propertyName;
+  private $record;
 
   /**
-   * Creates a multiple part primary key field related to a collection of property of parent record.
-   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
+   * Creates a multiple part primary key field related to a collection of property of associated record.
+   * @param \ramp\core\Str $propertyName Related dataObject property name of associated record.
+   * @param \ramp\model\business\Record $record Record parent of *this* property.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL)
+  public function __construct(Str $propertyName, Record $record, BusinessModel $children = NULL)
   {
-    $this->parentPropertyName = $parentPropertyName;
-    $this->parentRecord = $parentRecord;
+    $this->propertyName = $propertyName;
+    $this->record = $record;
     parent::__construct($children);
   }
 
   /**
    * Get parent record
-   * **DO NOT CALL DIRECTLY, USE this->parentRecord;**
+   * **DO NOT CALL DIRECTLY, USE this->record;**
    * @return \ramp\model\business\Record Parent record of *this*
    */
-  final protected function get_parentRecord() : Record
+  final protected function get_record() : Record
   {
-    return $this->parentRecord;
+    return $this->record;
   }
 
   /**
    * Get dataobject property name
-   * **DO NOT CALL DIRECTLY, USE this->parentPropertyName;**
+   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
    * @return \ramp\core\Str Property name for dataobject of *this* containing record
    */
-  final protected function get_parentPropertyName() : Str
+  final protected function get_propertyName() : Str
   {
-    return $this->parentPropertyName;
+    return $this->propertyName;
   }
 
   /**
-   * Returns value held by relevant property of parent record.
-   * @return mixed Value held by relevant property of parent record
+   * Returns value held by relevant property of associated record.
+   * @return mixed Value held by relevant property of associated record
    */
   protected function get_value()
   {
-    return $this->parentRecord->getPropertyValue((string)$this->parentPropertyName);
+    return $this->record->getPropertyValue((string)$this->propertyName);
   }
 }

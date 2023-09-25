@@ -124,12 +124,12 @@ abstract class Record extends Relatable
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
     }
-    $parentPropertyName = $object->parentPropertyName;
+    $propertyName = $object->propertyName;
     // if ($object instanceof \ramp\model\business\field\Relation) {
-    //   $parentPropertyName = $parentPropertyName->prepend(Str::FK());
+    //   $propertyName = $propertyName->prepend(Str::FK());
     // }
-    if (!isset($this->dataObject->$parentPropertyName)) {
-      $this->dataObject->$parentPropertyName = NULL;
+    if (!isset($this->dataObject->$propertyName)) {
+      $this->dataObject->$propertyName = NULL;
     }
     parent::offsetSet($offset, $object);
   }
