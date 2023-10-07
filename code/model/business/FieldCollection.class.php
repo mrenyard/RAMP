@@ -18,12 +18,13 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business;
+namespace ramp\model\business\field;
 
 use ramp\core\RAMPObject;
 use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\core\Str;
+use ramp\model\business\BusinessModel;
 
 /**
  * Referance and maintain a collection of \ramp\model\business\Records.
@@ -37,7 +38,7 @@ use ramp\core\Str;
  * COLLABORATORS
  * - Collection of {@link \ramp\model\business\Record}s
  */
-abstract class RecordCollection extends Relatable implements iCollection
+abstract class FieldCollection extends BusinessModel implements iCollection
 {
   /**
    * Default constructor for collection of \ramp\model\business\Records.

@@ -49,22 +49,21 @@ use ramp\model\business\FailedValidationException;
  */
 abstract class Field extends RecordComponent
 {
-  protected $errorCollection;
+  private $errorCollection;
   private $editable;
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property
+   * @param \ramp\core\Str $propertyName Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $record Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @param bool $editable 
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $parentPropertyName, Record $parentRecord, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $propertyName, Record $record, BusinessModel $children = NULL, bool $editable = NULL)
   {
-    $this->errorCollection = StrCollection::set();
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($parentPropertyName, $parentRecord, $children);
+    parent::__construct($propertyName, $record, $children);
   }
 
   /**
@@ -75,9 +74,9 @@ abstract class Field extends RecordComponent
   protected function get_id() : Str
   {
     return Str::COLON()->prepend(
-      $this->parentRecord->id
+      $this->record->id
     )->append(
-      Str::hyphenate($this->parentPropertyName)
+      Str::hyphenate($this->propertyName)
     );
   }
 
@@ -85,11 +84,11 @@ abstract class Field extends RecordComponent
    * Get Label
    * **DO NOT CALL DIRECTLY, USE this->label;**
    * @return \ramp\core\Str Label for *this*
-   */
+   *
   protected function get_label() : Str
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->parentPropertyName)))));
-  }
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->propertyName)))));
+  }*/
 
   /**
    * Get isEditable
@@ -98,10 +97,7 @@ abstract class Field extends RecordComponent
    */
   protected function get_isEditable() : bool
   {
-    return (
-      $this->parentRecord->isNew || 
-      (!$this->parentRecord->primaryKeyNames()->contains($this->parentPropertyName) && $this->editable !== FALSE)
-    );
+    return ($this->record->isNew || (!$this->record->isValid) || $this->editable !== FALSE);
   }
 
   /**
@@ -116,12 +112,29 @@ abstract class Field extends RecordComponent
   }
 
   /**
+   * ArrayAccess method offsetSet, USE DISCOURAGED.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object RAMPObject to be placed at provided index.
+   * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
+   */
+  public function offsetSet($offset, $object)
+  {
+    if (!($object instanceof \ramp\core\iOption)) {
+      throw new \InvalidArgumentException(
+        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+      );
+    }
+    parent::offsetSet($offset, $object);
+  }
+
+  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
   public function validate(PostData $postdata) : void
   {
+    $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
       if ((string)$inputdata->attributeURN == (string)$this->id)
@@ -133,8 +146,8 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($e->getMessage()));
           return;
         }
-        $this->parentRecord->setPropertyValue(
-          (string)$this->parentPropertyName, $inputdata->value
+        $this->record->setPropertyValue(
+          (string)$this->propertyName, $inputdata->value
         );
         return;
       }
@@ -148,7 +161,7 @@ abstract class Field extends RecordComponent
    */
   protected function get_hasErrors() : bool
   {
-    return ($this->errorCollection->count > 0);
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
   }
 
   /**
@@ -158,14 +171,8 @@ abstract class Field extends RecordComponent
    */
   protected function get_errors() : StrCollection
   {
-    return $this->errorCollection;
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
   }
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   *
-  abstract protected function get_value();*/
 
   /**
    * Template method for use in validation.

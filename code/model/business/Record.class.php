@@ -21,11 +21,8 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
-// use ramp\core\iOption;
-// use ramp\core\Collection;
+use ramp\condition\PostData;
 use ramp\core\StrCollection;
-// use ramp\condition\PostData;
-// use ramp\core\PropertyNotSetException;
 use ramp\model\business\Relatable;
 
 /**
@@ -48,16 +45,11 @@ use ramp\model\business\Relatable;
  */
 abstract class Record extends Relatable
 {
+  private static $strPrimaryKey;
+  private $primaryKey;
   private $dataObject;
-  private $validFromSource;
+  private $validAtSource;
   private $modified;
-  private $primaryKeyField;
-
-  /**
-   * Returns property name/s of concrete classes primary key.
-   * @return \ramp\core\StrCollection Primary Key Name/s
-   */
-  abstract public function primaryKeyNames() : StrCollection;
 
   /**
    * Creates record, new or with encapsulated source data contained.
@@ -66,21 +58,21 @@ abstract class Record extends Relatable
   public function __construct(\stdClass $dataObject = null)
   {
     parent::__construct();
+    if (!isset(self::$strPrimaryKey)) { self::$strPrimaryKey = Str::set('PrimaryKey'); }
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
-    $this->updated();
+    $this->primaryKey = new key\Primary(self::$strPrimaryKey, $this);
     $className = get_class($this);
-    foreach (get_class_methods($className) as $methodName)
-    {
-      if (strpos($methodName, 'get_') === 0)
-      {
-        foreach (get_class_methods(__NAMESPACE__ . '\Record') as $parentMethod)
-        {
+    foreach (get_class_methods($className) as $methodName) {
+      if (strpos($methodName, 'get_') === 0) {
+        foreach (get_class_methods(__NAMESPACE__ . '\Record') as $parentMethod) {
           if ($methodName == $parentMethod) { continue 2; }
         }
         $propertyName = str_replace('get_', '', $methodName);
+        $this->dataObject->$propertyName = NULL;
         $this->$propertyName;
       }
     }
+    $this->updated();
   }
 
   /**
@@ -90,9 +82,8 @@ abstract class Record extends Relatable
    */
   final protected function get_id() : Str
   {
-    $primaryKeyValue = ($this->isNew || !isset($this->primaryKey->value)) ?
-      Str::NEW() : Str::set($this->primaryKey->value); 
-    //s->implode(Str::BAR())->replace(Str::SPACE(),Str::PLUS()));
+    $primaryKeyValue = ($this->primaryKey->values === NULL) ?
+      Str::NEW() : $this->primaryKey->values->implode(Str::BAR())->lowercase;
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
     )->append($primaryKeyValue);
@@ -105,31 +96,30 @@ abstract class Record extends Relatable
    */
   final protected function get_primaryKey() : key\Primary
   {
-    if (!isset($this->primaryKeyField)) {
-      $this->primaryKeyField = new key\Primary($this);
-    }
-    return $this->primaryKeyField;
+    return $this->primaryKey;
+  }
+
+  /**
+   * Implementation of \IteratorAggregate method for use with foreach etc.
+   * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
+   */
+  public function getIterator() : \Traversable
+  {
+    return ($this->primaryKey->value === NULL)? $this->primaryKey->getIterator() : parent::getIterator();
   }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethosCallException Adding properties through offsetSet STRONGLY DISCOURAGED!
+   * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
   public function offsetSet($offset, $object)
   {
     if (!($object instanceof \ramp\model\business\RecordComponent)) {
-      throw new \BadMethodCallException(
+      throw new \InvalidArgumentException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
-    }
-    $propertyName = $object->propertyName;
-    // if ($object instanceof \ramp\model\business\field\Relation) {
-    //   $propertyName = $propertyName->prepend(Str::FK());
-    // }
-    if (!isset($this->dataObject->$propertyName)) {
-      $this->dataObject->$propertyName = NULL;
     }
     parent::offsetSet($offset, $object);
   }
@@ -138,14 +128,15 @@ abstract class Record extends Relatable
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   *
-  final public function validate(PostData $postdata)
+   */
+  public function validate(PostData $postdata) : void
   {
-    parent::validate($postdata);
-    if ($this->isNew && $this->isModified && $this->checkRequired($this->dataObject)) {
+    if ($this->isNew) {
       $this->PrimaryKey->validate($postdata);
+      return;
     }
-  }*/
+    parent::validate($postdata);
+  }
 
   /**
    * Checks if any errors have been recorded following validate().
@@ -214,7 +205,7 @@ abstract class Record extends Relatable
    */
   protected function get_isValid() : bool
   {
-    return ($this->validFromSource || (isset($this->primaryKey->value) && $this->checkRequired($this->dataObject)));
+    return ($this->validAtSource || (isset($this->primaryKey->value) && $this->checkRequired($this->dataObject)));
   }
 
   /**
@@ -224,7 +215,7 @@ abstract class Record extends Relatable
    */
   final protected function get_isNew() : bool
   {
-    return (!$this->validFromSource);
+    return (!$this->validAtSource);
   }
 
   /**
@@ -234,15 +225,7 @@ abstract class Record extends Relatable
   public function updated()
   {
     $this->modified = FALSE;
-    $pkNames = $this->primaryKeyNames();
-    foreach ($pkNames as $primaryKeyName) {
-      $pkName = (string)$primaryKeyName;
-      if (!isset($this->dataObject->$pkName)) {
-        $this->validFromSource = FALSE;
-        return;
-      }
-    }
-    $this->validFromSource = ($this->checkRequired($this->dataObject));
+    $this->validAtSource = ($this->primaryKey->value == NULL) ? FALSE : ($this->checkRequired($this->dataObject));
   }
 
   /**

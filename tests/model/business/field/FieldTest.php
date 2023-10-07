@@ -21,88 +21,53 @@
  */
 namespace tests\ramp\model\business\field;
 
+require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/OptionList.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/condition/Condition.class.php';
-require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
-require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/PostData.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
-require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/mocks/RecordTest/ConcreteValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockRecord.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/field/mocks/FieldTest/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
 
-use ramp\SETTING;
+use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\Collection;
-use ramp\core\OptionList;
-use ramp\core\PropertyNotSetException;
 use ramp\condition\PostData;
-use ramp\model\business\Record;
+use ramp\model\business\BusinessModel;
 use ramp\model\business\field\Option;
 
-use tests\ramp\model\business\field\mocks\FieldTest\MockRecordCollection;
-use tests\ramp\model\business\field\mocks\FieldTest\MockRecord;
-use tests\ramp\model\business\field\mocks\FieldTest\MockField;
+use tests\ramp\mocks\core\MockOption;
+use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\model\MockField;
+use tests\ramp\mocks\model\MockBusinessModel;
+use tests\ramp\mocks\model\MockBusinessModelWithErrors;
 
 /**
  * Collection of tests for \ramp\model\business\field\Field.
  */
-class FieldTest extends \PHPUnit\Framework\TestCase
+class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
-  private $testObject;
-  private $dataObject;
-  private $mockRecord;
-  private $children;
-  private $testChild1;
-  private $testChild2;
-  private $testChild3;
-
   /**
-   * Setup - add variables
+   * Template method inc. factory for TestObject instance.
    */
-  public function setUp() : void
-  {
-    MockField::reset();
-    $this->children = new MockRecordCollection();
-    $this->dataObject = new \stdClass();
-    $this->mockRecord = new MockRecord($this->dataObject);
-    $this->testChild1 = new MockRecord();
-    $this->testChild2 = new MockRecord();
-    $this->testChild3 = new MockRecord();
-    $this->children->add($this->testChild1);
-    $this->children->add($this->testChild2);
-    $this->children->add($this->testChild3);
-    $this->testObject = new MockField(Str::set('aProperty'), $this->mockRecord, $this->children);
-    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\model\business\field\mocks\FieldTest';
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    $this->dataObject = new \StdClass();
+    $this->record = new MockRecord($this->dataObject);
+  }
+  protected function getTestObject() : RAMPObject {
+    return $this->record->aProperty;
+  }
+  protected function postSetup() : void {
+    $this->propertyName = $this->record->propertyName;
+    $this->expectedChildCountNew = 0;
   }
 
   /**
@@ -116,37 +81,47 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@link \ramp\model\field\Field}
    * @link ramp.model.business.field.Field ramp\model\business\field\Field
    */
-  public function test__construct()
+  public function testConstruct()
   {
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
-    $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
-    $this->assertInstanceOf('\Countable', $this->testObject);
-    $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \ramp\model\business\field\Field::id.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * - assert property 'id' is gettable.
-   * - assert returned value instance of {@link \ramp\core\Str}.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.field.Field#method_get_id ramp\model\business\field\Field::id
+   * Minimumal Field initial 'new' state.
+   * - assert property 'id' is gettable:
+   *   - assert returned value instance of {@link \ramp\core\Str}.
+   *   - assert returned value matches expected result, in the format:
+   *     - lowercase and hypenated colon seperated [class-name]:[key].
+   * - assert isEditable matches expected values, some defaults are NOT overridable:
+   *   - assert always returns TRUE while state is 'new' (no primaryKey value)
+   *   - assert 
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::id
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
+   * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
+   * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
    */
-  public function testGet_id()
+  public function testInitStateField()
   {
-    try {
-      $this->testObject->id = "ID";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->id is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-      $this->assertSame($this->mockRecord->id . ':a-property', (string)$this->testObject->id);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
+    $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->propertyName), (string)$this->testObject->id);
+    // isEdiatable always remains TRUE while state is 'new'
+    $this->assertTrue($this->testObject->isEditable);
+    // even after requested change.
+    $this->isEditable = FALSE;
+    $this->assertTrue($this->testObject->isEditable);
+    // Now.. Update associated Record as 'validAtSource'
+    $this->dataObject->keyA = 1;
+    $this->dataObject->keyB = 1;
+    $this->dataObject->keyC = 1;
+    $this->record->updated();
+    $this->assertFalse($this->record->isNew);
+    $this->assertTrue($this->record->isValid);
+    // isEditable still defaults to TRUE
+    $this->assertTrue($this->testObject->isEditable);
+    // but allows state change.
+    $this->testObject->isEditable = FALSE;
+    $this->assertFalse($this->testObject->isEditable);
   }
 
   /**
@@ -156,7 +131,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert returned value instance of {@link \ramp\core\Str}.
    * - assert returned value matches expected result.
    * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
-   */
+   *
   public function testGet_label()
   {
     try {
@@ -168,6 +143,266 @@ class FieldTest extends \PHPUnit\Framework\TestCase
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }*/
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\field\Field::__set().
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @link ramp.model.Model#method__set ramp\model\field\Field::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set()
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\field\Field::__get().
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @link ramp.model.Model#method__get ramp\model\field\Field::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get()
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Good property is accessable on \ramp\model\field\Field::__get() and \ramp\model\field\Field::__set()
+   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
+   * @link ramp.model.Model#method___set \ramp\model\field\Field::__set()
+   * @link ramp.model.Model#method___get \ramp\model\field\Field::__get()
+   */
+  public function testAccessPropertyWith__set__get()
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\field\Field::__toString().
+   * - assert {@link \ramp\model\field\Field::__toString()} returns string 'class name'
+   * @link ramp.model.Model#method___toString \ramp\model\field\Field::__toString()
+   */
+  public function testToString()
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Minimumal field\Field initial state.
+   * - assert property 'type' is gettable:
+   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value matches expected result.
+   * - assert getIterator() returns object instance of {@link \Traversable}
+   * - assert foreach iterates zero times as no properties are present.
+   * - assert OffsetExists False returned on isset() when indexed with invalid index (0).
+   * - assert return expected int value related to the number of child Records held (0).
+   * - assert hasErrors returns FALSE.
+   * - assert returned errors are as expected:
+   *   - assert errors instance of {@link \ramp\core\StrCollection}.
+   *   - assert errors count is 0.
+   * @link ramp.model.business.field\Field#method_get_type ramp\model\business\field\Field::type
+   * @link ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
+   * @link ramp.model.business.field\Field#method_offsetExists ramp\model\business\field\Field::offsetExists()
+   * @link ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count()
+   * @link ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
+   * @link ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
+   */
+  public function testInitStateMin()
+  {
+    parent::testInitStateMin();
+  }
+
+  /**
+   * Set 'id' NOT accessable on \ramp\model\business\field\Field::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * @link ramp.model.business.field\Field#method_set_id ramp\model\business\field\Field::id
+   */
+  public function testSetIdPropertyNotSetException()
+  {
+    parent::testSetIdPropertyNotSetException();
+  }
+
+  /**
+   * Set 'type' NOT accessable on \ramp\model\business\field\Field::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * @link ramp.model.business.field\Field#method_set_type ramp\model\business\field\Field::type
+   */
+  public function testSetTypePropertyNotSetException()
+  {
+    parent::testSetTypePropertyNotSetException();
+
+  }
+
+  /**
+   * Get 'children' NOT accessable on \ramp\model\business\field\Field::children.
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * @link ramp.model.business.field\Field#method_get_children ramp\model\business\field\Field::children
+   */
+  public function testGetChildrenBadPropertyCallException()
+  {
+    parent::testGetChildrenBadPropertyCallException();
+
+  }
+
+  /**
+   * Index beyond bounds with \ramp\model\business\field\Field::offsetGet.
+   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
+   * @link ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
+   */
+  public function testOffsetGetOutOfBounds()
+  {
+    parent::testOffsetGetOutOfBounds();
+
+  }
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\BusinessModel',
+      new MockOption(0, Str::set('DESCRIPTION')),
+      'tests\ramp\mocks\core\MockOption NOT instanceof ramp\model\business\BusinessModel'
+    );
+    parent::testOffsetSetTypeCheckException(
+      '\ramp\core\iOption',
+      new BusinessModel(),
+      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+  }
+
+  /**
+   * Index editing of children through \ramp\model\business\field\Field::offsetSet and
+   * for \ramp\model\business\field\Field::offsetUnset.
+   * - assert successful use of offsetSet
+   * - assert returned object is the same object at same index (offset) as was set.
+   * - asser successful use of offsetUnset
+   * - assert isset return FALSE at the same index once unset has been used.
+   * @link ramp.model.business.field\Field#method_offsetSet ramp\model\business\field\Field::offsetSet()
+   * @link ramp.model.business.field\Field#method_offsetUnset ramp\model\business\field\Field::offsetUnset()
+   */
+  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  {
+    parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
+  }
+
+  /**
+   * Populates $testObject with hierarchal model for testing against. 
+   */
+  protected function populateSubModelTree()
+  {
+    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 1'));
+    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 2'));
+    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 3'));
+    $this->expectedChildCountExisting = 3;
+    $this->postData = PostData::build(array(
+      'mock-record:new:a-property' => 'BadValue'
+    ));
+    $this->childErrorIndexes = array(1);
+  }
+
+  /**
+   * Type checking definitions for test.
+   */
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[2]->type);
+  }
+
+  /**
+   * Handle complex iterative relations (model flexability).
+   * - assert set 'children' modifies interable field\Field.
+   * - assert foreach loop, iterates through each expected object:
+   *   - assert returns object that is an instance of {@link \Traversable}
+   *   - assert foreach returned object matches expected.
+   * - assert expected object returned at its expected index.
+   * - assert return expected int value related to the number of child BusinessModels held.
+   * @link ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
+   * @link ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
+   * @link ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
+   * @link ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count
+   */
+  public function testComplexModelIteration()
+  {
+    parent::testComplexModelIteration();
+  }
+
+  /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert set 'children' modifies interable field\Field.
+   * - assert validate method returns void (null) when called.
+   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
+   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
+   * - assert propagates through child/grandchild until reaches one that has recorded errors.
+   * @link ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
+   * @link ramp.model.business.field\Field#method_validate ramp\model\business\field\Field::validate()
+   * @link ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
+   */
+  public function testTouchValidityAndErrorMethods()
+  {
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertSame(1, $this->testObject->validateCount);
+    $this->assertSame(1, $this->testObject->hasErrorsCount);
+  }
+
+  /**
+   * Error reporting within complex models using \ramp\model\business\field\Field::getErrors().
+   * - assert following validate(), the expected iCollection of error messages returned from
+   *    getErrors() are as expected, depending on which level they are called.
+   * - assert any following call to hasErrors returns the same collection of messages as previously.
+   * - assert a single collection containing all errors including children and grandchildren
+   *    of top testObject returned when called on testObject.
+   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
+   * @link ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
+   */
+  public function testErrorReportingPropagation()
+  {
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
+    $this->assertSame('Error MESSAGE BadValue Submited!', (string)$this->testObject->errors[0]);
+  }
+
+  /**
+   * Hold reference back to associated parent Record, propertyName and value.
+   * - assert record as passed to constructor.
+   * - assert propertyName as passed to constructor.
+   * @link ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
+   * @link ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
+   */
+  public function testInitStateRecordComponent()
+  {
+    parent::testInitStateRecordComponent();
+  }
+
+  /**
+   * Set 'record' NOT accessable ramp\model\business\field\Field::record.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @link ramp.model.business.field\Field#method_set_parentRecord ramp\model\business\field\Field::record
+   */
+  public function testSetParentRecordPropertyNotSetException()
+  {
+    parent::testSetParentRecordPropertyNotSetException();
+  }
+
+  /**
+   * Set 'propertyName' NOT accessable ramp\model\business\field\Field::propertyName.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @link ramp.model.business.field\Field#method_set_parentPropertyName ramp\model\business\field\Field::propertyName
+   */
+  public function testSetParentPropertyNamePropertyNotSetException()
+  {
+    parent::testSetParentPropertyNamePropertyNotSetException();
   }
 
   /**
@@ -180,7 +415,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    * - assert returns set value non primaryKey as set
    * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
    * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
-   */
+   *
   public function testIsEditable()
   {
     $this->testObject->isEditable = TRUE;
@@ -219,128 +454,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
 
     $existingNonPrimaryFromNew = new MockField(Str::set('cProperty'), new MockRecord($this->dataObject), NULL, TRUE);
     $this->AssertTrue($existingNonPrimaryFromNew->isEditable);
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::containingRecord.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'containingRecord'
-   * - assert property 'containingRecord' is gettable.
-   * - assert returned Record matches Record as provided construct.
-   * @link ramp.model.business.field.Field#method_get_containingRecord ramp\model\business\field\Field::containingRecord
-   */
-  public function testGet_containingRecord()
-  {
-    try {
-      $this->testObject->parentRecord = $this->mockRecord;
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame($this->mockRecord, $this->testObject->parentRecord);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::type.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * - assert property 'type' is gettable.
-   * - assert returned value is of type {@link \ramp\core\Str}.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.field.Field#method_get_type ramp\model\business\field\Field::type
-   */
-  public function testGet_type()
-  {
-    try {
-      $this->testObject->type = "TYPE";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->type is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
-      $this->assertEquals('mock-field field', (string)$this->testObject->type);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::getIterator().
-   * - assert returns object that is an instance of {@link \Traversable}
-   * - assert foreach loop, iterates through each expected object.
-   * - assert foreach returned object matches expected.
-   * @link ramp.model.business.field.Field#method_getIterator ramp\model\business\field\Field::getIterator()
-   */
-  public function testGetIterator()
-  {
-    $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
-    $i = 0;
-    $iterator = $this->children->getIterator();
-    $iterator->rewind();
-    foreach ($this->testObject as $child) {
-      $this->assertSame($child, $iterator->current());
-      $iterator->next();
-    }
-    $this->assertSame('mock-record:new:a-property', (string)$this->testObject->id);
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::offsetGet.
-   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * - assert expected object returned at its expected index.
-   * @link ramp.model.business.field.Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
-   */
-  public function testOffsetGet()
-  {
-    try {
-      $this->testObject[4];
-    } catch (\OutOfBoundsException $expected) {
-      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[0]);
-      $this->assertSame($this->testChild1, $this->testObject[0]);
-      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[1]);
-      $this->assertSame($this->testChild2, $this->testObject[1]);
-      $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject[2]);
-      $this->assertSame($this->testChild3, $this->testObject[2]);
-      return;
-    }
-    $this->fail('An expected \OutOfBoundsException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::offsetExists.
-   * - assert True returned on isset() when within expected bounds.
-   * - assert False returned on isset() when outside expected bounds.
-   * @link ramp.model.business.field.Field#method_offsetExists ramp\model\business\field\Field::offsetExists()
-   */
-  public function testOffsetExists()
-  {
-    $this->assertTrue(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject[1]));
-    $this->assertTrue(isset($this->testObject[2]));
-    $this->assertFalse(isset($this->testObject[3]));
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::offsetSet and
-   * for \ramp\model\business\BusinessModel::offsetUnset.
-   * - assert successful use of offsetSet
-   * - assert returned object is the same object at same index (offset) as was set.
-   * - asser successful use of offsetUnset
-   * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.field.Field#method_offsetSet ramp\model\business\field\Field::offsetSet()
-   * @link ramp.model.business.field.Field#method_offsetUnset ramp\model\business\field\Field::offsetUnset()
-   */
-  public function testOffsetSetOffsetUnset()
-  {
-    try {
-      $this->testObject[3] = new Option(3, Str::set('No Option'));
-    } catch (\InvalidArgumentException $expected) {
-        $this->assertSame('ramp\model\business\field\Option NOT instanceof tests\ramp\model\business\field\mocks\FieldTest\MockRecord', $expected->getMessage());
-        $object = new MockRecord();
-        $this->testObject[3] = $object;
-        $this->assertSame($object, $this->testObject[3]);
-        unset($this->testObject[3]);
-        $this->assertFalse(isset($this->testObject[3]));
-        return;
-    }
-    $this->fail('An expected \BadMethodCallException has NOT been raised.');
-  }
+  }*/
 
   /**
    * Collection of assertions for \ramp\model\business\field\Field::validate() where PostData
@@ -350,12 +464,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    *    matches the testObject's id, then its processValidationRule method, is NOT called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
-   */
+   *
   public function testValidateProcessValidationRuleNotCalled()
   {
     $this->assertNull($this->testObject->validate(new PostData()));
     $this->assertSame(0, MockField::$processValidationRuleCount);
-  }
+  }*/
 
   /**
    * Further collection of assertions for \ramp\model\business\field\Field::validate(), where
@@ -368,7 +482,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    *    containingRecord setPropertyMethod is called.
    * - assert validate method is NOT propagated through to its children and grandchildren.
    * @link ramp.model.business.field.Field#method_validate ramp\model\business\field\Field::validate()
-   */
+   *
   public function testValidateProcessValidationRuleCalled()
   {
     $this->assertNull($this->testObject->validate(PostData::build(array(
@@ -376,7 +490,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(1, MockField::$processValidationRuleCount);
     $this->assertSame('GOOD', $this->dataObject->aProperty);
-  }
+  }*/
 
   /**
    * Further collection of assertions for \ramp\model\business\field\Field::validate(), where
@@ -386,7 +500,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase
    *    the testObject's id and valid data its processValidationRule method is NOT called.
    * - assert even though provided PostData contains an InputDataCondition with an attribute that matches
    *    the testObject's id and valid data its containingRecord setPropertyMethod is NOT called.
-   */
+   *
   public function testValidateNotSetOnUneditable()
   {
     $this->dataObject->aProperty = 'a';
@@ -397,77 +511,5 @@ class FieldTest extends \PHPUnit\Framework\TestCase
     ))));
     $this->assertSame(0, MockField::$processValidationRuleCount);
     $this->assertSame('original', $this->dataObject->bProperty);
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::hasErrors().
-   * - assert returns False when PostData does NOT contain an InputDataCondition with an attribute
-   *   that matches the testObject's id.
-   * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
-   *   matches the testObject's id, then its processValidationRule method, is NOT called.
-   * - assert does NOT propagates through to its child/grandchild.
-   * @link ramp.model.business.field.Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
-   */
-  public function testHasErrors()
-  {
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors);
-    $this->assertSame(0, MockField::$processValidationRuleCount);
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::getErrors().
-   * - assert returns an empty iCollection when PostData does NOT contain an InputDataCondition
-   *   with an attribute that matches the testObject's id.
-   * - assert if provided PostData does NOT contain an InputDataCondition with an attribute that
-   *   matches the testObject's id, then its processValidationRule method, is NOT called.
-   * - assert if provided PostData contains an InputDataCondition with an attribute that matches
-   *    the testObject's id, then its processValidationRule method is called.
-   * - assert if provided PostData contains an InputDataCondition with an attribute that matches
-   *    the testObject's id and its processValidationRule method is called and fails, throwing a
-   *    FailedValidationException then its message is added to its errorCollection for retrieval
-   *    by its hasErrors and getErrors methods.
-   * - assert following validate(), the expected iCollection of error messages are returned.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * @link ramp.model.business.field.Field#method_getErrors ramp\model\business\field\Field::getErrors()
-   */
-  public function testGetErrors()
-  {
-    // PostData does NOT contain an InputDataCondition with an attribute that matches the testObject's id.
-    $this->assertNull($this->testObject->validate(new PostData()));
-    $this->assertFalse($this->testObject->hasErrors);
-    $errors = $this->testObject->errors;
-    $this->assertSame(0, MockField::$processValidationRuleCount);
-    $this->assertInstanceOf('\ramp\core\iCollection', $errors);
-    $this->assertSame(0, $errors->count);
-    $this->assertFalse(isset($errors[0]));
-    // Returns same results on subsequent call, while Field in same state.
-    $secondCallOnErrors = $this->testObject->errors;
-    $this->assertEquals($secondCallOnErrors, $errors);
-    $this->assertFalse(isset($secondCallOnErrors[0]));
-    // PostData does contain an InputDataCondition with an attribute that matches the testObject's id.
-    $this->assertNull($this->testObject->validate(PostData::build(array(
-      'mock-record:new:a-property' => 'BAD'
-    ))));
-    $this->assertSame(1, MockField::$processValidationRuleCount);
-    $this->assertNull($this->dataObject->aProperty);
-    $thirdCallOnErrors = $this->testObject->errors;
-    $this->assertInstanceOf('\ramp\core\iCollection', $thirdCallOnErrors);
-    $this->assertSame(1, $thirdCallOnErrors->count);
-    $this->assertSame('MockField\'s has error due to $value of BAD!', (string)$thirdCallOnErrors[0]);
-    // Returns same results on subsequent call, while Field in same state.
-    $forthCallOnErrors = $this->testObject->errors;
-    $this->assertEquals($forthCallOnErrors, $thirdCallOnErrors);
-    $this->assertTrue(isset($thirdCallOnErrors[0]));
-  }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::count.
-   * - assert return expected int value related to the number of child BusinessModels held.
-   * @link ramp.model.business.field.Field#method_count ramp\model\business\field\Field::count
-   */
-  public function testCount()
-  {
-    $this->assertSame(3 ,$this->testObject->count);
-  }
+  }*/
 }

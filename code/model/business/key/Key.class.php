@@ -22,8 +22,10 @@ namespace ramp\model\business\key;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
+use ramp\model\business\FailedValidationException;
 
 /**
  * Abstract Key Record Component Business Model.
@@ -31,7 +33,7 @@ use ramp\model\business\RecordComponent;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
- * - Hold reference back to parent Record and restrict polymorphic composite association.
+ * - Hold a collection of reference back to parent Record and restrict polymorphic composite association.
  * - Define access to compound key indexes and values based on parent record state.
  * 
  * COLLABORATORS
@@ -42,14 +44,16 @@ use ramp\model\business\RecordComponent;
  */
 abstract class Key extends RecordComponent
 {
+  private $errorCollection;
+
   /**
    * Define a multiple part key related to its parent record.
-   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
+   * @param \ramp\core\Str $propertyName Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $record Record parent of *this* property.
    */
-  public function __construct(Str $parentPropertyName, Record $parentRecord)
+  public function __construct(Str $propertyName, Record $record)
   {
-    parent::__construct($parentPropertyName, $parentRecord);
+    parent::__construct($propertyName, $record);
   }
 
   /**
@@ -60,8 +64,26 @@ abstract class Key extends RecordComponent
   protected function get_id() : Str
   {
     return Str::COLON()->prepend(
-      $this->parentRecord->id
-    )->append(Str::hyphenate($this->parentPropertyName));
+      $this->record->id
+    )->append(Str::hyphenate($this->propertyName));
+  }
+
+  /**
+   * ArrayAccess method offsetSet, USE DISCOURAGED.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object RAMPObject to be placed at provided index.
+   * @throws \BadMethosCallException Adding properties through offsetSet STRONGLY DISCOURAGED!
+   */
+  public function offsetSet($offset, $object)
+  {
+    if (!($object instanceof \ramp\model\business\field\Field)
+    || $object->record != $this->record
+    || $this->indexes->contains($object->propertyName)) {
+      throw new \InvalidArgumentException(
+        'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+      );
+    }
+    parent::offsetSet($offset, $object);
   }
 
   /**
@@ -69,12 +91,83 @@ abstract class Key extends RecordComponent
    * **DO NOT CALL DIRECTLY, USE this->indexes;**
    * @return \ramp\core\StrCollection Indexes related to data fields for this key.
    */
-  abstract protected function get_indexes() : StrCollection;
+  protected function get_indexes() : StrCollection
+  {
+    $value = StrCollection::set();
+    foreach($this as $key) {
+      $value->add($key->propertyName);
+    }
+    return $value;
+  }
 
   /**
    * Returns primarykey values held by relevant properties of parent record.
    * **DO NOT CALL DIRECTLY, USE this->values;**
-   * @return \ramp\core\StrCollection Values held by relevant property of parent record
+   * @return ?\ramp\core\StrCollection Values held by relevant property of parent record or NULL
    */
-  abstract protected function get_values() : ?StrCollection;
+  protected function get_values() : ?StrCollection
+  {
+    $values = NULL;
+    foreach ($this as $key) {
+      if ($key->value === NULL) { return NULL; }
+      if ($values === NULL) { $values = StrCollection::set(); }
+      $values->add(Str::set($key->value));
+    }
+    return $values;
+  }
+
+  /**
+   * Returns value held by relevant property of associated record.
+   * @return mixed Value held by relevant property of associated record
+   */
+  protected function get_value()
+  {
+    return ($this->values !== NULL) ? (string)$this->values->implode(Str::BAR()) : NULL;
+  }
+
+  /**
+   * Checks if any errors have been recorded following validate().
+   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
+   * @return bool True if an error has been recorded
+   */
+  protected function get_hasErrors() : bool
+  {
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
+  }
+
+  /**
+   * Gets collection of recorded errors.
+   * **DO NOT CALL DIRECTLY, USE this->errors;**
+   * @return StrCollection List of recorded errors.
+   */
+  protected function get_errors() : StrCollection
+  {
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
+  }
+
+  /**
+   * Validate uniqueness of combined primary key.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   */
+  public function validate(PostData $postdata) : void
+  {
+    $this->errorCollection = StrCollection::set();
+    foreach ($postdata as $inputdata)
+    {
+      if (
+        ((string)$inputdata->attributeURN == (string)$this->id) &&
+        (\is_array($inputdata->value))
+      )
+      {
+        foreach ($inputdata->value as $subFieldKey => $subFieldValue) {
+          if (!$this[$subFieldKey]->isEditable) { return; }
+          try {
+            $this[$subFieldKey]->processValidationRule($subFieldValue);
+          } catch (FailedValidationException $e) {
+            $this->errorCollection->add(Str::set($e->getMessage()));
+          }
+        }
+      }
+    }
+  }
 }

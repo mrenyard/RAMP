@@ -36,7 +36,6 @@ require_once '/usr/share/php/ramp/condition/PostData.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelWithErrors.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -49,30 +48,27 @@ use ramp\model\business\BusinessModel;
 use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockBusinessModelCollection;
-use tests\ramp\mocks\model\MockBusinessModelWithErrors;
 
 /**
  * Collection of tests for \ramp\model\business\BusinessModel.
  */
 class BusinessModelTest extends \tests\ramp\model\ModelTest
 {
-  protected $expectedChildCount;
-
-  private $testChild1;
-  private $testChild2;
-  private $testChild3;
-  private $grandChild;
+  protected $expectedChildCountNew;
+  protected $expectedChildCountExisting;
+  protected $childErrorIndexes;
+  protected $postData;
 
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function getTestObject() : RAMPObject { return new MockBusinessModel('Top object'); }
-  protected function postSetup() : void { $this->expectedChildCount = 0; }
+  protected function getTestObject() : RAMPObject { return new MockBusinessModel(); }
+  protected function postSetup() : void { $this->expectedChildCountNew = 0; }
 
   /**
    * Default base constructor assertions \ramp\model\business\BusinessModel::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\Model}
+   * - assert is instance of {@link \ramp\model\BusinessModel}
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \IteratorAggregate}
@@ -88,6 +84,47 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\BusinessModel::__set().
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @link ramp.model.Model#method__set ramp\model\BusinessModel::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set()
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\BusinessModel::__get().
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @link ramp.model.Model#method__get ramp\model\BusinessModel::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get()
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Good property is accessable on \ramp\model\BusinessModel::__get() and \ramp\model\BusinessModel::__set()
+   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
+   * @link ramp.model.Model#method___set \ramp\model\BusinessModel::__set()
+   * @link ramp.model.Model#method___get \ramp\model\BusinessModel::__get()
+   */
+  public function testAccessPropertyWith__set__get()
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\BusinessModel::__toString().
+   * - assert {@link \ramp\model\BusinessModel::__toString()} returns string 'class name'
+   * @link ramp.model.Model#method___toString \ramp\model\BusinessModel::__toString()
+   */
+  public function testToString()
+  {
+    parent::testToString();
   }
 
   /**
@@ -132,9 +169,8 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame($type1 . ' ' . $type2, (string)$this->testObject->type);
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0; foreach ($this->testObject as $child) { $i++; }
-    $this->assertSame($this->expectedChildCount, $i);
-    $this->assertFalse(isset($this->testObject[$this->expectedChildCount]));
-    $this->assertSame($this->expectedChildCount, $this->testObject->count);
+    $this->assertSame($this->expectedChildCountNew, $i);
+    $this->assertFalse(isset($this->testObject[$this->expectedChildCountNew]));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->errors);
     $this->assertSame(0, $this->testObject->errors->count);
@@ -185,7 +221,22 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   {
     $this->expectException(\OutOfBoundsException::class);
     $this->expectExceptionMessage('Offset out of bounds');
-    $o = $this->testObject[$this->expectedChildCount];
+    $o = $this->testObject[$this->expectedChildCountNew];
+  }
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    $minAllowedType = 'ramp\model\business\BusinessModel';
+    $objectOutOfScope = ($objectOutOfScope !== NULL) ? $objectOutOfScope : new AnObject();
+    $this->expectException(\InvalidArgumentException::class);
+    $errorMessage = ($errorMessage !== NULL) ? $errorMessage : $objectOutOfScope . ' NOT instanceof ' . $minAllowedType;
+    $this->expectExceptionMessage($errorMessage);
+    $o = $this->testObject[0] = $objectOutOfScope;
   }
 
   /**
@@ -200,7 +251,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
-    $o = (isset($o)) ? $o : new MockBusinessModel('Forth child');
+    $o = (isset($o)) ? $o : new MockBusinessModel();
     $this->testObject[0] = $o;
     $this->assertSame($o, $this->testObject[0]);
     unset($this->testObject[0]);
@@ -210,83 +261,60 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   /**
    * Populates $testObject with hierarchal model for testing against. 
    */
-  private function populateModelChildren()
+  protected function populateSubModelTree()
   {
-    MockBusinessModel::reset();
-    $children = new MockBusinessModelCollection();
-    $grandchildren = new MockBusinessModelCollection();
-    $this->testChild1 = new MockBusinessModel('First child');
-    $children->add($this->testChild1);
-    $this->testChild2 = new MockBusinessModelWithErrors('Second child');
-    $children->add($this->testChild2);
-    $this->testChild3 = new MockBusinessModel('Third child', $grandchildren);
-    $children->add($this->testChild3);
-    $this->grandchild = new MockBusinessModelWithErrors('First grandchild');
-    $grandchildren->add($this->grandchild);
-    $this->testObject->children = $children;
+    $this->testObject[0] = new MockBusinessModel();
+    $this->testObject[1] = new MockBusinessModel();
+    $this->testObject[1][0] = new MockBusinessModel(TRUE);
+    $this->testObject[2] = new MockBusinessModel(TRUE);
+    $this->expectedChildCountExisting = 3;
+    $this->postData = new PostData();
+    $this->childErrorIndexes = array(1,2);
+  }
+
+  /**
+   * Type checking definitions for test.
+   */
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
   }
 
   /**
    * Handle complex iterative relations (model flexability).
    * - assert set 'children' modifies interable BusinessModel.
-   * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
-   *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
    *   - assert returns object that is an instance of {@link \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
-   * - assert offsetExists returns correctly:
-   *   - assert True returned on isset() when within expected bounds.
-   *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
    * @link ramp.model.business.BusinessModel#method_setChildren ramp\model\business\BusinessModel::children
-   * @link ramp.model.business.BusinessModel#method_get_type ramp\model\business\BusinessModel::type
    * @link ramp.model.business.BusinessModel#method_getIterator ramp\model\business\BusinessModel::getIterator()
    * @link ramp.model.business.BusinessModel#method_offsetGet ramp\model\business\BusinessModel::offsetGet()
-   * @link ramp.model.business.BusinessModel#method_offsetExists ramp\model\business\BusinessModel::offsetExists()
    * @link ramp.model.business.BusinessModel#method_count ramp\model\business\BusinessModel::count
    */
   public function testComplexModelIteration()
   {
-    $this->populateModelChildren();
-
-    $this->assertInstanceOf('\ramp\core\Str', $this->testChild1->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testChild1->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testChild2->type);
-    $this->assertSame('mock-business-model-with-errors mock-business-model', (string)$this->testChild2->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testChild3->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testChild3->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->grandchild->type);
-    $this->assertSame('mock-business-model-with-errors mock-business-model', (string)$this->grandchild->type);
-
+    $this->populateSubModelTree();
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0;
     $iterator = $this->testObject->getIterator();
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertSame($child, $iterator->current());
-      $this->assertSame('uid-' . $i++, (string)$child->id);
+      $this->assertInstanceOf('\ramp\model\business\BusinessModel', $iterator->current());
       $iterator->next();
     }
-    $this->assertSame(3, $i);
-
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[0]);
-    $this->assertSame($this->testChild1, $this->testObject[0]);
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[1]);
-    $this->assertSame($this->testChild2, $this->testObject[1]);
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject[2]);
-    $this->assertSame($this->testChild3, $this->testObject[2]);
-
-    $this->assertTrue(isset($this->testObject[0]));
-    $this->assertTrue(isset($this->testObject[1]));
-    $this->assertTrue(isset($this->testObject[2]));
-    $this->assertTrue(isset($this->testObject[2][0]));
-    $this->assertFalse(isset($this->testObject[2][1]));
-    $this->assertFalse(isset($this->testObject[3]));
-
-    $this->assertSame(3 ,$this->testObject->count);
-    $this->assertSame(3 ,$this->testObject->count());
+    $this->complexModelIterationTypeCheck();
+    $this->assertSame($this->expectedChildCountExisting, $this->testObject->count);
+    $this->assertSame($this->expectedChildCountExisting, $this->testObject->count());
   }
 
   /**
@@ -294,7 +322,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert set 'children' modifies interable BusinessModel.
    * - assert validate method returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
-   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
+   * - assert returns True when any child/grandchild has recorded an error.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
    * @link ramp.model.business.BusinessModel#method_setChildren ramp\model\business\BusinessModel::children
    * @link ramp.model.business.BusinessModel#method_validate ramp\model\business\BusinessModel::validate()
@@ -302,19 +330,16 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    */
   public function testTouchValidityAndErrorMethods()
   {
-    $this->populateModelChildren();
-
-    $this->assertNull($this->testObject->validate(new PostData())); // Call
-    $this->assertSame(1, $this->testChild1->validateCount); // touched
-    $this->assertSame(1, $this->testChild2->validateCount); // touched
-    $this->assertSame(1, $this->testChild3->validateCount); // touched
-    $this->assertSame(1, $this->grandchild->validateCount); // touched
-
-    $this->assertTrue($this->testObject->hasErrors); // Call
-    $this->assertSame(1, $this->testChild1->hasErrorsCount); // no errors
-    $this->assertSame(1, $this->testChild2->hasErrorsCount); // first with-errors (stops here)
-    $this->assertSame(0, $this->testChild3->hasErrorsCount);
-    $this->assertSame(0, $this->grandchild->hasErrorsCount);
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    $i = 0;
+    foreach ($this->testObject as $child) {
+      $this->assertSame(1, $child->validateCount);
+      $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
+      $this->assertSame($touch, $child->hasErrorsCount);
+      $i++;
+    }
   }
 
   /**
@@ -329,35 +354,14 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    */
   public function testErrorReportingPropagation()
   {
-    $this->populateModelChildren();
-
-    $this->assertNull($this->testObject->validate(new PostData())); // Call
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
-
     $errors = $this->testObject->errors;
-    // All errors including children and grandchildren of top testObject returned in a single collection.
-    $this->assertSame('Second child error message', (string)$errors[0]);
-    $this->assertSame('First grandchild error message', (string)$errors[1]);
-    $this->assertFalse(isset($errors[2]));
-
-    // Returns same results on subsequent call, while BusinessModels are in same state.
-    $secondCallOnErrors = $this->testObject->errors;
-    $this->assertEquals($secondCallOnErrors, $errors);
-    $this->assertFalse(isset($secondCallOnErrors[2]));
-
-    // Calls on sub BusinessModels return expected sub set of Errors.
-    $child2Errors = $this->testChild2->errors;
-    $this->assertSame('Second child error message', (string)$errors[0]);
-    $this->assertSame('First grandchild error message', (string)$errors[1]);
-
-    // Calls on sub BusinessModels return expected sub set of Errors, even on grandchildren.
-    $grandchildErrros = $this->grandchild->errors;
-    $this->assertSame('First grandchild error message', (string)$grandchildErrros[0]);
-    $this->assertFalse(isset($child3Errros[0]));
-
-    // Because testChild3 in the parent of grandchild it returns grandchild errors alone with any of own.
-    $child3Errros = $this->testChild3->errors;
-    $this->assertSame('First grandchild error message', (string)$child3Errros[0]);
-    $this->assertFalse(isset($child3Errros[1]));
+    $this->assertSame(count($this->childErrorIndexes), $errors->count);
+    $i = 0;
+    do {
+    $this->assertSame('Error MESSAGE BadValue Submited!', (string)$errors[$i++]);
+    } while  ($i < $errors->count);
   }
 }

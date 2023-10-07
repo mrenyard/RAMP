@@ -62,16 +62,6 @@ abstract class BusinessModel extends Model implements iList
   }
 
   /**
-   * Set children.
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @param \ramp\model\business\BusinessModel $children business model.
-   */
-  public function set_children(BusinessModel $value)
-  {
-    $this->children = $value;
-  }
-
-  /**
    * Get ID (URN).
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str Unique identifier for *this*
@@ -162,7 +152,7 @@ abstract class BusinessModel extends Model implements iList
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata)
+  public function validate(PostData $postdata) : void
   {
     foreach ($this->children as $child) {
       $child->validate($postdata);

@@ -19,32 +19,53 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\mocks\model;
+namespace tests\ramp\mocks\core;
 
+use ramp\core\RAMPObject;
+use ramp\core\iOption;
 use ramp\core\Str;
-use ramp\model\business\BusinessModel;
-use ramp\model\business\Record;
-use ramp\model\business\RecordComponent;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
+ * Concrete implementation of \ramp\core\iOption for testing against.
+ * .
+ * TODO:mrenyard: remove exasive code?
  */
-class MockRecordComponent extends RecordComponent
+class MockOption extends RAMPObject implements iOption
 {
   /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Unique Identifier
+   * Constructor for new instance of SimpleOption.
+   * @param int $key String value to be set for id.
+   * @param \ramp\core\Str $description String value to be set for description.
+   */
+  public function __construct(int $key, Str $description)
+  {
+  }
+
+  /**
+   * A test getter for ConcreteOption::get_id
    */
   public function get_id() : Str
   {
   }
 
   /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   * A test getter for ConcreteOption::get_key
    */
-  protected function get_value()
+  public function get_key() : int
   {
-    // STUB
+  }
+
+  /**
+   * A test getter for ConcreteOption::get_description
+   */
+  public function get_description() : Str
+  {
+  }
+
+  /**
+   * A test getter for ConcreteOption::get_isSelected
+   */
+  public function get_isSelected() : bool
+  {
   }
 }

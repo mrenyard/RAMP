@@ -22,29 +22,12 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
-use ramp\model\business\BusinessModel;
-use ramp\model\business\Record;
-use ramp\model\business\RecordComponent;
+use ramp\core\StrCollection;
+use ramp\model\business\key\Primary;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
+ * Mock Concreate implementation of \ramp\model\business\key\Key for testing against.
  */
-class MockRecordComponent extends RecordComponent
+class MockKeyPrimary extends Primary
 {
-  /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Unique Identifier
-   */
-  public function get_id() : Str
-  {
-  }
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  protected function get_value()
-  {
-    // STUB
-  }
 }

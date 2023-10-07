@@ -25,11 +25,9 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\Filter;
 use ramp\condition\PostData;
-use ramp\model\business\Record;
 use ramp\model\business\DataFetchException;
 use ramp\model\business\FailedValidationException;
 use ramp\model\business\SimpleBusinessModelDefinition;
-use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
  * MultiPartPrimary field related to a single property of its containing \ramp\model\business\Record.
@@ -45,51 +43,27 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Primary extends Key
 {
-  private static $propertyName;
   private $errorCollection;
 
   /**
-   * Creates a multiple part primary key field related to a collection of property of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
+   * Validate uniqueness of combined primary key.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    */
-  public function __construct(Record $parentRecord)
+  public function validate(PostData $postdata) : void
   {
-    if (!isset(self::$propertyName)) { self::$propertyName = Str::set('PrimaryKey'); }
     $this->errorCollection = StrCollection::set();
-    parent::__construct(self::$propertyName, $parentRecord);
-  }
-
-  /**
-   * Returns indexes for key.
-   * @return \ramp\core\StrCollection Indexes related to data fields for this key.
-   */
-  final protected function get_indexes() : StrCollection
-  {
-    return $this->parentRecord->primaryKeyNames();
-  }
-
-  /**
-   * Returns primarykey values held by relevant properties of parent record.
-   * @return \ramp\core\StrCollection Values held by relevant property of parent record
-   */
-  final protected function get_values() : ?StrCollection
-  {
-    $value = StrCollection::set();
-    foreach ($this->parentRecord->primaryKeyNames() as $propertyName) {
-      $partValue = $this->parentRecord->getPropertyValue((string)$propertyName);
-      if (!isset($partValue) || $partValue == '') { return NULL; }
-      $value->add(Str::set($partValue)->replace(Str::SPACE(), Str::PLUS()));
+    parent::validate($postdata);
+    if (parent::get_hasErrors()) {
+      $this->errorCollection = parent::get_errors();
+      return;
     }
-    return $value;
-  }
-
-  /**
-   * Returns primarykey bar seperated concatenated values held by relevant properties of parent record.
-   * @return \ramp\core\StrCollection Value Bar seperated concatenated key values.
-   */
-  final protected function get_value() : ?Str
-  {
-    return ($this->values === NULL) ? NULL : $this->values->implode(Str::BAR())->replace(Str::SPACE(), Str::PLUS());
+    if ($this->value !== NULL && $this->record->isNew) {
+      try {
+        $this->processValidationRule(NULL);
+      } catch (FailedValidationException $e) {
+        $this->errorCollection->add(Str::set($e->getMessage()));
+      }
+    }
   }
 
   /**
@@ -99,7 +73,7 @@ class Primary extends Key
    */
   protected function get_hasErrors() : bool
   {
-    return ($this->errorCollection->count > 0);
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
   }
 
   /**
@@ -109,24 +83,7 @@ class Primary extends Key
    */
   protected function get_errors() : StrCollection
   {
-    return $this->errorCollection;
-  }
-
-  /**
-   * Validate uniqueness of combined primary key.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   */
-  public function validate(PostData $postdata) : void
-  {
-    $this->errorCollection = StrCollection::set();
-    if ($this->parentRecord->isNew && $this->parentRecord->isValid) {    
-      try {
-        $this->processValidationRule(NULL);
-      } catch (FailedValidationException $e) {
-        $this->errorCollection->add(Str::set($e->getMessage()));
-        return;
-      }
-    }
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
   }
 
   /**
@@ -137,33 +94,22 @@ class Primary extends Key
    */
   public function processValidationRule($value) : void
   {
-    if ($value !== NULL || !$this->parentRecord->isNew) {
+    if ($value !== NULL || !$this->record->isNew) {
       throw new \BadMethodCallException('Primary::processValidationRule() SHOULD ONLY be called from within!');
     }
-    $recordName = Str::camelCase($this->parentRecord->id->trimEnd(Str::set(':new')));
-    $filterValues = array();
-    foreach ($this->parentRecord->primaryKeyNames() as $propertyName) {
-      $filterValues[(string)$propertyName] = $this->parentRecord->getPropertyValue((string)$propertyName);
-    }
-    $filter = Filter::build($recordName, $filterValues);
-    $def = new SimpleBusinessModelDefinition($recordName);
-    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    try {
-      $MODEL_MANAGER::getInstance()->getBusinessModel($def, $filter);
-    } catch (DataFetchException $expected) {
-      return;
-    }
+    // $recordName = Str::camelCase($this->record->id->trimEnd(Str::set(':new')));
+    // $filterValues = array();
+    // foreach ($this->record->primaryKey->values as $propertyName) {
+    //   $filterValues[(string)$propertyName] = $this->record->getPropertyValue((string)$propertyName);
+    // }
+    // $filter = Filter::build($recordName, $filterValues);
+    // $def = new SimpleBusinessModelDefinition($recordName);
+    // $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    // try {
+    //   $MODEL_MANAGER::getInstance()->getBusinessModel($def, $filter);
+    // } catch (DataFetchException $expected) {
+    //   return;
+    // }
     throw new FailedValidationException('An entry already exists for this record!');
   }
-  
-  /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access unsetting is not allowed.
-   */
-  public function offsetSet($offset, $object)
-  {
-    throw new \BadMethodCallException('Array access setting is not allowed.');
-  }
-}
+ }

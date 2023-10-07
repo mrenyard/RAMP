@@ -23,36 +23,62 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/RelatableTest.php';
 
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
+use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
-use ramp\model\business\field\Input;
-use ramp\model\business\validation\dbtype\VarChar;
+use ramp\model\business\Record;
 
-use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRecordComponent;
+use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\model\MockField;
 
 /**
  * Collection of tests for \ramp\model\business\Record.
  */
 class RecordTest extends \tests\ramp\model\business\RelatableTest
 {
-  private $dataObject;
+  private $propertyName;
+  // private $dataObject;
+  // private $property1;
+  // private $property2;
+  // private $property3;
+  // private $property4;
 
   /**
    * Template method inc. factory for TestObject instance.
    */
-  protected function preSetup() : void { $this->dataObject = new \StdClass(); }
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    $this->dataObject = new \StdClass();
+  }
   protected function getTestObject() : RAMPObject { return new MockRecord($this->dataObject); }
-  protected function postSetup() : void { $this->expectedChildCount = $this->testObject->count; }
+  protected function postSetup() : void {
+    $this->propertyName = $this->testObject->propertyName;
+    $this->expectedChildCountNew = 3;
+    // $this->property1 = $this->testObject->aProperty;
+    // $this->property2 = $this->testObject->bProperty;
+    // $this->property3 = Str::set('newProperty3');
+    // $this->property4 = Str::set('anotherProperty');
+  }
 
   /**
    * Default base constructor assertions \ramp\model\business\Relatable::__construct().
@@ -68,22 +94,250 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
   }
 
   /**
-   * Index editing of children through \ramp\model\business\BusinessModel::offsetSet and
-   * for \ramp\model\business\BusinessModel::offsetUnset.
+   * Bad property (name) NOT accessable on \ramp\model\Record::__set().
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @link ramp.model.Model#method__set ramp\model\Record::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set()
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Record::__get().
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @link ramp.model.Model#method__get ramp\model\Record::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get()
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Good property is accessable on \ramp\model\Record::__get() and \ramp\model\Record::__set()
+   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
+   * @link ramp.model.Model#method___set \ramp\model\Record::__set()
+   * @link ramp.model.Model#method___get \ramp\model\Record::__get()
+   */
+  public function testAccessPropertyWith__set__get()
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Record::__toString().
+   * - assert {@link \ramp\model\Record::__toString()} returns string 'class name'
+   * @link ramp.model.Model#method___toString \ramp\model\Record::__toString()
+   */
+  public function testToString()
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Returns Business model type without namespace from full class name.
+   * @param string $classFullName Full class name including path/namespace
+   * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
+   * @return \ramp\core\Str *This* business model type (without namespace)
+   *
+  protected function processType($classFullName, bool $hyphenate = null) : Str
+  {
+    $pathNode = explode('\\', $classFullName);
+    $modelName = explode('_', array_pop($pathNode));
+    $type = Str::set(array_pop($modelName));
+    return ($hyphenate)? Str::hyphenate($type) : $type;
+  }*/
+
+  /**
+   * Minimumal Record initial state.
+   * - assert property 'type' is gettable:
+   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value matches expected result.
+   * - assert getIterator() returns object instance of {@link \Traversable}
+   * - assert foreach iterates zero times as no properties are present.
+   * - assert OffsetExists False returned on isset() when indexed with invalid index (0).
+   * - assert return expected int value related to the number of child Records held (0).
+   * - assert hasErrors returns FALSE.
+   * - assert returned errors are as expected:
+   *   - assert errors instance of {@link \ramp\core\StrCollection}.
+   *   - assert errors count is 0.
+   * @link ramp.model.business.Record#method_get_type ramp\model\business\Record::type
+   * @link ramp.model.business.Record#method_getIterator ramp\model\business\Record::getIterator()
+   * @link ramp.model.business.Record#method_offsetExists ramp\model\business\Record::offsetExists()
+   * @link ramp.model.business.Record#method_count ramp\model\business\Record::count()
+   * @link ramp.model.business.Record#method_hasErrors ramp\model\business\Record::hasErrors()
+   * @link ramp.model.business.Record#method_getErrors ramp\model\business\Record::getErrors()
+   */
+  public function testInitStateMin()
+  {
+    parent::testInitStateMin();
+  }
+
+  /**
+   * Set 'id' NOT accessable on \ramp\model\business\Record::id.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * @link ramp.model.business.Record#method_set_id ramp\model\business\Record::id
+   */
+  public function testSetIdPropertyNotSetException()
+  {
+    parent::testSetIdPropertyNotSetException();
+
+  }
+
+  /**
+   * Set 'type' NOT accessable on \ramp\model\business\Record::type.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * @link ramp.model.business.Record#method_set_type ramp\model\business\Record::type
+   */
+  public function testSetTypePropertyNotSetException()
+  {
+    parent::testSetTypePropertyNotSetException();
+
+  }
+
+  /**
+   * Get 'children' NOT accessable on \ramp\model\business\Record::children.
+   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * @link ramp.model.business.Record#method_get_children ramp\model\business\Record::children
+   */
+  public function testGetChildrenBadPropertyCallException()
+  {
+    parent::testGetChildrenBadPropertyCallException();
+
+  }
+
+  /**
+   * Index beyond bounds with \ramp\model\business\Record::offsetGet.
+   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
+   * @link ramp.model.business.Record#method_offsetGet ramp\model\business\Record::offsetGet()
+   */
+  public function testOffsetGetOutOfBounds()
+  {
+    parent::testOffsetGetOutOfBounds();
+
+  }
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\RecordComponent',
+      new MockBusinessModel(),
+      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+  }
+
+  /**
+   * Index editing of children through \ramp\model\business\Record::offsetSet and
+   * for \ramp\model\business\Record::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
-   * @link ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   * @link ramp.model.business.Record#method_offsetUnset ramp\model\business\Record::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL) {
-    parent::testOffsetSetOffsetUnset(new MockRecordComponent(Str::set('aProperty'), new MockRecord()));
+  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  {
+    parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject));
+  }
+
+  /**
+   * Populated $testObject with hierarchal model for testing against. 
+   */
+  protected function populateSubModelTree()
+  {
+    $this->assertTrue($this->testObject->isNew);
+    $this->testObject->setPropertyValue(Str::set('keyA'), 1);
+    $this->testObject->setPropertyValue(Str::set('keyB'), 1);
+    $this->testObject->setPropertyValue(Str::set('keyC'), 1);
+    $this->assertSame('1|1|1', (string)$this->testObject->primaryKey->value);
+    $this->assertTrue($this->testObject->isModified);
+    $this->testObject->updated();
+    $this->assertTrue($this->testObject->isValid);
+    $this->assertSame('mock-record:1|1|1', (string)$this->testObject->id);
+    $this->expectedChildCountExisting = 2;
+    $this->postData = PostData::build(array(
+      'mock-record:1|1|1:a-property' => 'BadValue'
+    ));
+    $this->childErrorIndexes = array(0);
+    $this->assertSame(0, $this->testObject->aProperty->validateCount);
+  }
+
+  /**
+   * Type checking definitions for test.
+   */
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('mock-key key', (string)$this->testObject[1]->type);
+  }
+
+  /**
+   * (OVERRIDE) Handle complex iterative relations (model flexability).
+   * - assert set 'children' modifies interable Record.
+   * - assert property 'type' is gettable:
+   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value matches expected result.
+   * - assert foreach loop, iterates through each expected object:
+   *   - assert returns object that is an instance of {@link \Traversable}
+   *   - assert foreach returned object matches expected.
+   * - assert expected object returned at its expected index.
+   * - assert offsetExists returns correctly:
+   *   - assert True returned on isset() when within expected bounds.
+   *   - assert False returned on isset() when outside expected bounds.
+   * - assert return expected int value related to the number of child BusinessModels held.
+   * @link ramp.model.business.Record#method_setChildren ramp\model\business\Record::children
+   * @link ramp.model.business.Record#method_get_type ramp\model\business\Record::type
+   * @link ramp.model.business.Record#method_getIterator ramp\model\business\Record::getIterator()
+   * @link ramp.model.business.Record#method_offsetGet ramp\model\business\Record::offsetGet()
+   * @link ramp.model.business.Record#method_offsetExists ramp\model\business\Record::offsetExists()
+   * @link ramp.model.business.Record#method_count ramp\model\business\Record::count
+   */
+  public function testComplexModelIteration()
+  {
+    parent::testComplexModelIteration();
+  }
+
+  /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert set 'children' modifies interable Record.
+   * - assert validate method returns void (null) when called.
+   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
+   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
+   * - assert propagates through child/grandchild until reaches one that has recorded errors.
+   * @link ramp.model.business.Record#method_setChildren ramp\model\business\Record::children
+   * @link ramp.model.business.Record#method_validate ramp\model\business\Record::validate()
+   * @link ramp.model.business.Record#method_hasErrors ramp\model\business\Record::hasErrors()
+   */
+  public function testTouchValidityAndErrorMethods()
+  {
+    parent::testTouchValidityAndErrorMethods();
+  }
+
+  /**
+   * (OVERIDE) Error reporting within complex models using \ramp\model\business\Record::getErrors().
+   * - assert following validate(), the expected iCollection of error messages returned from
+   *    getErrors() are as expected, depending on which level they are called.
+   * - assert any following call to hasErrors returns the same collection of messages as previously.
+   * - assert a single collection containing all errors including children and grandchildren
+   *    of top testObject returned when called on testObject.
+   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
+   * @link ramp.model.business.Record#method_getErrors ramp\model\business\Record::getErrors()
+   */
+  public function testErrorReportingPropagation()
+  {
+    parent::testErrorReportingPropagation();
   }
 
   /**
@@ -91,13 +345,13 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    */
   public function testOffSetSetBadMethodCallException()
   {
-    $this->expectException(\BadMethodCallException::class);
+    $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!');
-    $this->testObject[0] = new MockRecord();
+    $this->testObject[0] = new MockBusinessModel();
   }
 
   /**
-   * Minimumal Record initial 'new' state.
+   * Record initial 'new' state.
    * - assert data state as expected:
    *   - assert isModifed returns FALSE.
    *   - assert isValid returns FALSE.
@@ -111,20 +365,23 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - assert returned value matches expected result value of 'new' when new.
    * - assert contained dataObject properties match requirements.
    *   - assert 'keyA' property NULL. 
-   * @link ramp.model.business.BusinessModel#method_get_isNew ramp\model\business\BusinessModel::isNew
-   * @link ramp.model.business.BusinessModel#method_get_isValid ramp\model\business\BusinessModel::isValid
-   * @link ramp.model.business.BusinessModel#method_get_isModified ramp\model\business\BusinessModel::isModified
+   * @link ramp.model.business.Record#method_get_isNew ramp\model\business\Record::isNew
+   * @link ramp.model.business.Record#method_get_isValid ramp\model\business\Record::isValid
+   * @link ramp.model.business.Record#method_get_isModified ramp\model\business\Record::isModified
    * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::id
    * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
    */
-  public function testMinRecordNewState()
+  public function testRecordNewState()
   {
     $this->assertTrue($this->testObject->isNew);
     $this->assertFalse($this->testObject->isValid);
     $this->assertFalse($this->testObject->isModified);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-    $this->assertNull($this->dataObject->keyA);
+
+    $this->assertSame($this->testObject->primaryKey['keyA'], $this->testObject->keyA);
+    $this->assertSame($this->testObject->primaryKey['keyB'], $this->testObject->keyB);
+    $this->assertSame($this->testObject->primaryKey['keyC'], $this->testObject->keyC);
   }
 
   /**
@@ -156,10 +413,16 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
 
+    $this->assertNull($this->dataObject->keyA);
+    $this->assertNull($this->dataObject->keyB);
+    $this->assertNull($this->dataObject->keyC);
+    $this->assertNull($this->testObject->primaryKey->value);
+
     $keyAValue = 'A1'; $keyBValue = 'B1'; $keyCValue = 'C1';
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
     $this->testObject->setPropertyValue('keyB', $keyBValue);
+    // $this->testObject->validate(PostData::build(array('mock-record:new:key-b' => $keyBValue)));
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyBValue, $this->testObject->keyB->value);
     $this->assertSame($this->dataObject->keyA, $this->testObject->keyA->value);
@@ -170,6 +433,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
+    // $this->testObject->validate(PostData::build(array('mock-record:new:key-a' => $keyAValue)));
     $this->testObject->setPropertyValue('keyA', $keyAValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
@@ -182,6 +446,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
+    // $this->testObject->validate(PostData::build(array('mock-record:new:key-c' => $keyCValue)));
     $this->testObject->setPropertyValue('keyC', $keyCValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
@@ -190,15 +455,23 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->dataObject->keyC, $this->testObject->keyC->value);
     $this->assertTrue($this->testObject->isNew);
     $this->assertTrue($this->testObject->isModified);
-    // TODO:mrenyard: Restart from HERE once key/Primary finished.
-    // $this->assertTrue($this->testObject->isValid);
-    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-    // $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':a1|b1|c1', (string)$this->testObject->id);
 
-    // // Simulate updated() called from BusinessModelManager
-    // $this->testObject->updated();
-    // $this->assertFalse($this->testObject->isNew);
-    // $this->assertTrue($this->testObject->isValid);
-    // $this->assertFalse($this->testObject->isModified);
+    $this->assertSame($this->testObject->keyA, $this->testObject->primaryKey['keyA']);
+    $this->assertSame($this->testObject->keyB, $this->testObject->primaryKey['keyB']);
+    $this->assertSame($this->testObject->keyC, $this->testObject->primaryKey['keyC']);
+
+    $this->assertSame($keyAValue, $this->testObject->primaryKey['keyA']->value);
+    $this->assertSame($keyBValue, $this->testObject->primaryKey['keyB']->value);
+    $this->assertSame($keyCValue, $this->testObject->primaryKey['keyC']->value);
+    $this->assertSame('A1|B1|C1', (string)$this->testObject->primaryKey->value);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
+    $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':a1|b1|c1', (string)$this->testObject->id);
+
+    // Simulate updated() called from BusinessModelManager
+    $this->testObject->updated();
+    $this->assertFalse($this->testObject->isNew);
+    $this->assertTrue($this->testObject->isValid);
+    $this->assertFalse($this->testObject->isModified);
+    $this->assertTrue($this->testObject->isValid);
   }
 }
