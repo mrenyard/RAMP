@@ -75,7 +75,7 @@
 ;password =
 
 ; Maximum rows to display on a single page from a single query
-; - defaults to 100 if not set
+; - defaults to 25 if not set
 ;max_results =
 
 

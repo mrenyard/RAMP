@@ -49,7 +49,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function __construct()
   {
-    $this->maxResults = (isset(SETTING::$DATABASE_MAX_RESULTS)) ? (int)SETTING::$DATABASE_MAX_RESULTS : 100;
+    $this->maxResults = (isset(SETTING::$DATABASE_MAX_RESULTS)) ? (int)SETTING::$DATABASE_MAX_RESULTS : 25;
     $this->recordCollection = new \SplObjectStorage();
     $this->dataObjectCollection = new \SplObjectStorage();
   }
@@ -234,6 +234,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
         $collection->add($record);
       } while ($dataObject = $statementHandle->fetch());
+      $collection->add($recordClass);
       $this->databaseHandle = \NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
       $this->databaseHandle = \NULL;
