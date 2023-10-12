@@ -33,26 +33,38 @@ use ramp\core\Str;
  * COLLABORATORS
  * - {@link \ramp\model\business\Record Record}
  *
- * @property-read \ramp\core\Str $propertyName Related parent record associated property name.
- * @property-read \ramp\model\business\Record $record Related parent Record associated with this component.
+ * @property-read \ramp\core\Str $name Related parent record associated property name.
+ * @property-read \ramp\model\business\Record $parent Related parent Record associated with this component.
  * @property-read mixed $value Relevent value based on parent record state.
  */
 abstract class RecordComponent extends BusinessModel
 {
-  private $propertyName;
-  private $record;
+  private $name;
+  private $parent;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of associated record.
-   * @param \ramp\core\Str $propertyName Related dataObject property name of associated record.
-   * @param \ramp\model\business\Record $record Record parent of *this* property.
+   * @param \ramp\core\Str $name Related dataObject property name of associated record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Str $propertyName, Record $record, BusinessModel $children = NULL)
+  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL)
   {
-    $this->propertyName = $propertyName;
-    $this->record = $record;
+    $this->name = $name;
+    $this->parent = $parent;
     parent::__construct($children);
+  }
+
+  /**
+   * Get ID (URN)
+   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * @return \ramp\core\Str Unique identifier for *this*
+   */
+  protected function get_id() : Str
+  {
+    return Str::COLON()->prepend(
+      $this->parent->id
+    )->append(Str::hyphenate($this->name));
   }
 
   /**
@@ -60,19 +72,19 @@ abstract class RecordComponent extends BusinessModel
    * **DO NOT CALL DIRECTLY, USE this->record;**
    * @return \ramp\model\business\Record Parent record of *this*
    */
-  final protected function get_record() : Record
+  final protected function get_parent() : Record
   {
-    return $this->record;
+    return $this->parent;
   }
 
   /**
    * Get dataobject property name
-   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
+   * **DO NOT CALL DIRECTLY, USE this->name;**
    * @return \ramp\core\Str Property name for dataobject of *this* containing record
    */
-  final protected function get_propertyName() : Str
+  final protected function get_name() : Str
   {
-    return $this->propertyName;
+    return $this->name;
   }
 
   /**
@@ -81,6 +93,6 @@ abstract class RecordComponent extends BusinessModel
    */
   protected function get_value()
   {
-    return $this->record->getPropertyValue((string)$this->propertyName);
+    return $this->parent->getPropertyValue((string)$this->name);
   }
 }

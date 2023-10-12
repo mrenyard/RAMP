@@ -55,9 +55,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   protected $subKey1;
   protected $subKey2;
 
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     $this->dataObject = new \StdClass();
@@ -67,11 +65,12 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     return $this->record->foreignKey;
   }
   protected function postSetup() : void {
-    $this->propertyName = $this->record->foreignKeyName;
+    $this->name = $this->record->foreignKeyName;
     $this->subKey1 = 'key1';
     $this->subKey2 = 'key2';
     $this->expectedChildCountNew = 0;
   }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\model\business\key\Key::__construct().
@@ -91,6 +90,28 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
   }
 
+  #region Sub model setup
+  protected function populateSubModelTree()
+  {
+    $this->testObject[$this->subKey1] = new MockField(Str::set('foreignKey[' . $this->subKey1 . ']'), $this->record);
+    $this->testObject[$this->subKey2] = new MockField(Str::set('foreignKey[' . $this->subKey2 . ']'), $this->record);
+    $this->expectedChildCountExisting = 2;
+    $this->postData = PostData::build(array(
+      'mock-record:new:foreignKey' => array('key1' => 1, 'key2' => 'BadValue')
+    ));
+    $this->childErrorIndexes = array(1);
+    $this->childErrorIDs = array(1);
+  }
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key1']->type);
+    $this->assertSame('mock-field field', (string)$this->testObject['key1']->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key2']->type);
+    $this->assertSame('mock-field field', (string)$this->testObject['key2']->type);
+  } 
+  #endregion
+
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\buiness\key\Key::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -188,31 +209,6 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope
-   *   and expected associated record and unique to 'Key' propertyName.
-   * @link ramp.model.business.key.Key#method_offsetSet ramp\model\business\key\Key::offsetSet()
-   */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
-  {
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent($this->propertyName, $this->record),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent(Str::set('NotApropertyName'), $this->record),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent($this->propertyName, new Record()),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-  }
-
-  /**
    * Index beyond bounds with \ramp\model\business\key\Key::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @link ramp.model.business.key.Key#method_offsetGet ramp\model\business\key\Key::offsetGet()
@@ -235,32 +231,6 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('KeyA'), $this->record));
-  }
-
-  /**
-   * Populates $testObject with hierarchal model for testing against. 
-   */
-  protected function populateSubModelTree()
-  {
-    $this->testObject[$this->subKey1] = new MockField(Str::set('foreignKey[' . $this->subKey1 . ']'), $this->record);
-    $this->testObject[$this->subKey2] = new MockField(Str::set('foreignKey[' . $this->subKey2 . ']'), $this->record);
-    $this->expectedChildCountExisting = 2;
-    $this->postData = PostData::build(array(
-      'mock-record:new:foreignKey' => array('key1' => 1, 'key2' => 'BadValue')
-    ));
-    $this->childErrorIndexes = array(1);
-    $this->childErrorIDs = array(1);
-  }
-
-  /**
-   * Type checking definitions for test.
-   */
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key1']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['key1']->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key2']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['key2']->type);
   }
 
   /**
@@ -290,28 +260,6 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Touch Validity checking and error checking within complex models.
-   * - assert validate method returns void (null) when called.
-   * - assert hasErrors reports as expected.
-   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
-   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
-   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
-   */
-  public function testTouchValidityAndErrorMethods()
-  {
-    $this->populateSubModelTree();
-    $this->assertNull($this->testObject->validate($this->postData)); // Call
-    $this->assertTrue($this->testObject->hasErrors);
-    // NOTE Validation through processValidationRule NOT validate and hasErrors.
-    $i = 0;
-    foreach ($this->testObject as $child) {
-      $this->assertSame(0, $child->validateCount);
-      $this->assertSame(0, $child->hasErrorsCount);
-      $i++;
-    }
-  }
-
-  /**
    * Error reporting within complex models using \ramp\model\business\key\Key::getErrors().
    * - assert following validate(), the expected iCollection of error messages returned from
    *    getErrors() are as expected, depending on which level they are called.
@@ -324,20 +272,6 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   public function testErrorReportingPropagation()
   {
     parent::testErrorReportingPropagation();
-  }
-
-  /**
-   * Hold reference back to associated parent Record, propertyName and value.
-   * - assert record as passed to constructor.
-   * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.key.Key#method_get_parentRecord ramp\model\business\key\Key::record
-   * @link ramp.model.business.key.Key#method_get_parentProppertyName ramp\model\business\key\Key::parentProppertyName
-   */
-  public function testInitStateRecordComponent(string $propertyName = NULL)
-  {
-    $propertyName = ($propertyName === NULL) ? 'foreign-key' :  $propertyName;
-    $this->assertSame('mock-record:new:' . $propertyName, (string)$this->testObject->id);
-    parent::testInitStateRecordComponent();
   }
 
   /**
@@ -358,5 +292,67 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   public function testSetParentPropertyNamePropertyNotSetException()
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
+  }
+  #endregion
+  
+  /**
+   * Hold reference back to associated parent Record, propertyName and value.
+   * - assert record as passed to constructor.
+   * - assert propertyName as passed to constructor.
+   * @link ramp.model.business.key.Key#method_get_parentRecord ramp\model\business\key\Key::record
+   * @link ramp.model.business.key.Key#method_get_parentProppertyName ramp\model\business\key\Key::parentProppertyName
+   */
+  public function testInitStateRecordComponent(string $propertyName = NULL)
+  {
+    $propertyName = ($propertyName === NULL) ? 'foreign-key' :  $propertyName;
+    $this->assertSame('mock-record:new:' . $propertyName, (string)$this->testObject->id);
+    parent::testInitStateRecordComponent();
+  }
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope
+   *   and expected associated record and unique to 'Key' propertyName.
+   * @link ramp.model.business.key.Key#method_offsetSet ramp\model\business\key\Key::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent($this->name, $this->record),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent(Str::set('NotApropertyName'), $this->record),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent($this->name, new Record()),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+  }
+
+  /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert validate method returns void (null) when called.
+   * - assert hasErrors reports as expected.
+   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
+   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
+   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
+   */
+  public function testTouchValidityAndErrorMethods()
+  {
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    // NOTE Validation through processValidationRule NOT validate and hasErrors.
+    $i = 0;
+    foreach ($this->testObject as $child) {
+      $this->assertSame(0, $child->validateCount);
+      $this->assertSame(0, $child->hasErrorsCount);
+      $i++;
+    }
   }
 }

@@ -34,11 +34,13 @@ require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -57,15 +59,8 @@ use tests\ramp\mocks\model\MockField;
 class RecordTest extends \tests\ramp\model\business\RelatableTest
 {
   private $propertyName;
-  // private $dataObject;
-  // private $property1;
-  // private $property2;
-  // private $property3;
-  // private $property4;
 
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     $this->dataObject = new \StdClass();
@@ -74,11 +69,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   protected function postSetup() : void {
     $this->propertyName = $this->testObject->propertyName;
     $this->expectedChildCountNew = 3;
-    // $this->property1 = $this->testObject->aProperty;
-    // $this->property2 = $this->testObject->bProperty;
-    // $this->property3 = Str::set('newProperty3');
-    // $this->property4 = Str::set('anotherProperty');
   }
+  #endregion
 
   /**
    * Default base constructor assertions \ramp\model\business\Relatable::__construct().
@@ -97,6 +89,39 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
   }
 
+  #region Sub model setup
+  protected function populateSubModelTree()
+  {
+    $this->assertTrue($this->testObject->isNew);
+    $this->testObject->setPropertyValue(Str::set('keyA'), 1);
+    $this->testObject->setPropertyValue(Str::set('keyB'), 1);
+    $this->testObject->setPropertyValue(Str::set('keyC'), 1);
+    $this->assertSame('1|1|1', (string)$this->testObject->primaryKey->value);
+    $this->assertTrue($this->testObject->isModified);
+    $this->testObject->updated();
+    $this->assertTrue($this->testObject->isValid);
+    $this->assertSame('mock-record:1|1|1', (string)$this->testObject->id);
+    $this->expectedChildCountExisting = 4;
+    $this->postData = PostData::build(array(
+      'mock-record:1|1|1:a-property' => 'BadValue'
+    ));
+    $this->childErrorIndexes = array(0);
+    $this->assertSame(0, $this->testObject->aProperty->validateCount);
+  }
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('mock-key key', (string)$this->testObject[2]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
+    $this->assertSame('mock-relation relation', (string)$this->testObject[3]->type);
+  }
+  #endregion
+
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Record::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -137,20 +162,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   {
     parent::testToString();
   }
-
-  /**
-   * Returns Business model type without namespace from full class name.
-   * @param string $classFullName Full class name including path/namespace
-   * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
-   * @return \ramp\core\Str *This* business model type (without namespace)
-   *
-  protected function processType($classFullName, bool $hyphenate = null) : Str
-  {
-    $pathNode = explode('\\', $classFullName);
-    $modelName = explode('_', array_pop($pathNode));
-    $type = Str::set(array_pop($modelName));
-    return ($hyphenate)? Str::hyphenate($type) : $type;
-  }*/
 
   /**
    * Minimumal Record initial state.
@@ -218,21 +229,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   public function testOffsetGetOutOfBounds()
   {
     parent::testOffsetGetOutOfBounds();
-
-  }
-
-  /**
-   * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
-   */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
-  {
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\RecordComponent',
-      new MockBusinessModel(),
-      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
   }
 
   /**
@@ -248,39 +244,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject));
-  }
-
-  /**
-   * Populated $testObject with hierarchal model for testing against. 
-   */
-  protected function populateSubModelTree()
-  {
-    $this->assertTrue($this->testObject->isNew);
-    $this->testObject->setPropertyValue(Str::set('keyA'), 1);
-    $this->testObject->setPropertyValue(Str::set('keyB'), 1);
-    $this->testObject->setPropertyValue(Str::set('keyC'), 1);
-    $this->assertSame('1|1|1', (string)$this->testObject->primaryKey->value);
-    $this->assertTrue($this->testObject->isModified);
-    $this->testObject->updated();
-    $this->assertTrue($this->testObject->isValid);
-    $this->assertSame('mock-record:1|1|1', (string)$this->testObject->id);
-    $this->expectedChildCountExisting = 2;
-    $this->postData = PostData::build(array(
-      'mock-record:1|1|1:a-property' => 'BadValue'
-    ));
-    $this->childErrorIndexes = array(0);
-    $this->assertSame(0, $this->testObject->aProperty->validateCount);
-  }
-
-  /**
-   * Type checking definitions for test.
-   */
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-key key', (string)$this->testObject[1]->type);
   }
 
   /**
@@ -338,6 +301,21 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   public function testErrorReportingPropagation()
   {
     parent::testErrorReportingPropagation();
+  }
+  #endregion
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\RecordComponent',
+      new MockBusinessModel(),
+      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
   }
 
   /**

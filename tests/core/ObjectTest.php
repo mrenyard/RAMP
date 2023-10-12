@@ -43,15 +43,12 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
 {
   protected $testObject;
 
-  /* Setup - template */
+  #region Setup
   final public function setUp() : void { $this->preSetUp(); $this->testObject = $this->getTestObject(); $this->postSetup(); }
-
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
   protected function preSetup() : void { }
   protected function getTestObject() : RAMPObject { return new AnObject(); }
   protected function postSetup() : void { }
+  #endregion
 
   /**
    * Default base constructor assertions \ramp\core\RAMPObject::__construct().

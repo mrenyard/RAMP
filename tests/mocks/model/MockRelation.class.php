@@ -21,56 +21,24 @@
  */
 namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
-use ramp\core\StrCollection;
 use ramp\condition\PostData;
-use ramp\model\business\BusinessModel;
-
-class MockBusinessModelCollection extends BusinessModel implements iCollection
-{
-  protected function get_id() : Str
-  {
-  }
-
-  /**
-   * Add a reference (Record), to this collection.
-   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
-   * @throws \InvalidArgumentException When provided object NOT expected type (Record)
-   */
-  public function add(RAMPObject $object)
-  {
-    self::offsetSet($this->get_count(), $object);
-  }
-}
+use ramp\model\business\Record;
+use ramp\model\business\Relation;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
+ * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
  */
-class MockBusinessModel extends BusinessModel
+class MockRelation extends Relation
 {
   public $validateCount;
   public $hasErrorsCount;
-  public $errorsTouchCount;
-  private $withError;
 
-  public function __construct($withError = FALSE)
+  public function __construct(Str $propertyName, Record $record)
   {
-    parent::__construct(NULL);
+    parent::__construct($propertyName, $record);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
-    $this->errorsTouchCount = 0;
-    $this->withError = $withError;
-  }
-
-  /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Str('uid-1')
-   */
-  public function get_id() : Str
-  {
   }
 
   /**
@@ -87,19 +55,6 @@ class MockBusinessModel extends BusinessModel
   public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
-    if ($this->withError) { return TRUE; }
     return parent::get_hasErrors();
-  }
-
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
-  public function get_errors() : StrCollection
-  {
-    $this->errorsTouchCount++;
-    if ($this->withError) { return StrCollection::set('Error MESSAGE BadValue Submited!'); }
-    return parent::get_errors();
   }
 }

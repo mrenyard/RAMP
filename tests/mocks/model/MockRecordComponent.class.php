@@ -32,14 +32,6 @@ use ramp\model\business\RecordComponent;
 class MockRecordComponent extends RecordComponent
 {
   /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Unique Identifier
-   */
-  public function get_id() : Str
-  {
-  }
-
-  /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */

@@ -54,9 +54,7 @@ use tests\ramp\mocks\model\MockBusinessModelWithErrors;
  */
 class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     $this->dataObject = new \StdClass();
@@ -66,9 +64,10 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     return $this->record->aProperty;
   }
   protected function postSetup() : void {
-    $this->propertyName = $this->record->propertyName;
+    $this->name = $this->record->propertyName;
     $this->expectedChildCountNew = 0;
   }
+  #endregion
 
   /**
     * Collection of assertions for \ramp\model\business\field\Field::__construct().
@@ -87,64 +86,30 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
   }
 
-  /**
-   * Minimumal Field initial 'new' state.
-   * - assert property 'id' is gettable:
-   *   - assert returned value instance of {@link \ramp\core\Str}.
-   *   - assert returned value matches expected result, in the format:
-   *     - lowercase and hypenated colon seperated [class-name]:[key].
-   * - assert isEditable matches expected values, some defaults are NOT overridable:
-   *   - assert always returns TRUE while state is 'new' (no primaryKey value)
-   *   - assert 
-   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::id
-   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
-   * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
-   * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
-   */
-  public function testInitStateField()
+  #region Sub model setup
+  protected function populateSubModelTree()
   {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-    $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->propertyName), (string)$this->testObject->id);
-    // isEdiatable always remains TRUE while state is 'new'
-    $this->assertTrue($this->testObject->isEditable);
-    // even after requested change.
-    $this->isEditable = FALSE;
-    $this->assertTrue($this->testObject->isEditable);
-    // Now.. Update associated Record as 'validAtSource'
-    $this->dataObject->keyA = 1;
-    $this->dataObject->keyB = 1;
-    $this->dataObject->keyC = 1;
-    $this->record->updated();
-    $this->assertFalse($this->record->isNew);
-    $this->assertTrue($this->record->isValid);
-    // isEditable still defaults to TRUE
-    $this->assertTrue($this->testObject->isEditable);
-    // but allows state change.
-    $this->testObject->isEditable = FALSE;
-    $this->assertFalse($this->testObject->isEditable);
+    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 1'));
+    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 2'));
+    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 3'));
+    $this->expectedChildCountExisting = 3;
+    $this->postData = PostData::build(array(
+      'mock-record:new:a-property' => 'BadValue'
+    ));
+    $this->childErrorIndexes = array(1);
   }
-
-  /**
-   * Collection of assertions for \ramp\model\business\field\Field::label.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
-   * - assert property 'label' is gettable.
-   * - assert returned value instance of {@link \ramp\core\Str}.
-   * - assert returned value matches expected result.
-   * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
-   *
-  public function testGet_label()
+  protected function complexModelIterationTypeCheck()
   {
-    try {
-      $this->testObject->label = "LABEL";
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(get_class($this->testObject) . '->label is NOT settable', $expected->getMessage());
-      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
-      $this->assertSame('A Property', (string)$this->testObject->label);
-      return;
-    }
-    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
-  }*/
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('option business-model', (string)$this->testObject[2]->type);
+  }
+  #endregion
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\field\Field::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -255,25 +220,6 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
-   */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
-  {
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\BusinessModel',
-      new MockOption(0, Str::set('DESCRIPTION')),
-      'tests\ramp\mocks\core\MockOption NOT instanceof ramp\model\business\BusinessModel'
-    );
-    parent::testOffsetSetTypeCheckException(
-      '\ramp\core\iOption',
-      new BusinessModel(),
-      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-  }
-
-  /**
    * Index editing of children through \ramp\model\business\field\Field::offsetSet and
    * for \ramp\model\business\field\Field::offsetUnset.
    * - assert successful use of offsetSet
@@ -286,34 +232,6 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
     parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
-  }
-
-  /**
-   * Populates $testObject with hierarchal model for testing against. 
-   */
-  protected function populateSubModelTree()
-  {
-    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 1'));
-    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 2'));
-    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 3'));
-    $this->expectedChildCountExisting = 3;
-    $this->postData = PostData::build(array(
-      'mock-record:new:a-property' => 'BadValue'
-    ));
-    $this->childErrorIndexes = array(1);
-  }
-
-  /**
-   * Type checking definitions for test.
-   */
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[2]->type);
   }
 
   /**
@@ -332,6 +250,116 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   public function testComplexModelIteration()
   {
     parent::testComplexModelIteration();
+  }
+
+  /**
+   * Hold reference back to associated parent Record, propertyName and value.
+   * - assert record as passed to constructor.
+   * - assert propertyName as passed to constructor.
+   * @link ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
+   * @link ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
+   */
+  public function testInitStateRecordComponent()
+  {
+    parent::testInitStateRecordComponent();
+  }
+
+  /**
+   * Set 'record' NOT accessable ramp\model\business\field\Field::record.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @link ramp.model.business.field\Field#method_set_parentRecord ramp\model\business\field\Field::record
+   */
+  public function testSetParentRecordPropertyNotSetException()
+  {
+    parent::testSetParentRecordPropertyNotSetException();
+  }
+
+  /**
+   * Set 'propertyName' NOT accessable ramp\model\business\field\Field::propertyName.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @link ramp.model.business.field\Field#method_set_parentPropertyName ramp\model\business\field\Field::propertyName
+   */
+  public function testSetParentPropertyNamePropertyNotSetException()
+  {
+    parent::testSetParentPropertyNamePropertyNotSetException();
+  }
+  #endregion
+
+  /**
+   * Minimumal Field initial 'new' state.
+   * - assert property 'id' is gettable:
+   *   - assert returned value instance of {@link \ramp\core\Str}.
+   *   - assert returned value matches expected result, in the format:
+   *     - lowercase and hypenated colon seperated [class-name]:[key].
+   * - assert isEditable matches expected values, some defaults are NOT overridable:
+   *   - assert always returns TRUE while state is 'new' (no primaryKey value)
+   *   - assert 
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::id
+   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
+   * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
+   * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
+   */
+  public function testInitStateField()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
+    $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
+    // isEdiatable always remains TRUE while state is 'new'
+    $this->assertTrue($this->testObject->isEditable);
+    // even after requested change.
+    $this->isEditable = FALSE;
+    $this->assertTrue($this->testObject->isEditable);
+    // Now.. Update associated Record as 'validAtSource'
+    $this->dataObject->keyA = 1;
+    $this->dataObject->keyB = 1;
+    $this->dataObject->keyC = 1;
+    $this->record->updated();
+    $this->assertFalse($this->record->isNew);
+    $this->assertTrue($this->record->isValid);
+    // isEditable still defaults to TRUE
+    $this->assertTrue($this->testObject->isEditable);
+    // but allows state change.
+    $this->testObject->isEditable = FALSE;
+    $this->assertFalse($this->testObject->isEditable);
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\field\Field::label.
+   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
+   * - assert property 'label' is gettable.
+   * - assert returned value instance of {@link \ramp\core\Str}.
+   * - assert returned value matches expected result.
+   * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
+   *
+  public function testGet_label()
+  {
+    try {
+      $this->testObject->label = "LABEL";
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame(get_class($this->testObject) . '->label is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->label);
+      $this->assertSame('A Property', (string)$this->testObject->label);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
+  }*/
+
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\BusinessModel',
+      new MockOption(0, Str::set('DESCRIPTION')),
+      'tests\ramp\mocks\core\MockOption NOT instanceof ramp\model\business\BusinessModel'
+    );
+    parent::testOffsetSetTypeCheckException(
+      '\ramp\core\iOption',
+      new BusinessModel(),
+      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
   }
 
   /**
@@ -371,38 +399,6 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
     $this->assertSame('Error MESSAGE BadValue Submited!', (string)$this->testObject->errors[0]);
-  }
-
-  /**
-   * Hold reference back to associated parent Record, propertyName and value.
-   * - assert record as passed to constructor.
-   * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
-   * @link ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
-   */
-  public function testInitStateRecordComponent()
-  {
-    parent::testInitStateRecordComponent();
-  }
-
-  /**
-   * Set 'record' NOT accessable ramp\model\business\field\Field::record.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @link ramp.model.business.field\Field#method_set_parentRecord ramp\model\business\field\Field::record
-   */
-  public function testSetParentRecordPropertyNotSetException()
-  {
-    parent::testSetParentRecordPropertyNotSetException();
-  }
-
-  /**
-   * Set 'propertyName' NOT accessable ramp\model\business\field\Field::propertyName.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @link ramp.model.business.field\Field#method_set_parentPropertyName ramp\model\business\field\Field::propertyName
-   */
-  public function testSetParentPropertyNamePropertyNotSetException()
-  {
-    parent::testSetParentPropertyNamePropertyNotSetException();
   }
 
   /**

@@ -48,24 +48,12 @@ abstract class Key extends RecordComponent
 
   /**
    * Define a multiple part key related to its parent record.
-   * @param \ramp\core\Str $propertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $record Record parent of *this* property.
+   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* property.
    */
-  public function __construct(Str $propertyName, Record $record)
+  public function __construct(Str $name, Record $parent)
   {
-    parent::__construct($propertyName, $record);
-  }
-
-  /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
-  {
-    return Str::COLON()->prepend(
-      $this->record->id
-    )->append(Str::hyphenate($this->propertyName));
+    parent::__construct($name, $parent);
   }
 
   /**
@@ -77,8 +65,8 @@ abstract class Key extends RecordComponent
   public function offsetSet($offset, $object)
   {
     if (!($object instanceof \ramp\model\business\field\Field)
-    || $object->record != $this->record
-    || $this->indexes->contains($object->propertyName)) {
+    || $object->parent != $this->parent
+    || $this->indexes->contains($object->name)) {
       throw new \InvalidArgumentException(
         'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
@@ -95,7 +83,7 @@ abstract class Key extends RecordComponent
   {
     $value = StrCollection::set();
     foreach($this as $key) {
-      $value->add($key->propertyName);
+      $value->add($key->name);
     }
     return $value;
   }

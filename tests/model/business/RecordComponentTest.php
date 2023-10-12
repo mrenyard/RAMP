@@ -29,11 +29,13 @@ require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -52,19 +54,18 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 {
   protected $dataObject;
   protected $record;
-  protected $propertyName;
+  protected $name;
 
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function preSetup() : void {
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
-    $this->propertyName = Str::set('aProperty');
+    $this->name = Str::set('aProperty');
   }
   protected function getTestObject() : RAMPObject {
-    return new MockRecordComponent($this->propertyName, $this->record);
+    return new MockRecordComponent($this->name, $this->record);
   }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::__construct().
@@ -83,6 +84,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\RecordComponent::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -270,6 +272,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   {
     parent::testErrorReportingPropagation();
   }
+  #endregion
 
   /**
    * Hold reference back to associated parent Record, propertyName and value.
@@ -280,14 +283,18 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    */
   public function testInitStateRecordComponent()
   {
-    $this->assertSame($this->propertyName, $this->testObject->propertyName);
-    $this->assertSame($this->record, $this->testObject->record);
+    $this->assertSame($this->name, $this->testObject->name);
+    $this->assertSame($this->record, $this->testObject->parent);
     $this->assertNull($this->testObject->value);
+    $this->assertSame(
+      (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
+      (string)$this->testObject->id
+    );
     
     $value = 'VALUE';
-    $propertyName = $this->propertyName;
-    $this->dataObject->$propertyName = $value;
-    $this->assertSame($this->record->getPropertyValue($this->propertyName), $value);
+    $name = $this->name;
+    $this->dataObject->$name = $value;
+    $this->assertSame($this->record->getPropertyValue($this->name), $value);
   }
 
   /**
@@ -309,9 +316,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {
-    $propertyName = $this->propertyName;
+    $name = $this->name;
     $this->expectException(PropertyNotSetException::class);
-    $this->expectExceptionMessage(get_class($this->testObject) . '->' . $propertyName .' is NOT settable');
-    $this->testObject->$propertyName = 'PARENTPROPERTYNAME';
+    $this->expectExceptionMessage(get_class($this->testObject) . '->' . $name .' is NOT settable');
+    $this->testObject->$name = 'PARENTPROPERTYNAME';
   }
 }

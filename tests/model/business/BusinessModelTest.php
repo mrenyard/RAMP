@@ -59,16 +59,15 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   protected $childErrorIndexes;
   protected $postData;
 
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function getTestObject() : RAMPObject { return new MockBusinessModel(); }
   protected function postSetup() : void { $this->expectedChildCountNew = 0; }
+  #endregion
 
   /**
    * Default base constructor assertions \ramp\model\business\BusinessModel::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\BusinessModel}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \IteratorAggregate}
@@ -85,11 +84,36 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
   }
+  
+  #region Sub model setup
+  protected function populateSubModelTree()
+  {
+    $this->testObject[0] = new MockBusinessModel();
+    $this->testObject[1] = new MockBusinessModel();
+    $this->testObject[1][0] = new MockBusinessModel(TRUE);
+    $this->testObject[2] = new MockBusinessModel(TRUE);
+    $this->expectedChildCountExisting = 3;
+    $this->postData = new PostData();
+    $this->childErrorIndexes = array(1,2);
+  }
+  protected function complexModelIterationTypeCheck()
+  {
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
+  }
+  #endregion
 
+  #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\BusinessModel::__set().
+   * Bad property (name) NOT accessable on \ramp\model\business\BusinessModel::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.Model#method__set ramp\model\BusinessModel::__set()
+   * @link ramp.model.Model#method__set ramp\model\business\BusinessModel::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -97,9 +121,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\BusinessModel::__get().
+   * Bad property (name) NOT accessable on \ramp\model\business\BusinessModel::__get().
    * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.Model#method__get ramp\model\BusinessModel::__get()
+   * @link ramp.model.business.model.BusinessModel#method__get ramp\model\business\BusinessModel::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -107,10 +131,10 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\BusinessModel::__get() and \ramp\model\BusinessModel::__set()
+   * Good property is accessable on \ramp\model\business\BusinessModel::__get() and \ramp\model\business\BusinessModel::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.Model#method___set \ramp\model\BusinessModel::__set()
-   * @link ramp.model.Model#method___get \ramp\model\BusinessModel::__get()
+   * @link ramp.model.Model#method___set \ramp\model\business\BusinessModel::__set()
+   * @link ramp.model.Model#method___get \ramp\model\business\BusinessModel::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -118,14 +142,15 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Correct return of ramp\model\BusinessModel::__toString().
-   * - assert {@link \ramp\model\BusinessModel::__toString()} returns string 'class name'
-   * @link ramp.model.Model#method___toString \ramp\model\BusinessModel::__toString()
+   * Correct return of ramp\model\business\BusinessModel::__toString().
+   * - assert {@link \ramp\model\business\BusinessModel::__toString()} returns string 'class name'
+   * @link ramp.model.Model#method___toString \ramp\model\business\BusinessModel::__toString()
    */
   public function testToString()
   {
     parent::testToString();
   }
+  #endregion
 
   /**
    * Returns Business model type without namespace from full class name.
@@ -170,7 +195,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0; foreach ($this->testObject as $child) { $i++; }
     $this->assertSame($this->expectedChildCountNew, $i);
-    $this->assertFalse(isset($this->testObject[$this->expectedChildCountNew]));
+    $this->assertFalse(isset($this->testObject[$this->expectedChildCountExisting]));
     $this->assertFalse($this->testObject->hasErrors);
     $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->errors);
     $this->assertSame(0, $this->testObject->errors->count);
@@ -221,7 +246,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   {
     $this->expectException(\OutOfBoundsException::class);
     $this->expectExceptionMessage('Offset out of bounds');
-    $o = $this->testObject[$this->expectedChildCountNew];
+    $o = $this->testObject[$this->expectedChildCountExisting];
   }
 
   /**
@@ -256,35 +281,6 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame($o, $this->testObject[0]);
     unset($this->testObject[0]);
     $this->assertFalse(isset($this->testObject[0]));
-  }
-
-  /**
-   * Populates $testObject with hierarchal model for testing against. 
-   */
-  protected function populateSubModelTree()
-  {
-    $this->testObject[0] = new MockBusinessModel();
-    $this->testObject[1] = new MockBusinessModel();
-    $this->testObject[1][0] = new MockBusinessModel(TRUE);
-    $this->testObject[2] = new MockBusinessModel(TRUE);
-    $this->expectedChildCountExisting = 3;
-    $this->postData = new PostData();
-    $this->childErrorIndexes = array(1,2);
-  }
-
-  /**
-   * Type checking definitions for test.
-   */
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
   }
 
   /**

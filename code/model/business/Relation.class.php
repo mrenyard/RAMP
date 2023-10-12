@@ -22,14 +22,14 @@ namespace ramp\model\business;
 
 use ramp\SETTING;
 use ramp\core\Str;
-use ramp\core\Collection;
-use ramp\core\StrCollection;
+// use ramp\core\Collection;
+// use ramp\core\StrCollection;
 use ramp\condition\PostData;
 // use ramp\model\business\BusinessModel;
 // use ramp\model\business\Record;
 // use ramp\model\business\key\Foreign;
-// use ramp\model\business\DataFetchException;
-// use ramp\model\business\FailedValidationException;
+use ramp\model\business\DataFetchException;
+use ramp\model\business\FailedValidationException;
 // use ramp\model\business\SimpleBusinessModelDefinition;
 // use ramp\model\business\field\Field;
 // use ramp\model\business\validation\dbtype\DbTypeValidation;
@@ -50,56 +50,41 @@ use ramp\condition\PostData;
 class Relation extends RecordComponent
 {
   private $modelManager;
-  private $errorCollection;
-  private $relationObjectRecordName;
-  private $record;
+  // private $errorCollection;
+  private $relatedRecordType;
 
   /**
    * Creates input field related to a single property of containing record.
-   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parentRecord Record parent of *this* property.
-   * @param \ramp\core\Str $relationObjectRecordName Record name of linked Object
+   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* property.
+   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records
    * proir to allowing property value change
    */
-  public function __construct(Str $parentPropertyName, Record $parentRecord, Str $relationObjectRecordName)
+  public function __construct(Str $name, Record $parent) //, Str $relatedRecordType) //, Str $lookUpTable = NULL)
   {
-    $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    $this->modelManager = $MODEL_MANAGER::getInstance();
-    $this->relationObjectRecordName = $relationObjectRecordName;
-    parent::__construct($parentPropertyName, $parentRecord);
-    $this->update($this->getValue());
+    // $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    // $this->modelManager = $MODEL_MANAGER::getInstance();
+    // $this->relatedRecordType = $relatedRecordType;
+    parent::__construct($name, $parent);
+    // $this->update($this->getValue());
   }
 
   /**
    * Update relation base on changed key.
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store.
-   */
+   *
   private function update($key = NULL)
   {
     $key = (isset($key)) ? Str::set($key) : Str::NEW();
-    $this->record = $this->modelManager->getBusinessModel(
+    $this->relatableTo = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
     );
-    $children = $this->record;
+    $children = $this->relatable;
     if ($key === Str::NEW()) {
-      $children = new key\Foreign($this->parentPropertyName, $this->parentRecord, new key\Primary($this->record));
+      $children = new key\Foreign($this->propertyName, $this->record, new key\Primary($this->relatableTo));
     }
     $this->setChildren($children);
-  }
-
-  /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
-  {
-    return Str::COLON()->prepend(
-      $this->parentRecord->id
-    )->append(
-      Str::hyphenate($this->dataObjectPropertyName)
-    );
-  }
+  }*/
 
   /**
    * Returns value held by relevant property of containing record.
@@ -107,7 +92,23 @@ class Relation extends RecordComponent
    */
   final private function getValue()
   {
-    return $this->parentRecord->getPropertyValue((string)$this->parentPropertyName->prepend(Str::FK()));
+    return NULL; //$this->parent->getPropertyValue((string)$this->name->prepend(Str::FK()));
+  }
+
+  /**
+   * ArrayAccess method offsetSet, USE DISCOURAGED.
+   * @param mixed $offset Index to place provided object.
+   * @param mixed $object RAMPObject to be placed at provided index.
+   * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
+   */
+  public function offsetSet($offset, $object)
+  {
+    if (!($object instanceof \ramp\model\business\Relatable)) {
+      throw new \InvalidArgumentException(
+        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+      );
+    }
+    parent::offsetSet($offset, $object);
   }
 
   /**
@@ -117,48 +118,48 @@ class Relation extends RecordComponent
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = StrCollection::set();
+    // $this->errorCollection = StrCollection::set();
     foreach ($this as $child) { $child->validate($postdata); }
-    foreach ($postdata as $inputdata)
-    {
-      if ((string)$inputdata->attributeURN == (string)$this->id)
-      {
-        $values = $inputdata->value;
-        $primaryKeyNames = $this->record->primaryKeyNames();
-        if (is_array($values))
-        {
-          if (isset($values['unset']) && $values['unset'] == 'on')
-          {
-            $this->parentRecord->setPropertyValue(
-              (string)$this->dataObjectPropertyName->prepend(Str::FK()), NULL
-            );
-            $this->update();
-          }
-          else if (count($values) === $primaryKeyNames->count)
-          {
-            $key = StrCollection::set();
-            foreach ($primaryKeyNames as $primaryKeyName) {
-              if (
-                !isset($values[(string)Str::hyphenate($primaryKeyName)]) ||
-                $values[(string)Str::hyphenate($primaryKeyName)] == ''
-              ) { return; }
-              $key->add(Str::set($values[(string)Str::hyphenate($primaryKeyName)]));
-            }
-            $value = (string)$key->implode(Str::BAR());
-            try {
-              $this->processValidationRule($value);
-            } catch (FailedValidationException $e) {
-              $this->errorCollection->add(Str::set($e->getMessage()));
-              return;
-            }
-            $this->parentRecord->setPropertyValue(
-              (string)$this->dataObjectPropertyName->prepend(Str::FK()), $value
-            );
-          }
-          return;
-        }
-      }
-    }
+    // foreach ($postdata as $inputdata)
+    // {
+    //   if ((string)$inputdata->attributeURN == (string)$this->id)
+    //   {
+    //     $values = $inputdata->value;
+    //     $primaryKeyNames = $this->record->primaryKeyNames();
+    //     if (is_array($values))
+    //     {
+    //       if (isset($values['unset']) && $values['unset'] == 'on')
+    //       {
+    //         $this->record->setPropertyValue(
+    //           (string)$this->dataObjectPropertyName->prepend(Str::FK()), NULL
+    //         );
+    //         $this->update();
+    //       }
+    //       else if (count($values) === $primaryKeyNames->count)
+    //       {
+    //         $key = StrCollection::set();
+    //         foreach ($primaryKeyNames as $primaryKeyName) {
+    //           if (
+    //             !isset($values[(string)Str::hyphenate($primaryKeyName)]) ||
+    //             $values[(string)Str::hyphenate($primaryKeyName)] == ''
+    //           ) { return; }
+    //           $key->add(Str::set($values[(string)Str::hyphenate($primaryKeyName)]));
+    //         }
+    //         $value = (string)$key->implode(Str::BAR());
+    //         try {
+    //           $this->processValidationRule($value);
+    //         } catch (FailedValidationException $e) {
+    //           $this->errorCollection->add(Str::set($e->getMessage()));
+    //           return;
+    //         }
+    //         $this->record->setPropertyValue(
+    //           (string)$this->dataObjectPropertyName->prepend(Str::FK()), $value
+    //         );
+    //       }
+    //       return;
+    //     }
+    //   }
+    // }
   }
 
   /**

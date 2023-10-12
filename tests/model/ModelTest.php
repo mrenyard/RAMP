@@ -35,10 +35,9 @@ use tests\ramp\mocks\model\MockModel;
  */
 class ModelTest extends \tests\ramp\core\ObjectTest
 {
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function getTestObject() : RAMPObject { return new MockModel(); }
+  #endregion
 
   /**
    * Default base constructor assertions \ramp\model\Model::__construct().
@@ -52,6 +51,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -92,4 +92,5 @@ class ModelTest extends \tests\ramp\core\ObjectTest
   {
     parent::testToString();
   }
+  #endregion
 }

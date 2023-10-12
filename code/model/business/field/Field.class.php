@@ -54,16 +54,16 @@ abstract class Field extends RecordComponent
 
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $propertyName Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $record Record parent of *this* property
+   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    * @param bool $editable 
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $propertyName, Record $record, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
   {
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($propertyName, $record, $children);
+    parent::__construct($name, $parent, $children);
   }
 
   /**
@@ -74,9 +74,9 @@ abstract class Field extends RecordComponent
   protected function get_id() : Str
   {
     return Str::COLON()->prepend(
-      $this->record->id
+      $this->parent->id
     )->append(
-      Str::hyphenate($this->propertyName)
+      Str::hyphenate($this->name)
     );
   }
 
@@ -97,7 +97,7 @@ abstract class Field extends RecordComponent
    */
   protected function get_isEditable() : bool
   {
-    return ($this->record->isNew || (!$this->record->isValid) || $this->editable !== FALSE);
+    return ($this->parent->isNew || (!$this->parent->isValid) || $this->editable !== FALSE);
   }
 
   /**
@@ -146,7 +146,7 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($e->getMessage()));
           return;
         }
-        $this->record->setPropertyValue(
+        $this->parent->setPropertyValue(
           (string)$this->propertyName, $inputdata->value
         );
         return;

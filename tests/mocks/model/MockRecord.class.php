@@ -28,8 +28,6 @@ use ramp\model\business\Record;
 use ramp\model\business\field\Field;
 use ramp\model\business\RecordComponent;
 
-// use tests\ramp\mocks\model\MockRecordComponent;
-
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
@@ -40,6 +38,8 @@ class MockRecord extends Record
   public $errorsTouchCount;
   public $foreignKeyName;
   public $propertyName;
+  public $propertyName2;
+  public $relationAlphaName;
 
   public function __construct(\stdClass $dataObject = null)
   {
@@ -82,13 +82,32 @@ class MockRecord extends Record
     return $this[0];
   }
 
-  protected function get_foreignKey() : RecordComponent
+  protected function get_bProperty() : RecordComponent
   {
     if (!isset($this[1])) {
-      $this->foreignKeyName = Str::set('foreignKey');
-      $this[1] = new MockKey($this->foreignKeyName, $this);
+      $this->propertyName2 = Str::set('bProperty');
+      $this[1] = new MockField($this->propertyName2, $this);
     }
     return $this[1];
+  }
+
+  protected function get_foreignKey() : RecordComponent
+  {
+    if (!isset($this[2])) {
+      $this->foreignKeyName = Str::set('foreignKey');
+      $this[2] = new MockKey($this->foreignKeyName, $this);
+    }
+    return $this[2];
+  }
+
+  protected function get_relationAlpha() : RecordComponent
+  {
+    if (!isset($this[3])) {
+      $this->relationAlphaName = Str::set('relationAlpha');
+      // $this->relationAlphaTo = Str::set('MockMinRecord');
+      $this[3] = new MockRelation($this->relationAlphaName, $this);
+    }
+    return $this[3];
   }
 
   /**
