@@ -87,34 +87,34 @@ class MockBusinessModelManager extends BusinessModelManager
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
     self::$callCount++;
-    if ($definition->recordName == 'ConcreteRecordMultiKey')
-    {
-      if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.propertyA = "1" AND ConcreteRecordMultiKey.propertyB = "2" AND ConcreteRecordMultiKey.propertyC = "3"') {
-        if (!isset(self::$objectOne)) {
-          self::$dataObjectOne = new \stdClass();
-          self::$dataObjectOne->propertyA = 1;
-          self::$dataObjectOne->propertyB = 2;
-          self::$dataObjectOne->propertyC = 3;
-          self::$objectOne = new ConcreteRecordMultiKey(self::$dataObjectOne);
-        }
-        return self::$objectOne;
-      }
-      throw new DataFetchException('No matching Record(s) found in data storage!');
-    }
-    if ($definition->recordName == 'ConcreteRecord')
-    {
-      if ($definition->recordKey == 'new') {
-          return new ConcreteRecord();
-      }
-      throw new DataFetchException('No matching Record(s) found in data storage!');
-    }
-    if ($definition->recordName == 'MockRecord')
-    {
-      if ($definition->recordKey == 'new') {
-        return new MockRecord();
-      }
-      throw new DataFetchException('No matching Record(s) found in data storage!');
-    }
+    // if ($definition->recordName == 'ConcreteRecordMultiKey')
+    // {
+    //   if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.propertyA = "1" AND ConcreteRecordMultiKey.propertyB = "2" AND ConcreteRecordMultiKey.propertyC = "3"') {
+    //     if (!isset(self::$objectOne)) {
+    //       self::$dataObjectOne = new \stdClass();
+    //       self::$dataObjectOne->propertyA = 1;
+    //       self::$dataObjectOne->propertyB = 2;
+    //       self::$dataObjectOne->propertyC = 3;
+    //       self::$objectOne = new ConcreteRecordMultiKey(self::$dataObjectOne);
+    //     }
+    //     return self::$objectOne;
+    //   }
+    //   throw new DataFetchException('No matching Record(s) found in data storage!');
+    // }
+    // if ($definition->recordName == 'ConcreteRecord')
+    // {
+    //   if ($definition->recordKey == 'new') {
+    //       return new ConcreteRecord();
+    //   }
+    //   throw new DataFetchException('No matching Record(s) found in data storage!');
+    // }
+    // if ($definition->recordName == 'MockRecord')
+    // {
+    //   if ($definition->recordKey == 'new') {
+    //     return new MockRecord();
+    //   }
+    //   throw new DataFetchException('No matching Record(s) found in data storage!');
+    // }
     throw new \DomainException('Business Model(s) NOT found!');
   }
 

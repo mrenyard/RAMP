@@ -468,7 +468,6 @@ class ViewTest extends \PHPUnit\Framework\TestCase
     $this->assertNotSame($this->testObject, $clone);
     $this->assertEquals($this->testObject, $clone);
     unset($clone);
-
     // $this->testObject->setModel($this->mockModel);
     $clone = clone $this->testObject;
     $this->assertNotSame($this->testObject, $clone);
