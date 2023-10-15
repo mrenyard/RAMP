@@ -221,11 +221,13 @@ final class SQLBusinessModelManager extends BusinessModelManager
       }
       $collection = new $classFullName();
       do {
-        $key = Str::_EMPTY();
-        foreach ($recordClass->primaryKeyNames() as $primaryKeyName) {
-          $key = $key->append(Str::set($dataObject->$primaryKeyName))->append(Str::BAR());
-        }
-        if ($record = $this->getRecordIfCached($recordName, $key->trimEnd(Str::BAR()))) {
+        // $key = Str::_EMPTY();
+        // foreach ($recordClass->primaryKey->values as $subKeyValue) {
+        //   $subKeyValue = $subKeyValue->prepend(Str::FK());
+        //   print_r()
+        //   $key = $key->append(Str::set($dataObject->$primaryKeyName))->append(Str::BAR());
+        // }
+        if ($record = $this->getRecordIfCached($recordName, $key)) {
           // Empty
         } else {
           $record = new $recordFullName($dataObject);

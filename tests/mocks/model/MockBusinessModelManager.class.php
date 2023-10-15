@@ -30,7 +30,7 @@ use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
-use tests\ramp\mocks\model\MockRecord;
+// use tests\ramp\mocks\model\MockRecord;
 
 /**
  * Mock business model managers for testing \ramp\http\Session
@@ -87,34 +87,23 @@ class MockBusinessModelManager extends BusinessModelManager
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
     self::$callCount++;
-    // if ($definition->recordName == 'ConcreteRecordMultiKey')
-    // {
-    //   if ($filter(SQLEnvironment::getInstance()) == 'ConcreteRecordMultiKey.propertyA = "1" AND ConcreteRecordMultiKey.propertyB = "2" AND ConcreteRecordMultiKey.propertyC = "3"') {
-    //     if (!isset(self::$objectOne)) {
-    //       self::$dataObjectOne = new \stdClass();
-    //       self::$dataObjectOne->propertyA = 1;
-    //       self::$dataObjectOne->propertyB = 2;
-    //       self::$dataObjectOne->propertyC = 3;
-    //       self::$objectOne = new ConcreteRecordMultiKey(self::$dataObjectOne);
-    //     }
-    //     return self::$objectOne;
-    //   }
-    //   throw new DataFetchException('No matching Record(s) found in data storage!');
-    // }
-    // if ($definition->recordName == 'ConcreteRecord')
-    // {
-    //   if ($definition->recordKey == 'new') {
-    //       return new ConcreteRecord();
-    //   }
-    //   throw new DataFetchException('No matching Record(s) found in data storage!');
-    // }
-    // if ($definition->recordName == 'MockRecord')
-    // {
-    //   if ($definition->recordKey == 'new') {
-    //     return new MockRecord();
-    //   }
-    //   throw new DataFetchException('No matching Record(s) found in data storage!');
-    // }
+    if ($definition->recordName == 'MockRecord')
+    {
+      if ($filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"') {
+        if (!isset(self::$objectOne)) {
+          self::$dataObjectOne = new \stdClass();
+          self::$dataObjectOne->keyA = 2;
+          self::$dataObjectOne->keyB = 2;
+          self::$dataObjectOne->keyC = 2;
+          self::$objectOne = new MockRecord(self::$dataObjectOne);
+        }
+        return self::$objectOne;
+      }
+      if ($definition->recordKey == 'new') {
+        return new MockRecord();
+      }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
     throw new \DomainException('Business Model(s) NOT found!');
   }
 

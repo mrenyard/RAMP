@@ -21,41 +21,26 @@
  */
 namespace tests\ramp\mocks\model;
 
-use ramp\core\Str;
-use ramp\condition\PostData;
-use ramp\model\business\Record;
-use ramp\model\business\Relation;
-use ramp\model\business\Relatable;
+use ramp\model\business\RecordComponent;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
+ * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
-class MockRelation extends Relation
+class MockRecordMockRelation extends MockRecord
 {
-  public $validateCount;
-  public $hasErrorsCount;
-
-  public function __construct(Str $name, Record $parent, Relatable $with)
+  protected function get_relationAlpha() : RecordComponent
   {
-    parent::__construct($name, $parent, $with);
-    $this->validateCount = 0;
-    $this->hasErrorsCount = 0;
+    if (!isset($this[1])) {
+      $this[1] = new MockRelation($this->relationAlphaName, $this, $this->buildAlphaWith());
+    }
+    return $this[1];
   }
 
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
-  public function validate(PostData $postdata) : void
+  protected function get_relationBeta() : RecordComponent
   {
-    $this->validateCount++;
-    parent::validate($postdata);
-  }
-
-  public function get_hasErrors() : bool
-  {
-    $this->hasErrorsCount++;
-    return parent::get_hasErrors();
+    if (!isset($this[2])) {
+      $this[2] = new MockRelation($this->relationBetaName, $this, $this->buildBetaWith());
+    }
+    return $this[2];
   }
 }

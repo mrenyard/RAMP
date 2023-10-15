@@ -24,6 +24,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\core\StrCollection;
 use ramp\model\business\Relatable;
+use ramp\model\business\key\Key;
 
 /**
  * A single Record (entry).
@@ -58,9 +59,9 @@ abstract class Record extends Relatable
   public function __construct(\stdClass $dataObject = null)
   {
     parent::__construct();
-    if (!isset(self::$strPrimaryKey)) { self::$strPrimaryKey = Str::set('PrimaryKey'); }
+    if (!isset(self::$strPrimaryKey)) { self::$strPrimaryKey = Str::set('primaryKey'); }
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
-    $this->primaryKey = new key\Primary(self::$strPrimaryKey, $this);
+    $this->primaryKey = new Key(self::$strPrimaryKey, $this);
     $className = get_class($this);
     foreach (get_class_methods($className) as $methodName) {
       if (strpos($methodName, 'get_') === 0) {
@@ -68,8 +69,13 @@ abstract class Record extends Relatable
           if ($methodName == $parentMethod) { continue 2; }
         }
         $propertyName = str_replace('get_', '', $methodName);
-        $this->dataObject->$propertyName = NULL;
-        $this->$propertyName;
+        $property = $this->$propertyName;
+        $dataPropertyName = (string)$property->name;
+        if ($property instanceof Relation) {
+          if ($property instanceof RelationToOne) { $property->addAnyForeightKeys($this->dataObject); }
+          continue;
+        }
+        if (!isset($this->dataObject->$dataPropertyName)) { $this->dataObject->$dataPropertyName = NULL; }
       }
     }
     $this->updated();
@@ -94,7 +100,7 @@ abstract class Record extends Relatable
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return \ramp\core\Str Value of primary key
    */
-  final protected function get_primaryKey() : key\Primary
+  final protected function get_primaryKey() : Key
   {
     return $this->primaryKey;
   }
@@ -142,26 +148,24 @@ abstract class Record extends Relatable
    * Checks if any errors have been recorded following validate().
    * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
    * @return bool True if an error has been recorded
-   *
+   */
   protected function get_hasErrors() : bool
   {
-    return (parent::get_hasErrors())? TRUE : $this->primaryKey->hasErrors;
-  }*/
+    return ($this->primaryKey->hasErrors)? TRUE : parent::get_hasErrors();
+  }
 
   /**
    * Gets collection of recorded errors.
    * **DO NOT CALL DIRECTLY, USE this->errors;**
    * @return StrCollection List of recorded errors.
-   *
+   */
   protected function get_errors() : StrCollection
   {
-    $errors = StrCollection::set();
     if ($this->primaryKey->hasErrors) {
-      $errors->add($this->primaryKey->errors[0]);
-      return $errors;
+      return $this->primaryKey->errors;
     }
     return parent::get_errors();
-  }*/
+  }
 
   /**
    * Gets the value of a given property.

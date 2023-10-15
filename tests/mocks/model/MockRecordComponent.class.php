@@ -31,12 +31,4 @@ use ramp\model\business\RecordComponent;
  */
 class MockRecordComponent extends RecordComponent
 {
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  protected function get_value()
-  {
-    // STUB
-  }
 }

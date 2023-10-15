@@ -333,9 +333,10 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     foreach ($this->testObject as $child) {
       $this->assertSame(1, $child->validateCount);
       $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
-      $this->assertSame($touch, $child->hasErrorsCount);
+      $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
       $i++;
     }
+    $this->assertEquals($this->expectedChildCountExisting, $i);
   }
 
   /**

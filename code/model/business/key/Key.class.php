@@ -22,10 +22,15 @@ namespace ramp\model\business\key;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\condition\Filter;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
+use ramp\model\business\DataFetchException;
 use ramp\model\business\FailedValidationException;
+use ramp\model\business\DataExistingEntryException;
+use ramp\model\business\SimpleBusinessModelDefinition;
+
 
 /**
  * Abstract Key Record Component Business Model.
@@ -42,7 +47,7 @@ use ramp\model\business\FailedValidationException;
  * @property-read \ramp\core\StrCollection $indexes Related parent record associated property name.
  * @property-read \ramp\core\StrCollection $values Related parent Record associated with this component.
  */
-abstract class Key extends RecordComponent
+class Key extends RecordComponent
 {
   private $errorCollection;
 
@@ -89,7 +94,7 @@ abstract class Key extends RecordComponent
   }
 
   /**
-   * Returns primarykey values held by relevant properties of parent record.
+   * Returns key values held by relevant properties of parent record.
    * **DO NOT CALL DIRECTLY, USE this->values;**
    * @return ?\ramp\core\StrCollection Values held by relevant property of parent record or NULL
    */
@@ -114,48 +119,30 @@ abstract class Key extends RecordComponent
   }
 
   /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
-   */
-  protected function get_hasErrors() : bool
-  {
-    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
-  }
-
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
-  protected function get_errors() : StrCollection
-  {
-    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
-  }
-
-  /**
-   * Validate uniqueness of combined primary key.
+   * Validate uniqueness of combined key.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   * @throws \ramp\model\business\DataExistingEntryException An entry already exists with this key!
    */
   public function validate(PostData $postdata) : void
   {
-    $this->errorCollection = StrCollection::set();
-    foreach ($postdata as $inputdata)
+    parent::validate($postdata);
+    if ($this->parent->isModified && $this->parent->isNew && !$this->hasErrors &&
+      ((string)$this->name == 'primaryKey') && $this->value !== NULL)
     {
-      if (
-        ((string)$inputdata->attributeURN == (string)$this->id) &&
-        (\is_array($inputdata->value))
-      )
-      {
-        foreach ($inputdata->value as $subFieldKey => $subFieldValue) {
-          if (!$this[$subFieldKey]->isEditable) { return; }
-          try {
-            $this[$subFieldKey]->processValidationRule($subFieldValue);
-          } catch (FailedValidationException $e) {
-            $this->errorCollection->add(Str::set($e->getMessage()));
-          }
-        }
+      $recordName = Str::camelCase($this->parent->id->explode(Str::COLON())[0]);
+      $filterValues = array();
+      foreach ($this->parent->primaryKey->indexes as $propertyName) {
+        $filterValues[(string)$propertyName] = $this->parent->getPropertyValue((string)$propertyName);
       }
-    }
+      $filter = Filter::build($recordName, $filterValues);
+      $def = new SimpleBusinessModelDefinition($recordName);
+      $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+      try {
+        $MODEL_MANAGER::getInstance()->getBusinessModel($def, $filter);
+      } catch (DataFetchException $expected) {
+        return;
+      }
+      throw new DataExistingEntryException('An entry already exists with this key!');
+    }    
   }
 }

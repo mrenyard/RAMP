@@ -282,8 +282,8 @@ final class Str extends RAMPObject
     // cannot remove from an empty string
     if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
     $value = ($value === NULL)? Str::SPACE() : $value;
-    $rtn =  Str::set(substr_replace((string)$this, '', strrpos((string)$this, (string)$value),));
-    return ((string)$rtn == (string)$this)? $this : $rtn;
+    $value =  Str::set(substr_replace((string)$this, '', strrpos((string)$this, (string)$value),));
+    return ((string)$value == (string)$this)? $this : $value;
   }
 
   /**
@@ -296,8 +296,8 @@ final class Str extends RAMPObject
     // cannot remove from an empty string
     if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
     $value = ($value === NULL)? Str::SPACE() : $value;
-    $rtn = Str::set(substr_replace((string)$this, '', 0, strlen((string)$value)));
-    return ((string)$rtn == (string)$this)? $this : $rtn;
+    $value = Str::set(substr_replace((string)$this, '', 0, strlen((string)$value)));
+    return ((string)$value == (string)$this)? $this : $value;
   }
 
   /**
@@ -349,6 +349,14 @@ final class Str extends RAMPObject
         if (stripos((string)$this, (string)$searchSubstring) !== FALSE) { return TRUE; }
     }
     return FALSE;
+  }
+
+  public function explode(Str $seperator) : StrCollection
+  {
+    $value = StrCollection::set();
+    if ($this === self::_EMPTY()){ return $value->add($this); } // cannot explode an empty string
+    foreach (explode((string)$seperator, $this->value) as $part) { $value->add(Str::set($part)); }
+    return $value;
   }
 
   /**

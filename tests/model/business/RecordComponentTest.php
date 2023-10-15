@@ -23,17 +23,19 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/BusinessModelTest.php';
 
+require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
 
@@ -58,6 +60,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Setup
   protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
     $this->name = Str::set('aProperty');
@@ -281,20 +284,20 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @link ramp.model.business.RecordComponent#method_get_parentRecord ramp\model\business\RecordComponent::record
    * @link ramp.model.business.RecordComponent#method_get_parentProppertyName ramp\model\business\RecordComponent::parentProppertyName
    */
-  public function testInitStateRecordComponent()
+  public function testStateChangesRecordComponent()
   {
-    $this->assertSame($this->name, $this->testObject->name);
+    $this->assertEquals($this->name, $this->testObject->name);
     $this->assertSame($this->record, $this->testObject->parent);
     $this->assertNull($this->testObject->value);
-    $this->assertSame(
+    $this->assertEquals(
       (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
       (string)$this->testObject->id
     );
-    
     $value = 'VALUE';
     $name = $this->name;
     $this->dataObject->$name = $value;
-    $this->assertSame($this->record->getPropertyValue($this->name), $value);
+    $this->assertSame($value, $this->record->getPropertyValue($this->name));
+    $this->assertSame($value, $this->testObject->value);
   }
 
   /**

@@ -27,17 +27,28 @@ require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/URNQueryEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
+use ramp\model\business\DataExistingEntryException;
 use ramp\model\business\key\Key;
 
 use tests\ramp\mocks\model\MockBusinessModel;
@@ -51,24 +62,19 @@ use tests\ramp\mocks\model\MockRecordComponent;
  */
 class KeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
-  protected $keyName;
-  protected $subKey1;
-  protected $subKey2;
-
   #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    $this->name = Str::set('primaryKey');
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
   }
   protected function getTestObject() : RAMPObject {
-    return $this->record->foreignKey;
+    return $this->record->primaryKey;
   }
   protected function postSetup() : void {
-    $this->name = $this->record->foreignKeyName;
-    $this->subKey1 = 'key1';
-    $this->subKey2 = 'key2';
-    $this->expectedChildCountNew = 0;
+    $this->expectedChildCountNew = 3;
   }
   #endregion
 
@@ -93,21 +99,22 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->testObject[$this->subKey1] = new MockField(Str::set('foreignKey[' . $this->subKey1 . ']'), $this->record);
-    $this->testObject[$this->subKey2] = new MockField(Str::set('foreignKey[' . $this->subKey2 . ']'), $this->record);
-    $this->expectedChildCountExisting = 2;
+    $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
-      'mock-record:new:foreignKey' => array('key1' => 1, 'key2' => 'BadValue')
+      'mock-record:new:keyA' => 1,
+      'mock-record:new:keyB' => 'BadValue',
+      'mock-record:new:keyC' => 1
     ));
     $this->childErrorIndexes = array(1);
-    $this->childErrorIDs = array(1);
   }
   protected function complexModelIterationTypeCheck()
   {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key1']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['key1']->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['key2']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['key2']->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyA']->type);
+    $this->assertSame('mock-field field', (string)$this->testObject['keyA']->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyB']->type);
+    $this->assertSame('mock-field field', (string)$this->testObject['keyB']->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyC']->type);
+    $this->assertSame('mock-field field', (string)$this->testObject['keyC']->type);
   } 
   #endregion
 
@@ -260,6 +267,19 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert validate method returns void (null) when called.
+   * - assert hasErrors reports as expected.
+   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
+   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
+   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
+   */
+  public function testTouchValidityAndErrorMethods()
+  {
+    parent::testTouchValidityAndErrorMethods();
+  }
+
+  /**
    * Error reporting within complex models using \ramp\model\business\key\Key::getErrors().
    * - assert following validate(), the expected iCollection of error messages returned from
    *    getErrors() are as expected, depending on which level they are called.
@@ -296,17 +316,30 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
   
   /**
-   * Hold reference back to associated parent Record, propertyName and value.
-   * - assert record as passed to constructor.
-   * - assert propertyName as passed to constructor.
+   * Hold a collection of reference back to parent (Record), name value and id.
+   * - assert parent same as passed to constructor.
+   * - assert name same as passed to constructor.
+   * - assert id returns as expected.
+   * - assert value returns as expected based on state of key
    * @link ramp.model.business.key.Key#method_get_parentRecord ramp\model\business\key\Key::record
    * @link ramp.model.business.key.Key#method_get_parentProppertyName ramp\model\business\key\Key::parentProppertyName
    */
-  public function testInitStateRecordComponent(string $propertyName = NULL)
+  public function testStateChangesRecordComponent()
   {
-    $propertyName = ($propertyName === NULL) ? 'foreign-key' :  $propertyName;
-    $this->assertSame('mock-record:new:' . $propertyName, (string)$this->testObject->id);
-    parent::testInitStateRecordComponent();
+    $this->assertSame('mock-record:new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
+    $this->assertEquals($this->name, $this->testObject->name);
+    $this->assertSame($this->record, $this->testObject->parent);
+    $this->assertNull($this->testObject->value);
+    $this->assertEquals(
+      (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
+      (string)$this->testObject->id
+    );
+    $this->dataObject->keyC = 1;
+    $this->assertNull($this->testObject->value);
+    $this->dataObject->keyB = 1;
+    $this->assertNull($this->testObject->value);
+    $this->dataObject->keyA = 1;
+    $this->assertEquals('1|1|1', $this->testObject->value);
   }
 
   /**
@@ -335,24 +368,44 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Touch Validity checking and error checking within complex models.
-   * - assert validate method returns void (null) when called.
-   * - assert hasErrors reports as expected.
-   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
-   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
-   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
+   * Test state changes for indexs, values, and value follwing before, during and after validation.
+   * - assert compound key indexes and values based on parent record state
+   * - assert validation leads to relevant state changes. 
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testStateChangesKey()
   {
-    $this->populateSubModelTree();
-    $this->assertNull($this->testObject->validate($this->postData)); // Call
-    $this->assertTrue($this->testObject->hasErrors);
-    // NOTE Validation through processValidationRule NOT validate and hasErrors.
-    $i = 0;
-    foreach ($this->testObject as $child) {
-      $this->assertSame(0, $child->validateCount);
-      $this->assertSame(0, $child->hasErrorsCount);
-      $i++;
-    }
+    $indexs = $this->testObject->indexes;
+    $this->assertEquals('keyA', (string)$indexs[0]);
+    $this->assertEquals('keyB', (string)$indexs[1]);
+    $this->assertEquals('keyC', (string)$indexs[2]);
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyC' => 1)));
+    $this->assertNull($this->testObject->values);
+    $this->assertNull($this->testObject->value);
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyB' => 1)));
+    $this->assertNull($this->testObject->values);
+    $this->assertNull($this->testObject->value);
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyA' => 1)));
+    $values = $this->testObject->values;
+    $this->assertInstanceOf('ramp\core\StrCollection', $values);
+    $this->assertEquals('1', $values[0]);
+    $this->assertEquals('1', $values[1]);
+    $this->assertEquals('1', $values[2]);
+    $this->assertEquals('1|1|1', $this->testObject->value);
+  }
+
+  /**
+   * Test DataExistingEntryException when new key entry matches an existing entry. 
+   * - assert throws \ramp\model\business\DataExistingEntryException
+   *   with message 'An entry already exists with this key!'.
+   */
+  public function testExistingEntryException()
+  {
+    $this->expectException(DataExistingEntryException::class);
+    $this->expectExceptionMessage('An entry already exists with this key!');
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:new:keyA' => 2,
+      'mock-record:new:keyB' => 2,
+      'mock-record:new:keyC' => 2
+    )));
   }
 }

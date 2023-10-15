@@ -38,10 +38,9 @@ use tests\ramp\mocks\model\MockBusinessModel;
  */
 class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 {
-  /**
-   * Template method inc. factory for TestObject instance.
-   */
+  #region Setup
   protected function getTestObject() : RAMPObject { return new MockRelatable(); }
+  #endregion
 
   /**
    * Default base constructor assertions \ramp\model\business\Relatable::__construct().
@@ -60,6 +59,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Relatable::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -249,4 +249,5 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   {
     parent::testErrorReportingPropagation();
   }
+  #endregion
 }

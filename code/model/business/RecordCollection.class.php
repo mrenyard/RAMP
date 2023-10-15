@@ -37,7 +37,7 @@ use ramp\core\Str;
  * COLLABORATORS
  * - Collection of {@link \ramp\model\business\Record}s
  */
-abstract class RecordCollection extends Relatable implements iCollection
+class RecordCollection extends Relatable implements iCollection
 {
   /**
    * Default constructor for collection of \ramp\model\business\Records.

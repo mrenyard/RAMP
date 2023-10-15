@@ -67,20 +67,6 @@ abstract class Field extends RecordComponent
   }
 
   /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
-  protected function get_id() : Str
-  {
-    return Str::COLON()->prepend(
-      $this->parent->id
-    )->append(
-      Str::hyphenate($this->name)
-    );
-  }
-
-  /**
    * Get Label
    * **DO NOT CALL DIRECTLY, USE this->label;**
    * @return \ramp\core\Str Label for *this*
@@ -147,7 +133,7 @@ abstract class Field extends RecordComponent
           return;
         }
         $this->parent->setPropertyValue(
-          (string)$this->propertyName, $inputdata->value
+          (string)$this->name, $inputdata->value
         );
         return;
       }

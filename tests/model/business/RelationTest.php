@@ -25,38 +25,45 @@ require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordMockRelation.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 
-use ramp\SETTING;
 use ramp\core\RAMPObject;
+use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\Relation;
 
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRelatable;
 use tests\ramp\mocks\model\MockRelation;
-use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\model\MockRecordMockRelation;
+use tests\ramp\mocks\model\MockMinRecord;
 
 /**
  * Collection of tests for \ramp\model\business\Relatable.
  */
 class RelationTest extends \tests\ramp\model\business\RecordComponentTest
 {
+  protected $with;
+
   #region Setup
   protected function preSetup() : void {
     $this->dataObject = new \StdClass();
-    $this->record = new MockRecord($this->dataObject);
+    $this->record = new MockRecordMockRelation($this->dataObject);
     $this->name = $this->record->relationAlphaName;
+    $this->with = $this->record->relationAlphaWith;
+    $this->betaWith = $this->record->relationBetaWith;
   }
   protected function getTestObject() : RAMPObject {
     return $this->record->relationAlpha;
   }
   protected function postSetup() : void {
-    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
-    $this->expectedChildCountNew = 0;
+    $this->expectedChildCountNew = 4;
   }
   #endregion
 
@@ -81,24 +88,24 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->testObject[0] = new MockRelatable();
-    $this->testObject[1] = new MockRelatable();
-    $this->testObject[1][0] = new MockRelatable(TRUE);
-    $this->testObject[2] = new MockRelatable(TRUE);
-    $this->expectedChildCountExisting = 3;
+    $this->expectedChildCountExisting = 4;
     $this->postData = new PostData();
-    $this->childErrorIndexes = array(1,2);
+    // 2|2|2 Should be 1|1|1
+    $d = new \stdClass(); $d->FK_relationAlpha['key1'] = 2;
+    $d->FK_relationAlpha['key2'] = 2; $d->FK_relationAlpha['key3'] = 2; 
+    $this->testObject[2] = new MockMinRecord($d, TRUE);
+    $this->childErrorIndexes = array(2);
   }
   protected function complexModelIterationTypeCheck()
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-relatable relatable', (string)$this->testObject[0]->type);
+    $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-relatable relatable', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
-    $this->assertSame('mock-relatable relatable', (string)$this->testObject[1][0]->type);
+    $this->assertSame('mock-min-record record', (string)$this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-relatable relatable', (string)$this->testObject[2]->type);
+    $this->assertSame('mock-min-record record', (string)$this->testObject[2]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
+    $this->assertSame('mock-min-record record', (string)$this->testObject[3]->type);
   }
   #endregion
 
@@ -231,7 +238,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
-    parent::testOffsetSetOffsetUnset(new MockRelatable());
+    parent::testOffsetSetOffsetUnset(new MockRecordMockRelation());
   }
 
   /**
@@ -298,9 +305,9 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @link ramp.model.business.Relation#method_get_parentRecord ramp\model\business\Relation::record
    * @link ramp.model.business.Relation#method_get_parentProppertyName ramp\model\business\Relation::parentProppertyName
    */
-  public function testInitStateRecordComponent()
+  public function testStateChangesRecordComponent()
   {
-    parent::testInitStateRecordComponent();
+    parent::testStateChangesRecordComponent();
   }
 
   /**
@@ -323,4 +330,44 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     parent::testSetParentPropertyNamePropertyNotSetException();
   }
   #endregion
+
+  public function testRecordNewWithRelation()
+  {
+    $this->assertObjectNotHasAttribute('relationAlpha', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_alphaKey1', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_alphaKey2', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_alphaKey3', $this->dataObject);
+    $this->assertSame(Relation::$OF::MANY(), $this->testObject->of);
+    $this->assertSame($this->record->primaryKey, $this->testObject->key);
+    // $this->assertSame('1|1|1', (string)$this->testObject->key->value);
+    $this->assertSame(Relation::$OF::ONE(), $this->record->relationBeta->of);
+    $this->assertSame($this->record->relationBetaWith->primaryKey, $this->record->relationBeta->key);
+    // $this->assertSame('1|1|2', (string)$this->record->relationBeta->key->value);
+  }
+
+  public function testInconsistentKeyWithCollection()
+  {
+    $with = new RecordCollection();
+    $d = new \stdClass();
+    $d->FK_relationDelta['key1'] = 1;
+    $d->FK_relationDelta['key2'] = 1;
+    $d->FK_relationDelta['key3'] = 1;
+    $with->add(new MockMinRecord($d));
+    $d = new \stdClass();
+    $d->FK_relationDelta['key1'] = 1;
+    $d->FK_relationDelta['key2'] = 2; // Inconsistency 
+    $d->FK_relationDelta['key3'] = 1;
+    $with->add(new MockMinRecord($d));
+    $d = new \stdClass();
+    $d->FK_relationDelta['key1'] = 1;
+    $d->FK_relationDelta['key2'] = 1;
+    $d->FK_relationDelta['key3'] = 1; 
+    $with->add(new MockMinRecord($d));
+    $with->add(new MockMinRecord(new \stdClass()));
+    // TODO:mrenyard: expect exception
+    // $this->expectException(\Exception::class);
+    // $this->expectExceptionMessage('');
+    $testObject = new MockRelation(Str::set('relationDelta'), $this->record, $with);
+    $this->assertSame(Relation::$OF::MANY(), $testObject->of);
+  }
 }

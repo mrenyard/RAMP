@@ -64,7 +64,9 @@ abstract class RecordComponent extends BusinessModel
   {
     return Str::COLON()->prepend(
       $this->parent->id
-    )->append(Str::hyphenate($this->name));
+    )->append(
+      Str::hyphenate($this->name)
+    );
   }
 
   /**

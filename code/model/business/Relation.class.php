@@ -20,11 +20,11 @@
  */
 namespace ramp\model\business;
 
-use ramp\SETTING;
 use ramp\core\Str;
 // use ramp\core\Collection;
 // use ramp\core\StrCollection;
 use ramp\condition\PostData;
+use ramp\model\business\key\Key;
 // use ramp\model\business\BusinessModel;
 // use ramp\model\business\Record;
 // use ramp\model\business\key\Foreign;
@@ -47,43 +47,60 @@ use ramp\model\business\FailedValidationException;
  * - {@link \ramp\validation\ValidationRule}
  * - {@link \ramp\model\business\BusinessModelManager}
  */
-class Relation extends RecordComponent
+abstract class Relation extends RecordComponent
 {
-  private $modelManager;
-  // private $errorCollection;
-  private $relatedRecordType;
+  public static $OF; private $of;
+  private $errorCollection;
+  private $expectedKeyValue;
+  private $key;
 
   /**
-   * Creates input field related to a single property of containing record.
+   * Creates a relation related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records
+   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
    * proir to allowing property value change
    */
-  public function __construct(Str $name, Record $parent) //, Str $relatedRecordType) //, Str $lookUpTable = NULL)
+  public function __construct(Str $name, Record $parent, Relatable $with)
   {
-    // $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    // $this->modelManager = $MODEL_MANAGER::getInstance();
-    // $this->relatedRecordType = $relatedRecordType;
-    parent::__construct($name, $parent);
-    // $this->update($this->getValue());
+    if (!isset(SELF::$OF)) {
+      SELF::$OF = new class() {
+        public static function ONE() : int { return 1; }
+        public static function MANY() : int { return 2; }
+      };
+    }
+    $this->of = ($with instanceof Record) ? Relation::$OF::ONE() : Relation::$OF::MANY();
+    $this->key = ($this->of === Relation::$OF::ONE()) ? $with->primaryKey : $parent->primaryKey;
+
+    // Check all have a shared ForeignKey to *THIS*
+    if ($this->of === Relation::$OF::MANY()) {
+      $i = $with->getIterator();
+      $i->rewind();
+      $this->expectedKeyValue = $i->current()->primaryKey->value;
+      $i->next();
+      while ($i->valid()) {
+        $o = $i->current();
+        if ($o === $with[$with->count-1] && $o->isNew) { break; }
+        if ($o->primaryKey->value !== $this->expectedKeyValue) { throw new Exception(); }
+        $i->next();
+      }
+    }
+    parent::__construct($name, $parent, $with);
   }
+
+  protected function get_of() { return $this->of; }
+  protected function get_key() { return $this->key; }
 
   /**
    * Update relation base on changed key.
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store.
    *
-  private function update($key = NULL)
+  abstract protected function update($key = NULL);
   {
     $key = (isset($key)) ? Str::set($key) : Str::NEW();
     $this->relatableTo = $this->modelManager->getBusinessModel(
-      new SimpleBusinessModelDefinition($this->relationObjectRecordName, $key)
+      new SimpleBusinessModelDefinition($this->relatedRecordType, $key)
     );
-    $children = $this->relatable;
-    if ($key === Str::NEW()) {
-      $children = new key\Foreign($this->propertyName, $this->record, new key\Primary($this->relatableTo));
-    }
-    $this->setChildren($children);
   }*/
 
   /**
@@ -103,7 +120,7 @@ class Relation extends RecordComponent
    */
   public function offsetSet($offset, $object)
   {
-    if (!($object instanceof \ramp\model\business\Relatable)) {
+    if ((!($object instanceof \ramp\model\business\Relatable)) || $object->primaryKey->value !== $this->expectedKeyValue) {
       throw new \InvalidArgumentException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
@@ -169,10 +186,10 @@ class Relation extends RecordComponent
    */
   public function processValidationRule($value) : void
   {
-    try {
-      $this->update($value);
-    } catch (DataFetchException $e) {
-      throw new FailedValidationException('Relation NOT found in data storage!');
-    }
+    // try {
+    //   $this->update($value);
+    // } catch (DataFetchException $e) {
+    //   throw new FailedValidationException('Relation NOT found in data storage!');
+    // }
   }
 }

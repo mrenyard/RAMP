@@ -29,14 +29,15 @@ require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Primary.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
@@ -101,7 +102,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->testObject->updated();
     $this->assertTrue($this->testObject->isValid);
     $this->assertSame('mock-record:1|1|1', (string)$this->testObject->id);
-    $this->expectedChildCountExisting = 4;
+    $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
       'mock-record:1|1|1:a-property' => 'BadValue'
     ));
@@ -113,11 +114,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-field field', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-key key', (string)$this->testObject[2]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
-    $this->assertSame('mock-relation relation', (string)$this->testObject[3]->type);
+    $this->assertSame('mock-relation relation', (string)$this->testObject[1]->type);
   }
   #endregion
 
@@ -356,10 +353,25 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isModified);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
+    $keys = [$this->testObject->primaryKey['keyA'], $this->testObject->primaryKey['keyB'], $this->testObject->primaryKey['keyC']];
+    $this->assertSame($keys[0], $this->testObject->keyA);
+    $this->assertSame($keys[1], $this->testObject->keyB);
+    $this->assertSame($keys[2], $this->testObject->keyC);
+    $i = 0;
+    foreach($this->testObject as $key) { $this->assertSame($keys[$i++], $key); }
+    $this->assertSame($this->expectedChildCountNew, $i);
+    $this->assertObjectHasAttribute('aProperty', $this->dataObject);
+    $this->assertObjectHasAttribute('keyA', $this->dataObject);
+    $this->assertObjectHasAttribute('keyB', $this->dataObject);
+    $this->assertObjectHasAttribute('keyC', $this->dataObject);
+  }
 
-    $this->assertSame($this->testObject->primaryKey['keyA'], $this->testObject->keyA);
-    $this->assertSame($this->testObject->primaryKey['keyB'], $this->testObject->keyB);
-    $this->assertSame($this->testObject->primaryKey['keyC'], $this->testObject->keyC);
+  public function testRecordNewWithRelation()
+  {
+    $this->assertObjectNotHasAttribute('relationAlpha', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_keyAlpha1', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_keyAlpha2', $this->dataObject);
+    // $this->assertObjectHasAttribute('FK_keyAlpha3', $this->dataObject);
   }
 
   /**

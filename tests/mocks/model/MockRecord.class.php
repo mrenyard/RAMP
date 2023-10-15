@@ -25,8 +25,10 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
-use ramp\model\business\field\Field;
+use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
+use ramp\model\business\Relatable;
+use ramp\model\business\field\Field;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
@@ -36,13 +38,16 @@ class MockRecord extends Record
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
-  public $foreignKeyName;
   public $propertyName;
-  public $propertyName2;
   public $relationAlphaName;
+  public $relationAlphaWith;
+  public $relationBetaName;
+  public $relationBetaWith;
 
   public function __construct(\stdClass $dataObject = null)
   {
+    $this->relationAlphaName = Str::set('relationAlpha');
+    $this->relationBetaName = Str::set('relationBeta');
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -82,33 +87,65 @@ class MockRecord extends Record
     return $this[0];
   }
 
-  protected function get_bProperty() : RecordComponent
+  protected function buildAlphaWith() : Relatable
   {
-    if (!isset($this[1])) {
-      $this->propertyName2 = Str::set('bProperty');
-      $this[1] = new MockField($this->propertyName2, $this);
-    }
-    return $this[1];
-  }
-
-  protected function get_foreignKey() : RecordComponent
-  {
-    if (!isset($this[2])) {
-      $this->foreignKeyName = Str::set('foreignKey');
-      $this[2] = new MockKey($this->foreignKeyName, $this);
-    }
-    return $this[2];
+    $this->relationAlphaWith = new RecordCollection();
+    $d = new \stdClass();
+    $d->FK_relationAlpha['key1'] = 1;
+    $d->FK_relationAlpha['key2'] = 1;
+    $d->FK_relationAlpha['key3'] = 1;
+    $this->relationAlphaWith->add(new MockMinRecord($d));
+    $d = new \stdClass();
+    $d->FK_relationAlpha['key1'] = 1;
+    $d->FK_relationAlpha['key2'] = 1;
+    $d->FK_relationAlpha['key3'] = 1; 
+    $this->relationAlphaWith->add(new MockMinRecord($d));
+    $d = new \stdClass();
+    $d->FK_relationAlpha['key1'] = 1;
+    $d->FK_relationAlpha['key2'] = 1;
+    $d->FK_relationAlpha['key3'] = 1; 
+    $this->relationAlphaWith->add(new MockMinRecord($d));
+    $this->relationAlphaWith->add(new MockMinRecord(new \stdClass()));
+    return $this->relationAlphaWith;
   }
 
   protected function get_relationAlpha() : RecordComponent
   {
+    // TODO:mrenyard: Use concrete RelationToMany
+    if (!isset($this[1])) {
+      $this[1] = new MockRelation($this->relationAlphaName, $this, $this->buildAlphaWith());
+    }
+    return $this[1];
+  }
+
+  protected function buildBetaWith() : Relatable
+  {
+    $d = new \stdClass();
+    $d->key1 = 1;
+    $d->key2 = 1;
+    $d->key2 = 2;
+    $this->relationBetaWith = new MockMinRecord($d);
+    return $this->relationBetaWith;
+  }
+
+  protected function get_relationBeta() : RecordComponent
+  {
+    // TODO:mrenyard: Use concrete RelationToOne
+    if (!isset($this[2])) {
+      $this[2] = new MockRelation($this->relationBetaName, $this, $this->buildBetaWith());
+    }
+    return $this[2];
+  }
+
+  /*
+  protected function get_relationGamma() : RecordComponent
+  {
+    // TODO:mrenyard: Use concrete RelationLookup
     if (!isset($this[3])) {
-      $this->relationAlphaName = Str::set('relationAlpha');
-      // $this->relationAlphaTo = Str::set('MockMinRecord');
-      $this[3] = new MockRelation($this->relationAlphaName, $this);
+      $this[3] = new MockRelation($this->relationGammaName, $this, $this->buildBetaWith());
     }
     return $this[3];
-  }
+  }*/
 
   /**
    * Validate postdata against this and update accordingly.
