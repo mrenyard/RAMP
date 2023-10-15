@@ -21,10 +21,8 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\condition\PostData;
 use ramp\core\StrCollection;
-use ramp\model\business\Relatable;
-use ramp\model\business\key\Key;
+use ramp\condition\PostData;
 
 /**
  * A single Record (entry).

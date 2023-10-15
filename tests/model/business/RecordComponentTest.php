@@ -28,7 +28,7 @@ require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 
@@ -74,10 +74,11 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * Collection of assertions for \ramp\model\business\RecordComponent::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\core\iOption}
+   * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\model\business\RecordComponent}
    * @link ramp.model.business.RecordComponent ramp\model\business\RecordComponent
    */

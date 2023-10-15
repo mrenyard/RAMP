@@ -18,7 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\key;
+namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;

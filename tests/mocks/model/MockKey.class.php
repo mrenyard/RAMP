@@ -24,7 +24,7 @@ namespace tests\ramp\mocks\model;
 use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
-use ramp\model\business\key\Key;
+use ramp\model\business\Key;
 use ramp\model\business\Record;
 
 /**

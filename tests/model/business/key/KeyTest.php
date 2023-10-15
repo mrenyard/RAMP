@@ -19,7 +19,7 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\key;
+namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
@@ -39,7 +39,7 @@ require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.clas
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/ramp/model/business/key/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/Key.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
@@ -49,7 +49,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\DataExistingEntryException;
-use ramp\model\business\key\Key;
+use ramp\model\business\Key;
 
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockKey;
@@ -58,7 +58,7 @@ use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockRecordComponent;
 
 /**
- * Collection of tests for \ramp\model\business\key\Key.
+ * Collection of tests for \ramp\model\business\Key.
  */
 class KeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
@@ -79,21 +79,22 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\key\Key::__construct().
+   * Collection of assertions for \ramp\model\business\Key::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
    * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\model\business\key\Key}
    * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \ramp\model\buiness\key\Key}   
-   * @link ramp.model.business.key.Key ramp\model\business\key\Key
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert is instance of {@link \ramp\model\business\RecordComponent}
+   * - assert is instance of {@link \ramp\model\buiness\Key}   
+   * @link ramp.model.business.Key ramp\model\business\Key
    */
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\key\Key', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\Key', $this->testObject);
   }
 
   #region Sub model setup
@@ -120,9 +121,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\buiness\key\Key::__set().
+   * Bad property (name) NOT accessable on \ramp\model\buiness\Key::__set().
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.business.key.Key#method__set ramp\model\buiness\key\Key::__set()
+   * @link ramp.model.business.Key#method__set ramp\model\buiness\Key::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -130,9 +131,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\buiness\key\Key::__get().
+   * Bad property (name) NOT accessable on \ramp\model\buiness\Key::__get().
    * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.business.key.Key#method__get ramp\model\buiness\key\Key::__get()
+   * @link ramp.model.business.Key#method__get ramp\model\buiness\Key::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -140,10 +141,10 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\buiness\key\Key::__get() and \ramp\model\buiness\key\Key::__set()
+   * Good property is accessable on \ramp\model\buiness\Key::__get() and \ramp\model\buiness\Key::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.business.key.Key#method___set \ramp\model\buiness\key\Key::__set()
-   * @link ramp.model.business.key.Key#method___get \ramp\model\buiness\key\Key::__get()
+   * @link ramp.model.business.Key#method___set \ramp\model\buiness\Key::__set()
+   * @link ramp.model.business.Key#method___get \ramp\model\buiness\Key::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -151,9 +152,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Correct return of ramp\model\buiness\key\Key::__toString().
-   * - assert {@link \ramp\model\buiness\key\Key::__toString()} returns string 'class name'
-   * @link ramp.model.business.key.Key#method___toString \ramp\model\buiness\key\Key::__toString()
+   * Correct return of ramp\model\buiness\Key::__toString().
+   * - assert {@link \ramp\model\buiness\Key::__toString()} returns string 'class name'
+   * @link ramp.model.business.Key#method___toString \ramp\model\buiness\Key::__toString()
    */
   public function testToString()
   {
@@ -173,12 +174,12 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert returned errors are as expected:
    *   - assert errors instance of {@link \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @link ramp.model.business.key.Key#method_get_type ramp\model\business\key\Key::type
-   * @link ramp.model.business.key.Key#method_getIterator ramp\model\business\key\Key::getIterator()
-   * @link ramp.model.business.key.Key#method_offsetExists ramp\model\business\key\Key::offsetExists()
-   * @link ramp.model.business.key.Key#method_count ramp\model\business\key\Key::count()
-   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
-   * @link ramp.model.business.key.Key#method_getErrors ramp\model\business\key\Key::getErrors()
+   * @link ramp.model.business.Key#method_get_type ramp\model\business\Key::type
+   * @link ramp.model.business.Key#method_getIterator ramp\model\business\Key::getIterator()
+   * @link ramp.model.business.Key#method_offsetExists ramp\model\business\Key::offsetExists()
+   * @link ramp.model.business.Key#method_count ramp\model\business\Key::count()
+   * @link ramp.model.business.Key#method_hasErrors ramp\model\business\Key::hasErrors()
+   * @link ramp.model.business.Key#method_getErrors ramp\model\business\Key::getErrors()
    */
   public function testInitStateMin()
   {
@@ -186,9 +187,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\key\Key::id.
+   * Set 'id' NOT accessable on \ramp\model\business\Key::id.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @link ramp.model.business.key\Key#method_set_id ramp\model\business\key\Key::id
+   * @link ramp.model.business.key\Key#method_set_id ramp\model\business\Key::id
    */
   public function testSetIdPropertyNotSetException()
   {
@@ -196,9 +197,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\key\Key::type.
+   * Set 'type' NOT accessable on \ramp\model\business\Key::type.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @link ramp.model.business.key.Key#method_set_type ramp\model\business\key\Key::type
+   * @link ramp.model.business.Key#method_set_type ramp\model\business\Key::type
    */
   public function testSetTypePropertyNotSetException()
   {
@@ -206,9 +207,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\key\Key::children.
+   * Get 'children' NOT accessable on \ramp\model\business\Key::children.
    * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @link ramp.model.business.key.Key#method_get_children ramp\model\business\key\Key::children
+   * @link ramp.model.business.Key#method_get_children ramp\model\business\Key::children
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -216,9 +217,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Index beyond bounds with \ramp\model\business\key\Key::offsetGet.
+   * Index beyond bounds with \ramp\model\business\Key::offsetGet.
    * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @link ramp.model.business.key.Key#method_offsetGet ramp\model\business\key\Key::offsetGet()
+   * @link ramp.model.business.Key#method_offsetGet ramp\model\business\Key::offsetGet()
    */
   public function testOffsetGetOutOfBounds()
   {
@@ -226,14 +227,14 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Index editing of children through \ramp\model\business\key\Key::offsetSet and
-   * for \ramp\model\business\key\Key::offsetUnset.
+   * Index editing of children through \ramp\model\business\Key::offsetSet and
+   * for \ramp\model\business\Key::offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.key.Key#method_offsetSet ramp\model\business\key\Key::offsetSet()
-   * @link ramp.model.business.key.Key#method_offsetUnset ramp\model\business\key\Key::offsetUnset()
+   * @link ramp.model.business.Key#method_offsetSet ramp\model\business\Key::offsetSet()
+   * @link ramp.model.business.Key#method_offsetUnset ramp\model\business\Key::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -254,12 +255,12 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    *   - assert True returned on isset() when within expected bounds.
    *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
-   * @link ramp.model.business.key.Key#method_get_type ramp\model\business\key\Key::type
-   * @link ramp.model.business.key.Key#method_getIterator ramp\model\business\key\Key::getIterator()
-   * @link ramp.model.business.key.Key#method_offsetGet ramp\model\business\key\Key::offsetGet()
-   * @link ramp.model.business.key.Key#method_offsetExists ramp\model\business\key\Key::offsetExists()
-   * @link ramp.model.business.key.Key#method_count ramp\model\business\key\Key::count
+   * @link ramp.model.business.Key#method_setChildren ramp\model\business\Key::children
+   * @link ramp.model.business.Key#method_get_type ramp\model\business\Key::type
+   * @link ramp.model.business.Key#method_getIterator ramp\model\business\Key::getIterator()
+   * @link ramp.model.business.Key#method_offsetGet ramp\model\business\Key::offsetGet()
+   * @link ramp.model.business.Key#method_offsetExists ramp\model\business\Key::offsetExists()
+   * @link ramp.model.business.Key#method_count ramp\model\business\Key::count
    */
   public function testComplexModelIteration()
   {
@@ -270,9 +271,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * Touch Validity checking and error checking within complex models.
    * - assert validate method returns void (null) when called.
    * - assert hasErrors reports as expected.
-   * @link ramp.model.business.key.Key#method_setChildren ramp\model\business\key\Key::children
-   * @link ramp.model.business.key.Key#method_validate ramp\model\business\key\Key::validate()
-   * @link ramp.model.business.key.Key#method_hasErrors ramp\model\business\key\Key::hasErrors()
+   * @link ramp.model.business.Key#method_setChildren ramp\model\business\Key::children
+   * @link ramp.model.business.Key#method_validate ramp\model\business\Key::validate()
+   * @link ramp.model.business.Key#method_hasErrors ramp\model\business\Key::hasErrors()
    */
   public function testTouchValidityAndErrorMethods()
   {
@@ -280,14 +281,14 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Error reporting within complex models using \ramp\model\business\key\Key::getErrors().
+   * Error reporting within complex models using \ramp\model\business\Key::getErrors().
    * - assert following validate(), the expected iCollection of error messages returned from
    *    getErrors() are as expected, depending on which level they are called.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link ramp.model.business.key.Key#method_getErrors ramp\model\business\key\Key::getErrors()
+   * @link ramp.model.business.Key#method_getErrors ramp\model\business\Key::getErrors()
    */
   public function testErrorReportingPropagation()
   {
@@ -295,9 +296,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'record' NOT accessable ramp\model\business\key\Key::record.
+   * Set 'record' NOT accessable ramp\model\business\Key::record.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @link ramp.model.business.key.Key#method_set_parentRecord ramp\model\business\key\Key::record
+   * @link ramp.model.business.Key#method_set_parentRecord ramp\model\business\Key::record
    */
   public function testSetParentRecordPropertyNotSetException()
   {
@@ -305,9 +306,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'propertyName' NOT accessable ramp\model\business\key\Key::propertyName.
+   * Set 'propertyName' NOT accessable ramp\model\business\Key::propertyName.
    * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @link ramp.model.business.key.Key#method_set_parentPropertyName ramp\model\business\key\Key::propertyName
+   * @link ramp.model.business.Key#method_set_parentPropertyName ramp\model\business\Key::propertyName
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {
@@ -321,8 +322,8 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert name same as passed to constructor.
    * - assert id returns as expected.
    * - assert value returns as expected based on state of key
-   * @link ramp.model.business.key.Key#method_get_parentRecord ramp\model\business\key\Key::record
-   * @link ramp.model.business.key.Key#method_get_parentProppertyName ramp\model\business\key\Key::parentProppertyName
+   * @link ramp.model.business.Key#method_get_parentRecord ramp\model\business\Key::record
+   * @link ramp.model.business.Key#method_get_parentProppertyName ramp\model\business\Key::parentProppertyName
    */
   public function testStateChangesRecordComponent()
   {
@@ -346,7 +347,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * Offset addition minimum type checking test
    * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope
    *   and expected associated record and unique to 'Key' propertyName.
-   * @link ramp.model.business.key.Key#method_offsetSet ramp\model\business\key\Key::offsetSet()
+   * @link ramp.model.business.Key#method_offsetSet ramp\model\business\Key::offsetSet()
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {

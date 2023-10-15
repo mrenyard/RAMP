@@ -67,22 +67,22 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   /**
    * Default base constructor assertions \ramp\model\business\BusinessModel::__construct().
    * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\BusinessModel}
-   * - assert is instance of {@link \ramp\model\business\BusinessModel}
+   * - assert is instance of {@link \ramp\model\Model}
    * - assert is instance of {@link \ramp\core\iList}
    * - assert is instance of {@link \IteratorAggregate}
    * - assert is instance of {@link \Countable}
    * - assert is instance of {@link \ArrayAccess}
+   * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * @link ramp.model.business.BusinessModel ramp\model\business\BusinessModel::__construct()
    */
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
     $this->assertInstanceOf('\ramp\core\iList', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\Countable', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
   }
   
   #region Sub model setup
