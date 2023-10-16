@@ -30,6 +30,8 @@ use ramp\model\business\RecordComponent;
 use ramp\model\business\Relatable;
 use ramp\model\business\field\Field;
 
+use tests\ramp\mocks\model\MockRelationToOne;
+
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
@@ -90,22 +92,24 @@ class MockRecord extends Record
   protected function buildAlphaWith() : Relatable
   {
     $this->relationAlphaWith = new RecordCollection();
-    $d = new \stdClass();
-    $d->FK_relationAlpha['key1'] = 1;
-    $d->FK_relationAlpha['key2'] = 1;
-    $d->FK_relationAlpha['key3'] = 1;
-    $this->relationAlphaWith->add(new MockMinRecord($d));
-    $d = new \stdClass();
-    $d->FK_relationAlpha['key1'] = 1;
-    $d->FK_relationAlpha['key2'] = 1;
-    $d->FK_relationAlpha['key3'] = 1; 
-    $this->relationAlphaWith->add(new MockMinRecord($d));
-    $d = new \stdClass();
-    $d->FK_relationAlpha['key1'] = 1;
-    $d->FK_relationAlpha['key2'] = 1;
-    $d->FK_relationAlpha['key3'] = 1; 
-    $this->relationAlphaWith->add(new MockMinRecord($d));
-    $this->relationAlphaWith->add(new MockMinRecord(new \stdClass()));
+    if (!$this->isNew) {
+      $d = new \stdClass();
+      $d->FK_relationAlpha_MockRecord_keyA = '2';
+      $d->FK_relationAlpha_MockRecord_keyB = '2';
+      $d->FK_relationAlpha_MockRecord_keyC = '2';
+      $this->relationAlphaWith->add(new MockMinRecord($d));
+      $d = new \stdClass();
+      $d->FK_relationAlpha_MockRecord_keyA = '2';
+      $d->FK_relationAlpha_MockRecord_keyB = '2';
+      $d->FK_relationAlpha_MockRecord_keyC = '2'; 
+      $this->relationAlphaWith->add(new MockMinRecord($d));
+      $d = new \stdClass();
+      $d->FK_relationAlpha_MockRecord_keyA = '2';
+      $d->FK_relationAlpha_MockRecord_keyB = '2';
+      $d->FK_relationAlpha_MockRecord_keyC = '2'; 
+      $this->relationAlphaWith->add(new MockMinRecord($d));
+    }
+    $this->relationAlphaWith->add(new MockMinRecord());
     return $this->relationAlphaWith;
   }
 
@@ -121,9 +125,11 @@ class MockRecord extends Record
   protected function buildBetaWith() : Relatable
   {
     $d = new \stdClass();
-    $d->key1 = 1;
-    $d->key2 = 1;
-    $d->key2 = 2;
+    if (!$this->isNew) {
+      $d->key1 = 1;
+      $d->key2 = 1;
+      $d->key2 = 2;
+    }
     $this->relationBetaWith = new MockMinRecord($d);
     return $this->relationBetaWith;
   }
@@ -132,7 +138,7 @@ class MockRecord extends Record
   {
     // TODO:mrenyard: Use concrete RelationToOne
     if (!isset($this[2])) {
-      $this[2] = new MockRelation($this->relationBetaName, $this, $this->buildBetaWith());
+      $this[2] = new MockRelationToOne($this->relationBetaName, $this, $this->buildBetaWith());
     }
     return $this[2];
   }

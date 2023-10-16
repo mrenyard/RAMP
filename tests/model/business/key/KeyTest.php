@@ -38,10 +38,12 @@ require_once '/usr/share/php/ramp/model/business/FailedValidationException.class
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;

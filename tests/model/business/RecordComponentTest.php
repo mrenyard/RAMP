@@ -28,6 +28,8 @@ require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
@@ -38,6 +40,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

@@ -66,7 +66,7 @@ abstract class RAMPObject
   {
     if (!method_exists($this, ($method = 'get_'.$propertyName))) {
       throw new BadPropertyCallException(
-        'Unable to locate '.$propertyName.' of \''.get_class($this).'\''
+        'Unable to locate \''.$propertyName.'\' of \''.get_class($this).'\''
       );
     }
     return $this->$method();

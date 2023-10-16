@@ -42,7 +42,9 @@ class MockBusinessModelManager extends BusinessModelManager
   public static $callCount;
   public static $updateLog;
   public static $objectOne;
+  public static $objectTwo;
   public static $dataObjectOne;
+  public static $dataObjectTwo;
 
   /**
    * Constuct the instance.
@@ -89,18 +91,35 @@ class MockBusinessModelManager extends BusinessModelManager
     self::$callCount++;
     if ($definition->recordName == 'MockRecord')
     {
-      if ($filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"') {
+      if ($definition->RecordKey == '2|2|2' || $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"') {
         if (!isset(self::$objectOne)) {
           self::$dataObjectOne = new \stdClass();
           self::$dataObjectOne->keyA = 2;
           self::$dataObjectOne->keyB = 2;
           self::$dataObjectOne->keyC = 2;
+          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key1 = 'A';
+          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key2 = 'B';
+          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key3 = 'C';
           self::$objectOne = new MockRecord(self::$dataObjectOne);
         }
         return self::$objectOne;
       }
       if ($definition->recordKey == 'new') {
         return new MockRecord();
+      }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
+    if ($definition->recordName == 'MockMinRecord')
+    {
+      if ($definition->RecordKey == 'A|B|C' || $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"') {
+        if (!isset(self::$objectTwo)) {
+          self::$dataObjectTwo = new \stdClass();
+          self::$dataObjectTwo->key1 = 'A';
+          self::$dataObjectTwo->key2 = 'B';
+          self::$dataObjectTwo->key3 = 'C';
+          self::$objectTwo = new MockMinRecord(self::$dataObjectOne);
+        }
+        return self::$objectTwo;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }

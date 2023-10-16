@@ -70,7 +70,7 @@ abstract class Record extends Relatable
         $property = $this->$propertyName;
         $dataPropertyName = (string)$property->name;
         if ($property instanceof Relation) {
-          if ($property instanceof RelationToOne) { $property->addAnyForeightKeys($this->dataObject); }
+          if ($property instanceof RelationToOne) { $property->addForeignKey($this->dataObject); }
           continue;
         }
         if (!isset($this->dataObject->$dataPropertyName)) { $this->dataObject->$dataPropertyName = NULL; }

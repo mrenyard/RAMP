@@ -30,12 +30,14 @@ require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

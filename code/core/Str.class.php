@@ -77,6 +77,11 @@ final class Str extends RAMPObject
   private static $FK;
 
   /**
+   * Singleton reference to {@link Str} with value '_'.
+   */
+  private static $UNDERLINE;
+
+  /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
   private $value;
@@ -148,6 +153,8 @@ final class Str extends RAMPObject
       case 'FK_':
         $s = self::FK();
         break;
+      case '_':
+        $s = self::UNDERLINE();
       default:
         $s = new Str((string)$value);
     }
@@ -248,6 +255,18 @@ final class Str extends RAMPObject
       self::$FK = new Str('FK_');
     }
     return self::$FK;
+  }
+
+  /**
+   * Returns NEW Str ('_')
+   * @return \ramp\core\Str Str object composed KEY ('FK_')
+   */
+  public static function UNDERLINE() : Str
+  {
+    if (!isset(self::$UNDERLINE)) {
+      self::$UNDERLINE = new Str('_');
+    }
+    return self::$UNDERLINE;
   }
 
   /**

@@ -80,7 +80,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   public function testBadPropertyCallExceptionOn__get()
   {
     $this->expectException(BadPropertyCallException::class);
-    $this->expectExceptionMessage('Unable to locate badProperty of \'' . get_class($this->testObject) . '\'');
+    $this->expectExceptionMessage('Unable to locate \'badProperty\' of \'' . get_class($this->testObject) . '\'');
     $o = $this->testObject->badProperty;
   }
 

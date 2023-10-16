@@ -21,48 +21,44 @@
  */
 namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/RelationTest.php';
 
-require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/model/business/Relation.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordMockRelation.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
-use ramp\model\business\RecordCollection;
 use ramp\model\business\Relation;
+use ramp\model\business\RecordCollection;
 
-use tests\ramp\mocks\model\MockBusinessModel;
-use tests\ramp\mocks\model\MockRelatable;
 use tests\ramp\mocks\model\MockRelation;
-use tests\ramp\mocks\model\MockRecordMockRelation;
+use tests\ramp\mocks\model\MockRelatable;
+use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockMinRecord;
+use tests\ramp\mocks\model\MockBusinessModel;
+use tests\ramp\mocks\model\MockRelationToOne;
 
 /**
- * Collection of tests for \ramp\model\business\Relation.
+ * Collection of tests for \ramp\model\business\RelationToOne.
  */
-class RelationTest extends \tests\ramp\model\business\RecordComponentTest
+class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 {
-  protected $with;
-
   #region Setup
   protected function preSetup() : void {
     $this->dataObject = new \StdClass();
-    $this->record = new MockRecordMockRelation($this->dataObject);
-    $this->name = $this->record->relationAlphaName;
-    $this->with = $this->record->relationAlphaWith;
+    $this->record = new MockRecord($this->dataObject);
+    $this->name = $this->record->relationBetaName;
+    $this->with = $this->record->relationBetaWith;
   }
   protected function getTestObject() : RAMPObject {
-    return $this->record->relationAlpha;
+    return $this->record->relationBeta;
   }
   protected function postSetup() : void {
-    $this->expectedChildCountNew = 1;
+    $this->expectedChildCountNew = 3;
   }
   #endregion
 
@@ -77,31 +73,14 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\model\business\RecordComponent}
    * - assert is instance of {@link \ramp\model\business\Relation}
+   * - assert is instance of {@link \ramp\model\business\RelationToOne}
    * @link ramp.model.business.Relation ramp\model\business\Relation
    */
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\Relation', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RelationToOne', $this->testObject);
   }
-  
-  #region Sub model setup
-  protected function populateSubModelTree()
-  {
-    $this->expectedChildCountExisting = 2;
-    $this->postData = new PostData();
-    $d = new \stdClass();
-    $this->testObject[1] = new MockMinRecord($d, TRUE);
-    $this->childErrorIndexes = array(2);
-  }
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[1]->type);
-  }
-  #endregion
 
   #region Inherited Tests
   /**
@@ -232,7 +211,8 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
-    parent::testOffsetSetOffsetUnset(new MockRecordMockRelation());
+    $this->expectException(\InvalidArgumentException::class);
+    parent::testOffsetSetOffsetUnset(new MockRecord());
   }
 
   /**
@@ -258,6 +238,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testComplexModelIteration()
   {
+    $this->expectException(\InvalidArgumentException::class);
     parent::testComplexModelIteration();
   }
 
@@ -274,6 +255,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testTouchValidityAndErrorMethods()
   {
+    $this->expectException(\InvalidArgumentException::class);
     parent::testTouchValidityAndErrorMethods();
   }
 
@@ -289,6 +271,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testErrorReportingPropagation()
   {
+    $this->expectException(\InvalidArgumentException::class);
     parent::testErrorReportingPropagation();
   }
 
@@ -325,13 +308,6 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
   #endregion
 
-  /**
-   * Succsesfully construct Relation toMANY with consistent keys plus final 'new'.
-   * - Set data on Record with pirmaryKey ready to recive foreignKey associated collection
-   * - Populate $with consistent foreignKeys + one final new (Record).
-   * - Create Relation SHOULD NOT throw Exception.
-   * - Assert interation matches passed collection.
-   */
   public function testConsistentKeyWithCollection()
   {
     // Set data and update to existing Record.
@@ -339,43 +315,31 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject->keyB = 1;
     $this->dataObject->keyC = 1;
     $this->record->updated();
-    $this->assertEquals('mock-record-mock-relation:1|1|1', (string)$this->record->id);
+    $this->assertEquals('mock-record:1|1|1', (string)$this->record->id);
     $this->assertFalse($this->record->isNew);
     // Populate $with consistent foreignKeys + one final new (Record).
     $with = new RecordCollection();
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->FK_relationGamma_MockRecord_keyA = 1;
+    $d->FK_relationGamma_MockRecord_keyB = 1;
+    $d->FK_relationGamma_MockRecord_keyC = 1;
     $with->add(new MockMinRecord($d));
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->FK_relationGamma_MockRecord_keyA = 1;
+    $d->FK_relationGamma_MockRecord_keyB = 1;
+    $d->FK_relationGamma_MockRecord_keyC = 1;
     $with->add(new MockMinRecord($d));
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->FK_relationGamma_MockRecord_keyA = 1;
+    $d->FK_relationGamma_MockRecord_keyB = 1;
+    $d->FK_relationGamma_MockRecord_keyC = 1;
     $with->add(new MockMinRecord($d));
     $with->add(new MockMinRecord());
     // Create Relation SHOULD NOT throw Exception.
     $testObject = new MockRelation(Str::set('relationGamma'), $this->record, $with);
-    // Assert interation matches passed collection
-    $i = 0;
-    foreach ($testObject as $relatedRecord) {
-      $this->assertSame($with[$i++], $relatedRecord);
-    }
-    $this->assertEquals($with->count, $testObject->count);
+    $this->assertSame($testObject[0], $with[0]);
   }
 
-  /**
-   * Unsuccsesfully construct Relation toMANY with inconsistent keys
-   * - Assert throws Exception
-   * - Set data on Record with pirmaryKey ready to recive foreignKey associated collection
-   * - Populate $with one inconsistent foreignKey to be detected.
-   * - Create Relation and expecet Exception.
-   */
   public function testInconsistentKeyWithCollection()
   {
     // Set data and update to existing Record.
@@ -383,9 +347,9 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject->keyB = 1;
     $this->dataObject->keyC = 1;
     $this->record->updated();
-    $this->assertEquals('mock-record-mock-relation:1|1|1', (string)$this->record->id);
+    $this->assertEquals('mock-record:1|1|1', (string)$this->record->id);
     $this->assertFalse($this->record->isNew);
-    // Populate $with including one inconsistent Record
+    // Populate $with consistent foreignKeys + one final new (Record).
     $with = new RecordCollection();
     $d = new \stdClass();
     $d->FK_relationGamma_MockRecord_keyA = 1;
@@ -399,15 +363,13 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $with->add(new MockMinRecord($d));
     $d = new \stdClass();
     $d->FK_relationGamma_MockRecord_keyA = 1;
-    $d->FK_relationGamma_MockRecord_keyB = 2; // Inconsistency 
+    $d->FK_relationGamma_MockRecord_keyB = 1;
     $d->FK_relationGamma_MockRecord_keyC = 1;
-    $inconsistent = new MockMinRecord($d);
-    $with->add($inconsistent);
+    $with->add(new MockMinRecord($d));
     $with->add(new MockMinRecord());
-    // Expect exception.
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Argument 3($with) contains inconsistent foreign key (' . $inconsistent->id . ')');
-    // Create Relation SHOULD throw Exception.
+    // Create Relation SHOULD NOT throw Exception.
     $testObject = new MockRelation(Str::set('relationGamma'), $this->record, $with);
+    $this->assertSame($testObject[0], $with[0]);
   }
 }
+

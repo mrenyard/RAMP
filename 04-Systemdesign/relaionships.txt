@@ -1,0 +1,48 @@
+oneToOne(Str $name, Record $from, Record $to)
+oneToMany(Str $name, Record $from, RecordCollection $to)
+manyToMany(Str $name, Record $from, LookUpTable $to)
+
+Record->primaryKey(new) | RecordFromKey
+RecordCollection + [last]Record->primaryKey(new)
+RecordCollection + [last]Record->primaryKey(new)
+
+Person->homeAddess (countryCode, PostCode, UDP)
+------------------
+Person::FK_homeAddress_Address_countryCode
+Person::FK_homeAddress_Address_postCode
+Person::FK_homeAddress_Address_deliveryPiontSufex
+
+Relation('homeAddress', Person, Address);
+RelationToOne('homeAddress', Person, Address);
+
+Address->owner
+--------------
+Address::FK_owner_Person_uname?type=owner
+
+Relation('owners', Address, PersonCollection);
+RelationLookup('owner', Address, 'Person', LOOKUP_Person_Address, Filter::type=owner);
+
+Person->addresses
+-----------------
+LOOKUP_Person_Address::FK_Person_uname
+LOOKUP_Person_Address::FK_Address_countryCode
+LOOKUP_Person_Address::FK_Address_postCode
+LOOKUP_Person_Address::FK_Address_deliveryPiontSufex
+
+Relation('addresses', Person, AddressCollection)
+RelationLookup('addresses', Person, LOOKUP_Person_Address)
+
+Person->bankAccounts
+--------------------
+BankAccount::FK_holder_Person_uname
+
+Relation('bankAccounts', Person, BankAccountCollection);
+RelationToMany('bankAccounts', Person, 'BankAccount', 'holder');
+
+BankAccount->holder
+-------------------
+BankAccount::FK_holder_Person_uname
+
+Relation('holder', BankAccount, Person)
+RelationToOne('holder', BankAccount, 'Person')
+

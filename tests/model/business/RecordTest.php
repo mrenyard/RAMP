@@ -34,7 +34,11 @@ require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
@@ -42,17 +46,21 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.ph
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
+use ramp\model\business\SimpleBusinessModelDefinition;
 
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRecordComponent;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
+use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\Record.
@@ -64,6 +72,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
   }
   protected function getTestObject() : RAMPObject { return new MockRecord($this->dataObject); }
@@ -99,8 +108,10 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->testObject->setPropertyValue(Str::set('keyC'), 1);
     $this->assertSame('1|1|1', (string)$this->testObject->primaryKey->value);
     $this->assertTrue($this->testObject->isModified);
+    // $this->assertTrue($this->testObject->isValid);
     $this->testObject->updated();
     $this->assertTrue($this->testObject->isValid);
+    $this->assertFalse($this->testObject->isNew);
     $this->assertSame('mock-record:1|1|1', (string)$this->testObject->id);
     $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
@@ -115,6 +126,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
     $this->assertSame('mock-relation relation', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('mock-relation-to-one relation-to-one', (string)$this->testObject[2]->type);
+    $this->assertFalse(isset($this->testObject[3]));
   }
   #endregion
 
@@ -366,14 +380,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertObjectHasAttribute('keyC', $this->dataObject);
   }
 
-  public function testRecordNewWithRelation()
-  {
-    $this->assertObjectNotHasAttribute('relationAlpha', $this->dataObject);
-    // $this->assertObjectHasAttribute('FK_keyAlpha1', $this->dataObject);
-    // $this->assertObjectHasAttribute('FK_keyAlpha2', $this->dataObject);
-    // $this->assertObjectHasAttribute('FK_keyAlpha3', $this->dataObject);
-  }
-
   /**
    * Validate process for primaryKey sub KEY inputs to achive valid record state.
    * - assert initial 'new' Record state:
@@ -463,5 +469,48 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($this->testObject->isValid);
     $this->assertFalse($this->testObject->isModified);
     $this->assertTrue($this->testObject->isValid);
+  }
+
+  /**
+   * Check 'new' Record has foreign keys in dataObject in correct format.
+   * - assert relationAlpha NOT in dataObject (no foreignKey as from MANY).
+   * - assert relationBeta has relevant foreignKeys in dataObject.  
+   */
+  public function testRecordNewWithRelationOfOne()
+  {
+    // ensure relation name NOT on dataObject.
+    $this->assertObjectNotHasAttribute('relationAlpha', $this->dataObject); // from MANY
+    $this->assertObjectNotHasAttribute('relationBeta', $this->dataObject); // to ONE
+    // Check for relevant foreignKeys in dataObject.
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key1', $this->dataObject);
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key2', $this->dataObject);
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key3', $this->dataObject);
+  }
+
+  /**
+   * - assert calling parent::Record->relationBeta->value loads associated model
+   */
+  public function testRecordExistingWithRelationOfOne()
+  {
+    MockBusinessModelManager::$callCount = 0;
+    // Parent (Record) get and test state.
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $parent = $MODEL_MANAGER::getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
+    );
+    $this->assertEquals(1, MockBusinessModelManager::$callCount);
+    $this->assertSame(MockBusinessModelManager::$objectOne, $parent);
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key1', MockBusinessModelManager::$dataObjectOne);
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key2', MockBusinessModelManager::$dataObjectOne);
+    $this->assertObjectHasAttribute('FK_relationBeta_MockMinRecord_key3', MockBusinessModelManager::$dataObjectOne);
+    // Associated (Record) get and test state.
+    $testObject = $parent->relationBeta;
+    $associatedRecord = $parent->relationBeta->value;
+    // TODO:mrenyard: continue from here!
+    // $this->assertEquals(2, MockBusinessModelManager::$callCount);
+    // $dataObject = MockBusinessModelManager::$dataObjectTwo;
+    // $this->assertEquals('A', $dataObject->key1);
+    // $this->assertEquals('B', $dataObject->key2);
+    // $this->assertEquals('C', $dataObject->key3);
   }
 }

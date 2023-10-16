@@ -22,7 +22,7 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 // use ramp\core\Collection;
-// use ramp\core\StrCollection;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\key\Key;
 // use ramp\model\business\BusinessModel;
@@ -35,24 +35,24 @@ use ramp\model\business\FailedValidationException;
 // use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Relation field related to a single property of its containing \ramp\model\business\Record.
+ * Abstract Relation association between parent (Record) and \ramp\model\business\Relatable.
  *
  * RESPONSIBILITIES
  * - Implement property specific methods for iteration, validity checking & error reporting
- * - Implement template method, processValidationRule to process provided ValidationRule.
- * - Hold referance back to its contining Record
+ * - Hold referance back to contining 'parent' Record
+ * - Manage and maintain association through keys (primaryKey -> ForeignKey), data Lookup and Model Management.
  *
  * COLLABORATORS
  * - {@link \ramp\model\business\Record}
- * - {@link \ramp\validation\ValidationRule}
+ * - {@link \ramp\model\business\Relatable}
  * - {@link \ramp\model\business\BusinessModelManager}
  */
 abstract class Relation extends RecordComponent
 {
-  public static $OF; private $of;
-  private $errorCollection;
-  private $expectedKeyValue;
-  private $key;
+  private static $OF; private $of;
+  protected $primaryKey;
+  protected $foreignKey;
+  // private $errorCollection;
 
   /**
    * Creates a relation related to a single property of containing record.
@@ -63,6 +63,8 @@ abstract class Relation extends RecordComponent
    */
   public function __construct(Str $name, Record $parent, Relatable $with)
   {
+    parent::__construct($name, $parent, $with);
+    // Enum 'OF' for this->of (ONE or MANY).
     if (!isset(SELF::$OF)) {
       SELF::$OF = new class() {
         public static function ONE() : int { return 1; }
@@ -70,26 +72,33 @@ abstract class Relation extends RecordComponent
       };
     }
     $this->of = ($with instanceof Record) ? Relation::$OF::ONE() : Relation::$OF::MANY();
-    $this->key = ($this->of === Relation::$OF::ONE()) ? $with->primaryKey : $parent->primaryKey;
-
-    // Check all have a shared ForeignKey to *THIS*
+    $toType = ($this->of === Relation::$OF::MANY()) ? $this->processType($parent) : $this->processType($with);
+    // Select and store common key (primary).
+    $this->primaryKey = ($this->of === Relation::$OF::ONE()) ? $with->primaryKey : $parent->primaryKey;
+    // Build foreignKey propertyNames.
+    $this->foreignKey = StrCollection::set();
+    foreach ($this->primaryKey->indexes as $index) {
+      $value = $this->name->prepend(Str::FK())
+        ->append($toType->prepend(Str::UNDERLINE()))
+        ->append($index->prepend(Str::UNDERLINE()));
+      $this->foreignKey->add($value);
+    }
     if ($this->of === Relation::$OF::MANY()) {
-      $i = $with->getIterator();
-      $i->rewind();
-      $this->expectedKeyValue = $i->current()->primaryKey->value;
-      $i->next();
-      while ($i->valid()) {
-        $o = $i->current();
-        if ($o === $with[$with->count-1] && $o->isNew) { break; }
-        if ($o->primaryKey->value !== $this->expectedKeyValue) { throw new Exception(); }
-        $i->next();
+      // Check all have a shared foreignKey consistant with primaryKey
+      foreach ($with as $o) {
+        $fk = $this->foreignKey->getIterator();
+        $pk = $this->primaryKey->getIterator();
+        if ($o === $with[$with->count-1] && $o->isNew) { continue; }
+        while ($fk->valid() && $pk->valid()) {
+          if ($o->getPropertyValue((string)$fk->current()) != (string)$pk->current()->value) {
+            throw new \InvalidArgumentException('Argument 3($with) contains inconsistent foreign key (' . $o->id . ')');
+          }
+          $fk->next(); $pk->next();
+        }
       }
     }
-    parent::__construct($name, $parent, $with);
   }
 
-  protected function get_of() { return $this->of; }
-  protected function get_key() { return $this->key; }
 
   /**
    * Update relation base on changed key.
@@ -120,7 +129,12 @@ abstract class Relation extends RecordComponent
    */
   public function offsetSet($offset, $object)
   {
-    if ((!($object instanceof \ramp\model\business\Relatable)) || $object->primaryKey->value !== $this->expectedKeyValue) {
+    if (
+      $this->of !== Relation::$OF::MANY() ||
+      (!($object instanceof \ramp\model\business\Record)) ||
+      (string)$object->primaryKey->value !== (string)$this->primaryKey->value
+    )
+    {
       throw new \InvalidArgumentException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
@@ -183,7 +197,7 @@ abstract class Relation extends RecordComponent
    * Process provided validation rule.
    * @param mixed $value Value to be processed
    * @throws ramp\model\business\FailedValidationException When test fails.
-   */
+   *
   public function processValidationRule($value) : void
   {
     // try {
@@ -191,5 +205,5 @@ abstract class Relation extends RecordComponent
     // } catch (DataFetchException $e) {
     //   throw new FailedValidationException('Relation NOT found in data storage!');
     // }
-  }
+  }*/
 }

@@ -233,7 +233,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   public function testGetChildrenBadPropertyCallException()
   {
     $this->expectException(BadPropertyCallException::class);
-    $this->expectExceptionMessage('Unable to locate children of \'' . get_class($this->testObject) . '\'');
+    $this->expectExceptionMessage('Unable to locate \'children\' of \'' . get_class($this->testObject) . '\'');
     $o = $this->testObject->children;
   }
 
