@@ -33,6 +33,8 @@ use ramp\model\business\Relatable;
  */
 class MockRelationA extends Relation
 {
+  private $primaryKey;
+  private $foreignKeyNames;
   public $validateCount;
   public $hasErrorsCount;
   private $withType;

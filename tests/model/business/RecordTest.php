@@ -522,15 +522,17 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->modelManager->dataObjectOne);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->modelManager->dataObjectOne);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->modelManager->dataObjectOne);
+    $this->assertEquals('A', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key1);
+    $this->assertEquals('B', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key2);
+    $this->assertEquals('C', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key3);
     // Associated (Record) get and test state.
     $associatedRecord = $this->testObjectExisting->relationBeta->value;
-    // TODO:mrenyard: Contiune from here!
-    // $this->assertEquals(1, $this->modelManager->callCount);
-    // $this->assertSame($this->modelManager->objectTwo, $associatedRecord);
-    // $dataObjectTwo = $this->modelManager->dataObjectTwo;
-    // $this->assertEquals('A', $dataObjectTwo->key1);
-    // $this->assertEquals('B', $dataObjectTwo->key2);
-    // $this->assertEquals('C', $dataObjectTwo->key3);
+    $this->assertEquals(1, $this->modelManager->callCount);
+    $this->assertSame($this->modelManager->objectTwo, $associatedRecord);
+    $dataObjectTwo = $this->modelManager->dataObjectTwo;
+    $this->assertEquals('A', $dataObjectTwo->key1);
+    $this->assertEquals('B', $dataObjectTwo->key2);
+    $this->assertEquals('C', $dataObjectTwo->key3);
   }
 
   /**

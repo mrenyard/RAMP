@@ -35,6 +35,8 @@ use ramp\model\business\SimpleBusinessModelDefinition;
  */
 class MockRelationB extends Relation
 {
+  private $primaryKey;
+  private $foreignKeyNames;
   public $validateCount;
   public $hasErrorsCount;
   private $withPropertyName;

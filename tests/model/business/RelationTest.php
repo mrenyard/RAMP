@@ -428,10 +428,16 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $inconsistent = new MockMinRecord($d);
     $with->add($inconsistent);
     $with->add(new MockMinRecord());
-    // Expect exception.
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Argument 3($with) contains inconsistent foreign key (' . $inconsistent->id . ')');
     // Create Relation SHOULD throw Exception.
-    $testObject = new MockRelationB(Str::set('relationGamma'), $this->record, $with);
+    try {
+      $testObject = new MockRelationB(Str::set('relationGamma'), $this->record, $with);
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertEquals(
+        'Argument 3($with) contains inconsistent foreign key (' . $inconsistent->id . ')',
+        $expected->getMessage()
+      );
+      return;
+    }
+    $this->fail('InvalidArgumentException NOT thrown!');
   }
 }

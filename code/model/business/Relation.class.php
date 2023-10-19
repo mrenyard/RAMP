@@ -41,9 +41,6 @@ use ramp\condition\Filter;
  */
 abstract class Relation extends RecordComponent
 {
-  protected $modelManager;
-  protected $primaryKey;
-  protected $foreignKeyNames;
   // private $errorCollection;
 
   /**
@@ -67,7 +64,7 @@ abstract class Relation extends RecordComponent
   {
     if (
       $this instanceof RelationToMany || (!($object instanceof Record)) || ($offset != $this->count) ||
-      (string)$object->primaryKey->value !== (string)$this->primaryKey->value
+      ($this->count > 0 && (string)$object->primaryKey->value !== (string)$this[0]->primaryKey->value)
     )
     {
       throw new \InvalidArgumentException(
