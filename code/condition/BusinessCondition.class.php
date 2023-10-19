@@ -22,6 +22,7 @@ namespace ramp\condition;
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\model\business\Property;
 
 /**
@@ -62,11 +63,14 @@ abstract class BusinessCondition extends Condition
    */
   public function __construct(Str $record, Str $property, Operator $operator, $comparable = null)
   {
+    //  
     $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
-    if (!class_exists($recordClassName) || !method_exists(new $recordClassName(), 'get_' . $property)) {
+    if (
+      !class_exists($recordClassName) ||
+      (!$property->contains(StrCollection::set('fk_')) && !method_exists(new $recordClassName(), 'get_' . $property))
+    ) {
       throw new \DomainException('Invalid: ' . $record . '->' . $property . ', does NOT match business model');
     }
-
     $this->record = $record;
     $this->property = $property;
     $memberAccessOperator = Operator::MEMBER_ACCESS();

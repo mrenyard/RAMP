@@ -31,6 +31,7 @@ require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
@@ -38,6 +39,7 @@ require_once '/usr/share/php/ramp/model/business/FailedValidationException.class
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -261,9 +263,9 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @link ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
    * @link ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
    */
-  public function testStateChangesRecordComponent()
+  public function testStateChangesRecordComponent(string $name = NULL)
   {
-    parent::testStateChangesRecordComponent();
+    parent::testStateChangesRecordComponent($name);
   }
 
   /**

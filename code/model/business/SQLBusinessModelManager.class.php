@@ -204,7 +204,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
   {
     $classFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    $recordClass =  new $recordFullName();
+    $recordNewDataObject = new strClass();
+    $recordNew = new $recordFullName($recordNewDataObject);
+    $this->recordCollection->attach($recordNew);
+    $this->dataObjectCollection->attach($recordNewDataObject);
     $sql = 'SELECT * FROM '. $recordName;
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
     $limit = ($fromIndex)? $fromIndex . ', ' .($this->maxResults + $fromIndex) : '0, '.$this->maxResults;
@@ -222,9 +225,8 @@ final class SQLBusinessModelManager extends BusinessModelManager
       $collection = new $classFullName();
       do {
         // $key = Str::_EMPTY();
-        // foreach ($recordClass->primaryKey->values as $subKeyValue) {
+        // foreach ($recordNew->primaryKey->values as $subKeyValue) {
         //   $subKeyValue = $subKeyValue->prepend(Str::FK());
-        //   print_r()
         //   $key = $key->append(Str::set($dataObject->$primaryKeyName))->append(Str::BAR());
         // }
         if ($record = $this->getRecordIfCached($recordName, $key)) {
@@ -236,7 +238,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
         $collection->add($record);
       } while ($dataObject = $statementHandle->fetch());
-      $collection->add($recordClass);
+      $collection->add($recordNew); // append new to end
       $this->databaseHandle = \NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
       $this->databaseHandle = \NULL;

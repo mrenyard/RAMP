@@ -24,13 +24,13 @@ namespace tests\ramp\mocks\model;
 use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
-use ramp\model\business\RelationToOne;
+use ramp\model\business\RelationToMany;
 use ramp\model\business\Relatable;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
+ * Mock Concreate implementation of \ramp\model\business\Relation for testing against.
  */
-class MockRelationToOne extends RelationToOne
+class MockRelationToMany extends RelationToMany
 {
   public $validateCount;
   public $hasErrorsCount;

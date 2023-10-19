@@ -1,6 +1,7 @@
 <?php
 /**
- * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ * Testing - RAMP - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,24 +16,15 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.test
  * @version 0.0.9;
  */
 namespace ramp\model\business;
 
 use ramp\core\Str;
-// use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
-use ramp\model\business\key\Key;
-// use ramp\model\business\BusinessModel;
-// use ramp\model\business\Record;
-// use ramp\model\business\key\Foreign;
-use ramp\model\business\DataFetchException;
-use ramp\model\business\FailedValidationException;
-// use ramp\model\business\SimpleBusinessModelDefinition;
-// use ramp\model\business\field\Field;
-// use ramp\model\business\validation\dbtype\DbTypeValidation;
+use ramp\condition\Filter;
 
 /**
  * Abstract Relation association between parent (Record) and \ramp\model\business\Relatable.
@@ -49,77 +41,21 @@ use ramp\model\business\FailedValidationException;
  */
 abstract class Relation extends RecordComponent
 {
-  private static $OF; private $of;
+  protected $modelManager;
   protected $primaryKey;
-  protected $foreignKey;
+  protected $foreignKeyNames;
   // private $errorCollection;
 
   /**
    * Creates a relation related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
    * proir to allowing property value change
-   */
-  public function __construct(Str $name, Record $parent, Relatable $with)
-  {
-    parent::__construct($name, $parent, $with);
-    // Enum 'OF' for this->of (ONE or MANY).
-    if (!isset(SELF::$OF)) {
-      SELF::$OF = new class() {
-        public static function ONE() : int { return 1; }
-        public static function MANY() : int { return 2; }
-      };
-    }
-    $this->of = ($with instanceof Record) ? Relation::$OF::ONE() : Relation::$OF::MANY();
-    $toType = ($this->of === Relation::$OF::MANY()) ? $this->processType($parent) : $this->processType($with);
-    // Select and store common key (primary).
-    $this->primaryKey = ($this->of === Relation::$OF::ONE()) ? $with->primaryKey : $parent->primaryKey;
-    // Build foreignKey propertyNames.
-    $this->foreignKey = StrCollection::set();
-    foreach ($this->primaryKey->indexes as $index) {
-      $value = $this->name->prepend(Str::FK())
-        ->append($toType->prepend(Str::UNDERLINE()))
-        ->append($index->prepend(Str::UNDERLINE()));
-      $this->foreignKey->add($value);
-    }
-    if ($this->of === Relation::$OF::MANY()) {
-      // Check all have a shared foreignKey consistant with primaryKey
-      foreach ($with as $o) {
-        $fk = $this->foreignKey->getIterator();
-        $pk = $this->primaryKey->getIterator();
-        if ($o === $with[$with->count-1] && $o->isNew) { continue; }
-        while ($fk->valid() && $pk->valid()) {
-          if ($o->getPropertyValue((string)$fk->current()) != (string)$pk->current()->value) {
-            throw new \InvalidArgumentException('Argument 3($with) contains inconsistent foreign key (' . $o->id . ')');
-          }
-          $fk->next(); $pk->next();
-        }
-      }
-    }
-  }
-
-
-  /**
-   * Update relation base on changed key.
-   * @throws \ramp\model\business\DataFetchException When unable to fetch from data store.
    *
-  abstract protected function update($key = NULL);
+  public function __construct(Str $name, Record $parent)
   {
-    $key = (isset($key)) ? Str::set($key) : Str::NEW();
-    $this->relatableTo = $this->modelManager->getBusinessModel(
-      new SimpleBusinessModelDefinition($this->relatedRecordType, $key)
-    );
+    parent::__construct($name, $parent);
   }*/
-
-  /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final private function getValue()
-  {
-    return NULL; //$this->parent->getPropertyValue((string)$this->name->prepend(Str::FK()));
-  }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
@@ -130,8 +66,7 @@ abstract class Relation extends RecordComponent
   public function offsetSet($offset, $object)
   {
     if (
-      $this->of !== Relation::$OF::MANY() ||
-      (!($object instanceof \ramp\model\business\Record)) ||
+      $this instanceof RelationToMany || (!($object instanceof Record)) || ($offset != $this->count) ||
       (string)$object->primaryKey->value !== (string)$this->primaryKey->value
     )
     {

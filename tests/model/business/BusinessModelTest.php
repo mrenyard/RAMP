@@ -277,10 +277,11 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
     $o = (isset($o)) ? $o : new MockBusinessModel();
-    $this->testObject[0] = $o;
-    $this->assertSame($o, $this->testObject[0]);
-    unset($this->testObject[0]);
-    $this->assertFalse(isset($this->testObject[0]));
+    $i = $this->testObject->count;
+    $this->testObject[$i] = $o;
+    $this->assertSame($o, $this->testObject[$i]);
+    unset($this->testObject[$i]);
+    $this->assertFalse(isset($this->testObject[$i]));
   }
 
   /**

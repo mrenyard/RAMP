@@ -122,10 +122,10 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
     $testObject = StrCollection::set($strArray[0], $strArray[1], $strArray[2]);
     $result = $testObject->implode();
     $this->assertInstanceOf('ramp\core\Str', $result);
-    $this->assertSame("string onestring twostring tree", (string)$result);
-    $result = $testObject->implode(Str::set(' | '));
+    $this->assertSame("string one string two string tree", (string)$result);
+    $result = $testObject->implode(Str::BAR());
     $this->assertInstanceOf('ramp\core\Str', $result);
-    $this->assertSame("string one | string two | string tree", (string)$result);
+    $this->assertSame("string one|string two|string tree", (string)$result);
   }
 
   /**

@@ -39,11 +39,13 @@ require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.clas
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
@@ -327,7 +329,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @link ramp.model.business.Key#method_get_parentRecord ramp\model\business\Key::record
    * @link ramp.model.business.Key#method_get_parentProppertyName ramp\model\business\Key::parentProppertyName
    */
-  public function testStateChangesRecordComponent()
+  public function testStateChangesRecordComponent(string $name = NULL)
   {
     $this->assertSame('mock-record:new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
     $this->assertEquals($this->name, $this->testObject->name);
@@ -381,19 +383,19 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertEquals('keyA', (string)$indexs[0]);
     $this->assertEquals('keyB', (string)$indexs[1]);
     $this->assertEquals('keyC', (string)$indexs[2]);
-    $this->testObject->validate(PostData::build(array('mock-record:new:keyC' => 1)));
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyC' => 3)));
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
-    $this->testObject->validate(PostData::build(array('mock-record:new:keyB' => 1)));
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyB' => 3)));
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
-    $this->testObject->validate(PostData::build(array('mock-record:new:keyA' => 1)));
+    $this->testObject->validate(PostData::build(array('mock-record:new:keyA' => 3)));
     $values = $this->testObject->values;
     $this->assertInstanceOf('ramp\core\StrCollection', $values);
-    $this->assertEquals('1', $values[0]);
-    $this->assertEquals('1', $values[1]);
-    $this->assertEquals('1', $values[2]);
-    $this->assertEquals('1|1|1', $this->testObject->value);
+    $this->assertEquals('3', $values[0]);
+    $this->assertEquals('3', $values[1]);
+    $this->assertEquals('3', $values[2]);
+    $this->assertEquals('3|3|3', $this->testObject->value);
   }
 
   /**

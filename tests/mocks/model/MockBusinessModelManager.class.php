@@ -26,6 +26,7 @@ use ramp\core\Str;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\BusinessModelManager;
 use ramp\model\business\iBusinessModelDefinition;
+use ramp\model\business\RecordCollection;
 use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
@@ -39,18 +40,25 @@ use ramp\condition\SQLEnvironment;
 class MockBusinessModelManager extends BusinessModelManager
 {
   private static $instance;
-  public static $callCount;
-  public static $updateLog;
-  public static $objectOne;
-  public static $objectTwo;
-  public static $dataObjectOne;
-  public static $dataObjectTwo;
+  public $callCount;
+  public $updateLog;
+  public $objectNew;
+  public $objectOne;
+  public $objectTwo;
+  public $objectThree;
+  public $objectFour;
+  public $dataObjectNew;
+  public $dataObjectOne;
+  public $dataObjectTwo;
+  public $dataObjectThree;
+  public $dataObjectFour;
 
   /**
    * Constuct the instance.
    */
   private function __construct()
   {
+    $this->callCount = 0;
   }
 
   /**
@@ -71,7 +79,6 @@ class MockBusinessModelManager extends BusinessModelManager
   public static function getInstance() : BusinessModelManager
   {
     if (!isset(self::$instance)) {
-      self::$callCount = 0;
       self::$instance = new MockBusinessModelManager();
     }
     return self::$instance;
@@ -88,38 +95,116 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
-    self::$callCount++;
+    $this->callCount++;
+    if (!isset($this->objectNew)) {
+      $this->dataObjectNew = new \stdClass();
+      $this->dataObjectNew->keyA = 1;
+      $this->dataObjectNew->keyB = 1;
+      $this->dataObjectNew->keyC = 1;
+      $this->dataObjectNew->fk_relationBeta_MockMinRecord_key1 = NULL;
+      $this->dataObjectNew->fk_relationBeta_MockMinRecord_key2 = NULL;
+      $this->dataObjectNew->fk_relationBeta_MockMinRecord_key3 = NULL;
+      $this->objectNew = new MockRecord($this->dataObjectNew);
+    }
+    if (!isset($this->objectOne)) {
+      $this->dataObjectOne = new \stdClass();
+      $this->dataObjectOne->keyA = 2;
+      $this->dataObjectOne->keyB = 2;
+      $this->dataObjectOne->keyC = 2;
+      $this->dataObjectOne->fk_relationBeta_MockMinRecord_key1 = 'A';
+      $this->dataObjectOne->fk_relationBeta_MockMinRecord_key2 = 'B';
+      $this->dataObjectOne->fk_relationBeta_MockMinRecord_key3 = 'C';
+      $this->objectOne = new MockRecord($this->dataObjectOne);
+    }
+    if (!isset($this->objectTwo)) {
+      $this->dataObjectTwo = new \stdClass();
+      $this->dataObjectTwo->key1 = 'A';
+      $this->dataObjectTwo->key2 = 'B';
+      $this->dataObjectTwo->key3 = 'C';
+      $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyA = 2;
+      $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyB = 2;
+      $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyC = 2;
+      $this->objectTwo = new MockMinRecord($this->dataObjectOne);          
+    }
+    if (!isset($this->objectThree)) {
+      $this->dataObjectThree = new \stdClass();
+      $this->dataObjectThree->key1 = 'A';
+      $this->dataObjectThree->key2 = 'B';
+      $this->dataObjectThree->key3 = 'D';
+      $this->dataObjectThree->fk_relationAlpha_MockRecord_keyA = 2;
+      $this->dataObjectThree->fk_relationAlpha_MockRecord_keyB = 2;
+      $this->dataObjectThree->fk_relationAlpha_MockRecord_keyC = 2;
+      $this->objectThree = new MockMinRecord($this->dataObjectOne);
+    }
+    if (!isset($this->objectFour)) {
+      $this->dataObjectFour = new \stdClass();
+      $this->dataObjectFour->key1 = 'A';
+      $this->dataObjectFour->key2 = 'B';
+      $this->dataObjectFour->key3 = 'E';
+      $this->dataObjectFour->fk_relationAlpha_MockRecord_keyA = 2;
+      $this->dataObjectFour->fk_relationAlpha_MockRecord_keyB = 2;
+      $this->dataObjectFour->fk_relationAlpha_MockRecord_keyC = 2;
+      $this->objectFour = new MockMinRecord($this->dataObjectOne);
+    }
     if ($definition->recordName == 'MockRecord')
     {
-      if ($definition->RecordKey == '2|2|2' || $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"') {
-        if (!isset(self::$objectOne)) {
-          self::$dataObjectOne = new \stdClass();
-          self::$dataObjectOne->keyA = 2;
-          self::$dataObjectOne->keyB = 2;
-          self::$dataObjectOne->keyC = 2;
-          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key1 = 'A';
-          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key2 = 'B';
-          self::$dataObjectOne->FK_relationBeta_MockMinRecord_key3 = 'C';
-          self::$objectOne = new MockRecord(self::$dataObjectOne);
-        }
-        return self::$objectOne;
+      if ($definition->recordKey == 'new') { return new MockRecord(new \stdClass()); }
+      if (
+        $definition->RecordKey == '1|1|1' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "1" AND MockRecord.keyB = "1" AND MockRecord.keyC = "1"')
+      ) {
+        return $this->objectNew;
       }
-      if ($definition->recordKey == 'new') {
-        return new MockRecord();
+      if (
+        $definition->RecordKey == '2|2|2' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"')
+      ) {
+        return $this->objectOne;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if ($definition->recordName == 'MockMinRecord')
     {
-      if ($definition->RecordKey == 'A|B|C' || $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"') {
-        if (!isset(self::$objectTwo)) {
-          self::$dataObjectTwo = new \stdClass();
-          self::$dataObjectTwo->key1 = 'A';
-          self::$dataObjectTwo->key2 = 'B';
-          self::$dataObjectTwo->key3 = 'C';
-          self::$objectTwo = new MockMinRecord(self::$dataObjectOne);
-        }
-        return self::$objectTwo;
+      if ($definition->recordKey == 'new') { return new MockMinRecord(new \stdClass()); }
+      if (
+        $definition->RecordKey == 'A|B|C' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"')
+      ) {
+        return $this->objectTwo;
+      }
+      if (
+        $definition->RecordKey == 'A|B|D' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "D"')
+      ) {
+        return $this->objectThree;
+      }
+      if (
+        $definition->RecordKey == 'A|B|E' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"')
+      ) {
+        return $this->objectFour;
+      }
+      if (
+        isset($filter) && $filter(SQLEnvironment::getInstance()) == 
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyA = "2" AND ' .
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyB = "2" AND ' .
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyC = "2"'
+      ) {
+        $collection = new RecordCollection();
+        $collection->add($this->objectTwo);
+        $collection->add($this->objectThree);
+        $collection->add($this->objectFour);
+        $collection->add(new MockMinRecord());
+        return $collection;
+      }
+      if (
+        isset($filter) && $filter(SQLEnvironment::getInstance()) ==
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyA = "1" AND ' .
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyB = "1" AND ' .
+        'MockMinRecord.fk_relationAlpha_MockRecord_keyC = "1"'
+      ) {
+        $collection = new RecordCollection();
+        return $collection;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
@@ -134,7 +219,7 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function update(BusinessModel $model)
   {
-    self::$updateLog[get_class($model) . ':' . $model->primaryKey->value] = 'updated ' . date('H:i:s');
+    $this->updateLog[get_class($model) . ':' . $model->primaryKey->value] = 'updated ' . date('H:i:s');
     $model->updated();
   }
 
@@ -143,7 +228,9 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function updateAny()
   {
-    if (isset(self::$objectOne) && self::$objectOne->isModified && self::$objectOne->isValid) { $this->update(self::$objectOne); }
-    if (isset(self::$objectTwo) && self::$objectTwo->isModified && self::$objectTwo->isValid) { $this->update(self::$objectTwo); }
+    if (isset($this->objectOne) && $this->objectOne->isModified && $this->objectOne->isValid) { $this->update($this->objectOne); }
+    if (isset($this->objectTwo) && $this->objectTwo->isModified && $this->objectTwo->isValid) { $this->update($this->objectTwo); }
+    if (isset($this->objectThree) && $this->objectThree->isModified && $this->objectThree->isValid) { $this->update($this->objectThree); }
+    if (isset($this->objectFour) && $this->objectFour->isModified && $this->objectFour->isValid) { $this->update($this->objectFour); }
   }
 }

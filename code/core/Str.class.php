@@ -150,7 +150,7 @@ final class Str extends RAMPObject
       case '+':
         $s = self::PLUS();
         break;
-      case 'FK_':
+      case 'fk_':
         $s = self::FK();
         break;
       case '_':
@@ -252,7 +252,7 @@ final class Str extends RAMPObject
   public static function FK() : Str
   {
     if (!isset(self::$FK)) {
-      self::$FK = new Str('FK_');
+      self::$FK = new Str('fk_');
     }
     return self::$FK;
   }

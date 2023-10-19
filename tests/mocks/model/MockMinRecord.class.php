@@ -35,6 +35,7 @@ class MockMinRecord extends Record
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
+  public $propertyName;
   private $withError;
 
   public function __construct($dataObject = NULL, $withError = FALSE)

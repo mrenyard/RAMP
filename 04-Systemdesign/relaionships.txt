@@ -13,7 +13,7 @@ Person::FK_homeAddress_Address_postCode
 Person::FK_homeAddress_Address_deliveryPiontSufex
 
 Relation('homeAddress', Person, Address);
-RelationToOne('homeAddress', Person, Address);
+RelationToOne('homeAddress', Person, 'Address');
 
 Address->owner
 --------------

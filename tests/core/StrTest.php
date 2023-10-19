@@ -344,12 +344,12 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertInstanceOf('ramp\core\Str', $o2);
     $this->assertSame($o1, $o2);
 
-    $o3 = Str::set('FK_');
+    $o3 = Str::set('fk_');
     $this->assertInstanceOf('ramp\core\Str', $o3);
     $this->assertSame($o1, $o3);
 
     $this->assertEquals($o1, $o2);
-    $this->assertSame('FK_', (string) $o1);
+    $this->assertSame('fk_', (string) $o1);
   }
 
   /**

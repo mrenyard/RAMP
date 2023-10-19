@@ -24,12 +24,25 @@ namespace tests\ramp\model\business;
 require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordMockRelation.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationA.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationB.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -40,9 +53,10 @@ use ramp\model\business\Relation;
 
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRelatable;
-use tests\ramp\mocks\model\MockRelation;
+use tests\ramp\mocks\model\MockRelationB;
 use tests\ramp\mocks\model\MockRecordMockRelation;
 use tests\ramp\mocks\model\MockMinRecord;
+use tests\ramp\mocks\model\MockMinRecordCollection;
 
 /**
  * Collection of tests for \ramp\model\business\Relation.
@@ -53,7 +67,10 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
 
   #region Setup
   protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
+    $this->dataObject->fk = NULL;
     $this->record = new MockRecordMockRelation($this->dataObject);
     $this->name = $this->record->relationAlphaName;
     $this->with = $this->record->relationAlphaWith;
@@ -62,7 +79,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     return $this->record->relationAlpha;
   }
   protected function postSetup() : void {
-    $this->expectedChildCountNew = 1;
+    $this->expectedChildCountNew = 0;
   }
   #endregion
 
@@ -88,19 +105,17 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->expectedChildCountExisting = 2;
+    $this->expectedChildCountExisting = 1;
     $this->postData = new PostData();
     $d = new \stdClass();
-    $this->testObject[1] = new MockMinRecord($d, TRUE);
+    $this->testObject[$this->testObject->count] = new MockMinRecord($d, TRUE);
     $this->childErrorIndexes = array(2);
   }
   protected function complexModelIterationTypeCheck()
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[1]->type);
-  }
+}
   #endregion
 
   #region Inherited Tests
@@ -292,17 +307,6 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     parent::testErrorReportingPropagation();
   }
 
-  /**
-   * Hold reference back to associated parent Record, propertyName and value.
-   * - assert record as passed to constructor.
-   * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.Relation#method_get_parentRecord ramp\model\business\Relation::record
-   * @link ramp.model.business.Relation#method_get_parentProppertyName ramp\model\business\Relation::parentProppertyName
-   */
-  public function testStateChangesRecordComponent()
-  {
-    parent::testStateChangesRecordComponent();
-  }
 
   /**
    * Set 'record' NOT accessable ramp\model\business\Relation::record.
@@ -326,6 +330,26 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
 
   /**
+   * Hold reference back to associated parent Record, propertyName and value.
+   * - assert record as passed to constructor.
+   * - assert propertyName as passed to constructor.
+   * @link ramp.model.business.Relation#method_get_parentRecord ramp\model\business\Relation::record
+   * @link ramp.model.business.Relation#method_get_parentProppertyName ramp\model\business\Relation::parentProppertyName
+   */
+  public function testStateChangesRecordComponent()
+  {
+    $this->assertEquals($this->name, $this->testObject->name);
+    $this->assertSame($this->record, $this->testObject->parent);
+    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObject->value);
+    $this->assertEquals(1, $this->testObject->value->count);
+    $this->assertTrue($this->testObject->value[0]->isNew);
+    $this->assertEquals(
+      (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
+      (string)$this->testObject->id
+    );
+  }
+
+  /**
    * Succsesfully construct Relation toMANY with consistent keys plus final 'new'.
    * - Set data on Record with pirmaryKey ready to recive foreignKey associated collection
    * - Populate $with consistent foreignKeys + one final new (Record).
@@ -344,23 +368,23 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     // Populate $with consistent foreignKeys + one final new (Record).
     $with = new RecordCollection();
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyA = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyB = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyC = 1;
     $with->add(new MockMinRecord($d));
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyA = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyB = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyC = 1;
     $with->add(new MockMinRecord($d));
     $d = new \stdClass();
-    $d->FK_relationGamma_MockRecordMockRelation_keyA = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyB = 1;
-    $d->FK_relationGamma_MockRecordMockRelation_keyC = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyA = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyB = 1;
+    $d->fk_relationGamma_MockRecordMockRelation_keyC = 1;
     $with->add(new MockMinRecord($d));
     $with->add(new MockMinRecord());
     // Create Relation SHOULD NOT throw Exception.
-    $testObject = new MockRelation(Str::set('relationGamma'), $this->record, $with);
+    $testObject = new MockRelationB(Str::set('relationGamma'), $this->record, $with);
     // Assert interation matches passed collection
     $i = 0;
     foreach ($testObject as $relatedRecord) {
@@ -408,6 +432,6 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Argument 3($with) contains inconsistent foreign key (' . $inconsistent->id . ')');
     // Create Relation SHOULD throw Exception.
-    $testObject = new MockRelation(Str::set('relationGamma'), $this->record, $with);
+    $testObject = new MockRelationB(Str::set('relationGamma'), $this->record, $with);
   }
 }

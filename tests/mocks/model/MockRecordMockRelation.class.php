@@ -21,25 +21,61 @@
  */
 namespace tests\ramp\mocks\model;
 
+use ramp\core\Str;
+use ramp\condition\Filter;
+use ramp\model\business\Relatable;
+use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
+use ramp\model\business\SimpleBusinessModelDefinition;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
 class MockRecordMockRelation extends MockRecord
 {
+  
+  protected function buildAlphaWith() : Relatable
+  {
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $manager = $MODEL_MANAGER::getInstance();
+    $recordName = Str::set('MockMinRecord');
+    if ($manager->callCount > 3 || $this->primaryKey->value == '1|1|1') { return new RecordCollection(new MockMinRecord()); }
+    return $manager->getBusinessModel(
+      new SimpleBusinessModelDefinition($recordName),
+      Filter::build($recordName, array(
+        'fk_relationAlpha_MockRecord_keyA' => '1',
+        'fk_relationAlpha_MockRecord_keyB' => '1',
+        'fk_relationAlpha_MockRecord_keyC' => '1'
+      ))
+    );
+  }
+
   protected function get_relationAlpha() : RecordComponent
   {
     if (!isset($this[1])) {
-      $this[1] = new MockRelation($this->relationAlphaName, $this, $this->buildAlphaWith());
+      $this[1] = new MockRelationB($this->relationAlphaName, $this, $this->buildAlphaWith());
     }
     return $this[1];
+  }
+
+  protected function buildBetaWith() : Relatable
+  {
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $manager = $MODEL_MANAGER::getInstance();
+    $d = new \stdClass();
+    if ($manager->callCount < 3 || !$this->isNew) {
+      $d->key1 = 1;
+      $d->key2 = 1;
+      $d->key3 = 1;
+    }
+    $this->relationBetaWith = new MockMinRecord($d);
+    return $this->relationBetaWith;
   }
 
   protected function get_relationBeta() : RecordComponent
   {
     if (!isset($this[2])) {
-      $this[2] = new MockRelation($this->relationBetaName, $this, $this->buildBetaWith());
+      $this[2] = new MockRelationA($this->relationBetaName, $this, $this->buildBetaWith());
     }
     return $this[2];
   }

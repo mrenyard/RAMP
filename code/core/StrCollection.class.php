@@ -60,7 +60,7 @@ final class StrCollection extends Collection
   public function implode(Str $glue = NULL) : Str
   {
     $value = Str::_EMPTY();
-    $glue = (isset($glue))? $glue : $value;
+    $glue = (isset($glue))? $glue : Str::SPACE();
     foreach ($this as $part) {
       $value = $value->append($part)->append($glue);
     }

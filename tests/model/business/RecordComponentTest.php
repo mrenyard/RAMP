@@ -30,17 +30,19 @@ require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelation.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -64,6 +66,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
     $this->name = Str::set('aProperty');
@@ -298,9 +301,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
       (string)$this->testObject->id
     );
     $value = 'VALUE';
-    $name = $this->name;
-    $this->dataObject->$name = $value;
-    $this->assertSame($value, $this->record->getPropertyValue($this->name));
+    $dataObjectProperty = $this->name;
+    $this->dataObject->$dataObjectProperty = $value;
+    $this->assertSame($value, $this->record->getPropertyValue($dataObjectProperty));
     $this->assertSame($value, $this->testObject->value);
   }
 

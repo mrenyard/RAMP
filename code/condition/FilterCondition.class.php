@@ -21,6 +21,7 @@
 namespace ramp\condition;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\core\PropertyNotSetException;
 
 /**
@@ -76,14 +77,16 @@ final class FilterCondition extends BusinessCondition
    */
   protected function set_comparable($value)
   {
-    $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
-    $recordClass = new $recordClassName();
-    $propertyName = (string)$this->property;
-    $propertyClass = $recordClass->$propertyName;
-    try {
-      $propertyClass->processValidationRule($value);
-    } catch (PropertyNotSetException $exception) {
-      throw new \DomainException('Supplied argument does Not validate against associated property');
+    if (!$this->property->contains(StrCollection::set('fk_'))) {
+      $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
+      $recordClass = new $recordClassName();
+      $propertyName = (string)$this->property;
+      $propertyClass = $recordClass->$propertyName;
+      try {
+        $propertyClass->processValidationRule($value);
+      } catch (PropertyNotSetException $exception) {
+        throw new \DomainException('Supplied argument does Not validate against associated property');
+      }
     }
     parent::set_comparable($value);
   }
