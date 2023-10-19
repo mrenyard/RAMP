@@ -226,8 +226,8 @@ abstract class Record extends Relatable
    */
   public function updated()
   {
+    $this->validAtSource = ($this->primaryKey->value === NULL) ? FALSE : ($this->checkRequired($this->dataObject));
     $this->modified = FALSE;
-    $this->validAtSource = ($this->primaryKey->value == NULL) ? FALSE : ($this->checkRequired($this->dataObject));
   }
 
   /**

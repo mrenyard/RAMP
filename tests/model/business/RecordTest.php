@@ -74,7 +74,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 {
   private $propertyName;
   private $modelManager;
-  private $testObjectExisting;
+  // private $testObject;
 
   #region Setup
   protected function preSetup() : void {
@@ -86,13 +86,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   protected function postSetup() : void {
     $this->propertyName = $this->testObject->propertyName;
     $this->expectedChildCountNew = 3;
-    // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
-    $this->testObjectExisting = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
-    );
-    $this->modelManager->callCount = 0;
   }
   #endregion
 
@@ -500,7 +495,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->dataObject);
     // assert $associatedRecord expected type and state 
     $i = 1;
-    $associatedRecord = $this->testObjectExisting->relationBeta->value;
+    $associatedRecord = $this->testObject->relationBeta->value;
     $this->assertTrue($associatedRecord->isNew);
     foreach ($associatedRecord as $indexField) {
       $this->assertInstanceOf('\ramp\model\business\field\Field', $indexField);
@@ -513,12 +508,18 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * - assert calling parent::Record->relationBeta->value loads associated model
+   * 
+   * - assert calling parent::Record->relationBeta->value loads associated model (ObjectOne --> ObjectTwo).
    */
   public function testRecordExistingWithRelationOfOne()
   {
+    // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
+    $testObject = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
+    );
+    $this->modelManager->callCount = 0;
     // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectOne, $this->testObjectExisting);
+    $this->assertSame($this->modelManager->objectOne, $testObject);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->modelManager->dataObjectOne);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->modelManager->dataObjectOne);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->modelManager->dataObjectOne);
@@ -526,8 +527,10 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertEquals('B', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key2);
     $this->assertEquals('C', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key3);
     // Associated (Record) get and test state.
-    $associatedRecord = $this->testObjectExisting->relationBeta->value;
+    $associatedRecord = $testObject->relationBeta->value;
     $this->assertEquals(1, $this->modelManager->callCount);
+    $this->assertFalse($associatedRecord->isNew);
+    $this->assertSame('mock-min-record:a|b|c', (string)$associatedRecord->id);
     $this->assertSame($this->modelManager->objectTwo, $associatedRecord);
     $dataObjectTwo = $this->modelManager->dataObjectTwo;
     $this->assertEquals('A', $dataObjectTwo->key1);
@@ -536,14 +539,42 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
+   * 
+   * - assert calling parent::Record->relationBeta->value loads associated model (ObjectNew --> (new))).
+   */
+  public function testRecordExistingWithoutRelationOfOne()
+  {
+    // EXISTING MockRecord without Relations from data store (MockBusinesModelManager)
+    $testObject = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
+    );
+    $this->modelManager->callCount = 0;
+    // Parent (Record) test state.
+    $this->assertSame($this->modelManager->objectNew, $testObject);
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->modelManager->dataObjectNew);
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->modelManager->dataObjectNew);
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->modelManager->dataObjectNew);
+    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key1);
+    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key2);
+    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key3);
+    // Associated (Record) get and test state.
+    $associatedRecord = $testObject->relationBeta->value;
+    $this->assertEquals(2, $this->modelManager->callCount);
+    $this->assertTrue($associatedRecord->isNew);
+    $this->assertSame('mock-min-record:new', (string)$associatedRecord->id);
+    // Same as New in data store.
+    $this->assertSame($this->modelManager->mockMinNew, $associatedRecord);
+  }
+
+  /**
    * - assert calling parent::Record->relationGamma->value loads associated model
    *
   public function testRecordExistingWithRelationOfMany()
   {
     // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectOne, $this->testObjectExisting);
+    $this->assertSame($this->modelManager->objectOne, $testObject);
     // Associated collection of (Record)s get and test state.
-    $associatedCollection = $this->testObjectExisting->relationAlpha->value;
+    $associatedCollection = $testObject->relationAlpha->value;
     $this->assertEquals(1, $this->modelManager->callCount);
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $associatedCollection);
     $this->assertSame($this->modelManager->objectTwo, $associatedCollection[0]);

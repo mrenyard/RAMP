@@ -42,6 +42,8 @@ class MockBusinessModelManager extends BusinessModelManager
   private static $instance;
   public $callCount;
   public $updateLog;
+  public $mockMinNew;
+  public $mockNew;
   public $objectNew;
   public $objectOne;
   public $objectTwo;
@@ -108,10 +110,7 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectTwo->key1 = 'A';
     $this->dataObjectTwo->key2 = 'B';
     $this->dataObjectTwo->key3 = 'C';
-    // $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyA = 1;
-    // $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyB = 1;
-    // $this->dataObjectTwo->fk_relationAlpha_MockRecord_keyC = 1;
-    $this->objectTwo = new MockMinRecord($this->dataObjectOne);          
+    $this->objectTwo = new MockMinRecord($this->dataObjectTwo);          
   }
   private function buildObjectThree() {
     $this->dataObjectThree = new \stdClass();
@@ -121,7 +120,7 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectThree->fk_relationAlpha_MockRecord_keyA = 1;
     $this->dataObjectThree->fk_relationAlpha_MockRecord_keyB = 1;
     $this->dataObjectThree->fk_relationAlpha_MockRecord_keyC = 1;
-    $this->objectThree = new MockMinRecord($this->dataObjectOne);
+    $this->objectThree = new MockMinRecord($this->dataObjectThree);
   }
   private function buildObjectFour() {
     $this->dataObjectFour = new \stdClass();
@@ -131,7 +130,7 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectFour->fk_relationAlpha_MockRecord_keyA = 1;
     $this->dataObjectFour->fk_relationAlpha_MockRecord_keyB = 1;
     $this->dataObjectFour->fk_relationAlpha_MockRecord_keyC = 1;
-    $this->objectFour = new MockMinRecord($this->dataObjectOne);
+    $this->objectFour = new MockMinRecord($this->dataObjectFour);
   }
 
   /**
@@ -148,7 +147,10 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->callCount++;
     if ($definition->recordName == 'MockRecord')
     {
-      if ($definition->recordKey == 'new') { return new MockRecord(new \stdClass()); }
+      if ($definition->recordKey == 'new') {
+        if (!isset($this->mockNew)) { $this->mockNew = new MockRecord(new \stdClass()); }
+        return $this->mockNew;
+      }
       if (
         $definition->RecordKey == '1|1|1' ||
         (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "1" AND MockRecord.keyB = "1" AND MockRecord.keyC = "1"')
@@ -167,7 +169,10 @@ class MockBusinessModelManager extends BusinessModelManager
     }
     if ($definition->recordName == 'MockMinRecord')
     {
-      if ($definition->recordKey == 'new') { return new MockMinRecord(new \stdClass()); }
+      if ($definition->recordKey == 'new') {
+        if (!isset($this->mockMinNew)) { $this->mockMinNew = new MockMinRecord(new \stdClass()); }
+        return $this->mockMinNew;
+      }
       if (
         $definition->RecordKey == 'A|B|C' ||
         (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"')
