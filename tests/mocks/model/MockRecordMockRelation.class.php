@@ -32,14 +32,13 @@ use ramp\model\business\SimpleBusinessModelDefinition;
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
 class MockRecordMockRelation extends MockRecord
-{
-  
+{ 
   protected function buildAlphaWith() : Relatable
   {
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $manager = $MODEL_MANAGER::getInstance();
     $recordName = Str::set('MockMinRecord');
-    if ($manager->callCount > 3 || $this->primaryKey->value == '1|1|1') { return new RecordCollection(new MockMinRecord()); }
+    if ($manager->callCount > 3 || $this->primaryKey->value == '2|2|2') { return new RecordCollection(new MockMinRecord()); }
     return $manager->getBusinessModel(
       new SimpleBusinessModelDefinition($recordName),
       Filter::build($recordName, array(
@@ -58,24 +57,24 @@ class MockRecordMockRelation extends MockRecord
     return $this[1];
   }
 
-  protected function buildBetaWith() : Relatable
-  {
-    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    $manager = $MODEL_MANAGER::getInstance();
-    $d = new \stdClass();
-    if ($manager->callCount < 3 || !$this->isNew) {
-      $d->key1 = 1;
-      $d->key2 = 1;
-      $d->key3 = 1;
-    }
-    $this->relationBetaWith = new MockMinRecord($d);
-    return $this->relationBetaWith;
-  }
+  // protected function buildBetaWith() : Relatable
+  // {
+  //   $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+  //   $manager = $MODEL_MANAGER::getInstance();
+  //   $d = new \stdClass();
+  //   if ($manager->callCount < 3 || !$this->isNew) {
+  //     $d->key1 = 1;
+  //     $d->key2 = 1;
+  //     $d->key3 = 1;
+  //   }
+  //   $this->relationBetaWith = new MockMinRecord($d);
+  //   return $this->relationBetaWith;
+  // }
 
   protected function get_relationBeta() : RecordComponent
   {
     if (!isset($this[2])) {
-      $this[2] = new MockRelationA($this->relationBetaName, $this, $this->buildBetaWith());
+      $this[2] = new MockRelationA($this->relationBetaName, $this); //, $this->buildBetaWith());
     }
     return $this[2];
   }

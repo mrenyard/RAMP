@@ -41,67 +41,46 @@ use ramp\condition\Filter;
  */
 class RelationToMany extends Relation
 {
+  private $withRecordName; // Str
+  private $withPropertyName; //Str
+  public $keys; // array
+  public $foreignKeyNames; // Strcollection
+
   /**
-   * Creates a relation related to a single property of containing record.
+   * Creates a relation from a single property of containing record to a Record collection.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
    * proir to allowing property value change
    */
-  public function __construct(Str $name, Record $parent, Str $withRecordName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
   {
-    // $NAMESPACE = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE;
-    // $recordName = $NAMESPACE . '\\' . $withRecordName;
-    // $with = new RecordCollection();
-    // $with->add(new $recordName());
+    $this->withRecordName = $withRecordName;
+    $this->withPropertyName = $withPropertyName;
+    // instantiate temporary (new) 'with' record for access to primaryKey
+    $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
+    $withNew = new $withRecordClassName();
+    $this->buildMapping($withNew, $parent, $withPropertyName);
+    parent::__construct($name, $parent);
+  }
 
-    // $toType = $this->processType($parent);
-    // // Select and store common key (primary).
-    // $this->primaryKey = $parent->primaryKey;
-    // // Build foreignKey propertyNames.
-    // $this->foreignKeyNames = StrCollection::set();
-    // $parentValues = array();
-    // foreach ($this->primaryKey as $subKey) {
-    //   $value = $this->name->prepend(Str::FK())
-    //     ->append($toType->prepend(Str::UNDERLINE()))
-    //     ->append($subKey->index->prepend(Str::UNDERLINE()));
-    //   $this->foreignKeyNames->add($value);
-    //   $this->parentValues[$this->parentValues->count] = $parent->getPropertyValue($subKey->index);
-    // }
-    // print_r($this->foreignKeyNames);
-    // print_r($parentValues);
-    // // foreach ($this->primaryKey->indexes as $index) {
-    // //   $value = $this->name->prepend(Str::FK())
-    // //     ->append($toType->prepend(Str::UNDERLINE()))
-    // //     ->append($index->prepend(Str::UNDERLINE()));
-    // //   $this->foreignKeyNames->add($value);
-    // // }
-
-    // $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    // $with = ($manager->callCount <= 3) ? $MODEL_MANAGER::getInstance()->getBusinessModel
-    // (
-    //   new SimpleBusinessModelDefinition($withRecordName),
-    //   Filter::build($withRecordName, array(
-    //     'fk_relationAlpha_MockRecord_keyA' => '1',
-    //     'fk_relationAlpha_MockRecord_keyB' => '1',
-    //     'fk_relationAlpha_MockRecord_keyC' => '1'
-    //   ))
-    // ):
-    // new RecordCollection(new $recordName());
-
-    // // Check all have a shared foreignKeyNames consistant with primaryKey
-    // foreach ($with as $o) {
-    //   $fkns = $this->foreignKeyNames->getIterator();
-    //   $pk = $this->primaryKey->getIterator();
-    //   if ($o === $with[$with->count-1] && $o->isNew) { continue; }
-    //   while ($fkns->valid() && $pk->valid()) {
-    //     if ($o->getPropertyValue((string)$fkns->current()) != (string)$pk->current()->value) {
-    //       throw new \InvalidArgumentException('Argument 3($with) contains inconsistent foreign key (' . $o->id . ')');
-    //     }
-    //     $fkns->next(); $pk->next();
-    //   }
-    // }
-    parent::__construct($name, $parent); //, $with);
+  protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : void
+  {
+    $i = 0;
+    $this->keys = array();
+    $this->foreignKeyNames = StrCollection::set();
+    $fromPK = $from->primaryKey->getIterator();
+    $toPK = $to->primaryKey->getIterator();
+    $fromPK->rewind(); $toPK->rewind();
+    while ($fromPK->valid() && $toPK->valid()) {
+      $this->keys[$i] = (string)$toPK->current()->name;
+      $value = $fromPropertyName->prepend(Str::FK())
+        ->append($this->processType($to)->prepend(Str::UNDERLINE()))
+        ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
+      $this->foreignKeyNames->add($value);
+      $fromPK->next(); $toPK->next();
+      $i++;
+    }
   }
 
   public function add(Record $object)
@@ -115,25 +94,22 @@ class RelationToMany extends Relation
    */
   final protected function get_value()
   {
-    // $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    // if ($this->parent->isNew) { return NULL;
-    //   // $collection = new RecordCollection();
-    //   // $collection->add($MODEL_MANAGER::getInstance()->getBusinessModel(
-    //   //   new SimpleBusinessModelDefinition($this->withType, Str::NEW())
-    //   // ));
-    //   // return $collection;
-    // }
-    // $filterArray = array();
-    // $fkns = $this->foreignKeyNames->getIterator();
-    // $pk = $this->primaryKey->getIterator();
-    // while ($fkns->valid() && $pk->valid()) {
-    //   $filterArray[(string)$fkns->current()] = $this->parent->getPropertyValue((string)$pk->current()->name);
-    //   $fkns->next(); $pk->next();
-    // }
-    // $recordName = $this->processType($this[0]);
-    // return $MODEL_MANAGER::getInstance()->getBusinessModel(
-    //   new SimpleBusinessModelDefinition($recordName),
-    //   Filter::build($recordName, $filterArray)
-    // );
+    $i = 0;
+    $filterArray = array();
+    foreach ($this->foreignKeyNames as $index) {
+      $filterArray[(string)$index] = $this->parent->getPropertyValue($this->keys[$i++]);
+    }
+    $collection = new RecordCollection();
+    try {
+      $collection = $this->manager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->withRecordName),
+        Filter::build($this->withRecordName, $filterArray)
+      );
+    } catch (DataFetchException $e) {
+      $collection->add($this->manager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
+      ));
+    }
+    return $collection;
   }
 }

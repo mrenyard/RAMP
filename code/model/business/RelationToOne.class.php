@@ -40,45 +40,44 @@ use ramp\condition\Filter;
  */
 class RelationToOne extends Relation
 {
-  private $manager; // BusinessModelManager
   private $withRecordName; // Str
-  private $withKeys; // array
-  private $parentValues; // array
-  private $foreignKeyNames; // Strcollection
+  public $keys; // array
+  public $foreignKeyNames; // Strcollection
 
   /**
-   * Creates a relation related to a single property of containing record.
+   * Creates a relation from a single property of containing Record to another Record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
+   * @param \ramp\core\Str $relatedRecordType Record name of associated Record.
    * proir to allowing property value change
    */
   public function __construct(Str $name, Record $parent, Str $withRecordName)
   {
     $this->withRecordName = $withRecordName;
-    // Set BusinesModelManager
-    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    $this->manager = $MODEL_MANAGER::getInstance();
     // instantiate temporary (new) 'with' record for access to primaryKey
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $withNew = new $withRecordClassName();
-    // build $this->withKeys, $this->parentValues, $this->foreignKeyNames 
-    $this->withKeys = array();
-    $this->parentValues = array();
-    $this->foreignKeyNames = StrCollection::set();
-    $wNpK = $withNew->primaryKey->getIterator();
-    $pRpK = $parent->primaryKey->getIterator();
-    $wNpK->rewind(); $pRpK->rewind();
-    while ($wNpK->valid() && $pRpK->valid()) {
-      $this->withKeys[count($this->withKeys)] = (string)$wNpK->current()->name; 
-      $this->parentValues[count($this->parentValues)] = ($value = $pRpK->current()->value) ? $value : NULL;
-      $value = $name->prepend(Str::FK())
-        ->append($this->withRecordName->prepend(Str::UNDERLINE()))
-        ->append($wNpK->current()->name->prepend(Str::UNDERLINE()));
-      $this->foreignKeyNames->add($value);
-      $wNpK->next(); $pRpK->next();
-    }
+    $this->buildMapping($parent, $withNew, $name, $withRecordName);
     parent::__construct($name, $parent);
+  }
+
+  protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : void
+  {
+    $i = 0;
+    $this->keys = array();
+    $this->foreignKeyNames = StrCollection::set();
+    $fromPK = $from->primaryKey->getIterator();
+    $toPK = $to->primaryKey->getIterator();
+    $fromPK->rewind(); $toPK->rewind();
+    while ($toPK->valid() && $fromPK->valid()) {
+      $this->keys[$i] = (string)$toPK->current()->name; 
+      $value = $fromPropertyName->prepend(Str::FK())
+        ->append($this->processType($to)->prepend(Str::UNDERLINE()))
+        ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
+      $this->foreignKeyNames->add($value);
+      $fromPK->next(); $toPK->next();
+      $i++;
+    }
   }
 
   public function addForeignKey(\stdClass $dataObject) : void
@@ -100,7 +99,7 @@ class RelationToOne extends Relation
     $i = 0;
     $filterArray = array();
     foreach ($this->foreignKeyNames as $index) {
-      $filterArray[$this->withKeys[$i++]] = $this->parent->getPropertyValue($index);
+      $filterArray[$this->keys[$i++]] = $this->parent->getPropertyValue($index);
     }
     try {
       return $this->manager->getBusinessModel(

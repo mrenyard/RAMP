@@ -35,9 +35,9 @@ class MockRelationToMany extends RelationToMany
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, Str $withRecordName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
   {
-    parent::__construct($name, $parent, $withRecordName);
+    parent::__construct($name, $parent, $withRecordName, $withPropertyName);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }

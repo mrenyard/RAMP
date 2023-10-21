@@ -41,18 +41,23 @@ use ramp\condition\Filter;
  */
 abstract class Relation extends RecordComponent
 {
-  // private $errorCollection;
+  protected $manager; // BusinessModelManager
 
   /**
    * Creates a relation related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * proir to allowing property value change
-   *
-  public function __construct(Str $name, Record $parent)
+   */
+  public function __construct(Str $name, Record $parent, Relatable $with = NULL)
   {
-    parent::__construct($name, $parent);
-  }*/
+    // Set BusinesModelManager
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $this->manager = $MODEL_MANAGER::getInstance();
+    parent::__construct($name, $parent, $with);
+  }
+
+  abstract protected function buildMapping(Record $from, Record $to, Str $fromName) : void;
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.

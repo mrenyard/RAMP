@@ -98,7 +98,7 @@ class MockRecord extends Record
   protected function get_relationAlpha() : RecordComponent
   {
     if (!isset($this[1])) {
-      $this[1] = new MockRelationToMany($this->relationAlphaName, $this, Str::set('MockMinRecord'));
+      $this[1] = new MockRelationToMany($this->relationAlphaName, $this, Str::set('MockMinRecord'), Str::set('relationDelta'));
     }
     return $this[1];
   }

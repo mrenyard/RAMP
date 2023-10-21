@@ -72,6 +72,10 @@ class MockRelationB extends Relation
     }
   }
 
+  protected function buildMapping(Record $from, Record $to, Str $fromName) : void
+  {
+  }
+
   /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s

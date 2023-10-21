@@ -49,11 +49,13 @@ class MockBusinessModelManager extends BusinessModelManager
   public $objectTwo;
   public $objectThree;
   public $objectFour;
+  public $objectFive;
   public $dataObjectNew;
   public $dataObjectOne;
   public $dataObjectTwo;
   public $dataObjectThree;
   public $dataObjectFour;
+  public $dataObjectFive;
 
   /**
    * Constuct the instance.
@@ -86,6 +88,14 @@ class MockBusinessModelManager extends BusinessModelManager
     return self::$instance;
   }
 
+  private function buildMockNew()
+  {
+    $this->mockNew = new MockRecord(new \stdClass());
+  }
+  private function buildMinNew()
+  {
+    $this->mockMinNew = new MockMinRecord(new \stdClass());
+  }
   private function buildObjectNew()
   {
     $this->dataObjectNew = new \stdClass();
@@ -117,9 +127,9 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectThree->key1 = 'A';
     $this->dataObjectThree->key2 = 'B';
     $this->dataObjectThree->key3 = 'D';
-    $this->dataObjectThree->fk_relationAlpha_MockRecord_keyA = 1;
-    $this->dataObjectThree->fk_relationAlpha_MockRecord_keyB = 1;
-    $this->dataObjectThree->fk_relationAlpha_MockRecord_keyC = 1;
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyA = 1;
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyB = 1;
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyC = 1;
     $this->objectThree = new MockMinRecord($this->dataObjectThree);
   }
   private function buildObjectFour() {
@@ -127,10 +137,20 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectFour->key1 = 'A';
     $this->dataObjectFour->key2 = 'B';
     $this->dataObjectFour->key3 = 'E';
-    $this->dataObjectFour->fk_relationAlpha_MockRecord_keyA = 1;
-    $this->dataObjectFour->fk_relationAlpha_MockRecord_keyB = 1;
-    $this->dataObjectFour->fk_relationAlpha_MockRecord_keyC = 1;
+    $this->dataObjectFour->fk_relationDelta_MockRecord_keyA = 1;
+    $this->dataObjectFour->fk_relationDelta_MockRecord_keyB = 1;
+    $this->dataObjectFour->fk_relationDelta_MockRecord_keyC = 1;
     $this->objectFour = new MockMinRecord($this->dataObjectFour);
+  }
+  private function buildObjectFive() {
+    $this->dataObjectFive = new \stdClass();
+    $this->dataObjectFive->key1 = 'A';
+    $this->dataObjectFive->key2 = 'B';
+    $this->dataObjectFive->key3 = 'F';
+    $this->dataObjectFive->fk_relationDelta_MockRecord_keyA = 1;
+    $this->dataObjectFive->fk_relationDelta_MockRecord_keyB = 1;
+    $this->dataObjectFive->fk_relationDelta_MockRecord_keyC = 1;
+    $this->objectFive = new MockMinRecord($this->dataObjectFive);
   }
 
   /**
@@ -148,7 +168,7 @@ class MockBusinessModelManager extends BusinessModelManager
     if ($definition->recordName == 'MockRecord')
     {
       if ($definition->recordKey == 'new') {
-        if (!isset($this->mockNew)) { $this->mockNew = new MockRecord(new \stdClass()); }
+        if (!isset($this->mockNew)) { $this->buildMockModel(); }
         return $this->mockNew;
       }
       if (
@@ -170,7 +190,7 @@ class MockBusinessModelManager extends BusinessModelManager
     if ($definition->recordName == 'MockMinRecord')
     {
       if ($definition->recordKey == 'new') {
-        if (!isset($this->mockMinNew)) { $this->mockMinNew = new MockMinRecord(new \stdClass()); }
+        if (!isset($this->mockMinNew)) { $this->buildMinNew(); }
         return $this->mockMinNew;
       }
       if (
@@ -195,30 +215,37 @@ class MockBusinessModelManager extends BusinessModelManager
         return $this->objectFour;
       }
       if (
+        $definition->RecordKey == 'A|B|F' ||
+        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"')
+      ) {
+        if (!isset($this->objectFive)) { $this->buildObjectFour(); }
+        return $this->objectFive;
+      }
+      if (
         isset($filter) && $filter(SQLEnvironment::getInstance()) == 
         'MockMinRecord.fk_relationAlpha_MockRecord_keyA = "2" AND ' .
         'MockMinRecord.fk_relationAlpha_MockRecord_keyB = "2" AND ' .
         'MockMinRecord.fk_relationAlpha_MockRecord_keyC = "2"'
       ) {
-        if (!isset($this->objectNew)) { $this->buildObjectNew(); }
-        if (!isset($this->objectOne)) { $this->buildObjectOne(); }
-        if (!isset($this->objectTwo)) { $this->buildObjectTwo(); }
-        if (!isset($this->objectThree)) { $this->buildObjectThree(); }
-        if (!isset($this->objectFour)) { $this->buildObjectFour(); }
+        if (!isset($this->objectMockNew)) { $this->buildObjectMockNew(); }
         $collection = new RecordCollection();
-        $collection->add($this->objectTwo);
-        $collection->add($this->objectThree);
-        $collection->add($this->objectFour);
-        $collection->add(new MockMinRecord());
+        $collection->add($this->objectMockNew);
         return $collection;
       }
       if (
         isset($filter) && $filter(SQLEnvironment::getInstance()) ==
-        'MockMinRecord.fk_relationAlpha_MockRecord_keyA = "1" AND ' .
-        'MockMinRecord.fk_relationAlpha_MockRecord_keyB = "1" AND ' .
-        'MockMinRecord.fk_relationAlpha_MockRecord_keyC = "1"'
+        'MockMinRecord.fk_relationDelta_MockRecord_keyA = "1" AND ' .
+        'MockMinRecord.fk_relationDelta_MockRecord_keyB = "1" AND ' .
+        'MockMinRecord.fk_relationDelta_MockRecord_keyC = "1"'
       ) {
+        if (!isset($this->objectThree)) { $this->buildObjectThree(); }
+        if (!isset($this->objectFour)) { $this->buildObjectFour(); }
+        if (!isset($this->objectFive)) { $this->buildObjectFive(); }
         $collection = new RecordCollection();
+        $collection->add($this->objectThree);
+        $collection->add($this->objectFour);
+        $collection->add($this->objectFive);
+        $collection->add($this->mockMinNew);
         return $collection;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');

@@ -74,7 +74,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 {
   private $propertyName;
   private $modelManager;
-  // private $testObject;
 
   #region Setup
   protected function preSetup() : void {
@@ -568,19 +567,87 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   /**
    * - assert calling parent::Record->relationGamma->value loads associated model
-   *
+   */
   public function testRecordExistingWithRelationOfMany()
   {
+    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
+    $testObject = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
+    );
+    $this->modelManager->callCount = 0;
     // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectOne, $testObject);
-    // Associated collection of (Record)s get and test state.
+    $this->assertSame($this->modelManager->objectNew, $testObject);
+    // // Associated collection of (Record)s get and test state.
     $associatedCollection = $testObject->relationAlpha->value;
     $this->assertEquals(1, $this->modelManager->callCount);
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $associatedCollection);
-    $this->assertSame($this->modelManager->objectTwo, $associatedCollection[0]);
-    $this->assertSame($this->modelManager->objectThree, $associatedCollection[1]);
-    $this->assertSame($this->modelManager->objectFour, $associatedCollection[2]);
-  }*/
+    $this->assertSame($this->modelManager->objectThree, $associatedCollection[0]);
+    $this->assertSame($this->modelManager->objectFour, $associatedCollection[1]);
+    $this->assertSame($this->modelManager->objectFive, $associatedCollection[2]);
+    // Same as New in data store.
+    $finalRecordInCollection = $associatedCollection[$associatedCollection->count -1];
+    $this->assertTrue($finalRecordInCollection->isNew);
+    $this->assertEquals('mock-min-record:new', (string)$finalRecordInCollection->id);
+    $this->assertSame($this->modelManager->mockMinNew, $finalRecordInCollection);
+  }
+
+  /**
+   * - assert calling parent::Record->relationGamma->value loads associated model
+   */
+  public function testRecordExistingWithoutRelationOfMany()
+  {
+    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
+    $testObject = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
+    );
+    $this->modelManager->callCount = 0;
+    // Parent (Record) test state.
+    // Associated collection of (Record)s get and test state.
+    $associatedCollection = $testObject->relationAlpha->value;
+    $this->assertEquals(2, $this->modelManager->callCount);
+    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $associatedCollection);
+    $this->assertEquals(1, $associatedCollection->count);
+    // Same as New in data store.
+    $finalRecordInCollection = $associatedCollection[$associatedCollection->count -1];
+    $this->assertTrue($finalRecordInCollection->isNew);
+    $this->assertEquals('mock-min-record:new', (string)$finalRecordInCollection->id);
+    $this->assertSame($this->modelManager->mockMinNew, $finalRecordInCollection);
+  }
+
+  public function testBuildMapping()
+  {
+    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
+    $testObjectMany = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
+    );
+    $this->modelManager->callCount = 0;
+    // MockMinRecord::fk_relationDelta_MockRecord_keyA = '1'
+    $this->assertEquals(
+      'fk_relationDelta_MockRecord_keyA ' .
+      'fk_relationDelta_MockRecord_keyB ' .
+      'fk_relationDelta_MockRecord_keyC',
+      (string)$testObjectMany->relationAlpha->foreignKeyNames->implode()    
+    );
+    $this->assertEquals('keyA', $testObjectMany->relationAlpha->keys[0]);
+    $this->assertEquals('keyB', $testObjectMany->relationAlpha->keys[1]);
+    $this->assertEquals('keyC', $testObjectMany->relationAlpha->keys[2]);
+
+    // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
+    $testObjectOne = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
+    );
+    $this->modelManager->callCount = 0;
+    // MockMinRecord:: $key1 = $this->parent->getPropertyValue(fk_relationBeta_MockMinRecord_key1)
+    $this->assertEquals(
+      'fk_relationBeta_MockMinRecord_key1 ' .
+      'fk_relationBeta_MockMinRecord_key2 ' .
+      'fk_relationBeta_MockMinRecord_key3',
+      (string)$testObjectOne->relationBeta->foreignKeyNames->implode()    
+    );
+    $this->assertEquals('key1', $testObjectOne->relationBeta->keys[0]);
+    $this->assertEquals('key2', $testObjectOne->relationBeta->keys[1]);
+    $this->assertEquals('key3', $testObjectOne->relationBeta->keys[2]);
+  }
 
   /**
    * - assert calling parent::Record->relationBeta->value loads associated model
