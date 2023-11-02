@@ -43,8 +43,12 @@ require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.c
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationLookup.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/Lookup.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/RecordA.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/RecordB.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
@@ -374,7 +378,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isModified);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-    $keys = [$this->testObject->primaryKey['keyA'], $this->testObject->primaryKey['keyB'], $this->testObject->primaryKey['keyC']];
+    $keys = [$this->testObject->primaryKey[0], $this->testObject->primaryKey[1], $this->testObject->primaryKey[2]];
     $this->assertSame($keys[0], $this->testObject->keyA);
     $this->assertSame($keys[1], $this->testObject->keyB);
     $this->assertSame($keys[2], $this->testObject->keyC);
@@ -459,13 +463,13 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($this->testObject->isNew);
     $this->assertTrue($this->testObject->isModified);
 
-    $this->assertSame($this->testObject->keyA, $this->testObject->primaryKey['keyA']);
-    $this->assertSame($this->testObject->keyB, $this->testObject->primaryKey['keyB']);
-    $this->assertSame($this->testObject->keyC, $this->testObject->primaryKey['keyC']);
+    $this->assertSame($this->testObject->keyA, $this->testObject->primaryKey[0]);
+    $this->assertSame($this->testObject->keyB, $this->testObject->primaryKey[1]);
+    $this->assertSame($this->testObject->keyC, $this->testObject->primaryKey[2]);
 
-    $this->assertSame($keyAValue, $this->testObject->primaryKey['keyA']->value);
-    $this->assertSame($keyBValue, $this->testObject->primaryKey['keyB']->value);
-    $this->assertSame($keyCValue, $this->testObject->primaryKey['keyC']->value);
+    $this->assertSame($keyAValue, $this->testObject->primaryKey[0]->value);
+    $this->assertSame($keyBValue, $this->testObject->primaryKey[1]->value);
+    $this->assertSame($keyCValue, $this->testObject->primaryKey[2]->value);
     $this->assertSame('A1|B1|C1', (string)$this->testObject->primaryKey->value);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':a1|b1|c1', (string)$this->testObject->id);
@@ -614,6 +618,20 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->modelManager->mockMinNew, $finalRecordInCollection);
   }
 
+  /**
+   * 
+   * - assert calling parent::Record->relationBeta->value loads associated model
+   *
+  public function testRecordExistingWithRelationOfManyLOOKUP()
+  {
+    $testObject = $this->modelManager->getInstance()->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('RecordA'), Str::set('1|1|1'))
+    );
+    $this->modelManager->callCount = 0;
+    $associatedCollection = $testObject->relationLookupAB->value;
+    $this->assertEquals(0, $associatedCollection->count);
+  }*/
+
   public function testBuildMapping()
   {
     // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
@@ -631,7 +649,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertEquals('keyA', $testObjectMany->relationAlpha->keys[0]);
     $this->assertEquals('keyB', $testObjectMany->relationAlpha->keys[1]);
     $this->assertEquals('keyC', $testObjectMany->relationAlpha->keys[2]);
-
     // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
     $testObjectOne = $this->modelManager->getInstance()->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
@@ -648,11 +665,4 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertEquals('key2', $testObjectOne->relationBeta->keys[1]);
     $this->assertEquals('key3', $testObjectOne->relationBeta->keys[2]);
   }
-
-  /**
-   * - assert calling parent::Record->relationBeta->value loads associated model
-   *
-  public function testRecordExistingWithRelationOfManyLOOKUP()
-  {
-  }*/
 }

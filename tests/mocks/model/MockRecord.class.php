@@ -64,26 +64,26 @@ class MockRecord extends Record
 
   protected function get_keyA() : Field
   {
-    if (!isset($this->primaryKey['keyA'])) {
-      $this->primaryKey['keyA'] = new MockField(Str::set('keyA'), $this);
+    if (!isset($this->primaryKey[0])) {
+      $this->primaryKey[0] = new MockField(Str::set('keyA'), $this);
     }
-    return $this->primaryKey['keyA']; 
+    return $this->primaryKey[0]; 
   }
 
   protected function get_keyB() : Field
   {
-    if (!isset($this->primaryKey['keyB'])) {
-      $this->primaryKey['keyB'] = new MockField(Str::set('keyB'), $this);
+    if (!isset($this->primaryKey[1])) {
+      $this->primaryKey[1] = new MockField(Str::set('keyB'), $this);
     }
-    return $this->primaryKey['keyB']; 
+    return $this->primaryKey[1]; 
   }
 
   protected function get_keyC() : Field
   {
-    if (!isset($this->primaryKey['keyC'])) {
-      $this->primaryKey['keyC'] = new MockField(Str::set('keyC'), $this);
+    if (!isset($this->primaryKey[2])) {
+      $this->primaryKey[2] = new MockField(Str::set('keyC'), $this);
     }
-    return $this->primaryKey['keyC']; 
+    return $this->primaryKey[2]; 
   }
 
   protected function get_aProperty() : RecordComponent

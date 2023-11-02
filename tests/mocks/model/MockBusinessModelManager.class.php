@@ -23,6 +23,7 @@ namespace tests\ramp\mocks\model;
 
 use ramp\SETTING;
 use ramp\core\Str;
+use ramp\model\business\RelationLookup;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\BusinessModelManager;
 use ramp\model\business\iBusinessModelDefinition;
@@ -30,8 +31,6 @@ use ramp\model\business\RecordCollection;
 use ramp\model\business\DataFetchException;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
-
-// use tests\ramp\mocks\model\MockRecord;
 
 /**
  * Mock business model managers for testing \ramp\http\Session
@@ -56,12 +55,33 @@ class MockBusinessModelManager extends BusinessModelManager
   public $dataObjectThree;
   public $dataObjectFour;
   public $dataObjectFive;
+  // MANY to MANY LOOKUP
+  private $lookup;
+  public $dataA1;
+  public $dataA2;
+  public $dataA3;
+  public $dataB1;
+  public $dataB2;
+  public $dataB3;
+  public $objectA1;
+  public $objectA2;
+  public $objectA3;
+  public $objectB1;
+  public $objectB2;
+  public $objectB3;
+  public $dataLookupA1toB1;
+  public $dataLookupA1toB2;
+  public $dataLookupA1toB3;
+  public $objectLookupA1toB1;
+  public $objectLookupA1toB2;
+  public $objectLookupA1toB3;
 
   /**
    * Constuct the instance.
    */
   private function __construct()
   {
+    $this->lookup = FALSE;
     $this->callCount = 0;
   }
 
@@ -153,6 +173,85 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->objectFive = new MockMinRecord($this->dataObjectFive);
   }
 
+  // MANY to MANY LOOKUPs
+  private function buildLOOKUP()
+  {
+    $this->lookup = TRUE;
+
+    $this->dataA1 = new \stdClass();
+    $this->dataA1->keyA = 1;
+    $this->dataA1->keyB = 1;
+    $this->dataA1->keyC = 1;
+    $this->objectA1 = new RecordA($this->dataA1);
+
+    $this->dataB1 = new \stdClass();
+    $this->dataB1->key1 = 1;
+    $this->dataB1->key2 = 1;
+    $this->objectB1 = new RecordB($this->dataB1);
+
+    $this->dataLookupA1toB1 = new \stdClass();
+    $this->dataLookupA1toB1->fk_RecordA_keyA = '1';
+    $this->dataLookupA1toB1->fk_RecordA_keyB = '1';
+    $this->dataLookupA1toB1->fk_RecordA_keyC = '1';
+    $this->dataLookupA1toB1->fk_RecordB_key1 = '1';
+    $this->dataLookupA1toB1->fk_RecordB_key2 = '1';
+    $this->objectLookupA1toB1 = new Lookup($this->dataLookupA1toB1);
+
+    $this->dataB2 = new \stdClass();
+    $this->dataB2->key1 = 2;
+    $this->dataB2->key2 = 2;
+    $this->objectB2 = new RecordB($this->dataB2);
+
+    $this->dataLookupA1toB2 = new \stdClass();
+    $this->dataLookupA1toB2->fk_RecordA_keyA = '1';
+    $this->dataLookupA1toB2->fk_RecordA_keyB = '1';
+    $this->dataLookupA1toB2->fk_RecordA_keyC = '1';
+    $this->dataLookupA1toB2->fk_RecordB_key1 = '2';
+    $this->dataLookupA1toB2->fk_RecordB_key2 = '2';
+    $this->objectLookupA1toB2 = new Lookup($this->dataLookupA1toB2);
+
+    $this->dataB3 = new \stdClass();
+    $this->dataB3->key1 = 3;
+    $this->dataB3->key2 = 3;
+    $this->objectB3 = new RecordB($this->dataB3);
+
+    $this->dataLookupA1toB3 = new \stdClass();
+    $this->dataLookupA1toB3->fk_RecordA_keyA = '1';
+    $this->dataLookupA1toB3->fk_RecordA_keyB = '1';
+    $this->dataLookupA1toB3->fk_RecordA_keyC = '1';
+    $this->dataLookupA1toB3->fk_RecordB_key1 = '3';
+    $this->dataLookupA1toB3->fk_RecordB_key2 = '3';
+    $this->objectLookupA1toB3 = new Lookup($this->dataLookupA1toB3);
+
+    // $this->dataA2 = new \stdClass();
+    // $this->dataA2->keyA = 2;
+    // $this->dataA2->keyB = 2;
+    // $this->dataA2->keyC = 2;
+    // $this->objectA2 = new RecordA($this->dataA2);
+
+    // $this->dataLookupA2toB1 = new \stdClass();
+    // $this->dataLookupA2toB1->fk_RecordA_keyA = '2';
+    // $this->dataLookupA2toB1->fk_RecordA_keyB = '2';
+    // $this->dataLookupA2toB1->fk_RecordA_keyC = '2';
+    // $this->dataLookupA2toB1->fk_RecordB_key1 = '1';
+    // $this->dataLookupA2toB1->fk_RecordB_key2 = '1';
+    // $this->objectLookupA2toB1 = new Lookup($this->dataLookupA2toB1);
+
+    // $this->dataA3 = new \stdClass();
+    // $this->dataA3->keyA = 3;
+    // $this->dataA3->keyB = 3;
+    // $this->dataA3->keyC = 3;
+    // $this->objectA3 = new RecordA($this->dataA3);
+
+    // $this->dataLookupA3toB1 = new \stdClass();
+    // $this->dataLookupA3toB1->fk_RecordA_keyA = '3';
+    // $this->dataLookupA3toB1->fk_RecordA_keyB = '3';
+    // $this->dataLookupA3toB1->fk_RecordA_keyC = '3';
+    // $this->dataLookupA3toB1->fk_RecordB_key1 = '1';
+    // $this->dataLookupA3toB1->fk_RecordB_key2 = '1';
+    // $this->objectLookupA3toB1 = new Lookup($this->dataLookupA3toB1);
+  }
+
   /**
    * Returns requested Model.
    * @param \ramp\model\iModelDefinition $definition  Definition of requested Model
@@ -227,6 +326,7 @@ class MockBusinessModelManager extends BusinessModelManager
         'MockMinRecord.fk_relationAlpha_MockRecord_keyB = "2" AND ' .
         'MockMinRecord.fk_relationAlpha_MockRecord_keyC = "2"'
       ) {
+        // NO ENTRIES 
         if (!isset($this->objectMockNew)) { $this->buildObjectMockNew(); }
         $collection = new RecordCollection();
         $collection->add($this->objectMockNew);
@@ -249,6 +349,45 @@ class MockBusinessModelManager extends BusinessModelManager
         return $collection;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
+    if (!$this->lookup) { $this->buildLookup(); }
+    if ($definition->recordName == 'Lookup')
+    {
+      if (
+        isset($filter) && $filter(SQLEnvironment::getInstance()) ==
+        'Lookup.fk_RecordA_keyA = "1" AND ' .
+        'Lookup.fk_RecordA_keyB = "1" AND ' .
+        'Lookup.fk_RecordA_keyC = "1"'
+      ) {
+        $lookupA1 = new RecordCollection();
+        $lookupA1->add($this->objectLookupA1toB1);
+        $lookupA1->add($this->objectLookupA1toB2);
+        $lookupA1->add($this->objectLookupA1toB3);
+        return $lookupA1;
+      }
+      if (
+        isset($filter) && $filter(SQLEnvironment::getInstance()) ==
+        'Lookup.fk_RecordB_key1 = "1" AND ' .
+        'Lookup.fk_RecordB_key2 = "1"'
+      ) {
+        $lookupB1 = new RecordCollection();
+        $lookupB1->add($this->objectLookupA1toB1);
+        $lookupB1->add($this->objectLookupA2toB1);
+        $lookupB1->add($this->objectLookupA3toB1);
+        return $lookupB1;
+      }
+    }
+    if ($definition->recordName == 'RecordA')
+    {
+      if ($definition->RecordKey == '1|1|1') { return $this->objectA1; }
+      if ($definition->RecordKey == '2|2|2') { return $this->objectA2; }
+      if ($definition->RecordKey == '3|3|3') { return $this->objectA3; }
+    }
+    if ($definition->recordName == 'RecordB')
+    {
+      if ($definition->RecordKey == '1|1') { return $this->objectB1; }
+      if ($definition->RecordKey == '2|2') { return $this->objectB2; }
+      if ($definition->RecordKey == '3|3') { return $this->objectB3; }
     }
     throw new \DomainException('Business Model(s) NOT found!');
   }

@@ -49,15 +49,33 @@ abstract class Relation extends RecordComponent
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * proir to allowing property value change
    */
-  public function __construct(Str $name, Record $parent, Relatable $with = NULL)
+  public function __construct(Str $name, Record $parent) //, Relatable $with = NULL)
   {
     // Set BusinesModelManager
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->manager = $MODEL_MANAGER::getInstance();
-    parent::__construct($name, $parent, $with);
+    parent::__construct($name, $parent); //, $with);
   }
 
-  abstract protected function buildMapping(Record $from, Record $to, Str $fromName) : void;
+  // abstract protected function buildMapping(Record $from, Record $to, Str $fromName) : void;
+  protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : void
+  {
+    $i = 0;
+    $this->keys = array();
+    $this->foreignKeyNames = StrCollection::set();
+    $fromPK = $from->primaryKey->getIterator();
+    $toPK = $to->primaryKey->getIterator();
+    $fromPK->rewind(); $toPK->rewind();
+    while ($toPK->valid() && $fromPK->valid()) {
+      $this->keys[$i] = (string)$toPK->current()->name; 
+      $value = $fromPropertyName->prepend(Str::FK())
+        ->append($this->processType($to)->prepend(Str::UNDERLINE()))
+        ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
+      $this->foreignKeyNames->add($value);
+      $fromPK->next(); $toPK->next();
+      $i++;
+    }
+  }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.

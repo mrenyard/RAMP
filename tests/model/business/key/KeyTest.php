@@ -114,12 +114,12 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
   protected function complexModelIterationTypeCheck()
   {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyA']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['keyA']->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyB']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['keyB']->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject['keyC']->type);
-    $this->assertSame('mock-field field', (string)$this->testObject['keyC']->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[1]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    $this->assertSame('mock-field field', (string)$this->testObject[2]->type);
   } 
   #endregion
 

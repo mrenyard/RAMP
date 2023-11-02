@@ -25,12 +25,13 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\RelationLookup;
 use ramp\model\business\field\Field;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
-class MockMinRecord extends Record
+class RecordB extends Record
 {
   public $validateCount;
   public $hasErrorsCount;
@@ -60,16 +61,20 @@ class MockMinRecord extends Record
     if (!isset($this->primaryKey[1])) {
       $this->primaryKey[1] = new MockField(Str::set('key2'), $this);
     }
-    return $this->primaryKey[1]; 
+    return $this->primaryKey[1];
   }
 
-  protected function get_key3() : Field
-  {
-    if (!isset($this->primaryKey[2])) {
-      $this->primaryKey[2] = new MockField(Str::set('key3'), $this);
-    }
-    return $this->primaryKey[2]; 
-  }
+  // protected function get_relationLookupBA() : Relation
+  // {
+  //   if (!isset($this[0])) {
+  //     $this[0] = new RelationLookup(
+  //       Str::set('relationLookupBA'),
+  //       $this,
+  //       Str::set('Recorda'),
+  //       Str::set('Lookup'),
+  //       Str::set('fk_recordA'));
+  //   }
+  // }
 
   /**
    * Validate postdata against this and update accordingly.

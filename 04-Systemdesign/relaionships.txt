@@ -1,6 +1,6 @@
-oneToOne(Str $name, Record $from, Record $to)
-oneToMany(Str $name, Record $from, RecordCollection $to)
-manyToMany(Str $name, Record $from, LookUpTable $to)
+RelationToOne (Str $name, Record $parent, Str $withRecordName)
+RelationToMany(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
+RelationLookup(Str $name, Record $parent, Str $withRecordName, Str $usesLookupTable, Str $toLookupProperty)
 
 Record->primaryKey(new) | RecordFromKey
 RecordCollection + [last]Record->primaryKey(new)
@@ -12,7 +12,7 @@ Person::FK_homeAddress_Address_countryCode
 Person::FK_homeAddress_Address_postCode
 Person::FK_homeAddress_Address_deliveryPiontSufex
 
-Relation('homeAddress', Person, Address);
+Relation('homeAddress', :Person, 'Address');
 RelationToOne('homeAddress', :Person, 'Address');
 
 Address->owner
@@ -20,7 +20,9 @@ Address->owner
 Address::FK_owner_Person_uname?type=owner
 
 Relation('owners', Address, PersonCollection);
-RelationLookup('owner', :Address, 'Person', LOOKUP_Person_Address, Filter::type=owner);
+RelationLookup('owner', :Address, 'Person', 'LOOKUP_Person_Address', Filter::type=ownership);
+RelationLookup('occupants', :Address, 'Person', 'LOOKUP_Person_Address', 'fk_Person');
+RelationLookup('residents', :Person, 'Address', 'LOOKUP_Person_Address', 'fk_Address');
 
 Person->addresses
 -----------------

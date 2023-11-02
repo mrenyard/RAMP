@@ -25,12 +25,14 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\Relation;
+use ramp\model\business\RelationLookup;
 use ramp\model\business\field\Field;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
-class MockMinRecord extends Record
+class RecordA extends Record
 {
   public $validateCount;
   public $hasErrorsCount;
@@ -47,28 +49,42 @@ class MockMinRecord extends Record
     $this->withError = $withError;
   }
 
-  protected function get_key1() : Field
+  protected function get_keyA() : Field
   {
     if (!isset($this->primaryKey[0])) {
-      $this->primaryKey[0] = new MockField(Str::set('key1'), $this);
+      $this->primaryKey[0] = new MockField(Str::set('keyA'), $this);
     }
     return $this->primaryKey[0]; 
   }
 
-  protected function get_key2() : Field
+  protected function get_keyB() : Field
   {
     if (!isset($this->primaryKey[1])) {
-      $this->primaryKey[1] = new MockField(Str::set('key2'), $this);
+      $this->primaryKey[1] = new MockField(Str::set('keyB'), $this);
     }
     return $this->primaryKey[1]; 
   }
 
-  protected function get_key3() : Field
+  protected function get_keyC() : Field
   {
     if (!isset($this->primaryKey[2])) {
-      $this->primaryKey[2] = new MockField(Str::set('key3'), $this);
+      $this->primaryKey[2] = new MockField(Str::set('keyC'), $this);
     }
-    return $this->primaryKey[2]; 
+    return $this->primaryKey[2];
+  }
+
+  protected function get_relationLookupAB() : Relation
+  {
+    if (!isset($this[0])) {
+      $this[0] = new RelationLookup(
+        Str::set('relationLookupAB'),
+        $this,
+        Str::set('RecordB'),
+        Str::set('Lookup')
+        // Str::set('RecordB')
+      );
+    }
+    return $this[0];
   }
 
   /**

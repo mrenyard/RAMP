@@ -53,31 +53,12 @@ class RelationToOne extends Relation
    */
   public function __construct(Str $name, Record $parent, Str $withRecordName)
   {
+    parent::__construct($name, $parent);
     $this->withRecordName = $withRecordName;
     // instantiate temporary (new) 'with' record for access to primaryKey
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $withNew = new $withRecordClassName();
-    $this->buildMapping($parent, $withNew, $name, $withRecordName);
-    parent::__construct($name, $parent);
-  }
-
-  protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : void
-  {
-    $i = 0;
-    $this->keys = array();
-    $this->foreignKeyNames = StrCollection::set();
-    $fromPK = $from->primaryKey->getIterator();
-    $toPK = $to->primaryKey->getIterator();
-    $fromPK->rewind(); $toPK->rewind();
-    while ($toPK->valid() && $fromPK->valid()) {
-      $this->keys[$i] = (string)$toPK->current()->name; 
-      $value = $fromPropertyName->prepend(Str::FK())
-        ->append($this->processType($to)->prepend(Str::UNDERLINE()))
-        ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
-      $this->foreignKeyNames->add($value);
-      $fromPK->next(); $toPK->next();
-      $i++;
-    }
+    $this->buildMapping($parent, $withNew, $name);
   }
 
   public function addForeignKey(\stdClass $dataObject) : void

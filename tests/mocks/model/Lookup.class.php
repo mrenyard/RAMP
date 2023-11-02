@@ -25,12 +25,13 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\RecordComponent;
 use ramp\model\business\field\Field;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
  */
-class MockMinRecord extends Record
+class Lookup extends Record
 {
   public $validateCount;
   public $hasErrorsCount;
@@ -47,28 +48,68 @@ class MockMinRecord extends Record
     $this->withError = $withError;
   }
 
-  protected function get_key1() : Field
+  protected function get_RecordA_keyA() : Field
   {
     if (!isset($this->primaryKey[0])) {
-      $this->primaryKey[0] = new MockField(Str::set('key1'), $this);
+      $this->primaryKey[0] = new MockField(Str::set('RecordA_keyA'), $this);
     }
     return $this->primaryKey[0]; 
   }
 
-  protected function get_key2() : Field
+  protected function get_RecordA_keyB() : Field
   {
     if (!isset($this->primaryKey[1])) {
-      $this->primaryKey[1] = new MockField(Str::set('key2'), $this);
+      $this->primaryKey[1] = new MockField(Str::set('RecordA_keyB'), $this);
     }
     return $this->primaryKey[1]; 
   }
 
-  protected function get_key3() : Field
+  protected function get_RecordA_keyC() : Field
   {
     if (!isset($this->primaryKey[2])) {
-      $this->primaryKey[2] = new MockField(Str::set('key3'), $this);
+      $this->primaryKey[2] = new MockField(Str::set('RecordA_keyC'), $this);
     }
-    return $this->primaryKey[2]; 
+    return $this->primaryKey[2];
+  }
+
+  protected function get_RecordB_key1() : Field
+  {
+    if (!isset($this->primaryKey[3])) {
+      $this->primaryKey[3] = new MockField(Str::set('RecordB_key1'), $this);
+    }
+    return $this->primaryKey[3];
+  }
+
+  protected function get_RecordB_key2() : Field
+  {
+    if (!isset($this->primaryKey[4])) {
+      $this->primaryKey[4] = new MockField(Str::set('RecordB_key2'), $this);
+    }
+    return $this->primaryKey[4];
+  }
+
+  protected function get_relationRecordA() : RecordComponent
+  {
+    if (!isset($this[1])) {
+      $this[1] = new MockRelationToMany(Str::set('relationRecordA'), $this, Str::set('RecordA'), Str::set('relationLoolupB'));
+    }
+    return $this[1];
+  }
+
+  protected function get_relationRecordB() : RecordComponent
+  {
+    if (!isset($this[1])) {
+      $this[1] = new MockRelationToMany(Str::set('relationRecordB'), $this, Str::set('RecordB'), Str::set('relationLookupA'));
+    }
+    return $this[1];
+  }
+
+  protected function get_relationType() : RecordComponent
+  {
+    if (!isset($this[0])) {
+      $this[0] = new MockField(Str::set('relationType'), $this);
+    }
+    return $this[0];
   }
 
   /**

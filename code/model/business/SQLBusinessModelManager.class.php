@@ -204,7 +204,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
   {
     $classFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    $recordNewDataObject = new strClass();
+    $recordNewDataObject = new \stdClass();
     $recordNew = new $recordFullName($recordNewDataObject);
     $this->recordCollection->attach($recordNew);
     $this->dataObjectCollection->attach($recordNewDataObject);

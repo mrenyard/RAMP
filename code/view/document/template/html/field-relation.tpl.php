@@ -20,8 +20,8 @@
  * 
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
-print_r($this->type);
-switch ((string)$this->type) {
+print_r((string)$this->class);
+switch ((string)$this->class) {
   case 'relation record-component': ?>
           <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <legend><?=$this->heading; ?></legend>
@@ -53,4 +53,7 @@ switch ((string)$this->type) {
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>
             <span class="error"><?=$error; ?></span><?php } } ?>
           </label>
-<?php break; } ?>
+<?php break;
+  default: ?>
+          <p><?=$this->id; ?></p>
+<?php }

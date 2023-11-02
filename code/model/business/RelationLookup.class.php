@@ -39,7 +39,7 @@ use ramp\condition\Filter;
  * - {@link \ramp\model\business\Relatable}
  * - {@link \ramp\model\business\BusinessModelManager}
  */
-class RelationToMany extends Relation
+class RelationLookup extends Relation
 {
   private $withRecordName; // Str
   public $keys; // array
@@ -52,14 +52,15 @@ class RelationToMany extends Relation
    * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
    * proir to allowing property value change
    */
-  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $usesLookupTable, Str $toLookupProperty = NULL)
   {
-    parent::__construct($name, $parent);
+    $toLookupProperty = ($toLookupProperty == NULL) ? $withRecordName : $toLookupProperty;
     $this->withRecordName = $withRecordName;
     // instantiate temporary (new) 'with' record for access to primaryKey
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $withNew = new $withRecordClassName();
-    $this->buildMapping($withNew, $parent, $withPropertyName);
+    $this->buildMapping($withNew, $parent, $toLookupProperty); //$withPropertyName);
+    parent::__construct($name, $parent);
   }
 
   public function add(Record $object)
