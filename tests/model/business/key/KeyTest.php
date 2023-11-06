@@ -41,9 +41,11 @@ require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.c
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
@@ -56,7 +58,6 @@ use ramp\model\business\DataExistingEntryException;
 use ramp\model\business\Key;
 
 use tests\ramp\mocks\model\MockBusinessModel;
-use tests\ramp\mocks\model\MockKey;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockRecordComponent;
@@ -325,7 +326,8 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert parent same as passed to constructor.
    * - assert name same as passed to constructor.
    * - assert id returns as expected.
-   * - assert value returns as expected based on state of key
+   * - assert value returns as expected based on state of record
+   * - assert key value unchangable (having valid value).
    * @link ramp.model.business.Key#method_get_parentRecord ramp\model\business\Key::record
    * @link ramp.model.business.Key#method_get_parentProppertyName ramp\model\business\Key::parentProppertyName
    */
@@ -344,6 +346,10 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject->keyB = 1;
     $this->assertNull($this->testObject->value);
     $this->dataObject->keyA = 1;
+    $this->assertEquals('1|1|1', $this->testObject->value);
+    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:keyB' => 2)));
+    $this->assertSame(0, $this->record->keyB->validateCount); // No attempted change of record
+    $this->assertNotEquals('1|2|1', $this->testObject->value);
     $this->assertEquals('1|1|1', $this->testObject->value);
   }
 
@@ -373,9 +379,10 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Test state changes for indexs, values, and value follwing before, during and after validation.
+   * Test state changes for indexs, values, and value following before, during and after validation.
    * - assert compound key indexes and values based on parent record state
    * - assert validation leads to relevant state changes. 
+   * - assert unchangable following successfull setting.  
    */
   public function testStateChangesKey()
   {
@@ -383,19 +390,30 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertEquals('keyA', (string)$indexs[0]);
     $this->assertEquals('keyB', (string)$indexs[1]);
     $this->assertEquals('keyC', (string)$indexs[2]);
+    $this->assertSame(0, $this->record->keyC->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyC' => 3)));
+    $this->assertSame(1, $this->record->keyC->validateCount); // Has been touched since previous
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
+    $this->assertSame(1, $this->record->keyB->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyB' => 3)));
+    $this->assertSame(2, $this->record->keyB->validateCount); // Has been touched since previous
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
+    $this->assertSame(2, $this->record->keyA->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyA' => 3)));
+    $this->assertSame(3, $this->record->keyA->validateCount); // Has been touched since previous
     $values = $this->testObject->values;
     $this->assertInstanceOf('ramp\core\StrCollection', $values);
     $this->assertEquals('3', $values[0]);
     $this->assertEquals('3', $values[1]);
     $this->assertEquals('3', $values[2]);
     $this->assertEquals('3|3|3', $this->testObject->value);
+    $this->assertSame(3, $this->record->keyA->validateCount);
+    $this->testObject->validate(PostData::build(array('mock-record:3|3|3:keyA' => 2)));
+    $this->assertSame(3, $this->record->keyA->validateCount); // SAME: No attempted change of record
+    $this->assertNotEquals('2|3|3', $this->testObject->value);
+    $this->assertEquals('3|3|3', $this->testObject->value); // Unchanged
   }
 
   /**

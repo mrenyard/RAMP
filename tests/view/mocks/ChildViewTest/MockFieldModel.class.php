@@ -29,10 +29,10 @@ use ramp\model\business\field\Field;
  */
 class MockFieldModel extends Field
 {
-  protected function get_value()
-  {
-    // STUB
-  }
+  // protected function get_value()
+  // {
+  //   // STUB
+  // }
 
   public function processValidationRule($value) : void
   {

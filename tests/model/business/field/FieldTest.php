@@ -27,16 +27,24 @@ require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/iOption.class.php';
 require_once '/usr/share/php/ramp/core/OptionList.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
@@ -61,6 +69,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
   }
@@ -110,6 +119,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertSame('option business-model', (string)$this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
     $this->assertSame('option business-model', (string)$this->testObject[2]->type);
+    $this->assertFalse(isset($this->testObject[3]));
   }
   #endregion
 
@@ -317,8 +327,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject->keyB = 1;
     $this->dataObject->keyC = 1;
     $this->record->updated();
-    $this->assertFalse($this->record->isNew);
     $this->assertTrue($this->record->isValid);
+    $this->assertFalse($this->record->isNew);
     // isEditable still defaults to TRUE
     $this->assertTrue($this->testObject->isEditable);
     // but allows state change.

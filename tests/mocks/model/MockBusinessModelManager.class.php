@@ -58,14 +58,10 @@ class MockBusinessModelManager extends BusinessModelManager
   // MANY to MANY LOOKUP
   private $lookup;
   public $dataA1;
-  public $dataA2;
-  public $dataA3;
   public $dataB1;
   public $dataB2;
   public $dataB3;
   public $objectA1;
-  public $objectA2;
-  public $objectA3;
   public $objectB1;
   public $objectB2;
   public $objectB3;
@@ -270,19 +266,25 @@ class MockBusinessModelManager extends BusinessModelManager
         if (!isset($this->mockNew)) { $this->buildMockModel(); }
         return $this->mockNew;
       }
-      if (
-        $definition->RecordKey == '1|1|1' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "1" AND MockRecord.keyB = "1" AND MockRecord.keyC = "1"')
-      ) {
+      if ($definition->RecordKey == '1|1|1') {
         if (!isset($this->objectNew)) { $this->buildObjectNew(); }
         return $this->objectNew;
       }
-      if (
-        $definition->RecordKey == '2|2|2' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"')
-      ) {
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "1" AND MockRecord.keyB = "1" AND MockRecord.keyC = "1"') {
+        if (!isset($this->objectNew)) { $this->buildObjectNew(); }
+        $o = new RecordCollection();
+        $o->add($this->objectNew);
+        return $o;
+      }
+      if ($definition->RecordKey == '2|2|2') {
         if (!isset($this->objectOne)) { $this->buildObjectOne(); }
         return $this->objectOne;
+      }
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockRecord.keyA = "2" AND MockRecord.keyB = "2" AND MockRecord.keyC = "2"') {
+        if (!isset($this->objectOne)) { $this->buildObjectOne(); }
+        $o = new RecordCollection();
+        $o->add($this->objectOne);
+        return $o;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
@@ -292,33 +294,45 @@ class MockBusinessModelManager extends BusinessModelManager
         if (!isset($this->mockMinNew)) { $this->buildMinNew(); }
         return $this->mockMinNew;
       }
-      if (
-        $definition->RecordKey == 'A|B|C' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"')
-      ) {
+      if ($definition->RecordKey == 'A|B|C') {
         if (!isset($this->objectTwo)) { $this->buildObjectTwo(); }
         return $this->objectTwo;
       }
-      if (
-        $definition->RecordKey == 'A|B|D' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "D"')
-      ) {
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C"') {
+        if (!isset($this->objectTwo)) { $this->buildObjectTwo(); }
+        $o = new RecordCollection();
+        $o->add($this->objectTwo);
+        return $o;
+      }
+      if ($definition->RecordKey == 'A|B|D') {
         if (!isset($this->objectThree)) { $this->buildObjectThree(); }
         return $this->objectThree;
       }
-      if (
-        $definition->RecordKey == 'A|B|E' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"')
-      ) {
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "D"') {
+        if (!isset($this->objectThree)) { $this->buildObjectThree(); }
+        $o = new RecordCollection();
+        $o->add($this->objectThree);
+        return $o;
+      }
+      if ($definition->RecordKey == 'A|B|E') {
         if (!isset($this->objectFour)) { $this->buildObjectFour(); }
         return $this->objectFour;
       }
-      if (
-        $definition->RecordKey == 'A|B|F' ||
-        (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"')
-      ) {
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"') {
+        if (!isset($this->objectFour)) { $this->buildObjectFour(); }
+        $o = new RecordCollection();
+        $o->add($this->objectFour);
+        return $o;
+      }
+      if ($definition->RecordKey == 'A|B|F') {
         if (!isset($this->objectFive)) { $this->buildObjectFour(); }
         return $this->objectFive;
+      }
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"') {
+        if (!isset($this->objectFive)) { $this->buildObjectFour(); }
+        $o = new RecordCollection();
+        $o->add($this->objectFive);
+        return $o;
       }
       if (
         isset($filter) && $filter(SQLEnvironment::getInstance()) == 
@@ -409,9 +423,20 @@ class MockBusinessModelManager extends BusinessModelManager
    */
   public function updateAny()
   {
+    if (isset($this->mockMinNew) && $this->mockMinNew->isModified && $this->mockMinNew->isValid) { $this->update($this->mockMinNew); }
+    if (isset($this->mockNew) && $this->mockNew->isModified && $this->mockNew->isValid) { $this->update($this->mockNew); }
+    if (isset($this->objectNew) && $this->objectNew->isModified && $this->objectNew->isValid) { $this->update($this->objectNew); }
     if (isset($this->objectOne) && $this->objectOne->isModified && $this->objectOne->isValid) { $this->update($this->objectOne); }
     if (isset($this->objectTwo) && $this->objectTwo->isModified && $this->objectTwo->isValid) { $this->update($this->objectTwo); }
     if (isset($this->objectThree) && $this->objectThree->isModified && $this->objectThree->isValid) { $this->update($this->objectThree); }
     if (isset($this->objectFour) && $this->objectFour->isModified && $this->objectFour->isValid) { $this->update($this->objectFour); }
+    if (isset($this->objectFive) && $this->objectFive->isModified && $this->objectFive->isValid) { $this->update($this->objectFive); }
+    if (isset($this->objectA1) && $this->objectA1->isModified && $this->objectA1->isValid) { $this->update($this->objectA1); }
+    if (isset($this->objectA1) && $this->objectB1->isModified && $this->objectB1->isValid) { $this->update($this->objectB1); }
+    if (isset($this->objectA1) && $this->objectB2->isModified && $this->objectB2->isValid) { $this->update($this->objectB2); }
+    if (isset($this->objectA1) && $this->objectB3->isModified && $this->objectB3->isValid) { $this->update($this->objectB3); }
+    if (isset($this->objectLookupA1toB1) && $this->objectLookupA1toB1->isModified && $this->objectLookupA1toB1->isValid) { $this->update($this->objectLookupA1toB1); }
+    if (isset($this->objectLookupA1toB2) && $this->objectLookupA1toB2->isModified && $this->objectLookupA1toB2->isValid) { $this->update($this->objectLookupA1toB2); }
+    if (isset($this->objectLookupA1toB3) && $this->objectLookupA1toB3->isModified && $this->objectLookupA1toB3->isValid) { $this->update($this->objectLookupA1toB3); }
   }
 }

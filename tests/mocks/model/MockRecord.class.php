@@ -27,7 +27,6 @@ use ramp\condition\PostData;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
-
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
@@ -35,6 +34,7 @@ use ramp\model\business\Relatable;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\field\Field;
 
+use tests\ramp\mocks\model\MockInput;
 use tests\ramp\mocks\model\MockRelationToOne;
 use tests\ramp\mocks\model\MockRelationToMany;
 
@@ -51,16 +51,33 @@ class MockRecord extends Record
   public $relationAlphaWith;
   public $relationBetaName;
   public $relationBetaWith;
+  public $inputName;
 
   public function __construct(\stdClass $dataObject = null)
   {
     $this->relationAlphaName = Str::set('relationAlpha');
     $this->relationBetaName = Str::set('relationBeta');
+    $this->inputName = Str::set('input');
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
   }   
+
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    $this->errorsTouchCount = 0;
+    foreach ($this->primaryKey as $key) { 
+      $key->validateCount = 0;
+      $key->hasErrorsCount = 0;
+    }
+    foreach ($this as $property) { 
+      $property->validateCount = 0;
+      $property->hasErrorsCount = 0;
+    }
+  }
 
   protected function get_keyA() : Field
   {
@@ -95,13 +112,13 @@ class MockRecord extends Record
     return $this[0];
   }
 
-  protected function get_relationAlpha() : RecordComponent
-  {
-    if (!isset($this[1])) {
-      $this[1] = new MockRelationToMany($this->relationAlphaName, $this, Str::set('MockMinRecord'), Str::set('relationDelta'));
-    }
-    return $this[1];
-  }
+  // protected function get_relationAlpha() : RecordComponent
+  // {
+  //   if (!isset($this[1])) {
+  //     $this[1] = new MockRelationToMany($this->relationAlphaName, $this, Str::set('MockMinRecord'), Str::set('relationDelta'));
+  //   }
+  //   return $this[1];
+  // }
 
   protected function get_relationBeta() : RecordComponent
   {
@@ -120,6 +137,14 @@ class MockRecord extends Record
     }
     return $this[3];
   }*/
+
+  protected function get_input() : RecordComponent
+  {
+    if (!isset($this[3])) {
+      $this[3] = new MockInput($this->inputName, $this);
+    }
+    return $this[3];
+  }
 
   /**
    * Validate postdata against this and update accordingly.

@@ -24,33 +24,23 @@ namespace tests\ramp\mocks\model;
 use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
-use ramp\model\business\RelationToOne;
-use ramp\model\business\Relatable;
+use ramp\model\business\field\Input;
+use ramp\model\business\FailedValidationException;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
+ * Mock Concreate implementation of \ramp\model\business\field\Field for testing against.
  */
-class MockRelationToOne extends RelationToOne
+class MockInput extends Input
 {
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, Str $withRecordName)
+  public function __construct(Str $propertyName, Record $record)
   {
-    parent::__construct($name, $parent, $withRecordName);
+    parent::__construct($propertyName, $record);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }
-
-  protected function get_foreignKeyNames()
-  {
-    return $this->foreignKeyNames;
-  }
-
-  // protected function get_keys()
-  // {
-  //   return $this->keys;
-  // }
 
   /**
    * Validate postdata against this and update accordingly.
@@ -68,4 +58,16 @@ class MockRelationToOne extends RelationToOne
     $this->hasErrorsCount++;
     return parent::get_hasErrors();
   }
+
+  /**
+   * Template method for use in validation.
+   * @param mixed $value Value to be processed
+   * @throws \ramp\validation\FailedValidationException When test fails.
+   *
+  public function processValidationRule($value) : void
+  {
+    if ($value == 'BadValue') {
+      throw new FailedValidationException('Error MESSAGE BadValue Submited!');
+    }
+  }*/
 }

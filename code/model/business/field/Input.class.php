@@ -48,10 +48,10 @@ class Input extends Field
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change
    */
-  public function __construct(Str $parentPropertyName, Record $containingRecord, DbTypeValidation $validationRule, bool $editable = NULL)
+  public function __construct(Str $parentPropertyName, Record $containingRecord) //, DbTypeValidation $validationRule, bool $editable = NULL)
   {
-    $this->validationRule = $validationRule;
-    parent::__construct($parentPropertyName, $containingRecord, NULL, $editable);
+    // $this->validationRule = $validationRule;
+    parent::__construct($parentPropertyName, $containingRecord); //, NULL, $editable);
   }
 
   /**
@@ -66,21 +66,12 @@ class Input extends Field
   }
 
   /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final protected function get_value()
-  {
-    return $this->parentRecord->getPropertyValue((string)$this->parentPropertyName);
-  }
-
-  /**
    * Process provided validation rule.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value) : void
   {
-    $this->validationRule->process($value);
+    // $this->validationRule->process($value);
   }
 }

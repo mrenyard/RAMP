@@ -97,6 +97,11 @@ abstract class BusinessModel extends Model implements iList
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
+  final protected function setChildren(BusinessModel $value)
+  {
+    $this->children = $value;
+  }
+
   /**
    * Implementation of \IteratorAggregate method for use with foreach etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
@@ -142,7 +147,7 @@ abstract class BusinessModel extends Model implements iList
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  final public function offsetUnset($offset)
+  public function offsetUnset($offset)
   {
     unset($this->children[$offset]);
   }

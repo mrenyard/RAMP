@@ -69,10 +69,9 @@ class RelationLookup extends Relation
   }
 
   /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   *
    */
-  final protected function get_value()
+  final protected function get_object()
   {
     $i = 0;
     $filterArray = array();

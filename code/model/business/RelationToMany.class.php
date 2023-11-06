@@ -42,8 +42,6 @@ use ramp\condition\Filter;
 class RelationToMany extends Relation
 {
   private $withRecordName; // Str
-  public $keys; // array
-  public $foreignKeyNames; // Strcollection
 
   /**
    * Creates a relation from a single property of containing record to a Record collection.
@@ -68,17 +66,15 @@ class RelationToMany extends Relation
   }
 
   /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   *
    */
-  final protected function get_value()
+  final protected function get_object()
   {
     $i = 0;
     $filterArray = array();
     foreach ($this->foreignKeyNames as $index) {
       $filterArray[(string)$index] = $this->parent->getPropertyValue($this->keys[$i++]);
     }
-    // print_r($filterArray);
     $collection = new RecordCollection();
     try {
       $collection = $this->manager->getBusinessModel(

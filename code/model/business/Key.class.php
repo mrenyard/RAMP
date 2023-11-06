@@ -80,8 +80,8 @@ class Key extends RecordComponent
   protected function get_indexes() : StrCollection
   {
     $value = StrCollection::set();
-    foreach($this as $key) {
-      $value->add($key->name);
+    foreach($this as $subKey) {
+      $value->add($subKey->name);
     }
     return $value;
   }
@@ -94,10 +94,10 @@ class Key extends RecordComponent
   protected function get_values() : ?StrCollection
   {
     $values = NULL;
-    foreach ($this as $key) {
-      if ($key->value === NULL) { return NULL; }
+    foreach ($this as $subKey) {
+      if ($subKey->value === NULL || $subKey->value === '') { return NULL; }
       if ($values === NULL) { $values = StrCollection::set(); }
-      $values->add(Str::set($key->value));
+      $values->add(Str::set($subKey->value));
     }
     return $values;
   }
@@ -106,18 +106,19 @@ class Key extends RecordComponent
    * Returns value held by relevant property of associated record.
    * @return mixed Value held by relevant property of associated record
    */
-  protected function get_value()
+  final protected function get_value()
   {
     return ($this->values !== NULL) ? (string)$this->values->implode(Str::BAR()) : NULL;
   }
 
   /**
-   * Validate uniqueness of combined key.
+   * Validate uniqueness of combined key
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    * @throws \ramp\model\business\DataExistingEntryException An entry already exists with this key!
    */
   public function validate(PostData $postdata) : void
   {
+    if ($this->values !== NULL) { return; } // Once set cannot be changed
     parent::validate($postdata);
     if ($this->parent->isModified && $this->parent->isNew && !$this->hasErrors &&
       ((string)$this->name == 'primaryKey') && $this->value !== NULL)

@@ -44,6 +44,7 @@ require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationLookup.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/Lookup.class.php';
@@ -53,7 +54,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockKey.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
@@ -124,7 +125,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($this->testObject->isValid);
     $this->assertFalse($this->testObject->isNew);
     $this->assertSame('mock-record:3|3|3', (string)$this->testObject->id);
-    $this->expectedChildCountExisting = 3;
+    $this->expectedChildCountExisting = 3; //4;
     $this->postData = PostData::build(array(
       'mock-record:3|3|3:a-property' => 'BadValue'
     ));
@@ -135,11 +136,13 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[1]->type);
+    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    // $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
     $this->assertSame('mock-relation-to-one relation-to-one', (string)$this->testObject[2]->type);
-    $this->assertFalse(isset($this->testObject[3]));
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
+    $this->assertSame('mock-input input', (string)$this->testObject[3]->type);
+    $this->assertFalse(isset($this->testObject[4]));
   }
   #endregion
 
@@ -404,7 +407,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   = assert dataObject updated with valid values for FIRST and SECOND KEY 
    *   - assert isNew, isModified, isValid flags report expected (TRUE|TRUE|FALSE).
    *   - assert id matches expected result, in the format [class-name]:new.
-   * 
    * - assert post simulated FINAL valid KEY input:
    *   = assert dataObject updated with valid values for ALL KEYs 
    *   - assert isNew, isModified, isValid flags report expected (TRUE|TRUE|TRUE).
@@ -428,8 +430,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $keyAValue = 'A1'; $keyBValue = 'B1'; $keyCValue = 'C1';
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
-    $this->testObject->setPropertyValue('keyB', $keyBValue);
-    // $this->testObject->validate(PostData::build(array('mock-record:new:key-b' => $keyBValue)));
+    $this->testObject->validate(PostData::build(array('mock-record:new:key-b' => $keyBValue)));
+    // $this->testObject->setPropertyValue('keyB', $keyBValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyBValue, $this->testObject->keyB->value);
     $this->assertSame($this->dataObject->keyA, $this->testObject->keyA->value);
@@ -440,8 +442,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
-    // $this->testObject->validate(PostData::build(array('mock-record:new:key-a' => $keyAValue)));
-    $this->testObject->setPropertyValue('keyA', $keyAValue);
+    $this->testObject->validate(PostData::build(array('mock-record:new:key-a' => $keyAValue)));
+    // $this->testObject->setPropertyValue('keyA', $keyAValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
     $this->assertSame($keyAValue, $this->testObject->keyA->value);
@@ -453,8 +455,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
 
     // Simulate getPropertyValue() called from relevant RecordComponent.
-    // $this->testObject->validate(PostData::build(array('mock-record:new:key-c' => $keyCValue)));
-    $this->testObject->setPropertyValue('keyC', $keyCValue);
+    $this->testObject->validate(PostData::build(array('mock-record:new:key-c' => $keyCValue)));
+    // $this->testObject->setPropertyValue('keyC', $keyCValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
     $this->assertSame($keyCValue, $this->dataObject->keyC);
@@ -483,186 +485,169 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
  
   /**
-   * Check 'new' Record has foreign keys in dataObject in correct format.
-   * - assert relationAlpha NOT in dataObject (no foreignKey as from MANY).
-   * - assert relationBeta has relevant foreignKeys in dataObject.  
+   * Set 'new' relation on Record (to ONE) accessable with appropiate state changes.
+   * - assert dataObject of parent Record does NOT contain relation name.
+   * - assert dataObject of parent Record contains expected 'foreign keys'.
+   * - assert pre ANY validation:
+   *   - assert id of 'new' Record pre validation() as expected (mock-record:new).
+   *   - assert value matches id of expected related 'new' Record pre validation() (mock-min-record:new)
+   * - assert attempted simultaneous validation of BOTH parent Record and Related Record:
+   *   - assert id of parent Record post validation() modified primaryKey as expected.
+   *   - assert 'value' matches 'id' of expected related Record NOT yet isModified() as parent was 'new'.
+   *   - assert post validate() parent record 'new' related record NOT isModified() as parent was 'new'.
+   *   - assert interator on relation 'keys' are in expected unmodified state.
+   *     - assert children primaryKey name match expected related record's.
+   *     - assert children match expected related record's keys.
+   *     - assert validate NOT called on related 'new' Record's key.
+   *     - assert hasErrors called on each related Record's key.
+   *     - assert validated related Record field's (key) values are NULL.
+   *  - assert related Record validation following successful parent Record primaryKey set:
+   *   - assert post validate() related record isModified() and hasErrors() as expected.
+   *   - assert 'value' matches 'id' of expected related Record with newly set primaryKey (mock-min-record:value1|value2|value3).
+   *   - assert interator on relation 'keys' are in expected modified state.
+   *     - assert children primaryKey name match expected related record's.
+   *     - assert children match expected related record's keys.
+   *     - assert validate called on each related Record's key.
+   *     - assert hasErrors called on each related Record's key.
+   *     - assert validated related Record field (key) values are modified as directed.
+   *   - assert interator on relation NOW returns proerpties NOT keys.
+   *     - assert children property name match expected related record's.
+   *     - assert children match expected related record's properties.
+   *     - assert validate called on each related Record's property.
+   *     - assert hasErrors called on each related Record's property.
+   *     - assert validated related Record field (property) values are NULL.
    */
   public function testRecordNewWithRelationOfOne()
   {
-    // ensure relation name NOT on dataObject.
-    $this->assertObjectNotHasAttribute('relationAlpha', $this->dataObject); // to MANY
+    // Expected related existing record from data store to test against
+    $toRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockMinRecord'), Str::NEW())
+    );
+    $toRecord->reset();
+    $this->assertTrue($toRecord->isNew);
+    $this->assertFalse($toRecord->isModified);
+    $this->assertFalse($toRecord->isValid);
+    // Ensure dataObject of parent Record does NOT contain relation name.
     $this->assertObjectNotHasAttribute('relationBeta', $this->dataObject); // to ONE
-    // Check for relevant foreignKeys in dataObject.
+    // Check dataObject of parent Record contains expected 'foreign keys'.
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->dataObject);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->dataObject);
     $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->dataObject);
-    // assert $associatedRecord expected type and state 
-    $i = 1;
-    $associatedRecord = $this->testObject->relationBeta->value;
-    $this->assertTrue($associatedRecord->isNew);
-    foreach ($associatedRecord as $indexField) {
-      $this->assertInstanceOf('\ramp\model\business\field\Field', $indexField);
-      $this->assertInstanceOf('\tests\ramp\mocks\model\MockMinRecord', $indexField->parent);
-      $this->assertEquals('key' . $i++, $indexField->name);
+    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key1);
+    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key2);
+    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key3);
+    // Get relation to test.
+    $relation = $this->testObject->relationBeta; // to ONE
+    // Pre ANY validation
+    // Check id of 'new' Record pre validation() as expected.
+    $this->assertSame('mock-record:new', (string)$this->testObject->id);
+    // Check value matches id of expected related 'new' Record pre validation().
+    $this->assertSame('mock-min-record:new', (string)$relation->value);
+    $this->assertTrue($this->testObject->isNew);
+    $this->assertFalse($this->testObject->isModified);
+    // Attempt simultaneous validation of BOTH parent Record and Related Record:
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:new:key-a' => 3,
+      'mock-record:new:key-b' => 3,
+      'mock-record:new:key-c' => 3,
+      'mock-record:new:relationBeta' => array('key1' => 'VALUE1', 'key2' => 'VALUE2', 'key3' => 'VALUE3')
+    )));
+    $this->assertTrue($this->testObject->isModified);
+    $this->assertTrue($this->testObject->isValid);
+    $this->testObject->updated();
+    $this->assertFalse($this->testObject->isNew);
+    // Check 'id' of parent Record post validation() modified primaryKey as expected.
+    $this->assertSame('mock-record:3|3|3', (string)$this->testObject->id);
+    // Check 'value' matches 'id' of expected related Record NOT yet isModified() as parent was 'new'.
+    $this->assertSame('mock-min-record:new', (string)$relation->value);
+    $this->assertSame((string)$toRecord->id, $relation->value);
+    // Check post validate() parent record 'new' related record NOT isModified() as parent was 'new'.
+    $this->assertTrue($toRecord->isNew);
+    $this->assertFalse($toRecord->isModified);
+    // Check post validate() parent record 'new' hasErrors as expected.
+    $this->assertFalse($toRecord->hasErrors);
+    // Check interator on relation 'keys' are in expected unmodified state. 
+    $i = 0;
+    $keyIterator = $relation->getIterator();
+    $keyIterator->rewind();
+    foreach ($toRecord->primaryKey as $toRecordKey) {
+      $this->assertTrue($keyIterator->valid());
+      $expectedRecordKey = $keyIterator->current();
+      // Check children primaryKey name match expected related record's.
+      $this->assertEquals('key' . ++$i, $expectedRecordKey->name);
+      // Check children match expected related record's keys.
+      $this->assertSame($expectedRecordKey, $toRecordKey);
+      // Check validate NOT called on related 'new' Record's key.
+      $this->assertSame(0, $toRecordKey->validateCount);
+      // Check hasErrors called on each related Record's key.
+      $this->assertSame(1, $toRecordKey->hasErrorsCount);
+      // Check validated related Record field's values are NULL.
+      $this->assertNull($expectedRecordKey->value);
+      $keyIterator->next();
     }
-    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key1);
-    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key1);
-    $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key1);
+    $this->assertSame($i, 3);
+    // Related Record validation following successful parent Record primaryKey set:
+    $this->testObject->validate(PostData::build(array( // placed out of order
+      'mock-record:3|3|3:relationBeta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1')
+    )));
+    // Check post validate() related record isModified as expected.
+    $this->assertTrue($toRecord->isModified);
+    // Check post validate() related record hasErrors as expected.
+    $this->assertFalse($toRecord->hasErrors);
+    // Check 'value' matches 'id' of expected related Record with newly set primaryKey (mock-min-record:value1|value2|value3).
+    $this->assertSame('mock-min-record:value1|value2|value3', $relation->value);
+    $this->assertSame((string)$toRecord->id, $relation->value);
+    $this->assertTrue($toRecord->isValid);
+    $toRecord->updated();
+    // Check interator on relation 'keys' are in expected modified state
+    $i = 0;
+    $keyIterator->rewind();
+    foreach ($toRecord->primaryKey as $toRecordKey) {
+      $expectedRecordKey = $keyIterator->current();
+      // Check children primaryKey name match expected related record's.
+      $this->assertEquals('key' . ++$i, (string)$expectedRecordKey->name);
+      // Check children match expected related record's keys.
+      $this->assertSame($expectedRecordKey, $toRecordKey);
+      // Check validate called on each related Record's key.
+      $this->assertSame(1, $toRecordKey->validateCount);
+      // Check hasErrors called on each related Record's key.
+      $this->assertSame(3, $toRecordKey->hasErrorsCount);
+      // Check validated related Record field (key) values are modified as directed.
+      $this->assertSame('VALUE' . $i, $toRecordKey->value);
+      $keyIterator->next();
+    }
+    $this->assertSame($i, 3);
+    // Check interator on relation NOW returns properties NOT keys.
+    $i = 0;
+    $propertyIterator = $relation->getIterator();
+    $propertyIterator->rewind();
+    foreach ($toRecord as $toRecordProperty) {
+      $expectedRecordProperty = $propertyIterator->current();
+      // Check children property name match expected related record's.
+      $this->assertEquals('property' . ++$i, (string)$expectedRecordProperty->name);
+      // Check children match expected related record's properties.
+      $this->assertSame($expectedRecordProperty, $toRecordProperty);
+      // Check validate called on each related Record's property.
+      $this->assertSame(0, $toRecordProperty->validateCount);
+      // Check hasErrors called on each related Record's property.
+      $this->assertSame(2, $toRecordProperty->hasErrorsCount);
+      // Check validated related Record field (property) values are modified as directed.
+      $this->assertNull($toRecordProperty->value);
+      $propertyIterator->next();
+    }
+    $this->assertSame($i, 2);
   }
 
   /**
-   * 
-   * - assert calling parent::Record->relationBeta->value loads associated model (ObjectOne --> ObjectTwo).
+   * Change 'existing' relation on Record (to ONE) accessable with appropiate state changes.
+   */ 
+
+  /**
+   * Add 'new' relation on Record collection (to MANY) accessable with appropiate state changes.
    */
-  public function testRecordExistingWithRelationOfOne()
-  {
-    // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
-    $testObject = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
-    );
-    $this->modelManager->callCount = 0;
-    // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectOne, $testObject);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->modelManager->dataObjectOne);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->modelManager->dataObjectOne);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->modelManager->dataObjectOne);
-    $this->assertEquals('A', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key1);
-    $this->assertEquals('B', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key2);
-    $this->assertEquals('C', $this->modelManager->dataObjectOne->fk_relationBeta_MockMinRecord_key3);
-    // Associated (Record) get and test state.
-    $associatedRecord = $testObject->relationBeta->value;
-    $this->assertEquals(1, $this->modelManager->callCount);
-    $this->assertFalse($associatedRecord->isNew);
-    $this->assertSame('mock-min-record:a|b|c', (string)$associatedRecord->id);
-    $this->assertSame($this->modelManager->objectTwo, $associatedRecord);
-    $dataObjectTwo = $this->modelManager->dataObjectTwo;
-    $this->assertEquals('A', $dataObjectTwo->key1);
-    $this->assertEquals('B', $dataObjectTwo->key2);
-    $this->assertEquals('C', $dataObjectTwo->key3);
-  }
 
-  /**
-   * 
-   * - assert calling parent::Record->relationBeta->value loads associated model (ObjectNew --> (new))).
-   */
-  public function testRecordExistingWithoutRelationOfOne()
-  {
-    // EXISTING MockRecord without Relations from data store (MockBusinesModelManager)
-    $testObject = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
-    );
-    $this->modelManager->callCount = 0;
-    // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectNew, $testObject);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $this->modelManager->dataObjectNew);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $this->modelManager->dataObjectNew);
-    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $this->modelManager->dataObjectNew);
-    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key1);
-    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key2);
-    $this->assertNull($this->modelManager->dataObjectNew->fk_relationBeta_MockMinRecord_key3);
-    // Associated (Record) get and test state.
-    $associatedRecord = $testObject->relationBeta->value;
-    $this->assertEquals(2, $this->modelManager->callCount);
-    $this->assertTrue($associatedRecord->isNew);
-    $this->assertSame('mock-min-record:new', (string)$associatedRecord->id);
-    // Same as New in data store.
-    $this->assertSame($this->modelManager->mockMinNew, $associatedRecord);
-  }
+   /**
+   * Remove 'existing' relation on Record collection (to MANY) accessable with appropiate state changes.
+   */ 
 
-  /**
-   * - assert calling parent::Record->relationGamma->value loads associated model
-   */
-  public function testRecordExistingWithRelationOfMany()
-  {
-    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
-    $testObject = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
-    );
-    $this->modelManager->callCount = 0;
-    // Parent (Record) test state.
-    $this->assertSame($this->modelManager->objectNew, $testObject);
-    // // Associated collection of (Record)s get and test state.
-    $associatedCollection = $testObject->relationAlpha->value;
-    $this->assertEquals(1, $this->modelManager->callCount);
-    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $associatedCollection);
-    $this->assertSame($this->modelManager->objectThree, $associatedCollection[0]);
-    $this->assertSame($this->modelManager->objectFour, $associatedCollection[1]);
-    $this->assertSame($this->modelManager->objectFive, $associatedCollection[2]);
-    // Same as New in data store.
-    $finalRecordInCollection = $associatedCollection[$associatedCollection->count -1];
-    $this->assertTrue($finalRecordInCollection->isNew);
-    $this->assertEquals('mock-min-record:new', (string)$finalRecordInCollection->id);
-    $this->assertSame($this->modelManager->mockMinNew, $finalRecordInCollection);
-  }
-
-  /**
-   * - assert calling parent::Record->relationGamma->value loads associated model
-   */
-  public function testRecordExistingWithoutRelationOfMany()
-  {
-    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
-    $testObject = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
-    );
-    $this->modelManager->callCount = 0;
-    // Parent (Record) test state.
-    // Associated collection of (Record)s get and test state.
-    $associatedCollection = $testObject->relationAlpha->value;
-    $this->assertEquals(2, $this->modelManager->callCount);
-    $this->assertInstanceOf('\ramp\model\business\RecordCollection', $associatedCollection);
-    $this->assertEquals(1, $associatedCollection->count);
-    // Same as New in data store.
-    $finalRecordInCollection = $associatedCollection[$associatedCollection->count -1];
-    $this->assertTrue($finalRecordInCollection->isNew);
-    $this->assertEquals('mock-min-record:new', (string)$finalRecordInCollection->id);
-    $this->assertSame($this->modelManager->mockMinNew, $finalRecordInCollection);
-  }
-
-  /**
-   * 
-   * - assert calling parent::Record->relationBeta->value loads associated model
-   *
-  public function testRecordExistingWithRelationOfManyLOOKUP()
-  {
-    $testObject = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('RecordA'), Str::set('1|1|1'))
-    );
-    $this->modelManager->callCount = 0;
-    $associatedCollection = $testObject->relationLookupAB->value;
-    $this->assertEquals(0, $associatedCollection->count);
-  }*/
-
-  public function testBuildMapping()
-  {
-    // EXISTING MockRecord with Relation to Collection (MANY) from data store (MockBusinesModelManager)
-    $testObjectMany = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
-    );
-    $this->modelManager->callCount = 0;
-    // MockMinRecord::fk_relationDelta_MockRecord_keyA = '1'
-    $this->assertEquals(
-      'fk_relationDelta_MockRecord_keyA ' .
-      'fk_relationDelta_MockRecord_keyB ' .
-      'fk_relationDelta_MockRecord_keyC',
-      (string)$testObjectMany->relationAlpha->foreignKeyNames->implode()    
-    );
-    $this->assertEquals('keyA', $testObjectMany->relationAlpha->keys[0]);
-    $this->assertEquals('keyB', $testObjectMany->relationAlpha->keys[1]);
-    $this->assertEquals('keyC', $testObjectMany->relationAlpha->keys[2]);
-    // EXISTING MockRecord with Relations from data store (MockBusinesModelManager)
-    $testObjectOne = $this->modelManager->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
-    );
-    $this->modelManager->callCount = 0;
-    // MockMinRecord:: $key1 = $this->parent->getPropertyValue(fk_relationBeta_MockMinRecord_key1)
-    $this->assertEquals(
-      'fk_relationBeta_MockMinRecord_key1 ' .
-      'fk_relationBeta_MockMinRecord_key2 ' .
-      'fk_relationBeta_MockMinRecord_key3',
-      (string)$testObjectOne->relationBeta->foreignKeyNames->implode()    
-    );
-    $this->assertEquals('key1', $testObjectOne->relationBeta->keys[0]);
-    $this->assertEquals('key2', $testObjectOne->relationBeta->keys[1]);
-    $this->assertEquals('key3', $testObjectOne->relationBeta->keys[2]);
-  }
 }

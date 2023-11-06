@@ -42,6 +42,16 @@ class MockRelationToMany extends RelationToMany
     $this->hasErrorsCount = 0;
   }
 
+  protected function get_foreignKeyNames()
+  {
+    return $this->foreignKeyNames;
+  }
+
+  protected function get_keys()
+  {
+    return $this->keys;
+  }
+
   /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s

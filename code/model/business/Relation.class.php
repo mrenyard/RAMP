@@ -49,33 +49,42 @@ abstract class Relation extends RecordComponent
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * proir to allowing property value change
    */
-  public function __construct(Str $name, Record $parent) //, Relatable $with = NULL)
+  public function __construct(Str $name, Record $parent)
   {
-    // Set BusinesModelManager
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->manager = $MODEL_MANAGER::getInstance();
-    parent::__construct($name, $parent); //, $with);
+    parent::__construct($name, $parent);
   }
 
-  // abstract protected function buildMapping(Record $from, Record $to, Str $fromName) : void;
-  protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : void
+  final static protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : array
   {
     $i = 0;
-    $this->keys = array();
-    $this->foreignKeyNames = StrCollection::set();
+    $keys = array();
+    $keyMap = array(); //StrCollection::set();
     $fromPK = $from->primaryKey->getIterator();
     $toPK = $to->primaryKey->getIterator();
     $fromPK->rewind(); $toPK->rewind();
     while ($toPK->valid() && $fromPK->valid()) {
-      $this->keys[$i] = (string)$toPK->current()->name; 
+      $keys[$i] = (string)$toPK->current()->name; 
       $value = $fromPropertyName->prepend(Str::FK())
-        ->append($this->processType($to)->prepend(Str::UNDERLINE()))
+        ->append(self::processType($to)->prepend(Str::UNDERLINE()))
         ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
-      $this->foreignKeyNames->add($value);
+      $keyMap[$keys[$i]] = (string)$value;
       $fromPK->next(); $toPK->next();
       $i++;
     }
+    return $keyMap;
   }
+
+  /**
+   * Get isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable;**
+   * @return bool isEditable for *this*
+   *
+  protected function get_isEditable() : bool
+  {
+    return ($this->with->isNew || $this->editable !== FALSE);
+  }*/
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
@@ -83,82 +92,21 @@ abstract class Relation extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
-  public function offsetSet($offset, $object)
+  final public function offsetSet($offset, $object)
   {
-    if (
-      $this instanceof RelationToMany || (!($object instanceof Record)) || ($offset != $this->count) ||
-      ($this->count > 0 && (string)$object->primaryKey->value !== (string)$this[0]->primaryKey->value)
-    )
-    {
+    // if (
+    //   $this instanceof RelationToMany || (!($object instanceof Record)) || ($offset != $this->count) ||
+    //   ($this->count > 0 && (string)$object->primaryKey->value !== (string)$this[0]->primaryKey->value)
+    // )
+    // if (
+    //   ($this instanceof RelationToOne && (!$object instanceof RecordComponent)) ||
+    //   ($this instanceof RelationToMany && $object instanceof Record)
+    // )
+    // {
       throw new \InvalidArgumentException(
         'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
-    }
-    parent::offsetSet($offset, $object);
-  }
-
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
-  public function validate(PostData $postdata) : void
-  {
-    // $this->errorCollection = StrCollection::set();
-    foreach ($this as $child) { $child->validate($postdata); }
-    // foreach ($postdata as $inputdata)
-    // {
-    //   if ((string)$inputdata->attributeURN == (string)$this->id)
-    //   {
-    //     $values = $inputdata->value;
-    //     $primaryKeyNames = $this->record->primaryKeyNames();
-    //     if (is_array($values))
-    //     {
-    //       if (isset($values['unset']) && $values['unset'] == 'on')
-    //       {
-    //         $this->record->setPropertyValue(
-    //           (string)$this->dataObjectPropertyName->prepend(Str::FK()), NULL
-    //         );
-    //         $this->update();
-    //       }
-    //       else if (count($values) === $primaryKeyNames->count)
-    //       {
-    //         $key = StrCollection::set();
-    //         foreach ($primaryKeyNames as $primaryKeyName) {
-    //           if (
-    //             !isset($values[(string)Str::hyphenate($primaryKeyName)]) ||
-    //             $values[(string)Str::hyphenate($primaryKeyName)] == ''
-    //           ) { return; }
-    //           $key->add(Str::set($values[(string)Str::hyphenate($primaryKeyName)]));
-    //         }
-    //         $value = (string)$key->implode(Str::BAR());
-    //         try {
-    //           $this->processValidationRule($value);
-    //         } catch (FailedValidationException $e) {
-    //           $this->errorCollection->add(Str::set($e->getMessage()));
-    //           return;
-    //         }
-    //         $this->record->setPropertyValue(
-    //           (string)$this->dataObjectPropertyName->prepend(Str::FK()), $value
-    //         );
-    //       }
-    //       return;
-    //     }
-    //   }
     // }
+    // parent::offsetSet($offset, $object);
   }
-
-  /**
-   * Process provided validation rule.
-   * @param mixed $value Value to be processed
-   * @throws ramp\model\business\FailedValidationException When test fails.
-   *
-  public function processValidationRule($value) : void
-  {
-    // try {
-    //   $this->update($value);
-    // } catch (DataFetchException $e) {
-    //   throw new FailedValidationException('Relation NOT found in data storage!');
-    // }
-  }*/
 }

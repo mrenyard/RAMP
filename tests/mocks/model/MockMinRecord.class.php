@@ -25,6 +25,7 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
+use ramp\model\business\RecordComponent;
 use ramp\model\business\field\Field;
 
 /**
@@ -45,6 +46,21 @@ class MockMinRecord extends Record
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
     $this->withError = $withError;
+  }
+
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    $this->errorsTouchCount = 0;
+    foreach ($this->primaryKey as $key) { 
+      $key->validateCount = 0;
+      $key->hasErrorsCount = 0;
+    }
+    foreach ($this as $property) { 
+      $property->validateCount = 0;
+      $property->hasErrorsCount = 0;
+    }
   }
 
   protected function get_key1() : Field
@@ -69,6 +85,22 @@ class MockMinRecord extends Record
       $this->primaryKey[2] = new MockField(Str::set('key3'), $this);
     }
     return $this->primaryKey[2]; 
+  }
+
+  protected function get_property1() : RecordComponent
+  {
+    if (!isset($this[0])) {
+      $this[0] =new MockField(Str::set('property1'), $this);
+    }
+    return $this[0];
+  }
+
+  protected function get_property2() : RecordComponent
+  {
+    if (!isset($this[1])) {
+      $this[1] =new MockField(Str::set('property2'), $this);
+    }
+    return $this[1];
   }
 
   /**

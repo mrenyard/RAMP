@@ -207,7 +207,7 @@ abstract class Record extends Relatable
    */
   protected function get_isValid() : bool
   {
-    return ($this->validAtSource || (isset($this->primaryKey->value) && $this->checkRequired($this->dataObject)));
+    return ($this->validAtSource || (($this->primaryKey->value !== NULL) && $this->checkRequired($this->dataObject)));
   }
 
   /**
