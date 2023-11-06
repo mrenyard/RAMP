@@ -63,7 +63,6 @@ abstract class BusinessCondition extends Condition
    */
   public function __construct(Str $record, Str $property, Operator $operator, $comparable = null)
   {
-    //  
     $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
     if (
       !class_exists($recordClassName) ||
