@@ -41,6 +41,7 @@ abstract class RecordComponent extends BusinessModel
 {
   private $name;
   private $parent;
+  private $editable;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of associated record.
@@ -48,10 +49,11 @@ abstract class RecordComponent extends BusinessModel
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL)
+  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
   {
     $this->name = $name;
     $this->parent = $parent;
+    $this->editable = ($editable === FALSE) ? FALSE : $editable;
     parent::__construct($children);
   }
 
@@ -87,6 +89,27 @@ abstract class RecordComponent extends BusinessModel
   final protected function get_name() : Str
   {
     return $this->name;
+  }
+
+  /**
+   * Get isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable;**
+   * @return bool isEditable for *this*
+   */
+  protected function get_isEditable() : bool
+  {
+    return ($this->parent->isNew || (!$this->parent->isValid) || $this->editable !== FALSE);
+  }
+
+  /**
+   * Set isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
+   * Use to request change of isEditable, some defaults are NOT overridable.
+   * @param bool $value of requested value.
+   */
+  protected function set_isEditable(bool $value)
+  {
+    $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
   }
 
   /**

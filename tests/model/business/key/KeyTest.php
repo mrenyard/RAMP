@@ -393,16 +393,24 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertSame(0, $this->record->keyC->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyC' => 3)));
     $this->assertSame(1, $this->record->keyC->validateCount); // Has been touched since previous
+    $this->assertTrue($this->record->isModified);
+    $this->assertFalse($this->record->isValid);
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
     $this->assertSame(1, $this->record->keyB->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyB' => 3)));
     $this->assertSame(2, $this->record->keyB->validateCount); // Has been touched since previous
+    $this->assertTrue($this->record->isModified);
+    $this->assertFalse($this->record->isValid);
     $this->assertNull($this->testObject->values);
     $this->assertNull($this->testObject->value);
     $this->assertSame(2, $this->record->keyA->validateCount);
     $this->testObject->validate(PostData::build(array('mock-record:new:keyA' => 3)));
     $this->assertSame(3, $this->record->keyA->validateCount); // Has been touched since previous
+    $this->assertTrue($this->record->isModified);
+    $this->assertTrue($this->record->isValid);
+    $this->record->updated();
+    $this->assertFalse($this->record->isNew);
     $values = $this->testObject->values;
     $this->assertInstanceOf('ramp\core\StrCollection', $values);
     $this->assertEquals('3', $values[0]);
@@ -414,6 +422,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertSame(3, $this->record->keyA->validateCount); // SAME: No attempted change of record
     $this->assertNotEquals('2|3|3', $this->testObject->value);
     $this->assertEquals('3|3|3', $this->testObject->value); // Unchanged
+    $this->assertFalse($this->testObject->isEditable);
+    $this->testObject->isEditable = TRUE; // CANNOT be changed to TRUE.
+    $this->assertFalse($this->testObject->isEditable);
   }
 
   /**

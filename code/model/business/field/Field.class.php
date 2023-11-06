@@ -50,20 +50,18 @@ use ramp\model\business\FailedValidationException;
 abstract class Field extends RecordComponent
 {
   private $errorCollection;
-  private $editable;
 
   /**
    * Base constructor for Field related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
-   * @param bool $editable 
-   * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
+   * @param bool $editable Optional set preferance for editability.
+   * @throws \InvalidArgumentException When $children OptionList CastableType is NOT field\Option or highter.
    */
   public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
   {
-    $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($name, $parent, $children);
+    parent::__construct($name, $parent, $children, $editable);
   }
 
   /**
@@ -75,27 +73,6 @@ abstract class Field extends RecordComponent
   {
     return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->propertyName)))));
   }*/
-
-  /**
-   * Get isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable;**
-   * @return bool isEditable for *this*
-   */
-  protected function get_isEditable() : bool
-  {
-    return ($this->parent->isNew || (!$this->parent->isValid) || $this->editable !== FALSE);
-  }
-
-  /**
-   * Set isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
-   * Use to request change of isEditable, some defaults are NOT overridable.
-   * @param bool $value of requested value.
-   */
-  protected function set_isEditable(bool $value)
-  {
-    $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
-  }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.

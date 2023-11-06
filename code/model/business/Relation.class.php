@@ -46,14 +46,14 @@ abstract class Relation extends RecordComponent
   /**
    * Creates a relation related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * proir to allowing property value change
+   * @param \ramp\model\business\Record $parent Record parent of *this* property
+   * @param bool $editable Optional set preferance for editability (defaults FALSE).
    */
-  public function __construct(Str $name, Record $parent)
+  public function __construct(Str $name, Record $parent, bool $editable = FALSE)
   {
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->manager = $MODEL_MANAGER::getInstance();
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, NULL, $editable);
   }
 
   final static protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : array

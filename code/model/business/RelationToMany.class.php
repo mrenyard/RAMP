@@ -48,7 +48,6 @@ class RelationToMany extends Relation
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
-   * proir to allowing property value change
    */
   public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
   {

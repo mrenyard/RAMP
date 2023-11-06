@@ -50,11 +50,11 @@ class RelationToOne extends Relation
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $relatedRecordType Record name of associated Record.
-   * proir to allowing property value change
+   * @param bool $editable Optional set preferance for editability (defaults FALSE).
    */
-  public function __construct(Str $name, Record $parent, Str $withRecordName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, bool $editable = FALSE)
   {
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, $editable);
     $this->withRecordName = $withRecordName;
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $this->keyMap = self::buildMapping($parent, new $withRecordClassName(), $name);

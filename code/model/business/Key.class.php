@@ -51,7 +51,7 @@ class Key extends RecordComponent
    */
   public function __construct(Str $name, Record $parent)
   {
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, NULL, FALSE);
   }
 
   /**
@@ -100,6 +100,16 @@ class Key extends RecordComponent
       $values->add(Str::set($subKey->value));
     }
     return $values;
+  }
+
+  /**
+   * Set isEditable
+   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
+   * Use to request change of isEditable, some defaults are NOT overridable.
+   * @param bool $value of requested value.
+   */
+  protected function set_isEditable(bool $value)
+  {
   }
 
   /**

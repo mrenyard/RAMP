@@ -170,6 +170,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   public function testInitStateMin()
   {
     parent::testInitStateMin();
+    $this->assertTrue($this->testObject->isEditable);
   }
 
   /**
