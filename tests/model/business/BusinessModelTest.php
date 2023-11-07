@@ -278,8 +278,18 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   {
     $o = (isset($o)) ? $o : new MockBusinessModel();
     $i = $this->testObject->count;
+    $this->offsetSet($o, $i);
+    $this->offsetUnset($i);
+  }
+
+  protected function offsetSet(BusinessModel $o, int $i)
+  {
     $this->testObject[$i] = $o;
     $this->assertSame($o, $this->testObject[$i]);
+  }
+
+  protected function offsetUnset(int $i)
+  {
     unset($this->testObject[$i]);
     $this->assertFalse(isset($this->testObject[$i]));
   }

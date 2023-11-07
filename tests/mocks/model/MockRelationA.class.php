@@ -27,38 +27,39 @@ use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\Relation;
 use ramp\model\business\Relatable;
+use ramp\model\business\RecordCollection;
+use ramp\model\business\BusinessModel;
+use ramp\model\business\BusinessModelManager;
+use ramp\model\business\SimpleBusinessModelDefinition;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\Relation (one-to-one) for testing against.
+ * Mock Relation association between parent (Record) and collection of (Record)s.
  */
 class MockRelationA extends Relation
 {
-  private $primaryKey;
-  private $foreignKeyNames;
   public $validateCount;
   public $hasErrorsCount;
-  private $withType;
 
-  public function __construct(Str $name, Record $parent, Relatable $with = NULL)
+  public function __construct(Str $name, Record $parent)
   {
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
-    parent::__construct($name, $parent, $with);
-    $this->withType = $this->processType($with);
-    // Select and store common key (primary).
-    $this->primaryKey = $with->primaryKey;
-    // Build foreignKey propertyNames.
-    $this->foreignKeyNames = StrCollection::set();
-    foreach ($this->primaryKey->indexes as $index) {
-      $value = $this->name->prepend(Str::FK())
-        ->append($this->withType->prepend(Str::UNDERLINE()))
-        ->append($index->prepend(Str::UNDERLINE()));
-      $this->foreignKeyNames->add($value);
-    }
+    parent::__construct($name, $parent);
   }
 
-  protected function buildMapping(Record $from, Record $to, Str $fromName) : void
+  public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array
   {
+    return self::buildMapping($from, $to, $fromPropertyName);
+  }
+
+  public function publicSetChildren(BusinessModel $value) : void
+  {
+    $this->setChildren($value);
+  }
+
+  public function getModelManager() : BusinessModelManager
+  {
+    return $this->manager;
   }
 
   /**
@@ -76,29 +77,5 @@ class MockRelationA extends Relation
   {
     $this->hasErrorsCount++;
     return parent::get_hasErrors();
-  }
-
-  /**   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
-   */
-  final protected function get_value()
-  {
-    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    if ($this->parent->isNew) {
-      return $MODEL_MANAGER::getInstance()->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withType, Str::NEW())
-      );
-    }
-    $filterArray = array();
-    $fkns = $this->foreignKeyNames->getIterator();
-    $pk = $this->primaryKey->getIterator();
-    while ($fkns->valid() && $pk->valid()) {
-      $filterArray[(string)$pk->current()->name] = $this->parent->getPropertyValue((string)$fkns->current());
-      $fkns->next(); $pk->next();
-    }
-    return $MODEL_MANAGER->getInstance()->getBusinessModel(
-      new SimpleBusinessModelDefinition($this->withType),
-      Filter::build($this->withType, $filterArray)
-    );
   }
 }

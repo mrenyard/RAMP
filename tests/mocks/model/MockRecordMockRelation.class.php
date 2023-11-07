@@ -33,49 +33,12 @@ use ramp\model\business\SimpleBusinessModelDefinition;
  */
 class MockRecordMockRelation extends MockRecord
 { 
-  protected function buildAlphaWith() : Relatable
-  {
-    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    $manager = $MODEL_MANAGER::getInstance();
-    $recordName = Str::set('MockMinRecord');
-    if ($manager->callCount > 3 || $this->primaryKey->value == '2|2|2') { return new RecordCollection(new MockMinRecord()); }
-    return $manager->getBusinessModel(
-      new SimpleBusinessModelDefinition($recordName),
-      Filter::build($recordName, array(
-        'fk_relationAlpha_MockRecord_keyA' => '1',
-        'fk_relationAlpha_MockRecord_keyB' => '1',
-        'fk_relationAlpha_MockRecord_keyC' => '1'
-      ))
-    );
-  }
 
   protected function get_relationAlpha() : RecordComponent
   {
-    if (!isset($this[1])) {
-      $this[1] = new MockRelationB($this->relationAlphaName, $this, $this->buildAlphaWith());
+    if (!isset($this[4])) {
+      $this[4] = new MockRelationA($this->relationAlphaName, $this);
     }
-    return $this[1];
-  }
-
-  // protected function buildBetaWith() : Relatable
-  // {
-  //   $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-  //   $manager = $MODEL_MANAGER::getInstance();
-  //   $d = new \stdClass();
-  //   if ($manager->callCount < 3 || !$this->isNew) {
-  //     $d->key1 = 1;
-  //     $d->key2 = 1;
-  //     $d->key3 = 1;
-  //   }
-  //   $this->relationBetaWith = new MockMinRecord($d);
-  //   return $this->relationBetaWith;
-  // }
-
-  protected function get_relationBeta() : RecordComponent
-  {
-    if (!isset($this[2])) {
-      $this[2] = new MockRelationA($this->relationBetaName, $this); //, $this->buildBetaWith());
-    }
-    return $this[2];
+    return $this[4];
   }
 }

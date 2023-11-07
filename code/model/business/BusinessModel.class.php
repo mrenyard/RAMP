@@ -97,7 +97,7 @@ abstract class BusinessModel extends Model implements iList
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
-  final protected function setChildren(BusinessModel $value)
+  final protected function setChildren(BusinessModel $value) : void
   {
     $this->children = $value;
   }

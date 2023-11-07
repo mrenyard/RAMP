@@ -238,6 +238,13 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     parent::testOffsetSetOffsetUnset($o);
   }
 
+  // protected function offsetUnset(int $i)
+  // {
+  //   $this->expectException(\InvalidArgumentException::class);
+  //   $this->expectExceptionMessage('');
+  //   unset($this->testObject[0]);
+  // }
+
   /**
    * Handle complex iterative relations (model flexability).
    * - assert set 'children' modifies interable RecordComponent.
