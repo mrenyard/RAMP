@@ -64,6 +64,7 @@ use ramp\model\business\BusinessModel;
 use ramp\model\business\RecordComponent;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockRecordComponent;
+use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\Relatable.
@@ -76,6 +77,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Setup
   protected function preSetup() : void {
+    MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
@@ -237,7 +239,6 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   {
     parent::testOffsetSetOffsetUnset($o);
   }
-
   // protected function offsetUnset(int $i)
   // {
   //   $this->expectException(\InvalidArgumentException::class);
@@ -304,26 +305,32 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   #endregion
 
   /**
-   * Hold reference back to associated parent Record, propertyName and value.
+   * Hold reference back to associated parent Record, propertyName and format for id.
    * - assert record as passed to constructor.
    * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.RecordComponent#method_get_parentRecord ramp\model\business\RecordComponent::record
-   * @link ramp.model.business.RecordComponent#method_get_parentProppertyName ramp\model\business\RecordComponent::parentProppertyName
+   * - assert id as expected in format record:key:propertyName.
+   * @link ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
+   * @link ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
    */
   public function testStateChangesRecordComponent()
   {
     $this->assertEquals($this->name, $this->testObject->name);
     $this->assertSame($this->record, $this->testObject->parent);
-    $this->assertNull($this->testObject->value);
     $this->assertEquals(
       (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
       (string)$this->testObject->id
     );
-    $value = 'VALUE';
-    $dataObjectProperty = $this->name;
-    $this->dataObject->$dataObjectProperty = $value;
-    $this->assertSame($value, $this->record->getPropertyValue($dataObjectProperty));
-    $this->assertSame($value, $this->testObject->value);
+  }
+
+  /**
+   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * - assert current record->getPropertyValue and RecordComponent->value return same instance.
+   * @link ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
+   * @link ramp.model.business.Record#method_getPropertyValue ramp\model\business\Record::getPropertyValue()
+   */
+  public function testRecordComponentValue()
+  {
+    $this->assertSame($this->record->getPropertyValue($this->name), $this->testObject->value);
   }
 
   /**

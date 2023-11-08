@@ -23,9 +23,11 @@ namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
 use ramp\condition\PostData;
+use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
 use ramp\model\business\RelationToOne;
 use ramp\model\business\Relatable;
+use ramp\model\business\BusinessModelManager;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\RecordComponent for testing against.
@@ -35,22 +37,17 @@ class MockRelationToOne extends RelationToOne
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, Str $withRecordName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, bool $editable = FALSE)
   {
-    parent::__construct($name, $parent, $withRecordName);
+    parent::__construct($name, $parent, $withRecordName, $editable);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }
 
-  protected function get_foreignKeyNames()
-  {
-    return $this->foreignKeyNames;
-  }
-
-  // protected function get_keys()
-  // {
-  //   return $this->keys;
-  // }
+  protected function get_with() { return $this->getWith(); }
+  protected function set_with(?Relatable $value) { $this->setWith($value); }
+  public function getModelManager() : BusinessModelManager { return $this->manager; }
+  public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array { return self::buildMapping($from, $to, $fromPropertyName); }
 
   /**
    * Validate postdata against this and update accordingly.

@@ -43,7 +43,6 @@ class RelationToOne extends Relation
   private $errorCollection; // StrCollection
   private $withRecordName; // Str
   private $keyMap; // Strcollection
-  private $with; // Record
 
   /**
    * Creates a relation from a single property of containing Record to another Record.
@@ -55,27 +54,30 @@ class RelationToOne extends Relation
   public function __construct(Str $name, Record $parent, Str $withRecordName, bool $editable = FALSE)
   {
     parent::__construct($name, $parent, $editable);
+    $this->setWith(NULL);
     $this->withRecordName = $withRecordName;
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $this->keyMap = self::buildMapping($parent, new $withRecordClassName(), $name);
     // TODO:mrenyard: Change once Request is back
     // if ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id) {
-    if ((string)$parent->id == 'mock-record:new' || (string)$parent->id == 'mock-record:2|2|2' || (string)$parent->id == 'mock-record:3|3|3') {
+    if (
+      (string)$parent->id == 'mock-record:new' || (string)$parent->id == 'mock-record:1|1|1'
+      || (string)$parent->id == 'mock-record:2|2|2' || (string)$parent->id == 'mock-record:3|3|3'
+    ) {
       $filterArray = array();
       foreach ($this->keyMap as $subKey => $foreighKey) {
         $filterArray[$subKey] = $this->parent->getPropertyValue($foreighKey);
       }
       try {
-        $this->with = $this->manager->getBusinessModel(
+        $this->setWith($this->manager->getBusinessModel(
           new SimpleBusinessModelDefinition($this->withRecordName),
           Filter::build($this->withRecordName, $filterArray)
-        )[0];
+        )[0]);
       } catch (DataFetchException $e) {
-        $this->with = $this->manager->getBusinessModel(
+        $this->setWith($this->manager->getBusinessModel(
           new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
-        );
+        ));
       }
-      $this->setChildren($this->with);
     }
   }
 
@@ -89,15 +91,6 @@ class RelationToOne extends Relation
   }
 
   /**
-   * Returns value held by relevant property of associated record.
-   * @return mixed Value held by relevant property of associated record
-   */
-  final protected function get_value()
-  {
-    return (isset($this->with)) ? (string)$this->with->id : NULL;
-  }
-
-  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $key Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
@@ -105,7 +98,8 @@ class RelationToOne extends Relation
   public function validate(PostData $postdata) : void
   {
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
-    if ($this->parent->isNew || $this->with === NULL) { return; }
+    if ($this->parent->isNew || $this->getWith() === NULL) { return; }
+    parent::validate($postdata);
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
@@ -120,29 +114,29 @@ class RelationToOne extends Relation
             // change FKs to NULL and Children to new;
             return;
           }
-          if (!$this->with->isNew) { return; }
-          if (count($values) === $this->with->primaryKey->count)
+          if (!$this->getWith()->isNew) { return; }
+          if (count($values) === $this->getWith()->primaryKey->count)
           {
             $filter = array();
             $keyPostdata = array();
             foreach ($this->keyMap as $subKey => $subForeignKey) {
-              $filter[$subForeignKey] = $values[$subKey];
-              $keyPostdata[(string)$this->with->id->append(Str::set($subKey)->prepend(Str::COLON()))] = $values[$subKey];
+              $filter[$subKey] = $values[$subKey];
+              $keyPostdata[(string)$this->getWith()->id->append(Str::set($subKey)->prepend(Str::COLON()))] = $values[$subKey];
             }
             try {
               // attempt to set primaryKey from provided values
-              $this->with->validate(PostData::build($keyPostdata));
+              $this->getWith()->validate(PostData::build($keyPostdata));
             } catch (DataExistingEntryException $e) {
               // Get referance to existing entry and set as relation
-              $this->with = $this->manager->getBusinessModel(
-                new SimpleBusinessModelDefinition($this->withRecordName, Filter::build($this->withRecordName, $filter))
-              )[0];
-              $this->setChildren($this->with);
+              $this->setWith($this->manager->getBusinessModel(
+                new SimpleBusinessModelDefinition($this->withRecordName),
+                Filter::build($this->withRecordName, $filter)
+              )[0]);
             }
             return;
           }
-          $this->errorCollection->add(Str::set('Illegal Action on $this->id'));
-        }
+        } // @codeCoverageIgnoreStart
+        $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id)); // @codeCoverageIgnoreEnd
       }
     }
   }

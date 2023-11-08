@@ -36,7 +36,9 @@ require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
@@ -82,6 +84,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   #region Setup
   protected function preSetup() : void {
+    MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
@@ -485,7 +488,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
  
   /**
-   * Set 'new' relation on Record (to ONE) accessable with appropiate state changes.
+   * Set 'new' relation on Record (ONE) accessable with appropiate state changes.
    * - assert dataObject of parent Record does NOT contain relation name.
    * - assert dataObject of parent Record contains expected 'foreign keys'.
    * - assert pre ANY validation:
@@ -550,7 +553,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       'mock-record:new:key-a' => 3,
       'mock-record:new:key-b' => 3,
       'mock-record:new:key-c' => 3,
-      'mock-record:new:relationBeta' => array('key1' => 'VALUE1', 'key2' => 'VALUE2', 'key3' => 'VALUE3')
+      'mock-record:new:relation-beta' => array('key1' => 'VALUE1', 'key2' => 'VALUE2', 'key3' => 'VALUE3')
     )));
     $this->assertTrue($this->testObject->isModified);
     $this->assertTrue($this->testObject->isValid);
@@ -588,7 +591,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($i, 3);
     // Related Record validation following successful parent Record primaryKey set:
     $this->testObject->validate(PostData::build(array( // placed out of order
-      'mock-record:3|3|3:relationBeta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1')
+      'mock-record:3|3|3:relation-beta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1')
     )));
     // Check post validate() related record isModified as expected.
     $this->assertTrue($toRecord->isModified);
@@ -609,7 +612,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       // Check children match expected related record's keys.
       $this->assertSame($expectedRecordKey, $toRecordKey);
       // Check validate called on each related Record's key.
-      $this->assertSame(1, $toRecordKey->validateCount);
+      $this->assertSame(2, $toRecordKey->validateCount);
       // Check hasErrors called on each related Record's key.
       $this->assertSame(3, $toRecordKey->hasErrorsCount);
       // Check validated related Record field (key) values are modified as directed.
@@ -639,15 +642,68 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Change 'existing' relation on Record (to ONE) accessable with appropiate state changes.
-   */ 
+   * Set 'existing' relation on Record (ONE) accessable with appropiate state changes.
+   * - assert post validate() related record is as expected.
+   * - assert 'value' matches 'id' of expected related Record mock-min-record:a|b|c).
+   * - assert interator on relation returns expected properties.
+   *   - assert children property name match expected related record's.
+   *   - assert children match expected related record's properties.
+   */
+  public function testSetExistingRelationOfOne()
+  {
+    $fromRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
+    );
+    $this->assertSame($this->modelManager->objectNew, $fromRecord);
+    $this->assertFalse($fromRecord->isNew);
+    $fromData = $this->modelManager->dataObjectNew;
+    $toRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockMinRecord'), Str::set('A|B|C'))
+    );
+    $this->assertSame($this->modelManager->objectTwo, $toRecord);
+    $toData = $this->modelManager->dataObjectTwo;
+    $fromRecord->reset();
+    $toRecord->reset();
+    // Get relation to test.
+    $relation = $fromRecord->relationBeta; // to ONE
+    $this->assertInstanceOf('\ramp\model\business\Relation', $relation);
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:1|1|1:relation-beta' => array('key2' => 'B', 'key3' => 'C', 'key1' => 'A')
+    )));
+    $this->assertSame($toRecord, $relation->with);
+    // Check interator on relation returns properties.
+    $i = 0;
+    $propertyIterator = $relation->getIterator();
+    $propertyIterator->rewind();
+    foreach ($toRecord as $toRecordProperty) {
+      $expectedRecordProperty = $propertyIterator->current();
+      // Check children property name match expected related record's.
+      $this->assertEquals('property' . ++$i, (string)$expectedRecordProperty->name);
+      // Check children match expected related record's properties.
+      $this->assertSame($expectedRecordProperty, $toRecordProperty);
+      $propertyIterator->next();
+    }
+    $this->assertSame($i, 2);
+  }
 
   /**
-   * Add 'new' relation on Record collection (to MANY) accessable with appropiate state changes.
-   */
+   * Unset 'existing' relation on Record (ONE) accessable with appropiate state changes.
+   * 
+  public function testUnsetExistingRelationOfOne()
+  {
+  }*/
+
+  /**
+   * Add 'new' relation on Record collection (MANY) accessable with appropiate state changes.
+   *
+  public function testAddNewRelationOfMany()
+  {
+  }*/
 
    /**
-   * Remove 'existing' relation on Record collection (to MANY) accessable with appropiate state changes.
-   */ 
-
+   * Remove 'existing' relation on Record collection (MANY) accessable with appropiate state changes.
+   *
+  public function testRemoveExistingRelationOfMany()
+  {
+  }*/ 
 }

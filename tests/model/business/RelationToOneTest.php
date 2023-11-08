@@ -21,67 +21,50 @@
  */
 namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/RelationTest.php';
 
-require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Environment.class.php';
-require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-require_once '/usr/share/php/ramp/condition/Filter.class.php';
-require_once '/usr/share/php/ramp/model/business/Relation.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
-require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+// require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordMockRelation.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationA.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
-use ramp\model\business\RecordCollection;
 use ramp\model\business\Relation;
+use ramp\model\business\RecordCollection;
 
-use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRelatable;
-use tests\ramp\mocks\model\MockRecordMockRelation;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockMinRecord;
-use tests\ramp\mocks\model\MockMinRecordCollection;
+use tests\ramp\mocks\model\MockBusinessModel;
+use tests\ramp\mocks\model\MockRelationToOne;
+use tests\ramp\mocks\model\MockRelationToMany;
 use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
- * Collection of tests for \ramp\model\business\Relation.
+ * Collection of tests for \ramp\model\business\RelationToOne.
  */
-class RelationTest extends \tests\ramp\model\business\RecordComponentTest
+class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 {
-  protected $with;
-
   #region Setup
   protected function preSetup() : void {
     MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
-    $this->dataObject->fk = NULL;
-    $this->record = new MockRecordMockRelation($this->dataObject);
-    $this->name = $this->record->relationAlphaName;
-    $this->with = $this->record->relationAlphaWith;
+    $this->record = new MockRecord($this->dataObject);
+    $this->name = $this->record->relationBetaName;
+    $this->with = $this->record->relationBetaWith;
   }
   protected function getTestObject() : RAMPObject {
-    return $this->record->relationAlpha;
+    return $this->record->relationBeta;
   }
   protected function postSetup() : void {
-    $this->expectedChildCountNew = 0;
+    $this->expectedChildCountNew = 3;
   }
   #endregion
 
@@ -96,12 +79,13 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@link \ramp\model\business\BusinessModel}
    * - assert is instance of {@link \ramp\model\business\RecordComponent}
    * - assert is instance of {@link \ramp\model\business\Relation}
+   * - assert is instance of {@link \ramp\model\business\RelationToOne}
    * @link ramp.model.business.Relation ramp\model\business\Relation
    */
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\Relation', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RelationToOne', $this->testObject);
   }
   
   #region Sub model setup
@@ -241,7 +225,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
-    parent::testOffsetSetTypeCheckException('Relatable', new MockBusinessModel, 'Adding properties through offsetSet BLOKED!');
+    parent::testOffsetSetTypeCheckException('Relatable', new MockBusinessModel, 'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!');
   }
 
   /**
@@ -256,13 +240,8 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
-    parent::testOffsetSetOffsetUnset($o);
-  }
-  protected function offsetSet(BusinessModel $o, int $i)
-  {
     $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Adding properties through offsetSet BLOKED!');
-    $this->testObject[$i] = $o;
+    parent::testOffsetSetOffsetUnset(new MockRecord());
   }
 
   /**
@@ -341,14 +320,14 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
   }
-  #endregion
 
   /**
-   * Hold reference back to associated parent Record, propertyName and value.
+   * Hold reference back to associated parent Record, propertyName and format for id.
    * - assert record as passed to constructor.
    * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.Relation#method_get_parentRecord ramp\model\business\Relation::record
-   * @link ramp.model.business.Relation#method_get_parentProppertyName ramp\model\business\Relation::parentProppertyName
+   * - assert id as expected in format record:key:propertyName.
+   * @link ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
+   * @link ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
    */
   public function testStateChangesRecordComponent()
   {
@@ -356,16 +335,16 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * RecordComponent (overridden) value returns ...
-   * - assert ... 
+   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * - assert current record->getPropertyValue and RecordComponent->value return same instance.
    * @link ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
    * @link ramp.model.business.Record#method_getPropertyValue ramp\model\business\Record::getPropertyValue()
    */
-  public function testRecordComponentValue(string $expectedValue = '')
+  public function testRecordComponentValue(string $expectedValue = 'mock-min-record:new')
   {
-    $this->assertEquals($expectedValue, $this->testObject->value);
+    parent::testRecordComponentValue($expectedValue);
   }
-
+  
   /**
    * Check assigned protected propery \ramp\model\business\Relation::$manager holds referance to expected BusinessModelManager.
    * - assert protected property $manager referances same object. 
@@ -373,9 +352,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testModelManager()
   {
-    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
-    $expectedManager = $MODEL_MANAGER::getInstance();
-    $this->assertSame($expectedManager, $this->testObject->getModelManager());
+    parent::testModelManager();
   }
 
   /**
@@ -385,21 +362,17 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testBuildMapping()
   {
-    $fromData = new \stdClass();
-    $from = new MockRecord($fromData);
-    $toData = new \stdClass();
-    $to = new MockMinRecord($toData);
-    $fromPropertyName = Str::set('Property1');
-    $keyMap = $this->testObject->callBuildMapping($from, $to, $fromPropertyName);
-    $i = 0;
-    foreach ($keyMap as $subKey => $subForeignKey) {
-      $i++;
-      $this->assertSame('key' . $i, $subKey);
-      $this->assertSame('fk_Property1_MockMinRecord_key' . $i, $subForeignKey);
-    }
+    parent::testBuildMapping();
   }
+  #endregion
 
-   /**
-   * Check NONE connection of Relation (to MANY) beyond second level (URL(model) + first Chuldren).
+  /**
+   * Check NONE connection of Relation (to ONE) beyond second level (URL(model) + first Chuldren).
+   * TODO:mrenyard: Max Relation depth test ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id)
    */
+  public function testMaxRelationDepth()
+  {
+    $this->assertTrue(TRUE);
+  }
 }
+

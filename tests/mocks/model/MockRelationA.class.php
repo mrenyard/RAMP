@@ -47,20 +47,10 @@ class MockRelationA extends Relation
     parent::__construct($name, $parent);
   }
 
-  public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array
-  {
-    return self::buildMapping($from, $to, $fromPropertyName);
-  }
-
-  public function publicSetChildren(BusinessModel $value) : void
-  {
-    $this->setChildren($value);
-  }
-
-  public function getModelManager() : BusinessModelManager
-  {
-    return $this->manager;
-  }
+  protected function get_with() { return $this->getWith(); }
+  protected function set_with(?Relatable $value) { $this->setWith($value); }
+  public function getModelManager() : BusinessModelManager { return $this->manager; }
+  public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array { return self::buildMapping($from, $to, $fromPropertyName); }
 
   /**
    * Validate postdata against this and update accordingly.

@@ -104,6 +104,27 @@ class MockBusinessModelManager extends BusinessModelManager
     return self::$instance;
   }
 
+  public static function reset()
+  {
+    $thiz = self::getInstance();
+    $thiz->mockMinNew = NULL;
+    $thiz->mockNew = NULL;
+    $thiz->objectNew = NULL;
+    $thiz->objectOne = NULL;
+    $thiz->objectTwo = NULL;
+    $thiz->objectThree = NULL;
+    $thiz->objectFour = NULL;
+    $thiz->objectFive = NULL;
+    $thiz->objectA1 = NULL;
+    $thiz->objectA1 = NULL;
+    $thiz->objectA1 = NULL;
+    $thiz->objectA1 = NULL;
+    $thiz->objectLookupA1toB1 = NULL;
+    $thiz->objectLookupA1toB2 = NULL;
+    $thiz->objectLookupA1toB3 = NULL;
+    self::$instance = NULL;
+  }
+
   private function buildMockNew()
   {
     $this->mockNew = new MockRecord(new \stdClass());

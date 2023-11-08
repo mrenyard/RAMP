@@ -42,6 +42,7 @@ use ramp\condition\Filter;
 abstract class Relation extends RecordComponent
 {
   protected $manager; // BusinessModelManager
+  private $with; // Relatable
 
   /**
    * Creates a relation related to a single property of containing record.
@@ -56,6 +57,13 @@ abstract class Relation extends RecordComponent
     parent::__construct($name, $parent, NULL, $editable);
   }
 
+  protected function getWith() { return $this->with; }
+  protected function setWith(?Relatable $value)
+  {
+    $this->with = $value;
+    if ($value) { parent::setChildren($value); }
+  }
+
   /**
    * Builds array where 'key, value pair' map $from->primaryKey subKeys to $to foreignKey subKeys.
    * @param \ramp\model\business\Record $from Record 'parent' to be mapped from.
@@ -66,9 +74,7 @@ abstract class Relation extends RecordComponent
    */
   final static protected function buildMapping(Record $from, Record $to, Str $fromPropertyName) : array
   {
-    $i = 0;
-    $keys = array();
-    $keyMap = array(); //StrCollection::set();
+    $i = 0; $keys = array(); $keyMap = array();
     $fromPK = $from->primaryKey->getIterator();
     $toPK = $to->primaryKey->getIterator();
     $fromPK->rewind(); $toPK->rewind();
@@ -93,5 +99,14 @@ abstract class Relation extends RecordComponent
   final public function offsetSet($offset, $object)
   {
     throw new \InvalidArgumentException('Adding properties through offsetSet BLOKED!');
+  }
+  
+  /**
+   * Returns value held by relevant property of associated record.
+   * @return mixed Value held by relevant property of associated record
+   */
+  final protected function get_value()
+  {
+    return ($this->with !== NULL) ? (string)$this->with->id : NULL;
   }
 }

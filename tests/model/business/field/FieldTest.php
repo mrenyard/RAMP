@@ -60,6 +60,7 @@ use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockBusinessModelWithErrors;
+use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\field\Field.
@@ -68,6 +69,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
   protected function preSetup() : void {
+    MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();

@@ -61,6 +61,7 @@ use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockRecordComponent;
+use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\Key.
@@ -69,6 +70,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
   protected function preSetup() : void {
+    MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->name = Str::set('primaryKey');
