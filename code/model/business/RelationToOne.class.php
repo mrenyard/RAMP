@@ -110,8 +110,14 @@ class RelationToOne extends Relation
         {
           if (isset($values['unset']) && $values['unset'] == 'on')
           {
-            // if (!$this->isEditable) { return; }
-            // change FKs to NULL and Children to new;
+            if (!$this->isEditable) { return; }
+            // Change FKs to NULL and Children to new;
+            foreach ($this->keyMap as $subForeignKey) {
+              $this->parent->setPropertyValue($subForeignKey, NULL);
+            }
+            $this->setWith($this->manager->getBusinessModel(
+              new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
+            ));    
             return;
           }
           if (!$this->getWith()->isNew) { return; }

@@ -638,7 +638,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       $this->assertNull($toRecordProperty->value);
       $propertyIterator->next();
     }
-    $this->assertSame($i, 2);
+    $this->assertSame($i, 2); 
   }
 
   /**
@@ -688,10 +688,61 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   /**
    * Unset 'existing' relation on Record (ONE) accessable with appropiate state changes.
-   * 
+   * - assert dataObject of parent Record does NOT contain relation name.
+   * - assert dataObject of parent Record contains expected 'foreign keys'.
+   * - assert while relation NOT isEditable no change occurs.
+   * - assert existing relation unset upon valid request.
+   * - assert following successful 'unset' foreignKey values reset NULL.
+   * - assert relation reset 'new' ready for any future changes.
+   */ 
   public function testUnsetExistingRelationOfOne()
   {
-  }*/
+    $fromRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
+    );
+    $this->assertSame($this->modelManager->objectOne, $fromRecord);
+    $this->assertFalse($fromRecord->isNew);
+    $fromData = $this->modelManager->dataObjectOne;
+    // Ensure dataObject of parent Record does NOT contain relation name.
+    $this->assertObjectNotHasAttribute('relationBeta', $fromData); // to ONE
+    // Check dataObject of parent Record contains expected 'foreign keys'.
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key1', $fromData);
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key2', $fromData);
+    $this->assertObjectHasAttribute('fk_relationBeta_MockMinRecord_key3', $fromData);
+    $this->assertSame('A', $fromData->fk_relationBeta_MockMinRecord_key1);
+    $this->assertSame('B', $fromData->fk_relationBeta_MockMinRecord_key2);
+    $this->assertSame('C', $fromData->fk_relationBeta_MockMinRecord_key3);
+    // Hold referance to expected current relation
+    $currentToRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockMinRecord'), Str::set('A|B|C'))
+    );
+    $this->assertSame($this->modelManager->objectTwo, $currentToRecord);
+    $currentToData = $this->modelManager->dataObjectTwo;
+    $fromRecord->reset();
+    $currentToRecord->reset();
+    // Get relation to test.
+    $relation = $fromRecord->relationBeta; // to ONE
+    $this->assertSame($currentToRecord, $relation->with);
+    // While relation NOT isEditable no change occurs.
+    $this->assertFalse($relation->isEditable);
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:2|2|2:relation-beta' => array('unset' => 'on')
+    )));
+    $this->assertSame($currentToRecord, $relation->with);
+    $relation->isEditable = TRUE;
+    $this->assertTrue($relation->isEditable);
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:2|2|2:relation-beta' => array('unset' => 'on')
+    )));
+    // Check foreignKey values reset NULL
+    $this->assertNull($fromData->fk_relationBeta_MockMinRecord_key1);
+    $this->assertNull($fromData->fk_relationBeta_MockMinRecord_key2);
+    $this->assertNull($fromData->fk_relationBeta_MockMinRecord_key3);
+    // Check existing reltion unset
+    $this->assertNotSame($currentToRecord, $relation->with);
+    // Check relation reset 'new' ready for any future changes.
+    $this->assertTrue($relation->with->isNew);
+  }
 
   /**
    * Add 'new' relation on Record collection (MANY) accessable with appropiate state changes.
