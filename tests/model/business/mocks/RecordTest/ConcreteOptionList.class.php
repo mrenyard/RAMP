@@ -33,6 +33,13 @@ use ramp\model\business\field\Option;
  */
 class ConcreteOptionList extends OptionList
 {
+  public const FIRST_OPTION = 1;
+  public const SECOND_OPTION = 2;
+  public const THIRDT_OPTION = 3;
+  public const FOURTH_OPTION = 4;
+  public const FITH_OPTION = 5;
+  public const SIXTH_OPTION = 6;
+
   /**
    * Constructor for new instance of ConcreteOptionList.
    */
@@ -40,11 +47,11 @@ class ConcreteOptionList extends OptionList
   {
     parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
     $this->add(new Option(0, Str::set('Please choose:')));
-    $this->add(new Option(1, Str::set('Option One')));
-    $this->add(new Option(2, Str::set('Option Two')));
-    $this->add(new Option(3, Str::set('Option Three')));
-    $this->add(new Option(4, Str::set('Option Four')));
-    $this->add(new Option(5, Str::set('Option Five')));
-    $this->add(new Option(6, Str::set('Option Six')));
+    $this->add(new Option(FIRST_OPTION, Str::set('Option One')));
+    $this->add(new Option(SECOND_OPTION, Str::set('Option Two')));
+    $this->add(new Option(THIRD_OPTION, Str::set('Option Three')));
+    $this->add(new Option(FORTH_OPTION, Str::set('Option Four')));
+    $this->add(new Option(FITH_OPTION, Str::set('Option Five')));
+    $this->add(new Option(SIXTH_OPTION, Str::set('Option Six')));
   }
 }
