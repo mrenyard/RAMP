@@ -32,14 +32,14 @@ use ramp\model\Document;
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
- * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+ * - Enable read access to associated {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
- * - {@link \ramp\view\View}
- * - {@link \ramp\model\business\BusinessModel}
- * - {@link \ramp\model\document\DocumentModel}
+ * - {@see \ramp\view\View}
+ * - {@see \ramp\model\business\BusinessModel}
+ * - {@see \ramp\model\document\DocumentModel}
  */
 abstract class DocumentView extends ComplexView
 {
@@ -121,7 +121,7 @@ abstract class DocumentView extends ComplexView
    *      print_r($this->aProperty);
    *   }
    * ```
-   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
+   * Called within Template file (.tpl.php), where {@see \ramp\view\Templated} is used.
    * ```php
    *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
    * ```

@@ -122,7 +122,7 @@ FUNC.core = function()
  * FUNC package. Registered Collections added to DOM under FUNC.my.package[i];
  * @example FUNC.init.register('class-name', FUNC.package);
  * @example ...
- *     <script src="/assets/func/svelte/core.js"></script>
+ *     <script src="/assets/func/core.js"></script>
  *     <script>FUNC.init.run();</script>
  *   </body>
  * </html>

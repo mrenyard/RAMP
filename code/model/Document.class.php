@@ -27,7 +27,7 @@ use ramp\model\Model;
  * Superclass for *Document*.
  *
  * RESPONSIBILITIES
- * - Inherit generalized methods for property access (from {@link \ramp\core\RAMPObject})
+ * - Inherit generalized methods for property access (from {@see \ramp\core\RAMPObject})
  * - Define generalized properties for Documents
  * @property \svetle\core\Str $id Unique Identifier of document / fragment
  * @property \svetle\core\Str $title Title of document / fragment
@@ -58,12 +58,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for Unique Identifier.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->id = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *id*
+   * @ignore
    */
   protected function set_id(Str $value)
   {
@@ -71,12 +66,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for Unique Identifier.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->id;
-   * ```
-   * @return \svetle\core\Str $value Value of the property *id*
+   * @ignore
    */
   protected function get_id() : Str
   {
@@ -84,12 +74,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for title.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->title = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *title*
+   * @ignore
    */
   protected function set_title(Str $value)
   {
@@ -97,12 +82,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for title.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->title;
-   * ```
-   * @return \svetle\core\Str Value of the property *title*
+   * @ignore
    */
   protected function get_title() : ?Str
   {
@@ -110,12 +90,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for heading.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->heading = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *heading*
+   * @ignore
    */
   protected function set_heading(Str $value)
   {
@@ -123,12 +98,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for heading.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->heading;
-   * ```
-   * @return \svetle\core\Str Value of the property *heading*
+   * @ignore
    */
   protected function get_heading() : Str
   {
@@ -136,12 +106,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for label - synonym {@link #set_heading}.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->label = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *label*
+   * @ignore
    */
   protected function set_label(Str $value)
   {
@@ -149,12 +114,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for label - synonym {@link #get_heading}.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->label;
-   * ```
-   * @param \svetle\core\Str Value of the property *label*
+   * @ignore
    */
   protected function get_label() : Str
   {
@@ -162,12 +122,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for summary.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->summary = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *summary*
+   * @ignore
    */
   protected function set_summary(Str $value)
   {
@@ -175,12 +130,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for summary.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->summary;
-   * ```
-   * @return \svetle\core\Str Value of the property *summary*
+   * @ignore
    */
   protected function get_summary() : ?Str
   {
@@ -188,12 +138,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for placeholder - synonym {@link #set_summary}.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->placeholder = $value;
-   * ```
-   * @return \svetle\core\Str Value of the property *placeholder*
+   * @ignore
    */
   protected function set_placeholder(Str $value)
   {
@@ -201,12 +146,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for placeholder - synonym {@link #get_summary}.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->placeholder;
-   * ```
-   * @return \svetle\core\Str Value of the property *placeholder*
+   * @ignore
    */
   protected function get_placeholder() : ?Str 
   {
@@ -214,12 +154,7 @@ class Document extends Model
   }
 
   /**
-   * Setter for style.
-   * DO NOT CALL THIS SETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->style = $value;
-   * ```
-   * @param \svetle\core\Str $value Value of the property *style*
+   * @ignore
    */
   protected function set_style(Str $value)
   {
@@ -227,12 +162,7 @@ class Document extends Model
   }
 
   /**
-   * Getter for style.
-   * DO NOT CALL THIS GETTER METHOD DIRECTLY - USE PROPERTY NAME!
-   * ```php
-   * $this->style;
-   * ```
-   * @return \svetle\core\Str Value of the property *style*
+   * @ignore
    */
   protected function get_style() : ?Str
   {

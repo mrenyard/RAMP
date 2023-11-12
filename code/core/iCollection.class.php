@@ -24,13 +24,14 @@ namespace ramp\core;
  * Interface for collections.
  *
  * RESPONSIBILITIES
- * - Enforce base api of \IteratorAggregate, \Countable and \ArrayAccess.
+ * - Enforce base api of \IteratorAggregate, \ArrayAccess and \Countable.
  * - Describe base api mechanism for adding to a collection.
  *
  * COLLABORATORS
- * - {@link \ramp\core\RAMPObject}
- *
- * @property-read int $count Returns the number of items currently stored in this collection.
+ * - IteratorAggregate ({@see https://www.php.net/manual/class.iteratoraggregate.php})
+ * - ArrayAccess ({@see https://www.php.net/manual/class.arrayaccess.php})
+ * - Countable ({@see https://www.php.net/manual/class.countable.php})
+ * - {@see \ramp\core\RAMPObject} Base object used universally within RAMP.
  */
 interface iCollection extends iList, \Countable
 {

@@ -38,10 +38,10 @@ use ramp\model\business\AuthenticatibleUnit;
  * - Implement methods for property access
  * - Implement methods for validity checking & reporting
  * - Provide access to this Collection
- * - Provide methods to maintain a Collection of {@link Record}s
+ * - Provide methods to maintain a Collection of {@see Record}s
  *
  * COLLABORATORS
- * - Collection of {@link \ramp\model\business\LoginAccount}s
+ * - Collection of {@see \ramp\model\business\LoginAccount}s
  */
 class LoginAccountCollection extends RecordCollection { }
 
@@ -49,17 +49,17 @@ class LoginAccountCollection extends RecordCollection { }
  * LoginAccount for authentication and authorization.
  *
  * RESPONSIBILITIES
- * - Act as main component of {@link \ramp\http\Session} to manage login activities
- * - Holds current access level {@link \ramp\model\business\LoginAccountType}
+ * - Act as main component of {@see \ramp\http\Session} to manage login activities
+ * - Holds current access level {@see \ramp\model\business\LoginAccountType}
  * - Coupling of login and authentication activities with chosen local
- *   {@link \ramp\model\business\AuthenticatableUnit}
+ *   {@see \ramp\model\business\AuthenticatableUnit}
  * - Auto generate secure password to associate with provided email address
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\AuthenticatableUnit}
- * - {@link \ramp\model\business\LoginAccountType}
- * - {@link \ramp\model\business\field\SelectOne}
- * - {@link \ramp\model\business\field\Input}
+ * - {@see \ramp\model\business\AuthenticatableUnit}
+ * - {@see \ramp\model\business\LoginAccountType}
+ * - {@see \ramp\model\business\field\SelectOne}
+ * - {@see \ramp\model\business\field\Input}
  *
  * @property-read field\Field $auPK Returns field containg value of Authenticatable Unit Primary Key.
  * @property-read field\Field $email Returns field containing value of login account associated email address.
@@ -85,10 +85,7 @@ class LoginAccount extends Record
   public function primaryKeyNames() : StrCollection { return StrCollection::set('auPK'); }
 
   /**
-   * Get field containing authenticatable unit's primary key
-   * **DO NOT CALL DIRECTLY, USE this->auPK;**
-   * @return \ramp\model\business\field\Field Returns field containing value of
-   * authenticatable unit's primary key.
+   * @ignore
    */
   protected function get_auPK() : field\Field
   {
@@ -109,9 +106,7 @@ class LoginAccount extends Record
   }
 
   /**
-   * Get field containing email address
-   * **DO NOT CALL DIRECTLY, USE this->email;**
-   * @return \ramp\model\business\field\Field Returns field containing value of email address
+   * @ignore
    */
   protected function get_email() : field\Field
   {
@@ -130,10 +125,8 @@ class LoginAccount extends Record
     return $this->email;
   }
 
-  /*
-   * Get field containing login account type
-   * **DO NOT CALL DIRECTLY, USE this->accountType;**
-   * @return \ramp\model\business\field\Field Returns field containing value (LoginAccountType)
+  /**
+   * @ignore
    */
   protected function get_loginAccountTypeID() : field\Field
   {

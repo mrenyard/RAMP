@@ -36,7 +36,7 @@ use ramp\model\business\field\Field;
  * - Hold referance back to its contining Record
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
+ * - {@see \ramp\model\business\Record}
  */
 class AdapterForRecord extends Field
 {

@@ -41,8 +41,8 @@ use tests\ramp\core\mocks\ListTest\BadObject;
  * List of tests for \ramp\core\List.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\ListTest\AnObject}
- * - {@link \tests\ramp\condition\mocks\ListTest\BadObject}
+ * - {@see \tests\ramp\condition\mocks\ListTest\AnObject}
+ * - {@see \tests\ramp\condition\mocks\ListTest\BadObject}
  */
 class ListTest extends \PHPUnit\Framework\TestCase
 {
@@ -60,15 +60,15 @@ class ListTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\List::__construct().
-   * - assert is instance of {@link \ramp\core\List}
-   * - assert is instance of {@link \ramp\core\iList}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\List}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
-   * @link ramp.core.List \ramp\core\List
+   * @see ramp.core.List \ramp\core\List
    */
   public function test__Construct()
   {
@@ -90,14 +90,14 @@ class ListTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\List::isCompositeType().
    * - assert returns TRUE when $compositeType name provided to constructor is
-   *    same as provided {@link \ramp\core\Str}
+   *    same as provided {@see \ramp\core\Str}
    * - assert evaluates TRUE where $compositeType name provided to constructor is
-   *    same as provided {@link \ramp\core\Str}
+   *    same as provided {@see \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided to constructor is
-   *    NOT same as provided {@link \ramp\core\Str}
+   *    NOT same as provided {@see \ramp\core\Str}
    * - assert evaluates FALSE where $compositeType name provided to constructor is
-   *    NOT same as provided {@link \ramp\core\Str}
-   * @link ramp.core.List#method_isCompositeType \ramp\core\List::isCompositeType()
+   *    NOT same as provided {@see \ramp\core\Str}
+   * @see \ramp\core\List::isCompositeType()
    */
   public function testIsCompositeType()
   {
@@ -109,16 +109,16 @@ class ListTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\List::getIterator(), add() and count.
-   * - assert handle unpopulated {@link \ramp\core\List} iteration without fail
-   * - assert {@link \ramp\core\List::add()} only accepts predefined types, throws \InvalidArgumentException
+   * - assert handle unpopulated {@see \ramp\core\List} iteration without fail
+   * - assert {@see \ramp\core\List::add()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
-   * - assert {@link \ramp\core\List::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   * - assert {@see \ramp\core\List::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
    *   - with message: <em>'Offset out of bounds'</em>
-   * @link ramp.core.List#method_getIterator \ramp\core\List::getIterator()
-   * @link ramp.core.List#method_add \ramp\core\List::add()
-   * @link ramp.core.List#method_count \ramp\core\List::count
+   * @see \ramp\core\List::getIterator()
+   * @see \ramp\core\List::add()
+   * @see \ramp\core\List::count
    *
   public function testIteratorAddCount()
   {
@@ -209,11 +209,11 @@ class ListTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\List::offsetSet().
-   * - assert {@link \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   * - assert {@see \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
-   * @link ramp.core.List#method_offsetSet \ramp\core\mocks\ListTest\List::offsetSet()
+   * @see \ramp\core\mocks\ListTest\List::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -243,7 +243,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index is no longer retivable at same index.
    * @depends testOffsetSet
    * @param List The test object.
-   * @link ramp.core.List#method_offsetUnset \ramp\core\mocks\ListTest\List::offsetUnset()
+   * @see \ramp\core\mocks\ListTest\List::offsetUnset()
    */
   public function testOffsetUnset(oList $testObject)
   {
@@ -259,7 +259,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\List::__clone().
    * - assert Shallow Cloning (default) composite collection is referenced only
    * - assert when Deep Cloning that NEW objects are formed with same values
-   * @link ramp.core.List#method__clone \ramp\core\mocks\ListTest\List::__clone()
+   * @see \ramp\core\mocks\ListTest\List::__clone()
    *
   public function test__clone()
   {

@@ -42,7 +42,7 @@ use tests\ramp\model\business\validation\FailOnBadValidationRule;
  * Collection of tests for \ramp\model\business\validation\dbtype\DbTypeValidation.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\validation\MockValidationRule}
+ * - {@see \tests\ramp\validation\MockValidationRule}
  */
 class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
 {
@@ -65,10 +65,10 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\DbTypeValidation::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\validation\DbTypeValidation}
-   * @link ramp.validation.DbTypeValidationTest \ramp\validation\DbTypeValidationTest
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
+   * @see ramp.validation.DbTypeValidationTest \ramp\validation\DbTypeValidationTest
    */
   public function test__Construct()
   {
@@ -80,9 +80,9 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\DbTypeValidationTest::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@link \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @link ramp.model.business.validation.DbTypeValidationTest#method_test \ramp\model\business\validation\DbTypeValidationTest::test()
-   * @link ramp.model.business.validation.DbTypeValidationTest#method_process \ramp\model\business\validation\DbTypeValidationTest::process()
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see ramp.model.business.validation.DbTypeValidationTest#method_test \ramp\model\business\validation\DbTypeValidationTest::test()
+   * @see ramp.model.business.validation.DbTypeValidationTest#method_process \ramp\model\business\validation\DbTypeValidationTest::process()
    */
   public function testProcess()
   {

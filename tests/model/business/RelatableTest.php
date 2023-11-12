@@ -44,14 +44,14 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Default base constructor assertions \ramp\model\business\Relatable::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\core\iOption}
-   * - assert is instance of {@link \IteratorAggregate}
-   * - assert is instance of {@link \Countable}
-   * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \ramp\model\business\Relatable}
-   * @link ramp.model.business.Relatable ramp\model\business\Relatable
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\Model}
+   * - assert is instance of {@see \ramp\core\iOption}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \Countable}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \ramp\model\business\Relatable}
+   * @see ramp.model.business.Relatable ramp\model\business\Relatable
    */
   public function testConstruct()
   {
@@ -62,8 +62,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Relatable::__set().
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.Model#method__set ramp\model\Relatable::__set()
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Relatable::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -72,8 +72,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Bad property (name) NOT accessable on \ramp\model\Relatable::__get().
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.Model#method__get ramp\model\Relatable::__get()
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Relatable::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -83,8 +83,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Good property is accessable on \ramp\model\Relatable::__get() and \ramp\model\Relatable::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.Model#method___set \ramp\model\Relatable::__set()
-   * @link ramp.model.Model#method___get \ramp\model\Relatable::__get()
+   * @see \ramp\model\Relatable::__set()
+   * @see \ramp\model\Relatable::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -93,8 +93,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Correct return of ramp\model\Relatable::__toString().
-   * - assert {@link \ramp\model\Relatable::__toString()} returns string 'class name'
-   * @link ramp.model.Model#method___toString \ramp\model\Relatable::__toString()
+   * - assert {@see \ramp\model\Relatable::__toString()} returns string 'class name'
+   * @see \ramp\model\Relatable::__toString()
    */
   public function testToString()
   {
@@ -104,22 +104,22 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Minimumal Relatable initial state.
    * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value is of type {@see \ramp\core\Str}.
    *   - assert returned value matches expected result.
-   * - assert getIterator() returns object instance of {@link \Traversable}
+   * - assert getIterator() returns object instance of {@see \Traversable}
    * - assert foreach iterates zero times as no properties are present.
    * - assert OffsetExists False returned on isset() when indexed with invalid index (0).
    * - assert return expected int value related to the number of child Records held (0).
    * - assert hasErrors returns FALSE.
    * - assert returned errors are as expected:
-   *   - assert errors instance of {@link \ramp\core\StrCollection}.
+   *   - assert errors instance of {@see \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @link ramp.model.business.Relatable#method_get_type ramp\model\business\Relatable::type
-   * @link ramp.model.business.Relatable#method_getIterator ramp\model\business\Relatable::getIterator()
-   * @link ramp.model.business.Relatable#method_offsetExists ramp\model\business\Relatable::offsetExists()
-   * @link ramp.model.business.Relatable#method_count ramp\model\business\Relatable::count()
-   * @link ramp.model.business.Relatable#method_hasErrors ramp\model\business\Relatable::hasErrors()
-   * @link ramp.model.business.Relatable#method_getErrors ramp\model\business\Relatable::getErrors()
+   * @see \ramp\model\business\Relatable::type
+   * @see \ramp\model\business\Relatable::getIterator()
+   * @see \ramp\model\business\Relatable::offsetExists()
+   * @see \ramp\model\business\Relatable::count()
+   * @see \ramp\model\business\Relatable::hasErrors()
+   * @see \ramp\model\business\Relatable::getErrors()
    */
   public function testInitStateMin()
   {
@@ -128,8 +128,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'id' NOT accessable on \ramp\model\business\Relatable::id.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @link ramp.model.business.Relatable#method_set_id ramp\model\business\Relatable::id
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * @see \ramp\model\business\Relatable::id
    */
   public function testSetIdPropertyNotSetException()
   {
@@ -138,8 +138,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'type' NOT accessable on \ramp\model\business\Relatable::type.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @link ramp.model.business.Relatable#method_set_type ramp\model\business\Relatable::type
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * @see \ramp\model\business\Relatable::type
    */
   public function testSetTypePropertyNotSetException()
   {
@@ -149,8 +149,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Get 'children' NOT accessable on \ramp\model\business\Relatable::children.
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @link ramp.model.business.Relatable#method_get_children ramp\model\business\Relatable::children
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * @see \ramp\model\business\Relatable::children
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -159,8 +159,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Index beyond bounds with \ramp\model\business\Relatable::offsetGet.
-   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @link ramp.model.business.Relatable#method_offsetGet ramp\model\business\Relatable::offsetGet()
+   * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
+   * @see \ramp\model\business\Relatable::offsetGet()
    */
   public function testOffsetGetOutOfBounds()
   {
@@ -170,8 +170,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @see \ramp\model\business\Record::offsetSet()
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
@@ -185,8 +185,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.Relatable#method_offsetSet ramp\model\business\Relatable::offsetSet()
-   * @link ramp.model.business.Relatable#method_offsetUnset ramp\model\business\Relatable::offsetUnset()
+   * @see \ramp\model\business\Relatable::offsetSet()
+   * @see \ramp\model\business\Relatable::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -197,22 +197,22 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * Handle complex iterative relations (model flexability).
    * - assert set 'children' modifies interable Relatable.
    * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value is of type {@see \ramp\core\Str}.
    *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
-   *   - assert returns object that is an instance of {@link \Traversable}
+   *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
    * - assert offsetExists returns correctly:
    *   - assert True returned on isset() when within expected bounds.
    *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link ramp.model.business.Relatable#method_setChildren ramp\model\business\Relatable::children
-   * @link ramp.model.business.Relatable#method_get_type ramp\model\business\Relatable::type
-   * @link ramp.model.business.Relatable#method_getIterator ramp\model\business\Relatable::getIterator()
-   * @link ramp.model.business.Relatable#method_offsetGet ramp\model\business\Relatable::offsetGet()
-   * @link ramp.model.business.Relatable#method_offsetExists ramp\model\business\Relatable::offsetExists()
-   * @link ramp.model.business.Relatable#method_count ramp\model\business\Relatable::count
+   * @see \ramp\model\business\Relatable::children
+   * @see \ramp\model\business\Relatable::type
+   * @see \ramp\model\business\Relatable::getIterator()
+   * @see \ramp\model\business\Relatable::offsetGet()
+   * @see \ramp\model\business\Relatable::offsetExists()
+   * @see \ramp\model\business\Relatable::count
    */
   public function testComplexModelIteration()
   {
@@ -226,9 +226,9 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @link ramp.model.business.Relatable#method_setChildren ramp\model\business\Relatable::children
-   * @link ramp.model.business.Relatable#method_validate ramp\model\business\Relatable::validate()
-   * @link ramp.model.business.Relatable#method_hasErrors ramp\model\business\Relatable::hasErrors()
+   * @see \ramp\model\business\Relatable::children
+   * @see \ramp\model\business\Relatable::validate()
+   * @see \ramp\model\business\Relatable::hasErrors()
    */
   public function testTouchValidityAndErrorMethods()
   {
@@ -243,7 +243,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link ramp.model.business.Relatable#method_getErrors ramp\model\business\Relatable::getErrors()
+   * @see \ramp\model\business\Relatable::getErrors()
    */
   public function testErrorReportingPropagation()
   {

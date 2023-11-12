@@ -60,10 +60,10 @@ class TinyTextTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\TinyText::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\TinyText}
-   * @link ramp.model.business.validation.dbtype.TinyText \ramp\model\business\validation\dbtype\TinyText
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\TinyText}
+   * @see ramp.model.business.validation.dbtype.TinyText \ramp\model\business\validation\dbtype\TinyText
    */
   public function test__Construct()
   {
@@ -76,8 +76,8 @@ class TinyTextTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\TinyText::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.TinyText#method_process \ramp\model\business\validation\dbtype\TinyText::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see ramp.model.business.validation.dbtype.TinyText#method_process \ramp\model\business\validation\dbtype\TinyText::process()
    */
   public function testTest()
   {

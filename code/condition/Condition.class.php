@@ -32,8 +32,8 @@ use ramp\core\Str;
  * - Hold values/references for attribute, operator and comparible
  *
  * COLLABORATORS
- * - {@link \ramp\condition\iEnvironment}
- * - {@link \ramp\condition\Operator}
+ * - {@see \ramp\condition\iEnvironment}
+ * - {@see \ramp\condition\Operator}
  *
  * @property-read \ramp\core\Str $attribute Returns name of attribute to be restricted, evaluated or modified.
  * @property-read \ramp\condition\Operator $operator Returns the type of Operation to be performed.
@@ -59,9 +59,7 @@ abstract class Condition extends RAMPObject
   }
 
   /**
-   * Returns name of attribute.
-   * **DO NOT CALL DIRECTLY, USE this->attribute;**
-   * @return \ramp\core\Str Name of attribute to be restricted, evaluated or modified
+   * @ignore
    */
   protected function get_attribute() : Str
   {
@@ -69,9 +67,7 @@ abstract class Condition extends RAMPObject
   }
 
   /**
-   * Returns the type of Operation to be performed.
-   * **DO NOT CALL DIRECTLY, USE this->operator;**
-   * @return \ramp\condition\Operator Performing operation
+   * @ignore
    */
   final protected function get_operator() : Operator
   {
@@ -79,9 +75,7 @@ abstract class Condition extends RAMPObject
   }
 
   /**
-   * Returns value to be compared with attribute by operator.
-   * **DO NOT CALL DIRECTLY, USE this->comparable;**
-   * @return mixed Value of comparable
+   * @ignore
    */
   final protected function get_comparable()
   {
@@ -89,9 +83,7 @@ abstract class Condition extends RAMPObject
   }
 
   /**
-   * Sets value of comparable (for operator to compare with attribute).
-   * **DO NOT CALL DIRECTLY, USE this->comparable = $value;**
-   * @param mixed $value Value to be compared with attribute by operation
+   * @ignore
    */
   protected function set_comparable($value)
   {

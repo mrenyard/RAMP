@@ -31,13 +31,13 @@ use ramp\core\Collection;
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
- * - Enable read access to associated {@link \ramp\model\Model}.
+ * - Enable read access to associated {@see \ramp\model\Model}.
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\Model}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\Model}.
  * 
  * COLLABORATORS
- * - {@link \ramp\view\View}
- * - {@link \ramp\model\Model}
+ * - {@see \ramp\view\View}
+ * - {@see \ramp\model\Model}
  */
 abstract class View extends RAMPObject
 {
@@ -58,7 +58,7 @@ abstract class View extends RAMPObject
    *   }
    * ```
    * 
-   * Called within Template file (.tpl.php), where {@link \ramp\view\Templated} is used.
+   * Called within Template file (.tpl.php), where {@see \ramp\view\Templated} is used.
    * ```php
    *  <section>
    *    <header>
@@ -92,7 +92,7 @@ abstract class View extends RAMPObject
 
   /**
    * Render relevant output.
-   * Combining data (@link \ramp\model\Model) with defined presentation ({@link View}).
+   * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
    */
   abstract public function render();
 

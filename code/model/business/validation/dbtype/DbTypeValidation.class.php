@@ -35,7 +35,7 @@ use ramp\model\business\validation\ValidationRule;
  * - Takes and argument of $errorMessage to bubble up as message of FailedValidationException when test fails.
  *
  * COLLABORATORS
- * - {@link \ramp\validation\ValidationRule}
+ * - {@see \ramp\validation\ValidationRule}
  */
 abstract class DbTypeValidation extends ValidationRule
 {

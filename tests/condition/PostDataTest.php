@@ -48,8 +48,8 @@ use \ramp\condition\PostData;
  * Collection of tests for \ramp\condition\PostData.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\PostDataTest\Property}
- * - {@link \tests\ramp\condition\mocks\PostDataTest\Record}
+ * - {@see \tests\ramp\condition\mocks\PostDataTest\Property}
+ * - {@see \tests\ramp\condition\mocks\PostDataTest\Record}
  */
 class PostDataTest extends \PHPUnit\Framework\TestCase
 {
@@ -63,11 +63,11 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\PostData::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\condition\PostData}
-   * - assert is composed of {@link \ramp\condition\InputDataCondition}s
-   * @link ramp.condition.PostData#method___construct ramp\condition\PostData
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\condition\PostData}
+   * - assert is composed of {@see \ramp\condition\InputDataCondition}s
+   * @see ramp.condition.PostData#method___construct ramp\condition\PostData
    */
   public function test__Construct()
   {
@@ -88,7 +88,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
    * - assert throws \DomainException when any $postdata NAME does NOT match business model
    *   - with message: <em>'Invalid name in $postdata does NOT match business model'</em>
    * - assert where valid produces like for like representation of provied array as PostData object
-   * @link ramp.condition.PostData#method___build ramp\condition\PostData::build()
+   * @see ramp.condition.PostData#method___build ramp\condition\PostData::build()
    */
   public function testBuild()
   {

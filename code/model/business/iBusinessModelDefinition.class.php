@@ -29,7 +29,7 @@ use \ramp\core\Str;
  * - Describe base api for defining Model identifiers.
  *
  * COLLABORATORS
- * - {@link \ramp\core\Str}
+ * - {@see \ramp\core\Str}
  *
  * @property-read \ramp\core\Str $recordName Returns name of requested Record one or collection.
  * @property-read ?\ramp\core\Str $recordKey Returns primary key value of requested Record or NULL.

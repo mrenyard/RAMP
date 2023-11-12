@@ -62,10 +62,10 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\VarChar::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\VarChar}
-   * @link ramp.model.business.validation.dbtype.VarChar \ramp\model\business\validation\dbtype\VarChar
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\VarChar}
+   * @see ramp.model.business.validation.dbtype.VarChar \ramp\model\business\validation\dbtype\VarChar
    */
   public function test__Construct()
   {
@@ -78,8 +78,8 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\VarChar::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.VarChar#method_process \ramp\model\business\validation\dbtype\VarChar::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see ramp.model.business.validation.dbtype.VarChar#method_process \ramp\model\business\validation\dbtype\VarChar::process()
    */
   public function testTest()
   {

@@ -25,11 +25,7 @@ namespace ramp\core;
  *
  * RESPONSIBILITIES
  * - Describe base api for a choice.
- *
- * @property-read \ramp\core\Str Returns id unique identifier (URN:string).
- * @property-read int $key Returns key unique identifier (enum:int)
- * @property-read \ramp\core\Str $description Returns description.
- * @property-read bool $isSelected Returns whether this has been chosen.
+ * @interface 
  */
 interface iOption
 {

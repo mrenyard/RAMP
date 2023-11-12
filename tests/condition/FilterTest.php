@@ -56,9 +56,9 @@ use tests\ramp\condition\mocks\FilterTest\MockEnvironment;
  * Collection of tests for \ramp\condition\Filter.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\FilterTest\MockEnvironment}
- * - {@link \tests\ramp\condition\mocks\FilterTest\Property}
- * - {@link \tests\ramp\condition\mocks\FilterTest\Record}
+ * - {@see \tests\ramp\condition\mocks\FilterTest\MockEnvironment}
+ * - {@see \tests\ramp\condition\mocks\FilterTest\Property}
+ * - {@see \tests\ramp\condition\mocks\FilterTest\Record}
  */
 class FilterTest extends \PHPUnit\Framework\TestCase
 {
@@ -95,11 +95,11 @@ class FilterTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\Filter::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\condition\Filter}
-   * - assert is composite type {@link \ramp\condition\FilterCondition}
-   * @link ramp.condition.Filter#method___construct ramp\condition\Filter
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\condition\Filter}
+   * - assert is composite type {@see \ramp\condition\FilterCondition}
+   * @see \ramp\condition\Filter
    */
   public function test__Construct()
   {
@@ -123,7 +123,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
    * - assert throws \DomainException when any $filter VALUE does NOT validate against associated property
    *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
-   * @link ramp.condition.Filter#method___build ramp\condition\Filter::build()
+   * @see \ramp\condition\Filter::build()
    */
   public function testBuildErrors()
   {
@@ -174,7 +174,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Filter::build().
    * - assert where valid, produces like for like representation of provied array as Filter object
-   * @link ramp.condition.Filter#method___build ramp\condition\Filter::build()
+   * @see \ramp\condition\Filter::build()
    */
   public function testBuildGood()
   {
@@ -199,7 +199,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Filter::build().
    * - assert where valid, produces like for like representation of provied array as Filter object
-   * @link ramp.condition.Filter#method___build ramp\condition\Filter::build()
+   * @see \ramp\condition\Filter::build()
    */
   public function testBuildComplex()
   {
@@ -259,7 +259,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Filter::build().
    * - assert where valid, produces like for like representation of provied array as Filter object
-   * @link ramp.condition.Filter#method___build ramp\condition\Filter::build()
+   * @see \ramp\condition\Filter::build()
    *
   public function testBuildMultiPartPrimary()
   {
@@ -278,7 +278,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    * - assert returns expected string when first argument (iEnvironment) differs from default in the form:
    *  - [record][memberAccessOperator][key][memberAccessOperator][property][assignmentOperator]
    * [openingParenthesisOperator][value][closingParenthesisOperator][andOperator][record][member...
-   * @link ramp.condition.Filter#method___invoke ramp\condition\Filter::__invoke()
+   * @see \ramp\condition\Filter::__invoke()
    */
   public function test__invoke()
   {

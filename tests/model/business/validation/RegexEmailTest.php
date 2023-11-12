@@ -48,10 +48,10 @@ class RegexEmailTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\model\business\validation\RegexEmail::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\RegexEmail}
-   * @link ramp.model.business.validation.RegexEmail \ramp\model\business\validation\RegexEmail
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\RegexEmail}
+   * @see ramp.model.business.validation.RegexEmail \ramp\model\business\validation\RegexEmail
    */
   public function test__Construct()
   {
@@ -63,8 +63,8 @@ class RegexEmailTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\RegexEmail::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.RegexEmail#method_process \ramp\model\business\validation\RegexEmail::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see ramp.model.business.validation.RegexEmail#method_process \ramp\model\business\validation\RegexEmail::process()
    */
   public function testProcess()
   {

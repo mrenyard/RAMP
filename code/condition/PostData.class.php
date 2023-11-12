@@ -29,8 +29,8 @@ use ramp\core\Collection;
  *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * COLLABORATORS
- * - {@link \ramp\core\Str}
- * - Collection of {@link \ramp\condition\InputDataCondition}s
+ * - {@see \ramp\core\Str}
+ * - Collection of {@see \ramp\condition\InputDataCondition}s
  */
 final class PostData extends Collection
 {

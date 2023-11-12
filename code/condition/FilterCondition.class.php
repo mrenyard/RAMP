@@ -31,15 +31,15 @@ use ramp\core\PropertyNotSetException;
  *
  * RESPONSIBILITIES
  * - Enforce 'equal to' operator as the primary operation.
- * - Set defaults target environment as {@link \ramp\condition\SQLEnvironment}
+ * - Set defaults target environment as {@see \ramp\condition\SQLEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
  *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - {@link \ramp\condition\BusinessCondition}
- * - {@link \ramp\condition\iEnvironment}
- * - {@link \ramp\condition\SQLEnvironment} (Default)
- * - {@link \ramp\condition\Operator} (Operator::EQUAL_TO Enforced)
+ * - {@see \ramp\condition\BusinessCondition}
+ * - {@see \ramp\condition\iEnvironment}
+ * - {@see \ramp\condition\SQLEnvironment} (Default)
+ * - {@see \ramp\condition\Operator} (Operator::EQUAL_TO Enforced)
  *
  * @property-write mixed $comparable Sets value of comparable while comparing its validity against business model.
  */
@@ -73,7 +73,7 @@ final class FilterCondition extends BusinessCondition
    *  - SETTING::RAMP_BUSINESS_MODEL_NAMESPACE
    * @param mixed $value Value to be compared
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
-   * @link ramp.model.business.Property#method_processValidationRules \ramp\model\business\Property::processValidationRules()
+   * @see \ramp\model\business\Property::processValidationRules()
    */
   protected function set_comparable($value)
   {

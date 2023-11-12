@@ -60,10 +60,10 @@ class DateTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\Date::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\Date}
-   * @link ramp.model.business.validation.dbtype.Date \ramp\model\business\validation\dbtype\Date
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\Date}
+   * @see ramp.model.business.validation.dbtype.Date \ramp\model\business\validation\dbtype\Date
    */
   public function test__Construct()
   {
@@ -76,8 +76,8 @@ class DateTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\Date::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.Date#method_process \ramp\model\business\validation\dbtype\Date::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see \ramp\model\business\validation\dbtype\Date::process()
    */
   public function testTest()
   {

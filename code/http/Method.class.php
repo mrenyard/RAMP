@@ -27,8 +27,8 @@ use ramp\core\Str;
  * Request Method (Verb) (based on HTTP/1.1 specification).
  * INVARIANT
  * - State of *this* is always unchanged (all operations return one of several Method types)
- * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
- * @link http://tools.ietf.org/html/rfc2518  HTTP Extensions for Distributed Authoring -- WEBDAV
+ * @see https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
+ * @see http://tools.ietf.org/html/rfc2518  HTTP Extensions for Distributed Authoring -- WEBDAV
  */
 class Method extends RAMPObject
 {
@@ -85,7 +85,7 @@ class Method extends RAMPObject
    * Returns the LOCK variant of Method.
    * Represents HTTP request to lock the specified resource.
    * @return \ramp\http\Method Method evaluating to 'LOCK' at index 3
-   * @link http://tools.ietf.org/html/rfc2518#section-8.10 Lock Method (RFC2518 Section 8.10)
+   * @see http://tools.ietf.org/html/rfc2518#section-8.10 Lock Method (RFC2518 Section 8.10)
    */
   public static function LOCK() : Method
   {
@@ -97,7 +97,7 @@ class Method extends RAMPObject
    * Returns the UNLOCK variant of Method.
    * Represents HTTP request to unlock the specified resource.
    * @return \ramp\http\Method Method evaluating to 'UNLOCK' at index 4
-   * @link http://tools.ietf.org/html/rfc2518#section-8.11 Unlock Method (RFC2518 Section 8.11)
+   * @see http://tools.ietf.org/html/rfc2518#section-8.11 Unlock Method (RFC2518 Section 8.11)
    */
   public static function UNLOCK() : Method
   {
@@ -120,7 +120,7 @@ class Method extends RAMPObject
    * Returns the MOVE variant of Method.
    * Represents HTTP request requesting specified resource be moved according to destination header.
    * @return \ramp\http\Method Method evaluating to 'MOVE' at index 6
-   * @link http://tools.ietf.org/html/rfc2518#section-8.9 Move Method (RFC2518 Section 8.9)
+   * @see http://tools.ietf.org/html/rfc2518#section-8.9 Move Method (RFC2518 Section 8.9)
    */
   public static function MOVE() : Method
   {

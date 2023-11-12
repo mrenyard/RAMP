@@ -51,9 +51,9 @@ use tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition;
  * Collection of tests for \ramp\condition\BusinessCondition.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition}
- * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\Property}
- * - {@link \tests\ramp\condition\mocks\BusinessConditionTest\Record}
+ * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition}
+ * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\Property}
+ * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\Record}
  */
 class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 {
@@ -75,12 +75,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\BusinessCondition::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\condition\Condition}
-   * - assert is instance of {@link \ramp\condition\BusinessCondition}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Condition}
+   * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
    *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
-   * @link ramp.condition.BusinessCondition#method___construct ramp\condition\BusinessCondition
+   * @see ramp.condition.BusinessCondition#method___construct ramp\condition\BusinessCondition
    */
   public function test__construct()
   {
@@ -111,12 +111,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\BusinessCondition::attribute.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'attribute'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
    *   - with message: <em>'[className]->attribute is NOT settable'</em>
    * - assert allows retrieval of 'attribute'
-   * - assert retrieved is a {@link \ramp\core\Str}
+   * - assert retrieved is a {@see \ramp\core\Str}
    * - assert 'attribute' is composite of [property]->[property]
-   * @link ramp.condition.BusinessCondition#method_get_attribute ramp\condition\BusinessCondition::attribute
+   * @see ramp.condition.BusinessCondition#method_get_attribute ramp\condition\BusinessCondition::attribute
    */
   public function testAttribute()
   {
@@ -137,12 +137,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\BusinessCondition::record.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'record'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'record'
    *   - with message: <em>'[className]->record is NOT settable'</em>
    * - assert allows retrieval of 'record'
-   * - assert 'record' is a {@link \ramp\core\Str}
+   * - assert 'record' is a {@see \ramp\core\Str}
    * - assert 'record' equal to provided at creation
-   * @link ramp.condition.BusinessCondition#method_get_record ramp\condition\BusinessCondition::record
+   * @see ramp.condition.BusinessCondition#method_get_record ramp\condition\BusinessCondition::record
    */
   public function testRecord()
   {
@@ -162,12 +162,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\BusinessCondition::property.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'property'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'property'
    *   - with message: <em>'[className]->property is NOT settable'</em>
    * - assert allows retrieval of 'property'
-   * - assert 'property' is a {@link \ramp\core\Str}
+   * - assert 'property' is a {@see \ramp\core\Str}
    * - assert 'property' equal to provided at creation
-   * @link ramp.condition.BusinessCondition#method_get_property ramp\condition\BusinessCondition::property
+   * @see ramp.condition.BusinessCondition#method_get_property ramp\condition\BusinessCondition::property
    */
   public function testProperty()
   {
@@ -187,12 +187,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\BusinessCondition::operator.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'operator'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
    *   - with message: <em>'[className]->operator is NOT settable'</em>.
    * - assert allows retrieval of 'operator'.
-   * - assert retreved is an instance of {@link \ramp\condition\Operator}.
+   * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @link ramp.condition.BusinessCondition#method_get_operator ramp\condition\BusinessCondition::operator.
+   * @see ramp.condition.BusinessCondition#method_get_operator ramp\condition\BusinessCondition::operator.
    */
   public function testOperator()
   {
@@ -218,8 +218,8 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'comparable'
    * - assert 'comparable' equal to recently set
    * - assert 'comparable' equal to that provided at creation
-   * @link ramp.condition.BusinessCondition#method_get_comparable ramp\condition\BusinessCondition::comparable (get)
-   * @link ramp.condition.BusinessCondition#method_set_comparable ramp\condition\BusinessCondition::comparable (set)
+   * @see ramp.condition.BusinessCondition#method_get_comparable ramp\condition\BusinessCondition::comparable (get)
+   * @see ramp.condition.BusinessCondition#method_set_comparable ramp\condition\BusinessCondition::comparable (set)
    */
   public function testComparable()
   {

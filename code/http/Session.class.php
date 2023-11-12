@@ -92,11 +92,11 @@ final class Session extends RAMPObject
    *
    * COLLABORATORS
    * - $_SESSION
-   * - {@link \ramp\SETTING}
-   * - {@link \ramp\condition\Filter}
-   * - {@link \ramp\condition\FilterCondition}
-   * - {@link \ramp\model\business\iBusinessModelManager}
-   * - {@link \ramp\model\business\SimpleBusinessModelDefinition}
+   * - {@see \ramp\SETTING}
+   * - {@see \ramp\condition\Filter}
+   * - {@see \ramp\condition\FilterCondition}
+   * - {@see \ramp\model\business\iBusinessModelManager}
+   * - {@see \ramp\model\business\SimpleBusinessModelDefinition}
    *
    * @return \ramp\http\Session Single instance of Session
    */
@@ -148,14 +148,14 @@ final class Session extends RAMPObject
    * COLLABORATORS
    * - $_POST
    * - $_SESSION
-   * - {@link \ramp\SETTING}
-   * - {@link \ramp\condition\Filter}
-   * - {@link \ramp\condition\FiltetCondition}
-   * - {@link \ramp\model\business\iBusinessModelManager}
-   * - {@link \ramp\model\business\SimpleBusinessModelDefinition}
-   * - {@link \ramp\model\business\LoginAccountType}
-   * - {@link \ramp\model\business\LoginAccount}
-   * - {@link \ramp\http\Unauthorized401Exception}
+   * - {@see \ramp\SETTING}
+   * - {@see \ramp\condition\Filter}
+   * - {@see \ramp\condition\FiltetCondition}
+   * - {@see \ramp\model\business\iBusinessModelManager}
+   * - {@see \ramp\model\business\SimpleBusinessModelDefinition}
+   * - {@see \ramp\model\business\LoginAccountType}
+   * - {@see \ramp\model\business\LoginAccount}
+   * - {@see \ramp\http\Unauthorized401Exception}
    *
    * @param int $authorizationLevel Required authorization Level
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:

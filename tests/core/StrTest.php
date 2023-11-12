@@ -43,7 +43,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Str::__construct().
    * - assert is private inaccessable
-   * @link ramp.core.Str \ramp\core\Str
+   * @see ramp.core.Str \ramp\core\Str
    */
   public function test__construct()
   {
@@ -58,13 +58,13 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::lowercase.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'lowercase'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'lowercase'
    *   - with message: <em>'[className]->lowercase is NOT settable'</em>
    * - assert allows retrieval of 'lowercase'
-   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert each subsequent is same instance as first
    * - assert retreved matches expected lowercase instance of original
-   * @link ramp.core.Str#method_get_lowercase \ramp\core\Str::lowercase
+   * @see \ramp\core\Str::lowercase
    */
   public function testLowercase()
   {
@@ -86,13 +86,13 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::uppercase.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'uppercase'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'uppercase'
    *   - with message: <em>'[className]->uppercase is NOT settable'</em>
    * - assert allows retrieval of 'uppercase'
-   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert each subsequent is same instance as first
    * - assert retreved matches expected lowercase instance of original
-   * @link ramp.core.Str#method_get_uppercase \ramp\core\Str::uppercase
+   * @see \ramp\core\Str::uppercase
    */
   public function testUppercase()
   {
@@ -116,10 +116,10 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\Str::set().
    * - assert accepts string literal
    * - assert accepts string literal concatenated
-   * - assert accepts {@link \ramp\core\Str} concatenated (as string literal)
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * - assert that each is instance of {@link \ramp\core\RAMPObject}
-   * @link ramp.core.Str#method_set \ramp\core\Str::set()
+   * - assert accepts {@see \ramp\core\Str} concatenated (as string literal)
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * - assert that each is instance of {@see \ramp\core\RAMPObject}
+   * @see \ramp\core\Str::set()
    */
   public function testSet()
   {
@@ -148,12 +148,12 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::_EMPTY().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::_EMPTY()}
-   * - assert returns the SAME instance on calling {@link \ramp\core\Str::set()} with no param
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::_EMPTY()}
+   * - assert returns the SAME instance on calling {@see \ramp\core\Str::set()} with no param
    * - assert returns the SAME instance on calling \ramp\core\Str::set('') (param of ''(empty string))
    * - assert when cast to (string) returns (empty string literal)
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method__EMPTY \ramp\core\Str::_EMPTY()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::_EMPTY()
    */
   public function test_EMPTY()
   {
@@ -178,11 +178,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::SPACE().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::SPACE()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::SPACE()}
    * - assert returns the SAME instance on calling set(' ')
    * - assert when cast to (string) returns (string literal ' ')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_SPACE \ramp\core\Str::SPACE()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::SPACE()
    */
   public function testSPACE()
   {
@@ -203,11 +203,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::COLON().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::COLON()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::COLON()}
    * - assert returns the SAME instance on calling set(':')
    * - assert when cast to (string) returns (string literal ':')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_COLON \ramp\core\Str::COLON()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::COLON()
    */
   public function testCOLON()
   {
@@ -228,11 +228,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::SEMICOLON().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::SEMICOLON()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::SEMICOLON()}
    * - assert returns the SAME instance on calling set(';')
    * - assert when cast to (string) returns (string literal ';')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_SEMICOLON \ramp\core\Str::SEMICOLON()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::SEMICOLON()
    */
   public function testSEMICOLON()
   {
@@ -253,11 +253,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::BAR().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::BAR()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::BAR()}
    * - assert returns the SAME instance on calling set('|')
    * - assert when cast to (string) returns (string literal '|')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_BAR \ramp\core\Str::BAR()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::BAR()
    */
   public function testBAR()
   {
@@ -278,11 +278,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::NEW().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::NEW()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::NEW()}
    * - assert returns the SAME instance on calling set('new')
    * - assert when cast to (string) returns (string literal 'new')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_NEW \ramp\core\Str::NEW()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::NEW()
    */
   public function testNEW()
   {
@@ -303,11 +303,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
   
   /**
    * Collection of assertions for ramp\core\Str::PLUS().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::PLUS()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::PLUS()}
    * - assert returns the SAME instance on calling set('+')
    * - assert when cast to (string) returns (string literal '+')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_PLUS \ramp\core\Str::PLUS()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::PLUS()
    */
   public function testPLUS()
   {
@@ -329,11 +329,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
   
   /**
    * Collection of assertions for ramp\core\Str::FK().
-   * - assert returns the SAME instance on every call of {@link \ramp\core\Str::FK()}
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::FK()}
    * - assert returns the SAME instance on calling set('FK_')
    * - assert when cast to (string) returns (string literal 'FK_')
-   * - assert that each is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_FK \ramp\core\Str::FK()
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::FK()
    */
   public function testFK()
   {
@@ -355,9 +355,9 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Str::append().
    * - assert returns string same as handed to constructor + appended param
-   * - assert returned {@link \ramp\core\Str} NOT same as original
-   * - assert returned {@link \ramp\core\Str} is still instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_append \ramp\core\Str::append()
+   * - assert returned {@see \ramp\core\Str} NOT same as original
+   * - assert returned {@see \ramp\core\Str} is still instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::append()
    */
   public function testAppend()
   {
@@ -383,9 +383,9 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Str::prepend().
    * - assert returns string same as handed to prepended param + constructor
-   * - assert returned {@link \ramp\core\Str} NOT same as original
-   * - assert returned {@link \ramp\core\Str} is still instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_prepend \ramp\core\Str::prepend()
+   * - assert returned {@see \ramp\core\Str} NOT same as original
+   * - assert returned {@see \ramp\core\Str} is still instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::prepend()
    */
   public function testPrepend()
   {
@@ -410,11 +410,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::trimEnd().
-   * - assert provided value removed from end on returned {@link \ramp\core\Str}
-   * - assert original {@link \ramp\core\Str}'s state in unchanged
+   * - assert provided value removed from end on returned {@see \ramp\core\Str}
+   * - assert original {@see \ramp\core\Str}'s state in unchanged
    * - assert only last occurrence of provided value removed from Str
-   * - assert returned object is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_trimEnd \ramp\core\Str::trimEnd()
+   * - assert returned object is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::trimEnd()
    */
   public function testTrimEnd()
   {
@@ -446,11 +446,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::trimStart().
-   * - assert provided value removed from end on returned {@link \ramp\core\Str}
-   * - assert original {@link \ramp\core\Str}'s state in unchanged
+   * - assert provided value removed from end on returned {@see \ramp\core\Str}
+   * - assert original {@see \ramp\core\Str}'s state in unchanged
    * - assert only last occurrence of provided value removed from Str
-   * - assert returned object is instance of {@link \ramp\core\Str}
-   * @link ramp.core.Str#method_trimStart \ramp\core\Str::trimStart()
+   * - assert returned object is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::trimStart()
    */
   public function testTrimStart()
   {
@@ -484,7 +484,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\Str::replace().
    * - assert correct replacement of searched sub string on all occurrences of sub string
    * - assert original value remains unchanged.
-   * @link ramp.core.Str#method_replace \ramp\core\Str::replace()
+   * @see \ramp\core\Str::replace()
    */
   public function testReplace()
   {
@@ -499,12 +499,12 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::camelCase().
-   * - assert any attempt to camelCase {@link \ramp\core\Str::_EMPTY()} return _EMPTY()
+   * - assert any attempt to camelCase {@see \ramp\core\Str::_EMPTY()} return _EMPTY()
    * - assert correct camelcasing of space seperated words
    * - assert correct camelcasing of space seperated words with lowercase first letter
    * - assert correct camelcasing of hyphen sepperated words
    * - assert correct camelcasing of hyphen sepperated words with lowercase first letter
-   * @link ramp.core.Str#method_camelCase \ramp\core\Str::camelCase()
+   * @see \ramp\core\Str::camelCase()
    */
   public function testCamelCase()
   {
@@ -535,11 +535,11 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Str::hyphenate().
-   * - assert any attempt to hyphenate {@link \ramp\core\Str::_EMPTY()} returns _EMPTY()
+   * - assert any attempt to hyphenate {@see \ramp\core\Str::_EMPTY()} returns _EMPTY()
    * - assert correct hyphenation of space seperated words
    * - assert correct hyphenation of space seperated words all converted to lowercase
    * - assert correct hyphenation of camlecased string
-   * @link ramp.core.Str#method_hyphenate \ramp\core\Str::hyphenate()
+   * @see \ramp\core\Str::hyphenate()
    */
   public function testHyphenate()
   {
@@ -576,9 +576,9 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Str::contains().
    * - assert returns FALSE when this _EMPTY().
-   * - assert returns TRUE when this contains at least one maching substring from provided {@link \ramp\core\StrCollection}
-   * - assert returns FALSE when thisdoes NOT contains maching substring from provided {@link \ramp\core\StrCollection}
-   * @link ramp.core.Str#method_contains \ramp\core\Str::contains()
+   * - assert returns TRUE when this contains at least one maching substring from provided {@see \ramp\core\StrCollection}
+   * - assert returns FALSE when thisdoes NOT contains maching substring from provided {@see \ramp\core\StrCollection}
+   * @see \ramp\core\Str::contains()
    */
   public function testContains()
   {

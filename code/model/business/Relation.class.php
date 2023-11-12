@@ -1,7 +1,6 @@
 <?php
 /**
- * Testing - RAMP - Rapid web application development enviroment for building
- *  flexible, customisable web systems.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -16,7 +15,7 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP.test
+ * @package RAMP
  * @version 0.0.9;
  */
 namespace ramp\model\business;
@@ -35,9 +34,9 @@ use ramp\condition\Filter;
  * - Manage and maintain association through keys (primaryKey -> ForeignKey), data Lookup and Model Management.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- * - {@link \ramp\model\business\Relatable}
- * - {@link \ramp\model\business\BusinessModelManager}
+ * - {@see \ramp\model\business\Record}
+ * - {@see \ramp\model\business\Relatable}
+ * - {@see \ramp\model\business\BusinessModelManager}
  */
 abstract class Relation extends RecordComponent
 {
@@ -47,7 +46,7 @@ abstract class Relation extends RecordComponent
   /**
    * Creates a relation related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parent Record parent of *this* property
+   * @param \ramp\model\business\Record $parent Record parent of *this* RecordComponent.
    * @param bool $editable Optional set preferance for editability (defaults FALSE).
    */
   public function __construct(Str $name, Record $parent, bool $editable = FALSE)

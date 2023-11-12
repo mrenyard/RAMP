@@ -45,7 +45,7 @@ use tests\ramp\condition\mocks\ConditionTest\ConcreteCondition;
  * Collection of tests for \ramp\condition\Condition.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\ConditionTest\ConcreteCondition}
+ * - {@see \tests\ramp\condition\mocks\ConditionTest\ConcreteCondition}
  */
 class ConditionTest extends \PHPUnit\Framework\TestCase
 {
@@ -63,9 +63,9 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\Condition::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\condition\Condition}
-   * @link ramp.condition.Condition#method___construct ramp\condition\Condition
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Condition}
+   * @see \ramp\condition\Condition
    */
   public function test__construct()
   {
@@ -76,12 +76,12 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\Condition::attribute.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'attribute'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'attribute'
    *   - with message: <em>'[className]->attribute is NOT settable'</em>.
    * - assert allows retrieval of 'attribute'.
-   * - assert retreved is an instance of {@link \ramp\core\Str}.
+   * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same as provided to constructor.
-   * @link ramp.condition.Condition#method_get_attribute ramp\condition\Condition::attribute
+   * @see \ramp\condition\Condition::attribute
    */
   public function testAttribute()
   {
@@ -101,12 +101,12 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\Condition::operator.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} when trying to set 'operator'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
    *   - with message: <em>'[className]->operator is NOT settable'</em>.
    * - assert allows retrieval of 'operator'.
-   * - assert retreved is an instance of {@link \ramp\condition\Operator}.
+   * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @link ramp.condition.Condition#method_get_operator ramp\condition\Condition::operator.
+   * @see \ramp\condition\Condition::operator.
    */
   public function testOperator()
   {
@@ -131,8 +131,8 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'comparable'.
    * - assert 'comparable' equal to recently set.
    * - assert 'comparable' equal to that provided to constructor when provided.
-   * @link ramp.condition.Condition#method_get_comparable ramp\condition\Condition::comparable (get)
-   * @link ramp.condition.Condition#method_set_comparable ramp\condition\Condition::comparable (set)
+   * @see \ramp\condition\Condition::comparable (get)
+   * @see \ramp\condition\Condition::comparable (set)
    */
   public function testComparable()
   {

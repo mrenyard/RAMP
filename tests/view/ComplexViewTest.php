@@ -68,10 +68,10 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
 {
   /**
    * Collection of assertions for \ramp\view\ComplexView::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * - assert is instance of {@link \ramp\view\ComplexView}
-   * @link ramp.view.View ramp\view\View
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * - assert is instance of {@see \ramp\view\ComplexView}
+   * @see ramp.view.View ramp\view\View
    */
   public function test__construct()
   {
@@ -87,8 +87,8 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - assert PropertyNotSetException thrown when trying to set value of none existant property
    * - assert BadPropertyCallException thrown when trying to get value of none existant property
    * - assert that property calls are passes to its component (contained) \ramp\model\Model
-   * @link ramp.view.ComplexView#method__get ramp\view\ComplexView::__get()
-   * @link ramp.view.ComplexView#method__set ramp\view\ComplexView::__set()
+   * @see ramp.view.ComplexView#method__get ramp\view\ComplexView::__get()
+   * @see ramp.view.ComplexView#method__set ramp\view\ComplexView::__set()
    */
   public function test__get__set()
   {
@@ -120,8 +120,8 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\ComplexView::children and \ramp\view\ComplexView::add(Model $model).
    * - assert each child view added sequentially
    * - assert View->children output maintains sequance and format
-   * @link ramp.view.ComplexView#method_add ramp\view\ComplexView::add()
-   * @link ramp.view.ComplexView#method_children ramp\view\ComplexView::children
+   * @see ramp.view.ComplexView#method_add ramp\view\ComplexView::add()
+   * @see ramp.view.ComplexView#method_children ramp\view\ComplexView::children
    */
   public function testAddGet_children()
   {
@@ -163,7 +163,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\ComplexView::setModel}.
    * - assert Exception thrown when model already set.
-   * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelAlreadySet()
   {
@@ -180,7 +180,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.ViewComplex#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ViewComplex#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelNoCascade()
   {
@@ -224,7 +224,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially as expected
    * - assert output from View->render() maintains sequance
-   * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelSequentially1()
   {
@@ -266,7 +266,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially as expected
    * - assert output from View->render() maintains sequance
-   * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelSequentially2()
   {
@@ -320,7 +320,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelHierarchy1()
   {
@@ -366,7 +366,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
+   * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
   public function testSetModelHierarchy2()
   {
@@ -430,7 +430,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - assert cloned View without associated model is equal to the original
    * - assert cloned View with associated model NOT equal as Model association removed
    * - assert cloned View with model re associated is equal to the original 
-   * @link ramp.view.ComplexView#method__clone ramp\view\ComplexView::__clone()
+   * @see ramp.view.ComplexView#method__clone ramp\view\ComplexView::__clone()
    */
   public function test__clone()
   {

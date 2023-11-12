@@ -46,15 +46,15 @@ use tests\ramp\model\business\validation\FailOnBadValidationRule;
  * Collection of tests for \ramp\validation\ValidationRule.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\validation\MockValidationRule}
+ * - {@see \tests\ramp\validation\MockValidationRule}
  */
 class ValidationRuleTest extends \PHPUnit\Framework\TestCase
 {
   /**
    * Collection of assertions for ramp\validation\ValidationRule::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\validation\ValidationRule}
-   * @link ramp.validation.ValidationRule \ramp\validation\ValidationRule
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\validation\ValidationRule}
+   * @see ramp.validation.ValidationRule \ramp\validation\ValidationRule
    */
   public function test__Construct()
   {
@@ -66,9 +66,9 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@link \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @link ramp.validation.ValidationRule#method_test \ramp\validation\ValidationRule::test()
-   * @link ramp.validation.ValidationRule#method_process \ramp\validation\ValidationRule::process()
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see ramp.validation.ValidationRule#method_test \ramp\validation\ValidationRule::test()
+   * @see ramp.validation.ValidationRule#method_process \ramp\validation\ValidationRule::process()
    */
   public function testProcess()
   {

@@ -37,47 +37,47 @@ namespace ramp\core;
 final class Str extends RAMPObject
 {
   /**
-   * Singleton reference to {@link Str} with value ''.
+   * Singleton reference to {@see Str} with value ''.
    */
   private static $EMPTY;
 
   /**
-   * Singleton reference to {@link Str} with value ' '.
+   * Singleton reference to {@see Str} with value ' '.
    */
   private static $SPACE;
 
   /**
-   * Singleton reference to {@link Str} with value ':'.
+   * Singleton reference to {@see Str} with value ':'.
    */
   private static $COLON;
 
   /**
-   * Singleton reference to {@link Str} with value ';'.
+   * Singleton reference to {@see Str} with value ';'.
    */
   private static $SEMICOLON;
 
   /**
-   * Singleton reference to {@link Str} with value '|'.
+   * Singleton reference to {@see Str} with value '|'.
    */
   private static $BAR;
 
   /**
-   * Singleton reference to {@link Str} with value 'new'.
+   * Singleton reference to {@see Str} with value 'new'.
    */
   private static $NEW;
 
   /**
-   * Singleton reference to {@link Str} with value '+'.
+   * Singleton reference to {@see Str} with value '+'.
    */
   private static $PLUS;
 
   /**
-   * Singleton reference to {@link Str} with value 'FK'.
+   * Singleton reference to {@see Str} with value 'FK'.
    */
   private static $FK;
 
   /**
-   * Singleton reference to {@link Str} with value '_'.
+   * Singleton reference to {@see Str} with value '_'.
    */
   private static $UNDERLINE;
 

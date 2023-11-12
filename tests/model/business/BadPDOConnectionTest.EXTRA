@@ -57,7 +57,7 @@ class BadPDOConnectionTest extends \PHPUnit\Framework\TestCase
    * Collection of PDO connection related assertions for \ramp\model\business\BusinessModelManager::getBusinessModel().
    * - assert unsuccessfull re-attemps 2 other times at gradualy prelonged intervals
    * - assert reports detail of attemps on fail
-   * @link ramp.BusinessModelManager#method_getBusinessModel ramp\BusinessModelManager::getBusinessModel()
+   * @see ramp.BusinessModelManager#method_getBusinessModel ramp\BusinessModelManager::getBusinessModel()
    */
   public function testBadConnection()
   {

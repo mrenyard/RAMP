@@ -33,11 +33,6 @@ use ramp\model\business\validation\dbtype\VarChar;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\RecordCollection for testing against.
- *
- * @property-read \ramp\model\business\field\Field $property eturns field containing value of property.
- * @property-read \ramp\model\business\field\Field $propertyA eturns field containing value of propertyA.
- * @property-read \ramp\model\business\field\Field $propertyB eturns field containing value of propertyB.
- * @property-read \ramp\model\business\field\Field $propertyC eturns field containing value of propertyC.
  */
 class BadRecordCollection extends RecordCollection { }
 
@@ -46,17 +41,8 @@ class BadRecordCollection extends RecordCollection { }
  */
 class BadRecord extends Record
 {
-  /**
-   * Returns property name of concrete classes primary key.
-   * @return \ramp\core\Str Name of property that is concrete classes primary key
-   */
   public function primaryKeyNames() : StrCollection { return StrCollection::set('property'); }
 
-  /**
-   * Get field containing property
-   * **DO NOT CALL DIRECTLY, USE this->property;**
-   * @return \ramp\model\business\field\Field Returns field containing value of property
-   */
   protected function get_property() : Field
   {
     if (!isset($this[-1]))
@@ -74,11 +60,6 @@ class BadRecord extends Record
     return $this[-1];
   }
 
-  /**
-   * Get field containing propertyA
-   * **DO NOT CALL DIRECTLY, USE this->propertyA;**
-   * @return \ramp\model\business\field\Field Returns field containing value of propertyA
-   */
   protected function get_propertyA() : Field
   {
     if (!isset($this[1]))
@@ -96,11 +77,6 @@ class BadRecord extends Record
     return $this[1];
   }
 
-  /**
-   * Get field containing propertyB
-   * **DO NOT CALL DIRECTLY, USE this->propertyB;**
-   * @return \ramp\model\business\field\Field Returns field containing value of propertyB
-   */
   protected function get_propertyB() : Field
   {
     if (!isset($this[2]))
@@ -118,11 +94,6 @@ class BadRecord extends Record
     return $this[2];
   }
 
-  /**
-   * Get field containing propertyC
-   * **DO NOT CALL DIRECTLY, USE this->propertyC;**
-   * @return \ramp\model\business\field\Field Returns field containing value of propertyC
-   */
   protected function get_propertyC() : Field
   {
     if (!isset($this[3]))
@@ -140,11 +111,6 @@ class BadRecord extends Record
     return $this[3];
   }
 
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
   protected static function checkRequired($dataObject) : bool
   {
     return (

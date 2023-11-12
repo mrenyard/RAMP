@@ -41,25 +41,14 @@ class SimpleRecordCollection extends RecordCollection { }
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
- *
- * @property-read \ramp\model\business\field\Field $primaryKey Returns field containing value of property.
  */
 class SimpleRecord extends Record
 {
   public static $uniquePrimaryKeyTest;
   private $primaryProperty;
 
-  /**
-   * Returns property name of concrete classes primary key.
-   * @return \ramp\core\Str Name of property that is concrete classes primary key
-   */
   public function primaryKeyNames() : StrCollection { return StrCollection::set('uniqueKey'); }
 
-  /**
-   * Get field containing uniqueKey
-   * **DO NOT CALL DIRECTLY, USE this->uniqueKey;**
-   * @return \ramp\model\business\field\Field Returns field containing value of uniqueKey
-   */
   protected function get_uniqueKey() : Field
   {
     self::$uniquePrimaryKeyTest = new UniquePrimaryKey($this);
@@ -81,11 +70,6 @@ class SimpleRecord extends Record
     return $this->primaryProperty;
   }
 
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
   protected static function checkRequired($dataObject) : bool
   {
     return TRUE;

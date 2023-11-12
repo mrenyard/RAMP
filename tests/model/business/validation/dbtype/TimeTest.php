@@ -60,10 +60,10 @@ class TimeTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\Time::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\Time}
-   * @link ramp.model.business.validation.dbtype.Time \ramp\model\business\validation\dbtype\Time
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\Time}
+   * @see ramp.model.business.validation.dbtype.Time \ramp\model\business\validation\dbtype\Time
    */
   public function test__Construct()
   {
@@ -76,8 +76,8 @@ class TimeTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\Time::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.Time#method_process \ramp\model\business\validation\dbtype\Time::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see \ramp\model\business\validation\dbtype\Time::process()
    */
   public function testTest()
   {

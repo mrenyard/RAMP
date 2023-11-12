@@ -35,10 +35,10 @@ use ramp\model\business\Property;
  *   defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - {@link \ramp\condition\Condition}
- * - {@link \ramp\condition\iEnvironment}
- * - {@link \ramp\condition\PHPEnvironment} (Default)
- * - {@link \ramp\condition\Operator}
+ * - {@see \ramp\condition\Condition}
+ * - {@see \ramp\condition\iEnvironment}
+ * - {@see \ramp\condition\PHPEnvironment} (Default)
+ * - {@see \ramp\condition\Operator}
  *
  * @property-read \ramp\core\Str $record Returns name of record containing property to evaluate.
  * @property-read \ramp\core\Str $property Returns name of property to be evaluated.
@@ -53,7 +53,7 @@ abstract class BusinessCondition extends Condition
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via ramp.ini):
-   *  - {@link \ramp\SETTING}::$RAMP_BUSINESS_MODEL_NAMESPACE
+   *  - {@see \ramp\SETTING}::$RAMP_BUSINESS_MODEL_NAMESPACE
    * @param \ramp\core\Str $record Name of business record containing property to evaluate
    * @param \ramp\core\Str $property Name of property to be evaluated
    * @param \ramp\condition\Operator $operator Operator to perform operation
@@ -85,9 +85,7 @@ abstract class BusinessCondition extends Condition
   }
 
   /**
-   * Returns name of business record.
-   * **DO NOT CALL DIRECTLY, USE this->record;**
-   * @return \ramp\core\Str Name of record containing property to evaluate.
+   * @ignore
    */
   protected function get_record() : Str
   {
@@ -95,9 +93,7 @@ abstract class BusinessCondition extends Condition
   }
 
   /**
-   * Returns name of business property.
-   * **DO NOT CALL DIRECTLY, USE this->property;**
-   * @return \ramp\core\Str Name of property to be evaluated
+   * @ignore
    */
   protected function get_property() : Str
   {

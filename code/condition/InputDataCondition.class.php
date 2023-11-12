@@ -31,15 +31,15 @@ use ramp\core\Str;
  * - Extend BusinessCondition to hold additional value for primaryKey,
  *    alone with record and property as component parts of attribute.
  * - Enforce assignment operator as the primary operation.
- * - Set defaults target environment as {@link \ramp\condition\URNQueryEnvironment}
+ * - Set defaults target environment as {@see \ramp\condition\URNQueryEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
  *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - {@link \ramp\condition\BusinessCondition}
- * - {@link \ramp\condition\iEnvironment}
- * - {@link \ramp\condition\URNQueryEnvironment} (Default)
- * - {@link \ramp\condition\Operator} (Operator::ASSIGNMENT Enforced)
+ * - {@see \ramp\condition\BusinessCondition}
+ * - {@see \ramp\condition\iEnvironment}
+ * - {@see \ramp\condition\URNQueryEnvironment} (Default)
+ * - {@see \ramp\condition\Operator} (Operator::ASSIGNMENT Enforced)
  *
  * @property-read \ramp\core\Str $primaryKeyValue Returns primary key of target business record.
  * @property-read mixed $value Returns value to be evaluated (synonym for comparable).
@@ -65,9 +65,7 @@ final class InputDataCondition extends BusinessCondition
   }
 
   /**
-   * Returns primary key of target business record.
-   * **DO NOT CALL DIRECTLY, USE this->primaryKey;**
-   * @return \ramp\core\Str Primary key of target record
+   * @ignore
    */
   protected function get_primaryKeyValue() : Str
   {
@@ -75,21 +73,15 @@ final class InputDataCondition extends BusinessCondition
   }
 
   /**
-   * returns value to be evaluated (synonym for $this->comparable).
-   * **DO NOT CALL DIRECTLY, USE this->value;**
-   * @see ramp.condition.InputDataCondition.html#method_get_comparable
-   * @return mixed Value to be evaluated
+   * @ignore
    */
   protected function get_value()
   {
     return $this->get_comparable();
   }
 
-   /**
-   * Returns name of attribute as URN.
-   * **DO NOT CALL DIRECTLY, USE this->attributeAsURN;**
-   * @param \ramp\condition\Environment $targetEnvironment Environment to target, default URN Query.
-   * @return \ramp\core\Str Name of attribute to be restricted, evaluated or modified
+  /**
+   * @ignore
    */
   protected function get_attributeURN() : Str
   {

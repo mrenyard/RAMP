@@ -24,18 +24,17 @@ namespace ramp\core;
  * Generic object List for encapsulation or inheritance.
  *
  * RESPONSIBILITIES
- * - Provide base implementation of iList.
- * - Allows checking of a specified 'Type' of any added/contained {@link RAMPObject}s.
+ * - Provide base implementation of {@see \ramp\core\iList iList}.
+ * - Allows checking of a specified 'Type' of any added/contained {@see \ramp\core\RAMPObject}s.
  *
  * COLLABORATORS
- * - {@link \ramp\core\RAMPObject}
- * 
- * @property-read int $count Returns number of items in list.
+ * - {@see \ramp\core\iList}
+ * - {@see \ramp\core\RAMPObject}
  */
 class oList extends RAMPObject implements iList
 {
   private $compositeType;
-  protected $list;
+  private $list;
 
   /**
    * Constructor for new instance of oList.
@@ -87,7 +86,7 @@ class oList extends RAMPObject implements iList
 
   /**
    * ArrayAccess method offsetGet.
-   * @param mixed $offset Index of requested {@link \ramp\core\RAMPObject}.
+   * @param mixed $offset Index of requested {@see \ramp\core\RAMPObject}.
    * @return \ramp\core\RAMPObject Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
@@ -128,6 +127,7 @@ class oList extends RAMPObject implements iList
   /**
    * Returns the number of items currently stored in this collection.
    * **DO NOT CALL DIRECTLY, USE this->count;**
+   * @see https://www.php.net/manual/en/class.countable.php
    * @return int Number of items in this collection
    */
   final public function count() : int
@@ -136,9 +136,7 @@ class oList extends RAMPObject implements iList
   }
 
   /**
-   * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
+   * @see \ramp\core\iList
    */
   final public function get_count() : int
   {

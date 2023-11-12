@@ -31,7 +31,7 @@ use ramp\core\RAMPObject;
  * - Work with iEnvironment in providing string literal representations of relavant operation.
  *
  * COLLABORATORS
- * - {@link \ramp\condition\iEnvironment}
+ * - {@see \ramp\condition\iEnvironment}
  */
 class Operator extends RAMPObject
 {

@@ -41,7 +41,7 @@ class AnObject extends RAMPObject {
 
   /**
    * Test setter for AnObject::aProperty
-   * @param mixed $value Value to set on {@link #aProperty}
+   * @param mixed $value Value to set on {@see #aProperty}
    */
   protected function set_aProperty($value)
   {

@@ -35,48 +35,26 @@ class MockModelCollection extends BusinessModel implements iCollection
   private $id;
   private $bProperty;
 
-  /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
   final public function get_id() : Str
   {
     return $this->processType((string)$this, TRUE);
   }
 
-  /**
-   * 
-   */
   protected function get_bProperty()
   {
     return $this->bProperty;
   }
 
-  /**
-   * 
-   */
   protected function set_bProperty($value)
   {
     $this->bProperty = $value;
   }
 
-  /**
-   * Add a reference (Record), to this collection.
-   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
-   * @throws \InvalidArgumentException When provided object NOT expected type (Record)
-   */
   final public function add(RAMPObject $object)
   {
     parent::offsetSet($this->count, $object);
   }
 
-  /**
-   * ArrayAccess method offsetSet, DO NOT USE.
-   * @param mixed $offset Index to place provided object.
-   * @param mixed $object RAMPObject to be placed at provided index.
-   * @throws \BadMethodCallException Array access setting is not allowed.
-   */
   public function offsetSet($offset, $object)
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');

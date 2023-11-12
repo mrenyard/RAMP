@@ -47,10 +47,10 @@ use tests\ramp\core\mocks\OptionListTest\SpecialistOption;
  * Collection of tests for \ramp\core\OptionList.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\core\mocks\OptionListTest\ConcreteOption}
- * - {@link \tests\ramp\core\mocks\OptionListTest\NotAnOption}
+ * - {@see \tests\ramp\core\mocks\OptionListTest\ConcreteOption}
+ * - {@see \tests\ramp\core\mocks\OptionListTest\NotAnOption}
  */
-class OptionlistTest extends \PHPUnit\Framework\TestCase
+class OptionListTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
   private $testCollection;
@@ -68,15 +68,15 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\OptionList::__construct() no arguments.
-   * - assert is instance of {@link \ramp\core\OptionList}
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\OptionList}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
    *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
-   * @link ramp.core.Collection \ramp\core\Collection
+   * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructNoAguments()
   {
@@ -107,15 +107,15 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\OptionList::__construct() with provided iOption Collection.
-   * - assert is instance of {@link \ramp\core\OptionList}
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\OptionList}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
    *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
-   * @link ramp.core.Collection \ramp\core\Collection
+   * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructWithCollection()
   {
@@ -144,15 +144,15 @@ class OptionlistTest extends \PHPUnit\Framework\TestCase
   
   /**
    * Collection of assertions for ramp\core\OptionList::__construct() for specialist iOption Collection.
-   * - assert is instance of {@link \ramp\core\OptionList}
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\OptionList}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
    *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
-   * @link ramp.core.Collection \ramp\core\Collection
+   * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructSpecialist()
   {  

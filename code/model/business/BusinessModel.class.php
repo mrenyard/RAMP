@@ -33,7 +33,7 @@ use ramp\model\Model;
  * Abstract Business Model.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  *
  * @property-read \ramp\core\Str $id Returns unique identifier (ID) for *this* (URN).
@@ -62,16 +62,12 @@ abstract class BusinessModel extends Model implements iList
   }
 
   /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
+   * @ignore
    */
   abstract protected function get_id() : Str;
 
   /**
-   * Returns type.
-   * **DO NOT CALL DIRECTLY, USE this->type;**
-   * @return \ramp\core\Str Type for *this*
+   * @ignore
    */
   protected function get_type() : Str
   {
@@ -97,6 +93,10 @@ abstract class BusinessModel extends Model implements iList
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
+  /**
+   * Set or change iteratable composite parts of *this*.
+   * @param ramp\model\busniness\BusinessModel $value New children to set.
+   */
   final protected function setChildren(BusinessModel $value) : void
   {
     $this->children = $value;
@@ -113,7 +113,7 @@ abstract class BusinessModel extends Model implements iList
 
   /**
    * ArrayAccess method offsetGet.
-   * @param mixed $offset Index of requested {@link \ramp\core\RAMPObject}.
+   * @param mixed $offset Index of requested {@see \ramp\core\RAMPObject}.
    * @return \ramp\model\business\BusinessModel Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
@@ -165,9 +165,7 @@ abstract class BusinessModel extends Model implements iList
   }
 
   /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
+   * @ignore
    */
   protected function get_hasErrors() : bool
   {
@@ -178,9 +176,7 @@ abstract class BusinessModel extends Model implements iList
   }
 
   /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
+   * @ignore
    */
   protected function get_errors() : StrCollection
   {
@@ -204,9 +200,7 @@ abstract class BusinessModel extends Model implements iList
   }
 
   /**
-   * Returns the number of children currently parented.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of parenten by *this*
+   * @ignore
    */
   final public function get_count() : int
   {

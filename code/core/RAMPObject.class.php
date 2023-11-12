@@ -24,15 +24,11 @@ namespace ramp\core;
  * Strongly typed Object used universally within RAMP.
  *
  * RESPONSIBILITIES
- *
  * - Act as superclass for all *Object*s (everything can cast to *RAMPObject*).
- *
  * - Define C# type *get* access to properties by passing
  * `$object->aProperty;` to `$object->get_aProperty();`
- *
  * - Define C# type *set* access to properties by passing
  * `$object->aProperty = $value;` to `$object->set_aProperty($value);`
- *
  * - Define default `_toString()` method.
  */
 abstract class RAMPObject
@@ -40,7 +36,7 @@ abstract class RAMPObject
   /**
    * Allows C# type access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
-   *
+   * 
    * **Passes:** `$object->aProperty;` **to:** `$object->get_aProperty();`
    *
    * Implementation in concrete Object

@@ -123,6 +123,9 @@ class Lookup extends Record
     parent::validate($postdata);
   }
 
+  /**
+   * @ignore
+   */
   public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
@@ -131,9 +134,7 @@ class Lookup extends Record
   }
 
   /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
+   * @ignore
    */
   public function get_errors() : StrCollection
   {

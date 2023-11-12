@@ -41,9 +41,9 @@ class ModelTest extends \tests\ramp\core\ObjectTest
 
   /**
    * Default base constructor assertions \ramp\model\Model::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\Model}
-   * @link ramp.model.Model ramp\model\Model
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\Model}
+   * @see ramp.model.Model ramp\model\Model
    */
   public function testConstruct()
   {
@@ -54,8 +54,8 @@ class ModelTest extends \tests\ramp\core\ObjectTest
   #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.Model#method__set ramp\model\Model::__set()
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -64,8 +64,8 @@ class ModelTest extends \tests\ramp\core\ObjectTest
 
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__get().
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.Model#method__get ramp\model\Model::__get()
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -75,8 +75,8 @@ class ModelTest extends \tests\ramp\core\ObjectTest
   /**
    * Good property is accessable on \ramp\model\Model::__get() and \ramp\model\Model::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.Model#method___set \ramp\model\Model::__set()
-   * @link ramp.model.Model#method___get \ramp\model\Model::__get()
+   * @see \ramp\model\Model::__set()
+   * @see \ramp\model\Model::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -85,8 +85,8 @@ class ModelTest extends \tests\ramp\core\ObjectTest
 
   /**
    * Correct return of ramp\model\Model::__toString().
-   * - assert {@link \ramp\model\Model::__toString()} returns string 'class name'
-   * @link ramp.model.Model#method___toString \ramp\model\Model::__toString()
+   * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
+   * @see \ramp\model\Model::__toString()
    */
   public function testToString()
   {

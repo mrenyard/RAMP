@@ -26,7 +26,7 @@ use ramp\core\RAMPObject;
  * Abstract Model definition.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject})
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject})
  */
 abstract class Model extends RAMPObject
 {

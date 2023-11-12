@@ -31,18 +31,19 @@ use ramp\view\document\DocumentView;
  * 
  * RESPONSIBILITIES
  * - Manages definition of Template to be used as view (fragment) for presentation.  
- * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+ * - Enable read access to associated {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
  * - Template used to define view to render (.tpl.php)
  *   - (RAMP\code|local\ramp)\view\document\template\(text|html|pdf)\[...].tpl.php
- * - {@link \ramp\view\View}
- * - {@link \ramp\model\business\BusinessModel}
- * - {@link \ramp\model\document\DocumentModel}
+ * - {@see \ramp\view\View}
+ * - {@see \ramp\model\business\BusinessModel}
+ * - {@see \ramp\model\document\DocumentModel}
  * 
- * @todo mrenyard:Add property-read/write for get_ methods 
+ * @property-write \ramp\core\Str $templateType Set/Change type of template (text|html|pdf) used as part of path to definite view to render().
+ * @property-read bool $hasModel Returns full template path of template to render().
  */
 class Templated extends DocumentView
 {
@@ -88,9 +89,7 @@ class Templated extends DocumentView
   }
 
   /**
-   * Set/Change type of template (text|html|pdf) used as part of path to definite view to render()
-   * @param \ramp\coreStr $value Str representing template type (text|html|pdf).
-   * @throws \ramp\core\PropertyNotSetException When provided template type value does NOT translate to a valid file path.
+   * @ignore
    */
   protected function set_templateType(Str $value)
   {
@@ -105,9 +104,7 @@ class Templated extends DocumentView
   }
 
   /**
-   * Accessor for full template path.
-   * **DO NOT CALL DIRECTLY, USE this->template;**
-   * @return string $tempatePath Full path to template file
+   * @ignore
    */
   protected function get_template()
   {
@@ -116,7 +113,7 @@ class Templated extends DocumentView
 
   /**
    * Render relevant output.
-   * Combining data {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+   * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
   public function render()

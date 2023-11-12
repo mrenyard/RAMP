@@ -84,7 +84,7 @@ class MockBusinessModelManager extends BusinessModelManager
    * @param \ramp\condition\Filter $filter Optional Filter to be apply to Model
    * @param int $fromIndex Optional index for first entry in a collection
    * @return \ramp\model\Model Relevant requested Model object
-   * @throws \DomainException When {@link \ramp\model\business\BusinessModel}(s) NOT found
+   * @throws \DomainException When {@see \ramp\model\business\BusinessModel}(s) NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = NULL, $fromIndex = NULL) : BusinessModel
@@ -171,9 +171,9 @@ class MockBusinessModelManager extends BusinessModelManager
 
 
   /**
-   * Update {@link Model} to any permanent data store.
+   * Update {@see Model} to any permanent data store.
    * @param BusinessModel Object to be updated
-   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
+   * @throws \InvalidArgumentException when {@see \ramp\model\business\BusinessModel}
    *  was not initially retrieved using this BusinessModelManager
    */
   public function update(BusinessModel $model)

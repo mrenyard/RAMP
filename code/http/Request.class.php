@@ -34,13 +34,13 @@ use ramp\http\Method;
  *
  * RESPONSIBILITIES
  * - Interpret HTTP request
- * - Act as {@link \ramp\model\business\iBusinessModelDefinition}
+ * - Act as {@see \ramp\model\business\iBusinessModelDefinition}
  *
  * COLLABORATORS
- * - {@link ramp\model\business\iBusinessModelDefinition}
- * - {@link ramp\condition\PostData}
- * - {@link ramp\condition\Filter}
- * - {@link ramp\http\Method}
+ * - {@see ramp\model\business\iBusinessModelDefinition}
+ * - {@see ramp\condition\PostData}
+ * - {@see ramp\condition\Filter}
+ * - {@see ramp\http\Method}
  * - $_SERVER
  * - $_POST
  * - $_GET
@@ -56,10 +56,10 @@ use ramp\http\Method;
  * }
  * ...
  * ```
- * @link https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
- * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
- * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
- * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
+ * @see https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
+ * @see https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
+ * @see https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
+ * @see https://www.ietf.org/rfc/rfc2396.txt URI Specification
  *
  * @property-read bool $expectsFragment Returns whether this request is expecting a document fragment or a complete document.
  * @property-read \ramp\http\Method $method Returns request Method (Verb) (based on HTTP/1.1 specification).
@@ -158,9 +158,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Is this request expecting a document fragment or a complete document.
-   * **DO NOT CALL DIRECTLY, USE this->expectsFragment;**
-   * @return bool Expects document fragment
+   * @ignore
    */
   protected function get_expectsFragment() : bool
   {
@@ -168,10 +166,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns request Method (Verb) (based on HTTP/1.1 specification).
-   * **DO NOT CALL DIRECTLY, USE this->method;**
-   * @link https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
-   * @return \ramp\Method Requested Method
+   * @ignore
    */
   protected function get_method() : Method
   {
@@ -179,10 +174,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns Uniform Resource Name (URN) of requested ramp\model\Model or NULL.
-   * **DO NOT CALL DIRECTLY, USE this->modelURN;**
-   * @link https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
-   * @return \ramp\core\Str URN of requested ramp\model\Model or NULL.
+   * @ignore
    */
   protected function get_modelURN() : ?Str
   {
@@ -226,10 +218,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns Uniform Resource Identifier (URI) of requested resource.
-   * **DO NOT CALL DIRECTLY, USE this->resourceURL;**
-   * @link https://www.ietf.org/rfc/rfc2396.txt URI Specification
-   * @return \ramp\core\Str URI of requested resource
+   * @ignore
    */
   protected function get_resourceIdentifier() : Str
   {
@@ -237,9 +226,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns any requested starting point within a collection.
-   * **DO NOT CALL DIRECTLY, USE this->fromIndex;**
-   * @return int Index to start index from
+   * @ignore
    */
   protected function get_fromIndex() : int
   {
@@ -247,9 +234,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns any filter to apply to a collection.
-   * **DO NOT CALL DIRECTLY, USE this->filter;**
-   * @return \ramp\condition\Filter Filter to be applied to collection
+   * @ignore
    */
   protected function get_filter() : ?Filter
   {
@@ -257,9 +242,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   }
 
   /**
-   * Returns any data for posting sent with request.
-   * **DO NOT CALL DIRECTLY, USE this->postData;**
-   * @return \ramp\condition\PostData Data collection to be posted
+   * @ignore
    */
   protected function get_postData() : ?PostData
   {

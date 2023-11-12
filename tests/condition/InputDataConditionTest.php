@@ -54,9 +54,9 @@ use tests\ramp\condition\mocks\InputDataConditionTest\MockEnvironment;
  * Collection of tests for \ramp\condition\InputDataCondition.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\InputDataConditionTest\MockEnvironment}
- * - {@link \tests\ramp\condition\mocks\InputDataConditionTest\Property}
- * - {@link \tests\ramp\condition\mocks\InputDataConditionTest\Record}
+ * - {@see \tests\ramp\condition\mocks\InputDataConditionTest\MockEnvironment}
+ * - {@see \tests\ramp\condition\mocks\InputDataConditionTest\Property}
+ * - {@see \tests\ramp\condition\mocks\InputDataConditionTest\Record}
  */
 class InputDataConditionTest extends \PHPUnit\Framework\TestCase
 {
@@ -79,13 +79,13 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\conditon\InputDataCondition::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\condition\Condition}
-   * - assert is instance of {@link \ramp\condition\BusinessCondition}
-   * - assert is instance of {@link \ramp\condition\InputDataCondition}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Condition}
+   * - assert is instance of {@see \ramp\condition\BusinessCondition}
+   * - assert is instance of {@see \ramp\condition\InputDataCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
    *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
-   * @link ramp.condition.InputDataCondition#method___construct ramp\condition\InputDataCondition
+   * @see ramp.condition.InputDataCondition#method___construct ramp\condition\InputDataCondition
    */
   public function test__Construct()
   {
@@ -117,12 +117,12 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\InputDataCondition::$primaryKeyValue.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set '$primaryKeyValue'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set '$primaryKeyValue'
    *   - with message: <em>'[className]->$primaryKeyValue is NOT settable'</em>
    * - assert allows retrieval of '$primaryKeyValue'
-   * - assert '$primaryKeyValue' is a {@link \ramp\core\Str}
+   * - assert '$primaryKeyValue' is a {@see \ramp\core\Str}
    * - assert '$primaryKeyValue' equal to provided at creation
-   * @link ramp.condition.InputDataCondition#method_get_$primaryKeyValue ramp\condition\InputDataCondition::$primaryKeyValue
+   * @see ramp.condition.InputDataCondition#method_get_$primaryKeyValue ramp\condition\InputDataCondition::$primaryKeyValue
    */
   public function testPrimaryKeyValue()
   {
@@ -143,13 +143,13 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\condition\InputDataCondition::value.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'value'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'value'
    *   - with message: <em>'[className]->value is NOT settable'</em>
    * - assert allows setting of 'comparable'
    * - assert allows retrieval of 'value'
    * - assert 'value' equal to recently set 'comparable'
    * - assert 'value' equal to that provided creation
-   * @link ramp.condition.InputDataCondition#method_get_value ramp\condition\InputDataCondition::value
+   * @see ramp.condition.InputDataCondition#method_get_value ramp\condition\InputDataCondition::value
    */
   public function testValue()
   {
@@ -176,12 +176,12 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
 
     /**
    * Collection of assertions for \ramp\condition\InputDataCondition::attributeURN.
-   * - assert throws {@link \ramp\core\PropertyNotSetException} trying to set 'attributeURN'
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attributeURN'
    *   - with message: <em>'[className]->attributeURN is NOT settable'</em>
    * - assert allows retrieval of 'attributeURN'
-   * - assert retreved is an instance of {@link \ramp\core\Str}
+   * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert 'attributeURN' equal to record:key:property
-   * @link ramp.condition.InputDataCondition#method_get_attributeURN ramp\condition\InputDataCondition::attributeURN
+   * @see ramp.condition.InputDataCondition#method_get_attributeURN ramp\condition\InputDataCondition::attributeURN
    */
   public function testAttributeURN()
   {
@@ -218,7 +218,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    *  - [record]:[key]:[property]=[newValue] where new values is the passes second argument.
    * - assert returns expected string where both arguments are suplied in the form:
    *  - [record][memberAccessOperator][key][memberAccessOperator][property][assignmentOperator][openingParenthesisOperator][passedValue][closingParenthesisOperator]
-   * @link ramp.condition.InputDataCondition#method__invoke ramp\condition\InputDataCondition::__invoke()
+   * @see ramp.condition.InputDataCondition#method__invoke ramp\condition\InputDataCondition::__invoke()
    */
   public function test__invoke()
   {

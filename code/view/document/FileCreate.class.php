@@ -32,16 +32,16 @@ use ramp\view\View;
  * RESPONSIBILITIES
  * - Write or replaces a file at the provided location.  
  * - Manages definition of Template to be used as view (fragment) for presentation.  
- * - Enable read access to associated {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+ * - Enable read access to associated {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@link \ramp\model\business\BusinessModel}.
+ *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\business\BusinessModel}.
  * 
  * COLLABORATORS
  * - Template used to define view to render and send (.tpl.php)
  *   - (RAMP\code|local\ramp)\view\document\template\(text|html|pdf)\[...].tpl.php
- * - {@link \ramp\view\View}
- * - {@link \ramp\model\business\BusinessModel}
- * - {@link \ramp\model\document\DocumentModel}
+ * - {@see \ramp\view\View}
+ * - {@see \ramp\model\business\BusinessModel}
+ * - {@see \ramp\model\document\DocumentModel}
  */
 final class FileCreate extends Templated
 {
@@ -66,7 +66,7 @@ final class FileCreate extends Templated
 
   /**
    * Render and write to file the relevant output.
-   * Combining data {@link \ramp\model\business\BusinessModel} and {@link \ramp\model\document\DocumentModel}
+   * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
   final public function render()

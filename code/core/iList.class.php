@@ -24,14 +24,21 @@ namespace ramp\core;
  * Interface for list.
  *
  * RESPONSIBILITIES
- * - Enforce base api of \IteratorAggregate and \ArrayAccess.
+ * - Enforce base api of \IteratorAggregate, \ArrayAccess and \Countable.
+ * 
+ * COLLABORATORS
+ * - IteratorAggregate ({@see https://www.php.net/manual/class.iteratoraggregate.php})
+ * - ArrayAccess ({@see https://www.php.net/manual/class.arrayaccess.php})
+ * - Countable ({@see https://www.php.net/manual/class.countable.php})
+ * 
+ * @property-read int $count Returns the number of items currently stored in this collection.
  */
 interface iList extends \IteratorAggregate, \ArrayAccess, \Countable
 {
   /**
-   * Returns the number of items currently stored in this collection.
+   * Returns the number of items currently referanced in *this* list.
    * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @return int Number of items in this collection
+   * @return int Number of items in *this* list
    */
   public function get_count() : int;
 }

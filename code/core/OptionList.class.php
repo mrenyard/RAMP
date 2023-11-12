@@ -24,19 +24,19 @@ namespace ramp\core;
  * Collection for iOption.
  *
  * RESPONSIBILITIES
- * - Holds references to collection of varifiable {@link iOption}s.
- * - Implements the functionality of {@link iCollection}.
+ * - Holds references to collection of varifiable {@see iOption}s.
+ * - Implements the functionality of {@see iCollection}.
  *
  * COLLABORATORS
- * - {@link \ramp\core\Collection}
- * - {@link \ramp\core\iOption}
+ * - {@see \ramp\core\Collection}
+ * - {@see \ramp\core\iOption}
  */
 class OptionList extends Collection
 {
   /**
    * Constructor for new instance of OptionList.
    * POSTCONDITIONS
-   * - New collection containing provided {@link \ramp\core\iOption}s from $optionCastableCollection or Empty.
+   * - New collection containing provided {@see \ramp\core\iOption}s from $optionCastableCollection or Empty.
    * @param \ramp\core\iCollection $iOptionCastableCollection Collection of iOptions to be stored in *this*.
    * @param \ramp\core\Str $iOptionCastableType Full class name for Type of objects to be stored in this collection.
    * @throws \InvalidArgumentException When any composite of provided collection is NOT castable to provided $iOptionCastableType or iOption.

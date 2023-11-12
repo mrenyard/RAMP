@@ -57,10 +57,10 @@ class TinyIntTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\Interger::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\Interger}
-   * @link ramp.model.business.validation.dbtype.Interger \ramp\model\business\validation\dbtype\Interger
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\Interger}
+   * @see ramp.model.business.validation.dbtype.Interger \ramp\model\business\validation\dbtype\Interger
    */
   public function test__Construct()
   {
@@ -73,8 +73,8 @@ class TinyIntTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\Interger::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.Interger#method_process \ramp\model\business\validation\dbtype\Interger::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see \ramp\model\business\validation\dbtype\Interger::process()
    */
   public function testTest()
   {

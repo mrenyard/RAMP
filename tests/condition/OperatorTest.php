@@ -37,7 +37,7 @@ use tests\ramp\condition\mocks\OperatorTest\ConcreteEnvironment;
  * Collection of tests for \ramp\condition\Operator.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\OperatorTest\ConcreteEnvironment}
+ * - {@see \tests\ramp\condition\mocks\OperatorTest\ConcreteEnvironment}
  */
 class OperatorTest extends \PHPUnit\Framework\TestCase
 {
@@ -54,7 +54,7 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::getInstance().
    * - assert __constructor inaccessible (private).
-   * @link ramp.condition.Environment#method_getInstance ramp\condition\Environment\getInstance()
+   * @see \ramp\condition\Environment\getInstance()
    */
   public function testGetInstance()
   {
@@ -70,10 +70,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::MEMBER_ACCESS().
    * - assert returns expected specilized 'member access' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_MEMBER_ACCESS ramp\condition\Environment\MEMBER_ACCESS()
+   * @see \ramp\condition\Environment\MEMBER_ACCESS()
    */
   public function testMEMBER_ACCESS()
   {
@@ -89,10 +89,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::ASSIGNMENT().
    * - assert returns expected specilized 'assignment' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_ASSIGNMENT ramp\condition\Environment\ASSIGNMENT()
+   * @see \ramp\condition\Environment\ASSIGNMENT()
    */
   public function testASSIGNMENT()
   {
@@ -107,10 +107,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::EQUAL_TO().
    * - assert returns expected specilized 'equal to' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_EQUAL_TO ramp\condition\Environment\EQUAL_TO()
+   * @see \ramp\condition\Environment\EQUAL_TO()
    */
   public function testEQUAL_TO()
   {
@@ -125,10 +125,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::NOT_EQUAL_TO().
    * - assert returns expected specilized 'not equal to' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_NOT_EQUAL_TO ramp\condition\Environment\NOT_EQUAL_TO()
+   * @see \ramp\condition\Environment\NOT_EQUAL_TO()
    */
   public function testNOT_EQUAL_TO()
   {
@@ -143,10 +143,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::LESS_THAN().
    * - assert returns expected specilized 'less than' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_LESS_THAN ramp\condition\Environment\LESS_THAN()
+   * @see \ramp\condition\Environment\LESS_THAN()
    */
   public function testLESS_THAN()
   {
@@ -161,10 +161,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::GREATER_THAN().
    * - assert returns expected specilized 'greater than' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_GREATER_THAN ramp\condition\Environment\GREATER_THAN()
+   * @see \ramp\condition\Environment\GREATER_THAN()
    */
   public function testGREATER_THAN()
   {
@@ -179,10 +179,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::AND().
    * - assert returns expected specilized 'and' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_AND ramp\condition\Environment\AND()
+   * @see \ramp\condition\Environment\AND()
    */
   public function testAND()
   {
@@ -197,10 +197,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::OR().
    * - assert returns expected specilized 'or' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_OR ramp\condition\Environment\OR()
+   * @see \ramp\condition\Environment\OR()
    */
   public function testOR()
   {
@@ -215,10 +215,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::OPENING_PARENTHESIS().
    * - assert returns expected specilized 'opening parenthesis' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_OPENING_PARENTHESIS ramp\condition\Environment\OPENING_PARENTHESIS()
+   * @see \ramp\condition\Environment\OPENING_PARENTHESIS()
    */
   public function testOPENING_PARENTHESIS()
   {
@@ -233,10 +233,10 @@ class OperatorTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Operator::CLOSING_PARENTHESIS().
    * - assert returns expected specilized 'closing parenthesis' instance of Operator.
-   * - assert is instance of {@link \ramp\condition\Operator}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Operator}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert returns the SAME instance on every subsequent call.
-   * @link ramp.condition.Environment#method_CLOSING_PARENTHESIS ramp\condition\Environment\CLOSING_PARENTHESIS()
+   * @see \ramp\condition\Environment\CLOSING_PARENTHESIS()
    */
   public function testCLOSING_PARENTHESIS()
   {

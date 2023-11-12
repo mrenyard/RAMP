@@ -61,10 +61,10 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\DecimalPointNumber::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\DecimalPointNumber}
-   * @link ramp.model.business.validation.dbtype.DecimalPointNumber \ramp\model\business\validation\dbtype\DecimalPointNumber
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\DecimalPointNumber}
+   * @see ramp.model.business.validation.dbtype.DecimalPointNumber \ramp\model\business\validation\dbtype\DecimalPointNumber
    */
   public function test__Construct()
   {
@@ -77,8 +77,8 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\DecimalPointNumber::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.DecimalPointNumber#method_process \ramp\model\business\validation\dbtype\DecimalPointNumber::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see ramp.model.business.validation.dbtype.DecimalPointNumber#method_process \ramp\model\business\validation\dbtype\DecimalPointNumber::process()
    */
   public function testTest()
   {

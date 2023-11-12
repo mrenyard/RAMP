@@ -31,8 +31,8 @@ use ramp\model\business\Record;
  * - Describe base api for an authenticatible unit.
  *
  * COLLABORATORS
- * - extends {@link ramp\model\business\Record}
- * - used by {@link ramp\model\business\LoginAccount}
+ * - extends {@see ramp\model\business\Record}
+ * - used by {@see ramp\model\business\LoginAccount}
  *
  * @property-read \ramp\model\business\field\Field $email Returns an email address field.
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
@@ -42,9 +42,7 @@ abstract class AuthenticatableUnit extends Record
   private $email;
 
   /**
-   * Get email
-   * **DO NOT CALL DIRECTLY, USE this->email;**
-   * @return field\Field Containing value for email.
+   * @ignore
    */
   protected function get_email() : field\Field
   {
@@ -65,9 +63,7 @@ abstract class AuthenticatableUnit extends Record
   }
 
   /**
-   * Returns whether data is in a valid/complete state from data store or as new.
-   * **DO NOT CALL DIRECTLY, USE this->isValid;**
-   * @return bool Value of isValid
+   * @ignore
    */
   final protected function get_isValid() : bool
   {

@@ -48,10 +48,10 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\Alphanumeric::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\Alphanumeric}
-   * @link ramp.model.business.validation.Alphanumeric \ramp\model\business\validation\Alphanumeric
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\Alphanumeric}
+   * @see ramp.model.business.validation.Alphanumeric \ramp\model\business\validation\Alphanumeric
    */
   public function test__Construct()
   {
@@ -63,8 +63,8 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\Alphanumeric::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.Alphanumeric#method_process \ramp\model\business\validation\Alphanumeric::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see \ramp\model\business\validation\Alphanumeric::process()
    */
   public function testTest()
   {

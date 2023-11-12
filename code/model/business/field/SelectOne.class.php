@@ -30,14 +30,14 @@ use ramp\model\business\FailedValidationException;
  * its parent \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
  * - Hold referance back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to validate against avalible iOptions.
  * 
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- * - {@link \ramp\core\OptionList}
+ * - {@see \ramp\model\business\Record}
+ * - {@see \ramp\core\OptionList}
  */
 final class SelectOne extends SelectFrom
 {

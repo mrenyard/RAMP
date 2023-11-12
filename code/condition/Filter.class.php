@@ -35,9 +35,9 @@ use ramp\condition\SQLEnvironment;
  *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
  * COLLABORATORS
- * - Collection of {@link \ramp\condition\FilterCondition}s
- * - {@link \ramp\model\business\RecordCollection}
- * - {@link \ramp\model\business\Record}
+ * - Collection of {@see \ramp\condition\FilterCondition}s
+ * - {@see \ramp\model\business\RecordCollection}
+ * - {@see \ramp\model\business\Record}
  */
 final class Filter extends Collection
 {
@@ -45,7 +45,7 @@ final class Filter extends Collection
 
   /**
    * Constructs an empty collection for \ramp\condition\FilterCondition.
-   * A collection of verified filters for filtering collections of {@link \ramp\model\business\Record}s
+   * A collection of verified filters for filtering collections of {@see \ramp\model\business\Record}s
    * - restricted and evaluated by the constraints of your business model
    *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
    */

@@ -32,7 +32,7 @@ use ramp\core\RAMPObject;
  * - Works with other ValidationRules to provide more complex set of tests.
  *
  * COLLABORATORS
- * - {@link \ramp\validation\ValidationRule}
+ * - {@see \ramp\validation\ValidationRule}
  */
 abstract class ValidationRule extends RAMPObject
 {

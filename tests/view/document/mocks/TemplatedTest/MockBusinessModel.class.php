@@ -31,29 +31,15 @@ class MockBusinessModel extends BusinessModel
 {
   private $aProperty;
 
-  /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
-   */
   protected function get_id() : Str
   {
   }
 
-  /**
-   * Accessor for aProperty test article
-   * **DO NOT CALL DIRECTLY, USE this->aProperty;**
-   */
   protected function get_aProperty()
   {
     return $this->aProperty;
   }
 
-  /**
-   * Setter for aProperty test article
-   * **DO NOT CALL DIRECTLY, USE this->aProperty = $value;**
-   * @param mixed $value Value to set.
-   */
   protected function set_aProperty($value)
   {
     $this->aProperty = $value;

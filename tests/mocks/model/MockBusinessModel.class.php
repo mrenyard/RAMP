@@ -65,19 +65,10 @@ class MockBusinessModel extends BusinessModel
     $this->withError = $withError;
   }
 
-  /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Str('uid-1')
-   */
   public function get_id() : Str
   {
   }
 
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
   public function validate(PostData $postdata) : void
   {
     $this->validateCount++;
@@ -91,11 +82,6 @@ class MockBusinessModel extends BusinessModel
     return parent::get_hasErrors();
   }
 
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
   public function get_errors() : StrCollection
   {
     $this->errorsTouchCount++;

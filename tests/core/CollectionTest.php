@@ -42,8 +42,8 @@ use tests\ramp\core\mocks\CollectionTest\BadObject;
  * Collection of tests for \ramp\core\Collection.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\CollectionTest\AnObject}
- * - {@link \tests\ramp\condition\mocks\CollectionTest\BadObject}
+ * - {@see \tests\ramp\condition\mocks\CollectionTest\AnObject}
+ * - {@see \tests\ramp\condition\mocks\CollectionTest\BadObject}
  */
 class CollectionTest extends \PHPUnit\Framework\TestCase
 {
@@ -61,15 +61,15 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Collection::__construct().
-   * - assert is instance of {@link \ramp\core\Collection}
-   * - assert is instance of {@link \ramp\core\iCollection}
-   * - assert is instance of {@link \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\Collection}
+   * - assert is instance of {@see \ramp\core\iCollection}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert implements \IteratorAggregate
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
-   * @link ramp.core.Collection \ramp\core\Collection
+   * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__Construct()
   {
@@ -93,14 +93,14 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Collection::isCompositeType().
    * - assert returns TRUE when $compositeType name provided to constructor is
-   *    same as provided {@link \ramp\core\Str}
+   *    same as provided {@see \ramp\core\Str}
    * - assert evaluates TRUE where $compositeType name provided to constructor is
-   *    same as provided {@link \ramp\core\Str}
+   *    same as provided {@see \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided to constructor is
-   *    NOT same as provided {@link \ramp\core\Str}
+   *    NOT same as provided {@see \ramp\core\Str}
    * - assert evaluates FALSE where $compositeType name provided to constructor is
-   *    NOT same as provided {@link \ramp\core\Str}
-   * @link ramp.core.Collection#method_isCompositeType \ramp\core\Collection::isCompositeType()
+   *    NOT same as provided {@see \ramp\core\Str}
+   * @see \ramp\core\Collection::isCompositeType()
    */
   public function testIsCompositeType()
   {
@@ -112,16 +112,16 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
-   * - assert handle unpopulated {@link \ramp\core\Collection} iteration without fail
-   * - assert {@link \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   * - assert handle unpopulated {@see \ramp\core\Collection} iteration without fail
+   * - assert {@see \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
-   * - assert {@link \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
    *   - with message: <em>'Offset out of bounds'</em>
-   * @link ramp.core.Collection#method_getIterator \ramp\core\Collection::getIterator()
-   * @link ramp.core.Collection#method_add \ramp\core\Collection::add()
-   * @link ramp.core.Collection#method_count \ramp\core\Collection::count
+   * @see \ramp\core\Collection::getIterator()
+   * @see \ramp\core\Collection::add()
+   * @see \ramp\core\Collection::count
    */
   public function testIteratorAddCount()
   {
@@ -212,11 +212,11 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\core\Collection::offsetSet().
-   * - assert {@link \ramp\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   * - assert {@see \ramp\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
    *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
-   * @link ramp.core.Collection#method_offsetSet \ramp\core\mocks\CollectionTest\Collection::offsetSet()
+   * @see \ramp\core\mocks\CollectionTest\Collection::offsetSet()
    */
   public function testOffsetSet()
   {
@@ -246,7 +246,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index is no longer retivable at same index.
    * @depends testOffsetSet
    * @param Collection The test object.
-   * @link ramp.core.Collection#method_offsetUnset \ramp\core\mocks\CollectionTest\Collection::offsetUnset()
+   * @see \ramp\core\mocks\CollectionTest\Collection::offsetUnset()
    */
   public function testOffsetUnset(Collection $testObject)
   {
@@ -262,7 +262,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\Collection::__clone().
    * - assert Shallow Cloning (default) composite collection is referenced only
    * - assert when Deep Cloning that NEW objects are formed with same values
-   * @link ramp.core.Collection#method__clone \ramp\core\mocks\CollectionTest\Collection::__clone()
+   * @see \ramp\core\mocks\CollectionTest\Collection::__clone()
    */
   public function test__clone()
   {

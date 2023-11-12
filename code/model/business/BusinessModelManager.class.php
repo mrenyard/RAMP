@@ -44,15 +44,15 @@ abstract class BusinessModelManager extends RAMPObject
    * @param \ramp\condition\Filter $filter Optional Filter to be apply to BusinessModel
    * @param int $fromIndex Optional index of first entry in a collection
    * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
-   * @throws \DomainException When {@link \ramp\model\business\BusinessModel}(s) NOT found
+   * @throws \DomainException When {@see \ramp\model\business\BusinessModel}(s) NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   abstract public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel;
 
   /**
-   * Update {@link BusinessModel} to any permanent data store
+   * Update {@see BusinessModel} to any permanent data store
    * @param \ramp\model\business\BusinessModel $model BusinessModel object to be updated
-   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
+   * @throws \InvalidArgumentException when {@see \ramp\model\business\BusinessModel}
    *  was not initially retrieved using *this* BusinessModelManager
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */

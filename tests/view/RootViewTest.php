@@ -63,7 +63,7 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\RootView::__construct().
    * - assert constructor inaccessible
-   * @link ramp.view.RootView ramp\view\RootView
+   * @see ramp.view.RootView ramp\view\RootView
    */
   public function test__construct()
   {
@@ -73,11 +73,11 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\view\RootView::getInstance().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * - assert is instance of {@link \ramp\view\RootView}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * - assert is instance of {@see \ramp\view\RootView}
    * - assert is same instance on every call (Singleton)
-   * @link ramp.view.RootView#method_getInstance ramp\view\RootView::getInstance()
+   * @see ramp.view.RootView#method_getInstance ramp\view\RootView::getInstance()
    */
   public function testGetInstance()
   {
@@ -93,8 +93,8 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
    * and \ramp\view\RootView::add().
    * - assert each child view added sequentially
    * - assert render() output maintains sequance and format
-   * @link ramp.view.RootView#method_add ramp\view\RootView::add()
-   * @link ramp.view.RootView#method_render ramp\view\RootView::render()
+   * @see ramp.view.RootView#method_add ramp\view\RootView::add()
+   * @see ramp.view.RootView#method_render ramp\view\RootView::render()
    */
   public function testAddRender()
   {
@@ -145,7 +145,7 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\RootView::__clone.
    * - assert cannot be cloned, throwing \BadMethodCallException
    *   - with message *Cloning is not allowed*
-   * @link ramp.view.RootView#method__clone ramp\view\RootView::__clone()
+   * @see ramp.view.RootView#method__clone ramp\view\RootView::__clone()
    */
   public function test__clone()
   {

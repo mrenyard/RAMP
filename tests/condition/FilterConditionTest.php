@@ -55,9 +55,9 @@ use tests\ramp\condition\mocks\FilterConditionTest\MockEnvironment;
  * Collection of tests for \ramp\condition\FilterCondition.
  *
  * COLLABORATORS
- * - {@link \tests\ramp\condition\mocks\FilterConditionTest\MockEnvironment}
- * - {@link \tests\ramp\condition\mocks\FilterConditionTest\Property}
- * - {@link \tests\ramp\condition\mocks\FilterConditionTest\Record}
+ * - {@see \tests\ramp\condition\mocks\FilterConditionTest\MockEnvironment}
+ * - {@see \tests\ramp\condition\mocks\FilterConditionTest\Property}
+ * - {@see \tests\ramp\condition\mocks\FilterConditionTest\Record}
  */
 class FilterConditionTest extends \PHPUnit\Framework\TestCase {
 
@@ -78,15 +78,15 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\FilterCondition::__construct.
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\condition\Condition}
-   * - assert is instance of {@link \ramp\condition\BusinessCondition}
-   * - assert is instance of {@link \ramp\condition\FilterCondition}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\condition\Condition}
+   * - assert is instance of {@see \ramp\condition\BusinessCondition}
+   * - assert is instance of {@see \ramp\condition\FilterCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
    *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
    * - assert throws \DomainException when $value does Not validate against associated property
    *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
-   * @link ramp.condition.FilterCondition#method___construct ramp\condition\FilterCondition
+   * @see ramp.condition.FilterCondition#method___construct ramp\condition\FilterCondition
    */
   public function test__Construct()
   {
@@ -125,7 +125,7 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
    * - assert throws \DomainException on setting invalid second argument for value when it
    *   does Not validate against its associated property's processValidationRules() method
    *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
-   * @link ramp.condition.FilterCondition#method__invoke ramp\condition\FilterCondition::__invoke()
+   * @see ramp.condition.FilterCondition#method__invoke ramp\condition\FilterCondition::__invoke()
    */
   public function test__invoke()
   {

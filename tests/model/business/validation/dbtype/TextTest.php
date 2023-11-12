@@ -60,10 +60,10 @@ class TextTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for ramp\validation\dbtype\Text::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@link \ramp\model\business\validation\Text}
-   * @link ramp.model.business.validation.dbtype.Text \ramp\model\business\validation\dbtype\Text
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\Text}
+   * @see ramp.model.business.validation.dbtype.Text \ramp\model\business\validation\dbtype\Text
    */
   public function test__Construct()
   {
@@ -76,8 +76,8 @@ class TextTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\model\business\validation\dbtype\Text::process().
    * - assert void returned when test successful
-   * - assert {@link \ramp\model\business\FailedValidationException} thrown when test fails
-   * @link ramp.model.business.validation.dbtype.Text#method_process \ramp\model\business\validation\dbtype\Text::process()
+   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
+   * @see \ramp\model\business\validation\dbtype\Text::process()
    */
   public function testTest()
   {

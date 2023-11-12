@@ -24,11 +24,11 @@ namespace ramp\core;
  * Collection for Strongly typed Str(ings).
  *
  * RESPONSIBILITIES
- * - Hold reference to a collection of {@link \ramp\core\Str} objects.
+ * - Hold reference to a collection of {@see \ramp\core\Str} objects.
  * - Provide an API for set of simple Str collection based functions.
  *
  * COLLABORATORS
- * - {@link \ramp\core\Str}
+ * - {@see \ramp\core\Str}
  */
 final class StrCollection extends Collection
 {

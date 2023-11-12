@@ -87,11 +87,6 @@ class RecordA extends Record
     return $this[0];
   }
 
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
   public function validate(PostData $postdata) : void
   {
     $this->validateCount++;
@@ -105,11 +100,6 @@ class RecordA extends Record
     return parent::get_hasErrors();
   }
 
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
   public function get_errors() : StrCollection
   {
     $this->errorsTouchCount++;

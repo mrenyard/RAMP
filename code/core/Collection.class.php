@@ -24,12 +24,13 @@ namespace ramp\core;
  * Generic collection for encapsulation or inheritance.
  *
  * RESPONSIBILITIES
- * - Provide base implementation of iCollection.
- * - Allows checking of a specified 'Type' of any added/contained {@link RAMPObject}s.
+ * - Provide base implementation of {@see \ramp\core\iCollection}.
+ * - Allows checking of a specified 'Type' of any added/contained {@see \ramp\core\RAMPObject}s.
  * - Configure and manage shallow or deep cloning.
  *
  * COLLABORATORS
- * - {@link \ramp\core\RAMPObject}
+ * - {@see \ramp\core\iCollection}
+ * - {@see \ramp\core\RAMPObject}
  *
  * @property-read int $count Returns the number of items currently stored in this collection.
  */
@@ -74,9 +75,8 @@ class Collection extends oList implements iCollection
     if ($this->deepClone) {
       $new = array();
       foreach ($this as $key => $value) {
-        $new[$key] = clone $value;
+        $this[$key] = clone $value;
       }
-      $this->list = $new;
     }
   }
 }

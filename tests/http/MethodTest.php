@@ -41,7 +41,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * Collection of assertions for \ramp\http\Method::GET().
    * - assert throws InvalidArgumentException When first constructor arguments NOT an int
    *   - with message: <em>'[className]::constructor expects first argument of type int.'</em>
-   * @link ramp.http.Method#method__construct ramp\http\Method::__construct()
+   * @see \ramp\http\Method::__construct()
    */
   public function test__Construct()
   {
@@ -59,11 +59,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::GET().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'GET' when cast to string
-   * @link ramp.http.Method#method_GET ramp\http\Method::GET()
+   * @see \ramp\http\Method::GET()
    */
   public function testGet()
   {
@@ -76,11 +76,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::POST().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'POST' when cast to string
-   * @link ramp.http.Method#method_POST ramp\http\Method::POST()
+   * @see \ramp\http\Method::POST()
    */
   public function testPOST()
   {
@@ -93,11 +93,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::LOCK().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'LOCK' when cast to string
-   * @link ramp.http.Method#method_LOCK ramp\http\Method::LOCK()
+   * @see \ramp\http\Method::LOCK()
    */
   public function testLOCK()
   {
@@ -110,11 +110,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::UNLOCK().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'UNLOCK' when cast to string
-   * @link ramp.http.Method#method_UNLOCK ramp\http\Method::UNLOCK()
+   * @see \ramp\http\Method::UNLOCK()
    */
   public function testUNLOCK()
   {
@@ -127,11 +127,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::PUT().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'PUT' when cast to string
-   * @link ramp.http.Method#method_PUT ramp\http\Method::PUT()
+   * @see \ramp\http\Method::PUT()
    */
   public function testPUT()
   {
@@ -144,11 +144,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::MOVE().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'MOVE' when cast to string
-   * @link ramp.http.Method#method_MOVE ramp\http\Method::MOVE()
+   * @see \ramp\http\Method::MOVE()
    */
   public function testMOVE()
   {
@@ -161,11 +161,11 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions for \ramp\http\Method::DELETE().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\http\Method}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert always returns the exact same object
    * - assert returns 'DELETE' when cast to string
-   * @link ramp.http.Method#method_DELETE ramp\http\Method::DELETE()
+   * @see \ramp\http\Method::DELETE()
    */
   public function testDELETE()
   {

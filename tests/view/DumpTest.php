@@ -45,12 +45,12 @@ class DumpTest extends \PHPUnit\Framework\TestCase
 {
   /**
    * Collection of assertions for \ramp\view\ChildView::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * - assert is instance of {@link \ramp\view\RootView}
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * - assert is instance of {@see \ramp\view\RootView}
    * - assert output of children on provided parentView is as expected maintaining sequance and format
    * - assert output of render on provided parentView is as expected maintaining sequance and format
-   * @link ramp.view.ChildView ramp\view\ChildView
+   * @see ramp.view.ChildView ramp\view\ChildView
    */
   public function test__construct()
   {
@@ -67,11 +67,11 @@ class DumpTest extends \PHPUnit\Framework\TestCase
     ob_start();
     $rootView->children;
     $output = ob_get_clean();
-    $this->assertRegExp($expectedRegEx, $output);
+    $this->assertMatchesRegularExpression($expectedRegEx, $output);
 
     ob_start();
     $rootView->render();
     $output = ob_get_clean();
-    $this->assertRegExp($expectedRegEx, $output);
+    $this->assertMatchesRegularExpression($expectedRegEx, $output);
   }
 }

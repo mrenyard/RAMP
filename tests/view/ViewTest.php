@@ -78,9 +78,9 @@ class ViewTest extends \PHPUnit\Framework\TestCase
 
   /**
    * Collection of assertions for \ramp\view\View::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * @link ramp.view.View ramp\view\View
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * @see ramp.view.View ramp\view\View
    */
   public function test__construct()
   {
@@ -94,8 +94,8 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert PropertyNotSetException thrown when trying to set value of none existant property
    * - assert BadPropertyCallException thrown when trying to get value of none existant property
    * - assert that property calls are passes to its component (contained) \ramp\model\Model
-   * @link ramp.view.View#method__get ramp\view\View::__get()
-   * @link ramp.view.View#method__set ramp\view\View::__set()
+   * @see \ramp\view\View::__get()
+   * @see \ramp\view\View::__set()
    *
   public function test__get__set()
   {
@@ -125,8 +125,8 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for \ramp\view\View::children.
    * - assert each child view added sequentially
    * - assert View->children output maintains sequance and format
-   * @link ramp.view.View#method_add ramp\view\View::add()
-   * @link ramp.view.View#method_children ramp\view\View::children
+   * @see \ramp\view\View::add()
+   * @see \ramp\view\View::children
    */
   public function testAddGet_children()
   {
@@ -169,7 +169,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\View::setModel}.
    * - assert Exception thrown when model already set.
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelAlreadySet()
   {
@@ -182,7 +182,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\view\View::setModel}.
    * - assert LogicException thrown when model \Traversable but NOT \Countable.
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelNoCount()
   {
@@ -196,7 +196,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelNoCascade()
   {
@@ -238,7 +238,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelComplex1()
   {
@@ -278,7 +278,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelComplex2()
   {
@@ -331,7 +331,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelHierarchy1()
   {
@@ -382,7 +382,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - Prior to model set hasModel returns FALSE and post set TRUE
    * - assert each view added sequentially and hieratically as expected
    * - assert output from View->render() maintains sequance and hieratically format
-   * @link ramp.view.View#method_setModel ramp\view\View::setModel()
+   * @see \ramp\view\View::setModel()
    *
   public function testSetModelHierarchy2()
   {
@@ -460,7 +460,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert cloned View without associated model is equal to the original
    * - assert cloned View with associated model NOT equal as Model association removed
    * - assert cloned View with model re associated is equal to the original 
-   * @link ramp.view.View#method__clone ramp\view\View::__clone()
+   * @see \ramp\view\View::__clone()
    */
   public function test__clone()
   {
