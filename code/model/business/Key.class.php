@@ -29,16 +29,16 @@ use ramp\condition\PostData;
  * Abstract Key Record Component Business Model.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  * - Hold a collection of reference back to parent Record and restrict polymorphic composite association.
  * - Define access to compound key indexes and values based on parent record state.
  * 
  * COLLABORATORS
- * - {@link \ramp\model\business\Record Record}
+ * - {@see \ramp\model\business\Record Record}
  *
- * @property-read \ramp\core\StrCollection $indexes Related parent record associated property name.
- * @property-read \ramp\core\StrCollection $values Related parent Record associated with this component.
+ * @property-read \ramp\core\StrCollection $indexes Sub key indexs (names) of composite properties that make up *this* PrimaryKey.
+ * @property-read ?\ramp\core\StrCollection $values Values held by each relevant property as key value composite or NULL.
  */
 class Key extends RecordComponent
 {
@@ -62,9 +62,11 @@ class Key extends RecordComponent
    */
   public function offsetSet($offset, $object)
   {
-    if (!($object instanceof \ramp\model\business\field\Field)
-    || $object->parent != $this->parent
-    || $this->indexes->contains($object->name)) {
+    if (
+      (!($object instanceof field\Field))
+      || $object->parent != $this->parent
+      || $this->indexes->contains($object->name)
+    ) {
       throw new \InvalidArgumentException(
         'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
       );
@@ -73,9 +75,7 @@ class Key extends RecordComponent
   }
 
   /**
-   * Returns indexes for key.
-   * **DO NOT CALL DIRECTLY, USE this->indexes;**
-   * @return \ramp\core\StrCollection Indexes related to data fields for this key.
+   * @ignore
    */
   protected function get_indexes() : StrCollection
   {
@@ -87,9 +87,7 @@ class Key extends RecordComponent
   }
 
   /**
-   * Returns key values held by relevant properties of parent record.
-   * **DO NOT CALL DIRECTLY, USE this->values;**
-   * @return ?\ramp\core\StrCollection Values held by relevant property of parent record or NULL
+   * @ignore
    */
   protected function get_values() : ?StrCollection
   {
@@ -103,18 +101,14 @@ class Key extends RecordComponent
   }
 
   /**
-   * Set isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
-   * Use to request change of isEditable, some defaults are NOT overridable.
-   * @param bool $value of requested value.
+   * @ignore
    */
   protected function set_isEditable(bool $value)
   {
   }
 
   /**
-   * Returns value held by relevant property of associated record.
-   * @return mixed Value held by relevant property of associated record
+   * @ignore
    */
   final protected function get_value()
   {

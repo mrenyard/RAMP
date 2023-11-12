@@ -34,10 +34,10 @@ use ramp\condition\Filter;
  * - Manage and maintain association through keys (primaryKey -> ForeignKey), data Lookup and Model Management.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- * - {@link \ramp\model\business\RecordCollection}
- * - {@link \ramp\model\business\Relatable}
- * - {@link \ramp\model\business\BusinessModelManager}
+ * - {@see \ramp\model\business\Record}
+ * - {@see \ramp\model\business\RecordCollection}
+ * - {@see \ramp\model\business\Relatable}
+ * - {@see \ramp\model\business\BusinessModelManager}
  */
 class RelationLookup extends Relation
 {
@@ -78,7 +78,6 @@ class RelationLookup extends Relation
     foreach ($this->foreignKeyNames as $index) {
       $filterArray[(string)$index] = $this->parent->getPropertyValue($this->keys[$i++]);
     }
-    // print_r($filterArray);
     $collection = new RecordCollection();
     try {
       $collection = $this->manager->getBusinessModel(

@@ -35,17 +35,14 @@ use ramp\model\business\FailedValidationException;
  * Abstract field related to a single property of its containing \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
  * - Hold referance back to parent Record and restrict polymorphic composite association.
  * - Provide access to relevent value based on parent record state.
  * - Implement template method, processValidationRule to process provided ValidationRule.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record Record}
- * 
- * @property bool $isEditable Flag for setting or getting access to modify Field value.
- * @property-read mixed $value Returns value held by relevant property of containing record.
+ * - {@see \ramp\model\business\Record Record}
  */
 abstract class Field extends RecordComponent
 {
@@ -91,6 +88,14 @@ abstract class Field extends RecordComponent
   }
 
   /**
+   * @ignore
+   */
+  protected function get_isEditable() : bool
+  {
+    return ((!$this->parent->isValid) || parent::get_isEditable());
+  }
+
+  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
@@ -118,9 +123,7 @@ abstract class Field extends RecordComponent
   }
 
   /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
+   * @ignore
    */
   protected function get_hasErrors() : bool
   {
@@ -128,9 +131,7 @@ abstract class Field extends RecordComponent
   }
 
   /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
+   * @ignore
    */
   protected function get_errors() : StrCollection
   {

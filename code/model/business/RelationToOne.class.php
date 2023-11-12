@@ -34,9 +34,9 @@ use ramp\condition\Filter;
  * - Manage and maintain association through keys (primaryKey -> ForeignKey), data Lookup and Model Management.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- * - {@link \ramp\model\business\Relatable}
- * - {@link \ramp\model\business\BusinessModelManager}
+ * - {@see \ramp\model\business\Record}
+ * - {@see \ramp\model\business\Relatable}
+ * - {@see \ramp\model\business\BusinessModelManager}
  */
 class RelationToOne extends Relation
 {
@@ -48,7 +48,7 @@ class RelationToOne extends Relation
    * Creates a relation from a single property of containing Record to another Record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * @param \ramp\core\Str $relatedRecordType Record name of associated Record.
+   * @param \ramp\core\Str $withRecordName Record name (type) of related associated Record.
    * @param bool $editable Optional set preferance for editability (defaults FALSE).
    */
   public function __construct(Str $name, Record $parent, Str $withRecordName, bool $editable = FALSE)
@@ -59,7 +59,7 @@ class RelationToOne extends Relation
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $this->keyMap = self::buildMapping($parent, new $withRecordClassName(), $name);
     // TODO:mrenyard: Change once Request is back
-    // if ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id) {
+    // if ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id && ) {
     if (
       (string)$parent->id == 'mock-record:new' || (string)$parent->id == 'mock-record:1|1|1'
       || (string)$parent->id == 'mock-record:2|2|2' || (string)$parent->id == 'mock-record:3|3|3'
@@ -123,23 +123,29 @@ class RelationToOne extends Relation
           if (!$this->getWith()->isNew) { return; }
           if (count($values) === $this->getWith()->primaryKey->count)
           {
-            $filter = array();
+            $primarySubKeys = StrCollection::set();
             $keyPostdata = array();
             foreach ($this->keyMap as $subKey => $subForeignKey) {
-              $filter[$subKey] = $values[$subKey];
+              $primarySubKeys->add(Str::set($values[$subKey]));
               $keyPostdata[(string)$this->getWith()->id->append(Str::set($subKey)->prepend(Str::COLON()))] = $values[$subKey];
             }
+            $primaryKey = $primarySubKeys->implode(Str::BAR());
             try {
               // attempt to set primaryKey from provided values
               $this->getWith()->validate(PostData::build($keyPostdata));
+              return;
             } catch (DataExistingEntryException $e) {
-              // Get referance to existing entry and set as relation
-              $this->setWith($this->manager->getBusinessModel(
-                new SimpleBusinessModelDefinition($this->withRecordName),
-                Filter::build($this->withRecordName, $filter)
-              )[0]);
+              // TODO:mrenyard: Check Session::loginAccount has access rights to resource.
+              // $level = Session::getInstance()->getResourceRights(($this->withRecordName->append($primaryKey->prepend(Str::COLON())))); // :int (0:NON|1:VIEW|2:EDIT)
+              // if ($level >= ResourceRights::VIEW) {
+              //   if ($level == ResourceRights::EDIT) { $o->isEditable = TRUE; }
+                // Get referance to existing entry
+                $this->setWith($this->manager->getBusinessModel(
+                  new SimpleBusinessModelDefinition($this->withRecordName, $primaryKey),
+                ));
+                return;
+              // }
             }
-            return;
           }
         } // @codeCoverageIgnoreStart
         $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id)); // @codeCoverageIgnoreEnd

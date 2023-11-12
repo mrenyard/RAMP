@@ -32,6 +32,7 @@ require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
@@ -91,15 +92,15 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\core\iList}
-   * - assert is instance of {@link \IteratorAggregate}
-   * - assert is instance of {@link \Countable}
-   * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \ramp\model\business\BusinessModel}
-   * - assert is instance of {@link \ramp\model\business\RecordComponent}
-   * @link ramp.model.business.RecordComponent ramp\model\business\RecordComponent
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\Model}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \Countable}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \ramp\model\business\BusinessModel}
+   * - assert is instance of {@see \ramp\model\business\RecordComponent}
+   * @see ramp.model.business.RecordComponent ramp\model\business\RecordComponent
    */
   public function testConstruct()
   {
@@ -110,8 +111,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\RecordComponent::__set().
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.Model#method__set ramp\model\RecordComponent::__set()
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\RecordComponent::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -120,8 +121,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Bad property (name) NOT accessable on \ramp\model\RecordComponent::__get().
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.Model#method__get ramp\model\RecordComponent::__get()
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\RecordComponent::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -131,8 +132,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Good property is accessable on \ramp\model\RecordComponent::__get() and \ramp\model\RecordComponent::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.Model#method___set \ramp\model\RecordComponent::__set()
-   * @link ramp.model.Model#method___get \ramp\model\RecordComponent::__get()
+   * @see \ramp\model\RecordComponent::__set()
+   * @see \ramp\model\RecordComponent::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -141,8 +142,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Correct return of ramp\model\RecordComponent::__toString().
-   * - assert {@link \ramp\model\RecordComponent::__toString()} returns string 'class name'
-   * @link ramp.model.Model#method___toString \ramp\model\RecordComponent::__toString()
+   * - assert {@see \ramp\model\RecordComponent::__toString()} returns string 'class name'
+   * @see \ramp\model\RecordComponent::__toString()
    */
   public function testToString()
   {
@@ -152,22 +153,22 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Minimumal RecordComponent initial state.
    * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value is of type {@see \ramp\core\Str}.
    *   - assert returned value matches expected result.
-   * - assert getIterator() returns object instance of {@link \Traversable}
+   * - assert getIterator() returns object instance of {@see \Traversable}
    * - assert foreach iterates zero times as no properties are present.
    * - assert OffsetExists False returned on isset() when indexed with invalid index (0).
    * - assert return expected int value related to the number of child Records held (0).
    * - assert hasErrors returns FALSE.
    * - assert returned errors are as expected:
-   *   - assert errors instance of {@link \ramp\core\StrCollection}.
+   *   - assert errors instance of {@see \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @link ramp.model.business.RecordComponent#method_get_type ramp\model\business\RecordComponent::type
-   * @link ramp.model.business.RecordComponent#method_getIterator ramp\model\business\RecordComponent::getIterator()
-   * @link ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
-   * @link ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count()
-   * @link ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
-   * @link ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
+   * @see ramp.model.business.RecordComponent#method_get_type ramp\model\business\RecordComponent::type
+   * @see ramp.model.business.RecordComponent#method_getIterator ramp\model\business\RecordComponent::getIterator()
+   * @see ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
+   * @see ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count()
+   * @see ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
+   * @see ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
    */
   public function testInitStateMin()
   {
@@ -177,8 +178,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'id' NOT accessable on \ramp\model\business\RecordComponent::id.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @link ramp.model.business.RecordComponent#method_set_id ramp\model\business\RecordComponent::id
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * @see ramp.model.business.RecordComponent#method_set_id ramp\model\business\RecordComponent::id
    */
   public function testSetIdPropertyNotSetException()
   {
@@ -187,8 +188,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'type' NOT accessable on \ramp\model\business\RecordComponent::type.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @link ramp.model.business.RecordComponent#method_set_type ramp\model\business\RecordComponent::type
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * @see ramp.model.business.RecordComponent#method_set_type ramp\model\business\RecordComponent::type
    */
   public function testSetTypePropertyNotSetException()
   {
@@ -197,8 +198,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Get 'children' NOT accessable on \ramp\model\business\RecordComponent::children.
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @link ramp.model.business.RecordComponent#method_get_children ramp\model\business\RecordComponent::children
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * @see ramp.model.business.RecordComponent#method_get_children ramp\model\business\RecordComponent::children
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -207,8 +208,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Index beyond bounds with \ramp\model\business\RecordComponent::offsetGet.
-   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @link ramp.model.business.RecordComponent#method_offsetGet ramp\model\business\RecordComponent::offsetGet()
+   * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
+   * @see ramp.model.business.RecordComponent#method_offsetGet ramp\model\business\RecordComponent::offsetGet()
    */
   public function testOffsetGetOutOfBounds()
   {
@@ -217,8 +218,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @see \ramp\model\business\Record::offsetSet()
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
@@ -232,8 +233,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.RecordComponent#method_offsetSet ramp\model\business\RecordComponent::offsetSet()
-   * @link ramp.model.business.RecordComponent#method_offsetUnset ramp\model\business\RecordComponent::offsetUnset()
+   * @see ramp.model.business.RecordComponent#method_offsetSet ramp\model\business\RecordComponent::offsetSet()
+   * @see ramp.model.business.RecordComponent#method_offsetUnset ramp\model\business\RecordComponent::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -250,22 +251,22 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * Handle complex iterative relations (model flexability).
    * - assert set 'children' modifies interable RecordComponent.
    * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value is of type {@see \ramp\core\Str}.
    *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
-   *   - assert returns object that is an instance of {@link \Traversable}
+   *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
    * - assert offsetExists returns correctly:
    *   - assert True returned on isset() when within expected bounds.
    *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link ramp.model.business.RecordComponent#method_setChildren ramp\model\business\RecordComponent::children
-   * @link ramp.model.business.RecordComponent#method_get_type ramp\model\business\RecordComponent::type
-   * @link ramp.model.business.RecordComponent#method_getIterator ramp\model\business\RecordComponent::getIterator()
-   * @link ramp.model.business.RecordComponent#method_offsetGet ramp\model\business\RecordComponent::offsetGet()
-   * @link ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
-   * @link ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count
+   * @see ramp.model.business.RecordComponent#method_setChildren ramp\model\business\RecordComponent::children
+   * @see ramp.model.business.RecordComponent#method_get_type ramp\model\business\RecordComponent::type
+   * @see ramp.model.business.RecordComponent#method_getIterator ramp\model\business\RecordComponent::getIterator()
+   * @see ramp.model.business.RecordComponent#method_offsetGet ramp\model\business\RecordComponent::offsetGet()
+   * @see ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
+   * @see ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count
    */
   public function testComplexModelIteration()
   {
@@ -279,9 +280,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @link ramp.model.business.RecordComponent#method_setChildren ramp\model\business\RecordComponent::children
-   * @link ramp.model.business.RecordComponent#method_validate ramp\model\business\RecordComponent::validate()
-   * @link ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
+   * @see ramp.model.business.RecordComponent#method_setChildren ramp\model\business\RecordComponent::children
+   * @see ramp.model.business.RecordComponent#method_validate ramp\model\business\RecordComponent::validate()
+   * @see ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
    */
   public function testTouchValidityAndErrorMethods()
   {
@@ -296,7 +297,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
+   * @see ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
    */
   public function testErrorReportingPropagation()
   {
@@ -309,8 +310,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert record as passed to constructor.
    * - assert propertyName as passed to constructor.
    * - assert id as expected in format record:key:propertyName.
-   * @link ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
-   * @link ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
+   * @see ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
+   * @see ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
    */
   public function testStateChangesRecordComponent()
   {
@@ -325,8 +326,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
    * - assert current record->getPropertyValue and RecordComponent->value return same instance.
-   * @link ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
-   * @link ramp.model.business.Record#method_getPropertyValue ramp\model\business\Record::getPropertyValue()
+   * @see ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
+   * @see \ramp\model\business\Record::getPropertyValue()
    */
   public function testRecordComponentValue()
   {
@@ -335,8 +336,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'record' NOT accessable ramp\model\business\RecordComponent::record.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @link ramp.model.business.RecordComponent#method_set_parentRecord ramp\model\business\RecordComponent::record
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @see ramp.model.business.RecordComponent#method_set_parentRecord ramp\model\business\RecordComponent::record
    */
   public function testSetParentRecordPropertyNotSetException()
   {
@@ -347,8 +348,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Set 'propertyName' NOT accessable ramp\model\business\RecordComponent::propertyName.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @link ramp.model.business.RecordComponent#method_set_parentPropertyName ramp\model\business\RecordComponent::propertyName
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @see ramp.model.business.RecordComponent#method_set_parentPropertyName ramp\model\business\RecordComponent::propertyName
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {

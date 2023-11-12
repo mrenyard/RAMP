@@ -34,57 +34,80 @@ use ramp\condition\Filter;
  * - Manage and maintain association through keys (primaryKey -> ForeignKey), data Lookup and Model Management.
  *
  * COLLABORATORS
- * - {@link \ramp\model\business\Record}
- * - {@link \ramp\model\business\RecordCollection}
- * - {@link \ramp\model\business\Relatable}
- * - {@link \ramp\model\business\BusinessModelManager}
+ * - {@see \ramp\model\business\Record}
+ * - {@see \ramp\model\business\RecordCollection}
+ * - {@see \ramp\model\business\Relatable}
+ * - {@see \ramp\model\business\BusinessModelManager}
  */
 class RelationToMany extends Relation
 {
+  private $errorCollection; // StrCollection
   private $withRecordName; // Str
+  private $keyMap; // Strcollection
 
   /**
    * Creates a relation from a single property of containing record to a Record collection.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parent Record parent of *this* property.
-   * @param \ramp\core\Str $relatedRecordType Record name of associated Record or Records. 
+   * @param \ramp\model\business\Record $parent Record parent of *this* RecordComponent.
+   * @param \ramp\core\Str $withRecordName Record name (type) of related associated Record.
+   * @param \ramp\core\Str $withPropertyName Related dataObject property name (type) of related associated Records.
+   * @param bool $editable Optional set preferance for editability (defaults FALSE).
    */
-  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName, bool $editable = FALSE)
   {
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, $editable);
+    $this->setWith(NULL);
     $this->withRecordName = $withRecordName;
-    // instantiate temporary (new) 'with' record for access to primaryKey
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
-    $withNew = new $withRecordClassName();
-    $this->buildMapping($withNew, $parent, $withPropertyName);
-  }
-
-  public function add(Record $object)
-  {
-    $this[$this->count] = $object;
+    $this->keyMap = $this->buildMapping(new $withRecordClassName(), $parent, $withPropertyName);
+    // TODO:mrenyard: Change once Request is back
+    // if ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id) {
+    if ((string)$parent->id == 'mock-record:1|1|1') {
+      $filterArray = array();
+      foreach ($this->keyMap as $subKey => $foreignKey) {
+        $filterArray[$foreignKey] = $this->parent->getPropertyValue($subKey);
+      }
+      try {
+        $this->setWith($this->manager->getBusinessModel(
+          new SimpleBusinessModelDefinition($this->withRecordName),
+          Filter::build($this->withRecordName, $filterArray)
+        ));
+      } catch (DataFetchException $e) {
+        $this->setWith(new RecordCollection());
+      }   
+      if ($editable === TRUE) {
+        $this->getWith()->add($this->manager->getBusinessModel(
+          new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
+        ));
+      }
+    }
   }
 
   /**
-   *
+   * @ignore
    */
-  final protected function get_object()
+  final protected function set_isEditable(bool $value)
   {
-    $i = 0;
-    $filterArray = array();
-    foreach ($this->foreignKeyNames as $index) {
-      $filterArray[(string)$index] = $this->parent->getPropertyValue($this->keys[$i++]);
-    }
-    $collection = new RecordCollection();
-    try {
-      $collection = $this->manager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withRecordName),
-        Filter::build($this->withRecordName, $filterArray)
-      );
-    } catch (DataFetchException $e) {
-      $collection->add($this->manager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
+    $with = $this->getWith();
+    if ($value === TRUE && !$with[(count($with) - 1)]->isNew) {
+      $with->add($this->manager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW()),
       ));
     }
-    return $collection;
+    parent::set_isEditable($value);
+  }
+
+  // public function add(Record $object)
+  // {
+  //   $this[$this->count] = $object;
+  // }
+
+  /**
+   * Validate postdata against this and update accordingly.
+   * @param \ramp\condition\PostData $key Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
+   */
+  public function validate(PostData $postdata) : void
+  {
   }
 }

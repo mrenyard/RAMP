@@ -35,22 +35,17 @@ class MockRelationToMany extends RelationToMany
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName)
+  public function __construct(Str $name, Record $parent, Str $withRecordName, Str $withPropertyName, bool $editable = FALSE)
   {
-    parent::__construct($name, $parent, $withRecordName, $withPropertyName);
+    parent::__construct($name, $parent, $withRecordName, $withPropertyName, $editable);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }
 
-  protected function get_foreignKeyNames()
-  {
-    return $this->foreignKeyNames;
-  }
-
-  protected function get_keys()
-  {
-    return $this->keys;
-  }
+  // protected function get_with() { return $this->getWith(); }
+  // protected function set_with(?Relatable $value) { $this->setWith($value); }
+  // public function getModelManager() : BusinessModelManager { return $this->manager; }
+  // public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array { return self::buildMapping($from, $to, $fromPropertyName); }
 
   /**
    * Validate postdata against this and update accordingly.

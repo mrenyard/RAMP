@@ -20,7 +20,6 @@
  * 
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
-print_r((string)$this->class);
 switch ((string)$this->class) {
   case 'relation record-component': ?>
           <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>

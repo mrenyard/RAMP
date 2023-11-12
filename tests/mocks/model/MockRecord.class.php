@@ -30,6 +30,7 @@ use ramp\condition\SQLEnvironment;
 use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
+use ramp\model\business\RecordComponentType;
 use ramp\model\business\Relatable;
 use ramp\model\business\SimpleBusinessModelDefinition;
 use ramp\model\business\field\Field;
@@ -79,78 +80,72 @@ class MockRecord extends Record
     }
   }
 
-  protected function get_keyA() : Field
+  protected function get_keyA() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[0])) {
-      $this->primaryKey[0] = new MockField(Str::set('keyA'), $this);
+    if ($this->register('keyA', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[0]; 
+    return $this->registered; 
   }
 
-  protected function get_keyB() : Field
+  protected function get_keyB() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[1])) {
-      $this->primaryKey[1] = new MockField(Str::set('keyB'), $this);
+    if ($this->register('keyB', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[1]; 
+    return $this->registered; 
   }
 
-  protected function get_keyC() : Field
+  protected function get_keyC() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[2])) {
-      $this->primaryKey[2] = new MockField(Str::set('keyC'), $this);
+    if ($this->register('keyC', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[2]; 
+    return $this->registered; 
   }
 
-  protected function get_aProperty() : RecordComponent
+  protected function get_aProperty() : ?RecordComponent
   {
-    if (!isset($this[0])) {
-      $this->propertyName = Str::set('aProperty');
-      $this[0] = new MockField($this->propertyName, $this);
+    if ($this->register('aProperty', RecordComponentType::PROPERTY)) {
+      $this->propertyName = $this->registeredName;
+      $this->initiate(new MockField($this->propertyName, $this));
     }
-    return $this[0];
+    return $this->registered; 
   }
 
-  // protected function get_relationAlpha() : RecordComponent
-  // {
-  //   if (!isset($this[1])) {
-  //     $this[1] = new MockRelationToMany($this->relationAlphaName, $this, Str::set('MockMinRecord'), Str::set('relationDelta'));
-  //   }
-  //   return $this[1];
-  // }
-
-  protected function get_relationBeta() : RecordComponent
+  protected function get_relationAlpha() : ?RecordComponent
   {
-    if (!isset($this[2])) {
-      $this[2] = new MockRelationToOne($this->relationBetaName, $this, Str::set('MockMinRecord'));
+    if ($this->register('relationAlpha', RecordComponentType::RELATION)) {
+      $this->initiate(new MockRelationToMany(
+        $this->registeredName,
+        $this,
+        Str::set('MockMinRecord'),
+        Str::set('relationDelta')
+      ));
     }
-    return $this[2];
+    return $this->registered; 
   }
 
-  /*
-  protected function get_relationGamma() : RecordComponent
+  protected function get_relationBeta() : ?RecordComponent
   {
-    // TODO:mrenyard: Use concrete RelationLookup
-    if (!isset($this[3])) {
-      $this[3] = new MockRelation($this->relationGammaName, $this, $this->buildBetaWith());
+     if ($this->register('relationBeta', RecordComponentType::RELATION)) {
+      $this->initiate(new MockRelationToOne(
+        $this->registeredName,
+        $this,
+        Str::set('MockMinRecord')
+      ));
     }
-    return $this[3];
-  }*/
-
-  protected function get_input() : RecordComponent
-  {
-    if (!isset($this[3])) {
-      $this[3] = new MockInput($this->inputName, $this);
-    }
-    return $this[3];
+    return $this->registered; 
   }
 
-  /**
-   * Validate postdata against this and update accordingly.
-   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
-   *  to be assessed for validity and imposed on *this* business model.
-   */
+  protected function get_input() : ?RecordComponent
+  {
+    if ($this->register('input', RecordComponentType::PROPERTY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
+    }
+    return $this->registered; 
+  }
+
   public function validate(PostData $postdata) : void
   {
     $this->validateCount++;
@@ -163,11 +158,6 @@ class MockRecord extends Record
     return parent::get_hasErrors();
   }
 
-  /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
-   */
   public function get_errors() : StrCollection
   {
     $this->errorsTouchCount++;

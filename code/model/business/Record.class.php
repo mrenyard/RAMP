@@ -22,33 +22,69 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\core\BadPropertyCallException;
 use ramp\condition\PostData;
 
 /**
  * A single Record (entry).
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject}).
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Define generalized methods for iteration, validity checking & error reporting.
- * - Define and restrict relational association to objects of this type ({@link \ramp\model\business\Relatable}). 
  * - Define API to maintain and/or assert valid state of dataObject and expose methods to BusinessModelManager.
- * - Implement methods for field/property managment and access.
- *
+ * - Define and restrict relational associations to one or many ({@see \ramp\model\business\Relatable}) other Records. 
+ * - Managment composite property registration managment and access.
+ * 
  * COLLABORATORS
- * - {@link \ramp\model\business\RecordComponent}s
+ * - {@see \ramp\model\business\RecordComponent}
+ * - {@see \ramp\model\business\RecordComponentType} (ENUM:KEY|PROPRTY|RELATION)
+ * - {@see \ramp\model\business\BusinessModelManager}
+ *
+ * A typical Record (inherited) entery will consist of:
+ * - One or more RecordComponent Registration Methods as exampled below:
+ * ```php
+ * protected function get_alpha() : ?RecordComponent
+ * {
+ *   if ($this->register('alpha', RecordComponentType::[KEY|PROPERTY|RELATION])) {
+ *     $this->initiate(new [field\[Flag|Input|SelectOne|SelectMany]|RelationToOne|RelationToMany](
+ *       $this->registeredName,
+ *       $this,
+ *       [...]
+ *     ));
+ *   }
+ *   return $this->registered;
+ * }
+ * ```
+ * 
+ * - A single checkRequired static method to assertain requeried properties are set:
+ * ```php
+ * protected static function checkRequired($dataObject) : bool
+ * {
+ *   return (
+ *     isset($dataObject->countryCode) &&
+ *     isset($dataObject->postalCode) &&
+ *     isset($dataObject->deliveryPointSuffix)
+ *   );
+ * }
+ * ```
  *
  * @property-read \ramp\core\Str $primaryKey Returns value of primary key.
  * @property-read bool $isModified Returns whether data has been modified since last update.
  * @property-read bool $isValid Returns whether data is in a valid/complete state from data store or as new.
  * @property-read bool $isNew Returns whether this is yet to be updated to data storage.
+ * @property-read \ramp\core\Str $registeredName Returns expected 'name' of current acceptable registered RecordComponent
+ * - can ONLY be called within `if ($this->register()) { .. }` statement.
+ * @property-read ?\ramp\model\business\RecordComponent $registered Returns most recent registered RecordComponent.
  */
 abstract class Record extends Relatable
 {
-  private static $strPrimaryKey;
-  private $primaryKey;
-  private $dataObject;
-  private $validAtSource;
-  private $modified;
+  private $awatingInitOn; // string
+  private $active; // Record
+  private $components; // array
+  private $primaryKey; // Key
+  private $dataObject; // stdClass
+  private $modified; // bool
+  private $validAtSource; // bool
 
   /**
    * Creates record, new or with encapsulated source data contained.
@@ -57,32 +93,43 @@ abstract class Record extends Relatable
   public function __construct(\stdClass $dataObject = null)
   {
     parent::__construct();
-    if (!isset(self::$strPrimaryKey)) { self::$strPrimaryKey = Str::set('primaryKey'); }
+    $this->awatingInitOn = NULL;
+    $this->active = NULL;
+    $this->components = array(array(), array(), array());
+    $this->primaryKey = new Key(Str::set('primaryKey'), $this);
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
-    $this->primaryKey = new Key(self::$strPrimaryKey, $this);
+    $this->modified = FALSE;
+    $this->validAtSource = FALSE;
     $className = get_class($this);
     foreach (get_class_methods($className) as $methodName) {
       if (strpos($methodName, 'get_') === 0) {
-        foreach (get_class_methods(__NAMESPACE__ . '\Record') as $parentMethod) {
+        foreach (get_class_methods('\ramp\model\business\Record') as $parentMethod) {
           if ($methodName == $parentMethod) { continue 2; }
         }
         $propertyName = str_replace('get_', '', $methodName);
-        $property = $this->$propertyName;
-        $dataPropertyName = (string)$property->name;
-        if ($property instanceof Relation) {
-          if ($property instanceof RelationToOne) { $property->addForeignKey($this->dataObject); }
-          continue;
-        }
-        if (!isset($this->dataObject->$dataPropertyName)) { $this->dataObject->$dataPropertyName = NULL; }
+        $this->$propertyName;
       }
     }
-    $this->updated();
+    foreach ($this->components[RecordComponentType::KEY] as $name => $o) {
+      $this->primaryKey[$this->primaryKey->count] = $this->$name;
+      if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
+    }
+    if ($this->primaryKey->value !== NULL) { $this->validAtSource = TRUE; }
+    $i = 0;
+    foreach ($this->components[RecordComponentType::PROPERTY] as $name => $o) {
+      $this[$i] = $this->$name;
+      if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
+      $i++;
+    }
+    foreach ($this->components[RecordComponentType::RELATION] as $name => $o) {
+      $this[$i] = $this->$name;
+      if ($this[$i] instanceof RelationToOne) { $this[$i]->addForeignKey($this->dataObject); }
+      $i++;
+    }
   }
 
   /**
-   * Get ID (URN).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
+   * @ignore
    */
   final protected function get_id() : Str
   {
@@ -94,9 +141,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Returns value of primary key.
-   * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return \ramp\core\Str Value of primary key
+   * @ignore
    */
   final protected function get_primaryKey() : Key
   {
@@ -129,6 +174,68 @@ abstract class Record extends Relatable
   }
 
   /**
+   * Register pre initiation and manage RecordComponent.
+   * @param string $name Property name on Record for intended RecordComponent.
+   * @param int $type Enum RecordComponentType one of:KEY|PROPERTY|RELATION.
+   * @return bool Allow to continue to initiation.
+   */
+  protected function register(string $name, int $type) : bool
+  {
+    $this->active = NULL;
+    if (!isset($this->components[$type][$name])) {
+      $this->components[$type][$name] = '';
+      return FALSE;
+    }
+    if ($this->components[$type][$name] === '') {
+      $this->awatingInitOn = $name;
+      return TRUE;
+    }
+      $this->active = $this->components[$type][$name];
+      return FALSE;
+  }
+
+  /**
+   * Pass provided RecordComponent as component of this Record.
+   * @parent RecordComponent $o Record component objet to associate.   
+   */
+  protected function initiate(RecordComponent $o) : void
+  {
+    if ($this->awatingInitOn != $o->name || (!$o->parent == $this)) {
+      throw new \Exception();
+    }
+    $i = 0;
+    if (isset($this->components[RecordComponentType::KEY][(string)$o->name]))
+    {
+      $this->components[RecordComponentType::KEY][(string)$o->name] = $o;
+    }
+    else if (isset($this->components[RecordComponentType::PROPERTY][(string)$o->name]))
+    {
+      $this->components[RecordComponentType::PROPERTY][(string)$o->name] = $o;
+    }
+    else if (isset($this->components[RecordComponentType::RELATION][(string)$o->name]))
+    {
+      $this->components[RecordComponentType::RELATION][(string)$o->name] = $o;
+    }
+    $this->active = $o;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_registeredName() : Str
+  {
+    return Str::set($this->awatingInitOn);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_registered() : ?RecordComponent
+  {
+    return ($this->active !== NULL) ? $this->active : NULL;
+  }
+
+  /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
@@ -143,9 +250,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Checks if any errors have been recorded following validate().
-   * **DO NOT CALL DIRECTLY, USE this->hasErrors;**
-   * @return bool True if an error has been recorded
+   * @ignore
    */
   protected function get_hasErrors() : bool
   {
@@ -153,9 +258,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Gets collection of recorded errors.
-   * **DO NOT CALL DIRECTLY, USE this->errors;**
-   * @return StrCollection List of recorded errors.
+   * @ignore
    */
   protected function get_errors() : StrCollection
   {
@@ -191,9 +294,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Returns whether data has been modified since last update.
-   * **DO NOT CALL DIRECTLY, USE this->isModified;**
-   * @return bool Value of isModified
+   * @ignore
    */
   final protected function get_isModified() : bool
   {
@@ -201,9 +302,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Returns whether data is in a valid/complete state from data store or as new.
-   * **DO NOT CALL DIRECTLY, USE this->isValid;**
-   * @return bool Value of isValid
+   * @ignore
    */
   protected function get_isValid() : bool
   {
@@ -211,9 +310,7 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Returns whether this is yet to be updated to data storage.
-   * **DO NOT CALL DIRECTLY, USE this->new;**
-   * @return bool Value of isNew
+   * @ignore
    */
   final protected function get_isNew() : bool
   {

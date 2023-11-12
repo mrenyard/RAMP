@@ -164,6 +164,9 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectThree->key1 = 'A';
     $this->dataObjectThree->key2 = 'B';
     $this->dataObjectThree->key3 = 'D';
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyA = 1;
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyB = 1;
+    $this->dataObjectThree->fk_relationDelta_MockRecord_keyC = 1;
     $this->objectThree = new MockMinRecord($this->dataObjectThree);
   }
   private function buildObjectFour() {
@@ -272,7 +275,7 @@ class MockBusinessModelManager extends BusinessModelManager
    * @param \ramp\condition\Filter $filter Optional Filter to be apply to Model
    * @param int $fromIndex Optional index for first entry in a collection
    * @return \ramp\model\Model Relevant requested Model object
-   * @throws \DomainException when {@link \ramp\model\Model}(s) NOT found
+   * @throws \DomainException when {@see \ramp\model\Model}(s) NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
@@ -377,7 +380,6 @@ class MockBusinessModelManager extends BusinessModelManager
         $collection->add($this->objectThree);
         $collection->add($this->objectFour);
         $collection->add($this->objectFive);
-        $collection->add($this->mockMinNew);
         return $collection;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
@@ -425,9 +427,9 @@ class MockBusinessModelManager extends BusinessModelManager
   }
 
   /**
-   * Update {@link Model} to any permanent data store.
+   * Update {@see Model} to any permanent data store.
    * @param BusinessModel Object to be updated
-   * @throws \InvalidArgumentException when {@link \ramp\model\business\BusinessModel}
+   * @throws \InvalidArgumentException when {@see \ramp\model\business\BusinessModel}
    *  was not initially retrieved using this BusinessModelManager
    */
   public function update(BusinessModel $model)

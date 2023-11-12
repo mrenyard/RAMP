@@ -26,16 +26,17 @@ use ramp\core\Str;
  * Abstract Business Model Record Component.
  *
  * RESPONSIBILITIES
- * - Provide generalised methods for property access (inherited from {@link \ramp\core\RAMPObject RAMPObject})
+ * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject RAMPObject})
  * - Define generalized methods for iteration, validity checking & error reporting.
  * - Hold reference back to parent Record and restrict polymorphic composite association. 
  * 
  * COLLABORATORS
- * - {@link \ramp\model\business\Record Record}
+ * - {@see \ramp\model\business\Record Record}
  *
  * @property-read \ramp\core\Str $name Related parent record associated property name.
  * @property-read \ramp\model\business\Record $parent Related parent Record associated with this component.
- * @property-read mixed $value Relevent value based on parent record state.
+ * @property bool Editability flag of *this*, some defaults are NOT overridable.
+ * @property-read mixed $value Returns value held by relevant property of associated record.
  */
 abstract class RecordComponent extends BusinessModel
 {
@@ -45,8 +46,8 @@ abstract class RecordComponent extends BusinessModel
 
   /**
    * Creates a multiple part primary key field related to a collection of property of associated record.
-   * @param \ramp\core\Str $name Related dataObject property name of associated record.
-   * @param \ramp\model\business\Record $parent Record parent of *this* property.
+   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* RecordComponent.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
   public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
@@ -58,9 +59,7 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
-   * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str Unique identifier for *this*
+   * @ignore
    */
   protected function get_id() : Str
   {
@@ -72,9 +71,7 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
-   * Get parent record
-   * **DO NOT CALL DIRECTLY, USE this->record;**
-   * @return \ramp\model\business\Record Parent record of *this*
+   * @ignore
    */
   final protected function get_parent() : Record
   {
@@ -82,9 +79,7 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
-   * Get dataobject property name
-   * **DO NOT CALL DIRECTLY, USE this->name;**
-   * @return \ramp\core\Str Property name for dataobject of *this* containing record
+   * @ignore
    */
   final protected function get_name() : Str
   {
@@ -92,29 +87,26 @@ abstract class RecordComponent extends BusinessModel
   }
 
   /**
-   * Get isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable;**
-   * @return bool isEditable for *this*
+   * @ignore
    */
   protected function get_isEditable() : bool
   {
-    return ($this->parent->isNew || (!$this->parent->isValid) || $this->editable !== FALSE);
+    // TODO:mrenyard: Change to commented once Record::isEditable added
+    // return ($this->parent->isNew || ($this->parent->isEditable && $this->editable !== FALSE));
+    $o = ($this->parent->isNew || ($this->editable !== FALSE));
+    return $o;
   }
 
   /**
-   * Set isEditable
-   * **DO NOT CALL DIRECTLY, USE this->isEditable = $value;**
-   * Use to request change of isEditable, some defaults are NOT overridable.
-   * @param bool $value of requested value.
+   * @ignore
    */
   protected function set_isEditable(bool $value)
   {
-    $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : NULL;
+    $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : TRUE; //NULL;
   }
 
   /**
-   * Returns value held by relevant property of associated record.
-   * @return mixed Value held by relevant property of associated record
+   * @ignore
    */
   protected function get_value()
   {

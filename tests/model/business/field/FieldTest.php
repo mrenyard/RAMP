@@ -35,6 +35,7 @@ require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
@@ -86,14 +87,14 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
     * Collection of assertions for \ramp\model\business\field\Field::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\model\Model}
-   * - assert is instance of {@link \ramp\model\business\BusinessModel}
-   * - assert is instance of {@link \IteratorAggregate}
-   * - assert is instance of {@link \Countable}
-   * - assert is instance of {@link \ArrayAccess}
-   * - assert is instance of {@link \ramp\model\field\Field}
-   * @link ramp.model.business.field.Field ramp\model\business\field\Field
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\model\Model}
+   * - assert is instance of {@see \ramp\model\business\BusinessModel}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \Countable}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \ramp\model\field\Field}
+   * @see ramp.model.business.field.Field ramp\model\business\field\Field
    */
   public function testConstruct()
   {
@@ -128,8 +129,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\field\Field::__set().
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @link ramp.model.Model#method__set ramp\model\field\Field::__set()
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\field\Field::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -138,8 +139,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Bad property (name) NOT accessable on \ramp\model\field\Field::__get().
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @link ramp.model.Model#method__get ramp\model\field\Field::__get()
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\field\Field::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -149,8 +150,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   /**
    * Good property is accessable on \ramp\model\field\Field::__get() and \ramp\model\field\Field::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @link ramp.model.Model#method___set \ramp\model\field\Field::__set()
-   * @link ramp.model.Model#method___get \ramp\model\field\Field::__get()
+   * @see \ramp\model\field\Field::__set()
+   * @see \ramp\model\field\Field::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -159,8 +160,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Correct return of ramp\model\field\Field::__toString().
-   * - assert {@link \ramp\model\field\Field::__toString()} returns string 'class name'
-   * @link ramp.model.Model#method___toString \ramp\model\field\Field::__toString()
+   * - assert {@see \ramp\model\field\Field::__toString()} returns string 'class name'
+   * @see \ramp\model\field\Field::__toString()
    */
   public function testToString()
   {
@@ -170,22 +171,22 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   /**
    * Minimumal field\Field initial state.
    * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@link \ramp\core\Str}.
+   *   - assert returned value is of type {@see \ramp\core\Str}.
    *   - assert returned value matches expected result.
-   * - assert getIterator() returns object instance of {@link \Traversable}
+   * - assert getIterator() returns object instance of {@see \Traversable}
    * - assert foreach iterates zero times as no properties are present.
    * - assert OffsetExists False returned on isset() when indexed with invalid index (0).
    * - assert return expected int value related to the number of child Records held (0).
    * - assert hasErrors returns FALSE.
    * - assert returned errors are as expected:
-   *   - assert errors instance of {@link \ramp\core\StrCollection}.
+   *   - assert errors instance of {@see \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @link ramp.model.business.field\Field#method_get_type ramp\model\business\field\Field::type
-   * @link ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
-   * @link ramp.model.business.field\Field#method_offsetExists ramp\model\business\field\Field::offsetExists()
-   * @link ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count()
-   * @link ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
-   * @link ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
+   * @see ramp.model.business.field\Field#method_get_type ramp\model\business\field\Field::type
+   * @see ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
+   * @see ramp.model.business.field\Field#method_offsetExists ramp\model\business\field\Field::offsetExists()
+   * @see ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count()
+   * @see ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
+   * @see ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
    */
   public function testInitStateMin()
   {
@@ -194,8 +195,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Set 'id' NOT accessable on \ramp\model\business\field\Field::id.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @link ramp.model.business.field\Field#method_set_id ramp\model\business\field\Field::id
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
+   * @see ramp.model.business.field\Field#method_set_id ramp\model\business\field\Field::id
    */
   public function testSetIdPropertyNotSetException()
   {
@@ -204,8 +205,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Set 'type' NOT accessable on \ramp\model\business\field\Field::type.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @link ramp.model.business.field\Field#method_set_type ramp\model\business\field\Field::type
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
+   * @see ramp.model.business.field\Field#method_set_type ramp\model\business\field\Field::type
    */
   public function testSetTypePropertyNotSetException()
   {
@@ -215,8 +216,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Get 'children' NOT accessable on \ramp\model\business\field\Field::children.
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @link ramp.model.business.field\Field#method_get_children ramp\model\business\field\Field::children
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * @see ramp.model.business.field\Field#method_get_children ramp\model\business\field\Field::children
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -226,8 +227,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Index beyond bounds with \ramp\model\business\field\Field::offsetGet.
-   * - assert {@link \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @link ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
+   * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
+   * @see ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
    */
   public function testOffsetGetOutOfBounds()
   {
@@ -242,8 +243,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @link ramp.model.business.field\Field#method_offsetSet ramp\model\business\field\Field::offsetSet()
-   * @link ramp.model.business.field\Field#method_offsetUnset ramp\model\business\field\Field::offsetUnset()
+   * @see ramp.model.business.field\Field#method_offsetSet ramp\model\business\field\Field::offsetSet()
+   * @see ramp.model.business.field\Field#method_offsetUnset ramp\model\business\field\Field::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -254,14 +255,14 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * Handle complex iterative relations (model flexability).
    * - assert set 'children' modifies interable field\Field.
    * - assert foreach loop, iterates through each expected object:
-   *   - assert returns object that is an instance of {@link \Traversable}
+   *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @link ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
-   * @link ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
-   * @link ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
-   * @link ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count
+   * @see ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
+   * @see ramp.model.business.field\Field#method_getIterator ramp\model\business\field\Field::getIterator()
+   * @see ramp.model.business.field\Field#method_offsetGet ramp\model\business\field\Field::offsetGet()
+   * @see ramp.model.business.field\Field#method_count ramp\model\business\field\Field::count
    */
   public function testComplexModelIteration()
   {
@@ -272,18 +273,18 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * Hold reference back to associated parent Record, propertyName and value.
    * - assert record as passed to constructor.
    * - assert propertyName as passed to constructor.
-   * @link ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
-   * @link ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
+   * @see ramp.model.business.field\Field#method_get_parentRecord ramp\model\business\field\Field::record
+   * @see ramp.model.business.field\Field#method_get_parentProppertyName ramp\model\business\field\Field::parentProppertyName
    */
-  public function testStateChangesRecordComponent(string $name = NULL)
+  public function testStateChangesRecordComponent() //string $name = NULL)
   {
-    parent::testStateChangesRecordComponent($name);
+    parent::testStateChangesRecordComponent(); //$name);
   }
 
   /**
    * Set 'record' NOT accessable ramp\model\business\field\Field::record.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @link ramp.model.business.field\Field#method_set_parentRecord ramp\model\business\field\Field::record
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @see ramp.model.business.field\Field#method_set_parentRecord ramp\model\business\field\Field::record
    */
   public function testSetParentRecordPropertyNotSetException()
   {
@@ -292,8 +293,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Set 'propertyName' NOT accessable ramp\model\business\field\Field::propertyName.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @link ramp.model.business.field\Field#method_set_parentPropertyName ramp\model\business\field\Field::propertyName
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @see ramp.model.business.field\Field#method_set_parentPropertyName ramp\model\business\field\Field::propertyName
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {
@@ -304,16 +305,16 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   /**
    * Minimumal Field initial 'new' state.
    * - assert property 'id' is gettable:
-   *   - assert returned value instance of {@link \ramp\core\Str}.
+   *   - assert returned value instance of {@see \ramp\core\Str}.
    *   - assert returned value matches expected result, in the format:
    *     - lowercase and hypenated colon seperated [class-name]:[key].
    * - assert isEditable matches expected values, some defaults are NOT overridable:
    *   - assert always returns TRUE while state is 'new' (no primaryKey value)
    *   - assert 
-   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::id
-   * @link ramp.model.business.Record#method_get_id ramp\model\business\Record::primarykey
-   * @link ramp.model.business.field.Field#method_get_isEditable ramp\model\business\field\Field::isEditable
-   * @link ramp.model.business.field.Field#method_set_isEditable ramp\model\business\field\Field::isEditable
+   * @see \ramp\model\business\Record::id
+   * @see \ramp\model\business\Record::primarykey
+   * @see \ramp\model\business\field\Field::isEditable
+   * @see \ramp\model\business\field\Field::isEditable
    */
   public function testStateChangesField()
   {
@@ -346,11 +347,11 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Collection of assertions for \ramp\model\business\field\Field::label.
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
    * - assert property 'label' is gettable.
-   * - assert returned value instance of {@link \ramp\core\Str}.
+   * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected result.
-   * @link ramp.model.business.field.Field#method_get_label ramp\model\business\field\Field::label
+   * @see \ramp\model\business\field\Field::label
    *
   public function testGet_label()
   {
@@ -367,8 +368,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 
   /**
    * Offset addition minimum type checking test
-   * - assert {@link \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @link ramp.model.business.Record#method_offsetSet ramp\model\business\Record::offsetSet()
+   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @see \ramp\model\business\Record::offsetSet()
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
@@ -391,9 +392,9 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @link ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
-   * @link ramp.model.business.field\Field#method_validate ramp\model\business\field\Field::validate()
-   * @link ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
+   * @see ramp.model.business.field\Field#method_setChildren ramp\model\business\field\Field::children
+   * @see ramp.model.business.field\Field#method_validate ramp\model\business\field\Field::validate()
+   * @see ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
    */
   public function testTouchValidityAndErrorMethods()
   {
@@ -412,7 +413,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @link ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
+   * @see ramp.model.business.field\Field#method_getErrors ramp\model\business\field\Field::getErrors()
    */
   public function testErrorReportingPropagation()
   {
