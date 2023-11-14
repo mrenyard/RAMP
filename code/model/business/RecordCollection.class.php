@@ -64,7 +64,7 @@ class RecordCollection extends Relatable implements iCollection
    * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
    * @throws \InvalidArgumentException When provided object NOT expected type (Record)
    */
-  final public function add(RAMPObject $object)
+  final public function add(RAMPObject $object) : void
   {
     parent::offsetSet($this->count, $object);
   }

@@ -90,7 +90,7 @@ class oList extends RAMPObject implements iList
    * @return \ramp\core\RAMPObject Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
-  public function offsetGet($offset)
+  public function offsetGet($offset) : RAMPObject
   {
     if (!isset($this->list[$offset])) {
       throw new \OutOfBoundsException('Offset out of bounds');
@@ -104,7 +104,7 @@ class oList extends RAMPObject implements iList
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException When provided object NOT of expected type
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     if (!($object instanceof $this->compositeType)) {
       throw new \InvalidArgumentException(
@@ -119,7 +119,7 @@ class oList extends RAMPObject implements iList
    * ArrayAccess method offsetUnset.
    * @param mixed $offset API to match \ArrayAccess interface
    */
-  public function offsetUnset($offset)
+  public function offsetUnset($offset) : void
   {
     unset($this->list[$offset]);
   }

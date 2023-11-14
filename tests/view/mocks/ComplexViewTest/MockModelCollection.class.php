@@ -50,7 +50,7 @@ class MockModelCollection extends BusinessModel implements iCollection
     $this->bProperty = $value;
   }
 
-  final public function add(RAMPObject $object)
+  final public function add(RAMPObject $object) : void
   {
     parent::offsetSet($this->count, $object);
   }

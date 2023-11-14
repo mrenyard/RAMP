@@ -41,5 +41,5 @@ interface iCollection extends iList, \Countable
    * - new object reference appended to this collection
    * @param \ramp\core\RAMPObject $object reference to be added
    */
-  public function add(RAMPObject $object);
+  public function add(RAMPObject $object) : void;
 }

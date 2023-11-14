@@ -61,7 +61,7 @@ class Collection extends oList implements iCollection
    * @param \ramp\core\RAMPObject $object reference to be added
    * @throws \InvalidArgumentException When provided object NOT of expected type
    */
-  public function add(RAMPObject $object)
+  public function add(RAMPObject $object) : void
   {
     parent::offsetSet(count($this), $object);
   }
@@ -70,7 +70,7 @@ class Collection extends oList implements iCollection
    * Ensures when in Deep Cloning Mode that composite collection is cloned or in
    * Shallow Cloning Mode (default) composite collection is referenced only.
    */
-  public function __clone()
+  public function __clone() : void
   {
     if ($this->deepClone) {
       $new = array();

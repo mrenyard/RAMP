@@ -93,7 +93,7 @@ abstract class RAMPObject
    * @param mixed $propertyValue The value to set on requested property (handled internally)
    * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
-  public function __set($propertyName, $propertyValue)
+  public function __set($propertyName, $propertyValue) : void
   {
     if (!method_exists($this, ($method = 'set_'.$propertyName))) {
       throw new PropertyNotSetException(
@@ -107,7 +107,7 @@ abstract class RAMPObject
    * Returns this 'class name' for screen output.
    * @return string name of class.
    */
-  public function __toString()
+  public function __toString() : string
   {
     return get_class($this);
   }

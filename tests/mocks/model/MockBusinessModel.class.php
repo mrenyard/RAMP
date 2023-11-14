@@ -40,7 +40,7 @@ class MockBusinessModelCollection extends BusinessModel implements iCollection
    * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
    * @throws \InvalidArgumentException When provided object NOT expected type (Record)
    */
-  public function add(RAMPObject $object)
+  public function add(RAMPObject $object) : void
   {
     self::offsetSet($this->get_count(), $object);
   }
