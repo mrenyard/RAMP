@@ -370,11 +370,15 @@ final class Str extends RAMPObject
     return FALSE;
   }
 
-  public function explode(Str $seperator) : StrCollection
+  /**
+   * Returns a StrCollection split at the point of designated seperator.
+   * @param \ramp\core\StrCollection $separator Separator used to determine points of separation. 
+   */
+  public function explode(Str $separator) : StrCollection
   {
     $value = StrCollection::set();
     if ($this === self::_EMPTY()){ return $value->add($this); } // cannot explode an empty string
-    foreach (explode((string)$seperator, $this->value) as $part) { $value->add(Str::set($part)); }
+    foreach (explode((string)$separator, $this->value) as $part) { $value->add(Str::set($part)); }
     return $value;
   }
 

@@ -30,14 +30,14 @@ namespace ramp\core;
 interface iOption
 {
   /**
-   * Get id unique identifier (URN:Str)
+   * Get id unique identifier (URN:Str).
    * **DO NOT CALL DIRECTLY, USE this->id;**
    * @return \ramp\core\Str id
    */
   public function get_id(): Str;
 
   /**
-   * Get key unique identifier (enum:int)
+   * Get key unique identifier (enum:int).
    * **DO NOT CALL DIRECTLY, USE this->key;**
    * @return int Key
    */
