@@ -127,7 +127,7 @@ class oList extends RAMPObject implements iList
   /**
    * Returns the number of items currently stored in this collection.
    * **DO NOT CALL DIRECTLY, USE this->count;**
-   * @see https://www.php.net/manual/en/class.countable.php
+   * @see https://www.php.net/manual/class.countable.php
    * @return int Number of items in this collection
    */
   final public function count() : int

@@ -84,7 +84,7 @@ class RelationLookup extends Relation
         new SimpleBusinessModelDefinition($this->withRecordName),
         Filter::build($this->withRecordName, $filterArray)
       );
-    } catch (DataFetchException $e) {
+    } catch (DataFetchException $exception) {
       $collection->add($this->manager->getBusinessModel(
         new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
       ));

@@ -25,4 +25,7 @@ namespace ramp\model\business;
  */
 class DataExistingEntryException extends DataWriteException
 {
+  // public function __construct(string $targetID, string $message, int $code = 0, Throwable $previous = null) {
+  //   parent::__construct($message, $code, $previous);
+  // }
 }

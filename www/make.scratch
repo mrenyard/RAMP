@@ -37,9 +37,9 @@ require_once $BASE_PATH . '/ramp/model/business/field/AdapterForRecord.class.php
 $session = http\Session::getInstance();
 try {
   $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
-} catch (http\Unauthorized401Exception $e) {
+} catch (http\Unauthorized401Exception $exception) {
   header('HTTP/1.1 401 Unauthorized');
-  $authenticationForm = new view\AuthenticationForm($e->getMessage());
+  $authenticationForm = new view\AuthenticationForm($exception->getMessage());
   $authenticationForm->setModel($session->loginAccount);
   view\RootView::getInstance()->render();
   return;

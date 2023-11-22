@@ -85,7 +85,7 @@ abstract class Condition extends RAMPObject
   /**
    * @ignore
    */
-  protected function set_comparable($value)
+  protected function set_comparable($value) : void
   {
     $this->comparable = (is_string($value) && is_numeric($value))?
       ((float)$value == (int)$value)? (int)$value:

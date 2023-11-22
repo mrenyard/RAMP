@@ -79,7 +79,7 @@ abstract class DbTypeValidation extends ValidationRule
   {
     try {
       parent::process($value);
-    } catch (FailedValidationException $e) {
+    } catch (FailedValidationException $exception) {
       throw new FailedValidationException($this->errorMessage);
     }
   }

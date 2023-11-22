@@ -68,19 +68,16 @@ class TestRecord extends Record
         $this->$propertyName;
       }
     }
-    print_r($this->components[RecordComponentType::KEY]);
     foreach ($this->components[RecordComponentType::KEY] as $name => $o) {
       $this->primaryKey[$this->primaryKey->count] = $this->$name;
       if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
     }
     if ($this->primaryKey->value !== NULL) { $this->validAtSource = TRUE; }
     $i = 0;
-    print_r($this->components[RecordComponentType::PROPERTY]);
     foreach ($this->components[RecordComponentType::PROPERTY] as $name => $o) {
       $this[$i++] = $this->$name;
       if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
     }
-    print_r($this->components[RecordComponentType::RELATION]);
     foreach ($this->components[RecordComponentType::RELATION] as $name => $o) {
       $this[$i++] = $this->$name;
       if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }

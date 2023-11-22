@@ -75,7 +75,7 @@ final class FilterCondition extends BusinessCondition
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
    * @see \ramp\model\business\Property::processValidationRules()
    */
-  protected function set_comparable($value)
+  protected function set_comparable($value) : void
   {
     if (!$this->property->contains(StrCollection::set('fk_'))) {
       $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $this->record;
@@ -85,7 +85,7 @@ final class FilterCondition extends BusinessCondition
       try {
         $propertyClass->processValidationRule($value);
       } catch (PropertyNotSetException $exception) {
-        throw new \DomainException('Supplied argument does Not validate against associated property');
+        throw new \DomainException('Supplied argument does Not validate against associated property', 0, $exception);
       }
     }
     parent::set_comparable($value);

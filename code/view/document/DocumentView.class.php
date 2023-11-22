@@ -99,10 +99,10 @@ abstract class DocumentView extends ComplexView
   {
     try {
       parent::__set($propertyName, $propertyValue);
-    } catch (PropertyNotSetException $e) {
+    } catch (PropertyNotSetException $exception) {
       try {
         $this->documentModel->$propertyName = $propertyValue;
-      } catch (PropertyNotSetException $f) { throw $e; }
+      } catch (PropertyNotSetException $f) { throw $exception; }
     }
   }
 
@@ -142,10 +142,10 @@ abstract class DocumentView extends ComplexView
     }
     try {
       return parent::__get($propertyName);
-    } catch (BadPropertyCallException $e) {
+    } catch (BadPropertyCallException $exception) {
       try {
         return $this->documentModel->$propertyName;
-      } catch (BadPropertyCallException $f) { throw $e; }
+      } catch (BadPropertyCallException $f) { throw $exception; }
     }
   }
 }

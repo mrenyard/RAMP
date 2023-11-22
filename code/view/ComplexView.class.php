@@ -70,8 +70,8 @@ abstract class ComplexView extends ChildView
   {
     try {
       return parent::__get($propertyName);
-    } catch (BadPropertyCallException $e) {
-      if (!isset($this->model)) { throw $e; }
+    } catch (BadPropertyCallException $exception) {
+      if (!isset($this->model)) { throw $exception; }
       return $this->model->$propertyName;
     }
   }

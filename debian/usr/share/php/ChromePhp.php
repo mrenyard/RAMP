@@ -324,7 +324,7 @@ class ChromePhp
 
             try {
                 $value = $property->getValue($object);
-            } catch (ReflectionException $e) {
+            } catch (ReflectionException $exception) {
                 $value = 'only PHP 5.3 can access private/protected properties';
             }
 

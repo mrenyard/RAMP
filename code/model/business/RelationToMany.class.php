@@ -72,9 +72,9 @@ class RelationToMany extends Relation
           new SimpleBusinessModelDefinition($this->withRecordName),
           Filter::build($this->withRecordName, $filterArray)
         ));
-      } catch (DataFetchException $e) {
+      } catch (DataFetchException $exception) {
         $this->setWith(new RecordCollection());
-      }   
+      }
       if ($editable === TRUE) {
         $this->getWith()->add($this->manager->getBusinessModel(
           new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
@@ -89,18 +89,13 @@ class RelationToMany extends Relation
   final protected function set_isEditable(bool $value)
   {
     $with = $this->getWith();
-    if ($value === TRUE && !$with[(count($with) - 1)]->isNew) {
+    if ($value === TRUE && isset($with[(count($with) - 1)]) && (!($with[(count($with) - 1)]->isNew))) {
       $with->add($this->manager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW()),
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
       ));
     }
     parent::set_isEditable($value);
   }
-
-  // public function add(Record $object)
-  // {
-  //   $this[$this->count] = $object;
-  // }
 
   /**
    * Validate postdata against this and update accordingly.
@@ -109,5 +104,32 @@ class RelationToMany extends Relation
    */
   public function validate(PostData $postdata) : void
   {
+    // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
+    if ($this->parent->isNew || $this->getWith() === NULL) { return; }
+    $with = $this->getWith();
+    $i = ($with->count - 1);
+    try {
+      parent::validate($postdata);
+    } catch (DataExistingEntryException $exception) {
+      // TODO:mrenyard: Check Session::loginAccount has access rights to resource.
+      // $level = Session::getInstance()->getResourceRights(($this->withRecordName->append($primaryKey->prepend(Str::COLON())))); // :int (0:NON|1:VIEW|2:EDIT)
+      // if ($level < ResourceRights::VIEW && $level < ResourceRights::EDIT) { throw new Exception;? }
+      // TODO:mrenyard: Fix hack for ID (A|B|C) once DataExistingEntryException changed to accomidate targetID.
+      $new = $with[$i];
+      $with[$i] = $this->manager->getBusinessModel(
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::set('A|B|C')) // $exception->targetID)
+      );
+      if ($this->isEditable) { $with->add($new); }
+      return;
+    }
+    if ((!$this->parent->hasErrors) && $this->parent->isValid) {
+      $with[$i]->updated();
+      if ($this->isEditable) {
+        $with->add($this->manager->getBusinessModel(
+          new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
+        ));
+      }
+      return;
+    }
   }
 }

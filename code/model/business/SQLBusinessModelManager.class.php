@@ -184,7 +184,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
           $this->databaseHandle = \NULL;
         } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
           $this->databaseHandle = \NULL;
-          throw new DataFetchException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
+          throw new DataFetchException($pdoException->getMessage(), 0, $pdoException); // @codeCoverageIgnoreEnd
         }
       }
     }
@@ -242,7 +242,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       $this->databaseHandle = \NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
       $this->databaseHandle = \NULL;
-      throw new DataFetchException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
+      throw new DataFetchException($pdoException->getMessage(), 0, $pdoException); // @codeCoverageIgnoreEnd
     }
     return $collection;
   }
@@ -347,7 +347,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
       }
     } while ($count < 3);
-    throw new DataWriteException($pdoException->getMessage()); // @codeCoverageIgnoreEnd
+    throw new DataWriteException($pdoException->getMessage(), 0, $pdoException); // @codeCoverageIgnoreEnd
   }
 
   /**

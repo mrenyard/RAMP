@@ -281,13 +281,14 @@ class MockBusinessModelManager extends BusinessModelManager
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
     $this->callCount++;
-    if ($definition->recordName == 'MockRecord')
+    if ((string)$definition->recordName == 'MockRecord')
     {
-      if ($definition->recordKey == 'new') {
-        if (!isset($this->mockNew)) { $this->buildMockModel(); }
+      if ((string)$definition->recordKey == 'new') {
+        // if (!isset($this->mockNew)) { 
+        $this->buildMockModel(); //}
         return $this->mockNew;
       }
-      if ($definition->RecordKey == '1|1|1') {
+      if ((string)$definition->RecordKey == '1|1|1') {
         if (!isset($this->objectNew)) { $this->buildObjectNew(); }
         return $this->objectNew;
       }
@@ -297,7 +298,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $o->add($this->objectNew);
         return $o;
       }
-      if ($definition->RecordKey == '2|2|2') {
+      if ((string)$definition->RecordKey == '2|2|2') {
         if (!isset($this->objectOne)) { $this->buildObjectOne(); }
         return $this->objectOne;
       }
@@ -309,13 +310,14 @@ class MockBusinessModelManager extends BusinessModelManager
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
-    if ($definition->recordName == 'MockMinRecord')
+    if ((string)$definition->recordName == 'MockMinRecord')
     {
-      if ($definition->recordKey == 'new') {
-        if (!isset($this->mockMinNew)) { $this->buildMinNew(); }
+      if ((string)$definition->recordKey == 'new') {
+        // if (!isset($this->mockMinNew)) {
+        $this->buildMinNew(); //}
         return $this->mockMinNew;
       }
-      if ($definition->RecordKey == 'A|B|C') {
+      if ((string)$definition->RecordKey == 'A|B|C') {
         if (!isset($this->objectTwo)) { $this->buildObjectTwo(); }
         return $this->objectTwo;
       }
@@ -325,7 +327,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $o->add($this->objectTwo);
         return $o;
       }
-      if ($definition->RecordKey == 'A|B|D') {
+      if ((string)$definition->RecordKey == 'A|B|D') {
         if (!isset($this->objectThree)) { $this->buildObjectThree(); }
         return $this->objectThree;
       }
@@ -335,7 +337,7 @@ class MockBusinessModelManager extends BusinessModelManager
         $o->add($this->objectThree);
         return $o;
       }
-      if ($definition->RecordKey == 'A|B|E') {
+      if ((string)$definition->RecordKey == 'A|B|E') {
         if (!isset($this->objectFour)) { $this->buildObjectFour(); }
         return $this->objectFour;
       }
@@ -345,12 +347,12 @@ class MockBusinessModelManager extends BusinessModelManager
         $o->add($this->objectFour);
         return $o;
       }
-      if ($definition->RecordKey == 'A|B|F') {
-        if (!isset($this->objectFive)) { $this->buildObjectFour(); }
+      if ((string)$definition->RecordKey == 'A|B|F') {
+        if (!isset($this->objectFive)) { $this->buildObjectFive(); }
         return $this->objectFive;
       }
-      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "E"') {
-        if (!isset($this->objectFive)) { $this->buildObjectFour(); }
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'MockMinRecord.key1 = "A" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "F"') {
+        if (!isset($this->objectFive)) { $this->buildObjectFive(); }
         $o = new RecordCollection();
         $o->add($this->objectFive);
         return $o;
@@ -385,7 +387,7 @@ class MockBusinessModelManager extends BusinessModelManager
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if (!$this->lookup) { $this->buildLookup(); }
-    if ($definition->recordName == 'Lookup')
+    if ((string)$definition->recordName == 'Lookup')
     {
       if (
         isset($filter) && $filter(SQLEnvironment::getInstance()) ==
@@ -411,17 +413,17 @@ class MockBusinessModelManager extends BusinessModelManager
         return $lookupB1;
       }
     }
-    if ($definition->recordName == 'RecordA')
+    if ((string)$definition->recordName == 'RecordA')
     {
-      if ($definition->RecordKey == '1|1|1') { return $this->objectA1; }
-      if ($definition->RecordKey == '2|2|2') { return $this->objectA2; }
-      if ($definition->RecordKey == '3|3|3') { return $this->objectA3; }
+      if ((string)$definition->RecordKey == '1|1|1') { return $this->objectA1; }
+      if ((string)$definition->RecordKey == '2|2|2') { return $this->objectA2; }
+      if ((string)$definition->RecordKey == '3|3|3') { return $this->objectA3; }
     }
-    if ($definition->recordName == 'RecordB')
+    if ((string)$definition->recordName == 'RecordB')
     {
-      if ($definition->RecordKey == '1|1') { return $this->objectB1; }
-      if ($definition->RecordKey == '2|2') { return $this->objectB2; }
-      if ($definition->RecordKey == '3|3') { return $this->objectB3; }
+      if ((string)$definition->RecordKey == '1|1') { return $this->objectB1; }
+      if ((string)$definition->RecordKey == '2|2') { return $this->objectB2; }
+      if ((string)$definition->RecordKey == '3|3') { return $this->objectB3; }
     }
     throw new \DomainException('Business Model(s) NOT found!');
   }

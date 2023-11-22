@@ -73,7 +73,7 @@ class RelationToOne extends Relation
           new SimpleBusinessModelDefinition($this->withRecordName),
           Filter::build($this->withRecordName, $filterArray)
         )[0]);
-      } catch (DataFetchException $e) {
+      } catch (DataFetchException $exception) {
         $this->setWith($this->manager->getBusinessModel(
           new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
         ));
@@ -99,7 +99,6 @@ class RelationToOne extends Relation
   {
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
     if ($this->parent->isNew || $this->getWith() === NULL) { return; }
-    parent::validate($postdata);
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
     {
@@ -110,7 +109,7 @@ class RelationToOne extends Relation
         {
           if (isset($values['unset']) && $values['unset'] == 'on')
           {
-            if (!$this->isEditable) { return; }
+            if (!$this->isEditable) { break; }
             // Change FKs to NULL and Children to new;
             foreach ($this->keyMap as $subForeignKey) {
               $this->parent->setPropertyValue($subForeignKey, NULL);
@@ -118,9 +117,9 @@ class RelationToOne extends Relation
             $this->setWith($this->manager->getBusinessModel(
               new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
             ));    
-            return;
+            break;
           }
-          if (!$this->getWith()->isNew) { return; }
+          if (!$this->getWith()->isNew) { break; }
           if (count($values) === $this->getWith()->primaryKey->count)
           {
             $primarySubKeys = StrCollection::set();
@@ -133,8 +132,8 @@ class RelationToOne extends Relation
             try {
               // attempt to set primaryKey from provided values
               $this->getWith()->validate(PostData::build($keyPostdata));
-              return;
-            } catch (DataExistingEntryException $e) {
+              break;
+            } catch (DataExistingEntryException $exception) {
               // TODO:mrenyard: Check Session::loginAccount has access rights to resource.
               // $level = Session::getInstance()->getResourceRights(($this->withRecordName->append($primaryKey->prepend(Str::COLON())))); // :int (0:NON|1:VIEW|2:EDIT)
               // if ($level >= ResourceRights::VIEW) {
@@ -143,13 +142,15 @@ class RelationToOne extends Relation
                 $this->setWith($this->manager->getBusinessModel(
                   new SimpleBusinessModelDefinition($this->withRecordName, $primaryKey),
                 ));
-                return;
+                break;
               // }
+              // throw new Exception?
             }
           }
         } // @codeCoverageIgnoreStart
         $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id)); // @codeCoverageIgnoreEnd
       }
     }
+    parent::validate($postdata);
   }
 }

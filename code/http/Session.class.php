@@ -46,7 +46,7 @@ use ramp\view\document\Email;
  * $session = http\Session::getInstance();
  * try {
  *   $session->authorizeAs(model\business\LoginAccountType::SYSTEM_ADMINISTRATOR());
- * } catch (http\Unauthorized401Exception $e) {
+ * } catch (http\Unauthorized401Exception $exception) {
  *   header('HTTP/1.1 401 Unauthorized');
  *   ...
  *   return;

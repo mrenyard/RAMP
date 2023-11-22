@@ -205,35 +205,12 @@ class FilterTest extends \PHPUnit\Framework\TestCase
   {
     $testObject = Filter::build($this->record, $this->complexArray);
     $i=0; $j=0;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyA', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueA', $testObject->subOrGroups[$i][$j]->comparable);
-    $j++;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyA', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueB', $testObject->subOrGroups[$i][$j]->comparable);
-    $j++;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyA', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueC', $testObject->subOrGroups[$i][$j]->comparable);
-    $i++; $j=0;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyC', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueA', $testObject->subOrGroups[$i][$j]->comparable);
-    $j++;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyC', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueB', $testObject->subOrGroups[$i][$j]->comparable);
-    $j++;
-    $this->assertSame('Record', (string)$testObject->subOrGroups[$i][$j]->record);
-    $this->assertSame('propertyC', (string)$testObject->subOrGroups[$i][$j]->property);
-    $this->assertSame(Operator::EQUAL_TO(), $testObject->subOrGroups[$i][$j]->operator);
-    $this->assertSame('valueC', $testObject->subOrGroups[$i][$j]->comparable);
+    $this->assertSame(
+      'Record.propertyB <> "valueA" AND Record.propertyB <> "valueC" AND Record.propertyInt < "11" AND Record.propertyInt > "4.5" AND ' .
+      '(Record.propertyA = "valueA" OR Record.propertyA = "valueB" OR Record.propertyA = "valueC") AND ' .
+      '(Record.propertyC = "valueA" OR Record.propertyC = "valueB" OR Record.propertyC = "valueC")',
+      $testObject()
+    );
     $i=0;
     $this->assertSame('Record', (string)$testObject[$i]->record);
     $this->assertSame('propertyB', (string)$testObject[$i]->property);

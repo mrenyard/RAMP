@@ -24,20 +24,20 @@ require_once('load.ini.php');
 $session = http\Session::getInstance();
 // try {
 //   $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
-// } catch (http\Unauthorized401Exception $e) {
+// } catch (http\Unauthorized401Exception $exception) {
 //   header('HTTP/1.1 401 Unauthorized');
-//   $authenticationForm = new view\AuthenticationForm($e->getMessage());
+//   $authenticationForm = new view\AuthenticationForm($exception->getMessage());
 //   $authenticationForm->setModel($session->loginAccount);
 //   view\RootView::getInstance()->render();
 //   return;
 // }
 try {
   $request = http\Request::current();
-} catch (\DomainException $e) {
+} catch (\DomainException $exception) {
   header('HTTP/1.1 404 Not Found');
   // TODO:mrenyard: Render view - Not Found.
   print_r('<h1>Render view - Not Found.</h1>');
-  print_r('<pre>' . $e . '</pre>');
+  print_r('<pre>' . $exception . '</pre>');
   return;
 }
 $view = view\ViewManager::getView($request);
@@ -46,25 +46,32 @@ if ((string)$request->modelURN !== '') {
   $modelManager = $MODEL_MANAGER::getInstance();
   try {
     $model = $modelManager->getBusinessModel($request, $request->filter, $request->fromIndex);
-  } catch (model\business\DataFetchException $e) {
+  } catch (model\business\DataFetchException $exception) {
     if ($request->recordKey != NULL) { // No matching Record found in data storage 
       header('HTTP/1.1 404 Not Found');
       print_r('<h1>Render view - Not Found.</h1>');
-      print_r('<pre>' . $e . '</pre>');
+      print_r('<pre>' . $exception . '</pre>');
       return;
     } elseif ($request->recordName != NULL)  { // No Records found in data storage redirect to new
       header('HTTP/1.1 307 Temporary Redirect');
       header('Location: /' . $request->modelURN . '/new');
       return;
     }
-    throw $e;
+    throw $exception;
   }
   if ($request->method === http\Method::POST()) {
-    $model->validate($request->postData);
+    // TODO: Add catch for DataExistingEntryException 
+    // try {
+      $model->validate($request->postData);
+    // } catch (model\business\DataExistingEntryException $exception) {
+    //   header('HTTP/1.1 303 See Other'); // 303 is correctly used as another resource is the corrent entry for this posted data.
+    //   header('Location: /' . str_replace(':', '/', (string)$exception->targetID));
+    //   return;
+    // }
     $modelManager->updateAny();
   }
   if (((string)$request->recordKey) == 'new' && ($model->isValid)) {
-    header('HTTP/1.1 303 See Other');
+    header('HTTP/1.1 303 See Other'); // The 'new' entry can now be located following post. 
     header('Location: /' . str_replace(':', '/', (string)$model->id));
     return;
   }

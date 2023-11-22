@@ -526,9 +526,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   public function testRecordNewWithRelationOfOne()
   {
     // Expected related existing record from data store to test against
-    $toRecord = $this->modelManager->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('MockMinRecord'), Str::NEW())
-    );
+    $toRecord = $this->modelManager->mockMinNew;
     $toRecord->reset();
     $this->assertTrue($toRecord->isNew);
     $this->assertFalse($toRecord->isModified);
@@ -615,7 +613,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       // Check children match expected related record's keys.
       $this->assertSame($expectedRecordKey, $toRecordKey);
       // Check validate called on each related Record's key.
-      $this->assertSame(2, $toRecordKey->validateCount);
+      $this->assertSame(1, $toRecordKey->validateCount);
       // Check hasErrors called on each related Record's key.
       $this->assertSame(3, $toRecordKey->hasErrorsCount);
       // Check validated related Record field (key) values are modified as directed.
@@ -634,7 +632,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       // Check children match expected related record's properties.
       $this->assertSame($expectedRecordProperty, $toRecordProperty);
       // Check validate called on each related Record's property.
-      $this->assertSame(0, $toRecordProperty->validateCount);
+      $this->assertSame(1, $toRecordProperty->validateCount);
       // Check hasErrors called on each related Record's property.
       $this->assertSame(2, $toRecordProperty->hasErrorsCount);
       // Check validated related Record field (property) values are modified as directed.
@@ -749,8 +747,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   /**
    * Add 'new' relation on Record collection (MANY) accessable with appropiate state changes.
-   *
-  public function testAddNewRelationOfMany()
+   * - assert ...
+   */
+  public function testAddExistingNewRelationOfMany()
   {
     $fromRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
@@ -759,7 +758,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($fromRecord->isNew);
     $fromData = $this->modelManager->dataObjectNew;
     // Ensure dataObject of parent Record does NOT contain relation name.
-    $this->assertObjectNotHasAttribute('relationAlpha', $fromData); // to ONE
+    $this->assertObjectNotHasProperty('relationAlpha', $fromData); // to ONE
     $expectedCollection = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockMinRecord')),
       Filter::build(Str::set('MockMinRecord'), array(
@@ -772,15 +771,15 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $relation = $fromRecord->relationAlpha; // to MANY
     // Check relation collection not editable as no prepended 'new'.
     $this->assertFalse($relation->isEditable); // NOT Editable
-    $this->assertSame(3, $expectedCollection->count); // NO prepended 'new' Record for addition
+    $this->assertSame(3, $relation->count); // NO prepended 'new' Record for addition
     $i = 0;
-    $iterator = $relation->getIterator();
+    $iterator = $expectedCollection->getIterator();
     $iterator->rewind();
-    foreach ($expectedCollection as $expectedRecord) {
-      $actualRecord = $iterator->current();
-      $this->assertSame($expectedRecord, $actualRecord);
+    foreach ($relation as $relatedRecord) {
+      $expectedRecord = $iterator->current();
+      $this->assertSame($expectedRecord, $relatedRecord);
       $i++; $j = 0;
-      foreach ($actualRecord as $subkeyOrProperty) {
+      foreach ($relatedRecord as $subkeyOrProperty) {
         $j++;
         $this->assertSame('property' . $j, (string)$subkeyOrProperty->name);
       }
@@ -795,30 +794,95 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     )));
     // Check validate tounced but collection unaffected
     $this->assertSame(1, $relation->validateCount);
-    $this->assertSame(3, $expectedCollection->count); // STILL ONLY 3 in Collection.
+    $this->assertSame(3, $relation->count); // STILL ONLY 3 in Collection.
     //  isEditable  
     $relation->isEditable = TRUE;
-    $this->assertSame(4, $expectedCollection->count); // NOW (3 + 'new').
+    // Check existance of append 'new' editable relevant record on collection.
+    $this->assertSame(4, $relation->count); // NOW (3 + 'new').
     $i = 0;
-    $iterator = $relation->getIterator();
+    $iterator = $expectedCollection->getIterator();
     $iterator->rewind();
-    foreach ($expectedCollection as $expectedRecord) {
-      $actualRecord = $iterator->current();
-      $this->assertSame($expectedRecord, $actualRecord);
+    foreach ($relation as $relatedRecord) {
       $i++; $j = 0;
-      foreach ($actualRecord as $subkeyOrProperty) {
+      $expectedRecord = $iterator->current();
+      if ($i < 4) { $this->assertSame($expectedRecord, $relatedRecord); }
+      foreach ($relatedRecord as $subkeyOrProperty) {
         $j++;
-        if ($i == $relation->count) {
-          $this->assertTrue($actualRecord->isNew);
+        if ($i === 4) {
+          $this->assertTrue($relatedRecord->isNew);
+          $this->assertNull($relatedRecord->primaryKey->value);
           $this->assertSame('key' . $j, (string)$subkeyOrProperty->name);
           continue;
         }
+        $this->assertFalse($relatedRecord->isNew);
+        $this->assertNotNull($relatedRecord->primaryKey->value);
         $this->assertSame('property' . $j, (string)$subkeyOrProperty->name);
       }
       $iterator->next();
     }
     $this->assertSame(4, $i);
-  }*/
+    // Edit existing record as 4th member of this relations collection.
+    $fromRecord->validate(PostData::build(array(
+      'mock-min-record:new:key1' => 'A',
+      'mock-min-record:new:key2' => 'B',
+      'mock-min-record:new:key3' => 'C'
+    )));
+    $this->assertSame(5, $relation->count); // NOW (3 + added-existing + 'new').
+    $i = 0;
+    $iterator = $expectedCollection->getIterator();
+    $iterator->rewind();
+    foreach ($relation as $relatedRecord) {
+      $i++; $j = 0;
+      $expectedRecord = $iterator->current();
+      if ($i < 4) { $this->assertSame($expectedRecord, $relatedRecord); }
+      if ($i === 4) { $this->assertSame($this->modelManager->objectTwo, $relatedRecord); }
+      foreach ($relatedRecord as $subkeyOrProperty) {
+        $j++;
+        if ($i === 5) {
+          $this->assertTrue($relatedRecord->isNew);
+          $this->assertNull($relatedRecord->primaryKey->value);
+          $this->assertSame('key' . $j, (string)$subkeyOrProperty->name);
+          continue;
+        }
+        $this->assertFalse($relatedRecord->isNew);
+        $this->assertNotNull($relatedRecord->primaryKey->value);
+        $this->assertSame('property' . $j, (string)$subkeyOrProperty->name);
+      }
+      $iterator->next();
+    }
+    $this->assertSame(5, $i);
+    // Edit existing record as 4th member of this relations collection.
+    $fromRecord->validate(PostData::build(array(
+      'mock-min-record:new:key1' => 'A',
+      'mock-min-record:new:key2' => 'B',
+      'mock-min-record:new:key3' => 'G'
+    )));
+    $this->assertSame(6, $relation->count); // NOW (3 + added-existing + added-new + 'new').
+    $i = 0;
+    $iterator = $expectedCollection->getIterator();
+    $iterator->rewind();
+    foreach ($relation as $relatedRecord) {
+      $i++; $j = 0;
+      $expectedRecord = $iterator->current();
+      if ($i < 4) { $this->assertSame($expectedRecord, $relatedRecord); }
+      if ($i === 4) { $this->assertSame($this->modelManager->objectTwo, $relatedRecord); }
+      if ($i === 5) { $this->assertSame('A|B|G', $relatedRecord->primaryKey->value); }
+      foreach ($relatedRecord as $subkeyOrProperty) {
+        $j++;
+        if ($i === 6) {
+          $this->assertTrue($relatedRecord->isNew);
+          $this->assertNull($relatedRecord->primaryKey->value);
+          $this->assertSame('key' . $j, (string)$subkeyOrProperty->name);
+          continue;
+        }
+        $this->assertFalse($relatedRecord->isNew);
+        $this->assertNotNull($relatedRecord->primaryKey->value);
+        $this->assertSame('property' . $j, (string)$subkeyOrProperty->name);
+      }
+      $iterator->next();
+    }
+    $this->assertSame(6, $i);
+  }
 
   /*
   public function testRecordComponentRegistrationProcess()

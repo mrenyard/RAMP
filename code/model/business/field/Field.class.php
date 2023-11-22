@@ -110,8 +110,8 @@ abstract class Field extends RecordComponent
         if (!$this->isEditable) { return; }
         try {
           $this->processValidationRule($inputdata->value);
-        } catch (FailedValidationException $e) {
-          $this->errorCollection->add(Str::set($e->getMessage()));
+        } catch (FailedValidationException $exception) {
+          $this->errorCollection->add(Str::set($exception->getMessage()));
           return;
         }
         $this->parent->setPropertyValue(

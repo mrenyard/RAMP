@@ -49,7 +49,7 @@ use ramp\http\Method;
  * ```php
  * try {
  *   $request = new http\Request();
- * } catch (\DomainException $e) {
+ * } catch (\DomainException $exception) {
  *   header('HTTP/1.1 404 Not Found');
  *   ...
   *  return;

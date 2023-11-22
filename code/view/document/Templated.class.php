@@ -67,8 +67,8 @@ class Templated extends DocumentView
     $this->templateType = ($templateType == null) ? Str::set('html') : $templateType;
     try {
       $this->updateTemplatePath();
-    } catch (\BadMethodCallException $e) {
-      throw new \InvalidArgumentException($e->getMessage());
+    } catch (\BadMethodCallException $exception) {
+      throw new \InvalidArgumentException($exception->getMessage(), 0, $exception);
     }
   }
 
@@ -97,9 +97,9 @@ class Templated extends DocumentView
     $this->templateType = $value;
     try {
       $this->updateTemplatePath();
-    } catch (\BadMethodCallException $e) {
+    } catch (\BadMethodCallException $exception) {
       $this->templateType = $oldValue;
-      throw new PropertyNotSetException($e->getMessage());
+      throw new PropertyNotSetException($exception->getMessage());
     }
   }
 

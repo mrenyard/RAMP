@@ -187,7 +187,7 @@ class LoginAccount extends Record
   {
     try {
       return parent::__get($propertyName);
-    } catch (BadPropertyCallException $e) {
+    } catch (BadPropertyCallException $exception) {
       if ($propertyName == 'unencryptedPassword' && isset($this->unencryptedPassword)) {
         return $this->getUnencryptedPassword();
       }
