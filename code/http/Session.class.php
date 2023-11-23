@@ -159,14 +159,14 @@ final class Session extends RAMPObject
    *
    * @param int $authorizationLevel Required authorization Level
    * @throws Unauthorized401Exception when authorisation fails with one of the following messages:
-   * - Unauthenticated or insufficient authority
-   * - Attempting POST to resource REQUIRING authentication or insufficient authority
-   * - Invalid email format
-   * - Account (email) NOT in database
-   * - Invalid password or insufficient privileges
-   * - New Authenticatible Unit Form: e-mail mismatch
-   * - Trying to create new login where one already exists!
-   * - SHOULD NEVER REACH HERE!
+   * - Unauthenticated or insufficient authority (1)
+   * - Attempting POST to resource REQUIRING authentication or insufficient authority (2)
+   * - Invalid email format (3)
+   * - Account (email) NOT in database (4)
+   * - New Authenticatible Unit Form: e-mail mismatch (5)
+   * - Invalid password or insufficient privileges (6)
+   * - Trying to create new login where one already exists! (7)
+   * - SHOULD NEVER REACH HERE! (0)
    * @throws BadMethodCallException Session::instance() MUST be called prior to use
    */
   public function authorizeAs(int $authorizationLevel)

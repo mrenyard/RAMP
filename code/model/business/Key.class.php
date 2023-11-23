@@ -141,12 +141,12 @@ class Key extends RecordComponent
       } catch (DataFetchException $expected) {
         return;
       }
+      $targetID = $this->parent->primaryKey->value;
       foreach ($this->parent->primaryKey->indexes as $propertyName) {
         $this->parent->setPropertyValue((string)$propertyName, NULL);
       }
       $this->parent->updated();
-      // throw new DataExistingEntryException((string)$this->value, 'An entry already exists with this key!');
-      throw new DataExistingEntryException('An entry already exists with this key!');
+      throw new DataExistingEntryException($targetID, 'An entry already exists with this key!');
     }    
   }
 }
