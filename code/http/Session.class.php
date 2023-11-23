@@ -187,20 +187,20 @@ final class Session extends RAMPObject
     $this->loginAccount->forcePasswordField = TRUE;
     if (!isset($_POST) || count($_POST) < 1) // GET request
     {
-      throw new Unauthorized401Exception('Unauthenticated or insufficient authority');
+      throw new Unauthorized401Exception('Unauthenticated or insufficient authority', 1);
     }
     if (!isset($_POST['login-email']))
     {
       $_SESSION['post_array'] = $_POST; // set aside Post array
       throw new Unauthorized401Exception(
-        'Attempting POST to resource REQUIRING authentication or insufficient authority'
+        'Attempting POST to resource REQUIRING authentication or insufficient authority', 2
       );
     }
     $loginEmail = $_POST['login-email']; unset($_POST['login-email']);
     try {
       $this->accountEmailCondition->comparable = $loginEmail;
     } catch (\DomainException $invalidEmailFormat) {
-      throw new Unauthorized401Exception('Invalid email format');
+      throw new Unauthorized401Exception('Invalid email format', 3);
     }
     if (isset($_POST['login-password']))
     {
@@ -215,13 +215,13 @@ final class Session extends RAMPObject
           $this->accountEmailFilter
         )[0];
       } catch (\DomainException | \OutOfBoundsException $loginAccountNotInDatabase) {
-        throw new Unauthorized401Exception('Account (email) NOT in database');
+        throw new Unauthorized401Exception('Account (email) NOT in database', 4);
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
         ((int)$this->loginAccount->loginAccountTypeID->value->key < $authorizationLevel)
       ) {
-        throw new Unauthorized401Exception('Invalid password or insufficient privileges');
+        throw new Unauthorized401Exception('Invalid password or insufficient privileges', 6);
       }
       if (isset($_SESSION['post_array'])) // reset $_POST
       {
@@ -238,7 +238,7 @@ final class Session extends RAMPObject
       {
         unset($_POST[$auEmailPropertyID]);
         // TODO:mrenyard: add e-mail mismatch to errorCollection
-        throw new Unauthorized401Exception('New Authenticatable Unit Form: e-mail mismatch');
+        throw new Unauthorized401Exception('New Authenticatable Unit Form: e-mail mismatch', 5);
       }
       try {
         // check login account NOT already exist
@@ -247,7 +247,7 @@ final class Session extends RAMPObject
           $this->accountEmailFilter
         )[0];
         unset($_POST[$auEmailPropertyID]);
-        throw new Unauthorized401Exception('Trying to create new login where one already exists!');
+        throw new Unauthorized401Exception('Trying to create new login where one already exists!', 7);
       }
       catch (DataFetchException | \OutOfBoundsException $confirmedEmailNew)
       {
@@ -287,7 +287,7 @@ final class Session extends RAMPObject
         }
       }
     }
-    throw new Unauthorized401Exception('SHOULD NEVER REACH HERE!');
+    throw new Unauthorized401Exception('SHOULD NEVER REACH HERE!', 0);
   }
 
   /**
