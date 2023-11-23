@@ -61,7 +61,6 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/TestRecord.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -69,6 +68,8 @@ use ramp\condition\Filter;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\Record;
+use ramp\model\business\RecordComponent;
+use ramp\model\business\RecordComponentType;
 use ramp\model\business\SimpleBusinessModelDefinition;
 
 use tests\ramp\mocks\model\MockBusinessModel;
@@ -357,6 +358,37 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!');
     $this->testObject[0] = new MockBusinessModel();
+  }
+
+  /**
+   * Record Component registration process, used for KEY, PROPERTY and RELATION management.
+   * - assert FIRST call to register() returns FALSE (registers $components[type][i] = name) and expects a second call.
+   * - assert SECOND call to register() returns TRUE, potentially allowing continuation to initiate().
+   * - assert $registeredName corresponds to that provided at register().
+   * - assert following initiate(), $registered return same object as provided on initiate().
+   * - assert $registered returns same on all subsequent calls, provided preceded by register().
+   * - assert if register() called with different 'name' between calls, $registered does NOT return same. 
+   */
+  public function testRecordComponentRegistrationProcess()
+  {
+    $testObject = new class() extends Record
+    {
+      public function __construct() {} // OVERRIDE 
+      public function doRegister(string $name, int $type) : bool { return $this->register($name, $type); }
+      public function doInitiate(RecordComponent $o) : void { $this->initiate($o); }
+      protected static function checkRequired($dataObject) : bool { return TRUE; }
+    };
+    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // First call
+    $this->assertTrue($testObject->doRegister('alpha', RecordComponentType::KEY)); // Second call
+    $this->assertSame('alpha', (string)$testObject->registeredName);
+    $expectedField = new MockField($testObject->registeredName, $testObject);
+    $testObject->doInitiate($expectedField);
+    $actualField = $testObject->registered;
+    $this->assertSame($expectedField, $actualField);
+    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // Third call
+    $this->assertSame($expectedField, $testObject->registered); // Same on all subsequent calls, provided preceded be register().
+    $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call
+    $this->assertNotSame($expectedField, $testObject->registered);
   }
 
   /**
@@ -889,14 +921,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     }
     $this->assertSame(6, $i);
   }
-
-  /*
-  public function testRecordComponentRegistrationProcess()
-  {
-    $testObject = new \tests\ramp\mocks\model\TestRecord();
-    $this->assertSame('alpha', (string)$testObject->primaryKey->indexes->implode());
-    $this->assertSame(2, $testObject->count);
-  }*/
 
   /**
    * Remove 'existing' relation on Record collection (MANY) accessable with appropiate state changes.

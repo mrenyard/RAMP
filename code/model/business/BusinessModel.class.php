@@ -202,7 +202,7 @@ abstract class BusinessModel extends Model implements iList
   /**
    * @ignore
    */
-  final public function get_count() : int
+  public function get_count() : int
   {
     return count($this->children);
   }

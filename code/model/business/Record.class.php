@@ -158,6 +158,14 @@ abstract class Record extends Relatable
   }
 
   /**
+   * @ignore
+   */
+  public function get_count() : int
+  {
+    return ($this->primaryKey->value === NULL)? count($this->primaryKey) : parent::get_count();
+  }
+
+  /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
