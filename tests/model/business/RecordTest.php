@@ -746,8 +746,14 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Add 'new' relation on Record collection (MANY) accessable with appropiate state changes.
-   * - assert ...
+   * Add 'existing' and 'new' relation on Record collection (MANY) accessable with appropiate state changes.
+   * - assert Record with relation (MANY) holds expected collection of associated Records.
+   * - assert default relation NOT isEditable (no extra 'new' Record appended to collection as default).
+   * - assert following change to isEditable=TRUE property has appended 'new' record ready to recieve primaryKey values.
+   * - assert when provided primaryKay values relate to existing Record, replaces 'new' with relevant Record in relation collection.
+   *   - assert that access to added existing Record is access checked before actioning.
+   *   - assert reset 'new' Record to end off relation collection for next add/edit.
+   * - assert when provided primaryKey values are 'new' (unique) Record added to relation collection and data store.
    */
   public function testAddExistingNewRelationOfMany()
   {
