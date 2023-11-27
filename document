@@ -1,3 +1,2 @@
-# sudo -S phpDocumentor --ignore "*/mocks/*" --visibility="public" -d $HOME/Projects/RAMP/code/,$HOME/Projects/RAMP/tests/,$HOME/Projects/RAMP/make -t $HOME/Code/Documentation/php
-sudo -S phpDocumentor run --visibility="public" -d $HOME/Projects/RAMP/code/ -t $HOME/Code/Documentation/php
-sudo phpunit --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
+sudo -S php8.2 phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php -i tests/core/mocks/ -i tests/condition/mocks/ -i tests/http/mocks/ -i tests/view/mocks/ -i tests/mocks/ --visibility=protected
+sudo -S php8.2 phpunit.phar --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
