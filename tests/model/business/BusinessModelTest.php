@@ -340,7 +340,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertTrue($this->testObject->hasErrors);
     $i = 0;
     foreach ($this->testObject as $child) {
-      // $this->assertSame(1, $child->validateCount);
+      $this->assertSame(1, $child->validateCount);
       $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
       $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
       $i++;
