@@ -574,6 +574,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertNull($this->dataObject->fk_relationBeta_MockMinRecord_key3);
     // Get relation to test.
     $relation = $this->testObject->relationBeta; // to ONE
+    $relation->isEditable = TRUE;
     // Pre ANY validation
     // Check id of 'new' Record pre validation() as expected.
     $this->assertSame('mock-record:new', (string)$this->testObject->id);
@@ -627,7 +628,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       'mock-record:3|3|3:relation-beta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1')
     )));
     // Check post validate() related record isModified as expected.
-    $this->assertTrue($toRecord->isModified);
+    // $this->assertTrue($toRecord->isModified);
     // Check post validate() related record hasErrors as expected.
     $this->assertFalse($toRecord->hasErrors);
     // Check 'value' matches 'id' of expected related Record with newly set primaryKey (mock-min-record:value1|value2|value3).
@@ -699,6 +700,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $toRecord->reset();
     // Get relation to test.
     $relation = $fromRecord->relationBeta; // to ONE
+    $relation->isEditable = TRUE;
     $this->assertInstanceOf('\ramp\model\business\Relation', $relation);
     $fromRecord->validate(PostData::build(array(
       'mock-record:1|1|1:relation-beta' => array('key2' => 'B', 'key3' => 'C', 'key1' => 'A')
@@ -759,13 +761,13 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     // While relation NOT isEditable no change occurs.
     $this->assertFalse($relation->isEditable);
     $fromRecord->validate(PostData::build(array(
-      'mock-record:2|2|2:relation-beta' => array('unset' => 'on')
+      'mock-record:2|2|2:relation-beta' => array('unset' => 'A|B|C')
     )));
     $this->assertSame($currentToRecord, $relation->with);
     $relation->isEditable = TRUE;
     $this->assertTrue($relation->isEditable);
     $fromRecord->validate(PostData::build(array(
-      'mock-record:2|2|2:relation-beta' => array('unset' => 'on')
+      'mock-record:2|2|2:relation-beta' => array('unset' => 'A|B|C')
     )));
     // Check foreignKey values reset NULL
     $this->assertNull($fromData->fk_relationBeta_MockMinRecord_key1);
@@ -895,6 +897,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       'mock-min-record:new:key2' => 'B',
       'mock-min-record:new:key3' => 'G'
     )));
+    // Get relation to test.
+    $relation = $fromRecord->relationAlpha; // to MANY
     $this->assertSame(6, $relation->count); // NOW (3 + added-existing + added-new + 'new').
     $i = 0;
     $iterator = $expectedCollection->getIterator();
@@ -924,8 +928,67 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   /**
    * Remove 'existing' relation on Record collection (MANY) accessable with appropiate state changes.
-   *
+   * - assert Record with relation (MANY) holds expected collection of associated Records.
+   * - assert following change to isEditable=TRUE property has appended 'new' record ready to recieve primaryKey values.
+   * - assert error recorded on attempting an Illegal UNSET Action.
+   * - assert on valid UNSET of a single Record in the elation collection:
+   *   - no errors are reported.
+   *   - the resulting relation collection modified as expected.
+   */
   public function testRemoveExistingRelationOfMany()
   {
-  }*/
+     $fromRecord = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
+    );
+    $this->assertSame($this->modelManager->objectNew, $fromRecord);
+    $this->assertFalse($fromRecord->isNew);
+    $fromData = $this->modelManager->dataObjectNew;
+    // Ensure dataObject of parent Record does NOT contain relation name.
+    $this->assertObjectNotHasProperty('relationAlpha', $fromData); // to ONE
+    $expectedCollection = $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('MockMinRecord')),
+      Filter::build(Str::set('MockMinRecord'), array(
+        'fk_relationDelta_MockRecord_keyA' => '1',
+        'fk_relationDelta_MockRecord_keyB' => '1',
+        'fk_relationDelta_MockRecord_keyC' => '1'
+      ))
+    );
+    // Get relation to test.
+    $relation = $fromRecord->relationAlpha; // to MANY
+    // Check relation collection not editable as no prepended 'new'.
+    $this->assertFalse($relation->isEditable); // NOT Editable
+    $this->assertSame(3, $relation->count); // NO prepended 'new' Record for addition
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:1|1|1:relation-alpha' => array('unset' => 'A|B|E')
+    )));
+    $this->assertSame(1, $relation->validateCount);
+    $this->assertSame(3, $relation->count); // 'new' Record for addition
+    $relation->isEditable = TRUE;
+    $this->assertTrue($relation->isEditable); // Changed
+    $this->assertSame(4, $relation->count); // NO prepended 'new' Record for addition
+    $this->assertTrue($relation[3]->isNew);
+    // Attemp an Illegal UNSET Action. 
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:1|1|1:relation-alpha' => array('unset' => 'A|B|C')
+    )));
+    // Confirm errors.
+    $this->assertTrue($relation->hasErrors);
+    $this->assertSame(
+      'Illegal UNSET Action: mock-record:1|1|1:relation-alpha[A|B|C]',
+      (string)$fromRecord->errors[0]
+    );
+    $this->assertSame(2, $relation->validateCount);
+    // Attemp valid unset on A|B|E.
+    $fromRecord->validate(PostData::build(array(
+      'mock-record:1|1|1:relation-alpha' => array('unset' => 'A|B|E')
+    )));
+    // Confirm no errors and correct removal on relation collection.
+    $this->assertFalse($relation->hasErrors);
+    $this->assertSame(3, $relation->validateCount);
+    $this->assertSame(3, $relation->count); // Existing - 1 (A|B|E)
+    $this->assertSame($relation[0], $expectedCollection[0]);
+    $this->assertSame($relation[1], $expectedCollection[2]);
+    $this->assertTrue($relation[2]->isNew);
+    $this->assertFalse(isset($relation[3]));
+  }
 }

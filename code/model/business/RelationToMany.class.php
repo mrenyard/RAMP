@@ -104,9 +104,26 @@ class RelationToMany extends Relation
    */
   public function validate(PostData $postdata) : void
   {
-    // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
-    if ($this->parent->isNew || $this->getWith() === NULL) { return; }
     $with = $this->getWith();
+    // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
+    if ($this->parent->isNew || $with === NULL || !$this->isEditable) { return; }
+    $this->errorCollection = StrCollection::set();
+    foreach ($postdata as $inputdata) {
+      if ((string)$inputdata->attributeURN == (string)$this->id) {
+        $values = $inputdata->value;
+        if (is_array($values) && isset($values['unset'])) {
+          $remove = FALSE;
+          $newWith = new RecordCollection();
+          foreach ($with as $o) {
+            if ($o->primaryKey->value == $values['unset']) { $remove = TRUE; continue; }
+            $newWith->add($o);
+          }
+          if ($remove) { $this->setWith($newWith); return; }
+          $this->errorCollection->add(Str::set('Illegal UNSET Action: ' . $this->id . '[' . $values['unset'] .']'));
+          return;
+        }
+      }
+    }
     $i = ($with->count - 1);
     try {
       parent::validate($postdata);
@@ -114,10 +131,9 @@ class RelationToMany extends Relation
       // TODO:mrenyard: Check Session::loginAccount has access rights to resource.
       // $level = Session::getInstance()->getResourceRights(($this->withRecordName->append($primaryKey->prepend(Str::COLON())))); // :int (0:NON|1:VIEW|2:EDIT)
       // if ($level < ResourceRights::VIEW && $level < ResourceRights::EDIT) { throw new Exception;? }
-      // TODO:mrenyard: Fix hack for ID (A|B|C) once DataExistingEntryException changed to accomidate targetID.
       $new = $with[$i];
       $with[$i] = $this->manager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withRecordName, Str::set('A|B|C')) // $exception->targetID)
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::set($exception->getTargetID()))
       );
       if ($this->isEditable) { $with->add($new); }
       return;
@@ -131,5 +147,21 @@ class RelationToMany extends Relation
       }
       return;
     }
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_hasErrors() : bool
+  {
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_errors() : StrCollection
+  {
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
   }
 }

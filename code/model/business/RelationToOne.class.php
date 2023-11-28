@@ -97,19 +97,15 @@ class RelationToOne extends Relation
    */
   public function validate(PostData $postdata) : void
   {
+    $with = $this->getWith();
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
-    if ($this->parent->isNew || $this->getWith() === NULL) { return; }
+    if ($this->parent->isNew || $with === NULL || !$this->isEditable) { return; }
     $this->errorCollection = StrCollection::set();
-    foreach ($postdata as $inputdata)
-    {
-      if ((string)$inputdata->attributeURN == (string)$this->id)
-      {
+    foreach ($postdata as $inputdata) {
+      if ((string)$inputdata->attributeURN == (string)$this->id) {
         $values = $inputdata->value;
-        if (is_array($values))
-        {
-          if (isset($values['unset']) && $values['unset'] == 'on')
-          {
-            if (!$this->isEditable) { break; }
+        if (is_array($values)) {
+          if (isset($values['unset']) && $values['unset'] == $with->primaryKey->value) {
             // Change FKs to NULL and Children to new;
             foreach ($this->keyMap as $subForeignKey) {
               $this->parent->setPropertyValue($subForeignKey, NULL);
@@ -119,14 +115,14 @@ class RelationToOne extends Relation
             ));    
             break;
           }
-          if (!$this->getWith()->isNew) { break; }
-          if (count($values) === $this->getWith()->primaryKey->count)
+          if (!$with->isNew) { break; }
+          if (count($values) === $with->primaryKey->count)
           {
             $primarySubKeys = StrCollection::set();
             $keyPostdata = array();
             foreach ($this->keyMap as $subKey => $subForeignKey) {
               $primarySubKeys->add(Str::set($values[$subKey]));
-              $keyPostdata[(string)$this->getWith()->id->append(Str::set($subKey)->prepend(Str::COLON()))] = $values[$subKey];
+              $keyPostdata[(string)$with->id->append(Str::set($subKey)->prepend(Str::COLON()))] = $values[$subKey];
             }
             $primaryKey = $primarySubKeys->implode(Str::BAR());
             try {
@@ -147,10 +143,26 @@ class RelationToOne extends Relation
               // throw new Exception?
             }
           }
-        } // @codeCoverageIgnoreStart
-        $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id)); // @codeCoverageIgnoreEnd
+        }
+        $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id));
       }
     }
     parent::validate($postdata);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_hasErrors() : bool
+  {
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_errors() : StrCollection
+  {
+    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
   }
 }
