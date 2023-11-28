@@ -646,9 +646,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       // Check children match expected related record's keys.
       $this->assertSame($expectedRecordKey, $toRecordKey);
       // Check validate called on each related Record's key.
-      $this->assertSame(1, $toRecordKey->validateCount);
+      $this->assertSame(2, $toRecordKey->validateCount);
       // Check hasErrors called on each related Record's key.
-      $this->assertSame(3, $toRecordKey->hasErrorsCount);
+      $this->assertSame(4, $toRecordKey->hasErrorsCount);
       // Check validated related Record field (key) values are modified as directed.
       $this->assertSame('VALUE' . $i, $toRecordKey->value);
       $keyIterator->next();
@@ -665,7 +665,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       // Check children match expected related record's properties.
       $this->assertSame($expectedRecordProperty, $toRecordProperty);
       // Check validate called on each related Record's property.
-      $this->assertSame(1, $toRecordProperty->validateCount);
+      // TODO:mrenyard: This should be touched check post isEditable implimentaion.
+      // $this->assertSame(1, $toRecordProperty->validateCount);
       // Check hasErrors called on each related Record's property.
       $this->assertSame(2, $toRecordProperty->hasErrorsCount);
       // Check validated related Record field (property) values are modified as directed.

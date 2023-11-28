@@ -97,15 +97,17 @@ class RelationToOne extends Relation
    */
   public function validate(PostData $postdata) : void
   {
+    parent::validate($postdata);
     $with = $this->getWith();
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
-    if ($this->parent->isNew || $with === NULL || !$this->isEditable) { return; }
+    if ($this->parent->isNew || $with === NULL || $this->hasErrors) { return; }
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata) {
       if ((string)$inputdata->attributeURN == (string)$this->id) {
         $values = $inputdata->value;
         if (is_array($values)) {
           if (isset($values['unset']) && $values['unset'] == $with->primaryKey->value) {
+            if (!$this->isEditable) { return; }
             // Change FKs to NULL and Children to new;
             foreach ($this->keyMap as $subForeignKey) {
               $this->parent->setPropertyValue($subForeignKey, NULL);
@@ -127,7 +129,7 @@ class RelationToOne extends Relation
             $primaryKey = $primarySubKeys->implode(Str::BAR());
             try {
               // attempt to set primaryKey from provided values
-              $this->getWith()->validate(PostData::build($keyPostdata));
+              $with->validate(PostData::build($keyPostdata));
               break;
             } catch (DataExistingEntryException $exception) {
               // TODO:mrenyard: Check Session::loginAccount has access rights to resource.
@@ -147,7 +149,6 @@ class RelationToOne extends Relation
         $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id));
       }
     }
-    parent::validate($postdata);
   }
 
   /**
@@ -155,7 +156,7 @@ class RelationToOne extends Relation
    */
   protected function get_hasErrors() : bool
   {
-    return (isset($this->errorCollection) && $this->errorCollection->count > 0);
+    return ((isset($this->errorCollection) && $this->errorCollection->count > 0) || parent::get_hasErrors());
   }
 
   /**
@@ -163,6 +164,6 @@ class RelationToOne extends Relation
    */
   protected function get_errors() : StrCollection
   {
-    return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();
+    return (isset($this->errorCollection) && $this->errorCollection->count > 0) ? $this->errorCollection : parent::get_errors();
   }
 }

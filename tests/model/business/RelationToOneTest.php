@@ -283,7 +283,19 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    */
   public function testTouchValidityAndErrorMethods()
   {
+    $this->testObject->isEditable = TRUE;
     parent::testTouchValidityAndErrorMethods();
+    // $this->populateSubModelTree();
+    // $this->assertNull($this->testObject->validate($this->postData)); // Call
+    // $this->assertTrue($this->testObject->hasErrors);
+    // $i = 0;
+    // foreach ($this->testObject as $child) {
+    //   $this->assertSame(1, $child->validateCount);
+    //   $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
+    //   $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
+    //   $i++;
+    // }
+    // $this->assertEquals($this->expectedChildCountExisting, $i);
   }
 
   /**
@@ -298,6 +310,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    */
   public function testErrorReportingPropagation()
   {
+    // $this->testObject->isEditable = TRUE;
     parent::testErrorReportingPropagation();
   }
 
