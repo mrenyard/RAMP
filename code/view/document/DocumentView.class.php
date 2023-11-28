@@ -95,7 +95,7 @@ abstract class DocumentView extends ComplexView
    * @param mixed $propertyValue The value to set on requested property (handled internally)
    * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
-  final public function __set($propertyName, $propertyValue)
+  final public function __set($propertyName, $propertyValue) : void
   {
     try {
       parent::__set($propertyName, $propertyValue);

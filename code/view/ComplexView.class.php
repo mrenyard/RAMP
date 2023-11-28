@@ -79,7 +79,7 @@ abstract class ComplexView extends ChildView
   /**
    * @ignore
    */
-  protected function get_hasModel()
+  protected function get_hasModel() : bool
   {
     return isset($this->model);
   }
