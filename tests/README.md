@@ -1,10 +1,12 @@
 The following scrips for testing are avalible at the root of this project:
+```console
 ./coverage
 ./document
+```
 
-We also use the following Visual Studio Extension:
+We also use the Visual Studio Extension **PhpTestExplorer** with the below settings:\
 https://marketplace.visualstudio.com/items?itemName=renandelmonico.vscode-php-test-explorer
-with the below settings:
+```json
 {
     "phpunit.args": ["tests"],
     "phpunit.files": "php8.2 phpunit {tests,Tests}",
@@ -23,3 +25,4 @@ with the below settings:
     "phpunit.php": "/usr/bin/php8.2 phpunit.phar $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code",
     "phpunit.relativeFilePath": true
 }
+```
