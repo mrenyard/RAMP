@@ -56,7 +56,7 @@ abstract class Field extends RecordComponent
    * @param bool $editable Optional set preferance for editability.
    * @throws \InvalidArgumentException When $children OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = TRUE)
   {
     parent::__construct($name, $parent, $children, $editable);
   }
@@ -114,9 +114,7 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($exception->getMessage()));
           return;
         }
-        $this->parent->setPropertyValue(
-          (string)$this->name, $inputdata->value
-        );
+        $this->parent->setPropertyValue((string)$this->name, $inputdata->value);
         return;
       }
     }

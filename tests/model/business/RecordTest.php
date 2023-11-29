@@ -625,7 +625,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($i, 3);
     // Related Record validation following successful parent Record primaryKey set:
     $this->testObject->validate(PostData::build(array( // placed out of order
-      'mock-record:3|3|3:relation-beta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1')
+      'mock-record:3|3|3:relation-beta' => array('key2' => 'VALUE2', 'key3' => 'VALUE3', 'key1' => 'VALUE1') //, 'property1' => 'VALUE')
     )));
     // Check post validate() related record isModified as expected.
     // $this->assertTrue($toRecord->isModified);

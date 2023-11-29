@@ -295,7 +295,7 @@ abstract class Record extends Relatable
    */
   public function setPropertyValue(string $propertyName, $value)
   {
-    $value = (\is_string($value) && $value === '')? NULL: $value;
+    $value = (\is_string($value) && $value === '')? NULL : $value;
     if ($this->getPropertyValue($propertyName) === $value) { return; }
     $this->dataObject->$propertyName = $value;
     $this->modified = TRUE;

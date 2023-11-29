@@ -22,6 +22,7 @@
 namespace tests\ramp\model;
 
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockModel.class.php';
 
@@ -43,7 +44,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * Default base constructor assertions \ramp\model\Model::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
-   * @see ramp.model.Model ramp\model\Model
+   * @see \ramp\model\Model
    */
   public function testConstruct()
   {
@@ -54,7 +55,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
   #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
   public function testPropertyNotSetExceptionOn__set()

@@ -63,7 +63,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   /**
    * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @see ramp.core.RAMPObject#method__set ramp\core\RAMPObject::__set()
+   * @see ramp\core\RAMPObject::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -75,7 +75,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   /**
    * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @see ramp.core.RAMPObject#method__get ramp\core\RAMPObject::__get()
+   * @see ramp\core\RAMPObject::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -85,10 +85,10 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Good property is accessable on \ramp\core\RAMPObject::__get() and \ramp\core\RAMPObject::__set()
+   * Property is accessable on \ramp\core\RAMPObject::__get() and \ramp\core\RAMPObject::__set().
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @see ramp.core.RAMPObject#method___set \ramp\core\RAMPObject::__set()
-   * @see ramp.core.RAMPObject#method___get \ramp\core\RAMPObject::__get()
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -101,7 +101,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   /**
    * Correct return of ramp\core\RAMPObject::__toString().
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
-   * @see ramp.core.RAMPObject#method___toString \ramp\core\RAMPObject::__toString()
+   * @see \ramp\core\RAMPObject::__toString()
    */
   public function testToString()
   {

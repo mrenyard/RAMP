@@ -21,7 +21,7 @@
 namespace ramp;
 
 require_once('load.ini.php');
-$session = http\Session::getInstance();
+// $session = http\Session::getInstance();
 // try {
 //   $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
 // } catch (http\Unauthorized401Exception $exception) {

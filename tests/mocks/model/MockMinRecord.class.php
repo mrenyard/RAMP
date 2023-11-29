@@ -21,12 +21,13 @@
  */
 namespace tests\ramp\mocks\model;
 
-use ramp\core\Str;
+// use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
-use ramp\model\business\field\Field;
+use ramp\model\business\RecordComponentType;
+// use ramp\model\business\field\Field;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
@@ -63,44 +64,44 @@ class MockMinRecord extends Record
     }
   }
 
-  protected function get_key1() : Field
+  protected function get_key1() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[0])) {
-      $this->primaryKey[0] = new MockField(Str::set('key1'), $this);
+    if ($this->register('key1', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[0]; 
+    return $this->registered; 
   }
 
-  protected function get_key2() : Field
+  protected function get_key2() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[1])) {
-      $this->primaryKey[1] = new MockField(Str::set('key2'), $this);
+    if ($this->register('key2', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[1]; 
+    return $this->registered; 
   }
 
-  protected function get_key3() : Field
+  protected function get_key3() : ?RecordComponent
   {
-    if (!isset($this->primaryKey[2])) {
-      $this->primaryKey[2] = new MockField(Str::set('key3'), $this);
+    if ($this->register('key3', RecordComponentType::KEY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this->primaryKey[2]; 
+    return $this->registered; 
   }
 
-  protected function get_property1() : RecordComponent
+  protected function get_property1() : ?RecordComponent
   {
-    if (!isset($this[0])) {
-      $this[0] =new MockField(Str::set('property1'), $this);
+    if ($this->register('property1', RecordComponentType::PROPERTY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this[0];
+    return $this->registered; 
   }
 
-  protected function get_property2() : RecordComponent
+  protected function get_property2() : ?RecordComponent
   {
-    if (!isset($this[1])) {
-      $this[1] =new MockField(Str::set('property2'), $this);
+    if ($this->register('property2', RecordComponentType::PROPERTY)) {
+      $this->initiate(new MockField($this->registeredName, $this));
     }
-    return $this[1];
+    return $this->registered; 
   }
 
   public function validate(PostData $postdata) : void

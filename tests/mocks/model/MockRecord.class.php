@@ -31,9 +31,6 @@ use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
-use ramp\model\business\Relatable;
-use ramp\model\business\SimpleBusinessModelDefinition;
-use ramp\model\business\field\Field;
 
 use tests\ramp\mocks\model\MockInput;
 use tests\ramp\mocks\model\MockRelationToOne;

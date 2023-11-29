@@ -35,9 +35,9 @@ class MockField extends Field
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $propertyName, Record $record)
+  public function __construct(Str $name, Record $parent)
   {
-    parent::__construct($propertyName, $record);
+    parent::__construct($name, $parent);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }
