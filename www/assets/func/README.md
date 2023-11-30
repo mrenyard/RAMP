@@ -9,7 +9,7 @@ Javascript (ECMAScript) modules that are capable
 of enhancing your web DOM (Document Object Model).**
 
  * @author Matt Renyard (twitter: @mrenyard)
- * @package func
+ * @package FUNC
 
 GETTING STARTED WITH FUNC
 --------------------------------------------------
