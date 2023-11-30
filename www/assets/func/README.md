@@ -120,4 +120,4 @@ Matt Renyard.
 MODULES
 --------------------------------------------------
 - [Core](docs/core.md)
-- [hijax](docs/hijax.md)
+- [Diagram](docs/diagram.md)
