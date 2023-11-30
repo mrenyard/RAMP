@@ -24,19 +24,6 @@ use ramp\core\Str;
 
 /**
  * Interface for environment specilised operators.
- *
- * @property-read \ramp\core\Str $memberAccess Returns Str repesentation of environment specific 'member access' operator.
- * @property-read \ramp\core\Str $assignment   Returns Str repesentation of environment specific 'assignment' operator.
- * @property-read \ramp\core\Str $equalTo Returns Str repesentation of environment specific 'equal to' operator.
- * @property-read \ramp\core\Str $notEqualTo Returns Str repesentation of environment specific 'not equal to' operator.
- * @property-read \ramp\core\Str $lessThan Returns Str repesentation of environment specific 'less than' operator.
- * @property-read \ramp\core\Str $greaterThan Returns Str repesentation of environment specific 'greater than' operator.
- * @property-read \ramp\core\Str $and Returns Str repesentation of environment specific 'and' operator.
- * @property-read \ramp\core\Str $or Returns Str repesentation of environment specific 'or' operator.
- * @property-read \ramp\core\Str $openingParentheses Returns Str repesentation of environment specific 'openingParentheses' operator.
- * @property-read \ramp\core\Str $closingParentheses Returns Str repesentation of environment specific 'closingParentheses' operator.
- * @property-read \ramp\core\Str $openingGroupingParentheses Returns Str repesentation of environment specific 'openingGroupingParentheses' operator.
- * @property-read \ramp\core\Str $closingGroupingParentheses Returns Str repesentation of environment specific 'closingGroupingParentheses' operator.
  */
 interface iEnvironment
 {

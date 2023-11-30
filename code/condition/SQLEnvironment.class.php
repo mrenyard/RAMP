@@ -26,18 +26,18 @@ class SQLEnvironment extends Environment
   {
     if (!isset(self::$INSTANCE)) {
       $o = new SQLEnvironment();
-      $o->memberAccess = '.';
-      $o->assignment = '=';
-      $o->equalTo = ' = ';
-      $o->notEqualTo = ' <> ';
-      $o->lessThan = ' < ';
-      $o->greaterThan = ' > ';
-      $o->and = ' AND ';
-      $o->or = ' OR ';
-      $o->openingParenthesis = '"';
-      $o->closingParenthesis = '"';
-      $o->openingGroupingParenthesis = '(';
-      $o->closingGroupingParenthesis = ')';
+      $o->setMemberAccess('.');
+      $o->setAssignment('=');
+      $o->setEqualTo(' = ');
+      $o->setNotEqualTo(' <> ');
+      $o->setLessThan(' < ');
+      $o->setGreaterThan(' > ');
+      $o->setAnd(' AND ');
+      $o->setOr(' OR ');
+      $o->setOpeningParenthesis('"');
+      $o->setClosingParenthesis('"');
+      $o->setOpeningGroupingParenthesis('(');
+      $o->setClosingGroupingParenthesis(')');
       self::$INSTANCE = $o;
     }
     return self::$INSTANCE;

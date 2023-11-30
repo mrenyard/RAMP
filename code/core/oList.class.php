@@ -30,6 +30,8 @@ namespace ramp\core;
  * COLLABORATORS
  * - {@see \ramp\core\iList}
  * - {@see \ramp\core\RAMPObject}
+ * 
+ * @property-read int $count Returns the number of items currently stored in this collection.
  */
 class oList extends RAMPObject implements iList
 {
@@ -126,7 +128,6 @@ class oList extends RAMPObject implements iList
 
   /**
    * Returns the number of items currently stored in this collection.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
    * @see https://www.php.net/manual/class.countable.php
    * @return int Number of items in this collection
    */
@@ -136,7 +137,7 @@ class oList extends RAMPObject implements iList
   }
 
   /**
-   * @see \ramp\core\iList
+   * @ignore
    */
   final public function get_count() : int
   {

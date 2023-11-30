@@ -28,13 +28,13 @@ class MockEnvironment extends Environment
   {
     if (!isset(self::$INSTANCE)) {
       $o = new MockEnvironment();
-      $o->memberAccess = 'memberAccess';
-      $o->assignment = 'assignment';
-      $o->equalTo = ' equalTo ';
-      $o->notEqualTo = ' notEqualTo ';
-      $o->and = ' and ';
-      $o->openingParenthesis = 'openingParenthesis';
-      $o->closingParenthesis = 'closingParenthesis';
+      $o->setmemberAccess('memberAccess');
+      $o->setassignment('assignment');
+      $o->setequalTo(' equalTo ');
+      $o->setnotEqualTo(' notEqualTo ');
+      $o->setand(' and ');
+      $o->setopeningParenthesis('openingParenthesis');
+      $o->setclosingParenthesis('closingParenthesis');
       self::$INSTANCE = $o;
     }
     return self::$INSTANCE;

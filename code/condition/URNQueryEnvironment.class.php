@@ -26,18 +26,18 @@ class URNQueryEnvironment extends Environment
   {
     if (!isset(self::$INSTANCE)) {
       $o = new URNQueryEnvironment();
-      $o->memberAccess = ':';
-      $o->assignment = '=';
-      $o->equalTo = '=';
-      $o->notEqualTo = '|not=';
-      $o->lessThan = '|lt=';
-      $o->greaterThan = '|gt=';
-      $o->and = '&';
-      $o->or = '|';
-      $o->openingParenthesis = '';
-      $o->closingParenthesis = '';
-      $o->openingGroupingParenthesis = '';
-      $o->closingGroupingParenthesis = '';
+      $o->setMemberAccess(':');
+      $o->setAssignment('=');
+      $o->setEqualTo('=');
+      $o->setNotEqualTo('|not=');
+      $o->setLessThan('|lt=');
+      $o->setGreaterThan('|gt=');
+      $o->setAnd('&');
+      $o->setOr('|');
+      $o->setOpeningParenthesis('');
+      $o->setClosingParenthesis('');
+      $o->setOpeningGroupingParenthesis('');
+      $o->setClosingGroupingParenthesis('');
       self::$INSTANCE = $o;
     }
     return self::$INSTANCE;

@@ -191,7 +191,10 @@ abstract class BusinessModel extends Model implements iList
 
   /**
    * Returns the number of children currently parented.
-   * **DO NOT CALL DIRECTLY, USE this->count;**
+   * **DO NOT CALL DIRECTLY, USE**
+   * ```php
+   * $this->count;
+   * ```
    * @return int Number of parenten by *this*
    */
   final public function count() : int

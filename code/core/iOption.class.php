@@ -25,34 +25,46 @@ namespace ramp\core;
  *
  * RESPONSIBILITIES
  * - Describe base api for a choice.
- * @interface 
  */
 interface iOption
 {
   /**
    * Get id unique identifier (URN:Str).
-   * **DO NOT CALL DIRECTLY, USE this->id;**
-   * @return \ramp\core\Str id
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->id;
+   * ```
+   * @return \ramp\core\Str id Unique identifier (URN:Str)
    */
   public function get_id(): Str;
 
   /**
    * Get key unique identifier (enum:int).
-   * **DO NOT CALL DIRECTLY, USE this->key;**
-   * @return int Key
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->key;
+   * ```
+   * @return int Key Unique identifier (enum:int).
    */
-   public function get_key(): int;
+  public function get_key(): int;
 
-   /**
-   * Get Description.
-   * **DO NOT CALL DIRECTLY, USE this->description;**
-   * @return Str Description
+  /**
+   * Get description or lable for a single option.
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->description;
+   * ```
+   * @return Str Description Text representing avalible option.
    */
   public function get_description() : Str;
 
   /**
    * Returns whether this has been chosen.
-   * **DO NOT CALL DIRECTLY, USE this->isSelected;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->isSelected;
+   * ```
+   * @return bool isSelected Whether this has been chosen.
    */
   public function get_isSelected() : bool;
 }

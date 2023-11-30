@@ -26,7 +26,7 @@ namespace ramp;
  *
  * Usually generated from RAMP's local initialization file, called ramp.ini.
  * Which SHOULD usually be located alongside the public website root folder. i.e.:
- * ```
+ * ```txt
  * -- ~/                    (secure ftp folder)
  *  |
  *  +-- public_html         (website root folder)

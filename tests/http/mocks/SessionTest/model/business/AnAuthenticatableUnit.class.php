@@ -64,7 +64,10 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
 
   /**
    * Get familyName
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->id;
+   * ```
    * @return \ramp\core\Str Email address associated with *this*.
    */
   protected function get_familyName() : Field
@@ -86,7 +89,10 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
 
   /**
    * Get givenName
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->id;
+   * ```
    * @return \ramp\core\Str Email address associated with *this*.
    */
   protected function get_givenName() : Field

@@ -62,7 +62,10 @@ class Option extends BusinessModel implements iOption
 
   /**
    * Get key (enum:int|URN:Str)
-   * **DO NOT CALL DIRECTLY, USE this->key;**
+   * **DO NOT CALL DIRECTLY, USE**
+   * ```php
+   * $this->key;
+   * ```
    * @return int Key
    */
   public function get_key() : int
@@ -72,7 +75,10 @@ class Option extends BusinessModel implements iOption
 
   /**
    * Get unique identifier
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->id;
+   * ```
    * @return \ramp\core\Str id
    */
   public function get_id() : Str
@@ -82,7 +88,10 @@ class Option extends BusinessModel implements iOption
 
   /**
    * Get Description.
-   * **DO NOT CALL DIRECTLY, USE this->description;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->description;
+   * ```
    * @return Str Description
    */
   public function get_description() : Str
@@ -92,7 +101,10 @@ class Option extends BusinessModel implements iOption
 
   /**
    * Returns whether this option has been chosen/selected.
-   * **DO NOT CALL DIRECTLY, USE this->isSelected;**
+   * **DO NOT CALL DIRECTLY, USE**
+   * ```php
+   * $this->isSelected;
+   * ```
    * @throws \BadMethodCallException When called without parentField first being set.
    */
   public function get_isSelected() : bool

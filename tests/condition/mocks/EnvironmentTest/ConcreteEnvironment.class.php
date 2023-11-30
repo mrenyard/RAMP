@@ -28,16 +28,16 @@ class ConcreteEnvironment extends Environment
   {
     if (!isset(self::$INSTANCE)) {
       $o = new ConcreteEnvironment();
-      $o->memberAccess = 'memberAccess';
-      $o->assignment = 'assignment';
-      $o->equalTo = ' equalTo ';
-      $o->notEqualTo = ' notEqualTo ';
-      $o->lessThan = ' lessThan ';
-      $o->greaterThan = ' greaterThan ';
-      $o->and = ' and ';
-      $o->or = ' or ';
-      $o->openingParenthesis = 'openingParenthesis';
-      $o->closingParenthesis = 'closingParenthesis';
+      $o->setMemberAccess('memberAccess');
+      $o->setAssignment('assignment');
+      $o->setEqualTo(' equalTo ');
+      $o->setNotEqualTo(' notEqualTo ');
+      $o->setLessThan(' lessThan ');
+      $o->setGreaterThan(' greaterThan ');
+      $o->setAnd(' and ');
+      $o->setOr(' or ');
+      $o->setOpeningParenthesis('openingParenthesis');
+      $o->setClosingParenthesis('closingParenthesis');
       self::$INSTANCE = $o;
     }
     return self::$INSTANCE;

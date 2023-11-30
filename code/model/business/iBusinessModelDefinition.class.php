@@ -39,21 +39,30 @@ interface iBusinessModelDefinition
 {
   /**
    * Returns name of requested Record one or collection.
-   * **DO NOT CALL DIRECTLY, USE this->recordName;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->recordName;
+   * ```
    * @return \ramp\core\Str Name of requested Record one or collection.
    */
   public function get_recordName() : Str;
 
   /**
    * Returns primary key value of requested ramp\model\business\Record or NULL.
-   * **DO NOT CALL DIRECTLY, USE this->recordKey;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->recordKey;
+   * ```
    * @return \ramp\core\Str Primary key for requested Record if any.
    */
   public function get_recordKey() : ?Str;
 
   /**
    * Returns name of requested Property of ramp\model\business\Record or NULL.
-   * **DO NOT CALL DIRECTLY, USE this->propertyName;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->propertyName;
+   * ```
    * @return \ramp\core\Str Name of requested Property if any.
    */
   public function get_propertyName(): ?Str;

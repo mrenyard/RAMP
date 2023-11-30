@@ -31,8 +31,6 @@ namespace ramp\core;
  * COLLABORATORS
  * - {@see \ramp\core\iCollection}
  * - {@see \ramp\core\RAMPObject}
- *
- * @property-read int $count Returns the number of items currently stored in this collection.
  */
 class Collection extends oList implements iCollection
 {

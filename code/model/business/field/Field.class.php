@@ -63,7 +63,10 @@ abstract class Field extends RecordComponent
 
   /**
    * Get Label
-   * **DO NOT CALL DIRECTLY, USE this->label;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->label;
+   * ```
    * @return \ramp\core\Str Label for *this*
    *
   protected function get_label() : Str

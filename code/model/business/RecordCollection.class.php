@@ -51,7 +51,10 @@ class RecordCollection extends Relatable implements iCollection
 
   /**
    * Get ID (URN)
-   * **DO NOT CALL DIRECTLY, USE this->id;**
+   * **DO NOT CALL DIRECTLY, USE:**
+   * ```php
+   * $this->id;
+   * ```
    * @return \ramp\core\Str Unique identifier for *this*
    */
   final public function get_id() : Str

@@ -26,18 +26,18 @@ class PHPEnvironment extends Environment
   {
     if (!isset(self::$INSTANCE)) {
       $o = new PHPEnvironment();
-      $o->memberAccess = '->';
-      $o->assignment = '=';
-      $o->equalTo = ' == ';
-      $o->notEqualTo = ' != ';
-      $o->lessThan = ' < ';
-      $o->greaterThan = ' > ';
-      $o->and = ' && ';
-      $o->or = ' || ';
-      $o->openingParenthesis = "'";
-      $o->closingParenthesis = "'";
-      $o->openingGroupingParenthesis = '(';
-      $o->closingGroupingParenthesis = ')';
+      $o->setMemberAccess('->');
+      $o->setAssignment('=');
+      $o->setEqualTo(' == ');
+      $o->setNotEqualTo(' != ');
+      $o->setLessThan(' < ');
+      $o->setGreaterThan(' > ');
+      $o->setAnd(' && ');
+      $o->setOr(' || ');
+      $o->setOpeningParenthesis("'");
+      $o->setClosingParenthesis("'");
+      $o->setOpeningGroupingParenthesis('(');
+      $o->setClosingGroupingParenthesis(')');
       self::$INSTANCE = $o;
     }
     return self::$INSTANCE;
