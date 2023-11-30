@@ -112,12 +112,12 @@ FUNC.my.[moduleName][index];
 FUNC.[moduleName]();
 ```
 
-For more details on each module you will find API
-documentaion witin this folder as `[moduleName].md`.
+For more details on avalible modules see the list below,
+you will find API documentaion within the adjacent docs folder.
 
 Matt Renyard.
 
-MODULES
+List of avalible Modules
 --------------------------------------------------
 - [Library of Commonly Used Functionality Across FUNC Modules (FUNC.core.js)](docs/core.md)
 - [Manipulate, Draw and Arrange a Range of Diagrams (FUNC.diagram.js)](docs/diagram.md)
