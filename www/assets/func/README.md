@@ -116,3 +116,8 @@ For more details on each module you will find API
 documentaion witin this folder as `[moduleName].md`.
 
 Matt Renyard.
+
+MODULES
+--------------------------------------------------
+- [Core](docs/core.md)
+- [hijax](docs/hijax.md)
