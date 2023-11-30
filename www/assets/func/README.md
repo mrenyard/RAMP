@@ -119,5 +119,5 @@ Matt Renyard.
 
 MODULES
 --------------------------------------------------
-- [Core](docs/core.md)
-- [Diagram](docs/diagram.md)
+- [Library of Commonly Used Functionality Across FUNC Modules (FUNC.core.js)](docs/core.md)
+- [Manipulate, Draw and Arrange a Range of Diagrams (FUNC.diagram.js)](docs/diagram.md)
