@@ -131,10 +131,14 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\business\BusinessModel::__get() and \ramp\model\business\BusinessModel::__set()
-   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @see \ramp\model\business\BusinessModel::__set()
-   * @see \ramp\model\business\BusinessModel::__get()
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -226,9 +230,8 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\BusinessModel::children.
+   * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @see ramp.model.business.BusinessModel#method_get_children ramp\model\business\BusinessModel::children
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -324,14 +327,12 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
 
   /**
    * Touch Validity checking and error checking within complex models.
-   * - assert set 'children' modifies interable BusinessModel.
    * - assert validate method returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded an error.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @see ramp.model.business.BusinessModel#method_setChildren ramp\model\business\BusinessModel::children
-   * @see ramp.model.business.BusinessModel#method_validate ramp\model\business\BusinessModel::validate()
-   * @see ramp.model.business.BusinessModel#method_hasErrors ramp\model\business\BusinessModel::hasErrors()
+   * @see \ramp\model\business\BusinessModel::validate()
+   * @see \ramp\model\business\BusinessModel::$hasErrors
    */
   public function testTouchValidityAndErrorMethods()
   {

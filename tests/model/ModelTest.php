@@ -74,10 +74,14 @@ class ModelTest extends \tests\ramp\core\ObjectTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\Model::__get() and \ramp\model\Model::__set()
-   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @see \ramp\model\Model::__set()
-   * @see \ramp\model\Model::__get()
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testAccessPropertyWith__set__get()
   {

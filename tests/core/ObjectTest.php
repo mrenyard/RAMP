@@ -85,8 +85,13 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Property is accessable on \ramp\core\RAMPObject::__get() and \ramp\core\RAMPObject::__set().
-   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
