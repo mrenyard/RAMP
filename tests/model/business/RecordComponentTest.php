@@ -335,9 +335,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'record' NOT accessable ramp\model\business\RecordComponent::record.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @see ramp.model.business.RecordComponent#method_set_parentRecord ramp\model\business\RecordComponent::record
+   * Set 'parent' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'parent'.
+   * @see \ramp\model\business\RecordComponent::$parent
    */
   public function testSetParentRecordPropertyNotSetException()
   {
@@ -347,9 +347,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'propertyName' NOT accessable ramp\model\business\RecordComponent::propertyName.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @see ramp.model.business.RecordComponent#method_set_parentPropertyName ramp\model\business\RecordComponent::propertyName
+   * Set 'name' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
+   * @see \ramp\model\business\RecordComponent::$name
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {

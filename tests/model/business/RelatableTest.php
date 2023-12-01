@@ -198,24 +198,15 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   /**
    * Handle complex iterative relations (model flexability).
-   * - assert set 'children' modifies interable Relatable.
-   * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@see \ramp\core\Str}.
-   *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
    *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
-   * - assert offsetExists returns correctly:
-   *   - assert True returned on isset() when within expected bounds.
-   *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @see \ramp\model\business\Relatable::children
-   * @see \ramp\model\business\Relatable::type
-   * @see \ramp\model\business\Relatable::getIterator()
-   * @see \ramp\model\business\Relatable::offsetGet()
+   * @see \ramp\model\business\BusinessModel::getIterator()
+   * @see \ramp\model\business\BusinessModel::offsetGet()
    * @see \ramp\model\business\Relatable::offsetExists()
-   * @see \ramp\model\business\Relatable::count
+   * @see \ramp\model\business\BusinessModel::$count
    */
   public function testComplexModelIteration()
   {
@@ -228,8 +219,8 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @see \ramp\model\business\Relatable::validate()
-   * @see \ramp\model\business\Relatable::hasErrors()
+   * @see \ramp\model\business\BusinessModel::validate()
+   * @see \ramp\model\business\BusinessModel::$hasErrors
    */
   public function testTouchValidityAndErrorMethods()
   {
@@ -244,7 +235,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @see \ramp\model\business\Relatable::getErrors()
+   * @see \ramp\model\business\BusinessModel::$errors
    */
   public function testErrorReportingPropagation()
   {

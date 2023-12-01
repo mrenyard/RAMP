@@ -297,16 +297,15 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
 
   /**
    * Handle complex iterative relations (model flexability).
-   * - assert set 'children' modifies interable BusinessModel.
    * - assert foreach loop, iterates through each expected object:
    *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @see ramp.model.business.BusinessModel#method_setChildren ramp\model\business\BusinessModel::children
-   * @see ramp.model.business.BusinessModel#method_getIterator ramp\model\business\BusinessModel::getIterator()
-   * @see ramp.model.business.BusinessModel#method_offsetGet ramp\model\business\BusinessModel::offsetGet()
-   * @see ramp.model.business.BusinessModel#method_count ramp\model\business\BusinessModel::count
+   * @see \ramp\model\business\BusinessModel::getIterator()
+   * @see \ramp\model\business\BusinessModel::offsetGet()
+   * @see \ramp\model\business\Relatable::offsetExists()
+   * @see \ramp\model\business\BusinessModel::$count
    */
   public function testComplexModelIteration()
   {
@@ -329,7 +328,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * Touch Validity checking and error checking within complex models.
    * - assert validate method returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
-   * - assert returns True when any child/grandchild has recorded an error.
+   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
@@ -350,14 +349,14 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Error reporting within complex models using \ramp\model\business\BusinessModel::getErrors().
+   * Error reporting within complex models using \ramp\model\business\Relatable::getErrors().
    * - assert following validate(), the expected iCollection of error messages returned from
    *    getErrors() are as expected, depending on which level they are called.
    * - assert any following call to hasErrors returns the same collection of messages as previously.
    * - assert a single collection containing all errors including children and grandchildren
    *    of top testObject returned when called on testObject.
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @see ramp.model.business.BusinessModel#method_getErrors ramp\model\business\BusinessModel::getErrors()
+   * @see \ramp\model\business\BusinessModel::$errors
    */
   public function testErrorReportingPropagation()
   {

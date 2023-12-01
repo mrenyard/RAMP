@@ -69,7 +69,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\Relation::__construct().
+   * Default base constructor.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\core\iOption}
@@ -80,7 +80,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\business\Relation}
    * - assert is instance of {@see \ramp\model\business\RelationToOne}
-   * @see ramp.model.business.Relation ramp\model\business\Relation
+   * @see \ramp\model\business\RelationToOne
    */
   public function testConstruct()
   {
@@ -113,9 +113,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Relation::__set().
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @see \ramp\model\Relation::__set()
+   * Bad property (name) NOT settable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property.
+   * @see \ramp\core\RAMPObject::__set()
    */
   public function testPropertyNotSetExceptionOn__set()
   {
@@ -123,9 +123,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Relation::__get().
+   * Bad property (name) NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @see \ramp\model\Relation::__get()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testBadPropertyCallExceptionOn__get()
   {
@@ -133,10 +133,14 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\Relation::__get() and \ramp\model\Relation::__set()
-   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @see \ramp\model\Relation::__set()
-   * @see \ramp\model\Relation::__get()
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -144,9 +148,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Correct return of ramp\model\Relation::__toString().
-   * - assert {@see \ramp\model\Relation::__toString()} returns string 'class name'
-   * @see \ramp\model\Relation::__toString()
+   * Correct return of string.
+   * - assert {@see \ramp\model\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
    */
   public function testToString()
   {
@@ -166,12 +170,12 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert returned errors are as expected:
    *   - assert errors instance of {@see \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @see \ramp\model\business\Relation::type
-   * @see \ramp\model\business\Relation::getIterator()
-   * @see \ramp\model\business\Relation::offsetExists()
-   * @see \ramp\model\business\Relation::count()
-   * @see \ramp\model\business\Relation::hasErrors()
-   * @see \ramp\model\business\Relation::getErrors()
+   * @see \ramp\model\business\BusinessModel::$type
+   * @see \ramp\model\business\BusinessModel::getIterator()
+   * @see \ramp\model\business\BusinessModel::offsetExists()
+   * @see \ramp\model\business\BusinessModel::$count
+   * @see \ramp\model\business\BusinessModel::$hasErrors
+   * @see \ramp\model\business\BusinessModel::$errors
    */
   public function testInitStateMin()
   {
@@ -179,9 +183,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\Relation::id.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @see \ramp\model\business\Relation::id
+   * Set 'id' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
+   * @see \ramp\model\business\BusinessModel::$id
    */
   public function testSetIdPropertyNotSetException()
   {
@@ -189,9 +193,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\Relation::type.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @see \ramp\model\business\Relation::type
+   * Set 'type' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
+   * @see \ramp\model\business\BusinessModel::$type
    */
   public function testSetTypePropertyNotSetException()
   {
@@ -199,9 +203,8 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\Relation::children.
-   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
-   * @see \ramp\model\business\Relation::children
+   * Get 'children' NOT accessable.
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   public function testGetChildrenBadPropertyCallException()
   {
@@ -210,8 +213,8 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 
   /**
    * Index beyond bounds with \ramp\model\business\Relation::offsetGet.
-   * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @see \ramp\model\business\Relation::offsetGet()
+   * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children.
+   * @see \ramp\model\business\BusinessModel::offsetGet()
    */
   public function testOffsetGetOutOfBounds()
   {
@@ -219,9 +222,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Offset addition minimum type checking test
+   * Offset addition minimum type checking test.
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @see \ramp\model\business\Record::offsetSet()
+   * @see \ramp\model\business\BusinessModel::offsetSet()
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
@@ -229,14 +232,13 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Index editing of children through \ramp\model\business\Relation::offsetSet and
-   * for \ramp\model\business\Relation::offsetUnset.
+   * Index editing of children through offsetSet and offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
-   * - assert successful use of offsetUnset
+   * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @see \ramp\model\business\Relation::offsetSet()
-   * @see \ramp\model\business\Relation::offsetUnset()
+   * @see \ramp\model\business\BusinessModel::offsetSet()
+   * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -246,24 +248,15 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 
   /**
    * Handle complex iterative relations (model flexability).
-   * - assert set 'children' modifies interable Relation.
-   * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@see \ramp\core\Str}.
-   *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
    *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
-   * - assert offsetExists returns correctly:
-   *   - assert True returned on isset() when within expected bounds.
-   *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @see \ramp\model\business\Relation::children
-   * @see \ramp\model\business\Relation::type
-   * @see \ramp\model\business\Relation::getIterator()
-   * @see \ramp\model\business\Relation::offsetGet()
-   * @see \ramp\model\business\Relation::offsetExists()
-   * @see \ramp\model\business\Relation::count
+   * @see \ramp\model\business\BusinessModel::getIterator()
+   * @see \ramp\model\business\BusinessModel::offsetGet()
+   * @see \ramp\model\business\BusinessModel::offsetExists()
+   * @see \ramp\model\business\BusinessModel::$count
    */
   public function testComplexModelIteration()
   {
@@ -272,41 +265,28 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 
   /**
    * Touch Validity checking and error checking within complex models.
-   * - assert set 'children' modifies interable Relation.
    * - assert validate method returns void (null) when called.
    * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
    * - assert returns True when any child/grandchild has recorded (a simulated) errors.
    * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @see \ramp\model\business\Relation::children
-   * @see \ramp\model\business\Relation::validate()
-   * @see \ramp\model\business\Relation::hasErrors()
+   * @see \ramp\model\business\BusinessModel::validate()
+   * @see \ramp\model\business\BusinessModel::$hasErrors
    */
   public function testTouchValidityAndErrorMethods()
   {
-    $this->testObject->isEditable = TRUE;
+    // $this->testObject->isEditable = TRUE;
     parent::testTouchValidityAndErrorMethods();
-    // $this->populateSubModelTree();
-    // $this->assertNull($this->testObject->validate($this->postData)); // Call
-    // $this->assertTrue($this->testObject->hasErrors);
-    // $i = 0;
-    // foreach ($this->testObject as $child) {
-    //   $this->assertSame(1, $child->validateCount);
-    //   $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
-    //   $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
-    //   $i++;
-    // }
-    // $this->assertEquals($this->expectedChildCountExisting, $i);
   }
 
   /**
-   * Error reporting within complex models using \ramp\model\business\Relation::getErrors().
+   * Error reporting within complex models.
    * - assert following validate(), the expected iCollection of error messages returned from
-   *    getErrors() are as expected, depending on which level they are called.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * - assert a single collection containing all errors including children and grandchildren
+   *    $error are as expected, depending on which level they are called.
+   * - assert any following call to $hasErrors returns the same collection of messages as previously.
+   * - assert a single collection containing all $errors including children and grandchildren
    *    of top testObject returned when called on testObject.
-   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @see \ramp\model\business\Relation::getErrors()
+   * - assert a single collection containing relevant sub errors returned when called on sub BusinessModels
+   * @see \ramp\model\business\BusinessModel::$errors
    */
   public function testErrorReportingPropagation()
   {
@@ -315,9 +295,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Set 'record' NOT accessable ramp\model\business\Relation::record.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @see \ramp\model\business\Relation::record
+   * Set 'parent' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'.
+   * @see \ramp\model\business\RecordComponent::$parent
    */
   public function testSetParentRecordPropertyNotSetException()
   {
@@ -325,9 +305,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Set 'propertyName' NOT accessable ramp\model\business\Relation::propertyName.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @see \ramp\model\business\Relation::propertyName
+   * Set 'name' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
+   * @see \ramp\model\business\RecordComponent::$name
    */
   public function testSetParentPropertyNamePropertyNotSetException()
   {
@@ -335,12 +315,12 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Hold reference back to associated parent Record, propertyName and format for id.
+   * Hold reference back to associated 'parent' Record, property 'name' and format for id.
    * - assert record as passed to constructor.
-   * - assert propertyName as passed to constructor.
-   * - assert id as expected in format record:key:propertyName.
-   * @see ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
-   * @see ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
+   * - assert name as passed to constructor.
+   * - assert id as expected in format record:key:name.
+   * @see \ramp\model\business\RecordComponent::$parent
+   * @see \ramp\model\business\RecordComponent::$name
    */
   public function testStateChangesRecordComponent()
   {
@@ -350,7 +330,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   /**
    * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
    * - assert current record->getPropertyValue and RecordComponent->value return same instance.
-   * @see ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
+   * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
   public function testRecordComponentValue(string $expectedValue = 'mock-min-record:new')
@@ -359,7 +339,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
   
   /**
-   * Check assigned protected propery \ramp\model\business\Relation::$manager holds referance to expected BusinessModelManager.
+   * Check assigned protected propery $manager holds referance to expected BusinessModelManager.
    * - assert protected property $manager referances same object. 
    * @see \ramp\model\business\Relation::$manager
    */
@@ -369,8 +349,8 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   }
 
   /**
-   * Test protected static \ramp\model\business\Relation::buildMapping().
-   *  - assert returns array with key => value pair in expected format.
+   * Test protected static buildMapping().
+   *  - assert returns array with `key => value` pair in expected format.
    * @see \ramp\model\business\Relation::buildMapping()
    */
   public function testBuildMapping()

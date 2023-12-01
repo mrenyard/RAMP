@@ -225,23 +225,14 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
 
   /**
    * Handle complex iterative relations (model flexability).
-   * - assert set 'children' modifies interable Relatable.
-   * - assert property 'type' is gettable:
-   *   - assert returned value is of type {@see \ramp\core\Str}.
-   *   - assert returned value matches expected result.
    * - assert foreach loop, iterates through each expected object:
    *   - assert returns object that is an instance of {@see \Traversable}
    *   - assert foreach returned object matches expected.
    * - assert expected object returned at its expected index.
-   * - assert offsetExists returns correctly:
-   *   - assert True returned on isset() when within expected bounds.
-   *   - assert False returned on isset() when outside expected bounds.
    * - assert return expected int value related to the number of child BusinessModels held.
-   * @see \ramp\model\business\BusinessModel::$children
-   * @see \ramp\model\business\BusinessModel::$type
    * @see \ramp\model\business\BusinessModel::getIterator()
    * @see \ramp\model\business\BusinessModel::offsetGet()
-   * @see \ramp\model\business\BusinessModel::offsetExists()
+   * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
   public function testComplexModelIteration()
