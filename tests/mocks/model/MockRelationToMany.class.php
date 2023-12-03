@@ -26,6 +26,7 @@ use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\RelationToMany;
 use ramp\model\business\Relatable;
+use ramp\model\business\BusinessModelManager;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relation for testing against.
@@ -44,8 +45,8 @@ class MockRelationToMany extends RelationToMany
 
   // protected function get_with() { return $this->getWith(); }
   // protected function set_with(?Relatable $value) { $this->setWith($value); }
-  // public function getModelManager() : BusinessModelManager { return $this->manager; }
-  // public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array { return self::buildMapping($from, $to, $fromPropertyName); }
+  public function getModelManager() : BusinessModelManager { return $this->manager; }
+  public function callBuildMapping(Record $from, Record $to, Str $fromPropertyName) : array { return self::buildMapping($from, $to, $fromPropertyName); }
 
   /**
    * Validate postdata against this and update accordingly.

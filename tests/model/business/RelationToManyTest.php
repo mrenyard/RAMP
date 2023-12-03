@@ -21,12 +21,8 @@
  */
 namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/tests/ramp/model/business/RelationTest.php';
-
-require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
-
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -46,7 +42,7 @@ use tests\ramp\mocks\model\MockBusinessModelManager;
 /**
  * Collection of tests for \ramp\model\business\RelationToOne.
  */
-class RelationToOneTest extends \tests\ramp\model\business\RelationTest
+class RelationToManyTest extends \tests\ramp\model\business\RelationTest
 {
   #region Setup
   protected function preSetup() : void {
@@ -54,15 +50,14 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->dataObject = new \StdClass();
+    $this->dataObject->keyA = 1;
+    $this->dataObject->keyB = 1;
+    $this->dataObject->keyC = 1;
     $this->record = new MockRecord($this->dataObject);
-    $this->name = $this->record->relationBetaName;
+    $this->name = $this->record->relationAlphaName;
   }
-  protected function getTestObject() : RAMPObject {
-    return $this->record->relationBeta;
-  }
-  protected function postSetup() : void {
-    $this->expectedChildCountNew = 3;
-  }
+  protected function getTestObject() : RAMPObject { return $this->record->relationAlpha; }
+  protected function postSetup() : void { $this->expectedChildCountNew = 3; }
   #endregion
 
   /**
@@ -76,35 +71,31 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\business\Relation}
-   * - assert is instance of {@see \ramp\model\business\RelationToOne}
-   * @see \ramp\model\business\RelationToOne
+   * - assert is instance of {@see \ramp\model\business\RelationToMany}
+   * @see \ramp\model\business\RelationToMany
    */
   public function testConstruct()
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\RelationToOne', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\RelationToMany', $this->testObject);
   }
-  
+
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->testObject->with = new RecordCollection();
-    $this->testObject->with->add(new MockMinRecord(new \stdClass));
-    $this->testObject->with->add(new MockMinRecord(new \stdClass, TRUE));
-    $this->testObject->with->add(new MockMinRecord(new \stdClass));
-    $this->expectedChildCountExisting = 3;
-    $this->postData = new PostData();
+    $this->postData = PostData::build(array('mock-min-record:a|b|e:property-2' => 'BadValue'));
+    $this->expectedChildCountExisting = 4;
     $this->childErrorIndexes = array(1);
   }
   protected function complexModelIterationTypeCheck()
   {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-min-record record', (string)$this->testObject[2]->type);
-    $this->assertArrayNotHasKey(3, $this->testObject);
+    $i = 0;
+    foreach ($this->testObject as $record) { $i++;
+      $this->assertInstanceOf('\ramp\core\Str', $record->type);
+      $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
+    }
+    $this->assertSame(3, $i);
+    $this->expectedChildCountExisting = 3;
   }
   #endregion
 
@@ -176,6 +167,10 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    */
   public function testInitStateMin()
   {
+    $this->assertSame($this->testObject[0],$this->testObject->getModelManager()->objectThree);
+    $this->assertSame($this->testObject[1], $this->testObject->getModelManager()->objectFour);
+    $this->assertSame($this->testObject[2], $this->testObject->getModelManager()->objectFive);
+    $this->assertFalse(isset($this->testObject[3]));
     parent::testInitStateMin();
   }
 
@@ -269,8 +264,8 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods()
-  {
+  public function testTouchValidityAndErrorMethods() //PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
+  {    
     $this->testObject->isEditable = TRUE;
     parent::testTouchValidityAndErrorMethods();
   }
@@ -330,7 +325,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
-  public function testRecordComponentValue(string $expectedValue = 'mock-min-record:new')
+  public function testRecordComponentValue(string $expectedValue = 'record-collection')
   {
     parent::testRecordComponentValue($expectedValue);
   }
@@ -363,6 +358,68 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   public function testMaxRelationDepth()
   {
     $this->assertTrue(TRUE);
+  }
+
+  /**
+   * isEditable set at construction state check.
+   * - assert $name same as provided at construction.
+   * - assert $parent same as provided at construction.
+   * - assert interation contains expected relations.
+   * @see \ramp\model\business\RelationToMany
+   */
+  public function testConstructAsEditable()
+  {
+    $name = Str::set('RelationGamma');
+    $testObject = new MockRelationToMany(
+      $name,
+      $this->record,
+      $this->record->relationGammaWithRecordName,
+      $this->record->relationGammaWithPropertyName,
+      TRUE
+    );
+    $this->assertSame($name, $testObject->name);
+    $this->assertSame($this->record, $testObject->parent);
+    $i = 0;
+    foreach ($testObject as $record) { $i++;
+      $this->assertInstanceOf('\ramp\core\Str', $record->type);
+      $this->assertSame('mock-min-record record', (string)$record->type);
+      if ($i === 4) { $this->assertTrue($record->isNew); break; }
+      $this->assertFalse($record->isNew);
+    }
+    $this->assertSame(4, $i);
+  }
+
+  /**
+   * No current relations at construction state check.
+   * - assert $name same as provided at construction.
+   * - assert $parent same as provided at construction.
+   * - assert interation contains only one 'new' relation.
+   * @see \ramp\model\business\RelationToMany
+   */
+  public function testNoCurrentRelations()
+  {
+    $dataObject = new \stdClass();
+    $dataObject->keyA = 4;
+    $dataObject->keyB = 4;
+    $dataObject->keyC = 4;
+    $parent = new MockRecord($dataObject);
+    $name = Str::set('RelationGamma');
+    $testObject = new MockRelationToMany(
+      $name,
+      $parent,
+      $parent->relationGammaWithRecordName,
+      $parent->relationGammaWithPropertyName,
+      TRUE
+    );
+    $this->assertSame($name, $testObject->name);
+    $this->assertSame($parent, $testObject->parent);
+    $i = 0;
+    foreach ($testObject as $record) { $i++;
+      $this->assertInstanceOf('\ramp\core\Str', $record->type);
+      $this->assertSame('mock-min-record record', (string)$record->type);
+      $this->assertTrue($record->isNew);
+    }
+    $this->assertSame(1, $i);
   }
 }
 

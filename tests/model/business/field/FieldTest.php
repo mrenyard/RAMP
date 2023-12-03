@@ -396,7 +396,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see ramp.model.business.field\Field#method_validate ramp\model\business\field\Field::validate()
    * @see ramp.model.business.field\Field#method_hasErrors ramp\model\business\field\Field::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() //PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call

@@ -93,8 +93,8 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->testObject[1][0] = new MockBusinessModel(TRUE);
     $this->testObject[2] = new MockBusinessModel(TRUE);
     $this->expectedChildCountExisting = 3;
-    $this->postData = new PostData();
     $this->childErrorIndexes = array(1,2);
+    $this->postData = new PostData();
   }
   protected function complexModelIterationTypeCheck()
   {

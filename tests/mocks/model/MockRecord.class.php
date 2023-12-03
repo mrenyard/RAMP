@@ -46,15 +46,17 @@ class MockRecord extends Record
   public $errorsTouchCount;
   public $propertyName;
   public $relationAlphaName;
-  public $relationAlphaWith;
   public $relationBetaName;
-  public $relationBetaWith;
+  public $relationGammaWithRecordName;
+  public $relationGammaWithPropertyName;
   public $inputName;
 
   public function __construct(\stdClass $dataObject = null)
   {
     $this->relationAlphaName = Str::set('relationAlpha');
     $this->relationBetaName = Str::set('relationBeta');
+    $this->relationGammaWithRecordName = Str::set('MockMinRecord');
+    $this->relationGammaWithPropertyName = Str::set('relationDelta');
     $this->inputName = Str::set('input');
     parent::__construct($dataObject);
     $this->validateCount = 0;
@@ -112,7 +114,7 @@ class MockRecord extends Record
 
   protected function get_relationAlpha() : ?RecordComponent
   {
-    if ($this->register('relationAlpha', RecordComponentType::RELATION)) {
+    if ($this->register($this->relationAlphaName, RecordComponentType::RELATION)) {
       $this->initiate(new MockRelationToMany(
         $this->registeredName,
         $this,
@@ -125,7 +127,7 @@ class MockRecord extends Record
 
   protected function get_relationBeta() : ?RecordComponent
   {
-     if ($this->register('relationBeta', RecordComponentType::RELATION)) {
+     if ($this->register($this->relationBetaName, RecordComponentType::RELATION)) {
       $this->initiate(new MockRelationToOne(
         $this->registeredName,
         $this,
@@ -137,7 +139,7 @@ class MockRecord extends Record
 
   protected function get_input() : ?RecordComponent
   {
-    if ($this->register('input', RecordComponentType::PROPERTY)) {
+    if ($this->register($this->inputName, RecordComponentType::PROPERTY)) {
       $this->initiate(new MockField($this->registeredName, $this));
     }
     return $this->registered; 

@@ -85,7 +85,6 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-  /**
    * Check property access through get and set methods.
    * - assert get returns same as set.
    * ```php

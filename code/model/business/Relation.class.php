@@ -56,7 +56,7 @@ abstract class Relation extends RecordComponent
     parent::__construct($name, $parent, NULL, $editable);
   }
 
-  protected function getWith() { return $this->with; }
+  protected function getWith() : ?Relatable  { return $this->with; }
   protected function setWith(?Relatable $value)
   {
     $this->with = $value;

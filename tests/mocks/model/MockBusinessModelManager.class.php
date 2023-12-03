@@ -177,7 +177,7 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectFour->fk_relationDelta_MockRecord_keyA = 1;
     $this->dataObjectFour->fk_relationDelta_MockRecord_keyB = 1;
     $this->dataObjectFour->fk_relationDelta_MockRecord_keyC = 1;
-    $this->objectFour = new MockMinRecord($this->dataObjectFour);
+    $this->objectFour = new MockMinRecord($this->dataObjectFour); //, TRUE);
   }
   private function buildObjectFive() {
     $this->dataObjectFive = new \stdClass();

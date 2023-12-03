@@ -72,7 +72,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
     $this->testObject->add(new MockMinRecord(NULL, TRUE));
     $this->expectedChildCountExisting = 3;
     $this->postData = new PostData();
-    $this->childErrorIndexes = array(2);
+    $this->childErrorIndexes = array(1);
   }
   protected function complexModelIterationTypeCheck()
   {

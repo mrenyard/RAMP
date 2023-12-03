@@ -132,10 +132,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($this->testObject->isValid);
     $this->assertFalse($this->testObject->isNew);
     $this->assertSame('mock-record:3|3|3', (string)$this->testObject->id);
+    
     $this->expectedChildCountExisting = 4;
-    $this->postData = PostData::build(array(
-      'mock-record:3|3|3:a-property' => 'BadValue'
-    ));
+    $this->postData = PostData::build(array('mock-record:3|3|3:a-property' => 'BadValue'));
     $this->childErrorIndexes = array(0);
     $this->assertSame(0, $this->testObject->aProperty->validateCount);
   }
@@ -315,9 +314,10 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::validate()
    * @see \ramp\model\business\Record::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() // PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
+  // public function testTouchValidityAndErrorMethods()
   {
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods(); //$postdata, $errorIndexes, $childCount);
   }
 
   /**

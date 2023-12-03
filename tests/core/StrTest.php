@@ -41,9 +41,9 @@ use ramp\core\PropertyNotSetException;
 class StrTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for ramp\core\Str::__construct().
+   * Default base constructor.
    * - assert is private inaccessable
-   * @see ramp.core.Str \ramp\core\Str
+   * @see \ramp\core\Str
    */
   public function test__construct()
   {
@@ -57,14 +57,14 @@ class StrTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Str::lowercase.
+   * Collection of assertions Str::$lowercase.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'lowercase'
    *   - with message: <em>'[className]->lowercase is NOT settable'</em>
    * - assert allows retrieval of 'lowercase'
    * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert each subsequent is same instance as first
    * - assert retreved matches expected lowercase instance of original
-   * @see \ramp\core\Str::lowercase
+   * @see \ramp\core\Str::$lowercase
    */
   public function testLowercase()
   {

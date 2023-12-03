@@ -283,7 +283,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::validate()
    * @see \ramp\model\business\Key::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() //PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
   {
     parent::testTouchValidityAndErrorMethods();
   }

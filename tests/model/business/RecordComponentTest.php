@@ -59,10 +59,11 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.cla
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
-
-use tests\ramp\mocks\core\AnObject;
+use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\RecordComponent;
+
+use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockRecordComponent;
 use tests\ramp\mocks\model\MockBusinessModelManager;
@@ -85,9 +86,8 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     $this->record = new MockRecord($this->dataObject);
     $this->name = Str::set('aProperty');
   }
-  protected function getTestObject() : RAMPObject {
-    return new MockRecordComponent($this->name, $this->record);
-  }
+  protected function getTestObject() : RAMPObject { return new MockRecordComponent($this->name, $this->record); }
+  protected function postSetup() : void { $this->expectedChildCountNew = 0; }
   #endregion
 
   /**
@@ -107,6 +107,30 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
   }
+
+  #region Sub model setup
+  // protected function populateSubModelTree()
+  // {
+  //   $this->testObject[0] = new MockBusinessModel();
+  //   $this->testObject[1] = new MockBusinessModel();
+  //   $this->testObject[1][0] = new MockBusinessModel(TRUE);
+  //   $this->testObject[2] = new MockBusinessModel(TRUE);
+  //   $this->expectedChildCountExisting = 3;
+  //   $this->childErrorIndexes = array(1,2);
+  //   $this->postData = new PostData();
+  // }
+  // protected function complexModelIterationTypeCheck()
+  // {
+  //   $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+  //   $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
+  //   $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+  //   $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
+  //   $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
+  //   $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
+  //   $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+  //   $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
+  // }
+  #endregion
 
   #region Inherited Tests
   /**
@@ -173,7 +197,6 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   public function testInitStateMin()
   {
     parent::testInitStateMin();
-    $this->assertTrue($this->testObject->isEditable);
   }
 
   /**

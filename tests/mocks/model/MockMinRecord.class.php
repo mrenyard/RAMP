@@ -40,11 +40,11 @@ class MockMinRecord extends Record
 
   public function __construct($dataObject = NULL, $withError = FALSE)
   {
-    parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
     $this->withError = $withError;
+    parent::__construct($dataObject);
   }
 
   public function reset()
@@ -52,14 +52,7 @@ class MockMinRecord extends Record
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
-    foreach ($this->primaryKey as $key) { 
-      $key->validateCount = 0;
-      $key->hasErrorsCount = 0;
-    }
-    foreach ($this as $property) { 
-      $property->validateCount = 0;
-      $property->hasErrorsCount = 0;
-    }
+    foreach ($this as $field) { $field->reset(); }
   }
 
   protected function get_key1() : ?RecordComponent
@@ -97,7 +90,7 @@ class MockMinRecord extends Record
   protected function get_property2() : ?RecordComponent
   {
     if ($this->register('property2', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->withError));
     }
     return $this->registered; 
   }
@@ -111,14 +104,12 @@ class MockMinRecord extends Record
   public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
-    if ($this->withError) { return TRUE; }
     return parent::get_hasErrors();
   }
 
   public function get_errors() : StrCollection
   {
     $this->errorsTouchCount++;
-    if ($this->withError) { return StrCollection::set('Error MESSAGE BadValue Submited!'); }
     return parent::get_errors();
   }
 

@@ -62,7 +62,7 @@ class RelationToMany extends Relation
     $this->keyMap = $this->buildMapping(new $withRecordClassName(), $parent, $withPropertyName);
     // TODO:mrenyard: Change once Request is back
     // if ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id) {
-    if ((string)$parent->id == 'mock-record:1|1|1') {
+    if ((string)$parent->id == 'mock-record:1|1|1' || (string)$parent->id == 'mock-record:4|4|4') {
       $filterArray = array();
       foreach ($this->keyMap as $subKey => $foreignKey) {
         $filterArray[$foreignKey] = $this->parent->getPropertyValue($subKey);

@@ -62,7 +62,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\Condition::__construct().
+   * Default base constructor.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\condition\Condition}
    * @see \ramp\condition\Condition
@@ -75,13 +75,13 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\condition\Condition::attribute.
-   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'attribute'
-   *   - with message: <em>'[className]->attribute is NOT settable'</em>.
-   * - assert allows retrieval of 'attribute'.
-   * - assert retreved is an instance of {@see \ramp\core\Str}.
-   * - assert retreved is same as provided to constructor.
-   * @see \ramp\condition\Condition::attribute
+   * Collection of assertions for BusinessCondition::$attribute.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
+   *   - with message: <em>'[className]->attribute is NOT settable'</em>
+   * - assert allows retrieval of 'attribute'
+   * - assert retrieved is a {@see \ramp\core\Str}
+   * - assert 'attribute' is composite of [property]->[property]
+   * @see \ramp\condition\Condition::$attribute
    */
   public function testAttribute()
   {
@@ -100,13 +100,13 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\condition\Condition::operator.
+   * Collection of assertions for BusinessCondition::$operator.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
    *   - with message: <em>'[className]->operator is NOT settable'</em>.
    * - assert allows retrieval of 'operator'.
    * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @see \ramp\condition\Condition::operator.
+   * @see \ramp\condition\Condition::$operator.
    */
   public function testOperator()
   {
@@ -125,14 +125,13 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\condition\Condition::comparable.
-   * - assert 'comparable' default is NULL.
-   * - assert allows setting of 'comparable'.
-   * - assert allows retrieval of 'comparable'.
-   * - assert 'comparable' equal to recently set.
-   * - assert 'comparable' equal to that provided to constructor when provided.
-   * @see \ramp\condition\Condition::comparable (get)
-   * @see \ramp\condition\Condition::comparable (set)
+   * Collection of assertions for BusinessCondition::$comparable.
+   * - assert 'comparable' default is NULL
+   * - assert allows setting of 'comparable'
+   * - assert allows retrieval of 'comparable'
+   * - assert 'comparable' equal to recently set
+   * - assert 'comparable' equal to that provided at creation
+   * @see \ramp\condition\Condition::$comparable
    */
   public function testComparable()
   {

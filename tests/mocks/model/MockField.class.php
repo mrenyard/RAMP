@@ -22,6 +22,7 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Field;
@@ -34,12 +35,22 @@ class MockField extends Field
 {
   public $validateCount;
   public $hasErrorsCount;
+  public $errorsTouchCount;
+  private $withError;
 
-  public function __construct(Str $name, Record $parent)
+  public function __construct(Str $name, Record $parent, $withError = FALSE)
   {
     parent::__construct($name, $parent);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
+    $this->withError = $withError;
+  }
+
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    $this->errorsTouchCount = 0;
   }
 
   /**
@@ -56,7 +67,15 @@ class MockField extends Field
   public function get_hasErrors() : bool
   {
     $this->hasErrorsCount++;
+    if ($this->withError) { return TRUE; }
     return parent::get_hasErrors();
+  }
+
+  public function get_errors() : StrCollection
+  {
+    $this->errorsTouchCount++;
+    if ($this->withError) { return StrCollection::set('Error MESSAGE BadValue Submited!'); }
+    return parent::get_errors();
   }
 
   /**

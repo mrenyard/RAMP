@@ -64,8 +64,6 @@ use tests\ramp\mocks\model\MockBusinessModelManager;
  */
 class RelationTest extends \tests\ramp\model\business\RecordComponentTest
 {
-  protected $with;
-
   #region Setup
   protected function preSetup() : void {
     MockBusinessModelManager::reset();
@@ -75,14 +73,9 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject->fk = NULL;
     $this->record = new MockRecordMockRelation($this->dataObject);
     $this->name = $this->record->relationAlphaName;
-    $this->with = $this->record->relationAlphaWith;
   }
-  protected function getTestObject() : RAMPObject {
-    return $this->record->relationAlpha;
-  }
-  protected function postSetup() : void {
-    $this->expectedChildCountNew = 0;
-  }
+  protected function getTestObject() : RAMPObject { return $this->record->relationAlpha; }
+  protected function postSetup() : void { $this->expectedChildCountNew = 0; }
   #endregion
 
   /**
@@ -107,12 +100,12 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->expectedChildCountExisting = 3;
     $this->postData = new PostData();
     $this->testObject->with = new RecordCollection();
     $this->testObject->with->add(new MockMinRecord(new \stdClass));
     $this->testObject->with->add(new MockMinRecord(new \stdClass, TRUE));
     $this->testObject->with->add(new MockMinRecord(new \stdClass));
+    $this->expectedChildCountExisting = 3;
     $this->childErrorIndexes = array(1);
   }
   protected function complexModelIterationTypeCheck()
