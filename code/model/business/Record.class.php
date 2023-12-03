@@ -254,6 +254,10 @@ abstract class Record extends Relatable
    */
   public function validate(PostData $postdata) : void
   {
+    // if (!$this->isEditable) {
+    //   $this->errorCollection= new StrCollection($this->id . ' is NOT editable!');
+    //   return;
+    // }
     if ($this->isNew) {
       $this->PrimaryKey->validate($postdata);
       return;

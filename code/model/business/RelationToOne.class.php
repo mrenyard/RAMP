@@ -100,24 +100,31 @@ class RelationToOne extends Relation
     parent::validate($postdata);
     $with = $this->getWith();
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
-    if ($this->parent->isNew || $with === NULL || $this->hasErrors) { return; }
+    if ($this->parent->isNew || $with === NULL || $this->hasErrors) {
+     return;
+    }
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata) {
       if ((string)$inputdata->attributeURN == (string)$this->id) {
         $values = $inputdata->value;
         if (is_array($values)) {
           if (isset($values['unset']) && $values['unset'] == $with->primaryKey->value) {
-            if (!$this->isEditable) { return; }
+            if (!$this->isEditable) {
+              return;
+            }
             // Change FKs to NULL and Children to new;
             foreach ($this->keyMap as $subForeignKey) {
               $this->parent->setPropertyValue($subForeignKey, NULL);
             }
             $this->setWith($this->manager->getBusinessModel(
               new SimpleBusinessModelDefinition($this->withRecordName, Str::NEW())
-            ));    
+            ));
             break;
           }
-          if (!$with->isNew) { break; }
+          if (!$with->isNew) {
+            $this->errorCollection->add(Str::set('Illegal EDIT Action: on existing ' . $with->id));
+            break;
+          }
           if (count($values) === $with->primaryKey->count)
           {
             $primarySubKeys = StrCollection::set();
@@ -147,6 +154,7 @@ class RelationToOne extends Relation
           }
         }
         $this->errorCollection->add(Str::set('Illegal Action: ' . $this->id));
+        return; 
       }
     }
   }

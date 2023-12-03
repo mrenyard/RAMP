@@ -48,6 +48,8 @@ use tests\ramp\mocks\model\MockBusinessModelManager;
  */
 class RelationToOneTest extends \tests\ramp\model\business\RelationTest
 {
+  private $modelManager;
+
   #region Setup
   protected function preSetup() : void {
     MockBusinessModelManager::reset();
@@ -61,6 +63,8 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
     return $this->record->relationBeta;
   }
   protected function postSetup() : void {
+    $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
+    $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->expectedChildCountNew = 3;
   }
   #endregion
@@ -354,7 +358,6 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
   {
     parent::testBuildMapping();
   }
-  #endregion
 
   /**
    * Check NONE connection of Relation (to ONE) beyond second level (URL(model) + first Chuldren).
@@ -362,7 +365,67 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    */
   public function testMaxRelationDepth()
   {
-    $this->assertTrue(TRUE);
+    parent::testMaxRelationDepth();
+  }
+  #endregion
+
+  /**
+   * Clean exitistin relation for base on validate checks.
+   */
+  public function cleanExistingRelation()
+  {
+    // Get relation to test.
+    $relation = $this->testObject; // to ONE
+    $relation->isEditable = TRUE;
+    // Pre ANY validation
+    // Check id of relation pre validation() as expected.
+    $this->assertSame('mock-record:new:relation-beta', (string)$this->testObject->id);
+    // Check value matches id of expected related 'new' Record pre validation().
+    $this->assertSame('mock-min-record:new', (string)$relation->value);
+    $this->assertTrue($this->testObject->parent->isNew);
+    $this->assertFalse($this->testObject->parent->isModified);
+    // Attempt simultaneous validation of BOTH parent Record and Related Record:
+    $this->testObject->parent->validate(PostData::build(array(
+      'mock-record:new:key-a' => 3,
+      'mock-record:new:key-b' => 3,
+      'mock-record:new:key-c' => 3
+    )));
+    $this->testObject->parent->updated();
+    $this->assertFalse($this->testObject->parent->isNew);
+  }
+
+  /**
+   * Illegal validate() action, incorrect key count. 
+   * - assert hasErrors following incorrect key count on validate().
+   * - assert errors contains expected message following incorrect key count on validate().
+   */
+  public function testIllegalActionKeyCount()
+  {
+    $this->cleanExistingRelation();
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:3|3|3:relation-beta' => array('property-1' => 'A', 'property-2' => 'B')
+    )));
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertSame('Illegal Action: mock-record:3|3|3:relation-beta', (string)$this->testObject->errors[0]);
+  }
+
+  /**
+   * Illegal validate() EDIT action while atempting to change key values. 
+   * - assert hasErrors following attempted change of key values on existing record.
+   * - assert errors contains expected message following attempted change of key values on existing record.
+   */
+  public function testIllegalEditActionOnExisting()
+  {
+    $this->cleanExistingRelation();
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:3|3|3:relation-beta' => array('key1' => 'A', 'key2' => 'B', 'key3' => 'C')
+    )));
+    $this->testObject[0]->parent->updated();
+    $this->assertFalse($this->testObject[0]->parent->isNew);
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:3|3|3:relation-beta' => array('key1' => 'B', 'key2' => 'B', 'key3' => 'C')
+    )));
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertSame('Illegal EDIT Action: on existing mock-min-record:a|b|c', (string)$this->testObject->errors[0]);
   }
 }
-

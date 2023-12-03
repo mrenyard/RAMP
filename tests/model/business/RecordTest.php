@@ -95,10 +95,10 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
   protected function getTestObject() : RAMPObject { return new MockRecord($this->dataObject); }
   protected function postSetup() : void {
-    $this->propertyName = $this->testObject->propertyName;
-    $this->expectedChildCountNew = 3;
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
+    $this->propertyName = $this->testObject->propertyName;
+    $this->expectedChildCountNew = 3;
   }
   #endregion
 
