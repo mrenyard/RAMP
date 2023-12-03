@@ -174,10 +174,14 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\Record::__get() and \ramp\model\Record::__set()
-   * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
-   * @see \ramp\model\Record::__set()
-   * @see \ramp\model\Record::__get()
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
    */
   public function testAccessPropertyWith__set__get()
   {
@@ -314,10 +318,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::validate()
    * @see \ramp\model\business\Record::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods() // PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
-  // public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods()
   {
-    parent::testTouchValidityAndErrorMethods(); //$postdata, $errorIndexes, $childCount);
+    parent::testTouchValidityAndErrorMethods();
   }
 
   /**
@@ -361,7 +364,11 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Record Component registration process, used for KEY, PROPERTY and RELATION management.
+   * Record Component registration process, used for KEY, PROPERTY and RELATION management
+   * - assert throws \BadMethodCallException when called without being proceded by 2 calls to register().
+   *   - with message: <em>'Method call MUST be proceded by register() as documented!'</em>
+   * - assert throws \InvalidArgumentException when provided RecordComponent::$parent dose NOT match Record.
+   *   - with message: <em>'Invalid RecordComponent argument (1), $parent does NOT match this Record.'</em>
    * - assert FIRST call to register() returns FALSE (registers $components[type][i] = name) and expects a second call.
    * - assert SECOND call to register() returns TRUE, potentially allowing continuation to initiate().
    * - assert $registeredName corresponds to that provided at register().
@@ -381,14 +388,29 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // First call
     $this->assertTrue($testObject->doRegister('alpha', RecordComponentType::KEY)); // Second call
     $this->assertSame('alpha', (string)$testObject->registeredName);
-    $expectedField = new MockField($testObject->registeredName, $testObject);
-    $testObject->doInitiate($expectedField);
+    $expectedAlphaField = new MockField($testObject->registeredName, $testObject);
+    $testObject->doInitiate($expectedAlphaField); // Initiate
     $actualField = $testObject->registered;
-    $this->assertSame($expectedField, $actualField);
+    $this->assertSame($expectedAlphaField, $actualField);
     $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // Third call
-    $this->assertSame($expectedField, $testObject->registered); // Same on all subsequent calls, provided preceded be register().
-    $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call
-    $this->assertNotSame($expectedField, $testObject->registered);
+    $this->assertSame($expectedAlphaField, $testObject->registered); // Same on all subsequent calls, provided preceded be register().
+    $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call (bata)
+    $this->assertNotSame($expectedAlphaField, $testObject->registered);
+    $expectedBetaField = new MockField(Str::set('beta'), $testObject);
+    try {
+      $testObject->doInitiate($expectedBetaField); // BAD initiate without 2x register().
+    } catch (\BadMethodCallException $expected) {
+      $this->assertTrue($testObject->doRegister('beta', RecordComponentType::KEY)); // Second call (bata)
+      $this->assertSame('Method call MUST be proceded by register() (x2) as documented!', $expected->getMessage());
+      try {
+        $testObject->doInitiate(new MockField($testObject->registeredName, new MockRecord())); // BAD parent - NOT $testRecord.
+      } catch (\InvalidArgumentException $expected) {
+        $this->assertSame('Invalid RecordComponent argument (1), $parent does NOT match this Record.', $expected->getMessage());
+        return;
+      }
+      $this->fail('An expected \InvalidArgumentException has NOT been raised');
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
   }
 
   /**
@@ -433,6 +455,25 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
+   * Testing primary key error reporting.
+   * - assert following BAD 'key' validation hasErrors returns TRUE.
+   * - assert following BAD 'key' validation error returns StrCollection with relevant message. 
+   * @see \ramp\model\business\Record::$hasErrors
+   * @see \ramp\model\business\Record::$errors
+   */
+  public function testPrimaryKeyErrors()
+  {
+    $this->testObject->validate(PostData::build(array(
+      'mock-record:new:key-b' => 'B',
+      'mock-record:new:key-c' => 'C',
+      'mock-record:new:key-a' => 'BadValue'
+    )));
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->errors);
+    $this->assertSame('Error MESSAGE BadValue Submited!', (string)$this->testObject->errors[0]);
+  }
+
+  /**
    * Validate process for primaryKey sub KEY inputs to achive valid record state.
    * - assert initial 'new' Record state:
    *   - assert isNew, isModified, isValid flags report expected (TRUE|FALSE|FALSE).
@@ -459,14 +500,11 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isModified);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-
     $this->assertNull($this->dataObject->keyA);
     $this->assertNull($this->dataObject->keyB);
     $this->assertNull($this->dataObject->keyC);
     $this->assertNull($this->testObject->primaryKey->value);
-
     $keyAValue = 'A1'; $keyBValue = 'B1'; $keyCValue = 'C1';
-
     // Simulate getPropertyValue() called from relevant RecordComponent.
     $this->testObject->validate(PostData::build(array('mock-record:new:key-b' => $keyBValue)));
     // $this->testObject->setPropertyValue('keyB', $keyBValue);
@@ -478,7 +516,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-
     // Simulate getPropertyValue() called from relevant RecordComponent.
     $this->testObject->validate(PostData::build(array('mock-record:new:key-a' => $keyAValue)));
     // $this->testObject->setPropertyValue('keyA', $keyAValue);
@@ -491,7 +528,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-
     // Simulate getPropertyValue() called from relevant RecordComponent.
     $this->testObject->validate(PostData::build(array('mock-record:new:key-c' => $keyCValue)));
     // $this->testObject->setPropertyValue('keyC', $keyCValue);
@@ -502,18 +538,15 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->dataObject->keyC, $this->testObject->keyC->value);
     $this->assertTrue($this->testObject->isNew);
     $this->assertTrue($this->testObject->isModified);
-
     $this->assertSame($this->testObject->keyA, $this->testObject->primaryKey[0]);
     $this->assertSame($this->testObject->keyB, $this->testObject->primaryKey[1]);
     $this->assertSame($this->testObject->keyC, $this->testObject->primaryKey[2]);
-
     $this->assertSame($keyAValue, $this->testObject->primaryKey[0]->value);
     $this->assertSame($keyBValue, $this->testObject->primaryKey[1]->value);
     $this->assertSame($keyCValue, $this->testObject->primaryKey[2]->value);
     $this->assertSame('A1|B1|C1', (string)$this->testObject->primaryKey->value);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':a1|b1|c1', (string)$this->testObject->id);
-
     // Simulate updated() called from BusinessModelManager
     $this->testObject->updated();
     $this->assertFalse($this->testObject->isNew);

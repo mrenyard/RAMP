@@ -203,25 +203,29 @@ abstract class Record extends Relatable
   }
 
   /**
-   * Pass provided RecordComponent as component of this Record.
-   * @parent RecordComponent $o Record component objet to associate.   
+   * Pass provided RecordComponent as component of *this* Record.
+   * @param RecordComponent $o Record component objet to associate.
+   * @throws \BadMethodCallException When called without being proceded by register().
+   * @throws \InvalidArgumentException When provided RecordComponent::$parent dose NOT match *this*.
    */
   protected function initiate(RecordComponent $o) : void
   {
-    if ($this->awatingInitOn != $o->name || (!$o->parent == $this)) {
-      throw new \Exception();
+    if ($this->awatingInitOn != $o->name) {
+      throw new \BadMethodCallException(
+        'Method call MUST be proceded by register() (x2) as documented!'
+      );
+    }
+    if ($o->parent !== $this) {
+      throw new \InvalidArgumentException(
+        'Invalid RecordComponent argument (1), $parent does NOT match this Record.'
+      );
     }
     $i = 0;
-    if (isset($this->components[RecordComponentType::KEY][(string)$o->name]))
-    {
+    if (isset($this->components[RecordComponentType::KEY][(string)$o->name])) {
       $this->components[RecordComponentType::KEY][(string)$o->name] = $o;
-    }
-    else if (isset($this->components[RecordComponentType::PROPERTY][(string)$o->name]))
-    {
+    } else if (isset($this->components[RecordComponentType::PROPERTY][(string)$o->name])) {
       $this->components[RecordComponentType::PROPERTY][(string)$o->name] = $o;
-    }
-    else if (isset($this->components[RecordComponentType::RELATION][(string)$o->name]))
-    {
+    } else if (isset($this->components[RecordComponentType::RELATION][(string)$o->name])) {
       $this->components[RecordComponentType::RELATION][(string)$o->name] = $o;
     }
     $this->active = $o;
