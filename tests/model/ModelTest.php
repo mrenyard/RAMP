@@ -46,7 +46,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert is instance of {@see \ramp\model\Model}
    * @see \ramp\model\Model
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
@@ -93,7 +93,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }

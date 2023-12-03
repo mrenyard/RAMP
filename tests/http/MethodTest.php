@@ -65,7 +65,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'GET' when cast to string
    * @see \ramp\http\Method::GET()
    */
-  public function testGet()
+  public function testGet() : void
   {
     $testObject = Method::get();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -82,7 +82,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'POST' when cast to string
    * @see \ramp\http\Method::POST()
    */
-  public function testPOST()
+  public function testPOST() : void
   {
     $testObject = Method::POST();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -99,7 +99,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'LOCK' when cast to string
    * @see \ramp\http\Method::LOCK()
    */
-  public function testLOCK()
+  public function testLOCK() : void
   {
     $testObject = Method::LOCK();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -116,7 +116,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'UNLOCK' when cast to string
    * @see \ramp\http\Method::UNLOCK()
    */
-  public function testUNLOCK()
+  public function testUNLOCK() : void
   {
     $testObject = Method::UNLOCK();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -133,7 +133,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'PUT' when cast to string
    * @see \ramp\http\Method::PUT()
    */
-  public function testPUT()
+  public function testPUT() : void
   {
     $testObject = Method::PUT();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -150,7 +150,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'MOVE' when cast to string
    * @see \ramp\http\Method::MOVE()
    */
-  public function testMOVE()
+  public function testMOVE() : void
   {
     $testObject = Method::MOVE();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -167,7 +167,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
    * - assert returns 'DELETE' when cast to string
    * @see \ramp\http\Method::DELETE()
    */
-  public function testDELETE()
+  public function testDELETE() : void
   {
     $testObject = Method::DELETE();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);

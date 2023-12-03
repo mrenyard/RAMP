@@ -171,7 +171,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert Exception thrown when model already set.
    * @see \ramp\view\View::setModel()
    *
-  public function testSetModelAlreadySet()
+  public function testSetModelAlreadySet() : void
   {
     $this->testObject->setModel($this->mockModel);
     $this->expectException('\Exception');
@@ -184,7 +184,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert LogicException thrown when model \Traversable but NOT \Countable.
    * @see \ramp\view\View::setModel()
    *
-  public function testSetModelNoCount()
+  public function testSetModelNoCount() : void
   {
     $this->expectException('\LogicException');
     $this->expectExceptionMessage('All Traversable Model(s) MUST also implement Countable');
@@ -198,7 +198,7 @@ class ViewTest extends \PHPUnit\Framework\TestCase
    * - assert output from View->render() maintains sequance and hieratically format
    * @see \ramp\view\View::setModel()
    *
-  public function testSetModelNoCascade()
+  public function testSetModelNoCascade() : void
   {
     foreach ($this->mockViewCollection as $view) {
       $this->testObject->add($view);

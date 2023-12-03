@@ -86,7 +86,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert that and special (_EMPTY,SPACE,COLON,SEMICOLON) exactly same as another.
    * @see ramp.core.StrCollection#method_set \ramp\core\StrCollection::set()
    */
-  public function testSet()
+  public function testSet() : void
   {
     $strArray = ['string one', 'string two', 'string tree'];
     $oneStringCollection = StrCollection::set($strArray[0]);
@@ -116,7 +116,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert returns expected concatenated string value including provided glue.
    * @see ramp.core.StrCollection#method_implode \ramp\core\StrCollection::implode()
    */
-  public function testImplode()
+  public function testImplode() : void
   {
     $strArray = ['string one', 'string two', 'string tree'];
     $testObject = StrCollection::set($strArray[0], $strArray[1], $strArray[2]);
@@ -133,7 +133,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert returns bool where anyone of the containd Str values matches the value of privide Str
    * @see ramp.core.StrCollection#method_contains \ramp\core\StrCollection::contains()
    */
-  public function testContains()
+  public function testContains() : void
   {
     $testObject = StrCollection::set('car', 'van', 'motorbike');
     $this->assertFalse($testObject->contains(Str::set('bicycle')));
@@ -146,7 +146,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
    * @see ramp.core.StrCollection#method_isCompositeType \ramp\core\StrCollection::isCompositeType()
    */
-  public function testIsCompositeType()
+  public function testIsCompositeType() : void
   {
     $this->assertTrue($this->testObject->isCompositeType(Str::set('ramp\core\Str')));
     $this->assertFalse($this->testObject->isCompositeType(Str::set('\not\Str')));
@@ -164,7 +164,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * @see ramp.core.StrCollection#method_add \ramp\core\StrCollection::add()
    * @see ramp.core.StrCollection#method_count \ramp\core\StrCollection::count
    */
-  public function testIteratorAddCount()
+  public function testIteratorAddCount() : void
   {
     foreach ($this->testObject as $o)
     {
@@ -258,7 +258,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index same as retived at index.
    * @see ramp.core.StrCollection#method_offsetSet \ramp\core\StrCollection::offsetSet()
    */
-  public function testOffsetSet()
+  public function testOffsetSet() // : void
   {
     $expectedAtNameIndex = Str::set('named');
     $expectedAt0Index = Str::set('indexed');

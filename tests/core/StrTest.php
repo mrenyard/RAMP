@@ -66,7 +66,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert retreved matches expected lowercase instance of original
    * @see \ramp\core\Str::$lowercase
    */
-  public function testLowercase()
+  public function testLowercase() : void
   {
     $o1 = Str::set('Hello');
     try {
@@ -94,7 +94,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert retreved matches expected lowercase instance of original
    * @see \ramp\core\Str::uppercase
    */
-  public function testUppercase()
+  public function testUppercase() : void
   {
     $o1 = Str::set('Hello');
     try {
@@ -121,7 +121,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\RAMPObject}
    * @see \ramp\core\Str::set()
    */
-  public function testSet()
+  public function testSet() : void
   {
     $o1 = Str::set('string Literal');
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -184,7 +184,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::SPACE()
    */
-  public function testSPACE()
+  public function testSPACE() : void
   {
     $o1 = Str::SPACE();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -209,7 +209,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::COLON()
    */
-  public function testCOLON()
+  public function testCOLON() : void
   {
     $o1 = Str::COLON();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -234,7 +234,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::SEMICOLON()
    */
-  public function testSEMICOLON()
+  public function testSEMICOLON() : void
   {
     $o1 = Str::SEMICOLON();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -259,7 +259,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::BAR()
    */
-  public function testBAR()
+  public function testBAR() : void
   {
     $o1 = Str::BAR();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -284,7 +284,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::NEW()
    */
-  public function testNEW()
+  public function testNEW() : void
   {
     $o1 = Str::NEW();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -309,7 +309,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::PLUS()
    */
-  public function testPLUS()
+  public function testPLUS() : void
   {
     $o1 = Str::PLUS();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -335,7 +335,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert that each is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::FK()
    */
-  public function testFK()
+  public function testFK() : void
   {
     $o1 = Str::FK();
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -359,7 +359,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert returned {@see \ramp\core\Str} is still instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::append()
    */
-  public function testAppend()
+  public function testAppend() : void
   {
     $o1 = Str::set('Hello');
     $o2 = $o1->append(Str::set(' World'));
@@ -387,7 +387,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert returned {@see \ramp\core\Str} is still instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::prepend()
    */
-  public function testPrepend()
+  public function testPrepend() : void
   {
     $o1 = Str::set('World');
     $o2 = $o1->prepend(Str::set('Hello '));
@@ -416,7 +416,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert returned object is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::trimEnd()
    */
-  public function testTrimEnd()
+  public function testTrimEnd() : void
   {
     $s1 = 'And the beast reborn spread over the earth';
     $s2 = 'And the beast reborn spread over the';
@@ -452,7 +452,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert returned object is instance of {@see \ramp\core\Str}
    * @see \ramp\core\Str::trimStart()
    */
-  public function testTrimStart()
+  public function testTrimStart() : void
   {
     $s1 = 'And the beast reborn spread over the earth';
     $s2 = 'the beast reborn spread over the earth';
@@ -486,7 +486,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert original value remains unchanged.
    * @see \ramp\core\Str::replace()
    */
-  public function testReplace()
+  public function testReplace() : void
   {
     $o1 = Str::set('Hello World!');
     $o2 = $o1->replace(Str::set('Hello'), Str::set('Goodbye'));
@@ -506,7 +506,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert correct camelcasing of hyphen sepperated words with lowercase first letter
    * @see \ramp\core\Str::camelCase()
    */
-  public function testCamelCase()
+  public function testCamelCase() : void
   {
     $o1 = Str::camelCase(Str::_EMPTY());
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -541,7 +541,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert correct hyphenation of camlecased string
    * @see \ramp\core\Str::hyphenate()
    */
-  public function testHyphenate()
+  public function testHyphenate() : void
   {
     $o1 = Str::hyphenate(Str::_EMPTY());
     $this->assertInstanceOf('ramp\core\Str', $o1);
@@ -580,7 +580,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
    * - assert returns FALSE when thisdoes NOT contains maching substring from provided {@see \ramp\core\StrCollection}
    * @see \ramp\core\Str::contains()
    */
-  public function testContains()
+  public function testContains() : void
   {
     $testObject = Str::set('My name is Tom Thumb');
     $testObject2 = Str::set('Marry had a little lamb');

@@ -90,7 +90,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
    * - assert where valid produces like for like representation of provied array as PostData object
    * @see ramp.condition.PostData#method___build ramp\condition\PostData::build()
    */
-  public function testBuild()
+  public function testBuild() : void
   {
     $alphabet = array( 'A','B','C' );
     $badlyFormedNameArray = array();

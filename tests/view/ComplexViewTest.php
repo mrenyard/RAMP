@@ -165,7 +165,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - assert Exception thrown when model already set.
    * @see ramp.view.ComplexView#method_setModel ramp\view\ComplexView::setModel()
    */
-  public function testSetModelAlreadySet()
+  public function testSetModelAlreadySet() : void
   {
     $testObject = new MockView(RootView::getInstance());
     $testObject->setModel(new MockModel);
@@ -182,7 +182,7 @@ class ComplexViewTest extends \PHPUnit\Framework\TestCase
    * - assert output from View->render() maintains sequance and hieratically format
    * @see ramp.view.ViewComplex#method_setModel ramp\view\ComplexView::setModel()
    */
-  public function testSetModelNoCascade()
+  public function testSetModelNoCascade() : void
   {
     RootView::reset();
     $testObject = new MockView(RootView::getInstance());

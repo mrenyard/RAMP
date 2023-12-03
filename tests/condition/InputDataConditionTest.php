@@ -124,7 +124,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    * - assert '$primaryKeyValue' equal to provided at creation
    * @see ramp.condition.InputDataCondition#method_get_$primaryKeyValue ramp\condition\InputDataCondition::$primaryKeyValue
    */
-  public function testPrimaryKeyValue()
+  public function testPrimaryKeyValue() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
     try {
@@ -151,7 +151,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'value' equal to that provided creation
    * @see ramp.condition.InputDataCondition#method_get_value ramp\condition\InputDataCondition::value
    */
-  public function testValue()
+  public function testValue() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
     try {
@@ -183,7 +183,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'attributeURN' equal to record:key:property
    * @see ramp.condition.InputDataCondition#method_get_attributeURN ramp\condition\InputDataCondition::attributeURN
    */
-  public function testAttributeURN()
+  public function testAttributeURN() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
     try {

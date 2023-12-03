@@ -118,7 +118,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'attribute' is composite of [property]->[property]
    * @see \ramp\condition\Condition::$attribute
    */
-  public function testAttribute()
+  public function testAttribute() : void
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     $this->assertInstanceOf('\ramp\core\Str', $testObject->attribute);
@@ -144,7 +144,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same as provided to constructor.
    * @see \ramp\condition\Condition::$operator.
    */
-  public function testOperator()
+  public function testOperator() : void
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     try {
@@ -170,7 +170,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'comparable' equal to that provided at creation
    * @see \ramp\condition\Condition::$comparable
    */
-  public function testComparable()
+  public function testComparable() : void
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     $this->assertNull($testObject->comparable);
@@ -190,7 +190,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'record' equal to provided at creation
    * @see \ramp\condition\BusinessCondition::record
    */
-  public function testRecord()
+  public function testRecord() : void
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     try {
@@ -215,7 +215,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'property' equal to provided at creation
    * @see \ramp\condition\BusinessCondition::$property
    */
-  public function testProperty()
+  public function testProperty() : void
   {
     $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     try {

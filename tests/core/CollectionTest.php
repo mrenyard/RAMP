@@ -102,7 +102,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    *    NOT same as provided {@see \ramp\core\Str}
    * @see \ramp\core\Collection::isCompositeType()
    */
-  public function testIsCompositeType()
+  public function testIsCompositeType() : void
   {
     $testObject = new Collection($this->typeName);
     $notAClass = Str::set('\not\a\Class');
@@ -123,7 +123,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\core\Collection::add()
    * @see \ramp\core\Collection::count
    */
-  public function testIteratorAddCount()
+  public function testIteratorAddCount() : void
   {
     $testObject = new Collection($this->typeName);
     foreach ($testObject as $o)
@@ -218,7 +218,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index same as retived at index.
    * @see \ramp\core\mocks\CollectionTest\Collection::offsetSet()
    */
-  public function testOffsetSet()
+  public function testOffsetSet() // : void
   {
     $testObject = new Collection($this->typeName);
     $expectedAtNameIndex = new AnObject();

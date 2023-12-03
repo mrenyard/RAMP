@@ -84,7 +84,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   - with message *Cloning is not allowed*
    * @see \ramp\model\business\SQLBusinessModelManager
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\BusinessModelManager', $this->testObject);
@@ -139,7 +139,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -165,7 +165,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny().
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
-  public function testGetBusinessModelNewRecord()
+  public function testGetBusinessModelNewRecord() : void
   {
     \ChromePhp::clear();
     $newRecord = $this->testObject->getBusinessModel(
@@ -299,7 +299,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   returns referance to same Record without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
-  public function testGetBusinessModelStoredRecord()
+  public function testGetBusinessModelStoredRecord() : void
   {
     $recordKey = Str::set('A|A|A');
     $storedRecord = $this->testObject->getBusinessModel(
@@ -371,7 +371,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   - with message: <em>'No matching Record(s) found in data storage!'</em>
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
-  public function testGetBusinessModelRecordNotStored()
+  public function testGetBusinessModelRecordNotStored() : void
   {
     try {
       $recordWithBadKey = $this->testObject->getBusinessModel(
@@ -402,7 +402,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   $propertyName) returns referance to same Field without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
-  public function testGetBusinessModelProperty()
+  public function testGetBusinessModelProperty() : void
   {
     $recordKey = Str::set('A|A|C');
     $propertyName = Str::set('property2');
@@ -453,7 +453,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * - assert update(ALL) runs update on full Record collection.
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
-  public function testGetBusinessModelCollection()
+  public function testGetBusinessModelCollection() : void
   {
     $all = $this->testObject->getBusinessModel(new SimpleBusinessModelDefinition($this->recordName));
     $this->assertInstanceOf('\ramp\core\iCollection', $all);
@@ -564,7 +564,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   - with message *'Provided Model NOT retrieved through this BusinessModelManager'*
    * @see \ramp\model\business\SQLBusinessModelManager::update()
    */
-  public function testUpdateInvalidArgumentException()
+  public function testUpdateInvalidArgumentException() : void
   {
     $this->testObject = SQLBusinessModelManager::getInstance();
     try {

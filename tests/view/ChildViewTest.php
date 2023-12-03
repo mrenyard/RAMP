@@ -103,7 +103,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @see \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
    *
-  public function testSetModelWithCascade()
+  public function testSetModelWithCascade() : void
   {
     $subModel1 = new MockRecordModel();
     $parentModel = new MockRecordModelCollection();
@@ -125,7 +125,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @see \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
    *
-  public function testSetModelNoCascade()
+  public function testSetModelNoCascade() : void
   {
     // $subField = new MockFieldModel();
     $recordModel = new MockRecordModel();
@@ -149,7 +149,7 @@ class ChildViewTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\view\document\ChildVieww#method_setModel \ramp\view\document\ChildView::setModel()
    * @see \ramp\view\document\ChildVieww#method_hasModel \ramp\view\document\ChildView::hasModel()
    *
-  public function testUpwardTraverseOnSetModelIsField()
+  public function testUpwardTraverseOnSetModelIsField() : void
   {
     $parentModel = new MockRecordModelCollection();
     $recordModel = new MockRecordModel();

@@ -99,7 +99,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \ramp\model\buiness\Key}   
    * @see ramp.model.business.Key ramp\model\business\Key
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\Key', $this->testObject);
@@ -164,7 +164,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\model\buiness\Key::__toString()} returns string 'class name'
    * @see \ramp\model\buiness\Key::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -189,7 +189,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::hasErrors()
    * @see \ramp\model\business\Key::getErrors()
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -199,7 +199,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see ramp.model.business.key\Key#method_set_id ramp\model\business\Key::id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
   }
@@ -209,7 +209,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Key::type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
   }
@@ -219,7 +219,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Key::children
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
   }
@@ -229,7 +229,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\Key::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
   }
@@ -270,7 +270,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::offsetExists()
    * @see \ramp\model\business\Key::count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -283,7 +283,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::validate()
    * @see \ramp\model\business\Key::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods() //PostData $postdata = new PostData(), array $errorIndexes = array(1,2), int $childCount = 3)
+  public function testTouchValidityAndErrorMethods() : void
   {
     parent::testTouchValidityAndErrorMethods();
   }
@@ -298,7 +298,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Key::getErrors()
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     parent::testErrorReportingPropagation();
   }
@@ -308,7 +308,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\Key::record
    */
-  public function testSetParentRecordPropertyNotSetException()
+  public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
   }
@@ -318,7 +318,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\Key::propertyName
    */
-  public function testSetParentPropertyNamePropertyNotSetException()
+  public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
   }
@@ -334,7 +334,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::record
    * @see \ramp\model\business\Key::parentProppertyName
    */
-  public function testStateChangesRecordComponent(string $name = NULL)
+  public function testStateChangesRecordComponent(string $name = NULL) : void
   {
     $this->assertSame('mock-record:new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
     $this->assertEquals($this->name, $this->testObject->name);
@@ -387,7 +387,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert validation leads to relevant state changes. 
    * - assert unchangable following successfull setting.  
    */
-  public function testStateChangesKey()
+  public function testStateChangesKey() : void
   {
     $indexs = $this->testObject->indexes;
     $this->assertEquals('keyA', (string)$indexs[0]);
@@ -435,7 +435,7 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert throws \ramp\model\business\DataExistingEntryException
    *   with message 'An entry already exists with this key!'.
    */
-  public function testExistingEntryException()
+  public function testExistingEntryException() : void
   {
     $this->expectException(DataExistingEntryException::class);
     $this->expectExceptionMessage('An entry already exists with this key!');

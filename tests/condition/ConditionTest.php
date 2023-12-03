@@ -83,7 +83,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'attribute' is composite of [property]->[property]
    * @see \ramp\condition\Condition::$attribute
    */
-  public function testAttribute()
+  public function testAttribute() : void
   {
     $testObject = new ConcreteCondition($this->attribute, $this->operator);
     try {
@@ -108,7 +108,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same as provided to constructor.
    * @see \ramp\condition\Condition::$operator.
    */
-  public function testOperator()
+  public function testOperator() : void
   {
     $testObject = new ConcreteCondition($this->attribute, $this->operator);
     try {
@@ -133,7 +133,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
    * - assert 'comparable' equal to that provided at creation
    * @see \ramp\condition\Condition::$comparable
    */
-  public function testComparable()
+  public function testComparable() : void
   {
     $testObject = new ConcreteCondition($this->attribute, $this->operator);
     $this->assertNull($testObject->comparable);

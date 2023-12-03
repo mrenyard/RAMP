@@ -56,7 +56,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert is instance of {@see \ramp\model\business\RecordCollection}
    * @see \ramp\model\business\RecordCollection
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObject);
@@ -128,7 +128,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\model\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -153,7 +153,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -163,7 +163,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
   }
@@ -173,7 +173,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
 
@@ -183,7 +183,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
   }
@@ -193,7 +193,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children.
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
 
@@ -235,7 +235,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -249,7 +249,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() : void
   {
     parent::testTouchValidityAndErrorMethods();
   }
@@ -264,7 +264,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     parent::testErrorReportingPropagation();
   }
@@ -278,7 +278,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    *     - lowercase and hypenated colon seperated [class-name].
    * @see \ramp\model\business\BusinessModel::$id
    */
-  public function testRecordCollectionNewState()
+  public function testRecordCollectionNewState() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame((string)$this->processType(get_class($this->testObject), TRUE), (string)$this->testObject->id);

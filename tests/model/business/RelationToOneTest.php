@@ -83,7 +83,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert is instance of {@see \ramp\model\business\RelationToOne}
    * @see \ramp\model\business\RelationToOne
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\RelationToOne', $this->testObject);
@@ -153,7 +153,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \ramp\model\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -178,7 +178,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -188,7 +188,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
   }
@@ -198,7 +198,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
   }
@@ -207,7 +207,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
   }
@@ -217,7 +217,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children.
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
   }
@@ -259,7 +259,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -273,7 +273,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() : void
   {
     $this->testObject->isEditable = TRUE;
     parent::testTouchValidityAndErrorMethods();
@@ -289,7 +289,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert a single collection containing relevant sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     $this->testObject->isEditable = TRUE;
     parent::testErrorReportingPropagation();
@@ -300,7 +300,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'.
    * @see \ramp\model\business\RecordComponent::$parent
    */
-  public function testSetParentRecordPropertyNotSetException()
+  public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
   }
@@ -310,7 +310,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
    * @see \ramp\model\business\RecordComponent::$name
    */
-  public function testSetParentPropertyNamePropertyNotSetException()
+  public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
   }
@@ -323,7 +323,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\RecordComponent::$parent
    * @see \ramp\model\business\RecordComponent::$name
    */
-  public function testStateChangesRecordComponent()
+  public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
   }
@@ -334,7 +334,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
-  public function testRecordComponentValue(string $expectedValue = 'mock-min-record:new')
+  public function testRecordComponentValue(string $expectedValue = 'mock-min-record:new') : void
   {
     parent::testRecordComponentValue($expectedValue);
   }
@@ -344,7 +344,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert protected property $manager referances same object. 
    * @see \ramp\model\business\Relation::$manager
    */
-  public function testModelManager()
+  public function testModelManager() : void
   {
     parent::testModelManager();
   }
@@ -354,7 +354,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    *  - assert returns array with `key => value` pair in expected format.
    * @see \ramp\model\business\Relation::buildMapping()
    */
-  public function testBuildMapping()
+  public function testBuildMapping() : void
   {
     parent::testBuildMapping();
   }
@@ -363,7 +363,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * Check NONE connection of Relation (to ONE) beyond second level (URL(model) + first Chuldren).
    * TODO:mrenyard: Max Relation depth test ((string)/ramp/http/Request::current()->modelURN == (string)$parent->id)
    */
-  public function testMaxRelationDepth()
+  public function testMaxRelationDepth() : void
   {
     parent::testMaxRelationDepth();
   }
@@ -399,7 +399,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert hasErrors following incorrect key count on validate().
    * - assert errors contains expected message following incorrect key count on validate().
    */
-  public function testIllegalActionKeyCount()
+  public function testIllegalActionKeyCount() : void
   {
     $this->cleanExistingRelation();
     $this->testObject->validate(PostData::build(array(
@@ -414,7 +414,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * - assert hasErrors following attempted change of key values on existing record.
    * - assert errors contains expected message following attempted change of key values on existing record.
    */
-  public function testIllegalEditActionOnExisting()
+  public function testIllegalEditActionOnExisting() : void
   {
     $this->cleanExistingRelation();
     $this->testObject->validate(PostData::build(array(

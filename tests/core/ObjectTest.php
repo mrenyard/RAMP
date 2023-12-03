@@ -55,7 +55,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
    * - assert child RAMPObject is instance of the parent
    * @see ramp.core.RAMPObject \ramp\core\RAMPObject
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
   }
@@ -107,7 +107,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     $this->assertSame(get_class($this->testObject), (string)$this->testObject);
   }

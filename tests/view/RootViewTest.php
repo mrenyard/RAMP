@@ -79,7 +79,7 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
    * - assert is same instance on every call (Singleton)
    * @see ramp.view.RootView#method_getInstance ramp\view\RootView::getInstance()
    */
-  public function testGetInstance()
+  public function testGetInstance() : void
   {
     $testObject = RootView::getInstance();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
@@ -96,7 +96,7 @@ class RootViewTest extends \PHPUnit\Framework\TestCase
    * @see ramp.view.RootView#method_add ramp\view\RootView::add()
    * @see ramp.view.RootView#method_render ramp\view\RootView::render()
    */
-  public function testAddRender()
+  public function testAddRender() : void
   {
     $mockViewCollection = new \SplObjectStorage();
     $mockViewCollection->attach(new MockViewA());

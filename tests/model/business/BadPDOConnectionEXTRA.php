@@ -65,7 +65,7 @@ class BadPDOConnectionTest extends \PHPUnit\Framework\TestCase
    * - assert reports detail of failed attemps.
    * @see \ramp\BusinessModelManager::getBusinessModel()
    */
-  public function testBadConnection()
+  public function testBadConnection() : void
   {
     \ChromePhp::clear();
     define('DEV_MODE', \TRUE);

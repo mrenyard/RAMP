@@ -113,7 +113,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert is instance of {@see \ramp\model\business\Relatable}
    * @see ramp.model.business.Relatable ramp\model\business\Relatable
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
@@ -193,7 +193,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\model\Record::__toString()} returns string 'class name'
    * @see \ramp\model\Record::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -218,7 +218,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::hasErrors()
    * @see \ramp\model\business\Record::getErrors()
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -228,7 +228,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Record::id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
 
@@ -239,7 +239,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Record::type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
 
@@ -250,7 +250,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Record::children
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
 
@@ -261,7 +261,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\Record::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
   }
@@ -302,7 +302,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::offsetExists()
    * @see \ramp\model\business\Record::count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -318,7 +318,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::validate()
    * @see \ramp\model\business\Record::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() : void
   {
     parent::testTouchValidityAndErrorMethods();
   }
@@ -333,7 +333,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Record::getErrors()
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     parent::testErrorReportingPropagation();
   }
@@ -356,7 +356,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   /**
    * Ensure children index editing restricted to BusinessModels of type 'RecordComponent's
    */
-  public function testOffSetSetBadMethodCallException()
+  public function testOffSetSetBadMethodCallException() : void
   {
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!');
@@ -376,7 +376,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert $registered returns same on all subsequent calls, provided preceded by register().
    * - assert if register() called with different 'name' between calls, $registered does NOT return same. 
    */
-  public function testRecordComponentRegistrationProcess()
+  public function testRecordComponentRegistrationProcess() : void
   {
     $testObject = new class() extends Record
     {
@@ -434,7 +434,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::id
    * @see \ramp\model\business\Record::primarykey
    */
-  public function testRecordNewState()
+  public function testRecordNewState() : void
   {
     $this->assertTrue($this->testObject->isNew);
     $this->assertFalse($this->testObject->isValid);
@@ -461,7 +461,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::$hasErrors
    * @see \ramp\model\business\Record::$errors
    */
-  public function testPrimaryKeyErrors()
+  public function testPrimaryKeyErrors() : void
   {
     $this->testObject->validate(PostData::build(array(
       'mock-record:new:key-b' => 'B',
@@ -493,7 +493,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert post simulated updated() called from BusinessModelManager:
    *   - assert isNew, isModified, isValid flags report expected (TRUE|FALSE|TRUE).
    */
-  public function testNewRecordPrimaryKeyInput()
+  public function testNewRecordPrimaryKeyInput() : void
   {
     $this->assertTrue($this->testObject->isNew);
     $this->assertFalse($this->testObject->isValid);
@@ -588,7 +588,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *     - assert hasErrors called on each related Record's property.
    *     - assert validated related Record field (property) values are NULL.
    */
-  public function testRecordNewWithRelationOfOne()
+  public function testRecordNewWithRelationOfOne() : void
   {
     // Expected related existing record from data store to test against
     $toRecord = $this->modelManager->mockMinNew;
@@ -717,7 +717,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - assert children property name match expected related record's.
    *   - assert children match expected related record's properties.
    */
-  public function testSetExistingRelationOfOne()
+  public function testSetExistingRelationOfOne() : void
   {
     $fromRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
@@ -764,7 +764,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert following successful 'unset' foreignKey values reset NULL.
    * - assert relation reset 'new' ready for any future changes.
    */ 
-  public function testUnsetExistingRelationOfOne()
+  public function testUnsetExistingRelationOfOne() : void
   {
     $fromRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('2|2|2'))
@@ -823,7 +823,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - assert reset 'new' Record to end off relation collection for next add/edit.
    * - assert when provided primaryKey values are 'new' (unique) Record added to relation collection and data store.
    */
-  public function testAddExistingNewRelationOfMany()
+  public function testAddExistingNewRelationOfMany() : void
   {
     $fromRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))
@@ -969,7 +969,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - no errors are reported.
    *   - the resulting relation collection modified as expected.
    */
-  public function testRemoveExistingRelationOfMany()
+  public function testRemoveExistingRelationOfMany() : void
   {
      $fromRecord = $this->modelManager->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockRecord'), Str::set('1|1|1'))

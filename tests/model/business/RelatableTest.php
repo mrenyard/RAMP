@@ -54,7 +54,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert is instance of {@see \ramp\model\business\Relatable}
    * @see ramp.model.business.Relatable ramp\model\business\Relatable
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
@@ -125,7 +125,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\model\Relatable::__toString()} returns string 'class name'
    * @see \ramp\model\Relatable::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -150,7 +150,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\Relatable::hasErrors()
    * @see \ramp\model\business\Relatable::getErrors()
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -160,7 +160,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Relatable::id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
   }
@@ -170,7 +170,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Relatable::$type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
 
@@ -180,7 +180,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
   }
@@ -190,7 +190,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\Relatable::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
 
@@ -233,7 +233,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -247,7 +247,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() : void
   {
     parent::testTouchValidityAndErrorMethods();
   }
@@ -262,7 +262,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     parent::testErrorReportingPropagation();
   }

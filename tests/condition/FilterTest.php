@@ -125,7 +125,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
    * @see \ramp\condition\Filter::build()
    */
-  public function testBuildErrors()
+  public function testBuildErrors() : void
   {
     $badPropertyArray = array(
       'property-a' => 'valueA',
@@ -176,7 +176,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    * - assert where valid, produces like for like representation of provied array as Filter object
    * @see \ramp\condition\Filter::build()
    */
-  public function testBuildGood()
+  public function testBuildGood() : void
   {
     $testObject = Filter::build($this->record, $this->goodArray);
     $i=0;
@@ -201,7 +201,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    * - assert where valid, produces like for like representation of provied array as Filter object
    * @see \ramp\condition\Filter::build()
    */
-  public function testBuildComplex()
+  public function testBuildComplex() : void
   {
     $testObject = Filter::build($this->record, $this->complexArray);
     $i=0; $j=0;
@@ -238,7 +238,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
    * - assert where valid, produces like for like representation of provied array as Filter object
    * @see \ramp\condition\Filter::build()
    *
-  public function testBuildMultiPartPrimary()
+  public function testBuildMultiPartPrimary() : void
   {
     $testObject = Filter::build($this->record, $this->multiPartPrimaryArray);
     $i=0;

@@ -68,7 +68,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
-  public function testRecordOnly()
+  public function testRecordOnly() : void
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName);
     $this->assertSame($this->recordName, $testObject->recordName);
@@ -85,7 +85,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
-  public function testRecordWithKey()
+  public function testRecordWithKey() : void
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName, $this->recordKey);
     $this->assertSame($this->recordName, $testObject->recordName);
@@ -102,7 +102,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
    * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
-  public function testRecordKeyProperty()
+  public function testRecordKeyProperty() : void
   {
     $testObject = new SimpleBusinessModelDefinition($this->recordName, $this->recordKey, $this->propertyName);
     $this->assertSame($this->recordName, $testObject->recordName);

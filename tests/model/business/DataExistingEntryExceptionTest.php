@@ -38,7 +38,7 @@ class DataExistingEntryExceptionTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\model\business\DataExistingEntryException}
    * @see ramp.model.business.DataExistingEntryException \ramp\model\business\DataExistingEntryException
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     try {
       throw new DataExistingEntryException();
@@ -56,7 +56,7 @@ class DataExistingEntryExceptionTest extends \PHPUnit\Framework\TestCase
    * - assert returned getTargetID() same as provided at construction.
    * - assert returned getMessage() same as provided at construction.
    */
-  public function testExistingEntryID()
+  public function testExistingEntryID() : void
   {
     try {
       throw new DataExistingEntryException('A|B|C', 'Error message!');

@@ -102,7 +102,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * @see ramp.model.business.RecordComponent ramp\model\business\RecordComponent
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
@@ -169,7 +169,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\model\RecordComponent::__toString()} returns string 'class name'
    * @see \ramp\model\RecordComponent::__toString()
    */
-  public function testToString()
+  public function testToString() : void
   {
     parent::testToString();
   }
@@ -194,7 +194,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
    * @see ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
    */
-  public function testInitStateMin()
+  public function testInitStateMin() : void
   {
     parent::testInitStateMin();
   }
@@ -204,7 +204,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see ramp.model.business.RecordComponent#method_set_id ramp\model\business\RecordComponent::id
    */
-  public function testSetIdPropertyNotSetException()
+  public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
   }
@@ -214,7 +214,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see ramp.model.business.RecordComponent#method_set_type ramp\model\business\RecordComponent::type
    */
-  public function testSetTypePropertyNotSetException()
+  public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
   }
@@ -224,7 +224,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see ramp.model.business.RecordComponent#method_get_children ramp\model\business\RecordComponent::children
    */
-  public function testGetChildrenBadPropertyCallException()
+  public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
   }
@@ -234,7 +234,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see ramp.model.business.RecordComponent#method_offsetGet ramp\model\business\RecordComponent::offsetGet()
    */
-  public function testOffsetGetOutOfBounds()
+  public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
   }
@@ -291,7 +291,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see ramp.model.business.RecordComponent#method_offsetExists ramp\model\business\RecordComponent::offsetExists()
    * @see ramp.model.business.RecordComponent#method_count ramp\model\business\RecordComponent::count
    */
-  public function testComplexModelIteration()
+  public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
   }
@@ -307,7 +307,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see ramp.model.business.RecordComponent#method_validate ramp\model\business\RecordComponent::validate()
    * @see ramp.model.business.RecordComponent#method_hasErrors ramp\model\business\RecordComponent::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods()
+  public function testTouchValidityAndErrorMethods() : void
   {
     parent::testTouchValidityAndErrorMethods();
   }
@@ -322,7 +322,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see ramp.model.business.RecordComponent#method_getErrors ramp\model\business\RecordComponent::getErrors()
    */
-  public function testErrorReportingPropagation()
+  public function testErrorReportingPropagation() : void
   {
     parent::testErrorReportingPropagation();
   }
@@ -336,7 +336,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see ramp.model.business.RecordComponent#method_get_parent ramp\model\business\RecordComponent::parent
    * @see ramp.model.business.RecordComponent#method_get_name ramp\model\business\RecordComponent::name
    */
-  public function testStateChangesRecordComponent()
+  public function testStateChangesRecordComponent() : void
   {
     $this->assertEquals($this->name, $this->testObject->name);
     $this->assertSame($this->record, $this->testObject->parent);
@@ -352,7 +352,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see ramp.model.business.RecordComponent#method_get_value ramp\model\business\RecordComponent::value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
-  public function testRecordComponentValue()
+  public function testRecordComponentValue() : void
   {
     $this->assertSame($this->record->getPropertyValue($this->name), $this->testObject->value);
   }
@@ -362,7 +362,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'parent'.
    * @see \ramp\model\business\RecordComponent::$parent
    */
-  public function testSetParentRecordPropertyNotSetException()
+  public function testSetParentRecordPropertyNotSetException() : void
   {
     $this->expectException(PropertyNotSetException::class);
     $this->expectExceptionMessage(get_class($this->testObject) . '->record is NOT settable');
@@ -374,7 +374,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
    * @see \ramp\model\business\RecordComponent::$name
    */
-  public function testSetParentPropertyNamePropertyNotSetException()
+  public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     $name = $this->name;
     $this->expectException(PropertyNotSetException::class);

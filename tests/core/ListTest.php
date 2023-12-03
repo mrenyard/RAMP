@@ -99,7 +99,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    *    NOT same as provided {@see \ramp\core\Str}
    * @see \ramp\core\List::isCompositeType()
    */
-  public function testIsCompositeType()
+  public function testIsCompositeType() : void
   {
     $testObject = new oList($this->typeName);
     $notAClass = Str::set('\not\a\Class');
@@ -120,7 +120,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\core\List::add()
    * @see \ramp\core\List::count
    *
-  public function testIteratorAddCount()
+  public function testIteratorAddCount() : void
   {
     $testObject = new oList($this->typeName);
     foreach ($testObject as $o)
@@ -215,7 +215,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index same as retived at index.
    * @see \ramp\core\mocks\ListTest\List::offsetSet()
    */
-  public function testOffsetSet()
+  public function testOffsetSet() //: void
   {
     $testObject = new oList($this->typeName);
     $expectedAtNameIndex = new AnObject();
