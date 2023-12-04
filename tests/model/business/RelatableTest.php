@@ -90,7 +90,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Relatable::__set()
    */
-  public function testPropertyNotSetExceptionOn__set()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
   }
@@ -100,7 +100,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Relatable::__get()
    */
-  public function testBadPropertyCallExceptionOn__get()
+  public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
   }
@@ -115,7 +115,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
-  public function testAccessPropertyWith__set__get()
+  public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
   }

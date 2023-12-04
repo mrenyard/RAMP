@@ -65,7 +65,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
-  public function testPropertyNotSetExceptionOn__set()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
     $this->expectException(PropertyNotSetException::class);
     $this->expectExceptionMessage(get_class($this->testObject) . '->badProperty is NOT settable');
@@ -77,7 +77,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
-  public function testBadPropertyCallExceptionOn__get()
+  public function testBadPropertyCallExceptionOn__get() : void
   {
     $this->expectException(BadPropertyCallException::class);
     $this->expectExceptionMessage('Unable to locate \'badProperty\' of \'' . get_class($this->testObject) . '\'');
@@ -94,7 +94,7 @@ class ObjectTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
-  public function testAccessPropertyWith__set__get()
+  public function testAccessPropertyWith__set__get() : void
   {
     $localTestObject = new AnObject();
     $value = 'VALUE';

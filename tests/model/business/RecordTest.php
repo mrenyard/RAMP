@@ -158,7 +158,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Record::__set()
    */
-  public function testPropertyNotSetExceptionOn__set()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
   }
@@ -168,7 +168,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Record::__get()
    */
-  public function testBadPropertyCallExceptionOn__get()
+  public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
   }
@@ -183,7 +183,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
-  public function testAccessPropertyWith__set__get()
+  public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
   }

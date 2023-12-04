@@ -115,7 +115,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\business\BusinessModel::__set()
    */
-  public function testPropertyNotSetExceptionOn__set()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
   }
@@ -125,7 +125,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp.model.business.model.BusinessModel#method__get ramp\model\business\BusinessModel::__get()
    */
-  public function testBadPropertyCallExceptionOn__get()
+  public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
   }
@@ -140,7 +140,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
-  public function testAccessPropertyWith__set__get()
+  public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
   }
