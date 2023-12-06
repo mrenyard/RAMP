@@ -53,6 +53,7 @@ require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php'
 require_once '/usr/share/php/tests/ramp/mocks/model/Lookup.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/RecordA.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/RecordB.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
@@ -143,7 +144,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-field field', (string)$this->testObject[1]->type);
+    $this->assertSame('mock-input input', (string)$this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
     $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[2]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);

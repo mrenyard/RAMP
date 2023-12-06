@@ -54,7 +54,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\model\document\Document}
    * @see ramp.model.Model ramp\model\document\Document
    */
-  public function testConstruct()
+  public function testConstruct() : void
   {
     $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
@@ -70,7 +70,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_id ramp\model\business\BusinessModel::id
    * @see ramp.model.business.BusinessModel#method_get_id ramp\model\business\BusinessModel::id
    */
-  public function testGetSet_id()
+  public function testGetSet_id() : void
   {
     $value = $this->testObject->id;
     $this->assertInstanceOf('\ramp\core\Str', $value);
@@ -91,7 +91,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_title ramp\model\business\BusinessModel::title
    * @see ramp.model.business.BusinessModel#method_get_title ramp\model\business\BusinessModel::title
    */
-  public function testGetSet_title()
+  public function testGetSet_title() : void
   {
     $value = $this->testObject->title;
     $this->assertNull($value);
@@ -114,7 +114,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_label ramp\model\business\BusinessModel::label
    * @see ramp.model.business.BusinessModel#method_get_label ramp\model\business\BusinessModel::label
    */
-  public function testGetSet_headingLabel()
+  public function testGetSet_headingLabel() : void
   {
     $this->testObject->heading = Str::set('Heading');
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->heading);
@@ -141,7 +141,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_placeholder ramp\model\business\BusinessModel::placeholder
    * @see ramp.model.business.BusinessModel#method_get_placeholder ramp\model\business\BusinessModel::placeholder
    */
-  public function testGetSet_summaryLabel()
+  public function testGetSet_summaryLabel() : void
   {
     $this->testObject->summary = Str::set('Heading');
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->summary);
@@ -163,7 +163,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_style ramp\model\business\BusinessModel::style
    * @see ramp.model.business.BusinessModel#method_get_style ramp\model\business\BusinessModel::style
    */
-  public function testGetSet_style()
+  public function testGetSet_style() : void
   {
     $value = $this->testObject->style;
     $this->assertNull($value);
@@ -180,7 +180,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert clone property values matches expected results.
    * @see ramp.model.business.BusinessModel#method_clone ramp\model\business\BusinessModel::clone()
    */
-  public function testClone()
+  public function testClone() : void
   {
     $expectedTitle = Str::set('clonedTitle');
     $expectedHeading = Str::set('clonedHeading');

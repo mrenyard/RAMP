@@ -183,12 +183,12 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert returned errors are as expected:
    *   - assert errors instance of {@see \ramp\core\StrCollection}.
    *   - assert errors count is 0.
-   * @see ramp.model.business.BusinessModel#method_get_type ramp\model\business\BusinessModel::type
-   * @see ramp.model.business.BusinessModel#method_getIterator ramp\model\business\BusinessModel::getIterator()
-   * @see ramp.model.business.BusinessModel#method_offsetExists ramp\model\business\BusinessModel::offsetExists()
-   * @see ramp.model.business.BusinessModel#method_count ramp\model\business\BusinessModel::count()
-   * @see ramp.model.business.BusinessModel#method_hasErrors ramp\model\business\BusinessModel::hasErrors()
-   * @see ramp.model.business.BusinessModel#method_getErrors ramp\model\business\BusinessModel::getErrors()
+   * @see \ramp\model\business\BusinessModel::$type
+   * @see \ramp\model\business\BusinessModel::getIterator()
+   * @see \ramp\model\business\BusinessModel::offsetExists()
+   * @see \ramp\model\business\BusinessModel::$count
+   * @see \ramp\model\business\BusinessModel::$hasErrors
+   * @see \ramp\model\business\BusinessModel::$Errors
    */
   public function testInitStateMin() : void
   {
@@ -206,9 +206,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\BusinessModel::id.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @see ramp.model.business.BusinessModel#method_set_id ramp\model\business\BusinessModel::id
+   * Set 'id' NOT accessable on \ramp\model\business\BusinessModel::$id.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
+   * @see \ramp\model\business\BusinessModel::$id
    */
   public function testSetIdPropertyNotSetException() : void
   {
@@ -218,9 +218,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\BusinessModel::type.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
-   * @see ramp.model.business.BusinessModel#method_set_type ramp\model\business\BusinessModel::type
+   * Set 'type' NOT accessable on \ramp\model\business\BusinessModel::$type.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
+   * @see \ramp\model\business\BusinessModel::type
    */
   public function testSetTypePropertyNotSetException() : void
   {
@@ -231,7 +231,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
 
   /**
    * Get 'children' NOT accessable.
-   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   public function testGetChildrenBadPropertyCallException() : void
   {
@@ -243,7 +243,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   /**
    * Index beyond bounds with \ramp\model\business\BusinessModel::offsetGet.
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
-   * @see ramp.model.business.BusinessModel#method_offsetGet ramp\model\business\BusinessModel::offsetGet()
+   * @see \ramp\model\business\BusinessModel::offsetGet()
    */
   public function testOffsetGetOutOfBounds() : void
   {
@@ -253,9 +253,10 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Offset addition minimum type checking test
+   * Offset addition minimum type checking test.
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\Record::offsetSet()
+   * @see \ramp\model\business\Record::offsetUnsSet()
    */
   public function testOffsetSetTypeCheckException(string $minAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
@@ -264,18 +265,17 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->expectException(\InvalidArgumentException::class);
     $errorMessage = ($errorMessage !== NULL) ? $errorMessage : $objectOutOfScope . ' NOT instanceof ' . $minAllowedType;
     $this->expectExceptionMessage($errorMessage);
-    $o = $this->testObject[0] = $objectOutOfScope;
+    $this->testObject[0] = $objectOutOfScope;
   }
 
   /**
-   * Index editing of children through \ramp\model\business\BusinessModel::offsetSet and
-   * for \ramp\model\business\BusinessModel::offsetUnset.
+   * Index editing of children with offsetSet and offsetUnset.
    * - assert successful use of offsetSet
    * - assert returned object is the same object at same index (offset) as was set.
    * - asser successful use of offsetUnset
    * - assert isset return FALSE at the same index once unset has been used.
-   * @see ramp.model.business.BusinessModel#method_offsetSet ramp\model\business\BusinessModel::offsetSet()
-   * @see ramp.model.business.BusinessModel#method_offsetUnset ramp\model\business\BusinessModel::offsetUnset()
+   * @see \ramp\model\business\BusinessModel::offsetSet()
+   * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
   public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
   {
@@ -349,7 +349,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Error reporting within complex models using \ramp\model\business\Relatable::getErrors().
+   * Error reporting within complex models.
    * - assert following validate(), the expected iCollection of error messages returned from
    *    getErrors() are as expected, depending on which level they are called.
    * - assert any following call to hasErrors returns the same collection of messages as previously.

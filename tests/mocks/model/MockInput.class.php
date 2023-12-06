@@ -26,18 +26,19 @@ use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
 use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\field\Field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\field\Input for testing against.
  */
 class MockInput extends Input
 {
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $propertyName, Record $record)
+  public function __construct(Str $name, Record $parent, DbTypeValidation $validationRule, bool $editable = TRUE)
   {
-    parent::__construct($propertyName, $record);
+    parent::__construct($name, $parent, $validationRule, $editable);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }

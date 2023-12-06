@@ -23,6 +23,7 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/BusinessModelTest.php';
 
+require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelatable.class.php';

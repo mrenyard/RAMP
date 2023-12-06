@@ -22,6 +22,10 @@
 namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
+
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
 use ramp\core\RAMPObject;

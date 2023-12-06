@@ -31,13 +31,16 @@ use ramp\model\business\Record;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
+use ramp\model\business\validation\dbtype\Text;
+use ramp\model\business\validation\Alphanumeric;
 
 use tests\ramp\mocks\model\MockInput;
+use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\MockRelationToOne;
 use tests\ramp\mocks\model\MockRelationToMany;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
+ * Mock Concreate implementation of \ramp\model\business\Record for testing against.
  */
 class MockRecord extends Record
 {
@@ -140,7 +143,9 @@ class MockRecord extends Record
   protected function get_input() : ?RecordComponent
   {
     if ($this->register($this->inputName, RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockInput($this->registeredName, $this,
+        new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
+      ));
     }
     return $this->registered; 
   }

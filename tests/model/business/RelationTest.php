@@ -40,6 +40,7 @@ require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php'
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordMockRelation.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationA.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
