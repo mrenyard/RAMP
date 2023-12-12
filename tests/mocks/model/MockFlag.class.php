@@ -19,46 +19,44 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\SelectFromTest;
+namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
-use ramp\core\OptionList;
-use ramp\core\iCollection;
-use ramp\core\Collection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
-use ramp\model\business\field\Field;
-use ramp\model\business\field\Option;
-use ramp\model\business\field\SelectFrom;
+use ramp\model\business\field\Flag;
 use ramp\model\business\FailedValidationException;
-
-use tests\ramp\model\business\field\mocks\SelectFromTest\MockRecord;
+use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel as field for testing against.
+ * Mock Concreate implementation of \ramp\model\business\field\Flag for testing against.
  */
-class MockSelectFromField extends SelectFrom
+class MockFlag extends Flag
 {
-  public static $processValidationRuleCount;
+  public $validateCount;
+  public $hasErrorsCount;
 
-  public static function reset()
+  public function __construct(Str $name, Record $parent)
   {
-    self::$processValidationRuleCount = 0;
+    parent::__construct($name, $parent);
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
   }
 
   /**
-   * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   * Validate postdata against this and update accordingly.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
    */
-  final protected function get_value()
+  public function validate(PostData $postdata) : void
   {
+    $this->validateCount++;
+    parent::validate($postdata);
   }
 
-  public function processValidationRule($value) : void
+  public function get_hasErrors() : bool
   {
-    self::$processValidationRuleCount++;
-    if ($value == 'BAD') {
-      throw new FailedValidationException('MockField\'s has error due to $value of BAD!');
-    }
+    $this->hasErrorsCount++;
+    return parent::get_hasErrors();
   }
 }

@@ -31,16 +31,19 @@ require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
+use ramp\core\Collection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\field\Option;
@@ -94,9 +97,9 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model setup
   protected function populateSubModelTree()
   {
-    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 1'));
-    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 2'));
-    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 3'));
+    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 0'));
+    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 1'));
+    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 2'));
     $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
       'mock-record:new:a-property' => 'BadValue'
@@ -272,6 +275,17 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
+   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * - assert current record->getPropertyValue and RecordComponent->value return same instance.
+   * @see \ramp\model\business\RecordComponent::$value
+   * @see \ramp\model\business\Record::getPropertyValue()
+   */
+  public function testRecordComponentValue() : void
+  {
+    parent::testRecordComponentValue();
+  }
+
+  /**
    * Set 'record' NOT accessable.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
@@ -304,7 +318,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
-  public function testStateChangesField($fieldName = 'aProperty') : void
+  public function testStateChangesField($fieldName = 'aProperty', $defaultValue = NULL, $value = 'VALUE', $newValue = 'NEW_VALUE') : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
@@ -325,12 +339,14 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     // but allows state change.
     $this->testObject->isEditable = FALSE;
     $this->assertFalse($this->testObject->isEditable);
-    $this->assertNull($this->testObject->value);
-    $this->dataObject->$fieldName = 'VALUE';
-    $this->assertSame('VALUE', $this->testObject->value);
+    $this->assertSame($defaultValue, $this->testObject->value);
+    $dataValue = ($value instanceof Option) ? $value->key : $value;
+    $this->dataObject->$fieldName = $dataValue;
+    $this->assertSame($value, $this->testObject->value);
     $this->testObject->isEditable = TRUE; // Reset editable
-    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => 'NEW_VALUE')));
-    $this->assertSame('NEW_VALUE', $this->testObject->value);
+    $dataNewValue = ($newValue instanceof Option) ? $newValue->key : $newValue;
+    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $dataNewValue)));
+    $this->assertSame($newValue, $this->testObject->value);
   }
 
   /**
@@ -382,13 +398,15 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
-    $this->assertSame(1, $this->testObject->validateCount);
-    $this->assertSame(1, $this->testObject->hasErrorsCount);
+    if ($touchCountTest) {
+      $this->assertSame(1, $this->testObject->validateCount);
+      $this->assertSame(1, $this->testObject->hasErrorsCount);
+    }
   }
 
   /**
@@ -401,12 +419,12 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
-    $this->assertSame('Error MESSAGE BadValue Submited!', (string)$this->testObject->errors[0]);
+    $this->assertSame($message, (string)$this->testObject->errors[0]);
   }
 }

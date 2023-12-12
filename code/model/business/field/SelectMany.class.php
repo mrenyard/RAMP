@@ -49,9 +49,10 @@ final class SelectMany extends SelectFrom
   final protected function get_value()
   {
     $selection = new Collection();
-    $selectionArray = (array)$this->parentRecord->getPropertyValue($this->parentPropertyName);
+    $value = $this->parent->getPropertyValue($this->name);
+    $selectionArray = (is_array($value)) ? $value: array(0);
     foreach ($selectionArray as $index) {
-      $selection->add($this->options[$index]);
+      $selection->add($this[$index]);
     }
     return $selection;
   }
@@ -69,7 +70,7 @@ final class SelectMany extends SelectFrom
     }
     foreach ($value as $selected) {
       $valid = FALSE;
-      foreach ($this->options as $option) {
+      foreach ($this as $option) {
         if ((string)$selected == (string)$option->id) {
           $valid = TRUE;
           continue;

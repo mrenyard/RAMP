@@ -22,9 +22,7 @@
 namespace tests\ramp\model\business\field;
 
 require_once '/usr/share/php/tests/ramp/model/business/field/FieldTest.php';
-
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 
 use ramp\core\RAMPObject;
@@ -34,11 +32,8 @@ use ramp\model\business\BusinessModel;
 use ramp\model\business\field\Option;
 
 use tests\ramp\mocks\core\AnObject;
-use tests\ramp\mocks\core\MockOption;
 use tests\ramp\mocks\model\MockRecord;
-use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockBusinessModel;
-use tests\ramp\mocks\model\MockBusinessModelWithErrors;
 use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
@@ -72,12 +67,13 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * - assert is instance of {@see \Countable}
    * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\field\Field}
-   * @see \ramp\model\business\field\Field
+   * - assert is instance of {@see \ramp\model\field\Input}
+   * @see \ramp\model\business\field\Input
    */
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\Input', $this->testObject);
   }
 
   #region Sub model setup
@@ -258,6 +254,17 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   }
 
   /**
+   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * - assert current record->getPropertyValue and RecordComponent->value return same instance.
+   * @see \ramp\model\business\RecordComponent::$value
+   * @see \ramp\model\business\Record::getPropertyValue()
+   */
+  public function testRecordComponentValue() : void
+  {
+    parent::testRecordComponentValue();
+  }
+
+  /**
    * Set 'record' NOT accessable.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
@@ -289,9 +296,9 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
-  public function testStateChangesField($fieldName = 'input') : void
+  public function testStateChangesField($fieldName = 'input', $defaultValue = NULL, $value = 'VALUE', $newValue = 'NEW_VALUE') : void
   {
-    parent::testStateChangesField($fieldName);
+    parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
   }
 
   /**
@@ -335,9 +342,9 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
   }
 
   /**
@@ -350,9 +357,9 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
 #endregion
 }

@@ -48,6 +48,9 @@ require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationLookup.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/Lookup.class.php';
@@ -59,6 +62,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
@@ -134,7 +138,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isNew);
     $this->assertSame('mock-record:3|3|3', (string)$this->testObject->id);
     
-    $this->expectedChildCountExisting = 4;
+    $this->expectedChildCountExisting = 8;
     $this->postData = PostData::build(array('mock-record:3|3|3:a-property' => 'BadValue'));
     $this->childErrorIndexes = array(0);
     $this->assertSame(0, $this->testObject->aProperty->validateCount);
@@ -146,10 +150,18 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
     $this->assertSame('mock-input input', (string)$this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[2]->type);
+    $this->assertSame('mock-flag flag', (string)$this->testObject[2]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
-    $this->assertSame('mock-relation-to-one relation-to-one', (string)$this->testObject[3]->type);
-    $this->assertFalse(isset($this->testObject[4]));
+    $this->assertSame('mock-select-from select-from', (string)$this->testObject[3]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[4]->type);
+    $this->assertSame('select-one select-from', (string)$this->testObject[4]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[5]->type);
+    $this->assertSame('select-many select-from', (string)$this->testObject[5]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[6]->type);
+    $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[6]->type);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[7]->type);
+    $this->assertSame('mock-relation-to-one relation-to-one', (string)$this->testObject[7]->type);
+    $this->assertFalse(isset($this->testObject[8]));
   }
   #endregion
 
@@ -319,9 +331,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::validate()
    * @see \ramp\model\business\Record::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
   {
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
   }
 
   /**
@@ -334,9 +346,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Record::getErrors()
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
   #endregion
 

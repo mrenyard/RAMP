@@ -23,21 +23,21 @@ namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
 use ramp\core\StrCollection;
+use ramp\core\OptionList;
 use ramp\condition\PostData;
 use ramp\condition\Filter;
 use ramp\condition\SQLEnvironment;
 
 use ramp\model\business\Record;
+use ramp\model\business\field\Option;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Text;
+use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\Alphanumeric;
-
-use tests\ramp\mocks\model\MockInput;
-use tests\ramp\mocks\model\MockValidationRule;
-use tests\ramp\mocks\model\MockRelationToOne;
-use tests\ramp\mocks\model\MockRelationToMany;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
@@ -47,12 +47,19 @@ class MockRecord extends Record
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
-  public $propertyName;
   public $relationAlphaName;
   public $relationBetaName;
   public $relationGammaWithRecordName;
   public $relationGammaWithPropertyName;
+  public $propertyName;
   public $inputName;
+  public $flagName;
+  public $selectFromList;
+  public $selectFromName;
+  public $selectOneList;
+  public $selectOneName;
+  public $selectManyList;
+  public $selectManyName;
 
   public function __construct(\stdClass $dataObject = null)
   {
@@ -60,7 +67,6 @@ class MockRecord extends Record
     $this->relationBetaName = Str::set('relationBeta');
     $this->relationGammaWithRecordName = Str::set('MockMinRecord');
     $this->relationGammaWithPropertyName = Str::set('relationDelta');
-    $this->inputName = Str::set('input');
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -77,8 +83,8 @@ class MockRecord extends Record
       $key->hasErrorsCount = 0;
     }
     foreach ($this as $property) { 
-      $property->validateCount = 0;
-      $property->hasErrorsCount = 0;
+      if (isset($property->validateCount)) { $property->validateCount = 0; }
+      if (isset($property->hasErrorsCount)) { $property->hasErrorsCount = 0; }
     }
   }
 
@@ -115,9 +121,71 @@ class MockRecord extends Record
     return $this->registered; 
   }
 
+  protected function get_input() : ?RecordComponent
+  {
+    if ($this->register('input', RecordComponentType::PROPERTY)) {
+      $this->inputName = $this->registeredName;
+      $this->initiate(new MockInput($this->registeredName, $this,
+        new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
+      ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_flag() : ?RecordComponent
+  {
+    if ($this->register('flag', RecordComponentType::PROPERTY)) {
+      $this->flagName = $this->registeredName;
+      $this->initiate(new MockFlag($this->registeredName, $this,
+        new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
+      ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_selectFrom() : ?RecordComponent
+  {
+    if ($this->register('selectFrom', RecordComponentType::PROPERTY)) {
+      $this->selectFromName = $this->registeredName;
+      $this->selectFromList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
+      $this->selectFromList->add(new Option(0, Str::set('Please choose:')));
+      $this->selectFromList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $this->selectFromList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $this->initiate(new MockSelectFrom($this->registeredName, $this, $this->selectFromList));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_selectOne() : ?RecordComponent
+  {
+    if ($this->register('selectOne', RecordComponentType::PROPERTY)) {
+      $this->selectOneName = $this->registeredName;
+      $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
+      $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
+      $this->selectOneList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $this->initiate(new SelectOne($this->registeredName, $this, $this->selectOneList));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_selectMany() : ?RecordComponent
+  {
+    if ($this->register('selectMany', RecordComponentType::PROPERTY)) {
+      $this->selectManyName = $this->registeredName;
+      $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
+      $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
+      $this->selectManyList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
+      $this->initiate(new SelectMany($this->registeredName, $this, $this->selectManyList));
+    }
+    return $this->registered; 
+  }
+
   protected function get_relationAlpha() : ?RecordComponent
   {
-    if ($this->register($this->relationAlphaName, RecordComponentType::RELATION)) {
+    if ($this->register((string)$this->relationAlphaName, RecordComponentType::RELATION)) {
       $this->initiate(new MockRelationToMany(
         $this->registeredName,
         $this,
@@ -130,21 +198,11 @@ class MockRecord extends Record
 
   protected function get_relationBeta() : ?RecordComponent
   {
-     if ($this->register($this->relationBetaName, RecordComponentType::RELATION)) {
+     if ($this->register((string)$this->relationBetaName, RecordComponentType::RELATION)) {
       $this->initiate(new MockRelationToOne(
         $this->registeredName,
         $this,
         Str::set('MockMinRecord')
-      ));
-    }
-    return $this->registered; 
-  }
-
-  protected function get_input() : ?RecordComponent
-  {
-    if ($this->register($this->inputName, RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockInput($this->registeredName, $this,
-        new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
       ));
     }
     return $this->registered; 

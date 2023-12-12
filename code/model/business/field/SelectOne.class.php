@@ -47,8 +47,8 @@ final class SelectOne extends SelectFrom
    */
   final protected function get_value()
   {
-    $index = $this->parentRecord->getPropertyValue($this->parentPropertyName);
-    return (isset($index))? $this->options[$index] : $this->options[0];
+    $index = $this->parent->getPropertyValue($this->name);
+    return (isset($index))? $this[$index] : $this[0];
   }
 
   /**
@@ -58,7 +58,7 @@ final class SelectOne extends SelectFrom
    */
   public function processValidationRule($value) : void
   {
-    foreach ($this->options as $option)
+    foreach ($this as $option)
     {
       if ((string)$value == (string)$option->id) { return; }
     }

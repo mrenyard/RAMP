@@ -19,50 +19,29 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\field\mocks\SelectFromTest;
+namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
+use ramp\core\OptionList;
 use ramp\condition\PostData;
-use ramp\model\business\BusinessModel;
+use ramp\model\business\Record;
+use ramp\model\business\field\SelectFrom;
+use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
- * .
+ * Mock Concreate implementation of \ramp\model\business\field\SelectFrom for testing against.
  */
-class MockBusinessModel extends BusinessModel
+class MockSelectFrom extends SelectFrom
 {
-  private static $count;
-  private $id;
-
-  public  $label;
   public $validateCount;
   public $hasErrorsCount;
-  public $isValidCount;
 
-  public static function reset()
+  public function __construct(Str $name, Record $parent, OptionList $options)
   {
-    self::$count = 0;
-  }
-
-  public function __construct(string $label, iCollection $children = null)
-  {
-    $this->id = Str::set('uid-' . self::$count++);
-    $this->label = $label;
+    parent::__construct($name, $parent, $options);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
-    $this->isValidCount = 0;
-    parent::__construct($children);
-  }
-
-  /**
-   * Mocked get_id method
-   * @return \ramp\core\Str Str('uid-1')
-   */
-  public function get_id() : Str
-  {
-    return $this->id;
   }
 
   /**
@@ -70,7 +49,7 @@ class MockBusinessModel extends BusinessModel
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata)
+  public function validate(PostData $postdata) : void
   {
     $this->validateCount++;
     parent::validate($postdata);
@@ -80,5 +59,19 @@ class MockBusinessModel extends BusinessModel
   {
     $this->hasErrorsCount++;
     return parent::get_hasErrors();
+  }
+
+  /**
+   * Validate that value is one of avalible options.
+   * @param mixed $value Value to be processed
+   * @throws \ramp\validation\FailedValidationException When test fails.
+   */
+  public function processValidationRule($value) : void
+  {
+    foreach ($this as $option)
+    {
+      if ((string)$value == (string)$option->id) { return; }
+    }
+    throw new FailedValidationException('Selected value NOT an avalible option!');
   }
 }

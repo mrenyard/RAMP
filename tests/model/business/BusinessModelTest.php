@@ -333,19 +333,21 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
-    $i = 0;
-    foreach ($this->testObject as $child) {
-      $this->assertSame(1, $child->validateCount);
-      $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
-      $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
-      $i++;
+    if ($touchCountTest) {
+      $i = 0;
+      foreach ($this->testObject as $child) {
+        $touch = ($i <= $this->childErrorIndexes[0]) ? 1 : 0;
+        $this->assertSame(1, $child->validateCount);
+        $this->assertGreaterThanOrEqual($touch, $child->hasErrorsCount);
+        $i++;
+      }
+      $this->assertEquals($this->expectedChildCountExisting, $i);
     }
-    $this->assertEquals($this->expectedChildCountExisting, $i);
   }
 
   /**

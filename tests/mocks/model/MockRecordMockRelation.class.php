@@ -33,12 +33,11 @@ use ramp\model\business\SimpleBusinessModelDefinition;
  */
 class MockRecordMockRelation extends MockRecord
 { 
-
   protected function get_relationAlpha() : RecordComponent
   {
-    if (!isset($this[4])) {
-      $this[4] = new MockRelationA($this->relationAlphaName, $this);
+    if (!isset($this[8])) {
+      $this[8] = new MockRelationA($this->relationAlphaName, $this);
     }
-    return $this[4];
+    return $this[8];
   }
 }

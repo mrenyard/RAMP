@@ -59,16 +59,4 @@ class MockInput extends Input
     $this->hasErrorsCount++;
     return parent::get_hasErrors();
   }
-
-  /**
-   * Template method for use in validation.
-   * @param mixed $value Value to be processed
-   * @throws \ramp\validation\FailedValidationException When test fails.
-   *
-  public function processValidationRule($value) : void
-  {
-    if ($value == 'BadValue') {
-      throw new FailedValidationException('Error MESSAGE BadValue Submited!');
-    }
-  }*/
 }

@@ -21,8 +21,8 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
-use \ramp\model\business\Record;
 use \ramp\core\OptionList;
+use \ramp\model\business\Record;
 
 /**
  * Abstract field related to a single property of its containing \ramp\model\business\Record.
@@ -42,32 +42,25 @@ use \ramp\core\OptionList;
  */
 abstract class SelectFrom extends Field
 {
-  private $options;
-
   /**
    * Base constructor for Field related to a single property of containing record.
-   * @param \ramp\core\Str $parentPropertyName Related dataObject property name of containing record
-   * @param \ramp\model\business\Record $containingRecord Record parent of *this* property
+   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $parentPropertyName, Record $containingRecord, OptionList $options)
+  public function __construct(Str $name, Record $parent, OptionList $options)
   {
+    parent::__construct($name ,$parent);
     if ($options != null) {
       if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
         throw new \InvalidArgumentException('OptionList $options compositeType MUST be \ramp\model\business\field\Option'); 
       }
-      foreach ($options as $option) { $option->setParentField($this); }
+      $i = 0;
+      foreach ($options as $option) {
+        $option->setParentField($this);
+        $this[$i++] = $option;
+      }
     }
-    $this->options = $options;
-    parent::__construct($parentPropertyName ,$containingRecord);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_options() : OptionList
-  {
-    return $this->options;
-  }
+  }  
 }

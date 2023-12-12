@@ -43,6 +43,7 @@ require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/Key.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
@@ -53,6 +54,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecordComponent.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
@@ -299,9 +301,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\RecordComponent::validate()
    * @see \ramp\model\business\RecordComponent::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
   }
 
   /**

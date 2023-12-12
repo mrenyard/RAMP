@@ -33,7 +33,7 @@ namespace ramp\core;
  * - Countable ({@see https://www.php.net/manual/class.countable.php})
  * - {@see \ramp\core\RAMPObject} Base object used universally within RAMP.
  */
-interface iCollection extends iList, \Countable
+interface iCollection extends iList
 {
   /**
    * Add a reference to object (of defined type), to this collection.

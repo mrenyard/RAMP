@@ -284,9 +284,9 @@ class KeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::validate()
    * @see \ramp\model\business\Key::hasErrors()
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest= TRUE) : void
   {
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
   }
 
   /**

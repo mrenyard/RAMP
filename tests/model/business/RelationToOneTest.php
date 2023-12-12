@@ -276,10 +276,10 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
-  public function testTouchValidityAndErrorMethods() : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     $this->testObject->isEditable = TRUE;
-    parent::testTouchValidityAndErrorMethods();
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
   }
 
   /**
