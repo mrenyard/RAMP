@@ -46,8 +46,7 @@ class SmallInt extends DbTypeValidation
    */
   protected function test($value)
   {
-    $value = ('')? NULL : $value;
-    if ($value === NULL || ((int)$value <= 65534 && (int)$value >= -32423)) { return; }
+    if (is_int($value) && $value <= 65534 && $value >= -32423) { return; }
     throw new FailedValidationException();
   }
 }
