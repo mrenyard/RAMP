@@ -256,14 +256,15 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
   }
 
   /**
-   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * RecordComponent (default) value returns as expeced.
    * - assert current record->getPropertyValue and RecordComponent->value return same instance.
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
   public function testRecordComponentValue() : void
   {
-    parent::testRecordComponentValue();
+    $this->assertNull($this->record->getPropertyValue($this->name));
+    $this->assertSame($this->record->selectFromList[0], $this->testObject->value);
   }
 
   /**
@@ -298,9 +299,13 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
-  public function testStateChangesField($fieldName = 'selectFrom', $defaultValue = NULL, $value = 1, $newValue = 2) : void
+  public function testStateChangesField($fieldName = 'selectFrom', $defaultValue = 0, $value = 1, $newValue = 2) : void
   {
-    parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
+    $list = $fieldName . 'List';
+    $defaultValueOption = $this->record->$list[$defaultValue];
+    $valueOption = $this->record->$list[$value];
+    $newValueOption = $this->record->$list[$newValue];
+    parent::testStateChangesField($fieldName, $defaultValueOption, $valueOption, $newValueOption);
   }
 
   /**

@@ -320,7 +320,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
     $this->assertFalse($this->testObject->isEditable);
     $this->assertSame($defaultValue, $this->testObject->value[0]);
     $dataValue = ($value instanceof Option) ? $value->key : $value;
-    $this->dataObject->selectMany = array(1);
+    $this->dataObject->selectMany = 1;
     $this->assertSame($value, $this->testObject->value[0]);
     $this->testObject->isEditable = TRUE; // Reset editable
     $dataNewValue = ($newValue instanceof Option) ? $newValue->key : $newValue;

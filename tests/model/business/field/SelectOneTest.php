@@ -294,10 +294,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    */
   public function testStateChangesField($fieldName = 'selectOne', $defaultValue = 0, $value = 1, $newValue = 2) : void
   {
-    $defaultValueOption = $this->record->selectOneList[$defaultValue];
-    $valueOption = $this->record->selectOneList[$value];
-    $newValueOption = $this->record->selectOneList[$newValue];
-    parent::testStateChangesField($fieldName, $defaultValueOption, $valueOption, $newValueOption);
+    parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
   }
 
   /**

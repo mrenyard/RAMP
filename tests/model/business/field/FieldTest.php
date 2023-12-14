@@ -377,15 +377,17 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
   {
+    try {
+      parent::testOffsetSetTypeCheckException(
+        '\ramp\core\iOption',
+        new MockBusinessModel(),
+        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+      );
+    } catch (\InvalidArgumentException $expected) { }
     parent::testOffsetSetTypeCheckException(
       'ramp\model\business\BusinessModel',
       new MockOption(0, Str::set('DESCRIPTION')),
       'tests\ramp\mocks\core\MockOption NOT instanceof ramp\model\business\BusinessModel'
-    );
-    parent::testOffsetSetTypeCheckException(
-      '\ramp\core\iOption',
-      new BusinessModel(),
-      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
     );
   }
 

@@ -50,8 +50,8 @@ final class SelectMany extends SelectFrom
   {
     $selection = new Collection();
     $value = $this->parent->getPropertyValue($this->name);
-    $selectionArray = (is_array($value)) ? $value: array(0);
-    foreach ($selectionArray as $index) {
+    $value = ($value !== NULL) ? explode('|', $value) : array(0);
+    foreach ($value as $index) {
       $selection->add($this[$index]);
     }
     return $selection;

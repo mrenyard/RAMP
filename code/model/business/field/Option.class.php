@@ -23,6 +23,7 @@ namespace ramp\model\business\field;
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\iOption;
+use ramp\core\BadPropertyCallException;
 use ramp\model\business\BusinessModel;
 
 /**
@@ -47,15 +48,16 @@ class Option extends BusinessModel implements iOption
    */
   public function __construct(int $key, Str $description)
   {
+    parent::__construct();
     $this->key = $key;
     $this->description = $description;
   }
 
   /**
    * Sets relationship to parent field for use by isSelected.
-   * @param Field $value Parent field.
+   * @param \ramp\model\business\field\SelectFrom $value Parent field.
    */
-  public function setParentField(Field $value)
+  public function setParentField(SelectFrom $value)
   {
     $this->parentField = $value;
   }
@@ -105,24 +107,20 @@ class Option extends BusinessModel implements iOption
    * ```php
    * $this->isSelected;
    * ```
-   * @throws \BadMethodCallException When called without parentField first being set.
+   * @return bool This option has been chosen/selected.
+   * @throws BadPropertyCallException When called without parentField first being set.
    */
   public function get_isSelected() : bool
   {
     if (!isset($this->parentField)) {
-      throw new \BadMethodCallException('Must set parentField before calling isSelected.');
+      throw new BadPropertyCallException('Must set parentField before calling isSelected.');
     }
-    $fullClassName = explode('\\', get_class($this->parentField));
-    $className = array_pop($fullClassName);
-    switch($className) {
-      case "SelectOne":
-        return ($this->parentField->value->key === $this->key);
-      case "SelectMany":
-        foreach($this->parentField->value as $selected) {
-          if ($selected->key === $this->key) { return true; }
-        }
-        // PASS THROUGH
+    if ($this->parentField instanceof SelectMany) {
+      foreach($this->parentField->value as $selected) {
+        if ($selected->key === $this->key) { return TRUE; }
+      }
+      return FALSE;
     }
-    return false;
+    return ($this->parentField->value->key === $this->key);
   }
 }

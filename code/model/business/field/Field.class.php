@@ -117,7 +117,8 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($exception->getMessage()));
           return;
         }
-        $this->parent->setPropertyValue((string)$this->name, $inputdata->value);
+        $value = (\is_array($inputdata->value)) ? implode('|', $inputdata->value) : $inputdata->value;
+        $this->parent->setPropertyValue((string)$this->name, $value);
         return;
       }
     }

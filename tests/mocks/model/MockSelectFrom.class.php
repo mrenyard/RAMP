@@ -62,6 +62,16 @@ class MockSelectFrom extends SelectFrom
   }
 
   /**
+   * Returns value held by relevant property of containing record.
+   * @return mixed Value held by relevant property of containing record
+   */
+  final protected function get_value()
+  {
+    $index = $this->parent->getPropertyValue($this->name);
+    return (isset($index))? $this[$index] : $this[0];
+  }
+
+  /**
    * Validate that value is one of avalible options.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.

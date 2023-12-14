@@ -51,6 +51,7 @@ class MockRecord extends Record
   public $relationBetaName;
   public $relationGammaWithRecordName;
   public $relationGammaWithPropertyName;
+  public $selectDescriptionOne;
   public $propertyName;
   public $inputName;
   public $flagName;
@@ -67,6 +68,7 @@ class MockRecord extends Record
     $this->relationBetaName = Str::set('relationBeta');
     $this->relationGammaWithRecordName = Str::set('MockMinRecord');
     $this->relationGammaWithPropertyName = Str::set('relationDelta');
+    $this->selectDescriptionOne = Str::set('DESCRIPTION ONE');
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -148,9 +150,9 @@ class MockRecord extends Record
     if ($this->register('selectFrom', RecordComponentType::PROPERTY)) {
       $this->selectFromName = $this->registeredName;
       $this->selectFromList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-      $this->selectFromList->add(new Option(0, Str::set('Please choose:')));
-      $this->selectFromList->add(new Option(1, Str::set('DESCRIPTION ONE')));
-      $this->selectFromList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $this->selectFromList->add(new MockOption(0, Str::set('Please choose:')));
+      $this->selectFromList->add(new MockOption(1, $this->selectDescriptionOne));
+      $this->selectFromList->add(new MockOption(2, Str::set('DESCRIPTION TWO')));  
       $this->initiate(new MockSelectFrom($this->registeredName, $this, $this->selectFromList));
     }
     return $this->registered; 
@@ -162,7 +164,7 @@ class MockRecord extends Record
       $this->selectOneName = $this->registeredName;
       $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
       $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
-      $this->selectOneList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->initiate(new SelectOne($this->registeredName, $this, $this->selectOneList));
     }
@@ -175,7 +177,7 @@ class MockRecord extends Record
       $this->selectManyName = $this->registeredName;
       $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
       $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
-      $this->selectManyList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $this->selectManyList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
       $this->initiate(new SelectMany($this->registeredName, $this, $this->selectManyList));
