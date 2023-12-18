@@ -43,6 +43,7 @@ class MockField extends Field
     parent::__construct($name, $parent);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
+    $this->errorsTouchCount = 0;
     $this->withError = $withError;
   }
 

@@ -96,7 +96,7 @@ abstract class Record extends Relatable
     $this->awatingInitOn = NULL;
     $this->active = NULL;
     $this->components = array(array(), array(), array());
-    $this->primaryKey = new Key(Str::set('primaryKey'), $this);
+    $this->primaryKey = new Key($this);
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
     $this->modified = FALSE;
     $this->validAtSource = FALSE;

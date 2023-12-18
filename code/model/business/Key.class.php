@@ -42,16 +42,17 @@ use ramp\condition\PostData;
  */
 final class Key extends RecordComponent
 {
+  private static $name;
   private $errorCollection;
 
   /**
-   * Define a multiple part key related to its parent record.
-   * @param \ramp\core\Str $name Related dataObject property name of parent record.
+   * Define a multiple part primaryKey related to its parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    */
-  public function __construct(Str $name, Record $parent)
+  public function __construct(Record $parent)
   {
-    parent::__construct($name, $parent, NULL, FALSE);
+    if (!isset(self::$name)) { self::$name = Str::set('primaryKey'); }
+    parent::__construct(self::$name, $parent, NULL, FALSE);
   }
 
   /**
@@ -124,9 +125,8 @@ final class Key extends RecordComponent
   public function validate(PostData $postdata) : void
   {
     if ($this->values !== NULL) { return; } // Once set cannot be changed
-    parent::validate($postdata);
-    if ($this->parent->isModified && $this->parent->isNew && !$this->hasErrors &&
-      ((string)$this->name == 'primaryKey') && $this->value !== NULL)
+    parent::validate($postdata); // Look to validate any sub keys.
+    if ($this->parent->isModified && $this->parent->isNew && !$this->hasErrors) // && $this->values !== NULL)
     {
       $recordName = Str::camelCase($this->parent->id->explode(Str::COLON())[0]);
       $filterValues = array();
@@ -147,6 +147,6 @@ final class Key extends RecordComponent
       }
       $this->parent->updated();
       throw new DataExistingEntryException($targetID, 'An entry already exists with this key!');
-    }    
+    }
   }
 }

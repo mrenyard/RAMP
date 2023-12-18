@@ -67,10 +67,9 @@ class LoginAccountCollection extends RecordCollection { }
  */
 class LoginAccount extends Record
 {
-  private $email;
+  // private $email;
   private $authenticatableUnit;
   private $unencryptedPassword;
-  private $primaryProperty;
 
   /**
    * Flag for assiciated View expressing wish to show password field.
@@ -79,66 +78,48 @@ class LoginAccount extends Record
   public $forcePasswordField;
 
   /**
-   * Returns property name of concrete classes primary key.
-   * @return \ramp\core\StrCollection Name of property that is concrete classes primary key
-   */
-  public function primaryKeyNames() : StrCollection { return StrCollection::set('auPK'); }
-
-  /**
    * @ignore
    */
-  protected function get_auPK() : field\Field
+  protected function get_auPK() : ?RecordComponent
   {
-    if (!isset($this->primaryProperty))
-    {
-      $this->primaryProperty = new field\Input(
-        Str::set('auPK'),
-        $this,
+    if ($this->register('auPK', RecordComponentType::KEY)) {
+      $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           20,
           new validation\LowerCaseAlphanumeric(),
           Str::set('My error message HERE!')
         )
-      );
-      if ($this->isNew) { $this['auPK'] = $this->primaryProperty; }
+      ));
     }
-    return $this->primaryProperty;
+    return $this->registered; 
   }
 
   /**
    * @ignore
    */
-  protected function get_email() : field\Field
+  protected function get_email() : ?RecordComponent
   {
-    if (!isset($this->email))
-    {
-      $this->email = new field\Input(
-        Str::set('email'),
-        $this,
+    if ($this->register('email', RecordComponentType::KEY)) {
+      $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           150,
           new validation\RegexEmail(),
           Str::set('My error message HERE!')
         )
-      );
+      ));
     }
-    return $this->email;
+    return $this->registered; 
   }
 
   /**
    * @ignore
    */
-  protected function get_loginAccountTypeID() : field\Field
+  protected function get_loginAccountTypeID() : ?RecordComponent
   {
-    if (!isset($this['loginAccountTypeID']))
-    {
-      $this['loginAccountTypeID'] = new field\SelectOne(
-        Str::set('loginAccountTypeID'),
-        $this,
-        new LoginAccountType()
-      );
+    if ($this->register('loginAccountTypeID', RecordComponentType::PROPERTY)) {
+      $this->initiate(new field\SelectOne($this->registeredName, $this, new LoginAccountType()));
     }
-    return $this['loginAccountTypeID'];
+    return $this->registered; 
   }
 
   /**
@@ -202,7 +183,7 @@ class LoginAccount extends Record
    */
   public function validatePassword(string $password) : bool
   {
-    return ($this->getPropertyValue('encryptedPassword') == crypt($password, SETTING::$SECURITY_PASSWORD_SALT));
+    return ($this->getPropertyValue('encryptedPassword') === \crypt($password, SETTING::$SECURITY_PASSWORD_SALT));
   }
 
   /**
@@ -215,14 +196,14 @@ class LoginAccount extends Record
   public function createFor(AuthenticatableUnit $authenticatableUnit)
   {
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
-    if (!$authenticatableUnit->isValid) { throw new \Exception(); }
+    // if (!$authenticatableUnit->isValid) { throw new \Exception(); }
     $this->setPropertyValue('auPK', $authenticatableUnit->getPropertyValue(
-      (string)$authenticatableUnit->primaryKeyNames()[0] // ->implode(Str::BAR())
+      (string)$authenticatableUnit->primaryKey->value //Names()[0] // ->implode(Str::BAR())
     ));
     $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
     $this->setPropertyValue('loginAccountTypeID', 1);
     $this->setPassword($this->generateRandomPassword());
-    if (!$this->isValid) { throw new \Exception('Unable to add Login Account'); }
+    // if (!$this->isValid) { throw new \Exception('Unable to add Login Account'); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $modelManager = $MODEL_MANAGER::getInstance();
     $modelManager->update($this);

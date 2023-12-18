@@ -43,6 +43,13 @@ class MockRelationToMany extends RelationToMany
     $this->hasErrorsCount = 0;
   }
 
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    foreach ($this as $record) { $record->reset(); }
+  }
+
   // protected function get_with() { return $this->getWith(); }
   // protected function set_with(?Relatable $value) { $this->setWith($value); }
   public function getModelManager() : BusinessModelManager { return $this->manager; }

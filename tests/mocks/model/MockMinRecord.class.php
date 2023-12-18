@@ -26,6 +26,8 @@ use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Relatable for testing against.
@@ -52,7 +54,11 @@ class MockMinRecord extends Record
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
-    foreach ($this as $field) { $field->reset(); }
+    foreach ($this->primaryKey as $key) { $key->reset(); }
+    foreach ($this as $field) { 
+      if ($field instanceof selectOne || $field instanceof selectMany) { continue; }
+      $field->reset();
+    }
   }
 
   protected function get_key1() : ?RecordComponent

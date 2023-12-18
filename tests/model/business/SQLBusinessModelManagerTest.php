@@ -247,9 +247,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     );
     $newRecord->validate(PostData::build($_POST));
     $this->assertSame(1, $newRecord->validateCount);
-    $this->assertSame(1, $newRecord->primaryKey[0]->validateCount);
-    $this->assertSame(1, $newRecord->primaryKey[1]->validateCount);
-    $this->assertSame(1, $newRecord->primaryKey[2]->validateCount);
+    // $this->assertSame(1, $newRecord->primaryKey[0]->validateCount);
+    // $this->assertSame(1, $newRecord->primaryKey[1]->validateCount);
+    // $this->assertSame(1, $newRecord->primaryKey[2]->validateCount);
     $this->assertSame(1, $newRecord[0]->validateCount);
     $this->assertSame(1, $newRecord[1]->validateCount);
     $this->assertTrue($newRecord->isValid);

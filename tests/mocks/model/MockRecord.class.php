@@ -80,13 +80,10 @@ class MockRecord extends Record
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
-    foreach ($this->primaryKey as $key) { 
-      $key->validateCount = 0;
-      $key->hasErrorsCount = 0;
-    }
-    foreach ($this as $property) { 
-      if (isset($property->validateCount)) { $property->validateCount = 0; }
-      if (isset($property->hasErrorsCount)) { $property->hasErrorsCount = 0; }
+    foreach ($this->primaryKey as $key) { $key->reset(); }
+    foreach ($this as $field) { 
+      if ($field instanceof selectOne || $field instanceof selectMany) { continue; }
+      $field->reset();
     }
   }
 

@@ -131,7 +131,6 @@ class MockBusinessModelManager extends BusinessModelManager
     {
       if ((string)$definition->recordKey == 'new')
       {
-        // new
         self::$anAuthenticatableUnit = new AnAuthenticatableUnit(new \stdClass());
         return self::$anAuthenticatableUnit;
       }

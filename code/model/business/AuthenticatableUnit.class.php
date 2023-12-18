@@ -22,7 +22,6 @@ namespace ramp\model\business;
 
 use ramp\core\Str;
 use ramp\condition\PostData;
-use ramp\model\business\Record;
 
 /**
  * Abstract representing something that can be authenticated.
@@ -39,27 +38,21 @@ use ramp\model\business\Record;
  */
 abstract class AuthenticatableUnit extends Record
 {
-  private $email;
-
   /**
    * @ignore
    */
-  protected function get_email() : field\Field
+  protected function get_email() : ?RecordComponent
   {
-    if (!isset($this->email))
-    {
-      $this->email = new field\Input(
-        Str::set('email'),
-        $this,
+    if ($this->register('email', RecordComponentType::PROPERTY)) {
+      $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           150,
           new validation\RegexEmail(),
-          Str::set('Please provide a correctly formated email address!')
+          Str::set('My error message HERE!')
         )
-      );
-      if ($this->isNew) { $this[0] = $this->email; }
+      ));
     }
-    return $this->email;
+    return $this->registered; 
   }
 
   /**
@@ -67,6 +60,6 @@ abstract class AuthenticatableUnit extends Record
    */
   final protected function get_isValid() : bool
   {
-    return (($this->email->value != NULL) && parent::get_isValid());
+    return (isset($this->email) && $this->email->value !== NULL && parent::get_isValid());
   }
 }

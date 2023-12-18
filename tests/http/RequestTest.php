@@ -384,18 +384,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function testRecordKeyLoggedinAccount()
   {
     $_SERVER['REQUEST_URI'] = '/mock-record/~/property-b/';    $dataObject = new \stdClass();
-
     $testObject = Request::current();
     $this->assertInstanceOf('ramp\core\Str', $testObject->recordKey);
     $this->assertSame((string)$testObject->recordKey, 'new');
-
     $dataObject->auPK = 'aperson';
     $dataObject->id = 'login-account:aperson';
     $dataObject->email = 'aperson@domain.com';
     $dataObject->encryptedPassword = crypt(
       'Pa55w0rd', \ramp\SETTING::$SECURITY_PASSWORD_SALT
     );
-    $dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR();
+    $dataObject->loginAccountTypeID = LoginAccountType::ADMINISTRATOR;
     $_SESSION['loginAccount'] = new LoginAccount($dataObject);
     $this->assertTrue($_SESSION['loginAccount']->isValid);
     $this->assertSame((string)$testObject->recordKey, 'aperson');

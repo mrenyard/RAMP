@@ -34,7 +34,6 @@ use ramp\condition\SQLEnvironment;
 
 /**
  * Mock business model managers for testing \ramp\http\Session
- * .
  */
 class MockBusinessModelManager extends BusinessModelManager
 {
@@ -42,19 +41,24 @@ class MockBusinessModelManager extends BusinessModelManager
   public $callCount;
   public $updateLog;
   public $mockMinNew;
-  public $mockNew;
+  public $mockMinNewData;
+  // 
   public $objectNew;
   public $objectOne;
   public $objectTwo;
   public $objectThree;
   public $objectFour;
   public $objectFive;
+  public $existingPerson;
+  public $anAuthenticatableUnit;
   public $dataObjectNew;
   public $dataObjectOne;
   public $dataObjectTwo;
   public $dataObjectThree;
   public $dataObjectFour;
   public $dataObjectFive;
+  public $existingPersonData;
+  public $anAuthenticatableUnitData;
   // MANY to MANY LOOKUP
   private $lookup;
   public $dataA1;
@@ -106,22 +110,23 @@ class MockBusinessModelManager extends BusinessModelManager
 
   public static function reset()
   {
-    $thiz = self::getInstance();
-    $thiz->mockMinNew = NULL;
-    $thiz->mockNew = NULL;
-    $thiz->objectNew = NULL;
-    $thiz->objectOne = NULL;
-    $thiz->objectTwo = NULL;
-    $thiz->objectThree = NULL;
-    $thiz->objectFour = NULL;
-    $thiz->objectFive = NULL;
-    $thiz->objectA1 = NULL;
-    $thiz->objectA1 = NULL;
-    $thiz->objectA1 = NULL;
-    $thiz->objectA1 = NULL;
-    $thiz->objectLookupA1toB1 = NULL;
-    $thiz->objectLookupA1toB2 = NULL;
-    $thiz->objectLookupA1toB3 = NULL;
+    $o = self::getInstance();
+    $o->mockMinNew = NULL;
+    $o->objectNew = NULL;
+    $o->objectOne = NULL;
+    $o->objectTwo = NULL;
+    $o->objectThree = NULL;
+    $o->objectFour = NULL;
+    $o->objectFive = NULL;
+    $o->objectA1 = NULL;
+    $o->objectA1 = NULL;
+    $o->objectA1 = NULL;
+    $o->objectA1 = NULL;
+    $o->objectLookupA1toB1 = NULL;
+    $o->objectLookupA1toB2 = NULL;
+    $o->objectLookupA1toB3 = NULL;
+    $o->existingPerson = NULL;
+    $o->anAuthenticatableUnit = NULL;
     self::$instance = NULL;
   }
 
@@ -157,7 +162,7 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataObjectTwo->key1 = 'A';
     $this->dataObjectTwo->key2 = 'B';
     $this->dataObjectTwo->key3 = 'C';
-    $this->objectTwo = new MockMinRecord($this->dataObjectTwo);          
+    $this->objectTwo = new MockMinRecord($this->dataObjectTwo);
   }
   private function buildObjectThree() {
     $this->dataObjectThree = new \stdClass();
@@ -239,34 +244,6 @@ class MockBusinessModelManager extends BusinessModelManager
     $this->dataLookupA1toB3->fk_RecordB_key1 = '3';
     $this->dataLookupA1toB3->fk_RecordB_key2 = '3';
     $this->objectLookupA1toB3 = new Lookup($this->dataLookupA1toB3);
-
-    // $this->dataA2 = new \stdClass();
-    // $this->dataA2->keyA = 2;
-    // $this->dataA2->keyB = 2;
-    // $this->dataA2->keyC = 2;
-    // $this->objectA2 = new RecordA($this->dataA2);
-
-    // $this->dataLookupA2toB1 = new \stdClass();
-    // $this->dataLookupA2toB1->fk_RecordA_keyA = '2';
-    // $this->dataLookupA2toB1->fk_RecordA_keyB = '2';
-    // $this->dataLookupA2toB1->fk_RecordA_keyC = '2';
-    // $this->dataLookupA2toB1->fk_RecordB_key1 = '1';
-    // $this->dataLookupA2toB1->fk_RecordB_key2 = '1';
-    // $this->objectLookupA2toB1 = new Lookup($this->dataLookupA2toB1);
-
-    // $this->dataA3 = new \stdClass();
-    // $this->dataA3->keyA = 3;
-    // $this->dataA3->keyB = 3;
-    // $this->dataA3->keyC = 3;
-    // $this->objectA3 = new RecordA($this->dataA3);
-
-    // $this->dataLookupA3toB1 = new \stdClass();
-    // $this->dataLookupA3toB1->fk_RecordA_keyA = '3';
-    // $this->dataLookupA3toB1->fk_RecordA_keyB = '3';
-    // $this->dataLookupA3toB1->fk_RecordA_keyC = '3';
-    // $this->dataLookupA3toB1->fk_RecordB_key1 = '1';
-    // $this->dataLookupA3toB1->fk_RecordB_key2 = '1';
-    // $this->objectLookupA3toB1 = new Lookup($this->dataLookupA3toB1);
   }
 
   /**
@@ -281,12 +258,32 @@ class MockBusinessModelManager extends BusinessModelManager
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
   {
     $this->callCount++;
+    if ((string)$definition->recordName == 'AnAuthenticatableUnit')
+    {
+      if ((string)$definition->recordKey == 'new') {
+        if (!isset($this->anAuthenticatableUnit)) {
+          $this->anAuthenticatableUnitData = new \stdClass();
+          $this->anAuthenticatableUnit = new AnAuthenticatableUnit($this->anAuthenticatableUnitData);
+        }
+        return $this->anAuthenticatableUnit;
+      }
+      if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'AnAuthenticatableUnit.email = "existing.person@domain.com"') {
+        if (!isset($this->aPerson)) {
+          $this->existingPersonData = new \stdClass();
+          $this->existingPersonData->uname = 'existing';
+          $this->existingPersonData->email = 'existing.person@domain.com';
+          $this->existingPersonData->familyName = 'Person';
+          $this->existingPersonData->givenName = 'Exist';
+          $this->existingPerson = new AnAuthenticatableUnit($this->existingPersonData);
+        }
+        return $this->existingPerson;
+      }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
+    }
     if ((string)$definition->recordName == 'MockRecord')
     {
       if ((string)$definition->recordKey == 'new') {
-        // if (!isset($this->mockNew)) { 
-        $this->buildMockModel(); //}
-        return $this->mockNew;
+        return new MockRecord();
       }
       if ((string)$definition->RecordKey == '1|1|1') {
         if (!isset($this->objectNew)) { $this->buildObjectNew(); }
@@ -312,11 +309,6 @@ class MockBusinessModelManager extends BusinessModelManager
     }
     if ((string)$definition->recordName == 'MockMinRecord')
     {
-      if ((string)$definition->recordKey == 'new') {
-        // if (!isset($this->mockMinNew)) {
-        $this->buildMinNew(); //}
-        return $this->mockMinNew;
-      }
       if ((string)$definition->RecordKey == 'A|B|C') {
         if (!isset($this->objectTwo)) { $this->buildObjectTwo(); }
         return $this->objectTwo;
@@ -384,6 +376,9 @@ class MockBusinessModelManager extends BusinessModelManager
         $collection->add($this->objectFive);
         return $collection;
       }
+      if ((string)$definition->recordKey == 'new') {
+        return new MockMinRecord();
+      }
       throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if (!$this->lookup) { $this->buildLookup(); }
@@ -412,18 +407,21 @@ class MockBusinessModelManager extends BusinessModelManager
         $lookupB1->add($this->objectLookupA3toB1);
         return $lookupB1;
       }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if ((string)$definition->recordName == 'RecordA')
     {
       if ((string)$definition->RecordKey == '1|1|1') { return $this->objectA1; }
       if ((string)$definition->RecordKey == '2|2|2') { return $this->objectA2; }
       if ((string)$definition->RecordKey == '3|3|3') { return $this->objectA3; }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     if ((string)$definition->recordName == 'RecordB')
     {
       if ((string)$definition->RecordKey == '1|1') { return $this->objectB1; }
       if ((string)$definition->RecordKey == '2|2') { return $this->objectB2; }
       if ((string)$definition->RecordKey == '3|3') { return $this->objectB3; }
+      throw new DataFetchException('No matching Record(s) found in data storage!');
     }
     throw new \DomainException('Business Model(s) NOT found!');
   }
@@ -460,5 +458,7 @@ class MockBusinessModelManager extends BusinessModelManager
     if (isset($this->objectLookupA1toB1) && $this->objectLookupA1toB1->isModified && $this->objectLookupA1toB1->isValid) { $this->update($this->objectLookupA1toB1); }
     if (isset($this->objectLookupA1toB2) && $this->objectLookupA1toB2->isModified && $this->objectLookupA1toB2->isValid) { $this->update($this->objectLookupA1toB2); }
     if (isset($this->objectLookupA1toB3) && $this->objectLookupA1toB3->isModified && $this->objectLookupA1toB3->isValid) { $this->update($this->objectLookupA1toB3); }
+    if (isset($this->anAuthenticatableUnit) && $this->anAuthenticatableUnit->isModified && $this->anAuthenticatableUnit->isValid) { $this->update($this->anAuthenticatableUnit); }
+    if (isset($this->existingPerson) && $this->existingPerson->isModified && $this->existingPerson->isValid) { $this->update($this->existingPerson); }
   }
 }

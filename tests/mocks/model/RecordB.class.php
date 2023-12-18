@@ -48,6 +48,18 @@ class RecordB extends Record
     $this->withError = $withError;
   }
 
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+    $this->errorsTouchCount = 0;
+    foreach ($this->primaryKey as $key) { $key->reset(); }
+    foreach ($this as $field) { 
+      if ($field instanceof selectOne || $field instanceof selectMany) { continue; }
+      $field->reset();
+    }
+  }
+
   protected function get_key1() : Field
   {
     if (!isset($this->primaryKey[0])) {

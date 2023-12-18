@@ -43,6 +43,12 @@ class MockFlag extends Flag
     $this->hasErrorsCount = 0;
   }
 
+  public function reset()
+  {
+    $this->validateCount = 0;
+    $this->hasErrorsCount = 0;
+  }
+
   /**
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
