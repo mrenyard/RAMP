@@ -85,7 +85,7 @@ final class Str extends RAMPObject
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
   private $value;
-
+  // Case variants.
   private $lower;
   private $upper;
 

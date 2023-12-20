@@ -88,9 +88,6 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   protected static function checkRequired($dataObject) : bool
   {
-    return (
-      isset($dataObject->email) /*&&
-      isset($dataObject->uname)*/
-    );
+    return TRUE;
   }
 }

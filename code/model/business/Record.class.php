@@ -114,7 +114,7 @@ abstract class Record extends Relatable
       $this->primaryKey[$this->primaryKey->count] = $this->$name;
       if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
     }
-    if ($this->primaryKey->value !== NULL) { $this->validAtSource = TRUE; }
+    if ($this->primaryKey->value != NULL) { $this->validAtSource = TRUE; }
     $i = 0;
     foreach ($this->components[RecordComponentType::PROPERTY] as $name => $o) {
       $this[$i] = $this->$name;

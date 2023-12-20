@@ -130,6 +130,15 @@ class MockBusinessModelManager extends BusinessModelManager
     self::$instance = NULL;
   }
 
+  private function buildExistingPerson()
+  {
+    $this->existingPersonData = new \stdClass();
+    $this->existingPersonData->uname = 'existing';
+    $this->existingPersonData->email = 'existing.person@domain.com';
+    $this->existingPersonData->familyName = 'Person';
+    $this->existingPersonData->givenName = 'Exist';
+    $this->existingPerson = new AnAuthenticatableUnit($this->existingPersonData);
+  }
   private function buildMockNew()
   {
     $this->mockNew = new MockRecord(new \stdClass());
@@ -267,15 +276,12 @@ class MockBusinessModelManager extends BusinessModelManager
         }
         return $this->anAuthenticatableUnit;
       }
+      if ((string)$definition->recordKey == 'existing') {
+        if (!isset($this->aPerson)) { $this->buildExistingPerson(); }
+        return $this->existingPerson;
+      }
       if (isset($filter) && $filter(SQLEnvironment::getInstance()) == 'AnAuthenticatableUnit.email = "existing.person@domain.com"') {
-        if (!isset($this->aPerson)) {
-          $this->existingPersonData = new \stdClass();
-          $this->existingPersonData->uname = 'existing';
-          $this->existingPersonData->email = 'existing.person@domain.com';
-          $this->existingPersonData->familyName = 'Person';
-          $this->existingPersonData->givenName = 'Exist';
-          $this->existingPerson = new AnAuthenticatableUnit($this->existingPersonData);
-        }
+        if (!isset($this->aPerson)) { $this->buildExistingPerson(); }
         return $this->existingPerson;
       }
       throw new DataFetchException('No matching Record(s) found in data storage!');

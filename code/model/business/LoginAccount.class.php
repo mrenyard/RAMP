@@ -32,20 +32,6 @@ use ramp\model\business\LoginAccountType;
 use ramp\model\business\AuthenticatibleUnit;
 
 /**
- * Referance and maintain a collection of \ramp\model\business\LoginAccount.
- *
- * RESPONSIBILITIES
- * - Implement methods for property access
- * - Implement methods for validity checking & reporting
- * - Provide access to this Collection
- * - Provide methods to maintain a Collection of {@see Record}s
- *
- * COLLABORATORS
- * - Collection of {@see \ramp\model\business\LoginAccount}s
- */
-class LoginAccountCollection extends RecordCollection { }
-
-/**
  * LoginAccount for authentication and authorization.
  *
  * RESPONSIBILITIES
@@ -65,9 +51,8 @@ class LoginAccountCollection extends RecordCollection { }
  * @property-read field\Field $email Returns field containing value of login account associated email address.
  * @property-read field\Field $accountType Returns field containing value of account type (LoginAccountType).
  */
-class LoginAccount extends Record
+final class LoginAccount extends Record
 {
-  // private $email;
   private $authenticatableUnit;
   private $unencryptedPassword;
 
@@ -91,7 +76,7 @@ class LoginAccount extends Record
         )
       ));
     }
-    return $this->registered; 
+    return $this->registered;
   }
 
   /**
@@ -99,7 +84,7 @@ class LoginAccount extends Record
    */
   protected function get_email() : ?RecordComponent
   {
-    if ($this->register('email', RecordComponentType::KEY)) {
+    if ($this->register('email', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           150,
@@ -114,9 +99,9 @@ class LoginAccount extends Record
   /**
    * @ignore
    */
-  protected function get_loginAccountTypeID() : ?RecordComponent
+  protected function get_loginAccountType() : ?RecordComponent
   {
-    if ($this->register('loginAccountTypeID', RecordComponentType::PROPERTY)) {
+    if ($this->register('loginAccountType', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\SelectOne($this->registeredName, $this, new LoginAccountType()));
     }
     return $this->registered; 
@@ -196,14 +181,12 @@ class LoginAccount extends Record
   public function createFor(AuthenticatableUnit $authenticatableUnit)
   {
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
-    // if (!$authenticatableUnit->isValid) { throw new \Exception(); }
-    $this->setPropertyValue('auPK', $authenticatableUnit->getPropertyValue(
-      (string)$authenticatableUnit->primaryKey->value //Names()[0] // ->implode(Str::BAR())
-    ));
+    if (!$authenticatableUnit->isValid) { throw new InvalidArgumentException('$authenticatableUnit MUST be in Valid state'); }
+    $this->setPropertyValue('auPK', $authenticatableUnit->primaryKey->value);
     $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
-    $this->setPropertyValue('loginAccountTypeID', 1);
+    $this->setPropertyValue('loginAccountType', 1);
     $this->setPassword($this->generateRandomPassword());
-    // if (!$this->isValid) { throw new \Exception('Unable to add Login Account'); }
+    if (!$this->isValid) { throw new \Exception('Unable to add Login Account'); }
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $modelManager = $MODEL_MANAGER::getInstance();
     $modelManager->update($this);
@@ -264,7 +247,7 @@ class LoginAccount extends Record
       isset($dataObject->auPK) &&
       isset($dataObject->email) &&
       isset($dataObject->encryptedPassword) &&
-      isset($dataObject->loginAccountTypeID)
+      isset($dataObject->loginAccountType)
     );
   }
 }

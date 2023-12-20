@@ -35,7 +35,7 @@ class Alphanumeric extends ValidationRule
    */
   protected function test($value)
   {
-    if (preg_match('/^[a-zA-Z0-9_ \.]*$/', $value)) { return; }
+    if (preg_match('/^[a-zA-Z0-9_ |\.]*$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }
