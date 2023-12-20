@@ -43,7 +43,7 @@ require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-require_once '/usr/share/php/ramp/model/business/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
@@ -57,7 +57,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\DataExistingEntryException;
-use ramp\model\business\Key;
+use ramp\model\business\PrimaryKey;
 
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRecord;
@@ -68,14 +68,13 @@ use tests\ramp\mocks\model\MockBusinessModelManager;
 /**
  * Collection of tests for \ramp\model\business\Key.
  */
-class KeyTest extends \tests\ramp\model\business\RecordComponentTest
+class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
   protected function preSetup() : void {
     MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
-    $this->name = Str::set('primaryKey');
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
   }

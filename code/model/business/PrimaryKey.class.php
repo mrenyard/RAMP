@@ -40,7 +40,7 @@ use ramp\condition\PostData;
  * @property-read \ramp\core\StrCollection $indexes Sub key indexs (names) of composite properties that make up *this* PrimaryKey.
  * @property-read ?\ramp\core\StrCollection $values Values held by each relevant property as key value composite or NULL.
  */
-final class Key extends RecordComponent
+final class PrimaryKey extends RecordComponent
 {
   private static $name;
   private $errorCollection;

@@ -35,7 +35,7 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/Key.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
