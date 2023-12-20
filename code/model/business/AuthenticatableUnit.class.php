@@ -60,6 +60,6 @@ abstract class AuthenticatableUnit extends Record
    */
   final protected function get_isValid() : bool
   {
-    return (parent::get_isValid() && $this->email->value !== NULL);
+    return ($this->email->value !== NULL && parent::get_isValid());
   }
 }
