@@ -24,70 +24,23 @@ namespace tests\ramp\model\business;
 require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
-// require_once '/usr/share/php/ramp/core/iList.class.php';
-// require_once '/usr/share/php/ramp/core/oList.class.php';
-// require_once '/usr/share/php/ramp/core/iCollection.class.php';
-// require_once '/usr/share/php/ramp/core/Collection.class.php';
-// require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-// require_once '/usr/share/php/ramp/core/iOption.class.php';
-// require_once '/usr/share/php/ramp/core/OptionList.class.php';
-// require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-// require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-// require_once '/usr/share/php/ramp/condition/Operator.class.php';
-// require_once '/usr/share/php/ramp/condition/Condition.class.php';
-// require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
-// require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
-// require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/Environment.class.php';
-// require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/PostData.class.php';
-// require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-// require_once '/usr/share/php/ramp/condition/Filter.class.php';
-// require_once '/usr/share/php/ramp/model/Model.class.php';
-// require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
-// require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
-// require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-// require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
-// require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-// require_once '/usr/share/php/ramp/model/business/Record.class.php';
-// require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
-// require_once '/usr/share/php/ramp/model/business/Key.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/AuthenticatableUnit.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
-// require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
-// require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php';
-// require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-// require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/AnAuthenticatableUnit.class.php';
 
 use ramp\core\Str;
-// use ramp\core\PropertyNotSetException;
-// use ramp\condition\PostData;
-// use ramp\condition\Filter;
-// use ramp\model\business\LoginAccountCollection;
 use ramp\model\business\LoginAccount;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\SimpleBusinessModelDefinition;
-// use ramp\model\business\field\Input;
-// use ramp\model\business\validation\dbtype\VarChar;
-// use ramp\model\business\validation\LowerCaseAlphanumeric;
-// use ramp\model\business\validation\RegexEmail;
 
-// use tests\ramp\mocks\model\AnAuthenticatableUnit;
 use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
@@ -112,6 +65,19 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->testObject = new LoginAccount($this->dataObject);
   }
 
+  /**
+   * Check initial state.
+   * - assert is instance of {@see \ramp\model\business\Record}
+   * - assert is instance of {@see \ramp\model\business\LoginAccount}
+   * - assert isNew returns as expected (TRUE).
+   * - assert isModified returns as expected (FALSE).
+   * - assert isValid returns as expected (FALSE).
+   * - assert primaryKey returns expected (NULL).
+   * - assert auPK property retuns instanceof {@see \ramp\model\business\RecordComponent} with value of NULL.
+   * - assert email property retuns instanceof {@see \ramp\model\business\RecordComponent} with value of NULL.
+   * - assert {@see \ramp\model\business\loginAccountType} property retuns instanceof
+   *   {@see \ramp\model\business\RecordComponent} with value {@see \ramp\model\business\LoginAccountType} Option.
+   */
   public function testInitState()
   {
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
@@ -128,6 +94,15 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertSame(0, $this->testObject->loginAccountType->value->key);
   }
 
+  /**
+   * Populate with associated data for provided AutenticatableUnit.
+   * - assert *this* auPK holds primaryKey data for relevant {@see \ramp\model\business\AutenticatableUnit}.
+   * - assert email eqaul to that of {@see \ramp\model\business\AutenticatableUnit}.
+   * - assert LoginAccoutType::REGISTERED set as default.
+   * - assert randomised password generated and encrypted with temparary access to the unencrypted version.
+   * - assert data writen to datastore for future varification.
+   * - assert through access provided for ALL other properties of {@see \ramp\model\business\AutenticatableUnit}.
+   */
   public function testCreateForAutenticatableUnit()
   {
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
@@ -150,7 +125,14 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($this->testObject->familyName->value, $authenticatableUnit->familyName->value);
   }
 
-  public function testSetNewPassword()
+  /**
+   * Change or set new password and password validation.
+   * - assert provided password set and encrypted with temparary access to the unencrypted version.
+   * - assert correct password validation.
+   * @see \ramp\model\business\LoginAccount::setPassword()
+   * @see \ramp\model\business\LoginAccount::validatePassword()
+   */
+  public function testSetValidatePassword()
   {
     $this->testObject->setPassword('Pa55w0rd');
     $this->assertSame(
@@ -161,6 +143,11 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($this->testObject->validatePassword('Pa55w0rd'));
   }
 
+  /**
+   * Check BadMethodCallException on improper access of getUnencryptedPassword().
+   * - assert throws {@see \BadMethodCallException} when requested outside of same HTTP request. 
+   *   - with message: **'Unencrypted password only available on same http request as set'**
+   */
   public function testUnencryptedPasswordBadCall()
   {
     $this->expectException(\BadMethodCallException::class);

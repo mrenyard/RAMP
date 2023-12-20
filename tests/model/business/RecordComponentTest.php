@@ -86,6 +86,12 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Setup
   protected function preSetup() : void {
+    \ramp\http\Request::reset();
+    $_GET = array();
+    $_POST = array();
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_SERVER['QUERY_STRING'] = null;
+    $_SERVER['REQUEST_URI'] = '/mock-record/new';
     MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
