@@ -200,12 +200,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
   {
-    // $classFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName->append(Str::set('Collection'));
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
-    // $recordNewDataObject = new \stdClass();
-    // $recordNew = new $recordFullName($recordNewDataObject);
-    // $this->recordCollection->attach($recordNew);
-    // $this->dataObjectCollection->attach($recordNewDataObject);
     $sql = 'SELECT * FROM '. $recordName;
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
     $limit = ($fromIndex)? $fromIndex . ', ' .($this->maxResults + $fromIndex) : '0, '.$this->maxResults;
@@ -220,15 +215,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
       {
         throw new DataFetchException('No matching Records found in data storage!');
       }
-      $collection = new RecordCollection(); //$classFullName();
+      $collection = new RecordCollection();
       do {
         $recordFromDB = new $recordFullName($dataObject);
         $key = $recordFromDB->primaryKey->value;  
-        // foreach ($recordNew->primaryKey->values as $subKeyValue) {
-        // foreach ($recordNew->primaryKey->indexes as $index) {
-        //   $dataIndex = $index->prepend(Str::FK());
-        //   $key = $key->append(Str::set($dataObject->$index))->append(Str::BAR());
-        // }
         if ($key !== NULL && $record = $this->getRecordIfCached($recordName, $key)) {
           // Empty
         } else {
@@ -238,7 +228,6 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
         $collection->add($record);
       } while ($dataObject = $statementHandle->fetch());
-      // $collection->add($recordNew); // append new to end
       $this->databaseHandle = \NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
       $this->databaseHandle = \NULL;
@@ -298,8 +287,6 @@ final class SQLBusinessModelManager extends BusinessModelManager
     $comma = Str::set(', '); $colon = Str::COLON();
     $eqColon = Str::set('=:'); $and = Str::set(' AND ');
     $properties = Str::_EMPTY(); $placeholders = Str::_EMPTY(); $updateSet = Str::_EMPTY();
-    // TODO:mrenyard: Change below once Record::$requiered implemented. 
-    // $propertySubSet = ($record->isNew) ? $record->requiered : $record;
     $propertySubSet = ($record->isNew) ? $record->primaryKey : $record;
     foreach ($propertySubSet as $property) {
       $propertyName = (string)$property->name;
