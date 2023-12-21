@@ -353,7 +353,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    */
   public function testRecordComponentValue() : void
   {
-    $this->assertSame($this->record->getPropertyValue($this->name), $this->testObject->value);
+    $this->assertSame($this->record->getPropertyValue('primaryKey'), $this->testObject->value);
   }
 
   /**

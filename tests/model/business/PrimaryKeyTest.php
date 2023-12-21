@@ -72,6 +72,12 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
   protected function preSetup() : void {
+    \ramp\http\Request::reset();
+    $_GET = array();
+    $_POST = array();
+    $_SERVER['REQUEST_METHOD'] = 'GET';
+    $_SERVER['QUERY_STRING'] = null;
+    $_SERVER['REQUEST_URI'] = '/mock-record/new';
     MockBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
@@ -96,13 +102,13 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
-   * - assert is instance of {@see \ramp\model\buiness\Key}   
-   * @see ramp.model.business.Key ramp\model\business\Key
+   * - assert is instance of {@see \ramp\model\buiness\PrimaryKey}   
+   * @see ramp.model.business.Key ramp\model\business\PrimaryKey
    */
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\Key', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\PrimaryKey', $this->testObject);
   }
 
   #region Sub model setup
@@ -336,12 +342,12 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testStateChangesRecordComponent(string $name = NULL) : void
   {
-    $this->assertSame('mock-record:new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
-    $this->assertEquals($this->name, $this->testObject->name);
+    $this->assertSame('mock-record:new:primary-key', (string)$this->testObject->id);
+    $this->assertEquals(Str::set('primaryKey'), $this->testObject->name);
     $this->assertSame($this->record, $this->testObject->parent);
     $this->assertNull($this->testObject->value);
     $this->assertEquals(
-      (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate($this->name)),
+      (string)Str::COLON()->prepend($this->record->id)->append(Str::hyphenate(Str::set('PrimaryKey'))),
       (string)$this->testObject->id
     );
     $this->dataObject->keyC = 1;
@@ -366,7 +372,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   {
     parent::testOffsetSetTypeCheckException(
       'ramp\model\business\field\Field',
-      new MockRecordComponent($this->name, $this->record),
+      new MockRecordComponent(Str::set('primaryKey'), $this->record),
       'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
     );
     parent::testOffsetSetTypeCheckException(
@@ -376,7 +382,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     );
     parent::testOffsetSetTypeCheckException(
       'ramp\model\business\field\Field',
-      new MockRecordComponent($this->name, new Record()),
+      new MockRecordComponent(Str::set('primaryKey'), new Record()),
       'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
     );
   }
