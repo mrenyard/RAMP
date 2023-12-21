@@ -25,12 +25,12 @@ require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/http/Method.class.php';
 
-require_once '/usr/share/php/tests/ramp/http/mocks/MethodTest/ExtendedMethod.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/http/ExtendedMethod.class.php';
 
 use ramp\core\Str;
 use ramp\http\Method;
 
-use tests\ramp\http\mocks\MethodTest\ExtendedMethod;
+use tests\ramp\mocks\http\ExtendedMethod;
 
 /**
  * Collection of tests for \ramp\http\Method.
@@ -49,7 +49,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
       $o = ExtendedMethod::FAIL();
     } catch (\InvalidArgumentException $expected) {
       $this->assertSame(
-        'tests\ramp\http\mocks\MethodTest\ExtendedMethod::constructor expects first argument of type int.', $expected->getMessage()
+        'tests\ramp\mocks\http\ExtendedMethod::constructor expects first argument of type int.', $expected->getMessage()
       );
       $o = ExtendedMethod::SUCCEED();
       return;

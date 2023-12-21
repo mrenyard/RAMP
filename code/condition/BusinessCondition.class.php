@@ -66,7 +66,7 @@ abstract class BusinessCondition extends Condition
     $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
     if (
       !class_exists($recordClassName) ||
-      (!$property->contains(StrCollection::set('fk_')) && !method_exists(new $recordClassName(), 'get_' . $property))
+      (!$property->contains(StrCollection::set('fk_')) && !method_exists($recordClassName, 'get_' . $property))
     ) {
       throw new \DomainException('Invalid: ' . $record . '->' . $property . ', does NOT match business model');
     }

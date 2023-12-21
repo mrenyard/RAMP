@@ -135,8 +135,7 @@ class MockRecord extends Record
   {
     if ($this->register('flag', RecordComponentType::PROPERTY)) {
       $this->flagName = $this->registeredName;
-      $this->initiate(new MockFlag($this->registeredName, $this,
-        new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
+      $this->initiate(new MockFlag($this->registeredName, $this
       ));
     }
     return $this->registered; 

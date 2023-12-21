@@ -42,8 +42,10 @@ require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
@@ -63,8 +65,9 @@ require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/ramp/http/Request.class.php';
 require_once '/usr/share/php/ramp/http/Method.class.php';
 
-require_once '/usr/share/php/tests/ramp/http/mocks/RequestTest/Field.class.php';
-require_once '/usr/share/php/tests/ramp/http/mocks/RequestTest/MockRecord.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/http/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/http/MockRecord.class.php';
 
 use ramp\core\Str;
 use ramp\http\Request;
@@ -76,6 +79,8 @@ use ramp\condition\InputDataCondition;
 use ramp\model\business\iBusinessModelDefinition;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\LoginAccount;
+
+// use tests\ramp\mocks\model\MockBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\http\Request.
@@ -91,14 +96,13 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   public function setUp() : void
   {
     Request::reset();
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\http\mocks\RequestTest';
-
     $_GET = array();
     $_POST = array();
-    $_SERVER['SCRIPT_NAME'] = '/404.php';
-
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['QUERY_STRING'] = null;
+    // MockBusinessModelManager::reset();
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\http';
+    // \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
   }
@@ -108,7 +112,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - assert is instance of {@link \ramp\core\Object}
    * - assert is instance of {@link \ramp\model\iModelDefinition}
    * - assert is instance of {@link \ramp\http\Request}
-   * @link ramp.http.Request ramp\request\http\Request
+   * @link \ramp\request\http\Request
    */
   public function test__construct()
   {
@@ -122,15 +126,15 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
 
   /**
    * Collection of assertions based on Property NOT defined in business model.
-   * - $_SERVER['REQUEST_URI'] equals '/bad-record'
+   * - $_SERVER['REQUEST_URI'] equals '/non-record'
    * - assert throws \DomainException when supplied argument do NOT meet the restrictions and
    *   limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
    */
   public function testDomainExceptionBadRecord()
   {
     $this->expectException(\DomainException::class);
-    $this->expectExceptionMessage('Invalid: BadRecord, does NOT match business model');
-    $_SERVER['REQUEST_URI'] = '/bad-record';
+    $this->expectExceptionMessage('Invalid: NonRecord, does NOT match business model');
+    $_SERVER['REQUEST_URI'] = '/non-record';
     $testObject = Request::current();
   }
 
@@ -208,7 +212,6 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_GET['property-c'] = 'valueC';
     $_GET['from'] = '100';
     $testObject = Request::current();
-
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::GET());
     $this->assertInstanceOf('ramp\core\Str', $testObject->modelURN);
@@ -274,7 +277,6 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_POST['mock-record:key:property-b'] = 'valueB';
     $_POST['mock-record:key:property-c'] = 'valueC';
     $testObject = Request::current();
-
     $this->assertFalse($testObject->expectsFragment);
     $this->assertSame($testObject->method, Method::POST());
     $this->assertInstanceOf('ramp\core\Str', $testObject->modelURN);
