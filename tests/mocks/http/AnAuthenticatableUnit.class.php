@@ -19,40 +19,30 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\mocks\model;
+namespace ramp\model\business;
 
 use ramp\core\Str;
-use ramp\core\StrCollection;
 use ramp\model\business\AuthenticatableUnit;
-use ramp\model\business\field\Field;
+use ramp\model\business\RecordComponent;
+use ramp\model\business\RecordComponentType;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\Alphanumeric;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
-use ramp\model\business\validation\RegexEmail;
 
 /**
- * Mock AuthenticatableUnit for testing \ramp\http\Session
+ * Mock AuthenticatableUnit for testing.
  */
 class AnAuthenticatableUnit extends AuthenticatableUnit
 {
-  // private $uname;
-  protected function get_uname() : Field
+  protected function get_uname() : ?RecordComponent
   {
-    // if (!isset($this->uname))
-    // {
-    //   $this->uname = new Input(
-    //     Str::set('uname'),
-    //     $this,
-    //     new VarChar(
-    //       15,
-    //       new LowerCaseAlphanumeric(),
-    //       Str::set('My error message HERE!')
-    //     )
-    //   );
-    //   if ($this->isNew) { $this[-1] = $this->uname; }
-    // }
-    // return $this->uname;
+    if ($this->register('uname', RecordComponentType::KEY)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        new VarChar(20, new LowerCaseAlphanumeric(), Str::set('My error message HERE!'))
+      ));
+    }
+    return $this->registered; 
   }
 
   /**
@@ -63,21 +53,14 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * ```
    * @return \ramp\core\Str Email address associated with *this*.
    */
-  protected function get_familyName() : Field
+  protected function get_familyName() : ?RecordComponent
   {
-    // if (!isset($this[1]))
-    // {
-    //   $this[1] = new Input(
-    //     Str::set('familyName'),
-    //     $this,
-    //     new VarChar(
-    //       15,
-    //       new Alphanumeric(),
-    //       Str::set('My error message HERE!')
-    //     )
-    //   );
-    // }
-    // return $this[1];
+    if ($this->register('familyName', RecordComponentType::PROPERTY)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        new VarChar(150, new Alphanumeric(), Str::set('My error message HERE!'))
+      ));
+    }
+    return $this->registered; 
   }
 
   /**
@@ -88,33 +71,23 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    * ```
    * @return \ramp\core\Str Email address associated with *this*.
    */
-  protected function get_givenName() : Field
+  protected function get_givenName() : ?RecordComponent
   {
-    // if (!isset($this[2]))
-    // {
-    //   $this[2] = new Input(
-    //     Str::set('givenName'),
-    //     $this,
-    //     new VarChar(
-    //       15,
-    //       new Alphanumeric(), //CapitalizedFirstLetter
-    //       Str::set('My error message HERE!')
-    //     )
-    //   );
-    // }
-    // return $this[2];
+    if ($this->register('givenName', RecordComponentType::PROPERTY)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        new VarChar(150, new Alphanumeric(), Str::set('My error message HERE!'))
+      ));
+    }
+    return $this->registered; 
   }
 
   /**
    * Check requeried properties have value or not.
-   * @param dataObject to be checked for requiered property values
+   * @param $dataObject Data object to checke for requiered property values.
    * @return bool Check all requiered properties are set.
    */
   protected static function checkRequired($dataObject) : bool
   {
-    return (
-      isset($dataObject->email) &&
-      isset($dataObject->uname)
-    );
+    return TRUE;
   }
 }

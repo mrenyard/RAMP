@@ -177,11 +177,12 @@ final class LoginAccount extends Record
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    * to be assessed for validity and imposed on associated authenticatable unit or *this*
    * @throws \BadMethodCallException When NOT new
+   * @throws \InvalidArgumentException When provided argument NOT in valid state.
    */
   public function createFor(AuthenticatableUnit $authenticatableUnit)
   {
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
-    if (!$authenticatableUnit->isValid) { throw new InvalidArgumentException('$authenticatableUnit MUST be in Valid state'); }
+    if (!$authenticatableUnit->isValid) { throw new \InvalidArgumentException('$authenticatableUnit MUST be in Valid state'); }
     $this->setPropertyValue('auPK', $authenticatableUnit->primaryKey->value);
     $this->setPropertyValue('email', $authenticatableUnit->getPropertyValue('email'));
     $this->setPropertyValue('loginAccountType', 1);

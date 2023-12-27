@@ -73,7 +73,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
    */
   protected function get_givenName() : ?RecordComponent
   {
-    if ($this->register('familyName', RecordComponentType::PROPERTY)) {
+    if ($this->register('givenName', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
         new VarChar(150, new Alphanumeric(), Str::set('My error message HERE!'))
       ));

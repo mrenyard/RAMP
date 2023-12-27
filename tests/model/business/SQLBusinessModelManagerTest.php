@@ -154,7 +154,6 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * - assert returned record is instance of provided argument iBusinessModelDefinition::$recordName.
    * - assert returns fresh Record is instance of provided argument iBusinessModelDefinition::$recordName.
    * - assert state of returned Record (isNew, isValid and isModified) is as expected.
-   * 
    * - assert properties of record are instance of {@see \ramp\model\business\field\Field}.
    * - assert each property's field\Field::$value returns NULL.
    * - assert state of Record its properties, as well as hasErrors, isNew, isValid and
@@ -208,8 +207,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     $this->assertSame(1, $newRecord->primaryKey[0]->validateCount);
     $this->assertSame(1, $newRecord->primaryKey[1]->validateCount);
     $this->assertSame(1, $newRecord->primaryKey[2]->validateCount);
-    $this->assertSame(0, $newRecord[0]->validateCount);
-    $this->assertSame(0, $newRecord[1]->validateCount);    
+    $this->assertSame(1, $newRecord[0]->validateCount);
+    $this->assertSame(1, $newRecord[1]->validateCount);    
     $this->assertTrue($newRecord->isValid);
     $this->assertTrue($newRecord->isModified);
     $this->assertTrue($newRecord->isNew);
@@ -232,9 +231,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->key3);
     $this->assertSame('C', $newRecord->key3->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->property1);
-    $this->assertNull($newRecord->property1->value);
+    $this->assertSame('valueA', $newRecord->property1->value);
     $this->assertInstanceOf('\ramp\model\business\field\Field', $newRecord->property2);
-    $this->assertNull($newRecord->property2->value);
+    $this->assertSame('valueB', $newRecord->property2->value);
     \ChromePhp::clear();
     $this->testObject->updateAny();
     $this->assertTrue($newRecord->isValid);

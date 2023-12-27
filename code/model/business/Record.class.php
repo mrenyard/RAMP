@@ -258,11 +258,8 @@ abstract class Record extends Relatable
     //   $this->errorCollection= new StrCollection($this->id . ' is NOT editable!');
     //   return;
     // }
-    if ($this->isNew) {
-      $this->PrimaryKey->validate($postdata);
-      return;
-    }
     parent::validate($postdata);
+    if ($this->isNew && !$this->hasErrors) { $this->PrimaryKey->validate($postdata); }
   }
 
   /**

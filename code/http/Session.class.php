@@ -74,9 +74,9 @@ final class Session extends RAMPObject
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
-      $this->modelManager->getBusinessModel(
-        new SimpleBusinessModelDefinition(Str::set('LoginAccount'), Str::set('new'))
-      );
+    $this->modelManager->getBusinessModel(
+      new SimpleBusinessModelDefinition(Str::set('LoginAccount'), Str::set('new'))
+    );
     $this->accountEmailFilter = new Filter();
     $this->accountEmailCondition = new FilterCondition(Str::set('LoginAccount'), Str::set('email'));
     $this->accountEmailFilter->add($this->accountEmailCondition);
@@ -124,7 +124,7 @@ final class Session extends RAMPObject
     return (
       (isset(self::$instance->loginAccount)) &&
       (self::$instance->loginAccount->isValid) &&
-      (self::$instance->loginAccount->loginAccountTypeID->value->key >= $authorizationLevel)
+      (self::$instance->loginAccount->loginAccountType->value->key >= $authorizationLevel)
     );
   }
 
@@ -219,7 +219,7 @@ final class Session extends RAMPObject
       }
       if (
         (!$this->loginAccount->validatePassword($loginPassword)) ||
-        ((int)$this->loginAccount->loginAccountTypeID->value->key < $authorizationLevel)
+        ((int)$this->loginAccount->loginAccountType->value->key < $authorizationLevel)
       ) {
         throw new Unauthorized401Exception('Invalid password or insufficient privileges', 6);
       }
@@ -252,19 +252,20 @@ final class Session extends RAMPObject
       catch (DataFetchException | \OutOfBoundsException $confirmedEmailNew)
       {
         // new login details successfully confirmed
-        if ($authorizationLevel == LoginAccountType::REGISTERED())
+        if ($authorizationLevel == LoginAccountType::REGISTERED)
         {
           try {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
               new SimpleBusinessModelDefinition($strAU),
-              Filter::build($strAU, array('email' => $_POST[$auEmailPropertyID])))[0];
+              Filter::build($strAU, array('email' => $_POST[$auEmailPropertyID]))
+            )[0];
           } catch (DataFetchException $authenticatableUnitNotInDatabase) {
             $authenticatableUnit = $this->modelManager->getBusinessModel(
               new SimpleBusinessModelDefinition($strAU, Str::set('new'))
             );  
             $authenticatableUnit->validate(PostData::build($_POST));
             $this->modelManager->update($authenticatableUnit);
-          }
+          }          
           $this->loginAccount->createFor($authenticatableUnit);
           $view = new Email(
             RootView::getInstance(),

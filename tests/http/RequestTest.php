@@ -47,9 +47,12 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
@@ -57,15 +60,11 @@ require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 require_once '/usr/share/php/ramp/http/Request.class.php';
 require_once '/usr/share/php/ramp/http/Method.class.php';
 
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/http/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/http/MockRecord.class.php';
 
@@ -77,10 +76,11 @@ use ramp\condition\FilterCondition;
 use ramp\condition\PostData;
 use ramp\condition\InputDataCondition;
 use ramp\model\business\iBusinessModelDefinition;
-use ramp\model\business\LoginAccountType;
+use ramp\model\business\MockField;
+use ramp\model\business\MockRecord;
 use ramp\model\business\LoginAccount;
-
-// use tests\ramp\mocks\model\MockBusinessModelManager;
+use ramp\model\business\LoginAccountType;
+use ramp\model\business\HttpBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\http\Request.
@@ -100,19 +100,19 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
     $_POST = array();
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['QUERY_STRING'] = null;
-    // MockBusinessModelManager::reset();
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\http';
-    // \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/tests/mocks/http';
+    set_include_path( "'" . \ramp\SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path() );
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'ramp\model\business';
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
   }
 
   /**
    * Collection of assertions for ramp\http\Request::__construct().
-   * - assert is instance of {@link \ramp\core\Object}
-   * - assert is instance of {@link \ramp\model\iModelDefinition}
-   * - assert is instance of {@link \ramp\http\Request}
-   * @link \ramp\request\http\Request
+   * - assert is instance of {@see \ramp\core\Object}
+   * - assert is instance of {@see \ramp\model\iModelDefinition}
+   * - assert is instance of {@see \ramp\http\Request}
+   * @see \ramp\request\http\Request
    */
   public function test__construct()
   {
@@ -173,9 +173,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (GET Record collection filtered):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals NULL
-   *  - assert expectsFragment returns {@link \ramp\core\Boolean::FALSE()}
+   *  - assert expectsFragment returns {@see \ramp\core\Boolean::FALSE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'GET'
-   *  - assert method returns {@link \ramp\Method::GET()}
+   *  - assert method returns {@see \ramp\Method::GET()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/?property-a=valueA&property-b=valueB&property-c=valueC&from=100'
    * - $_SERVER['QUERY_STRING'] equals 'property-a=valueA&property-b=valueB&property-c=valueC&from=100'
    *  - assert modelURN mock-record
@@ -192,16 +192,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    *  - assert filter returns comparable Filter object
    * - $_POST[] (postData)
    *  - assert postData returns NULL
-   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
-   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
-   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
-   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
-   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
-   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
-   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
-   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
-   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
-   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
+   * @see ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @see ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @see ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @see ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @see ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @see ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @see ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @see ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @see ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @see ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function testGETRecordCollection()
   {
@@ -240,9 +240,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (POST individual Record):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals 'NotXmlHTTPRequest'
-   *  - assert expectsFragment returns {@link \ramp\core\Boolean::FALSE()}
+   *  - assert expectsFragment returns {@see \ramp\core\Boolean::FALSE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'POST'
-   *  - assert method returns {@link \ramp\Method::POST()}
+   *  - assert method returns {@see \ramp\Method::POST()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/key/'
    *  - assert modelURN mock-record:property-a
    *  - assert recordName MockRecord
@@ -257,16 +257,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - $_POST['mock-record:key:property-b'] equals 'valueB'
    * - $_POST['mock-record:key:property-c'] equals 'valueC'
    *   - assert postData returns comparable PostData object
-   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
-   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
-   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
-   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
-   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
-   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
-   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
-   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
-   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
-   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
+   * @see ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @see ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @see ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @see ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @see ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @see ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @see ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @see ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @see ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @see ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function testPOSTRecord()
   {
@@ -313,9 +313,9 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions based on (POST Property of Record return fragment):.
    * - $_SERVER['HTTP_X_REQUESTED_WITH'] equals 'Xmlhttp\Request'
-   *  - assert expectsFragment returns {@link \ramp\core\Boolean::TRUE()}
+   *  - assert expectsFragment returns {@see \ramp\core\Boolean::TRUE()}
    * - $_SERVER['REQUEST_METHOD'] equals 'POST'
-   *  - assert method returns {@link \ramp\Method::POST()}
+   *  - assert method returns {@see \ramp\Method::POST()}
    * - $_SERVER['REQUEST_URI'] equals '/mock-record/key/property-a'
    *  - assert modelURN mock-record:key:property-a
    *  - assert recordName MockRecord
@@ -329,16 +329,16 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    *  - assert filter returns NULL
    * - $_POST['record:key:property-b'] equals 'valueB'
    *   - assert postData returns comparable PostData object
-   * @link ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
-   * @link ramp.http.Request#method_get_method ramp\request\http\Request::method
-   * @link ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
-   * @link ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
-   * @link ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
-   * @link ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
-   * @link ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
-   * @link ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
-   * @link ramp.http.Request#method_get_filter ramp\request\http\Request::filter
-   * @link ramp.http.Request#method_get_postData ramp\request\http\Request::postData
+   * @see ramp.http.Request#method_get_expectsFragment ramp\request\http\Request::expectsFragment
+   * @see ramp.http.Request#method_get_method ramp\request\http\Request::method
+   * @see ramp.http.Request#method_get_resourceIdentifier ramp\request\http\Request::resourceIdentifier
+   * @see ramp.http.Request#method_get_modelURN ramp\request\http\Request::modelURN
+   * @see ramp.http.Request#method_get_recordName ramp\request\http\Request::recordName
+   * @see ramp.http.Request#method_get_recordKey ramp\request\http\Request::recordKey
+   * @see ramp.http.Request#method_get_propertyName ramp\request\http\Request::propertyName
+   * @see ramp.http.Request#method_get_fromIndex ramp\request\http\Request::fromIndex
+   * @see ramp.http.Request#method_get_filter ramp\request\http\Request::filter
+   * @see ramp.http.Request#method_get_postData ramp\request\http\Request::postData
    */
   public function test_POSTProperty()
   {
@@ -381,7 +381,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * Collection of assertions for \ramp\http\Request::recordKey based on (~) the current Session logged in account.
    * - assert returns key value 'new' when Session not set.
    * - assert returns key of relevant Session loginAccount when set.
-   * @link ramp.http.Request#methos_get_recordKey ramp\http\Request::recordKey
+   * @see ramp.http.Request#methos_get_recordKey ramp\http\Request::recordKey
    */
   public function testRecordKeyLoggedinAccount()
   {

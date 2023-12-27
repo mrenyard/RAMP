@@ -79,7 +79,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\condition\Condition}
    * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
-   *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * @see \ramp\condition\BusinessCondition
    */
   public function test__construct()

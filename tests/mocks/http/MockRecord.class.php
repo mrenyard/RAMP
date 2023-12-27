@@ -19,7 +19,7 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\mocks\http;
+namespace ramp\model\business;
 
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
