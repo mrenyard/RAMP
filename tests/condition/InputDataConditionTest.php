@@ -84,7 +84,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert is instance of {@see \ramp\condition\InputDataCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
-   *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * @see ramp.condition.InputDataCondition#method___construct ramp\condition\InputDataCondition
    */
   public function test__Construct()
@@ -118,7 +118,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\InputDataCondition::$primaryKeyValue.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set '$primaryKeyValue'
-   *   - with message: <em>'[className]->$primaryKeyValue is NOT settable'</em>
+   *   - with message: *'[className]->$primaryKeyValue is NOT settable'*
    * - assert allows retrieval of '$primaryKeyValue'
    * - assert '$primaryKeyValue' is a {@see \ramp\core\Str}
    * - assert '$primaryKeyValue' equal to provided at creation
@@ -144,7 +144,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\InputDataCondition::value.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'value'
-   *   - with message: <em>'[className]->value is NOT settable'</em>
+   *   - with message: *'[className]->value is NOT settable'*
    * - assert allows setting of 'comparable'
    * - assert allows retrieval of 'value'
    * - assert 'value' equal to recently set 'comparable'
@@ -177,7 +177,7 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
     /**
    * Collection of assertions for \ramp\condition\InputDataCondition::attributeURN.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attributeURN'
-   *   - with message: <em>'[className]->attributeURN is NOT settable'</em>
+   *   - with message: *'[className]->attributeURN is NOT settable'*
    * - assert allows retrieval of 'attributeURN'
    * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert 'attributeURN' equal to record:key:property

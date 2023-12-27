@@ -360,7 +360,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   /**
    * InvalidArgumentException reported when 3rd argument on constructor NOT compositeType \ramp\model\business\field\Option.
    * - assert throws \InvalidArgumentException when supplied 3rd arguments NOT compositeType \ramp\model\business\field\Option
-   *   - with message: <em>'OptionList $options compositeType MUST be \ramp\model\business\field\Option'</em>
+   *   - with message: *'OptionList $options compositeType MUST be \ramp\model\business\field\Option'*
    * @see \ramp\model\business\field\SelectFrom
    */
   public function testConstructorInvalidArgumentException()

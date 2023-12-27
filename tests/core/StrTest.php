@@ -59,7 +59,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions Str::$lowercase.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'lowercase'
-   *   - with message: <em>'[className]->lowercase is NOT settable'</em>
+   *   - with message: *'[className]->lowercase is NOT settable'*
    * - assert allows retrieval of 'lowercase'
    * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert each subsequent is same instance as first
@@ -87,7 +87,7 @@ class StrTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Str::uppercase.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'uppercase'
-   *   - with message: <em>'[className]->uppercase is NOT settable'</em>
+   *   - with message: *'[className]->uppercase is NOT settable'*
    * - assert allows retrieval of 'uppercase'
    * - assert retreved is an instance of {@see \ramp\core\Str}
    * - assert each subsequent is same instance as first

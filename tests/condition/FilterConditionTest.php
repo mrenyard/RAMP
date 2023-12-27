@@ -83,9 +83,9 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
    * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert is instance of {@see \ramp\condition\FilterCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
-   *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * - assert throws \DomainException when $value does Not validate against associated property
-   *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
+   *   - with message: *'Supplied argument does Not validate against associated property'*
    * @see ramp.condition.FilterCondition#method___construct ramp\condition\FilterCondition
    */
   public function test__Construct()
@@ -124,7 +124,7 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
    *  - [record][memberAccessOperator][key][memberAccessOperator][property][ComparisonOperator][openingParenthesisOperator][passedValue][closingParenthesisOperator]
    * - assert throws \DomainException on setting invalid second argument for value when it
    *   does Not validate against its associated property's processValidationRules() method
-   *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
+   *   - with message: *'Supplied argument does Not validate against associated property'*
    * @see ramp.condition.FilterCondition#method__invoke ramp\condition\FilterCondition::__invoke()
    */
   public function test__invoke()

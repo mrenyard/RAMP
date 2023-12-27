@@ -74,7 +74,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::memberAccess.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'memberAccess'
-   *   - with message: <em>'[className]->memberAccess is NOT settable'</em>.
+   *   - with message: *'[className]->memberAccess is NOT settable'*.
    * - assert allows retrieval of 'memberAccess'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (->).
@@ -95,7 +95,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::assignment.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'assignment'
-   *   - with message: <em>'[className]->assignment is NOT settable'</em>.
+   *   - with message: *'[className]->assignment is NOT settable'*.
    * - assert allows retrieval of 'assignment'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (=).
@@ -120,7 +120,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::equalTo.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'equalTo'
-   *   - with message: <em>'[className]->equalTo is NOT settable'</em>.
+   *   - with message: *'[className]->equalTo is NOT settable'*.
    * - assert allows retrieval of 'equalTo'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( == ).
@@ -145,7 +145,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::notEqualTo.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'notEqualTo'
-   *   - with message: <em>'[className]->notEqualTo is NOT settable'</em>.
+   *   - with message: *'[className]->notEqualTo is NOT settable'*.
    * - assert allows retrieval of 'notEqualTo'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( != ).
@@ -170,7 +170,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::lessThan.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'lessThan'
-   *   - with message: <em>'[className]->lessThan is NOT settable'</em>.
+   *   - with message: *'[className]->lessThan is NOT settable'*.
    * - assert allows retrieval of 'lessThan'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( < ).
@@ -195,7 +195,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::greaterThan.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'greaterThan'
-   *   - with message: <em>'[className]->greaterThan is NOT settable'</em>.
+   *   - with message: *'[className]->greaterThan is NOT settable'*.
    * - assert allows retrieval of 'greaterThan'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( > ).
@@ -220,7 +220,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::and.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'and'
-   *   - with message: <em>'[className]->and is NOT settable'</em>.
+   *   - with message: *'[className]->and is NOT settable'*.
    * - assert allows retrieval of 'and'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( && ).
@@ -245,7 +245,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::or.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'or'
-   *   - with message: <em>'[className]->or is NOT settable'</em>.
+   *   - with message: *'[className]->or is NOT settable'*.
    * - assert allows retrieval of 'or'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction ( || ).
@@ -270,7 +270,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::openingParenthesis.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'openingParenthesis'
-   *   - with message: <em>'[className]->memberAccess is NOT settable'</em>.
+   *   - with message: *'[className]->memberAccess is NOT settable'*.
    * - assert allows retrieval of 'openingParenthesis'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (').
@@ -295,7 +295,7 @@ class PHPEnvironmentTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Environment::closingParenthesis.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'closingParenthesis'
-   *   - with message: <em>'[className]->closingParenthesis is NOT settable'</em>.
+   *   - with message: *'[className]->closingParenthesis is NOT settable'*.
    * - assert allows retrieval of 'closingParenthesis'.
    * - assert retreved is an instance of {@see \ramp\core\Str}.
    * - assert retreved is same string as provided at construction (').

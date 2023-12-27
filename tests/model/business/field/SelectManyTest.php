@@ -391,7 +391,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
   /**
    * InvalidArgumentException reported when 3rd argument on constructor NOT compositeType \ramp\model\business\field\Option.
    * - assert throws \InvalidArgumentException when supplied 3rd arguments NOT compositeType \ramp\model\business\field\Option
-   *   - with message: <em>'OptionList $options compositeType MUST be \ramp\model\business\field\Option'</em>
+   *   - with message: *'OptionList $options compositeType MUST be \ramp\model\business\field\Option'*
    * @see \ramp\model\business\field\SelectFrom
    */
   public function testConstructorInvalidArgumentException()
@@ -403,7 +403,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
   /**
    * BadMethodCallException reported when $vlaue passed to processValidationRule() is NOT an array.
    * - assert throws \BadMethodCallException when supplied argument is NOT array
-   *   - with message: <em>'$value parameter must be an array'</em>
+   *   - with message: *'$value parameter must be an array'*
    * @see \ramp\model\business\field\SelectMany::processValidationRule()
    */
   public function testProcessValidationRuleException()

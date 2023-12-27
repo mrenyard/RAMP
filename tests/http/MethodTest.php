@@ -40,7 +40,7 @@ class MethodTest extends \PHPUnit\Framework\TestCase {
   /**
    * Collection of assertions for \ramp\http\Method::GET().
    * - assert throws InvalidArgumentException When first constructor arguments NOT an int
-   *   - with message: <em>'[className]::constructor expects first argument of type int.'</em>
+   *   - with message: *'[className]::constructor expects first argument of type int.'*
    * @see \ramp\http\Method::__construct()
    */
   public function test__Construct()

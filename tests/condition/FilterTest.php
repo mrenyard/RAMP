@@ -116,13 +116,13 @@ class FilterTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\Filter::build().
    * - assert throws \LengthException when $filters is empty
-   *   - with message: <em>'2nd argument $filters, MUST NOT be empty'</em>
+   *   - with message: *'2nd argument $filters, MUST NOT be empty'*
    * - assert throws \DomainException when RECORD does NOT match business model
-   *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * - assert throws \DomainException when any $filters PROPERTY does NOT match business model
-   *   - with message: <em>'Invalid $record $property arguments, do NOT match business model'</em>
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * - assert throws \DomainException when any $filter VALUE does NOT validate against associated property
-   *   - with message: <em>'Supplied argument does Not validate against associated property'</em>
+   *   - with message: *'Supplied argument does Not validate against associated property'*
    * @see \ramp\condition\Filter::build()
    */
   public function testBuildErrors() : void

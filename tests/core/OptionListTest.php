@@ -75,7 +75,7 @@ class OptionListTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
-   *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
+   *   - with message: *'[provided object]  NOT instanceof ramp\core\iOption'*
    * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructNoAguments()
@@ -114,7 +114,7 @@ class OptionListTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
-   *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
+   *   - with message: *'[provided object]  NOT instanceof ramp\core\iOption'*
    * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructWithCollection()
@@ -151,7 +151,7 @@ class OptionListTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws \InvalidArgumentException When any composite of provided collection is NOT castable to iOption.
-   *   - with message: <em>'[provided object]  NOT instanceof ramp\core\iOption'</em>
+   *   - with message: *'[provided object]  NOT instanceof ramp\core\iOption'*
    * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__ConstructSpecialist()

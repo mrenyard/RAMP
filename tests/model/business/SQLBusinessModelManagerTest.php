@@ -367,7 +367,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * - assert makes successful connection with data store
    * - assert SELECT SQL statement logged with \ChromePhp (Logger) on first request as expected
    * - assert throws \DomainException as provided iBusinessModelDefinition::$recordKey NOT found
-   *   - with message: <em>'No matching Record(s) found in data storage!'</em>
+   *   - with message: *'No matching Record(s) found in data storage!'*
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
   public function testGetBusinessModelRecordNotStored() : void

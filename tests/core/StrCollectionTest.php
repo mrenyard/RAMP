@@ -63,7 +63,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if any provided arguments are NOT string literal.
-   *   - with message: <em>'All arguments MUST be string literals!'</em>
+   *   - with message: *'All arguments MUST be string literals!'*
    * @see ramp.core.StrCollection \ramp\core\StrCollection
    */
   public function test__Construct()
@@ -159,7 +159,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
    * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
-   *   - with message: <em>'Offset out of bounds'</em>
+   *   - with message: *'Offset out of bounds'*
    * @see ramp.core.StrCollection#method_getIterator \ramp\core\StrCollection::getIterator()
    * @see ramp.core.StrCollection#method_add \ramp\core\StrCollection::add()
    * @see ramp.core.StrCollection#method_count \ramp\core\StrCollection::count
@@ -253,7 +253,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\StrCollection::offsetSet().
    * - assert {@see \ramp\core\StrCollection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
    * @see ramp.core.StrCollection#method_offsetSet \ramp\core\StrCollection::offsetSet()

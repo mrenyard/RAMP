@@ -112,7 +112,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$attribute.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
-   *   - with message: <em>'[className]->attribute is NOT settable'</em>
+   *   - with message: *'[className]->attribute is NOT settable'*
    * - assert allows retrieval of 'attribute'
    * - assert retrieved is a {@see \ramp\core\Str}
    * - assert 'attribute' is composite of [property]->[property]
@@ -138,7 +138,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$operator.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
-   *   - with message: <em>'[className]->operator is NOT settable'</em>.
+   *   - with message: *'[className]->operator is NOT settable'*.
    * - assert allows retrieval of 'operator'.
    * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
@@ -184,7 +184,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$record.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'record'
-   *   - with message: <em>'[className]->record is NOT settable'</em>
+   *   - with message: *'[className]->record is NOT settable'*
    * - assert allows retrieval of 'record'
    * - assert 'record' is a {@see \ramp\core\Str}
    * - assert 'record' equal to provided at creation
@@ -209,7 +209,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$property.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'property'
-   *   - with message: <em>'[className]->property is NOT settable'</em>
+   *   - with message: *'[className]->property is NOT settable'*
    * - assert allows retrieval of 'property'
    * - assert 'property' is a {@see \ramp\core\Str}
    * - assert 'property' equal to provided at creation

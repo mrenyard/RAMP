@@ -77,7 +77,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$attribute.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
-   *   - with message: <em>'[className]->attribute is NOT settable'</em>
+   *   - with message: *'[className]->attribute is NOT settable'*
    * - assert allows retrieval of 'attribute'
    * - assert retrieved is a {@see \ramp\core\Str}
    * - assert 'attribute' is composite of [property]->[property]
@@ -102,7 +102,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for BusinessCondition::$operator.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
-   *   - with message: <em>'[className]->operator is NOT settable'</em>.
+   *   - with message: *'[className]->operator is NOT settable'*.
    * - assert allows retrieval of 'operator'.
    * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.

@@ -84,9 +84,9 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for \ramp\condition\PostData::build().
    * - assert throws \DomainException when any $postdata NAME is NOT in correct form
-   *   - with message: <em>'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'</em>
+   *   - with message: *'Invalid format for name in $postdata, SHOULD be URN in the form "record:key:property"'*
    * - assert throws \DomainException when any $postdata NAME does NOT match business model
-   *   - with message: <em>'Invalid name in $postdata does NOT match business model'</em>
+   *   - with message: *'Invalid name in $postdata does NOT match business model'*
    * - assert where valid produces like for like representation of provied array as PostData object
    * @see ramp.condition.PostData#method___build ramp\condition\PostData::build()
    */

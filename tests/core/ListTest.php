@@ -67,7 +67,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
-   *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
+   *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see ramp.core.List \ramp\core\List
    */
   public function test__Construct()
@@ -111,11 +111,11 @@ class ListTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\List::getIterator(), add() and count.
    * - assert handle unpopulated {@see \ramp\core\List} iteration without fail
    * - assert {@see \ramp\core\List::add()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
    * - assert {@see \ramp\core\List::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
-   *   - with message: <em>'Offset out of bounds'</em>
+   *   - with message: *'Offset out of bounds'*
    * @see \ramp\core\List::getIterator()
    * @see \ramp\core\List::add()
    * @see \ramp\core\List::count
@@ -210,7 +210,7 @@ class ListTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\List::offsetSet().
    * - assert {@see \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
    * @see \ramp\core\mocks\ListTest\List::offsetSet()

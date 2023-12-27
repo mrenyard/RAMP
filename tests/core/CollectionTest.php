@@ -68,7 +68,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * - assert implements \Countable
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
-   *   - with message: <em>'$compositeType MUST be an accesible class name'</em>
+   *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see ramp.core.Collection \ramp\core\Collection
    */
   public function test__Construct()
@@ -114,11 +114,11 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
    * - assert handle unpopulated {@see \ramp\core\Collection} iteration without fail
    * - assert {@see \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert Count equal to number of objects added.
    * - assert collection object references occupy SAME position as added
    * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
-   *   - with message: <em>'Offset out of bounds'</em>
+   *   - with message: *'Offset out of bounds'*
    * @see \ramp\core\Collection::getIterator()
    * @see \ramp\core\Collection::add()
    * @see \ramp\core\Collection::count
@@ -213,7 +213,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\Collection::offsetSet().
    * - assert {@see \ramp\core\Collection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: <em>'[provided object] NOT instanceof [expected type]'</em>
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
    * @see \ramp\core\mocks\CollectionTest\Collection::offsetSet()

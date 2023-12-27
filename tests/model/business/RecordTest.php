@@ -386,9 +386,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   /**
    * Record Component registration process, used for KEY, PROPERTY and RELATION management
    * - assert throws \BadMethodCallException when called without being proceded by 2 calls to register().
-   *   - with message: <em>'Method call MUST be proceded by register() as documented!'</em>
+   *   - with message: *'Method call MUST be proceded by register() as documented!'*
    * - assert throws \InvalidArgumentException when provided RecordComponent::$parent dose NOT match Record.
-   *   - with message: <em>'Invalid RecordComponent argument (1), $parent does NOT match this Record.'</em>
+   *   - with message: *'Invalid RecordComponent argument (1), $parent does NOT match this Record.'*
    * - assert FIRST call to register() returns FALSE (registers $components[type][i] = name) and expects a second call.
    * - assert SECOND call to register() returns TRUE, potentially allowing continuation to initiate().
    * - assert $registeredName corresponds to that provided at register().
