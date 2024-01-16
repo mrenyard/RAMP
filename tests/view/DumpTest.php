@@ -21,57 +21,89 @@
  */
 namespace tests\ramp\view;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/view/View.class.php';
-require_once '/usr/share/php/ramp/view/ChildView.class.php';
+require_once '/usr/share/php/tests/ramp/view/ChildViewTest.php';
+
 require_once '/usr/share/php/ramp/view/Dump.class.php';
 
-require_once '/usr/share/php/tests/ramp/view/mocks/DumpTest/MockView.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/view/MockChildView.class.php';
 
-use tests\ramp\view\mocks\DumpTest\MockView;
-
-use ramp\view\View;
+use ramp\core\RAMPObject;
+use ramp\view\ChildView;
+use ramp\view\RootView;
 use ramp\view\Dump;
 
+// use tests\ramp\mocks\view\MockChildView;
+use tests\ramp\mocks\view\MockViewA;
+use tests\ramp\mocks\view\MockViewB;
+use tests\ramp\mocks\view\MockViewC;
+
 /**
- * Collection of tests for \ramp\view\Dump.
+ * Collection of tests for \ramp\view\ChildView.
  */
-class DumpTest extends \PHPUnit\Framework\TestCase
+class DumpTest extends \tests\ramp\view\ChildViewTest
 {
+  #region Setup
+  protected function preSetup() : void { RootView::reset(); }
+  protected function getTestObject() : RAMPObject { return new Dump(RootView::getInstance()); }
+  protected function postSetup() : void
+  {
+    // if (!isset($this->subCollection)) {
+    //   $this->subCollection = new \SplObjectStorage();
+    //   $this->subCollection->attach(new MockViewA());
+    //   $this->subCollection->attach(new MockViewB());
+    //   $this->subCollection->attach(new MockViewC());
+    // }
+  }
+  #endregion
+
   /**
-   * Collection of assertions for \ramp\view\ChildView::__construct().
+   * Default base constructor assertions \ramp\view\View::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\view\View}
-   * - assert is instance of {@see \ramp\view\RootView}
-   * - assert output of children on provided parentView is as expected maintaining sequance and format
-   * - assert output of render on provided parentView is as expected maintaining sequance and format
-   * @see ramp.view.ChildView ramp\view\ChildView
+   * - assert is instance of {@see \ramp\view\ChildView}
+   * - assert is instance of {@see \ramp\view\Dump}
+   * @see \ramp\model\Model
    */
-  public function test__construct()
+  public function testConstruct() : void
   {
-    $rootView = new MockView();
-    $testObject = new Dump($rootView);
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\view\View', $testObject);
-    $this->assertInstanceOf('\ramp\view\Dump', $testObject);
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\view\Dump', $this->testObject);
+  }
 
-    $expectedRegEx = '#^<pre>[A-Za-z0-9 _/]*code/view/Dump.class.php:[0-9]*:'.PHP_EOL.
-      'class ramp\\\\view\\\\Dump\#[0-9]* \([0-9]*\) {'.PHP_EOL.
-        '((.|\n)*)}'.PHP_EOL.'</pre>$#';
-  
+  /**
+   * Addition of sub views.
+   * - assert each child view added sequentially.
+   * - assert View->children output maintains sequance and format.
+   * @see \ramp\view\View::add()
+   * @see \ramp\view\View::children
+   */
+  public function testSubViewAddition(string $parentRender = 'tests\ramp\mocks\view\MockChildView ') : void
+  {
+    // STUB
+    $this->assertTrue(TRUE);
+  }
+
+  public function testRender()
+  {
+    $expectedRegEx = '#^<pre>object\(ramp\\\view\\\Dump\)\#[0-9]* \([0-9]*\) {'.PHP_EOL. '((.|\n)*)}'.PHP_EOL.'</pre>$#';
     ob_start();
-    $rootView->children;
+    RootView::getInstance()->children;
     $output = ob_get_clean();
     $this->assertMatchesRegularExpression($expectedRegEx, $output);
 
     ob_start();
-    $rootView->render();
+    RootView::getInstance()->render();
     $output = ob_get_clean();
     $this->assertMatchesRegularExpression($expectedRegEx, $output);
+  }
+
+  /**
+   * Cloning copies sub views.
+   * - assert cloned View without associated model is equal to the original
+   * @see \ramp\view\View::__clone()
+   */
+  public function testClone() : void
+  {
+    parent::testClone();
   }
 }

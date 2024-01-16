@@ -23,41 +23,24 @@ namespace tests\ramp\mocks\model;
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\iCollection;
-use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
-
-class MockBusinessModelCollection extends BusinessModel implements iCollection
-{
-  protected function get_id() : Str
-  {
-  }
-
-  /**
-   * Add a reference (Record), to this collection.
-   * @param \ramp\core\RAMPObject $object RAMPObject reference to be added (Record)
-   * @throws \InvalidArgumentException When provided object NOT expected type (Record)
-   */
-  public function add(RAMPObject $object) : void
-  {
-    self::offsetSet($this->get_count(), $object);
-  }
-}
 
 /**
  * Mock Concreate implementation of \ramp\model\business\BusinessModel for testing against.
  */
 class MockBusinessModel extends BusinessModel
 {
+  private $aProperty;
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
   private $withError;
 
-  public function __construct($withError = FALSE)
+  public function __construct($withError = FALSE, $aProperty = NULL)
   {
+    $this->aProperty = $aProperty;
     parent::__construct(NULL);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -67,6 +50,11 @@ class MockBusinessModel extends BusinessModel
 
   public function get_id() : Str
   {
+  }
+
+  protected function get_aProperty()
+  {
+    return $this->aProperty;
   }
 
   public function validate(PostData $postdata) : void

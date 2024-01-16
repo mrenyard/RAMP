@@ -23,8 +23,6 @@ namespace ramp\view;
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\Collection;
-// use ramp\core\BadPropertyCallException;
-// use ramp\model\business\BusinessModel;
 
 /**
  * Definition of presentation format and type to be associated with a given Model.
