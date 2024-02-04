@@ -21,177 +21,153 @@
  */
 namespace tests\ramp\view\document;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/view/View.class.php';
-require_once '/usr/share/php/ramp/view/RootView.class.php';
-require_once '/usr/share/php/ramp/view/ChildView.class.php';
-require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/Document.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
-require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
-require_once '/usr/share/php/ramp/model/business/Record.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 
-require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockDocumentView.class.php';
-require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockView.class.php';
-require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/ramp/view/document/mocks/DocumentViewTest/MockModel.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/view/MockDocumentView.class.php';
 
-use tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView;
-use tests\ramp\view\document\mocks\DocumentViewTest\MockView;
-use tests\ramp\view\document\mocks\DocumentViewTest\MockModel;
-use tests\ramp\view\document\mocks\DocumentViewTest\MockBusinessModel;
-use tests\ramp\view\document\mocks\DocumentViewTest\MockBusinessModelCollection;
-
+use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\BadPropertyCallException;
-use ramp\core\PropertyNotSetException;
 use ramp\view\RootView;
-use ramp\view\document\DocumentView;
+
+use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\view\MockDocumentView;
+use tests\ramp\mocks\model\MockBusinessModel;
 
 /**
- * Collection of tests for \ramp\view\document\DocumentView.
+ * Collection of tests for \ramp\view\ComplexView.
  */
-class DocumentViewTest extends \PHPUnit\Framework\TestCase
+class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
 {
-  private $testObject;
-  private $parentView;
+  #region Setup
+  protected function preSetup() : void { RootView::reset(); }
+  protected function getTestObject() : RAMPObject { return new MockDocumentView(RootView::getInstance()); }
+  protected function postSetup() : void { }
+  #endregion
 
   /**
-   * Setup test articles
+   * Default base constructor assertions \ramp\view\View::__construct().
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * - assert is instance of {@see \ramp\view\ChildView}
+   * - assert is instance of {@see \ramp\view\ComplexView}
+   * - assert is instance of {@see \ramp\view\document\DocumentView}
+   * @see \ramp\view\document\DocumentView
    */
-  public function setUp() : void
+  public function testConstruct() : void
   {
-    RootView::reset();
-    $this->parentView = new MockView(RootView::getInstance());
-    $this->testObject = new MockDocumentView($this->parentView);
-  }
-
-  /**
-   * Collection of assertions for \ramp\view\document\DocumentView::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * - assert is instance of {@link \ramp\view\ChildView}
-   * - assert is instance of {@link \ramp\view\document\DocumentView}
-   * @link ramp.view.document.DocumentView ramp\view\document\DocumentView
-   */
-  public function test__construct()
-  {
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\view\View', $this->testObject);
-    $this->assertInstanceOf('\ramp\view\ChildView', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\document\DocumentView', $this->testObject);
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\DocumentView::__set() and
-   * \ramp\view\document\DocumentView::__get().
-   * - assert PropertyNotSetException thrown when trying to set value of none existant property
-   * - assert BadPropertyCallException thrown when trying to get value of none existant property
-   * - assert setting of property on component (contained) \ramp\model\document\DocumentModel passed through 
-   * - assert that property calls are passes to its component (contained) \ramp\model\document\DocumentModel
-   * - assert that property calls are passes to its component (contained) \ramp\model\business\BusinessModel
-   * @link ramp.view.document.DocumentView#method__set ramp\view\document\DocumentView::__set()
-   * @link ramp.view.document.DocumentView#method__get ramp\view\document\DocumentView::__get()
+   * Addition of sub views. 
+   * - assert each child view added sequentially.
+   * - assert View->children output maintains sequance and format.
+   * @see \ramp\view\View::add()
+   * @see \ramp\view\View::children
    */
-  public function test__set__get()
+  public function testSubViewAddition(string $parentRender = 'tests\ramp\mocks\view\MockDocumentView ') : void
   {
-    try {
-      $fail = $this->testObject->noProperty;
-    } catch (BadPropertyCallException $expected) {
-      $this->assertEquals(
-        'Unable to locate noProperty of \'tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView\'',
-        $expected->getMessage()
-      );
-      try {
-        $this->testObject->noProperty = 'aValue';
-      } catch (PropertyNotSetException $expected) {
-        $this->assertEquals(
-          'tests\ramp\view\document\mocks\DocumentViewTest\MockDocumentView->noProperty is NOT settable',
-          $expected->getMessage()
-        );
-        $value = Str::set('[TITLE]');
-        $this->testObject->title = $value;
-        $this->assertSame($value, $this->testObject->title);
-        return;
-      }
-      $this->fail('An expected PropertyNotSetException has NOT been raised.');
-    }
-    $this->fail('An expected BadPropertyCallException has NOT been raised.');
+    parent::postSetup();
+    $this->testObject->viewOnlyTesting = TRUE;
+    parent::testSubViewAddition($parentRender);
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\DocumentView::setModel(), and 
-   * \ramp\view\document\DocumentView::hasModel and \ramp\view\document\DocumentView::__get().
-   * - Prior to model set hasModel returns FALSE and post set TRUE.
-   * - assert that property calls are passes to its component (contained) {@link \ramp\model\business\BusinessModel}
-   * @link ramp.view.document.DocumentView#method_setModel ramp\view\document\DocumentView::setModel()
-   * @link ramp.view.document.DocumentView#method__get ramp\view\document\DocumentView::__get()
+   * Cloning copies sub views.
+   * - assert cloned View without associated model is equal to the original
+   * - assert cloned View with associated model NOT equal as Model association removed
+   * - assert cloned View with model re associated is equal to the original 
+   * @see \ramp\view\View::__clone()
    */
-  public function testSetModel()
+  public function testClone() : void
   {
-    $businessModel = new MockBusinessModel();
-    $this->assertFalse($this->testObject->hasModel);
-    $this->testObject->setModel($businessModel);
-    $this->assertTrue($this->testObject->hasModel);
-    $value = 'aValue';
-    $businessModel->aProperty = $value;
-    $this->assertSame($this->testObject->aProperty, $value);
-    $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
+    parent::testClone();
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\DocumentView::setModel() and
-   * \ramp\view\document\DocumentView::hasModel with cascade.
-   * - Prior to model set hasModel returns FALSE and post set TRUE
-   * @link \ramp\view\document\DocumentVieww#method_setModel \ramp\view\document\DocumentView::setModel()
-   * @link \ramp\view\document\DocumentVieww#method_hasModel \ramp\view\document\DocumentView::hasModel()
+   * Check BadMethodCallException thrown when model already set.
+   * - assert throws BadMethodCallException when model already set.
+   *   - with message: *'model already set violation'*
+   * @see \ramp\view\ComplexView::setModel()
    */
-  public function testSetModelWithCascade()
+  public function testModelAlreadySetException() : void
   {
-    $subModel1 = new MockBusinessModel();
-    $parentModel = new MockBusinessModelCollection();
-    $parentModel->add($subModel1);
-
-    $parentView = new MockDocumentView(RootView::getINstance());
-    $childView = new MockDocumentView($parentView);
-    $this->assertFalse($parentView->hasModel);
-    $this->assertFalse($childView->hasModel);
-    $parentView->setModel($parentModel);
-    $this->assertTrue($parentView->hasModel);
-    $this->assertTrue($childView->hasModel);
+    parent::testModelAlreadySetException();
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\DocumentView::setModel() and
-   * \ramp\view\document\DocumentView::hasModel no cascade.
-   * - Prior to model set hasModel returns FALSE and post set TRUE
-   * @link \ramp\view\document\DocumentVieww#method_setModel \ramp\view\document\DocumentView::setModel()
-   * @link \ramp\view\document\DocumentVieww#method_hasModel \ramp\view\document\DocumentView::hasModel()
+   * Check read access to associated Model's properties.
+   * - assert that property calls are passes to its component (contained) {@see \ramp\model\Model}.
    */
-  public function testSetModelNoCascade()
+  public function testPassthroughProperties() : void
   {
-    $subModel1 = new MockBusinessModel();
-    $parentModel = new MockBusinessModelCollection();
-    $parentModel->add($subModel1);
+    parent::testPassthroughProperties();
+  }
 
-    $parentView = new MockDocumentView(RootView::getINstance());
-    $childView = new MockDocumentView($parentView);
-    $this->assertFalse($parentView->hasModel);
-    $this->assertFalse($childView->hasModel);
-    $parentView->setModel($parentModel, FALSE);
-    $this->assertTrue($parentView->hasModel);
-    $this->assertFalse($childView->hasModel);
+  /**
+   * Manage complex hierarchical and ordered model to view interlacing, as appropriate from *this* View definition.
+   * - assert prior to model set hasModel returns FALSE and post set TRUE.
+   * - assert when Sequentially model provided (x2 examples):
+   *   - each view added sequentially as expected.
+   *   - output from View->render() maintains ecpected sequance.
+   * - assert when Hierarchy model provided (x2 examples):
+   *   - each view added sequentially and hieratically as expected.
+   *   - output from View->render() maintains sequance and hieratically format.
+   */
+  public function testComplexModelCascading(string $parentViewType = 'tests\ramp\mocks\view\MockDocumentView', $templateName = NULL, $templateType = NULL) : void
+  {
+    parent::testComplexModelCascading($parentViewType, $templateName, $templateType);
+  }
+
+  /**
+   * 'class' attribute managment and retrieval.
+   * - assert 'style' setting adds to classlist
+   * - assert attribute('class') returns in expected format.
+   * - assert model definition forms part of classlist as expected. 
+   */
+  public function testClassProperyReturnValue()
+  {
+    $this->testObject->style = Str::set('default');
+    $this->assertSame('default', (string)$this->testObject->class);
+    $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
+    $record = new MockRecord();
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('mock-field field default', (string)$this->testObject->class);
+    $this->assertSame(' class="mock-field field default"', (string)$this->testObject->attribute('class'));
+  }
+
+  /**
+   * heading/label element value managment and retrieval.
+   * - assert default value '[Heading/Lable]'
+   * - assert access setting through $this->label.
+   * - assert retrieval throught either throught 'heading' or 'lable'
+   * - assert when associated with a field, returns the field 'lable' in expected format. 
+   */
+  public function testLabelHeadingProperyReturnValue()
+  {
+    $this->assertSame('[Heading/Label]', (string)$this->testObject->label); // DEFAULT
+    $this->testObject->label = Str::set('My Heading');
+    $this->assertSame('My Heading', (string)$this->testObject->heading);
+    $this->assertSame($this->testObject->label, $this->testObject->heading);
+    $record = new MockRecord();
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
+  }
+
+  /**
+   * 'id' attribute managment and retrieval.
+   * - assert default when not set or related to data field returns unique uid[number].
+   * - assert with data returns expected URN [record]:[key]:[property]
+   */
+  public function testIdPropertyReturenValue()
+  {
+    $this->assertMatchesRegularExpression('#^uid[0-9]*$#', (string)$this->testObject->id);
+    $data = new \stdClass();
+    $data->keyA = 1; $data->keyB = 1; $data->keyC = 1;
+    $record = new MockRecord($data);
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
   }
 }

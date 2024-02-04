@@ -85,16 +85,17 @@ class DumpTest extends \tests\ramp\view\ChildViewTest
 
   public function testRender()
   {
-    $expectedRegEx = '#^<pre>object\(ramp\\\view\\\Dump\)\#[0-9]* \([0-9]*\) {'.PHP_EOL. '((.|\n)*)}'.PHP_EOL.'</pre>$#';
+    $expectedRegEx = '#^<pre>(object\\()?[\\\///a-zA-Z]*Dump(\\)\\#|.class.php:)[0-9]*(:| \\([0-9]*\\) {)' .
+      PHP_EOL . '((.|\n)*)' .PHP_EOL.'</pre>$#';
     ob_start();
     RootView::getInstance()->children;
-    $output = ob_get_clean();
-    $this->assertMatchesRegularExpression($expectedRegEx, $output);
-
+    $output1 = ob_get_clean();
+    $this->assertMatchesRegularExpression($expectedRegEx, $output1);
     ob_start();
     RootView::getInstance()->render();
-    $output = ob_get_clean();
-    $this->assertMatchesRegularExpression($expectedRegEx, $output);
+    $output2 = ob_get_clean();
+    $this->assertMatchesRegularExpression($expectedRegEx, $output2);
+    $this->assertSame($output1, $output2);
   }
 
   /**

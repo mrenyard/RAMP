@@ -50,6 +50,7 @@ class MockBusinessModel extends BusinessModel
 
   public function get_id() : Str
   {
+    return Str::set('ID');
   }
 
   protected function get_aProperty()

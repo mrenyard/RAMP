@@ -68,11 +68,11 @@ abstract class Field extends RecordComponent
    * $this->label;
    * ```
    * @return \ramp\core\Str Label for *this*
-   *
+   */
   protected function get_label() : Str
   {
-    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', str_replace('KEY', '', $this->propertyName)))));
-  }*/
+    return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->name))));
+  }
 
   /**
    * ArrayAccess method offsetSet, USE DISCOURAGED.

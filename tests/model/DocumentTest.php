@@ -141,7 +141,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * @see ramp.model.business.BusinessModel#method_set_placeholder ramp\model\business\BusinessModel::placeholder
    * @see ramp.model.business.BusinessModel#method_get_placeholder ramp\model\business\BusinessModel::placeholder
    */
-  public function testGetSet_summaryLabel() : void
+  public function testGetSet_summaryPlaceholder() : void
   {
     $this->testObject->summary = Str::set('Heading');
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->summary);

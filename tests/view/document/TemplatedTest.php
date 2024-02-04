@@ -21,194 +21,245 @@
  */
 namespace tests\ramp\view\document;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/view/View.class.php';
-require_once '/usr/share/php/ramp/view/RootView.class.php';
-require_once '/usr/share/php/ramp/view/ChildView.class.php';
-require_once '/usr/share/php/ramp/view/ComplexView.class.php';
-require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
+require_once '/usr/share/php/tests/ramp/view/document/DocumentViewTest.php';
+
+require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/Document.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 
-require_once '/usr/share/php/tests/ramp/view/document/mocks/TemplatedTest/MockBusinessModel.class.php';
-require_once '/usr/share/php/tests/ramp/view/document/mocks/TemplatedTest/MockModel.class.php';
-
-use tests\ramp\view\document\mocks\TemplatedTest\MockBusinessModel;
-use tests\ramp\view\document\mocks\TemplatedTest\MockModel;
-
+use ramp\SETTING;
+use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\core\BadPropertyCallException;
 use ramp\core\PropertyNotSetException;
 use ramp\view\RootView;
 use ramp\view\document\Templated;
 
+use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\view\MockViewA;
+use tests\ramp\mocks\view\MockViewB;
+use tests\ramp\mocks\view\MockViewC;
+
 /**
- * Collection of tests for \ramp\view\document\template\Templated.
+ * Collection of tests for \ramp\view\ComplexView.
  */
-class TemplatedTest extends \PHPUnit\Framework\TestCase
+class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
 {
-  private $templateName;
-  private $testObject;
+  private $templareName;
+  private $templateType;
 
-  /**
-   * Setup test articles
-   */
-  public function setUp() : void
-  {
-    $this->templateName = Str::set('info');
-    $this->testObject = new Templated(RootView::getInstance(), $this->templateName);
+  #region Setup
+  protected function preSetup() : void { 
+    require_once '/home/mrenyard/Projects/RAMP/www/load.ini.php';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = '\tests\ramp\mocks\model';
+    $this->templateName = Str::set('path');
+    $this->templateType = Str::set('test');
+    RootView::reset();
   }
+  protected function getTestObject() : RAMPObject { return new Templated(RootView::getInstance(), $this->templateName, $this->templateType); }
+  protected function postSetup() : void {  }
+  #endregion
 
   /**
-   * Collection of assertions for \ramp\view\document\Templated::__construct().
-   * - assert is instance of {@link \ramp\core\RAMPObject}
-   * - assert is instance of {@link \ramp\view\View}
-   * - assert is instance of {@link \ramp\view\ChildView}
-   * - assert is instance of {@link \ramp\view\document\DocumentView}
-   * - assert is instance of {@link \ramp\view\document\Templated}
-   * - assert throws {@link \InvalidArgumentException} when provided arguments do NOT translate to a valid file path. 
-   *  - with message 'Provided $templateName ([...]) of $templateType ([...]) is non existant!'
-   * @link ramp.view.document.Templated ramp\view\document\Templated
+   * Default base constructor assertions \ramp\view\View::__construct().
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\view\View}
+   * - assert is instance of {@see \ramp\view\ChildView}
+   * - assert is instance of {@see \ramp\view\ComplexView}
+   * - assert is instance of {@see \ramp\view\document\DocumentView}
+   * - assert is instance of {@see \ramp\view\document\Templated}
+   * @see \ramp\view\document\Templated
    */
-  public function test__construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\view\View', $this->testObject);
-    $this->assertInstanceOf('\ramp\view\ChildView', $this->testObject);
-    $this->assertInstanceOf('\ramp\view\document\DocumentView', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\document\Templated', $this->testObject);
-
-    try {
-      new Templated(RootView::getInstance(), Str::set('bad'));
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertEquals(
-        'Provided $templateName (bad) of $templateType (html) is non existant!',
-        $expected->getMessage()
-      );
-      return;
-    }
-    $this->fail('An expected InvalidArgumentException has NOT been raised.');
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\Templated::__set() and
-   * \ramp\view\document\Templated::__get().
-   * - assert {@link \ramp\core\PropertyNotSetException} thrown when trying to set value of none existant property
-   * - assert {@link \ramp\core\BadPropertyCallException} thrown when trying to get value of none existant property
-   * - assert setting of property on component (contained) {@link \ramp\model\document\DocumentModel} passed through 
-   * - assert that property calls are passed to its component (contained) {@link \ramp\model\document\DocumentModel}
-   * - assert that property calls are passed to its component (contained) {@link \ramp\model\business\BusinessModel}
-   * @link ramp.view.document.Templated#method__set ramp\view\document\Templated::__set()
-   * @link ramp.view.document.Templated#method__get ramp\view\document\Templated::__get()
+   * Addition of sub views. 
+   * - assert each child view added sequentially.
+   * - assert View->children output maintains sequance and format.
+   * @see \ramp\view\View::add()
+   * @see \ramp\view\View::children
    */
-  public function test__set__get()
+  public function testSubViewAddition(string $parentRender = 'ramp\view\document\Templated') : void
   {
-    $this->testObject = new Templated(RootView::getInstance(), $this->templateName);
-    try {
-      $fail = $this->testObject->noProperty;
-    } catch (BadPropertyCallException $expected) {
-      $this->assertEquals(
-        'Unable to locate noProperty of \'ramp\view\document\Templated\'',
-        $expected->getMessage()
-      );
-      try {
-        $this->testObject->noProperty = 'aValue';
-      } catch (PropertyNotSetException $expected) {
+    $subCollection = new \SplObjectStorage();
+    $subCollection->attach(new MockViewA());
+    $subCollection->attach(new MockViewB());
+    $subCollection->attach(new MockViewC());
+    $i = 0;
+    foreach ($subCollection as $subView) {
+      $this->testObject->add($subView);
+      $i++;
+      ob_start();
+      $this->testObject->render();
+      $output = ob_get_clean();
+      if ($i === 1)
+      {
         $this->assertEquals(
-          'ramp\view\document\Templated->noProperty is NOT settable',
-          $expected->getMessage()
+          $parentRender .
+          'tests\ramp\mocks\view\MockViewA ',
+          $output
         );
-        $value = Str::set('[TITLE]');
-        $this->testObject->title = $value;
-        $this->assertSame($value, $this->testObject->title);
-        return;
       }
-      $this->fail('An expected PropertyNotSetException has NOT been raised.');
+      if ($i === 2)
+      {
+        $this->assertEquals(
+          $parentRender.
+          'tests\ramp\mocks\view\MockViewA '.
+          'tests\ramp\mocks\view\MockViewB ',
+          $output
+        );
+      }
+      if ($i === 3)
+      {
+        $this->assertEquals(
+          $parentRender.
+          'tests\ramp\mocks\view\MockViewA '.
+          'tests\ramp\mocks\view\MockViewB '.
+          'tests\ramp\mocks\view\MockViewC ',
+          $output
+        );
+      }
     }
-    $this->fail('An expected BadPropertyCallException has NOT been raised.');
+    $this->assertSame(3, $i);
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\Templated::setModel()
-   *  and \ramp\view\document\Templated::__get().
-   * - assert that property calls are passes to its component (contained) {@link \ramp\model\business\BusinessModel}
-   * @link ramp.view.document.Templated#method_setModel ramp\view\document\Templated::setModel()
-   * @link ramp.view.document.Templated#method__get ramp\view\document\Templated::__get()
+   * Cloning copies sub views.
+   * - assert cloned View without associated model is equal to the original
+   * - assert cloned View with associated model NOT equal as Model association removed
+   * - assert cloned View with model re associated is equal to the original 
+   * @see \ramp\view\View::__clone()
    */
-  public function testSetModel()
+  public function testClone() : void
   {
-    $this->testObject = new Templated(RootView::getInstance(), $this->templateName);
-    $businessModel = new MockBusinessModel();
-    $this->testObject->setModel($businessModel);
-    $value = 'aValue';
-    $businessModel->aProperty = $value;
-    $this->assertSame($this->testObject->aProperty, $value);
-    $this->assertSame($businessModel->aProperty, $this->testObject->aProperty);
+    parent::testClone();
   }
 
   /**
-   * Collection of assertions for \ramp\view\document\Templated::templateType.
-   * - assert path (OBJECT::$templte) contains template type (html) by default.
-   * - assert post set path (OBJECT::$template) contains template type as expected. 
-   * - assert throws {@link \ramp\core\PropertyNotSetException} when provided value does NOT translate to a valid file path. 
-   *  - with message 'Provided $templateName ([...]) of $templateType ([...]) is non existant!'
-   * @link ramp.view.document.Templated#method_set_templateType ramp\view\document\Templated::templateType
+   * Check BadMethodCallException thrown when model already set.
+   * - assert throws BadMethodCallException when model already set.
+   *   - with message: *'model already set violation'*
+   * @see \ramp\view\ComplexView::setModel()
    */
-  public function testTemplateType()
+  public function testModelAlreadySetException() : void
   {
-    $this->assertStringContainsString('/html/', $this->testObject->template);
+    parent::testModelAlreadySetException();
+  }
+
+  /**
+   * Check read access to associated Model's properties.
+   * - assert that property calls are passes to its component (contained) {@see \ramp\model\Model}.
+   */
+  public function testPassthroughProperties() : void
+  {
+    parent::testPassthroughProperties();
+  }
+
+  /**
+   * Manage complex hierarchical and ordered model to view interlacing, as appropriate from *this* View definition.
+   * - assert prior to model set hasModel returns FALSE and post set TRUE.
+   * - assert when Sequentially model provided (x2 examples):
+   *   - each view added sequentially as expected.
+   *   - output from View->render() maintains ecpected sequance.
+   * - assert when Hierarchy model provided (x2 examples):
+   *   - each view added sequentially and hieratically as expected.
+   *   - output from View->render() maintains sequance and hieratically format.
+   */
+  public function testComplexModelCascading(string $parentViewType = 'ramp\view\document\Templated', $templateName = NULL, $templateType = NULL) : void
+  {
+    // $this->assertSame(
+    //   SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
+    //   $this->testObject->template
+    // );
+    parent::testComplexModelCascading($parentViewType, Str::set('path'), Str::set('test'));
+  }
+
+  /**
+   * 'class' attribute managment and retrieval.
+   * - assert 'style' setting adds to classlist
+   * - assert attribute('class') returns in expected format.
+   * - assert model definition forms part of classlist as expected. 
+   */
+  public function testClassProperyReturnValue()
+  {
+    $this->testObject->style = Str::set('default');
+    $this->assertSame('default', (string)$this->testObject->class);
+    $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
+    $record = new MockRecord();
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('mock-field field default', (string)$this->testObject->class);
+    $this->assertSame(' class="mock-field field default"', (string)$this->testObject->attribute('class'));
+  }
+
+  /**
+   * heading/label element value managment and retrieval.
+   * - assert default value '[Heading/Lable]'
+   * - assert access setting through $this->label.
+   * - assert retrieval throught either throught 'heading' or 'lable'
+   * - assert when associated with a field, returns the field 'lable' in expected format. 
+   */
+  public function testLabelHeadingProperyReturnValue()
+  {
+    $this->assertSame('[Heading/Label]', (string)$this->testObject->label); // DEFAULT
+    $this->testObject->label = Str::set('My Heading');
+    $this->assertSame('My Heading', (string)$this->testObject->heading);
+    $this->assertSame($this->testObject->label, $this->testObject->heading);
+    $record = new MockRecord();
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
+  }
+  
+  /**
+   * 'id' attribute managment and retrieval.
+   * - assert default when not set or related to data field returns unique uid[number].
+   * - assert with data returns expected URN [record]:[key]:[property]
+   */
+  public function testIdPropertyReturenValue()
+  {
+    $this->assertMatchesRegularExpression('#^uid[0-9]*$#', (string)$this->testObject->id);
+    $data = new \stdClass();
+    $data->keyA = 1; $data->keyB = 1; $data->keyC = 1;
+    $record = new MockRecord($data);
+    $this->testObject->setModel($record->aProperty);
+    $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
+  }
+
+  /**
+   * Constructor bad template path exception test.
+   * - assert throws InvalidArgumentException when arguments do NOT map to a valid template file.
+   */
+  public function testConstructInvalidArgumentException()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Provided $templateName (NotATemplate) of $templateType (test) is non existant!');
+    new Templated(RootView::getInstance(), Str::set('NotATemplate'), $this->templateType);
+  }
+
+  /**
+   * Alow template type swithiching through set templateType.
+   * - assert get $this->template returns valid template full path.
+   * - assert changing templateType changes to relevant new full path.
+   * - assert exeption throws PropertyNotSetException when teplate file missing and reverts to last valid path.
+   */
+  public function testSwitchTemplateType()
+  {
+    $this->assertSame(
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
+      $this->testObject->template
+    );
     $this->testObject->templateType = Str::set('text');
-    $this->assertStringContainsString('/text/', $this->testObject->template);
-    try {
-      $this->testObject->templateType = Str::set('bad');
-    } catch (PropertyNotSetException $expected) {
-      $this->assertEquals(
-        'Provided $templateName (info) of $templateType (bad) is non existant!',
-        $expected->getMessage()
-      );
-      return;
-    }
-    $this->fail('An expected PropertyNotSetException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for \ramp\view\document\Templated::render().
-   * - assert renders expected output using named and type of template
-   * - assert renders expected output including 'info' when in DEV_MODE  
-   * @link ramp.view.document.Templated#method_render ramp\view\document\Templated::Render()
-   */
-  public function testRender()
-  {
-    ob_start();
-    $this->testObject->render();
-    $render1 = ob_get_contents();
-    ob_end_clean();
-    $this->assertEquals(
-'<!-- ' . $this->testObject->template . ' -->
-',
-      $render1
+    $this->assertSame(
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/text/'. $this->templateName . '.tpl.php',
+      $this->testObject->template
     );
-
-    define('DEV_MODE', TRUE);
-    ob_start();
-    $this->testObject->render();
-    $render2 = ob_get_contents();
-    ob_end_clean();
-    $this->assertEquals(
-'<!-- ' . $this->testObject->template . ' -->
-<!-- ' . $this->testObject->template . ' -->
-',
-      $render2
-    );
-    $DEV_MODE = FALSE;
+    $this->expectException(PropertyNotSetException::class);
+    $this->expectExceptionMessage('Provided $templateName (path) of $templateType (html) is non existant!');
+    $this->testObject->templateType = Str::set('html');
+    $this->assertSame(
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/text/'. $this->templateName . '.tpl.php',
+      $this->testObject->template
+    );    
   }
 }

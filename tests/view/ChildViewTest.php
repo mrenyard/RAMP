@@ -60,7 +60,7 @@ class ChildViewTest extends \tests\ramp\view\ViewTest
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\view\View}
    * - assert is instance of {@see \ramp\view\ChildView}
-   * @see \ramp\model\Model
+   * @see \ramp\view\ChildView
    */
   public function testConstruct() : void
   {

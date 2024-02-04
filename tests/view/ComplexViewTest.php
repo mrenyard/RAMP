@@ -58,7 +58,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
    * - assert is instance of {@see \ramp\view\View}
    * - assert is instance of {@see \ramp\view\ChildView}
    * - assert is instance of {@see \ramp\view\ComplexView}
-   * @see \ramp\model\Model
+   * @see \ramp\view\ChildView
    */
   public function testConstruct() : void
   {
@@ -136,7 +136,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
    *   - each view added sequentially and hieratically as expected.
    *   - output from View->render() maintains sequance and hieratically format.
    */
-  public function testComplexModelCascading() : void
+  public function testComplexModelCascading(string $parentViewType = 'tests\ramp\mocks\view\MockComplexView', $templateName = NULL, $templateType = NULL) : void
   {
     new MockComplexViewA($this->testObject);
     new MockComplexViewB($this->testObject);
@@ -155,7 +155,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     RootView::getInstance()->render();
     $output = ob_get_clean();
     $this->assertSame(
-      'tests\ramp\mocks\view\MockComplexView:Parent1 ' .
+      $parentViewType.':Parent1 ' .
       'tests\ramp\mocks\view\MockComplexViewA:Value1A ' .
       'tests\ramp\mocks\view\MockComplexViewB:Value1B ' .
       'tests\ramp\mocks\view\MockComplexViewC:Value1C ',
@@ -163,7 +163,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     );
 
     RootView::reset();
-    $testObject2 =  new MockComplexView(RootView::getInstance());
+    $testObject2 =  new $parentViewType(RootView::getInstance(), $templateName, $templateType);
     new MockComplexViewA($testObject2);
     new MockComplexViewB($testObject2);
     new MockComplexViewC($testObject2);
@@ -187,7 +187,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     RootView::getInstance()->render();
     $output = ob_get_clean();
     $this->assertSame(
-      'tests\ramp\mocks\view\MockComplexView:Parent2 ' .
+      $parentViewType.':Parent2 ' .
       'tests\ramp\mocks\view\MockComplexViewA:ValueOne ' .
       'tests\ramp\mocks\view\MockComplexViewB:ValueTwo ' .
       'tests\ramp\mocks\view\MockComplexViewC:ValueThree ' .
@@ -198,7 +198,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     );
 
     RootView::reset();
-    $testObject3 = new MockComplexView(RootView::getInstance());
+    $testObject3 = new $parentViewType(RootView::getInstance(), $templateName, $templateType);
     new MockComplexViewD(
       new MockComplexViewC(
         new MockComplexViewB(
@@ -224,7 +224,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     RootView::getInstance()->render();
     $output = ob_get_clean();
     $this->assertSame(
-      'tests\ramp\mocks\view\MockComplexView:Parent3 ' .
+      $parentViewType.':Parent3 ' .
       'tests\ramp\mocks\view\MockComplexViewA:ValueOne ' .
       'tests\ramp\mocks\view\MockComplexViewB:ValueTwo ' .
       'tests\ramp\mocks\view\MockComplexViewC:ValueThree ' .
@@ -233,7 +233,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     );
 
     RootView::reset();
-    $testObject4 = new MockComplexView(RootView::getInstance());
+    $testObject4 = new $parentViewType(RootView::getInstance(), $templateName, $templateType);
     new MockComplexViewD(
       new MockComplexViewC(
         new MockComplexViewB(
@@ -267,7 +267,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
     RootView::getInstance()->render();
     $output = ob_get_clean();
     $this->assertSame(
-      'tests\ramp\mocks\view\MockComplexView:Parent4 ' .
+      $parentViewType.':Parent4 ' .
       'tests\ramp\mocks\view\MockComplexViewA:ValueOne '.
       'tests\ramp\mocks\view\MockComplexViewB:ValueTwo '.
       'tests\ramp\mocks\view\MockComplexViewC:ValueThree '.
