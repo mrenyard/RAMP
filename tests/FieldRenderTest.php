@@ -34,6 +34,7 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/HexidecimalColorCode.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/TelephoneNumber.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/ComprehensiveRecord.class.php';
 
@@ -155,7 +156,47 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="text input field compact required" title="The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:given-name">First Name</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:given-name" name="comprehensive-record:1|1|1:given-name" type="text" tabindex="0" placeholder="e.g. John" required="required" pattern="[A-Za-z]{0,20}" maxlength="20" value="Matt" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:given-name" name="comprehensive-record:1|1|1:given-name" type="text" tabindex="0" placeholder="e.g. John" required="required" pattern="([A-Za-z]*){0,20}" maxlength="20" value="Matt" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'tel input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   * " type="tel" required="required" pattern="^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" value="07744 123123" 
+   */
+  public function testFieldTelRender()
+  {
+    $this->data->mobile = '07744 123123';
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->mobile);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Mobile Number');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $view->title = Str::set('The series of numbers that you dial when you are making a telephone call to a mobile phone');
+    $this->assertSame(
+      ' title="The series of numbers that you dial when you are making a telephone call to a mobile phone"',
+      (string)$view->attribute('title')
+    );
+    $view->placeholder = Str::set('e.g. 07744 123456');
+    $this->assertSame(' placeholder="e.g. 07744 123456"', (string)$view->attribute('placeholder'));
+    $this->assertSame('Mobile Number', (string)$view->label);
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" maxlength="12" value="07744 123123" />' . PHP_EOL .
       '        </div>',
       $output
     );

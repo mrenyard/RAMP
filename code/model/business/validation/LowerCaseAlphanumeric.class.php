@@ -30,6 +30,6 @@ class LowerCaseAlphanumeric extends RegexValidationRule
 {
   public function __construct(ValidationRule $subRule = null)
   {
-    parent::__construct('[a-z0-9]', $subRule);
+    parent::__construct('[a-z0-9]*', $subRule);
   }
 }

@@ -41,6 +41,7 @@ use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\HexidecimalColorCode;
+use ramp\model\business\validation\TelephoneNumber;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
@@ -149,7 +150,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         new VarChar(20,
-          new RegexValidationRule('[A-Za-z]'),
+          new RegexValidationRule('[A-Za-z]*'),
           Str::set('My error message HERE!')
         )
       ));
@@ -157,25 +158,18 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 
-  // protected function get_aProperty() : ?RecordComponent
-  // {
-  //   if ($this->register('aProperty', RecordComponentType::PROPERTY)) {
-  //     $this->propertyName = $this->registeredName;
-  //     $this->initiate(new MockField($this->propertyName, $this));
-  //   }
-  //   return $this->registered; 
-  // }
-
-  // protected function get_input() : ?RecordComponent
-  // {
-  //   if ($this->register('input', RecordComponentType::PROPERTY)) {
-  //     $this->inputName = $this->registeredName;
-  //     $this->initiate(new MockInput($this->registeredName, $this,
-  //       new Text(NULL, new MockValidationRule(), Str::set('Error MESSAGE BadValue Submited!'))
-  //     ));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_mobile() : ?RecordComponent
+  {
+    if ($this->register('mobile', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        new VarChar(12,
+          new TelephoneNumber(),
+          Str::set('My error message HERE!')
+        )
+      ));
+    }
+    return $this->registered; 
+  }
 
   // protected function get_flag() : ?RecordComponent
   // {

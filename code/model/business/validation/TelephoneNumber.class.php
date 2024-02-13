@@ -21,29 +21,33 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
 
 /**
  * Regex pattern matching validation.
  */
-class HexidecimalColorCode extends ValidationRule
+class TelephoneNumber extends RegexValidationRule
 {
   private static $type;
+  private static $maxlength;
 
    /**
-   * Abstract regex pattern matching validation.
+   * Regex pattern matching validation.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myRule = new dbtype\Char(7, new HexidecimalColorCode())
+   * $myRule = new dbtype\FirstValidationRule(
+   *   new RegexValidationRule('[a-zA-Z]'
+   *     new SpecialValidationRule()
+   *   )
    * );
    * ```
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct()
+  public function __construct(ValidationRule $subRule = null)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('color'); } 
-    parent::__construct();
+    if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
+    if (!isset(self::$maxlength)) { self::$maxlength = Str::set('12'); } 
+    parent::__construct('^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
   }
 
   /**
@@ -55,29 +59,10 @@ class HexidecimalColorCode extends ValidationRule
   }
 
   /**
-   * @ignore 
-   */
-  protected function get_pattern() : ?Str
-  {
-    return NULL;
-  }
-
-  /**
    * @ignore
    */
   protected function get_maxlength() : ?Str
   {
-    return NULL;
-  }
-
-  /**
-   * Asserts that $value is lower case and alphanumeric.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value) : void
-  {
-    if (preg_match('/^#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2}$/', $value)) { return; }
-    throw new FailedValidationException();
+    return self::$maxlength;
   }
 }

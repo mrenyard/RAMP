@@ -73,9 +73,8 @@ class VarChar extends DbTypeValidation
    */
   protected function get_pattern() : ?Str
   {
-    return ($value = parent::get_pattern()) ?
-      (str_contains((string)$value, '}')) ? $value :
-      $value->append(Str::set('{0,' . $this->maxLength . '}')) : NULL;
+    return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
+    $value->prepend(Str::set('('))->append(Str::set('){0,' . $this->maxLength . '}')) : NULL;
   }
 
   /**

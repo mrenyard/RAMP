@@ -63,7 +63,8 @@ class Char extends DbTypeValidation
    */
   protected function get_pattern() : ?Str
   {
-    return parent::get_pattern()->append(Str::set('{' . $this->length . '}'));
+    return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
+    $value->prepend(Str::set('('))->append(Str::set('){' . $this->length . '}')) : NULL;
   }
 
   /**

@@ -64,7 +64,9 @@ class RegexValidationRule extends ValidationRule
    */
   protected function test($value) : void
   {
-    if (preg_match('/^' . $this->pattern . '*$/', $value)) { return; }
+    // $pattern = parent::get_pattern();
+    // print_r($pattern);
+    if (preg_match('/^' . $this->pattern . '$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }

@@ -29,6 +29,6 @@ class Alphanumeric extends RegexValidationRule
 {
   public function __construct(ValidationRule $subRule = null)
   {
-    parent::__construct('[a-zA-Z0-9_ |\.]', $subRule);
+    parent::__construct('[a-zA-Z0-9_ |\.]*', $subRule);
   }
 }
