@@ -56,7 +56,7 @@ class Time extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     $format = 'H:i:s';
     $o = \DateTime::createFromFormat($format, $value);

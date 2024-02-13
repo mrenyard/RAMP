@@ -68,6 +68,9 @@ abstract class ComplexView extends ChildView
    */
   public function __get($propertyName)
   {
+    if ($propertyName == 'isRequired' && isset($this->model) && $this->model instanceof \ramp\model\business\field\Field) {
+      return ($this->model->isRequired);
+    }
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $exception) {

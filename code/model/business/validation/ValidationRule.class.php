@@ -21,6 +21,7 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\RAMPObject;
+use ramp\core\Str;
 
 /**
  * Single validation rule to test against an input value before allowing a business model property
@@ -33,6 +34,9 @@ use ramp\core\RAMPObject;
  *
  * COLLABORATORS
  * - {@see \ramp\validation\ValidationRule}
+ * 
+ * @property-read \ramp\core\Str $inputType Input type.
+ * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
  */
 abstract class ValidationRule extends RAMPObject
 {
@@ -42,7 +46,7 @@ abstract class ValidationRule extends RAMPObject
    * Default constructor for a ValidationRule.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myRule = new FirstValidationRule(
+   * $myRule = new dbtype\FirstValidationRule(
    *   new SecondValidationRule(
    *     new ThirdValiationRule(
    *       new ForthValidationRule()
@@ -58,11 +62,35 @@ abstract class ValidationRule extends RAMPObject
   }
 
   /**
+   * @ignore
+   */
+  protected function get_inputType() : ?Str
+  {
+    return ($this->subRule) ? $this->subRule->inputType : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_pattern() : ?Str
+  {
+    return ($this->subRule) ? $this->subRule->pattern : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?Str
+  {
+    return ($this->subRule) ? $this->subRule->maxlength : NULL;
+  }
+
+  /**
    * Runs code defined test against provided value.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  abstract protected function test($value);
+  abstract protected function test($value) : void;
 
   /**
    * Process each validation test against provided value.

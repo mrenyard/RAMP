@@ -26,14 +26,14 @@ use ramp\model\business\FailedValidationException;
  * Email address format validation.
  * Runs code defined test against provided value.
  */
-class RegexEmail extends ValidationRule
+class EmailAddress extends ValidationRule
 {
   /**
    * Asserts that $value is format of valid email address.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     if (\filter_var($value, FILTER_VALIDATE_EMAIL)) {
       // if (\checkdnsrr(explode('@', $value)[1], 'MX')) { return; }

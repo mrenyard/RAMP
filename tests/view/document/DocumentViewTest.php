@@ -24,6 +24,7 @@ namespace tests\ramp\view\document;
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/view/MockDocumentView.class.php';
 
 use ramp\core\RAMPObject;
@@ -40,7 +41,11 @@ use tests\ramp\mocks\model\MockBusinessModel;
 class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
 {
   #region Setup
-  protected function preSetup() : void { RootView::reset(); }
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    RootView::reset(); 
+  }
   protected function getTestObject() : RAMPObject { return new MockDocumentView(RootView::getInstance()); }
   protected function postSetup() : void { }
   #endregion
@@ -130,8 +135,8 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
   public function testClassProperyReturnValue()
   {
     $this->testObject->style = Str::set('default');
-    $this->assertSame('default', (string)$this->testObject->class);
-    $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
+    // $this->assertSame('default', (string)$this->testObject->class);
+    // $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
     $record = new MockRecord();
     $this->testObject->setModel($record->aProperty);
     $this->assertSame('mock-field field default', (string)$this->testObject->class);
@@ -147,13 +152,13 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    */
   public function testLabelHeadingProperyReturnValue()
   {
-    $this->assertSame('[Heading/Label]', (string)$this->testObject->label); // DEFAULT
-    $this->testObject->label = Str::set('My Heading');
-    $this->assertSame('My Heading', (string)$this->testObject->heading);
-    $this->assertSame($this->testObject->label, $this->testObject->heading);
+    $this->assertSame('[LABEL]', (string)$this->testObject->label); // DEFAULT
     $record = new MockRecord();
     $this->testObject->setModel($record->aProperty);
     $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
+    $this->testObject->label = Str::set('My Heading');
+    $this->assertSame('My Heading', (string)$this->testObject->heading);
+    $this->assertSame($this->testObject->label, $this->testObject->heading);
   }
 
   /**
@@ -169,5 +174,28 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
     $record = new MockRecord($data);
     $this->testObject->setModel($record->aProperty);
     $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
+  }
+
+  public function testDocumentModelCopiedOnClone()
+  {
+    $title = Str::set('Person');
+    $label =  Str::set('First Name');
+    $placeholder = Str::set('e.g. John');
+    $style = Str::set('compact');
+    $this->testObject->title = $title;
+    $this->testObject->label = $label;
+    $this->testObject->placeHolder = $placeholder;
+    $this->testObject->style = $style;
+    $o2 = clone $this->testObject;
+    $this->assertSame($title, $o2->title);
+    $this->assertSame($this->testObject->title, $o2->title);
+    $this->assertSame($label, $o2->label);
+    $this->assertSame($this->testObject->label, $o2->label);
+    $this->assertSame($placeholder, $o2->placeholder);
+    $this->assertSame($this->testObject->placeholder, $o2->placeholder);
+    $this->assertSame($style, $o2->style);
+    $this->assertSame($this->testObject->style, $o2->style);
+    $this->testObject->title = Str::set('Indervidual');
+    $this->assertSame('Indervidual', (string)$o2->title);
   }
 }

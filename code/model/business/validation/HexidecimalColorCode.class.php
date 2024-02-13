@@ -18,35 +18,66 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation\dbtype;
+namespace ramp\model\business\validation;
 
 use ramp\core\Str;
 use ramp\model\business\FailedValidationException;
-use ramp\model\business\validation\ValidationRule;
 
 /**
- * Small Interger database type validation rule, whole number (not decimal) from -32423 to 65534.
- * Runs code defined test against provided value.
+ * Regex pattern matching validation.
  */
-class SmallInt extends DbTypeValidation
+class HexidecimalColorCode extends ValidationRule
 {
-  /**
-   * Default constructor for a validation rule of database type Interger.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+  private static $type;
+
+   /**
+   * Abstract regex pattern matching validation.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new dbtype\Char(7, new HexidecimalColorCode())
+   * );
+   * ```
+   * @param string $pattern Regex pattern to be validated against.
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(Str $errorMessage)
+  public function __construct()
   {
-    parent::__construct(NULL, $errorMessage);
+    if (!isset(self::$type)) { self::$type = Str::set('color'); } 
+    parent::__construct();
   }
 
   /**
-   * Asserts that $value is an Interger, a whole number.
+   * @ignore
+   */
+  protected function get_inputType() : ?Str
+  {
+    return self::$type;
+  }
+
+  /**
+   * @ignore 
+   */
+  protected function get_pattern() : ?Str
+  {
+    return NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?Str
+  {
+    return NULL;
+  }
+
+  /**
+   * Asserts that $value is lower case and alphanumeric.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   protected function test($value) : void
   {
-    if (is_int($value) && $value <= 65534 && $value >= -32423) { return; }
+    if (preg_match('/^#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2}*$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }

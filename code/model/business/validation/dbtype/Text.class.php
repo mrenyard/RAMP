@@ -61,7 +61,7 @@ class Text extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     if (is_string($value) && strlen($value) <= $this->size) { return; }
     throw new FailedValidationException();

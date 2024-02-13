@@ -36,6 +36,10 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * COLLABORATORS
  * - {@see \ramp\model\business\Record}
  * - {@see \ramp\validation\ValidationRule}
+ * 
+ * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
+ * @property-read \ramp\core\Str $maxlength Regex pattern used in this validation rule.
  */
 class Input extends Field
 {
@@ -63,6 +67,30 @@ class Input extends Field
   public function offsetSet($offset, $object)
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_inputType() : ?Str
+  {
+    return $this->validationRule->inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_pattern() : ?Str
+  {
+    return $this->validationRule->pattern;    
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?Str
+  {
+    return $this->validationRule->maxlength;
   }
 
   /**

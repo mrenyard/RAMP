@@ -124,7 +124,7 @@ final class Str extends RAMPObject
    * @param string $value Value of encapsulated string literal
    * @return \ramp\core\Str Relevant Str object
    */
-  public static function set($value = \NULL) : Str
+  public static function set($value = NULL) : Str
   {
     $s;
     switch((string)$value) {
@@ -318,6 +318,11 @@ final class Str extends RAMPObject
     $value = Str::set(substr_replace((string)$this, '', 0, strlen((string)$value)));
     return ((string)$value == (string)$this)? $this : $value;
   }
+
+  // public function trim(Str $value = NULL) : Str
+  // {
+  //   return $this->trimStart()->trimEnd();
+  // }
 
   /**
    * Returns a new Str based on 'this' with all occurrences of $search:Str replaced as directed.

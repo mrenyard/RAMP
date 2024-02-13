@@ -31,6 +31,7 @@ use ramp\model\business\validation\ValidationRule;
 class Char extends DbTypeValidation
 {
   private $length;
+  private $maxlength;
 
   /**
    * Default constructor for a validation rule of database type Char.
@@ -50,10 +51,27 @@ class Char extends DbTypeValidation
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(int $length, ValidationRule $subRule, Str $errorMessage)
+  public function __construct(int $length, ValidationRule $subRule)
   {
     $this->length = $length;
-    parent::__construct($subRule, $errorMessage);
+    $this->maxlength = Str::set($this->length);
+    parent::__construct($subRule, Str::set('Must be exactly ' . $length . ' characters long.'));
+  }
+
+  /**
+   * @ignore 
+   */
+  protected function get_pattern() : ?Str
+  {
+    return parent::get_pattern()->append(Str::set('{' . $this->length . '}'));
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?Str
+  {
+    return $this->maxlength;
   }
 
   /**
@@ -61,7 +79,7 @@ class Char extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     if (is_string($value) && strlen($value) == $this->length) { return; }
     throw new FailedValidationException();

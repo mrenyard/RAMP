@@ -89,17 +89,4 @@ class Column extends Record
   {
     return ($this->getPropertyValue('IS_NULLABLE') == 'YES');
   }
-
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (
-      isset($dataObject->COLUMN_NAME) &&
-      isset($dataObject->COLUMN_TYPE)
-    );
-  }
 }

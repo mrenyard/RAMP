@@ -21,11 +21,15 @@
  */
 namespace tests\ramp\core;
 
+require_once '/usr/share/php/tests/ramp/TestBase.php';
+
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/core/AnObject.class.php';
+
+use tests\ramp\TestBase;
 
 use ramp\core\RAMPObject;
 use ramp\core\BadPropertyCallException;
@@ -39,12 +43,11 @@ use tests\ramp\mocks\core\AnObject;
  * COLLABORATORS
  * - {@see \tests\ramp\condition\mocks\ObjectTest\AnObject}
  */
-class ObjectTest extends \PHPUnit\Framework\TestCase
+class ObjectTest extends TestBase
 {
   protected $testObject;
 
   #region Setup
-  final public function setUp() : void { $this->preSetUp(); $this->testObject = $this->getTestObject(); $this->postSetup(); }
   protected function preSetup() : void { }
   protected function getTestObject() : RAMPObject { return new AnObject(); }
   protected function postSetup() : void { }

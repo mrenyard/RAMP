@@ -47,7 +47,7 @@ abstract class AuthenticatableUnit extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           150,
-          new validation\RegexEmail(),
+          new validation\EmailAddress(),
           Str::set('My error message HERE!')
         )
       ));

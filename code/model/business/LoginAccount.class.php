@@ -67,7 +67,7 @@ final class LoginAccount extends Record
    */
   protected function get_auPK() : ?RecordComponent
   {
-    if ($this->register('auPK', RecordComponentType::KEY)) {
+    if ($this->register('auPK', RecordComponentType::KEY, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           20,
@@ -84,11 +84,11 @@ final class LoginAccount extends Record
    */
   protected function get_email() : ?RecordComponent
   {
-    if ($this->register('email', RecordComponentType::PROPERTY)) {
+    if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
           150,
-          new validation\RegexEmail(),
+          new validation\EmailAddress(),
           Str::set('My error message HERE!')
         )
       ));
@@ -101,7 +101,7 @@ final class LoginAccount extends Record
    */
   protected function get_loginAccountType() : ?RecordComponent
   {
-    if ($this->register('loginAccountType', RecordComponentType::PROPERTY)) {
+    if ($this->register('loginAccountType', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new field\SelectOne($this->registeredName, $this, new LoginAccountType()));
     }
     return $this->registered; 
@@ -235,20 +235,5 @@ final class LoginAccount extends Record
       $randkey .= substr($keyset, rand(0, strlen($keyset) - 1), 1);
     }
     return $randkey;
-  }
-
-  /**
-   * Check requeried properties have value or not.
-   * @param $dataObject DataObject to be checked for requiered property values
-   * @return bool All requiered properties set.
-   */
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (
-      isset($dataObject->auPK) &&
-      isset($dataObject->email) &&
-      isset($dataObject->encryptedPassword) &&
-      isset($dataObject->loginAccountType)
-    );
   }
 }

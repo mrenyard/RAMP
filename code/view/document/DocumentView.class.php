@@ -59,13 +59,30 @@ abstract class DocumentView extends ComplexView
    * Returns complete attbibute and value.
    * @param string $propertyName Attribute Property Name 
    * @return \ramp\core\Str Attribute and value of requested property 
-   * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
+   * @throws \BadMethodCallException Unable to set property when undefined or inaccessible
    */
   public function attribute($propertyName) : ?Str
   {
-     return ($value = $this->__get($propertyName))? 
-      $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')):
-      NULL;
+    if ($propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote') {
+      throw new \BadMethodCallException($propertyName . ' is NOT avalible as an HTML attribute');
+    }
+    if ($this->hasModel) {
+      if ($propertyName == 'required') { return ($this->isRequired) ? Str::set(' required="required"') : NULL; }
+      if ($this->type == 'input field'
+        && ($propertyName == 'placeholder' || $propertyName == 'pattern' || $propertyName == 'maxlength')
+        && (!($this->inputType == 'text' || $this->inputType == 'search' || $this->inputType == 'url'
+          || $this->inputType == 'tel' || $this->inputType == 'email' || $this->inputType == 'password'))
+      ) {
+        return NULL;
+      }
+    }
+    try {
+      return ($value = $this->__get($propertyName))? 
+        $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')):
+        NULL;
+    } catch (\ramp\core\BadPropertyCallException $exception) {
+      throw new \BadMethodCallException($exception);
+    }
   }
 
   /**
@@ -131,21 +148,25 @@ abstract class DocumentView extends ComplexView
    */
   final public function __get($propertyName)
   {
-    if ($propertyName == 'children') {
-      $this->get_children();
-      return;
+    if ($propertyName == 'id' && $this->hasModel) {
+      return parent::__get($propertyName);
     }
     if ($propertyName == 'class') {
-      $value = ($this->documentModel->style)? $this->documentModel->style : Str::_EMPTY();
-      if ($this->hasModel) { $value = $value->prepend(parent::__get('type')->append(Str::SPACE())); }
-      return ($value === Str::_EMPTY())? NULL : $value;
+      $value = Str::_EMPTY();
+      if ($this->hasModel) { $value = $value->prepend(parent::__get('type')); }
+      if ($value !== Str::_EMPTY() && $this->documentModel->style) { $value = $value->append(Str::SPACE()); }
+      if ($this->documentModel->style) { $value = $value->append($this->documentModel->style); }
+      return ($value === Str::_EMPTY()) ? NULL : $value;
     }
     try {
+      if ($value = $this->documentModel->$propertyName) { return $value; }
+    } catch (BadPropertyCallException $exception) { }
+    try {
       return parent::__get($propertyName);
-    } catch (BadPropertyCallException $exception) {
-      try {
-        return $this->documentModel->$propertyName;
-      } catch (BadPropertyCallException $f) { throw $exception; }
+    } catch (BadPropertyCallException $f) {
+      if (isset($exception)) { throw $f; }
+      if ($propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote') { return NULL; }
+      return Str::set('[' . $propertyName . ']')->uppercase;
     }
   }
 }

@@ -40,7 +40,7 @@ class FirstValidationRule extends ValidationRule
   /**
    * {@inheritdoc }
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     self::$testCallCount++;
   }

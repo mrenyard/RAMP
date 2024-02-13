@@ -67,21 +67,4 @@ class <?=$this->name; ?> extends <?=($this->name == \ramp\SETTING::$RAMP_AUTHENT
     return StrCollection::set(<?=$this->primaryKeys; ?>);
   }
 <?=$this->children; ?>
-
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
-  protected static function checkRequired($dataObject) : bool
-  {
-    return (
-<?php
-  $requiered = $this->requiered; $i = 0;
-  foreach ($this->requiered as $property) { $i++; ?>
-      isset($dataObject-><?=$property->name; ?>) <?=($requiered->count > $i)? '&&' : ''; ?>
-
-<?php } ?>
-    );
-  }
 }

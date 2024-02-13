@@ -40,7 +40,7 @@ class MockDbTypeValidation extends DbTypeValidation
   /**
    * {@inheritdoc }
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     self::$testCallCount++;
   }

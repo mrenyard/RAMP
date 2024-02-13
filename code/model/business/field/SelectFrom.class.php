@@ -49,7 +49,8 @@ abstract class SelectFrom extends Field
    * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $name, Record $parent, OptionList $options)
+  public function __construct(Str $name, Record $parent, OptionList $options, Str $title = NULL)
+  // public function __construct(Str $name, Record $parent, OptionList $options)
   {
     parent::__construct($name ,$parent);
     if ($options != null) {

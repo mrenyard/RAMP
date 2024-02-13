@@ -30,6 +30,22 @@ use ramp\view\View;
 class ViewManager extends RAMPObject 
 {
   /**
+   * /person/~
+   * $page = new document\templated(RootView::getInstance(), Str::set('page'))
+   * $page->title = Str::set('');
+   * $page->heading = Str::set('');
+   * $page->summary = Str::set('');
+   * $record = new document\templated($sectionForm, Str::set(record));
+   * /person/~/given-name
+   * $givenName = new document\Templated($record, Str::set('input));
+   * $givenName->title = Str::set('The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters');
+   * $givenName->label = Str::set('First Name');
+   * $givenName->placeholder = Str::set('e.g. John');
+   * /person/~/family-name
+   * $familyName = new document\Templated($record, Str::set('input));
+   * $familyName->title = Str::set('The mostly hereditary portion of one's personal name that indicates one's family, a single word consisting only upper and lower case letters');
+   * $familyName->label = Str::set('Surname');
+   * $familyName->placeholder = Str::set('e.g. Smith');
    */
   public static function getView(Request $request) : View
   {

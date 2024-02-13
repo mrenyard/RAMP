@@ -30,7 +30,9 @@ use ramp\model\business\validation\ValidationRule;
  */
 class VarChar extends DbTypeValidation
 {
+  private static $defaultType;
   private $maxLength;
+  private $maxlength;
 
   /**
    * Default constructor for a validation rule of database type VarChar.
@@ -52,8 +54,36 @@ class VarChar extends DbTypeValidation
    */
   public function __construct(int $maxLength, ValidationRule $subRule, Str $errorMessage)
   {
+    if (!isset(self::$defaultType)) { self::$defaultType = Str::set('text'); } 
     $this->maxLength = $maxLength;
+    $this->maxlength = Str::set($this->maxLength);
     parent::__construct($subRule, $errorMessage);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_inputType() : ?Str
+  {
+    return ($value = parent::get_inputType()) ? $value : self::$defaultType;
+  }
+
+  /**
+   * @ignore 
+   */
+  protected function get_pattern() : ?Str
+  {
+    return ($value = parent::get_pattern()) ?
+      (str_contains((string)$value, '}')) ? $value :
+      $value->append(Str::set('{0,' . $this->maxLength . '}')) : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?Str
+  {
+    return $this->maxlength;
   }
 
   /**
@@ -61,7 +91,7 @@ class VarChar extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     if (is_string((string)$value) && strlen($value) <= $this->maxLength) { return; }
     throw new FailedValidationException();

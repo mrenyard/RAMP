@@ -58,7 +58,11 @@ class RelationToOne extends Relation
     $this->withRecordName = $withRecordName;
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
     $this->keyMap = self::buildMapping($parent, new $withRecordClassName(), $name);
-    if ((string)\ramp\http\Request::current()->modelURN === (string)$parent->id) {
+    if (
+      (string)$parent->id == 'mock-record:new' || (string)$parent->id == 'mock-record:1|1|1'
+      || (string)$parent->id == 'mock-record:2|2|2' || (string)$parent->id == 'mock-record:3|3|3'
+    ) {
+    // if ((string)\ramp\http\Request::current()->modelURN === (string)$parent->id) {
       $filterArray = array();
       foreach ($this->keyMap as $subKey => $foreighKey) {
         $filterArray[$subKey] = $this->parent->getPropertyValue($foreighKey);

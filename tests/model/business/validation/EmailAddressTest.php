@@ -26,15 +26,15 @@ require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/RegexEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
 
 use ramp\model\business\FailedValidationException;
-use ramp\model\business\validation\RegexEmail;
+use ramp\model\business\validation\EmailAddress;
 
 /**
  * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class RegexEmailTest extends \PHPUnit\Framework\TestCase
+class EmailAddressTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
 
@@ -43,7 +43,7 @@ class RegexEmailTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new RegexEmail();
+    $this->testObject = new EmailAddress();
   }
 
   /**
@@ -57,7 +57,7 @@ class RegexEmailTest extends \PHPUnit\Framework\TestCase
   {
     $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\RegexEmail', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\EmailAddress', $this->testObject);
   }
 
   /**

@@ -42,7 +42,7 @@ class MockValidationRule extends ValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     self::$testCallCount++;
     if ($value === 'BadValue') {

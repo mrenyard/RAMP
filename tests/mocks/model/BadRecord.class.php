@@ -62,9 +62,4 @@ class BadRecord extends Record
     }
     return $this->registered; 
   }
-
-  protected static function checkRequired($dataObject) : bool
-  {
-    return TRUE;
-  }
 }

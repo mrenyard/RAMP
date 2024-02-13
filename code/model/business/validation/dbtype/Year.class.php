@@ -56,7 +56,7 @@ class Year extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  protected function test($value)
+  protected function test($value) : void
   {
     $format = 'Y';
     $o = \DateTime::createFromFormat($format, $value);

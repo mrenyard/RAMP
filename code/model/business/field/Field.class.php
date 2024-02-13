@@ -43,6 +43,8 @@ use ramp\model\business\FailedValidationException;
  *
  * COLLABORATORS
  * - {@see \ramp\model\business\Record Record}
+ * 
+ * @property bool $isRequired Check for property is a required field value.
  */
 abstract class Field extends RecordComponent
 {
@@ -96,6 +98,14 @@ abstract class Field extends RecordComponent
   protected function get_isEditable() : bool
   {
     return ((!$this->parent->isValid) || parent::get_isEditable());
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_isRequired() : bool
+  {
+    return ($this->parent->isRequiredField((string)$this->name));
   }
 
   /**

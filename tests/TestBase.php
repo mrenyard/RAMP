@@ -19,39 +19,18 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace ramp\model\business;
+namespace tests\ramp;
 
-use ramp\model\business\Record;
-use ramp\model\business\RecordComponent;
-use ramp\model\business\RecordComponentType;
+use ramp\core\RAMPObject;
 
-/**
- * Mock business record with property.
- * .
- */
-class MockRecord extends Record
+abstract class TestBase extends \PHPUnit\Framework\TestCase
 {
-  protected function get_propertyA() : ?RecordComponent
-  {
-    if ($this->register('propertyA', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
-    }
-    return $this->registered;
-  }
+  protected $testObject;
 
-  protected function get_propertyB()
-  {
-    if ($this->register('propertyB', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
-    }
-    return $this->registered;
-  }
-
-  protected function get_propertyC() : ?RecordComponent
-  {
-    if ($this->register('propertyC', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
-    }
-    return $this->registered;
-  }
+  #region Setup
+  final public function setUp() : void { $this->preSetUp(); $this->testObject = $this->getTestObject(); $this->postSetup(); }
+  abstract protected function preSetup() : void;
+  abstract protected function getTestObject() : RAMPObject;
+  abstract protected function postSetup() : void;
+  #endregion
 }

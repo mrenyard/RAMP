@@ -401,20 +401,22 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $testObject = new class() extends Record
     {
       public function __construct() {} // OVERRIDE 
-      public function doRegister(string $name, int $type) : bool { return $this->register($name, $type); }
+      public function doRegister(string $name, int $type, bool $required = FALSE) : bool { return $this->register($name, $type, $required); }
       public function doInitiate(RecordComponent $o) : void { $this->initiate($o); }
-      protected static function checkRequired($dataObject) : bool { return TRUE; }
     };
-    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // First call
-    $this->assertTrue($testObject->doRegister('alpha', RecordComponentType::KEY)); // Second call
+    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::PROPERTY, TRUE)); // First call
+    $this->assertTrue($testObject->doRegister('alpha', RecordComponentType::PROPERTY, TRUE)); // Second call
     $this->assertSame('alpha', (string)$testObject->registeredName);
     $expectedAlphaField = new MockField($testObject->registeredName, $testObject);
     $testObject->doInitiate($expectedAlphaField); // Initiate
     $actualField = $testObject->registered;
     $this->assertSame($expectedAlphaField, $actualField);
-    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::KEY)); // Third call
+    $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::PROPERTY)); // Third call
     $this->assertSame($expectedAlphaField, $testObject->registered); // Same on all subsequent calls, provided preceded be register().
+    $this->assertTrue($testObject->isRequiredField('alpha'));
+
     $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call (bata)
+    $this->assertFalse($testObject->isRequiredField('beta'));
     $this->assertNotSame($expectedAlphaField, $testObject->registered);
     $expectedBetaField = new MockField(Str::set('beta'), $testObject);
     try {

@@ -48,8 +48,11 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
 
   #region Setup
   protected function preSetup() : void { 
-    require_once '/home/mrenyard/Projects/RAMP/www/load.ini.php';
+    SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = '\tests\ramp\mocks\model';
+    if (!\str_contains(get_include_path(), SETTING::$RAMP_LOCAL_DIR)) {
+      \set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path());
+    }  
     $this->templateName = Str::set('path');
     $this->templateType = Str::set('test');
     RootView::reset();
@@ -169,10 +172,10 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    */
   public function testComplexModelCascading(string $parentViewType = 'ramp\view\document\Templated', $templateName = NULL, $templateType = NULL) : void
   {
-    // $this->assertSame(
-    //   SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
-    //   $this->testObject->template
-    // );
+    $this->assertSame(
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
+      $this->testObject->template
+    );
     parent::testComplexModelCascading($parentViewType, Str::set('path'), Str::set('test'));
   }
 
@@ -202,13 +205,13 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    */
   public function testLabelHeadingProperyReturnValue()
   {
-    $this->assertSame('[Heading/Label]', (string)$this->testObject->label); // DEFAULT
-    $this->testObject->label = Str::set('My Heading');
-    $this->assertSame('My Heading', (string)$this->testObject->heading);
-    $this->assertSame($this->testObject->label, $this->testObject->heading);
+    $this->assertSame('[HEADING]', (string)$this->testObject->heading); // DEFAULT
     $record = new MockRecord();
     $this->testObject->setModel($record->aProperty);
     $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
+    $this->testObject->label = Str::set('My Heading');
+    $this->assertSame('My Heading', (string)$this->testObject->heading);
+    $this->assertSame($this->testObject->label, $this->testObject->heading); // overiden from documentView.
   }
   
   /**

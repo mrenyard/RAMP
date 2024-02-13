@@ -80,14 +80,4 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
     }
     return $this->registered; 
   }
-
-  /**
-   * Check requeried properties have value or not.
-   * @param $dataObject Data object to checke for requiered property values.
-   * @return bool Check all requiered properties are set.
-   */
-  protected static function checkRequired($dataObject) : bool
-  {
-    return TRUE;
-  }
 }

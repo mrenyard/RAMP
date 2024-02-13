@@ -18,35 +18,53 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation\dbtype;
+namespace ramp\model\business\validation;
 
 use ramp\core\Str;
 use ramp\model\business\FailedValidationException;
-use ramp\model\business\validation\ValidationRule;
 
 /**
- * Small Interger database type validation rule, whole number (not decimal) from -32423 to 65534.
- * Runs code defined test against provided value.
+ * Regex pattern matching validation.
  */
-class SmallInt extends DbTypeValidation
+class RegexValidationRule extends ValidationRule
 {
-  /**
-   * Default constructor for a validation rule of database type Interger.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+  private $pattern;
+
+   /**
+   * Regex pattern matching validation.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new dbtype\FirstValidationRule(
+   *   new RegexValidationRule('[a-zA-Z]'
+   *     new SpecialValidationRule()
+   *   )
+   * );
+   * ```
+   * @param string $pattern Regex pattern to be validated against.
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(Str $errorMessage)
+  public function __construct(string $pattern, ValidationRule $subRule = null)
   {
-    parent::__construct(NULL, $errorMessage);
+    $this->pattern = $pattern;
+    parent::__construct($subRule);
   }
 
   /**
-   * Asserts that $value is an Interger, a whole number.
+   * @ignore 
+   */
+  protected function get_pattern() : ?Str
+  {
+    return Str::set($this->pattern);
+  }
+
+  /**
+   * Asserts that $value is lower case and alphanumeric.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   protected function test($value) : void
   {
-    if (is_int($value) && $value <= 65534 && $value >= -32423) { return; }
+    if (preg_match('/^' . $this->pattern . '*$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }

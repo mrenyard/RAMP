@@ -55,18 +55,6 @@ use ramp\condition\PostData;
  *   return $this->registered;
  * }
  * ```
- * 
- * - A single checkRequired static method to assertain requeried properties are set:
- * ```php
- * protected static function checkRequired($dataObject) : bool
- * {
- *   return (
- *     isset($dataObject->countryCode) &&
- *     isset($dataObject->postalCode) &&
- *     isset($dataObject->deliveryPointSuffix)
- *   );
- * }
- * ```
  *
  * @property-read \ramp\core\Str $primaryKey Returns value of primary key.
  * @property-read bool $isModified Returns whether data has been modified since last update.
@@ -85,6 +73,7 @@ abstract class Record extends Relatable
   private $dataObject; // stdClass
   private $modified; // bool
   private $validAtSource; // bool
+  private $required; // array
 
   /**
    * Creates record, new or with encapsulated source data contained.
@@ -100,6 +89,7 @@ abstract class Record extends Relatable
     $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
     $this->modified = FALSE;
     $this->validAtSource = FALSE;
+    $this->required = array();
     $className = get_class($this);
     foreach (get_class_methods($className) as $methodName) {
       if (strpos($methodName, 'get_') === 0) {
@@ -187,11 +177,12 @@ abstract class Record extends Relatable
    * @param int $type Enum RecordComponentType one of:KEY|PROPERTY|RELATION.
    * @return bool Allow to continue to initiation.
    */
-  protected function register(string $name, int $type) : bool
+  protected function register(string $name, int $type, bool $required = FALSE) : bool
   {
     $this->active = NULL;
     if (!isset($this->components[$type][$name])) {
       $this->components[$type][$name] = '';
+      if ($type ==  RecordComponentType::PROPERTY && $required) { $this->required[$name] = TRUE; }
       return FALSE;
     }
     if ($this->components[$type][$name] === '') {
@@ -298,12 +289,22 @@ abstract class Record extends Relatable
    * @param string $propertyName Name of property to be set.
    * @param mixed The value to be set on provided property.
    */
-  public function setPropertyValue(string $propertyName, $value)
+  public function setPropertyValue(string $propertyName, $value) : void
   {
     $value = (\is_string($value) && $value === '')? NULL : $value;
     if ($this->getPropertyValue($propertyName) === $value) { return; }
     $this->dataObject->$propertyName = $value;
     $this->modified = TRUE;
+  }
+
+  /**
+   * Check is property is a required field.
+   * @param $propertyName Name of property to be assessed.
+   * @return bool True if filed is a required field.
+   */
+  final public function isRequiredField(string $propertyName) : bool
+  {
+    return isset($this->required[$propertyName]);
   }
 
   /**
@@ -319,7 +320,7 @@ abstract class Record extends Relatable
    */
   protected function get_isValid() : bool
   {
-    return ($this->validAtSource || (($this->primaryKey->value !== NULL) && $this->checkRequired($this->dataObject)));
+    return ($this->validAtSource || (($this->primaryKey->value !== NULL) && $this->checkRequired()));
   }
 
   /**
@@ -336,14 +337,15 @@ abstract class Record extends Relatable
    */
   public function updated()
   {
-    $this->validAtSource = ($this->primaryKey->value === NULL) ? FALSE : ($this->checkRequired($this->dataObject));
+    $this->validAtSource = ($this->primaryKey->value === NULL) ? FALSE : ($this->checkRequired());
     $this->modified = FALSE;
   }
 
-  /**
-   * Check requeried properties have value or not.
-   * @param DataObject to be checked for requiered property values
-   * @return bool Check all requiered properties are set.
-   */
-  abstract protected static function checkRequired($dataObject) : bool;
+  private function checkRequired() : bool
+  {
+    foreach ($this->required as $name => $value) {
+      if ($this->dataObject->$name == NULL) { return FALSE; }
+    }
+    return TRUE;
+  }
 }

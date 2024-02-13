@@ -52,7 +52,7 @@ class CharTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->length = 10;
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('Must be exactly 10 characters long.');
     $this->testObject = new Char(
       $this->length,
       new FailOnBadValidationRule(),

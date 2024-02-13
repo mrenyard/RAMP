@@ -24,18 +24,11 @@ use ramp\model\business\FailedValidationException;
 
 /**
  * Alphanumeric validation.
- * Runs code defined test against provided value.
  */
-class Alphanumeric extends ValidationRule
+class Alphanumeric extends RegexValidationRule
 {
-  /**
-   * Asserts that $value is alphanumeric.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value)
+  public function __construct(ValidationRule $subRule = null)
   {
-    if (preg_match('/^[a-zA-Z0-9_ |\.]*$/', $value)) { return; }
-    throw new FailedValidationException();
+    parent::__construct('[a-zA-Z0-9_ |\.]', $subRule);
   }
 }

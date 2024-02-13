@@ -118,9 +118,4 @@ class RecordA extends Record
     if ($this->withError) { return StrCollection::set('Error MESSAGE BadValue Submited!'); }
     return parent::get_errors();
   }
-
-  protected static function checkRequired($dataObject) : bool
-  {
-    return TRUE;
-  }
 }

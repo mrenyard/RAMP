@@ -418,21 +418,25 @@ class StrTest extends \PHPUnit\Framework\TestCase
    */
   public function testTrimEnd() : void
   {
-    $s1 = 'And the beast reborn spread over the earth';
-    $s2 = 'And the beast reborn spread over the';
-    $s3 = 'And the beast reborn spread over';
+    $s1 = 'And the beast reborn spread over the earth ';
+    $s2 = 'And the beast reborn spread over the earth';
+    $s3 = 'And the beast reborn spread over the';
+    $s4 = 'And the beast reborn spread over';
 
     $o1 = Str::set($s1);
-    $o2 = $o1->trimEnd(Str::set(' earth'));
-    $o3 = $o2->trimEnd(Str::set(' the'));
+    $o2 = $o1->trimEnd();
+    $o3 = $o2->trimEnd(Str::set(' earth'));
+    $o4 = $o3->trimEnd(Str::set(' the'));
 
     $this->assertSame($s1, (string)$o1);
     $this->assertSame($s2, (string)$o2);
     $this->assertSame($s3, (string)$o3);
+    $this->assertSame($s4, (string)$o4);
 
     $this->assertInstanceOf('ramp\core\Str', $o1);
     $this->assertInstanceOf('ramp\core\Str', $o2);
     $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertInstanceOf('ramp\core\Str', $o4);
 
     $oEmpty = Str::_EMPTY();
     $test = Str::set('test');
@@ -454,21 +458,25 @@ class StrTest extends \PHPUnit\Framework\TestCase
    */
   public function testTrimStart() : void
   {
-    $s1 = 'And the beast reborn spread over the earth';
-    $s2 = 'the beast reborn spread over the earth';
-    $s3 = 'beast reborn spread over the earth';
+    $s1 = ' And the beast reborn spread over the earth';
+    $s2 = 'And the beast reborn spread over the earth';
+    $s3 = 'the beast reborn spread over the earth';
+    $s4 = 'beast reborn spread over the earth';
 
     $o1 = Str::set($s1);
-    $o2 = $o1->trimStart(Str::set('And '));
-    $o3 = $o2->trimStart(Str::set('the '));
+    $o2 = $o1->trimStart();
+    $o3 = $o2->trimStart(Str::set('And '));
+    $o4 = $o3->trimStart(Str::set('the '));
 
     $this->assertSame($s1, (string)$o1);
     $this->assertSame($s2, (string)$o2);
     $this->assertSame($s3, (string)$o3);
+    $this->assertSame($s4, (string)$o4);
 
     $this->assertInstanceOf('ramp\core\Str', $o1);
     $this->assertInstanceOf('ramp\core\Str', $o2);
     $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertInstanceOf('ramp\core\Str', $o4);
 
     $oEmpty = Str::_EMPTY();
     $test = Str::set('test');
@@ -479,6 +487,36 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($o5, $oEmpty);
     $this->assertSame('', (string) $o5);
   }
+
+  /**
+   * 
+   *
+  public function testTrim()
+  {
+    $s1 = ' And the beast reborn spread over the earth ';
+    $s2 = 'And the beast reborn spread over the earth';
+    $s3 = 'And the beast reborn spread over the';
+    $s4 = 'the beast reborn spread over the';
+    $s5 = 'beast reborn spread over';
+
+    $o1 = Str::set($s1);
+    $o2 = $o1->trim();
+    $o3 = $o2->trim(Str::set(' earth'));
+    $o4 = $o3->trim(Str::set('And '));
+    $o5 = $o4->trim(Str::set('the'));
+
+    $this->assertSame($s1, (string)$o1);
+    $this->assertSame($s2, (string)$o2);
+    $this->assertSame($s3, (string)$o3);
+    $this->assertSame($s4, (string)$o4);
+    $this->assertSame($s5, (string)$o5);
+
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertInstanceOf('ramp\core\Str', $o4);
+    $this->assertInstanceOf('ramp\core\Str', $o5);
+  }*/
 
   /**
    * Collection of assertions for ramp\core\Str::replace().

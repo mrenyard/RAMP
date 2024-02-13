@@ -26,16 +26,10 @@ use ramp\model\business\FailedValidationException;
  * Lower case alphanumeric validation.
  * Runs code defined test against provided value.
  */
-class LowerCaseAlphanumeric extends ValidationRule
+class LowerCaseAlphanumeric extends RegexValidationRule
 {
-  /**
-   * Asserts that $value is lower case and alphanumeric.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value)
+  public function __construct(ValidationRule $subRule = null)
   {
-    if (preg_match('/^[a-z0-9]*$/', $value)) { return; }
-    throw new FailedValidationException();
+    parent::__construct('[a-z0-9]', $subRule);
   }
 }

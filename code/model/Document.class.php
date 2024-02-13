@@ -33,7 +33,7 @@ use ramp\model\Model;
  * @property \svetle\core\Str $title Title of document / fragment
  * @property \svetle\core\Str $heading Heading of document / fragment
  * @property \svetle\core\Str $label Synonym for heading (on form fields)
- * @property \svetle\core\Str $summary Overview, into or description 
+ * @property \svetle\core\Str $summary Overview, intro or description 
  * @property \svetle\core\Str $placeholder Synonym for summary (on form fields)
  * @property \svetle\core\Str $style Look, sub group or class.
  */
@@ -46,6 +46,9 @@ class Document extends Model
   private $title;
   private $heading;
   private $summary;
+  private $extendedSummary;
+  private $exendedContent;
+  private $footnote;
   private $style;
 
   /**
@@ -54,7 +57,6 @@ class Document extends Model
   public function __construct()
   {
     $this->id = Str::set('uid' . ++self::$NEXT_ID);
-    $this->heading = Str::set('[Heading/Label]');
   }
 
   /**
@@ -100,7 +102,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function get_heading() : Str
+  protected function get_heading() : ?Str
   {
     return $this->heading;
   }
@@ -116,7 +118,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function get_label() : Str
+  protected function get_label() : ?Str
   {
     return $this->get_heading();
   }
@@ -151,6 +153,57 @@ class Document extends Model
   protected function get_placeholder() : ?Str 
   {
     return $this->get_summary();
+  }
+  
+  /**
+   * @ignore
+   */
+  protected function set_extendedSummary(string $value)
+  {
+    // TODO:mrenyard: Safe Sub-HTML validation.
+    $this->extendedSummary = Str::set($value);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_extendedSummary()
+  {
+    return $this->extendedSummary;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function set_exendedContent(string $value)
+  {
+    // TODO:mrenyard: Safe Sub-HTML validation.
+    $this->extendedContent = Str::set($value);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_exendedContent()
+  {
+    return $this->extendedContent;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function set_footnote(string $value)
+  {
+    // TODO:mrenyard: Safe Sub-HTML validation.
+    $this->footnote = Str::set($value);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_footnote()
+  {
+    return $this->footnote;
   }
 
   /**
