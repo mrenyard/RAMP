@@ -35,6 +35,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/HexidecimalColorCode.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/TelephoneNumber.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Password.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/ComprehensiveRecord.class.php';
 
@@ -170,7 +171,6 @@ class FieldRenderTest extends TestBase
    * - assert 'title' same as set on documentView.
    * - assert 'label' on documnentView overrides model label.
    * - assert render() matches expected format as defined in Templated. 
-   * " type="tel" required="required" pattern="^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" value="07744 123123" 
    */
   public function testFieldTelRender()
   {
@@ -197,6 +197,42 @@ class FieldRenderTest extends TestBase
       '<div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" maxlength="12" value="07744 123123" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'tel input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldPasswordRender()
+  {
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->password);
+    $view->style = Str::set('compact');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $view->title = Str::set('A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access');
+    $this->assertSame(
+      ' title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access"',
+      (string)$view->attribute('title')
+    );
+    $view->placeholder = Str::set('e.g. N0T-Pa55W0rd');
+    $this->assertSame(' placeholder="e.g. N0T-Pa55W0rd"', (string)$view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
       '        </div>',
       $output
     );

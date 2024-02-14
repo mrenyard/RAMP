@@ -42,6 +42,7 @@ use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\HexidecimalColorCode;
 use ramp\model\business\validation\TelephoneNumber;
+use ramp\model\business\validation\Password;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
@@ -166,6 +167,16 @@ class ComprehensiveRecord extends Record
           new TelephoneNumber(),
           Str::set('My error message HERE!')
         )
+      ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_password() : ?RecordComponent
+  {
+    if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        new VarChar(35, new Password(), Str::set('My error message HERE!'))
       ));
     }
     return $this->registered; 

@@ -21,14 +21,13 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
 
 /**
  * Regex pattern matching validation.
  */
-class RegexValidationRule extends ValidationRule
+class Password extends RegexValidationRule
 {
-  private $pattern;
+  private static $type;
 
    /**
    * Regex pattern matching validation.
@@ -43,28 +42,17 @@ class RegexValidationRule extends ValidationRule
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(string $pattern, ValidationRule $subRule = null)
+  public function __construct(ValidationRule $subRule = null)
   {
-    $this->pattern = $pattern;
-    parent::__construct($subRule);
+    if (!isset(self::$type)) { self::$type = Str::set('password'); } 
+    parent::__construct('[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}', $subRule);
   }
 
   /**
-   * @ignore 
+   * @ignore
    */
-  protected function get_pattern() : ?Str
+  protected function get_inputType() : ?Str
   {
-    return Str::set($this->pattern);
-  }
-
-  /**
-   * Asserts that $value is lower case and alphanumeric.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value) : void
-  {
-    if (preg_match('/^' . $this->pattern . '$/', $value)) { return; }
-    throw new FailedValidationException();
+    return self::$type;
   }
 }
