@@ -51,11 +51,11 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->point = 2;
     $this->errorMessage = Str::set('My error message HERE!');
+    $this->point = 2;
     $this->testObject = new DecimalPointNumber(
-      $this->point,
-      $this->errorMessage
+      $this->errorMessage,
+      $this->point, 5
     );
   }
 
@@ -86,7 +86,7 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
     $this->assertNull($this->testObject->process($isFloat));
     $this->assertNull($this->testObject->process(10.50));
     try {
-      $this->testObject->process('10.55');
+      $this->testObject->process('10.55'); // string
     } catch (FailedValidationException $expected) {
       $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
       try {

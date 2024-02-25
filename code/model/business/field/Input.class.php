@@ -72,7 +72,7 @@ class Input extends Field
   /**
    * @ignore
    */
-  protected function get_inputType() : ?Str
+  protected function get_inputType() : Str
   {
     return $this->validationRule->inputType;
   }
@@ -88,9 +88,33 @@ class Input extends Field
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
     return $this->validationRule->maxlength;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_min() : ?float
+  {
+    return $this->validationRule->min;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_max() : ?float
+  {
+    return $this->validationRule->max;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_step() : ?float
+  {
+    return $this->validationRule->step;
   }
 
   /**

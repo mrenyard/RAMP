@@ -68,22 +68,22 @@ abstract class DocumentView extends ComplexView
     }
     if ($this->hasModel) {
       if ($propertyName == 'required') { return ($this->isRequired) ? Str::set(' required="required"') : NULL; }
-      if ($this->type == 'input field'
-        && ($propertyName == 'placeholder' || $propertyName == 'pattern' || $propertyName == 'maxlength')
-        && (!($this->inputType == 'text' || $this->inputType == 'search' || $this->inputType == 'url'
-          || $this->inputType == 'tel' || $this->inputType == 'email' || $this->inputType == 'password'))
+      if (
+        ((string)$this->type == 'input field' && $propertyName == 'placeholder') &&
+          ((string)$this->inputType != 'text' && (string)$this->inputType != 'search' && (string)$this->inputType != 'url' &&
+          (string)$this->inputType != 'tel' && (string)$this->inputType != 'email' && (string)$this->inputType != 'password')
       ) {
         return NULL;
       }
     }
     try {
-      return ($value = $this->__get($propertyName))? 
-        $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')):
-        NULL;
+      $value = $this->__get($propertyName);
     } catch (\ramp\core\BadPropertyCallException $exception) {
       throw new \BadMethodCallException($exception);
     }
-  }
+    if ($value !== NULL && (!($value instanceof \ramp\core\Str))) { $value = Str::set((string)$value); }
+    return ($value) ? $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')) : NULL;
+}
 
   /**
    * Allows C# type access to properties.

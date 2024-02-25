@@ -30,7 +30,12 @@ use ramp\model\business\validation\ValidationRule;
  */
 class DecimalPointNumber extends DbTypeValidation
 {
+  private static $inputType;
+  private $precision;
   private $point;
+  private $min;
+  private $max;
+  private $step;
 
   /**
    * Default constructor for a validation rule of database type DecimalPointNumber.
@@ -41,13 +46,64 @@ class DecimalPointNumber extends DbTypeValidation
    *   Str::set('My error message HERE!')
    * );
    * ```
-   * @param int $point Number of places from decimal point expected
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param int $point Number of places from decimal point expected
+   * @param int $precision Number of digets including decimal places that are storable places from decimal point expected
    */
-  public function __construct(int $point, Str $errorMessage)
+  public function __construct(Str $errorMessage, int $point, int $precision = NULL)
   {
-    $this->point = $point;
+    if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
+    $this->precision = ($precision) ? $precision : 65; 
+    $this->point = ($point && $point < $precision) ? $point: $precision;
+    $this->min = 0;
+    $max = '';
+    for ($i = 0, $j = $this->precision; $i < $j; $i++) {
+      $max = $max . '9';
+      if ($i == $point) { $max = $max . '.'; }
+    }
+    $this->max = $max;
+    $step = '0.';
+    for ($i = 0, $j = $this->point; $i < $j; $i++) {
+      if (($i) == ($j-1)) {
+        $step = $step . '1';
+        break;
+      }
+      $step = $step . '0';
+    }
+    $this->step = $step;
     parent::__construct(NULL, $errorMessage);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_inputType() : Str
+  {
+    return self::$inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_min() : ?float
+  {
+    return $this->min;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_max() : ?float
+  {
+    return $this->max;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_step() : ?float
+  {
+    return $this->step;
   }
 
   /**

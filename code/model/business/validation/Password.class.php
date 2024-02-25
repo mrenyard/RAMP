@@ -51,7 +51,7 @@ class Password extends RegexValidationRule
   /**
    * @ignore
    */
-  protected function get_inputType() : ?Str
+  protected function get_inputType() : Str
   {
     return self::$type;
   }

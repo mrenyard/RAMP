@@ -57,7 +57,7 @@ abstract class DbTypeValidation extends ValidationRule
    * @param ValidationRule $subRule Addtional rule to be added to *this* test
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    */
-  public function __construct(ValidationRule $subRule = NULL, Str $errorMessage)
+  public function __construct(ValidationRule $subRule = NULL, Str $errorMessage = NULL)
   {
     $this->errorMessage = $errorMessage;
     parent::__construct($subRule);

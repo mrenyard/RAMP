@@ -70,9 +70,9 @@ class Char extends DbTypeValidation
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
-    return $this->maxlength;
+    return (parent::get_maxlength() == NULL) ? NULL : $this->maxlength;
   }
 
   /**

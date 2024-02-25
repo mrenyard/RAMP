@@ -53,7 +53,7 @@ class TelephoneNumber extends RegexValidationRule
   /**
    * @ignore
    */
-  protected function get_inputType() : ?Str
+  protected function get_inputType() : Str
   {
     return self::$type;
   }
@@ -61,7 +61,7 @@ class TelephoneNumber extends RegexValidationRule
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
     return self::$maxlength;
   }

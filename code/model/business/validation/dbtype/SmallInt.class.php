@@ -30,13 +30,54 @@ use ramp\model\business\validation\ValidationRule;
  */
 class SmallInt extends DbTypeValidation
 {
+  private static $inputType;
+  private $min;
+  private $max;
+  private $step;
+
   /**
    * Default constructor for a validation rule of database type Interger.
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(Str $errorMessage)
+  public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
   {
+    if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
+    $this->min = ($min) ? $min : -32423;
+    $this->max = ($max) ? $max : 65534;
+    $this->step = ($step) ? $step : 1;
     parent::__construct(NULL, $errorMessage);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_inputType() : Str
+  {
+    return self::$inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_min() : ?float
+  {
+    return $this->min;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_max() : ?float
+  {
+    return $this->max;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_step() : ?float
+  {
+    return $this->step;
   }
 
   /**
@@ -46,7 +87,7 @@ class SmallInt extends DbTypeValidation
    */
   protected function test($value) : void
   {
-    if (is_int($value) && $value <= 65534 && $value >= -32423) { return; }
+    if (is_int($value) && $value <= $this->max && $value >= $this->min && ($value === 0 || $value % $this->step == 0)) { return; }
     throw new FailedValidationException();
   }
 }

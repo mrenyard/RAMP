@@ -106,6 +106,7 @@ class FieldRenderTest extends TestBase
     $view->label = Str::set('Primary Colour');
     $this->assertSame('input field', (string)$view->type);
     $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('color', (string)$view->inputType);
     $view->title = Str::set('Primary colour, main identifiable brand colour, the core colour, commonly incorporated into a companies logo.');
     $this->assertSame(
       ' title="Primary colour, main identifiable brand colour, the core colour, commonly incorporated into a companies logo."',
@@ -143,6 +144,7 @@ class FieldRenderTest extends TestBase
     $view->label = Str::set('First Name');
     $this->assertSame('input field', (string)$view->type);
     $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('text', (string)$view->inputType);
     $view->title = Str::set('The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters');
     $this->assertSame(
       ' title="The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters"',
@@ -182,6 +184,7 @@ class FieldRenderTest extends TestBase
     $view->label = Str::set('Mobile Number');
     $this->assertSame('input field', (string)$view->type);
     $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('tel', (string)$view->inputType);
     $view->title = Str::set('The series of numbers that you dial when you are making a telephone call to a mobile phone');
     $this->assertSame(
       ' title="The series of numbers that you dial when you are making a telephone call to a mobile phone"',
@@ -219,6 +222,7 @@ class FieldRenderTest extends TestBase
     $view->style = Str::set('compact');
     $this->assertSame('input field', (string)$view->type);
     $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('password', (string)$view->inputType);
     $view->title = Str::set('A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access');
     $this->assertSame(
       ' title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access"',
@@ -233,6 +237,83 @@ class FieldRenderTest extends TestBase
       '<div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'number input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldNumberRender()
+  {
+    $this->data->wholeNumber = '365';
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->wholeNumber);
+    $view->style = Str::set('compact');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('number', (string)$view->inputType);
+    $view->title = Str::set('A whole number (not a fractional number) that can be positive, negative, or zero');
+    $this->assertSame(
+      ' title="A whole number (not a fractional number) that can be positive, negative, or zero"',
+      (string)$view->attribute('title')
+    );
+    $view->placeholder = Str::set('NON');
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="number input field compact required" title="A whole number (not a fractional number) that can be positive, negative, or zero">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:whole-number">Whole Number</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:whole-number" name="comprehensive-record:1|1|1:whole-number" type="number" tabindex="0" required="required" min="-32423" max="65534" step="1" value="365" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'number input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldCurrencyRender()
+  {
+    $this->data->currency = '365.72';
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->currency);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Account Balance');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('number', (string)$view->inputType);
+    $view->title = Str::set('The amount of money present in your primary named account during the current accounting period in UK pounds sterling');
+    $this->assertSame(
+      ' title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling"',
+      (string)$view->attribute('title')
+    );
+    $view->placeholder = Str::set('NON');
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:currency">Account Balance</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:currency" name="comprehensive-record:1|1|1:currency" type="number" tabindex="0" required="required" min="0" max="999.99" step="0.01" value="365.72" />' . PHP_EOL .
       '        </div>',
       $output
     );

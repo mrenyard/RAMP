@@ -37,11 +37,15 @@ use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Char;
 use ramp\model\business\validation\dbtype\VarChar;
+use ramp\model\business\validation\dbtype\SmallInt;
+use ramp\model\business\validation\dbtype\DecimalPointNumber;
 // use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\HexidecimalColorCode;
 use ramp\model\business\validation\TelephoneNumber;
+// use ramp\model\business\validation\WholeNumber;
+// use ramp\model\business\validation\Currency;
 use ramp\model\business\validation\Password;
 
 /**
@@ -178,6 +182,24 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         new VarChar(35, new Password(), Str::set('My error message HERE!'))
       ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_wholeNumber() : ?RecordComponent
+  {
+    if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+      new SmallInt(Str::set('My error message HERE!'))));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_currency() : ?RecordComponent
+  {
+    if ($this->register('currency', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+      new DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)));
     }
     return $this->registered; 
   }

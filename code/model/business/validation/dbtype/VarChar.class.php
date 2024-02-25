@@ -30,8 +30,6 @@ use ramp\model\business\validation\ValidationRule;
  */
 class VarChar extends DbTypeValidation
 {
-  private static $defaultType;
-  private $maxLength;
   private $maxlength;
 
   /**
@@ -48,24 +46,14 @@ class VarChar extends DbTypeValidation
    *   Str::set('My error message HERE!')
    * );
    * ```
-   * @param int $maxLength Maximum number of characters from 0 to 16383
+   * @param int $maxlength Maximum number of characters from 0 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(int $maxLength, ValidationRule $subRule, Str $errorMessage)
+  public function __construct(int $maxlength, ValidationRule $subRule, Str $errorMessage)
   {
-    if (!isset(self::$defaultType)) { self::$defaultType = Str::set('text'); } 
-    $this->maxLength = $maxLength;
-    $this->maxlength = Str::set($this->maxLength);
+    $this->maxlength = $maxlength;
     parent::__construct($subRule, $errorMessage);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_inputType() : ?Str
-  {
-    return ($value = parent::get_inputType()) ? $value : self::$defaultType;
   }
 
   /**
@@ -74,13 +62,13 @@ class VarChar extends DbTypeValidation
   protected function get_pattern() : ?Str
   {
     return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
-    $value->prepend(Str::set('('))->append(Str::set('){0,' . $this->maxLength . '}')) : NULL;
+    $value->prepend(Str::set('('))->append(Str::set('){0,' . $this->maxlength . '}')) : NULL;
   }
 
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
     return $this->maxlength;
   }
@@ -92,7 +80,7 @@ class VarChar extends DbTypeValidation
    */
   protected function test($value) : void
   {
-    if (is_string((string)$value) && strlen($value) <= $this->maxLength) { return; }
+    if (is_string((string)$value) && strlen($value) <= $this->maxlength) { return; }
     throw new FailedValidationException();
   }
 }

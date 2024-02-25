@@ -40,6 +40,7 @@ use ramp\core\Str;
  */
 abstract class ValidationRule extends RAMPObject
 {
+  private static $defaultInputType;
   private $subRule;
 
   /**
@@ -58,15 +59,23 @@ abstract class ValidationRule extends RAMPObject
    */
   public function __construct(ValidationRule $subRule = null)
   {
+    if (!isset(self::$defaultInputType)) { self::$defaultInputType = Str::set('text'); }
     $this->subRule = $subRule;
   }
 
   /**
    * @ignore
    */
-  protected function get_inputType() : ?Str
+  protected function get_inputType() : Str
   {
-    return ($this->subRule) ? $this->subRule->inputType : NULL;
+    return ($this->subRule) ? $this->subRule->inputType : self::$defaultInputType;
+  }
+  /**
+   * @ignore
+   */
+  protected function get_placeholder() : ?Str
+  {
+    return ($this->subRule) ? $this->subRule->placeholder : NULL;
   }
 
   /**
@@ -80,9 +89,33 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
     return ($this->subRule) ? $this->subRule->maxlength : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_min() : ?float
+  {
+    return ($this->subRule) ? $this->subRule->min : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_max() : ?float
+  {
+    return ($this->subRule) ? $this->subRule->max : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_step() : ?float
+  {
+    return ($this->subRule) ? $this->subRule->step : NULL;
   }
 
   /**

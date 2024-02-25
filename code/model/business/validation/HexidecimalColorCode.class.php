@@ -49,7 +49,7 @@ class HexidecimalColorCode extends ValidationRule
   /**
    * @ignore
    */
-  protected function get_inputType() : ?Str
+  protected function get_inputType() : Str
   {
     return self::$type;
   }
@@ -65,7 +65,7 @@ class HexidecimalColorCode extends ValidationRule
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?Str
+  protected function get_maxlength() : ?int
   {
     return NULL;
   }
