@@ -21,7 +21,7 @@
  */
 namespace tests\ramp\mocks\model;
 
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**

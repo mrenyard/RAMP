@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/Char.class.ph
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\Char;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -52,11 +52,11 @@ class CharTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->length = 10;
-    $this->errorMessage = Str::set('Must be exactly 10 characters long.');
+    $this->errorMessage = Str::set('string with a character length of exactly ');
     $this->testObject = new Char(
+      $this->errorMessage,
       $this->length,
-      new FailOnBadValidationRule(),
-      $this->errorMessage
+      new FailOnBadValidationRule(Str::set('formate error message/hint')),
     );
   }
 
@@ -87,7 +87,7 @@ class CharTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('not10');
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals($this->errorMessage . '10', $expected->getMessage());
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');

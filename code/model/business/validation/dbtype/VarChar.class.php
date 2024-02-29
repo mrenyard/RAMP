@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**

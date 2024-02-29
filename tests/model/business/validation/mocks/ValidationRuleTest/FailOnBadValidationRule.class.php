@@ -23,7 +23,7 @@ namespace tests\ramp\model\business\validation;
 
 use ramp\core\RAMPObject;
 use ramp\model\business\validation\ValidationRule;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.

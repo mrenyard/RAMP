@@ -33,8 +33,9 @@ require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/Validati
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
+use ramp\core\Str;
 use ramp\core\RAMPObject;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 use tests\ramp\model\business\validation\MockValidationRule;
 use tests\ramp\model\business\validation\FirstValidationRule;
@@ -58,7 +59,7 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
    */
   public function test__Construct()
   {
-    $testObject = new MockValidationRule();
+    $testObject = new MockValidationRule(Str::set('formate error message/hint'));
     $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
     $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $testObject);
   }
@@ -73,15 +74,21 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
   public function testProcess()
   {
     MockValidationRule::reset();
-    $testObject = new MockValidationRule();
+    $testObject = new MockValidationRule(Str::set('formate error message/hint'));
     $testObject->process('GOOD');
     $this->assertSame(1, MockValidationRule::$testCallCount);
     MockValidationRule::reset();
     $testObject = new MockValidationRule(
+      Str::set('formate error message/hint'),
       new MockValidationRule(
+        Str::set('formate error message/hint'),
         new MockValidationRule(
+          Str::set('formate error message/hint'),
           new MockValidationRule(
-            new MockValidationRule()
+            Str::set('formate error message/hint'),
+            new MockValidationRule(
+              Str::set('formate error message/hint')
+            )
           )
         )
       )
@@ -92,8 +99,12 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
     SecondValidationRule::reset();
     ThirdValidationRule::reset();
     $testObject = new FirstValidationRule(
+      Str::set('formate error message/hint'),
       new SecondValidationRule(
-        new ThirdValidationRule()
+        Str::set('formate error message/hint'),
+        new ThirdValidationRule(
+          Str::set('formate error message/hint')
+        )
       )
     );
     $testObject->process('GOOD');
@@ -105,9 +116,14 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
     ThirdValidationRule::reset();
     FailOnBadValidationRule::reset();
     $testObject = new FirstValidationRule(
+      Str::set('formate error message/hint'),
       new SecondValidationRule(
+        Str::set('formate error message/hint'),
         new ThirdValidationRule(
-          new FailOnBadValidationRule()
+          Str::set('formate error message/hint'),
+          new FailOnBadValidationRule(
+            Str::set('formate error message/hint')
+          )
         )
       )
     );
@@ -115,7 +131,7 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
       $testObject->process('BAD');
     } catch (FailedValidationException $expected) {
       $this->assertSame(
-        'FailOnBadValidationRule has been given the value BAD', $expected->getMessage()
+        'formate error message/hint', $expected->getMessage()
       );
       $this->assertSame(1, FirstValidationRule::$testCallCount);
       $this->assertSame(1, SecondValidationRule::$testCallCount);
@@ -126,9 +142,14 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
       ThirdValidationRule::reset();
       FailOnBadValidationRule::reset();
       $testObject = new FirstValidationRule(
+        Str::set('formate error message/hint'),
         new SecondValidationRule(
+          Str::set('formate error message/hint'),
           new ThirdValidationRule(
-            new FailOnBadValidationRule()
+            Str::set('formate error message/hint'),
+            new FailOnBadValidationRule(
+              Str::set('formate error message/hint')
+            )
           )
         )
       );

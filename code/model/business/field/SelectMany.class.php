@@ -24,7 +24,7 @@ use ramp\core\Str;
 use ramp\core\OptionList;
 use ramp\core\Collection;
 use ramp\model\business\Record;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Specilised field for selecting zero or many from a collection of iOptions tied to a single

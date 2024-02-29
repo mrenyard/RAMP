@@ -20,7 +20,8 @@
  */
 namespace ramp\model\business\validation;
 
-use ramp\model\business\FailedValidationException;
+use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Lower case alphanumeric validation.
@@ -28,8 +29,13 @@ use ramp\model\business\FailedValidationException;
  */
 class LowerCaseAlphanumeric extends RegexValidationRule
 {
-  public function __construct(ValidationRule $subRule = null)
+  /**
+   * Constructor for lowercase alphnumaric regex pattern validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test
+   */
+  public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
   {
-    parent::__construct('[a-z0-9]*', $subRule);
+    parent::__construct($errorMessage, '[a-z0-9]*', $subRule);
   }
 }

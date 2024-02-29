@@ -31,23 +31,15 @@ class TelephoneNumber extends RegexValidationRule
   private static $maxlength;
 
    /**
-   * Regex pattern matching validation.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myRule = new dbtype\FirstValidationRule(
-   *   new RegexValidationRule('[a-zA-Z]'
-   *     new SpecialValidationRule()
-   *   )
-   * );
-   * ```
-   * @param string $pattern Regex pattern to be validated against.
+   * Constructor for telephone number restricted regex pattern validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(ValidationRule $subRule = null)
+  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
   {
     if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
     if (!isset(self::$maxlength)) { self::$maxlength = Str::set('12'); } 
-    parent::__construct('^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
+    parent::__construct($errorMessage, '^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
   }
 
   /**

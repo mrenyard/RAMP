@@ -20,15 +20,20 @@
  */
 namespace ramp\model\business\validation;
 
-use ramp\model\business\FailedValidationException;
+use ramp\core\Str;
 
 /**
- * Alphanumeric validation.
+ * Alphnumaric regex pattern validation.
  */
 class Alphanumeric extends RegexValidationRule
 {
-  public function __construct(ValidationRule $subRule = null)
+    /**
+   * Constructor for alphnumaric regex pattern validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test
+   */
+  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
   {
-    parent::__construct('[a-zA-Z0-9_ |\.]*', $subRule);
+    parent::__construct($errorMessage, '[a-zA-Z0-9_ |\.]*', $subRule);
   }
 }

@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/SmallInt.clas
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\SmallInt;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;

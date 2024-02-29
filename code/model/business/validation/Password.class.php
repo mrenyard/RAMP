@@ -29,23 +29,16 @@ class Password extends RegexValidationRule
 {
   private static $type;
 
-   /**
-   * Regex pattern matching validation.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myRule = new dbtype\FirstValidationRule(
-   *   new RegexValidationRule('[a-zA-Z]'
-   *     new SpecialValidationRule()
-   *   )
-   * );
-   * ```
+  /**
+   * Constructor for password restricted regex pattern validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(ValidationRule $subRule = null)
+  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
   {
     if (!isset(self::$type)) { self::$type = Str::set('password'); } 
-    parent::__construct('[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}', $subRule);
+    parent::__construct($errorMessage, '[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}', $subRule);
   }
 
   /**

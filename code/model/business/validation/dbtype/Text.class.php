@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
@@ -53,7 +53,7 @@ class Text extends DbTypeValidation
   public function __construct(Str $errorMessage, ValidationRule $subRule, int $size = NULL)
   {
     $this->size = (isset($size) && $size <= 16383) ? $size : 16383;
-    parent::__construct($errorMessage, $subRule);
+    parent::__construct(Str::set($size)->prepend($errorMessage), $subRule);
   }
 
   /**

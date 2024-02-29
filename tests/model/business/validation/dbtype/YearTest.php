@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/Year.class.ph
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\Year;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -51,10 +51,10 @@ class YearTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->maxLength = 10;
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('valid year formated yyyy');
     $this->testObject = new Year(
       $this->errorMessage,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
     );
   }
 

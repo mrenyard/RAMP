@@ -25,7 +25,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**

@@ -26,7 +26,7 @@ use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\Field;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\field\Field for testing against.

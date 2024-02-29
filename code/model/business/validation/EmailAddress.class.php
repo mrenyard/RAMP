@@ -20,7 +20,7 @@
  */
 namespace ramp\model\business\validation;
 
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Email address format validation.
@@ -40,6 +40,6 @@ class EmailAddress extends ValidationRule
       // throw new FailedValidationException('Provided email domain does NOT exist!');
       return;
     }
-    throw new FailedValidationException('Incorrectly formed email address!');
+    throw new FailedValidationException();
   }
 }

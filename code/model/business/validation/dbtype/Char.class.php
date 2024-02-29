@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
@@ -47,15 +47,15 @@ class Char extends DbTypeValidation
    *   Str::set('My error message HERE!')
    * );
    * ```
+   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful prior to $length.
    * @param int $length Exact number of characters expected
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(int $length, ValidationRule $subRule)
+  public function __construct(Str $errorMessage, int $length, ValidationRule $subRule)
   {
     $this->length = $length;
     $this->maxlength = Str::set($this->length);
-    parent::__construct(Str::set('Must be exactly ' . $length . ' characters long.'), $subRule);
+    parent::__construct($this->maxlength->prepend($errorMessage), $subRule);
   }
 
   /**

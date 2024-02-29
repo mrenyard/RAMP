@@ -29,7 +29,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 
@@ -45,8 +45,8 @@ class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new LowerCaseAlphanumeric();
-    new VarChar(Str::set('My error message here'), 40, $this->testObject);
+    $this->testObject = new LowerCaseAlphanumeric(Str::set('lowerCase and alphanumeric'));
+    new VarChar(Str::set('string with a maximun character length of '), 40, $this->testObject);
   }
 
   /**

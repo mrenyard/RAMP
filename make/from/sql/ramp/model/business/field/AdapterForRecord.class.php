@@ -24,7 +24,7 @@ use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\model\business\Record;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\field\Field;
 
 /**

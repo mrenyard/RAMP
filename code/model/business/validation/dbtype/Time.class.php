@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
@@ -58,7 +58,7 @@ class Time extends DbTypeValidation
    */
   protected function test($value) : void
   {
-    $format = 'H:i:s';
+    $format = 'H:i';
     $o = \DateTime::createFromFormat($format, $value);
     if ($o && $o->format($format) === $value) { return; }
     throw new FailedValidationException();

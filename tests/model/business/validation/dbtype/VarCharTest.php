@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -52,11 +52,11 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->maxlength = 10;
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('string with a maximum length of ');
     $this->testObject = new VarChar(
       $this->errorMessage,
       $this->maxlength,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
     );
   }
 

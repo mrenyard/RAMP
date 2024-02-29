@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Regex pattern matching validation.
@@ -31,22 +31,27 @@ class RegexValidationRule extends ValidationRule
   private $pattern;
 
    /**
-   * Regex pattern matching validation.
+   * Constructor for regex pattern matching validation.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myRule = new dbtype\FirstValidationRule(
-   *   new RegexValidationRule('[a-zA-Z]'
-   *     new SpecialValidationRule()
+   *   new RegexValidationRule(
+   *     Str::set('regex format message/hint'),
+   *     '[a-zA-Z]'
+   *     new SpecialValidationRule(
+   *       Str::set('extra format message/hint')
+   *     )
    *   )
    * );
    * ```
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(string $pattern, ValidationRule $subRule = null)
+  public function __construct(Str $errorMessage, string $pattern, ValidationRule $subRule = null)
   {
     $this->pattern = $pattern;
-    parent::__construct($subRule);
+    parent::__construct($errorMessage, $subRule);
   }
 
   /**

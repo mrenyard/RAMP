@@ -22,7 +22,7 @@
 namespace tests\ramp\condition\mocks\FilterTest;
 
 use ramp\core\RAMPObject;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Mock Field with processValidationRules method.

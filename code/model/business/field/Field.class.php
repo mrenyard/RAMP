@@ -29,7 +29,7 @@ use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\Record;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Abstract field related to a single property of its containing \ramp\model\business\Record.

@@ -21,7 +21,7 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Validates a string value that corespondes to a single week in a give year.

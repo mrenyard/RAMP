@@ -22,7 +22,7 @@ namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
@@ -39,45 +39,4 @@ use ramp\model\business\validation\ValidationRule;
  */
 abstract class DbTypeValidation extends ValidationRule
 {
-  private $errorMessage;
-
-  /**
-   * Default constructor for a DbTypeValidation.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myRule = new dbtype\FirstValidationRule(
-   *   Str::set('Format error message/hint'),
-   *   new SecondValidationRule(
-   *     Str::set('Format error message/hint'),
-   *     new ThirdValiationRule(
-   *       Str::set('Format error message/hint'),
-   *       new ForthValidationRule(
-   *         Str::set('Format error message/hint')
-   *       )
-   *     )
-   *   )
-   * );
-   * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test
-   */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
-  {
-    $this->errorMessage = $errorMessage;
-    parent::__construct($subRule);
-  }
-
-  /**
-   * Process each validation test against provided value.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  public function process($value)
-  {
-    try {
-      parent::process($value);
-    } catch (FailedValidationException $exception) {
-      throw new FailedValidationException($this->errorMessage);
-    }
-  }
 }

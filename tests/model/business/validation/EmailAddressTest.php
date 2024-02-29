@@ -28,7 +28,8 @@ require_once '/usr/share/php/ramp/model/business/FailedValidationException.class
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
 
-use ramp\model\business\FailedValidationException;
+use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\EmailAddress;
 
 /**
@@ -43,7 +44,7 @@ class EmailAddressTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new EmailAddress();
+    $this->testObject = new EmailAddress(Str::set('string with a maximun character length of '));
   }
 
   /**

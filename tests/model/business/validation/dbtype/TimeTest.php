@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/Time.class.ph
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\Time;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -51,10 +51,10 @@ class TimeTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->maxLength = 10;
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('valid time formated hh:mm');
     $this->testObject = new Time(
       $this->errorMessage,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
     );
   }
 
@@ -81,9 +81,9 @@ class TimeTest extends \PHPUnit\Framework\TestCase
    */
   public function testTest()
   {
-    $this->assertNull($this->testObject->process('23:29:59'));
+    $this->assertNull($this->testObject->process('23:29'));
     try {
-      $this->testObject->process('24:00:00'); // Shoud be 00:00:00.
+      $this->testObject->process('24:00'); // Shoud be 00:00:00.
     } catch (FailedValidationException $expected) {
       $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
       return;

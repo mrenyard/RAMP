@@ -64,11 +64,10 @@ abstract class ValidationRule extends RAMPObject
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  // public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
-  public function __construct(ValidationRule $subRule = NULL)
+  public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
   {
     if (!isset(self::$defaultInputType)) { self::$defaultInputType = Str::set('text'); }
-    // $this->errorMessage = $errorMessage;
+    $this->errorMessage = $errorMessage;
     $this->subRule = $subRule;
   }
 
@@ -141,9 +140,11 @@ abstract class ValidationRule extends RAMPObject
    */
   public function process($value)
   {
-    $this->test($value);
-    if (isset($this->subRule)) {
-      $this->subRule->process($value);
+    try {
+      $this->test($value);
+      if (isset($this->subRule)) { $this->subRule->process($value); }
+    } catch (FailedValidationException $exception) {
+      throw new FailedValidationException((string)$this->errorMessage);
     }
   }
 }

@@ -21,7 +21,6 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
 
 /**
  * Regex pattern matching validation.
@@ -31,12 +30,13 @@ final class HexidecimalColorCode extends ValidationRule
   private static $type;
 
   /**
-   * 
+   * Constructor for HexidecimalColorCode validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    */
-  public function __construct()
+  public function __construct(Str $errorMessage)
   {
     if (!isset(self::$type)) { self::$type = Str::set('color'); } 
-    parent::__construct();
+    parent::__construct($errorMessage);
   }
 
   /**

@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.ph
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\Text;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -50,10 +50,10 @@ class TextTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('Long form text not exceeding ');
     $this->testObject = new Text(
       $this->errorMessage,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
     );
   }
 

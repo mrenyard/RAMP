@@ -32,7 +32,7 @@ require_once '/usr/share/php/ramp/model/business/validation/dbtype/DateTime.clas
 require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\DateTime;
 
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -51,10 +51,12 @@ class DateTimeTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->maxLength = 10;
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('valid date and time formated yyyy-mm-ddThh:mm:ss');
     $this->testObject = new DateTime(
       $this->errorMessage,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(
+        Str::set('My error message HERE!')
+      )
     );
   }
 

@@ -33,7 +33,7 @@ require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/Validati
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 
 use tests\ramp\model\business\validation\MockDbTypeValidation;
 use tests\ramp\model\business\validation\FailOnBadValidationRule;
@@ -54,10 +54,10 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('database error message HERE!');
     $this->testObject = new MockDbTypeValidation(
       $this->errorMessage,
-      new FailOnBadValidationRule()
+      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
     );
     FailOnBadValidationRule::reset();
     MockDbTypeValidation::reset();

@@ -125,7 +125,11 @@ class MockRecord extends Record
     if ($this->register('input', RecordComponentType::PROPERTY)) {
       $this->inputName = $this->registeredName;
       $this->initiate(new MockInput($this->registeredName, $this,
-        new Text(Str::set('Error MESSAGE BadValue Submited!'), new MockValidationRule(), NULL)
+        new Text(
+          Str::set('Error MESSAGE BadValue Submited!'),
+          new MockValidationRule(
+            Str::set('Error MESSAGE BadValue Submited!')
+          ), NULL)
       ));
     }
     return $this->registered; 

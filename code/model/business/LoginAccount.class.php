@@ -70,8 +70,10 @@ final class LoginAccount extends Record
     if ($this->register('auPK', RecordComponentType::KEY, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
-          Str::set('My error message HERE!'),
-          20, new validation\LowerCaseAlphanumeric()
+          Str::set('string with a maximun character length of '),
+          20, new validation\LowerCaseAlphanumeric(
+            Str::set('lowercase and alphanumeric')
+          )
         )
       ));
     }
@@ -86,8 +88,10 @@ final class LoginAccount extends Record
     if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         new validation\dbtype\VarChar(
-          Str::set('My error message HERE!'),
-          150,  new validation\EmailAddress()
+          Str::set('string with a maximun character length of '),
+          150,  new validation\EmailAddress(
+            Str::set('and must be a validly formatted email address!')
+          )
         )
       ));
     }

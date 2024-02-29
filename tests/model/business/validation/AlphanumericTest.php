@@ -30,7 +30,7 @@ require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.p
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 
 use ramp\core\Str;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\Alphanumeric;
 
@@ -46,8 +46,8 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new Alphanumeric();
-    new VarChar(Str::set('My error message'), 60, $this->testObject);
+    $this->testObject = new Alphanumeric(Str::set('alphanumeric'));
+    new VarChar(Str::set('string with a maximun character length of '), 60, $this->testObject);
   }
 
   /**

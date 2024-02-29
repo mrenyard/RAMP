@@ -26,7 +26,7 @@ use ramp\core\OptionList;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\field\SelectOne;
-use ramp\model\business\FailedValidationException;
+use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**

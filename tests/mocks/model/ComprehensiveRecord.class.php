@@ -103,8 +103,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('keyA', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
         new Char(
-          // Str::set('My error message HERE!'),
-          1, new LowerCaseAlphanumeric()
+          Str::set('Character length must be exactly '),
+          1, new LowerCaseAlphanumeric(
+            Str::set('My error message HERE!')
+          )
         )
       ));
     }
@@ -116,8 +118,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('keyB', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
         new Char(
-          // Str::set('My error message HERE!'),
-          1, new LowerCaseAlphanumeric()
+          Str::set('Character length must be exactly '),
+          1, new LowerCaseAlphanumeric(
+            Str::set('My error message HERE!')
+          )
         )
       ));
     }
@@ -129,8 +133,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('keyC', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
         new Char(
-          // Str::set('My error message HERE!'),
-          1, new LowerCaseAlphanumeric()
+          Str::set('Character length must be exactly '),
+          1, new LowerCaseAlphanumeric(
+            Str::set('My error message HERE!')
+          )
         )
       ));
     }
@@ -142,8 +148,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
         new Char(
-          // Str::set('My error message HERE!'),
-          7, new HexidecimalColorCode()
+          Str::set('Character length must be exactly '),
+          7, new HexidecimalColorCode(
+            Str::set('My error message HERE!')
+          )
         ),
         
       ));
@@ -157,8 +165,11 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         //Str::set('title'),
         new VarChar(
-          Str::set('My error message HERE!'),
-          20, new RegexValidationRule('[A-Za-z]*')
+          Str::set('string with a maximum length of '),
+          20, new RegexValidationRule(
+            Str::set('a single word with only latin alphabet characters'),
+            '[A-Za-z]*'
+          )
         )
       ));
     }
@@ -170,8 +181,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('mobile', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         new VarChar(
-          Str::set('My error message HERE!'),
-          12, new TelephoneNumber()
+          Str::set('string with a maximum length of '),
+          12, new TelephoneNumber(
+            Str::set('My error message HERE!')
+          )
         )
       ));
     }
@@ -183,8 +196,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         new VarChar(
-          Str::set('My error message HERE!'),
-          35, new Password()
+          Str::set('string with a maximum length of '),
+          35, new Password(
+            Str::set('My error message HERE!')
+          )
         )
       ));
     }
