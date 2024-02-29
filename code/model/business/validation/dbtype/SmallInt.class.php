@@ -45,7 +45,7 @@ class SmallInt extends DbTypeValidation
     $this->min = ($min) ? $min : -32423;
     $this->max = ($max) ? $max : 65534;
     $this->step = ($step) ? $step : 1;
-    parent::__construct(NULL, $errorMessage);
+    parent::__construct($errorMessage, NULL);
   }
 
   /**
@@ -59,25 +59,25 @@ class SmallInt extends DbTypeValidation
   /**
    * @ignore
    */
-  protected function get_min() : ?float
+  protected function get_min() : ?Str
   {
-    return $this->min;
+    return Str::set($this->min);
   }
 
   /**
    * @ignore
    */
-  protected function get_max() : ?float
+  protected function get_max() : ?Str
   {
-    return $this->max;
+    return Str::set($this->max);
   }
 
   /**
    * @ignore
    */
-  protected function get_step() : ?float
+  protected function get_step() : ?Str
   {
-    return $this->step;
+    return Str::set($this->step);
   }
 
   /**

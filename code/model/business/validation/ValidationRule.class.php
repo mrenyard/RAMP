@@ -41,6 +41,7 @@ use ramp\core\Str;
 abstract class ValidationRule extends RAMPObject
 {
   private static $defaultInputType;
+  private $errorMessage;
   private $subRule;
 
   /**
@@ -48,18 +49,26 @@ abstract class ValidationRule extends RAMPObject
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myRule = new dbtype\FirstValidationRule(
+   *   Str::set('Format error message/hint'),
    *   new SecondValidationRule(
+   *     Str::set('Format error message/hint'),
    *     new ThirdValiationRule(
-   *       new ForthValidationRule()
+   *       Str::set('Format error message/hint'),
+   *       new ForthValidationRule(
+   *         Str::set('Format error message/hint')
+   *       )
    *     )
    *   )
    * );
    * ```
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(ValidationRule $subRule = null)
+  // public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
+  public function __construct(ValidationRule $subRule = NULL)
   {
     if (!isset(self::$defaultInputType)) { self::$defaultInputType = Str::set('text'); }
+    // $this->errorMessage = $errorMessage;
     $this->subRule = $subRule;
   }
 
@@ -97,7 +106,7 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_min() : ?float
+  protected function get_min() : ?Str
   {
     return ($this->subRule) ? $this->subRule->min : NULL;
   }
@@ -105,7 +114,7 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_max() : ?float
+  protected function get_max() : ?Str
   {
     return ($this->subRule) ? $this->subRule->max : NULL;
   }
@@ -113,7 +122,7 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_step() : ?float
+  protected function get_step() : ?Str
   {
     return ($this->subRule) ? $this->subRule->step : NULL;
   }

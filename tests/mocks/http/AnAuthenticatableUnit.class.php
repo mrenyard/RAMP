@@ -39,7 +39,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   {
     if ($this->register('uname', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(20, new LowerCaseAlphanumeric(), Str::set('My error message HERE!'))
+        new VarChar(Str::set('My error message HERE!'), 20, new LowerCaseAlphanumeric())
       ));
     }
     return $this->registered; 
@@ -57,7 +57,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   {
     if ($this->register('familyName', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(150, new Alphanumeric(), Str::set('My error message HERE!'))
+        new VarChar(Str::set('My error message HERE!'), 150, new Alphanumeric())
       ));
     }
     return $this->registered; 
@@ -75,7 +75,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(150, new Alphanumeric(), Str::set('My error message HERE!'))
+        new VarChar(Str::set('My error message HERE!'), 150, new Alphanumeric())
       ));
     }
     return $this->registered; 

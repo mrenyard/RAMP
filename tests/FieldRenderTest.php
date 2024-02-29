@@ -266,7 +266,6 @@ class FieldRenderTest extends TestBase
       ' title="A whole number (not a fractional number) that can be positive, negative, or zero"',
       (string)$view->attribute('title')
     );
-    $view->placeholder = Str::set('NON');
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
     $parentView->render();
@@ -305,7 +304,6 @@ class FieldRenderTest extends TestBase
       ' title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling"',
       (string)$view->attribute('title')
     );
-    $view->placeholder = Str::set('NON');
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
     $parentView->render();

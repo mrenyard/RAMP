@@ -31,7 +31,7 @@ use ramp\model\business\validation\ValidationRule;
 class Date extends DbTypeValidation
 {
   /**
-   * Default constructor for a validation rule of database type Date.
+   * Constructor for a validation rule of database type Date.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myValidationRule = new validation\dbtype\Date(
@@ -48,7 +48,7 @@ class Date extends DbTypeValidation
    */
   public function __construct(ValidationRule $subRule, Str $errorMessage)
   {
-    parent::__construct($subRule, $errorMessage);
+    parent::__construct($errorMessage, $subRule);
   }
 
   /**

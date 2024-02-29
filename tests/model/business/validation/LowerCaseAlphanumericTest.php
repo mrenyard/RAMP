@@ -46,7 +46,7 @@ class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->testObject = new LowerCaseAlphanumeric();
-    new VarChar(40, $this->testObject, Str::set('My error message here'));
+    new VarChar(Str::set('My error message here'), 40, $this->testObject);
   }
 
   /**

@@ -47,7 +47,7 @@ class AlphanumericTest extends \PHPUnit\Framework\TestCase
   public function setUp() : void
   {
     $this->testObject = new Alphanumeric();
-    new VarChar(60, $this->testObject, Str::set('My error message'));
+    new VarChar(Str::set('My error message'), 60, $this->testObject);
   }
 
   /**

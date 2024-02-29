@@ -38,6 +38,7 @@ use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Char;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\dbtype\SmallInt;
+use ramp\model\business\validation\dbtype\TinyInt;
 use ramp\model\business\validation\dbtype\DecimalPointNumber;
 // use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
@@ -101,9 +102,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyA', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new Char(1,
-          new LowerCaseAlphanumeric(),
-          Str::set('My error message HERE!')
+        new Char(
+          // Str::set('My error message HERE!'),
+          1, new LowerCaseAlphanumeric()
         )
       ));
     }
@@ -114,9 +115,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyB', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new Char(1,
-          new LowerCaseAlphanumeric(),
-          Str::set('My error message HERE!')
+        new Char(
+          // Str::set('My error message HERE!'),
+          1, new LowerCaseAlphanumeric()
         )
       ));
     }
@@ -127,9 +128,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyC', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new Char(1,
-          new LowerCaseAlphanumeric(),
-          Str::set('My error message HERE!')
+        new Char(
+          // Str::set('My error message HERE!'),
+          1, new LowerCaseAlphanumeric()
         )
       ));
     }
@@ -140,9 +141,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new Char(7,
-          new HexidecimalColorCode(),
-          Str::set('My error message HERE!')
+        new Char(
+          // Str::set('My error message HERE!'),
+          7, new HexidecimalColorCode()
         ),
         
       ));
@@ -154,9 +155,10 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(20,
-          new RegexValidationRule('[A-Za-z]*'),
-          Str::set('My error message HERE!')
+        //Str::set('title'),
+        new VarChar(
+          Str::set('My error message HERE!'),
+          20, new RegexValidationRule('[A-Za-z]*')
         )
       ));
     }
@@ -167,9 +169,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('mobile', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(12,
-          new TelephoneNumber(),
-          Str::set('My error message HERE!')
+        new VarChar(
+          Str::set('My error message HERE!'),
+          12, new TelephoneNumber()
         )
       ));
     }
@@ -180,7 +182,10 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new VarChar(35, new Password(), Str::set('My error message HERE!'))
+        new VarChar(
+          Str::set('My error message HERE!'),
+          35, new Password()
+        )
       ));
     }
     return $this->registered; 
@@ -203,6 +208,27 @@ class ComprehensiveRecord extends Record
     }
     return $this->registered; 
   }
+
+/*
+input(
+dbtype\MultiPart(
+  VarChar(RegexValidation('',)),
+  $split ['W']
+  $dataProperties ['weekNumber', 'weekYear', 'weekTime']
+  TinyInt(),
+  TintInt(),
+  Time(),
+))
+*/
+
+  // protected function get_week() : ?RecordComponent
+  // {
+  //   if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
+  //     $this->initiate(new Input($this->registeredName, $this,
+  //     new TinyInt(Str::set('My error message HERE!'), new Week())));
+  //   }
+  //   return $this->registered; 
+  // }
 
   // protected function get_flag() : ?RecordComponent
   // {

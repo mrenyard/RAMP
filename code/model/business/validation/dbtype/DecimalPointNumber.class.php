@@ -26,7 +26,7 @@ use ramp\model\business\validation\ValidationRule;
 
 /**
  * DecimalPointNumber database type validation rule, fractional part of number represented in tenth after a dot.
- * Runs code defined test against provided value.
+ * Runs code defined test constricted by construction parameters against provided value.
  */
 class DecimalPointNumber extends DbTypeValidation
 {
@@ -39,11 +39,9 @@ class DecimalPointNumber extends DbTypeValidation
 
   /**
    * Default constructor for a validation rule of database type DecimalPointNumber.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myValidationRule = new validation\dbtype\DecimalPointNumber(
-   *   2,
-   *   Str::set('My error message HERE!')
+   *   Str::set('My error message HERE!'), 2, 5
    * );
    * ```
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
@@ -71,7 +69,7 @@ class DecimalPointNumber extends DbTypeValidation
       $step = $step . '0';
     }
     $this->step = $step;
-    parent::__construct(NULL, $errorMessage);
+    parent::__construct($errorMessage, NULL);
   }
 
   /**
@@ -85,25 +83,25 @@ class DecimalPointNumber extends DbTypeValidation
   /**
    * @ignore
    */
-  protected function get_min() : ?float
+  protected function get_min() : ?Str
   {
-    return $this->min;
+    return Str::set($this->min);
   }
 
   /**
    * @ignore
    */
-  protected function get_max() : ?float
+  protected function get_max() : ?Str
   {
-    return $this->max;
+    return Str::set($this->max);
   }
 
   /**
    * @ignore
    */
-  protected function get_step() : ?float
+  protected function get_step() : ?Str
   {
-    return $this->step;
+    return Str::set($this->step);
   }
 
   /**

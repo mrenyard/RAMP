@@ -34,9 +34,9 @@ class TinyInt extends DbTypeValidation
    * Default constructor for a validation rule of database type Interger.
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(Str $errorMessage)
+  public function __construct(Str $errorMessage, ValidationRule $subRule)
   {
-    parent::__construct(NULL, $errorMessage);
+    parent::__construct($errorMessage, $subRule);
   }
 
   /**

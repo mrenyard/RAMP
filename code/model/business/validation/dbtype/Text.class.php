@@ -50,10 +50,10 @@ class Text extends DbTypeValidation
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(int $size = NULL, ValidationRule $subRule, Str $errorMessage)
+  public function __construct(Str $errorMessage, ValidationRule $subRule, int $size = NULL)
   {
     $this->size = (isset($size) && $size <= 16383) ? $size : 16383;
-    parent::__construct($subRule, $errorMessage);
+    parent::__construct($errorMessage, $subRule);
   }
 
   /**

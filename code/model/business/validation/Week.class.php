@@ -24,18 +24,29 @@ use ramp\core\Str;
 use ramp\model\business\FailedValidationException;
 
 /**
- * Regex pattern matching validation.
+ * Validates a string value that corespondes to a single week in a give year.
+ * 
+ * A valid week string consists of a valid year number, followed by a hyphen character (-), then the capital letter "W",
+ * followed by a two-digit week of the year value. The week of the year is a two-digit string between 01 and 53.
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Date_and_time_formats#week_strings
  */
-final class HexidecimalColorCode extends ValidationRule
+final class Week extends ValidationRule
 {
   private static $type;
 
-  /**
-   * 
+   /**
+   * Constructor for a validation rule for Week formated string.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new dbtype\Char(8, new Week(Str::set('2015-W1'), Str::set('2025-W53')))
+   * );
+   * ```
+   * @param Str $pattern Regex pattern to be validated against.
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct()
+  public function __construct(Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('color'); } 
+    if (!isset(self::$type)) { self::$type = Str::set('week'); } 
     parent::__construct();
   }
 
@@ -70,7 +81,7 @@ final class HexidecimalColorCode extends ValidationRule
    */
   protected function test($value) : void
   {
-    if (preg_match('/^#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2}$/', $value)) { return; }
+    if (preg_match('/^[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3])$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }

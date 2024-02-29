@@ -43,7 +43,7 @@ use tests\ramp\model\business\validation\FailOnBadValidationRule;
 class VarCharTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
-  private $maxLength;
+  private $maxlength;
   private $errorMessage;
 
   /**
@@ -51,12 +51,12 @@ class VarCharTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->maxLength = 10;
+    $this->maxlength = 10;
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new VarChar(
-      $this->maxLength,
-      new FailOnBadValidationRule(),
-      $this->errorMessage
+      $this->errorMessage,
+      $this->maxlength,
+      new FailOnBadValidationRule()
     );
   }
 

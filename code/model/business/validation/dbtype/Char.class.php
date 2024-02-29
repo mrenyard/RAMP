@@ -55,7 +55,7 @@ class Char extends DbTypeValidation
   {
     $this->length = $length;
     $this->maxlength = Str::set($this->length);
-    parent::__construct($subRule, Str::set('Must be exactly ' . $length . ' characters long.'));
+    parent::__construct(Str::set('Must be exactly ' . $length . ' characters long.'), $subRule);
   }
 
   /**

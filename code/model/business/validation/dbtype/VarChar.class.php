@@ -50,10 +50,10 @@ class VarChar extends DbTypeValidation
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(int $maxlength, ValidationRule $subRule, Str $errorMessage)
+  public function __construct(Str $errorMessage, int $maxlength, ValidationRule $subRule)
   {
     $this->maxlength = $maxlength;
-    parent::__construct($subRule, $errorMessage);
+    parent::__construct($errorMessage, $subRule);
   }
 
   /**

@@ -53,8 +53,8 @@ class TinyTextTest extends \PHPUnit\Framework\TestCase
     $this->maxLength = 10;
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new TinyText(
-      new FailOnBadValidationRule(),
-      $this->errorMessage
+      $this->errorMessage,
+      new FailOnBadValidationRule()
     );
   }
 

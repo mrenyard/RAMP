@@ -27,7 +27,7 @@ use ramp\core\RAMPObject;
  */
 class RecordComponentType extends RAMPObject
 {
-  public const KEY = 0;
-  public const PROPERTY = 1;
+  public const KEY = 1;
   public const RELATION = 2;
+  public const PROPERTY = 3;
 }

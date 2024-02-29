@@ -51,6 +51,16 @@ class Input extends Field
    * @param \ramp\model\business\Record $parent Record parent of *this* property
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change
+   * ```php
+   * new field\Input(Str::set('propertyName'), $parent,
+   *   Str::set('Field description/hint to the user'),
+   *   new dbtype\FirstValidationRule(
+   *     Str::set('Format error message/hint'),
+   *     new SecondValidationRule(
+   *       Str::set('Format error message/hint')
+   *   )
+   * );
+   * ```
    */
   public function __construct(Str $name, Record $parent, DbTypeValidation $validationRule, bool $editable = TRUE)
   {
@@ -96,7 +106,7 @@ class Input extends Field
   /**
    * @ignore
    */
-  protected function get_min() : ?float
+  protected function get_min() : ?Str
   {
     return $this->validationRule->min;
   }
@@ -104,7 +114,7 @@ class Input extends Field
   /**
    * @ignore
    */
-  protected function get_max() : ?float
+  protected function get_max() : ?Str
   {
     return $this->validationRule->max;
   }
@@ -112,7 +122,7 @@ class Input extends Field
   /**
    * @ignore
    */
-  protected function get_step() : ?float
+  protected function get_step() : ?Str
   {
     return $this->validationRule->step;
   }

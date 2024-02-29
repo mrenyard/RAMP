@@ -56,8 +56,8 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
   {
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new MockDbTypeValidation(
-      new FailOnBadValidationRule(),
-      $this->errorMessage
+      $this->errorMessage,
+      new FailOnBadValidationRule()
     );
     FailOnBadValidationRule::reset();
     MockDbTypeValidation::reset();

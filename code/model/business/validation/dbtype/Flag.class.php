@@ -36,7 +36,7 @@ class Flag extends DbTypeValidation
    */
   public function __construct(Str $errorMessage)
   {
-    parent::__construct(NULL, $errorMessage);
+    parent::__construct($errorMessage);
   }
 
   /**

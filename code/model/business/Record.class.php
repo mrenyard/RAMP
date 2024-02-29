@@ -289,7 +289,7 @@ abstract class Record extends Relatable
    * @param string $propertyName Name of property to be set.
    * @param mixed The value to be set on provided property.
    */
-  public function setPropertyValue(string $propertyName, $value) : void
+  public function setPropertyValue(string $propertyName, $value = NULL) : void
   {
     $value = (\is_string($value) && $value === '')? NULL : $value;
     if ($this->getPropertyValue($propertyName) === $value) { return; }

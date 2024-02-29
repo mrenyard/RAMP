@@ -52,9 +52,8 @@ class TextTest extends \PHPUnit\Framework\TestCase
   {
     $this->errorMessage = Str::set('My error message HERE!');
     $this->testObject = new Text(
-      NULL,
-      new FailOnBadValidationRule(),
-      $this->errorMessage
+      $this->errorMessage,
+      new FailOnBadValidationRule()
     );
   }
 

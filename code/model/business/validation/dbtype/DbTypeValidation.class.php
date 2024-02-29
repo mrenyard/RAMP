@@ -45,19 +45,23 @@ abstract class DbTypeValidation extends ValidationRule
    * Default constructor for a DbTypeValidation.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myRule = new MyDbTypeValidation(
+   * $myRule = new dbtype\FirstValidationRule(
+   *   Str::set('Format error message/hint'),
    *   new SecondValidationRule(
+   *     Str::set('Format error message/hint'),
    *     new ThirdValiationRule(
-   *       new ForthValidationRule()
+   *       Str::set('Format error message/hint'),
+   *       new ForthValidationRule(
+   *         Str::set('Format error message/hint')
+   *       )
    *     )
    *   )
-   *   Str::set('My error message HERE!')
    * );
    * ```
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test
    */
-  public function __construct(ValidationRule $subRule = NULL, Str $errorMessage = NULL)
+  public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
   {
     $this->errorMessage = $errorMessage;
     parent::__construct($subRule);

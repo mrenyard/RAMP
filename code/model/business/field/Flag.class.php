@@ -44,8 +44,7 @@ class Flag extends Field
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    */
-  public function __construct(Str $name, Record $parent, Str $title = NULL)
-  // public function __construct(Str $name, Record $parent)
+  public function __construct(Str $name, Record $parent)
   {
     parent::__construct($name, $parent);
   }
