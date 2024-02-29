@@ -39,7 +39,7 @@ class TelephoneNumber extends RegexValidationRule
   {
     if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
     if (!isset(self::$maxlength)) { self::$maxlength = Str::set('12'); } 
-    parent::__construct($errorMessage, '^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
+    parent::__construct($errorMessage, '^(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
   }
 
   /**

@@ -199,7 +199,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="^(\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" maxlength="12" value="07744 123123" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="^(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" maxlength="12" value="07744 123123" />' . PHP_EOL .
       '        </div>',
       $output
     );
@@ -236,7 +236,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#$%&()+,-./:;<=>?[]^_`{|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
       '        </div>',
       $output
     );

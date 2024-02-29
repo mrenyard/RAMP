@@ -227,12 +227,17 @@ class ComprehensiveRecord extends Record
 /*
 input(
 dbtype\MultiPart(
-  VarChar(RegexValidation('',)),
+  VarChar(
+    Str::set('')
+    7, RegexValidation(
+      Str::set(''),
+      '[1][0-9]{3}W(?:)'
+    )
+  ),
   $split ['W']
-  $dataProperties ['weekNumber', 'weekYear', 'weekTime']
-  TinyInt(),
-  TintInt(),
-  Time(),
+  $dataProperties ['weekNumber', 'weekYear']
+  TinyInt(1, 53),
+  TintInt(1000, 9999)
 ))
 */
 

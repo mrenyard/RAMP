@@ -85,7 +85,7 @@ class DumpTest extends \tests\ramp\view\ChildViewTest
 
   public function testRender()
   {
-    $expectedRegEx = '#^<pre>(object\\()?[\\\///a-zA-Z]*Dump(\\)\\#|.class.php:)[0-9]*(:| \\([0-9]*\\) {)' .
+    $expectedRegEx = '#^<pre>(?:object\\()?[\\\///a-zA-Z]*Dump(?:\\)\\#|.class.php:)[0-9]*(?::| \\([0-9]*\\) {)' .
       PHP_EOL . '((.|\n)*)' .PHP_EOL.'</pre>$#';
     ob_start();
     RootView::getInstance()->children;
