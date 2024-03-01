@@ -47,13 +47,14 @@ class Input extends Field
 
   /**
    * Creates input field related to a single property of containing record.
+   * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
-   * @param \ramp\model\business\Record $parent Record parent of *this* property
+   * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
-   * proir to allowing property value change
+   * proir to allowing property value change.
    * ```php
    * new field\Input(Str::set('propertyName'), $parent,
-   *   Str::set('Field description/hint to the user'),
+   *   Str::set('Expanded description of expected field content.'),
    *   new dbtype\FirstValidationRule(
    *     Str::set('Format error message/hint'),
    *     new SecondValidationRule(
@@ -62,7 +63,7 @@ class Input extends Field
    * );
    * ```
    */
-  public function __construct(Str $name, Record $parent, DbTypeValidation $validationRule, bool $editable = TRUE)
+  public function __construct(Str $name, Record $parent, Str $title, DbTypeValidation $validationRule, bool $editable = TRUE)
   {
     $this->validationRule = $validationRule;
     parent::__construct($name, $parent, NULL, $editable);

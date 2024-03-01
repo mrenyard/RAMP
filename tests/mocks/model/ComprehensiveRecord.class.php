@@ -102,6 +102,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyA', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
+        Str::set('First single character key element.'),
         new Char(
           Str::set('Character length must be exactly '),
           1, new LowerCaseAlphanumeric(
@@ -117,7 +118,8 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyB', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        new Char(
+      Str::set('Second single character key element.'),
+      new Char(
           Str::set('Character length must be exactly '),
           1, new LowerCaseAlphanumeric(
             Str::set('My error message HERE!')
@@ -132,6 +134,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('keyC', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
+        Str::set('Third single character key element.'),
         new Char(
           Str::set('Character length must be exactly '),
           1, new LowerCaseAlphanumeric(
@@ -147,6 +150,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
+        Str::set('Main thematic colour of presentation.'),
         new Char(
           Str::set('Character length must be exactly '),
           7, new HexidecimalColorCode(
@@ -163,7 +167,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        //Str::set('title'),
+        Str::set('The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters.'),
         new VarChar(
           Str::set('string with a maximum length of '),
           20, new RegexValidationRule(
@@ -180,6 +184,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('mobile', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new VarChar(
           Str::set('string with a maximum length of '),
           12, new TelephoneNumber(
@@ -195,6 +200,7 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new VarChar(
           Str::set('string with a maximum length of '),
           35, new Password(
@@ -210,7 +216,9 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-      new SmallInt(Str::set('My error message HERE!'))));
+        Str::set('The non fractional number related to this query'),
+        new SmallInt(Str::set('My error message HERE!'))
+      ));
     }
     return $this->registered; 
   }
@@ -219,27 +227,34 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('currency', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-      new DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)));
+        Str::set('The ammount of money in UK pounds and pence that you have access to.'),
+        new DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)
+      ));
     }
     return $this->registered; 
   }
 
-/*
-input(
-dbtype\MultiPart(
-  VarChar(
-    Str::set('')
-    7, RegexValidation(
-      Str::set(''),
-      '[1][0-9]{3}W(?:)'
-    )
-  ),
-  $split ['W']
-  $dataProperties ['weekNumber', 'weekYear']
-  TinyInt(1, 53),
-  TintInt(1000, 9999)
-))
-*/
+  /**
+  protected function get_week() : ?RecordComponent
+  {
+    if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new MultipartInput($name, $parent,
+        Str::set('expanded description of expected field content'),
+        validation\dbtype\Char(
+          Str::set('string with a character length of exactly '),
+          7, new validation\RegexValidation(
+            Str::set('valid week formated (yyyyW00)'),
+            '[1-9][0-9]{3}-W(?:0[1-9]|[1-4][0-9]|5[0-3])'
+          )
+        ),
+        $split ['W']
+        $dataProperties ['weekYear', 'weekNumber']
+        validation\dbtype\TintInt(Str::_EMPTY(), 1000, 9999)
+        validation\dbtype\TinyInt(Str::_EMPTY(), 1, 53)
+      ));
+    }
+    return $this->registered; 
+  }*/
 
   // protected function get_week() : ?RecordComponent
   // {

@@ -25,7 +25,7 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
- * DateTime database type validation rule, in the format YYYY-mm-ddThh:mm:ss.
+ * DateTime database type validation rule, in the format YYYY-mm-ddThh:mm.
  * Runs code defined test against provided value.
  */
 class DateTime extends DbTypeValidation

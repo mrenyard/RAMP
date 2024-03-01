@@ -45,6 +45,7 @@ abstract class AuthenticatableUnit extends Record
   {
     if ($this->register('email', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
+        Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
         new validation\dbtype\VarChar(
           Str::set('string with a maximun character length of '),
           150,  new validation\EmailAddress(

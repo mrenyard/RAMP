@@ -36,9 +36,9 @@ class MockInput extends Input
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, DbTypeValidation $validationRule, bool $editable = TRUE)
+  public function __construct(Str $name, Record $parent, Str $title, DbTypeValidation $validationRule, bool $editable = TRUE)
   {
-    parent::__construct($name, $parent, $validationRule, $editable);
+    parent::__construct($name, $parent, $title, $validationRule, $editable);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }
