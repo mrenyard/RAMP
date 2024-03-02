@@ -37,6 +37,14 @@ use ramp\core\Str;
  * 
  * @property-read \ramp\core\Str $inputType Input type.
  * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
+
+
+ * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
+ * @property-read ?int $maxlength Regex pattern used in this validation rule.
+ * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
+ * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid.
+ * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
  */
 abstract class ValidationRule extends RAMPObject
 {
@@ -78,13 +86,6 @@ abstract class ValidationRule extends RAMPObject
   {
     return ($this->subRule) ? $this->subRule->inputType : self::$defaultInputType;
   }
-  /**
-   * @ignore
-   */
-  protected function get_placeholder() : ?Str
-  {
-    return ($this->subRule) ? $this->subRule->placeholder : NULL;
-  }
 
   /**
    * @ignore
@@ -92,6 +93,14 @@ abstract class ValidationRule extends RAMPObject
   protected function get_pattern() : ?Str
   {
     return ($this->subRule) ? $this->subRule->pattern : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_placeholder() : ?Str
+  {
+    return ($this->subRule) ? $this->subRule->placeholder : NULL;
   }
 
   /**

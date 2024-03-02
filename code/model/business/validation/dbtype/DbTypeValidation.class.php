@@ -20,9 +20,6 @@
  */
 namespace ramp\model\business\validation\dbtype;
 
-use ramp\core\RAMPObject;
-use ramp\core\Str;
-use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**

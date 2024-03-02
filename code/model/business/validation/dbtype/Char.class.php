@@ -31,7 +31,6 @@ use ramp\model\business\validation\ValidationRule;
 class Char extends DbTypeValidation
 {
   private $length;
-  private $maxlength;
 
   /**
    * Default constructor for a validation rule of database type Char.
@@ -54,8 +53,7 @@ class Char extends DbTypeValidation
   public function __construct(Str $errorMessage, int $length, ValidationRule $subRule)
   {
     $this->length = $length;
-    $this->maxlength = Str::set($this->length);
-    parent::__construct($this->maxlength->prepend($errorMessage), $subRule);
+    parent::__construct(Str::set($this->length)->prepend($errorMessage), $subRule);
   }
 
   /**
@@ -72,7 +70,7 @@ class Char extends DbTypeValidation
    */
   protected function get_maxlength() : ?int
   {
-    return (parent::get_maxlength() == NULL) ? NULL : $this->maxlength;
+    return (parent::get_maxlength() == NULL) ? NULL : $this->length;
   }
 
   /**

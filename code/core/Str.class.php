@@ -100,20 +100,18 @@ final class Str extends RAMPObject
   }
 
   /**
-   * Returns 'this' lowercase.
-   * @return \ramp\core\Str Lowercase instance of *this*.
+   * @ignore
    */
-  public function get_lowercase() : Str
+  protected function get_lowercase() : Str
   {
     if (!isset($this->lower)) { $this->lower = Str::set(strtolower($this->value)); }
     return $this->lower;
   }
 
   /**
-   * Returns 'this' uppercase.
-   * @return \ramp\core\Str Uppercase instance of *this*.
+   * @ignore
    */
-  public function get_uppercase() : Str
+  protected function get_uppercase() : Str
   {
     if (!isset($this->upper)) { $this->upper = Str::set(strtoupper($this->value)); }
     return $this->upper;

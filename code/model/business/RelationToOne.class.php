@@ -82,6 +82,9 @@ class RelationToOne extends Relation
     }
   }
 
+  /**
+   * 
+   */
   final public function addForeignKey(\stdClass $keyObject) : void
   {
     foreach ($this->keyMap as $subKey => $subForeignKey) {

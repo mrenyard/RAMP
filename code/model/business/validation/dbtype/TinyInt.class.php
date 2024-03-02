@@ -21,32 +21,26 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\ValidationRule;
 
 /**
- * Tiny Interger database type validation rule, whole number (not decimal) from 0 to 255.
+ * Tiny Interger database type validation rule, whole number (not decimal) from -128 to 127.
  * Runs code defined test against provided value.
  */
-class TinyInt extends DbTypeValidation
+class TinyInt extends Integer
 {
   /**
-   * Default constructor for a validation rule of database type Interger.
+   * Default constructor for a validation rule of database type Interger between -128 and 127.
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param int $min Optional minimum value that is acceptable and valid.
+   * @param int $max Optional maximum value that is acceptable and valid.
+   * @param int $step Optional number that specifies the granularity that the value must adhere to.
+   * @throws \InvalidArgumentException When $min or $max exceed limits.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule)
+  public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
   {
-    parent::__construct($errorMessage, $subRule);
-  }
-
-  /**
-   * Asserts that $value is an Interger, a whole number.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value) : void
-  {
-    if (is_int($value) && $value <= 255 && $value >= 0) { return; }
-    throw new FailedValidationException();
+    if (($max !== NULL && $max > 127) || ($min !== NULL && $min < -128)) {
+      throw new \InvalidArgumentException('$max has exceded 127 and or $min is less than -128');
+    }
+    parent::__construct($errorMessage, ($min) ? $min : -128, ($max) ? $max : 127, ($step) ? $step : 1);
   }
 }

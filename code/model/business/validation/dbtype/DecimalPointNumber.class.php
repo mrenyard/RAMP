@@ -25,7 +25,7 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
- * DecimalPointNumber database type validation rule, fractional part of number represented in tenth after a dot.
+ * DecimalPointNumber database type validation rule, fractional part of number represented in tenths after a dot.
  * Runs code defined test constricted by construction parameters against provided value.
  */
 class DecimalPointNumber extends DbTypeValidation

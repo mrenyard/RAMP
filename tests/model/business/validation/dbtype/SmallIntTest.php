@@ -51,7 +51,7 @@ class SmallIntTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->errorMessage = Str::set('My error message HERE!');
+    $this->errorMessage = Str::set('number from ');
     $this->testObject = new SmallInt($this->errorMessage);
   }
 
@@ -81,28 +81,28 @@ class SmallIntTest extends \PHPUnit\Framework\TestCase
   {
     $failPoint = 0;
     $this->assertNull($this->testObject->process(0));
-    $this->assertNull($this->testObject->process(-32423));
-    $this->assertNull($this->testObject->process(65534));
+    $this->assertNull($this->testObject->process(-32768));
+    $this->assertNull($this->testObject->process(32767));
     try {
       $this->testObject->process('1');
     } catch (FailedValidationException $expected) {
       $failPoint = 1;
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
       try {
         $this->testObject->process(10.55);
       } catch (FailedValidationException $expected) {
         $failPoint = 2;
-        $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+        $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
         try {
-          $this->testObject->process(-32424);
+          $this->testObject->process(-32769);
         } catch (FailedValidationException $expected) {
           $failPoint = 3;
-          $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+          $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
           try {
-            $this->testObject->process(65535);
+            $this->testObject->process(32768);
           } catch (FailedValidationException $expected) {
             $failPoint = 4;
-            $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+            $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
             return;
           }
         }

@@ -25,7 +25,7 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
- * Time database type validation rule, in the format hh::ss:mm.
+ * Time database type validation rule, in the format hh::mm.
  * Runs code defined test against provided value.
  */
 class Time extends DbTypeValidation

@@ -29,6 +29,7 @@ use ramp\core\Str;
 // use ramp\condition\SQLEnvironment;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
+use ramp\model\business\field\MultipartInput;
 // use ramp\model\business\field\Option;
 // use ramp\model\business\field\SelectOne;
 // use ramp\model\business\field\SelectMany;
@@ -41,10 +42,12 @@ use ramp\model\business\validation\dbtype\SmallInt;
 use ramp\model\business\validation\dbtype\TinyInt;
 use ramp\model\business\validation\dbtype\DecimalPointNumber;
 // use ramp\model\business\validation\dbtype\Flag;
-use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\RegexValidationRule;
+use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
 use ramp\model\business\validation\TelephoneNumber;
+use ramp\model\business\validation\ISOWeek;
+use ramp\model\business\validation\ISOMonth;
 // use ramp\model\business\validation\WholeNumber;
 // use ramp\model\business\validation\Currency;
 use ramp\model\business\validation\Password;
@@ -167,11 +170,11 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters.'),
+        Str::set('The name by which you are refered by, in western culture usually your first name.'),
         new VarChar(
           Str::set('string with a maximum length of '),
           20, new RegexValidationRule(
-            Str::set('a single word with only latin alphabet characters'),
+            Str::set('single word with only latin alphabet charactered'),
             '[A-Za-z]*'
           )
         )
@@ -217,7 +220,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The non fractional number related to this query'),
-        new SmallInt(Str::set('My error message HERE!'))
+        new SmallInt(Str::set('number from '))
       ));
     }
     return $this->registered; 
@@ -234,36 +237,35 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 
-  /**
   protected function get_week() : ?RecordComponent
   {
     if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new MultipartInput($name, $parent,
+      $this->initiate(new MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        validation\dbtype\Char(
-          Str::set('string with a character length of exactly '),
-          7, new validation\RegexValidation(
-            Str::set('valid week formated (yyyyW00)'),
-            '[1-9][0-9]{3}-W(?:0[1-9]|[1-4][0-9]|5[0-3])'
-          )
-        ),
-        $split ['W']
-        $dataProperties ['weekYear', 'weekNumber']
-        validation\dbtype\TintInt(Str::_EMPTY(), 1000, 9999)
-        validation\dbtype\TinyInt(Str::_EMPTY(), 1, 53)
+        new ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
+        ['-W'],
+        ['weekYear', 'weekNumber'],
+        new SmallInt(Str::set('4 digit year from '), 0, 9999),
+        new TinyInt(Str::set('2 digit week number from '), 1, 53)
       ));
     }
-    return $this->registered; 
-  }*/
+    return $this->registered;
+  }
 
-  // protected function get_week() : ?RecordComponent
-  // {
-  //   if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
-  //     $this->initiate(new Input($this->registeredName, $this,
-  //     new TinyInt(Str::set('My error message HERE!'), new Week())));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_month() : ?RecordComponent
+  {
+    if ($this->register('month', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new MultipartInput($this->registeredName, $this,
+        Str::set('expanded description of expected field content'),
+        new ISOMonth(Str::set('valid month formated (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
+        ['-'],
+        ['monthYear', 'monthNumber'],
+        new SmallInt(Str::set('4 digit year from '), 0, 9999),
+        new TinyInt(Str::set('2 digit month number from '), 1, 12)
+      ));
+    }
+    return $this->registered;
+  }
 
   // protected function get_flag() : ?RecordComponent
   // {

@@ -32,10 +32,19 @@ require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Integer.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/HexidecimalColorCode.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/TelephoneNumber.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/Password.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISOWeek.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISOMonth.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/MultipartInput.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/ComprehensiveRecord.class.php';
 
@@ -199,7 +208,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="^(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$" maxlength="12" value="07744 123123" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}" maxlength="12" value="07744 123123" />' . PHP_EOL .
       '        </div>',
       $output
     );
@@ -273,7 +282,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="number input field compact required" title="A whole number (not a fractional number) that can be positive, negative, or zero">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:whole-number">Whole Number</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:whole-number" name="comprehensive-record:1|1|1:whole-number" type="number" tabindex="0" required="required" min="-32423" max="65534" step="1" value="365" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:whole-number" name="comprehensive-record:1|1|1:whole-number" type="number" tabindex="0" required="required" min="-32768" max="32767" step="1" value="365" />' . PHP_EOL .
       '        </div>',
       $output
     );
@@ -299,9 +308,9 @@ class FieldRenderTest extends TestBase
     $this->assertSame('input field', (string)$view->type);
     $this->assertSame('input field compact', (string)$view->class);
     $this->assertSame('number', (string)$view->inputType);
-    $view->title = Str::set('The amount of money present in your primary named account during the current accounting period in UK pounds sterling');
+    $view->title = Str::set('The amount of money present in your primary named account during the current accounting period in UK pounds sterling.');
     $this->assertSame(
-      ' title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling"',
+      ' title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling."',
       (string)$view->attribute('title')
     );
     $this->assertNull($view->attribute('placeholder'));
@@ -309,9 +318,87 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling">' . PHP_EOL .
+      '<div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling.">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:currency">Account Balance</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:currency" name="comprehensive-record:1|1|1:currency" type="number" tabindex="0" required="required" min="0" max="999.99" step="0.01" value="365.72" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'week input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldISOWeekRender()
+  {
+    $this->data->weekYear = 2024;
+    $this->data->weekNumber = 2;
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->week);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Preferred install week');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('week', (string)$view->inputType);
+    $view->title = Str::set('The preferred week of fiber optic broadband installation.');
+    $this->assertSame(
+      ' title="The preferred week of fiber optic broadband installation."',
+      (string)$view->attribute('title')
+    );
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="week input field compact required" title="The preferred week of fiber optic broadband installation.">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:week">Preferred install week</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:week" name="comprehensive-record:1|1|1:week" type="week" tabindex="0" required="required" pattern="([0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3])){8}" min="2024-W06" max="2024-W52" step="any" value="2024-W02" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'week input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldISOMonthRender()
+  {
+    $this->data->monthYear = 2024;
+    $this->data->monthNumber = 8;
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->month);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Target release');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('month', (string)$view->inputType);
+    $view->title = Str::set('The target month for the next release edition of our software.');
+    $this->assertSame(
+      ' title="The target month for the next release edition of our software."',
+      (string)$view->attribute('title')
+    );
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:month">Target release</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="any" value="2024-08" />' . PHP_EOL .
       '        </div>',
       $output
     );

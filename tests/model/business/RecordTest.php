@@ -470,7 +470,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $i = 0;
     foreach($this->testObject as $key) { $this->assertSame($keys[$i++], $key); }
     $this->assertSame($this->expectedChildCountNew, $i);
-    $this->assertObjectHasProperty('aProperty', $this->dataObject);
     $this->assertObjectHasProperty('keyA', $this->dataObject);
     $this->assertObjectHasProperty('keyB', $this->dataObject);
     $this->assertObjectHasProperty('keyC', $this->dataObject);

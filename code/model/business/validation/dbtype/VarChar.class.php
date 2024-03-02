@@ -46,14 +46,14 @@ class VarChar extends DbTypeValidation
    *   Str::set('My error message HERE!')
    * );
    * ```
+   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    * @param int $maxlength Maximum number of characters from 0 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
   public function __construct(Str $errorMessage, int $maxlength, ValidationRule $subRule)
   {
     $this->maxlength = $maxlength;
-    parent::__construct($errorMessage, $subRule);
+    parent::__construct(Str::set($maxlength)->prepend($errorMessage), $subRule);
   }
 
   /**

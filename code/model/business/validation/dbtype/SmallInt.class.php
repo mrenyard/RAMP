@@ -21,73 +21,26 @@
 namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
-use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\ValidationRule;
 
 /**
- * Small Interger database type validation rule, whole number (not decimal) from -32423 to 65534.
+ * Small Interger database type validation rule, whole number (not decimal) from -32768 to 32767.
  * Runs code defined test against provided value.
  */
-class SmallInt extends DbTypeValidation
+class SmallInt extends Integer
 {
-  private static $inputType;
-  private $min;
-  private $max;
-  private $step;
-
   /**
-   * Default constructor for a validation rule of database type Interger.
+   * Default constructor for a validation rule of database type Interger between -32768 and 32767.
    * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param int $min Optional minimum value that is acceptable and valid.
+   * @param int $max Optional maximum value that is acceptable and valid.
+   * @param int $step Optional number that specifies the granularity that the value must adhere to.
+   * @throws \InvalidArgumentException When $min or $max exceed limits.
    */
   public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
   {
-    if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
-    $this->min = ($min) ? $min : -32423;
-    $this->max = ($max) ? $max : 65534;
-    $this->step = ($step) ? $step : 1;
-    parent::__construct($errorMessage, NULL);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_inputType() : Str
-  {
-    return self::$inputType;
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_min() : ?Str
-  {
-    return Str::set($this->min);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_max() : ?Str
-  {
-    return Str::set($this->max);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_step() : ?Str
-  {
-    return Str::set($this->step);
-  }
-
-  /**
-   * Asserts that $value is an Interger, a whole number.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  protected function test($value) : void
-  {
-    if (is_int($value) && $value <= $this->max && $value >= $this->min && ($value === 0 || $value % $this->step == 0)) { return; }
-    throw new FailedValidationException();
+    if (($max !== NULL && $max > 32767) || ($min !== NULL && $min < -32768)) {
+      throw new \InvalidArgumentException('$max has exceded 32767 and or $min is less than -32768');
+    }
+    parent::__construct($errorMessage, ($min) ? $min : -32768, ($max) ? $max : 32767, ($step) ? $step : 1);
   }
 }

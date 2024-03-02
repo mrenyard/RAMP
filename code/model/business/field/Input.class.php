@@ -38,8 +38,11 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * - {@see \ramp\validation\ValidationRule}
  * 
  * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
- * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
- * @property-read \ramp\core\Str $maxlength Regex pattern used in this validation rule.
+ * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
+ * @property-read ?int $maxlength Maximun character length allowed.
+ * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
+ * @property-read ?\ramp\core\Str $max The maximum value that is acceptable and valid.
+ * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
  */
 class Input extends Field
 {
@@ -47,9 +50,9 @@ class Input extends Field
 
   /**
    * Creates input field related to a single property of containing record.
-   * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
+   * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
    * proir to allowing property value change.
    * ```php

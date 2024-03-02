@@ -108,7 +108,6 @@ abstract class Record extends Relatable
     $i = 0;
     foreach ($this->components[RecordComponentType::PROPERTY] as $name => $o) {
       $this[$i] = $this->$name;
-      if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
       $i++;
     }
     foreach ($this->components[RecordComponentType::RELATION] as $name => $o) {

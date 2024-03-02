@@ -23,7 +23,7 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Regex pattern matching validation.
+ * Telephone number (digits pertaining to calling a telephonic device) restricted validation rule.
  */
 class TelephoneNumber extends RegexValidationRule
 {
@@ -33,13 +33,12 @@ class TelephoneNumber extends RegexValidationRule
    /**
    * Constructor for telephone number restricted regex pattern validation.
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  public function __construct(Str $errorMessage)
   {
     if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
     if (!isset(self::$maxlength)) { self::$maxlength = Str::set('12'); } 
-    parent::__construct($errorMessage, '^(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}$', $subRule);
+    parent::__construct($errorMessage, '(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}');
   }
 
   /**
