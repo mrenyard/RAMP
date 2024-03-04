@@ -49,9 +49,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * Collection of assertions for ramp\model\business\SimpleBusinessModelDefinition::__construct().
+   * Collection of assertions for ramp\model\business\SimpleBusinessModelDefinition.
    * - assert is instance of {@see \ramp\model\iBusinessModelDefinition}.
-   * @see ramp.model.business.SimpleBusinessModelDefinition ramp\model\business\SimpleBusinessModelDefinition
+   * @see \ramp\model\business\SimpleBusinessModelDefinition
    */
   public function test__Construct()
   {
@@ -64,9 +64,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals null
    * - getPropertyName() equals null
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordOnly() : void
   {
@@ -81,9 +81,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals null
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordWithKey() : void
   {
@@ -98,9 +98,9 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals Str with the value 'property'
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordName ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getRecordKey ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
-   * @see ramp.model.business.SimpleBusinessModelDefinition#method_getPropertyName ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordName()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getRecordKey()
+   * @see \ramp\model\business\SimpleBusinessModelDefinition::getPropertyName()
    */
   public function testRecordKeyProperty() : void
   {

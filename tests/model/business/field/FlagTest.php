@@ -57,7 +57,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
   #endregion
 
   /**
-    * Collection of assertions for \ramp\model\business\field\Field::__construct().
+    * Collection of assertions for \ramp\model\business\field\Flag.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}

@@ -56,7 +56,7 @@ class ObjectTest extends TestBase
   /**
    * Default base constructor assertions \ramp\core\RAMPObject::__construct().
    * - assert child RAMPObject is instance of the parent
-   * @see ramp.core.RAMPObject \ramp\core\RAMPObject
+   * @see \ramp\core\RAMPObject
    */
   public function testConstruct() : void
   {

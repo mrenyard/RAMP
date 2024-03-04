@@ -60,7 +60,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\Collection::__construct().
+   * Collection of assertions for ramp\core\Collection.
    * - assert is instance of {@see \ramp\core\Collection}
    * - assert is instance of {@see \ramp\core\iCollection}
    * - assert is instance of {@see \ramp\core\RAMPObject}
@@ -69,7 +69,7 @@ class CollectionTest extends \PHPUnit\Framework\TestCase
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: *'$compositeType MUST be an accesible class name'*
-   * @see ramp.core.Collection \ramp\core\Collection
+   * @see \ramp\core\Collection
    */
   public function test__Construct()
   {

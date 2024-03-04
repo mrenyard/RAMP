@@ -112,7 +112,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
   /**
    * Bad property (name) NOT accessable on \ramp\model\business\BusinessModel::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @see ramp.model.business.model.BusinessModel#method__get ramp\model\business\BusinessModel::__get()
+   * @see \ramp\model\business\BusinessModel::__get()
    */
   public function testBadPropertyCallExceptionOn__get() : void
   {

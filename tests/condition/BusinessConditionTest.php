@@ -116,7 +116,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'attribute'
    * - assert retrieved is a {@see \ramp\core\Str}
    * - assert 'attribute' is composite of [property]->[property]
-   * @see \ramp\condition\Condition::$attribute
+   * @see \ramp\condition\Condition::attribute
    */
   public function testAttribute() : void
   {
@@ -142,7 +142,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'operator'.
    * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @see \ramp\condition\Condition::$operator.
+   * @see \ramp\condition\Condition::$operator
    */
   public function testOperator() : void
   {
@@ -188,7 +188,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'record'
    * - assert 'record' is a {@see \ramp\core\Str}
    * - assert 'record' equal to provided at creation
-   * @see \ramp\condition\BusinessCondition::record
+   * @see \ramp\condition\BusinessCondition::$record
    */
   public function testRecord() : void
   {

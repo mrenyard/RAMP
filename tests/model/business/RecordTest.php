@@ -123,7 +123,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\business\Relatable}
    * - assert is instance of {@see \ramp\model\business\Record}
-   * @see ramp.model.business.Relatable ramp\model\business\Relatable
+   * @see \ramp\model\business\Relatable
    */
   public function testConstruct() : void
   {

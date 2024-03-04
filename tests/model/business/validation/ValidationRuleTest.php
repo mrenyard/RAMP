@@ -52,10 +52,10 @@ use tests\ramp\model\business\validation\FailOnBadValidationRule;
 class ValidationRuleTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Collection of assertions for ramp\validation\ValidationRule::__construct().
+   * Collection of assertions for ramp\validation\ValidationRule.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\validation\ValidationRule}
-   * @see ramp.validation.ValidationRule \ramp\validation\ValidationRule
+   * @see \ramp\validation\ValidationRule
    */
   public function test__Construct()
   {
@@ -68,8 +68,8 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
    * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see ramp.validation.ValidationRule#method_test \ramp\validation\ValidationRule::test()
-   * @see ramp.validation.ValidationRule#method_process \ramp\validation\ValidationRule::process()
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess()
   {

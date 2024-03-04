@@ -32,11 +32,11 @@ use ramp\model\business\DataExistingEntryException;
 class DataExistingEntryExceptionTest extends \PHPUnit\Framework\TestCase
 {
   /**
-   * Default throw/construct assertions \ramp\model\business\DataExistingEntryException::__construct().
+   * Default throw/construct assertions \ramp\model\business\DataExistingEntryException
    * - assert is instance of {@see  https://www.php.net/manual/class.runtimeexception.php \RuntimeException}
    * - assert is instance of {@see \ramp\model\business\DataWriteException}
    * - assert is instance of {@see \ramp\model\business\DataExistingEntryException}
-   * @see ramp.model.business.DataExistingEntryException \ramp\model\business\DataExistingEntryException
+   * @see \ramp\model\business\DataExistingEntryException
    */
   public function testConstruct() : void
   {

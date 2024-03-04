@@ -61,11 +61,11 @@ class CharTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\Char::__construct().
+   * Collection of assertions for ramp\validation\dbtype\Char.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\Char}
-   * @see ramp.model.business.validation.dbtype.Char \ramp\model\business\validation\dbtype\Char
+   * @see \ramp\model\business\validation\dbtype\Char
    */
   public function test__Construct()
   {

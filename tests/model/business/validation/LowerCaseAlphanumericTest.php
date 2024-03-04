@@ -50,11 +50,11 @@ class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\validation\LowerCaseAlphanumeric::__construct().
+   * Collection of assertions for ramp\validation\LowerCaseAlphanumeric.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\LowerCaseAlphanumeric}
-   * @see ramp.model.business.validation.LowerCaseAlphanumeric \ramp\model\business\validation\LowerCaseAlphanumeric
+   * @see \ramp\model\business\validation\LowerCaseAlphanumeric
    */
   public function test__Construct()
   {
@@ -67,7 +67,7 @@ class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\model\business\validation\LowerCaseAlphanumeric::process().
    * - assert void returned when test successful
    * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see ramp.model.business.validation.LowerCaseAlphanumeric#method_process \ramp\model\business\validation\LowerCaseAlphanumeric::process()
+   * @see \ramp\model\business\validation\LowerCaseAlphanumeric::process()
    */
   public function testTest()
   {

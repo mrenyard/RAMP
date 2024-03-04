@@ -48,11 +48,11 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\model\document\Document::__construct().
+   * Collection of assertions for \ramp\model\document\Document.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\model\document\Document}
-   * @see ramp.model.Model ramp\model\document\Document
+   * @see \ramp\model\document\Document
    */
   public function testConstruct() : void
   {
@@ -67,8 +67,8 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert property 'id' is settable
    * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @see ramp.model.business.BusinessModel#method_set_id ramp\model\business\BusinessModel::id
-   * @see ramp.model.business.BusinessModel#method_get_id ramp\model\business\BusinessModel::id
+   * @see \ramp\model\business\BusinessModel::id
+   * @see \ramp\model\business\BusinessModel::id
    */
   public function testGetSet_id() : void
   {
@@ -88,8 +88,8 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert property 'title' is settable
    * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @see ramp.model.business.BusinessModel#method_set_title ramp\model\business\BusinessModel::title
-   * @see ramp.model.business.BusinessModel#method_get_title ramp\model\business\BusinessModel::title
+   * @see \ramp\model\business\BusinessModel::title
+   * @see \ramp\model\business\BusinessModel::title
    */
   public function testGetSet_title() : void
   {
@@ -109,10 +109,10 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert property 'label' is settable (synonym)
    * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @see ramp.model.business.BusinessModel#method_set_heading ramp\model\business\BusinessModel::heading
-   * @see ramp.model.business.BusinessModel#method_get_heading ramp\model\business\BusinessModel::heading
-   * @see ramp.model.business.BusinessModel#method_set_label ramp\model\business\BusinessModel::label
-   * @see ramp.model.business.BusinessModel#method_get_label ramp\model\business\BusinessModel::label
+   * @see \ramp\model\business\BusinessModel::heading
+   * @see \ramp\model\business\BusinessModel::heading
+   * @see \ramp\model\business\BusinessModel::label
+   * @see \ramp\model\business\BusinessModel::label
    */
   public function testGetSet_headingLabel() : void
   {
@@ -136,10 +136,10 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert property 'placeholder' is settable (synonym)
    * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @see ramp.model.business.BusinessModel#method_set_summary ramp\model\business\BusinessModel::summary
-   * @see ramp.model.business.BusinessModel#method_get_summary ramp\model\business\BusinessModel::summary
-   * @see ramp.model.business.BusinessModel#method_set_placeholder ramp\model\business\BusinessModel::placeholder
-   * @see ramp.model.business.BusinessModel#method_get_placeholder ramp\model\business\BusinessModel::placeholder
+   * @see \ramp\model\business\BusinessModel::summary
+   * @see \ramp\model\business\BusinessModel::summary
+   * @see \ramp\model\business\BusinessModel::placeholder
+   * @see \ramp\model\business\BusinessModel::placeholder
    */
   public function testGetSet_summaryPlaceholder() : void
   {
@@ -160,8 +160,8 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert property 'style' is settable
    * - assert returned value instance of {@see \ramp\core\Str}.
    * - assert returned value matches expected results.
-   * @see ramp.model.business.BusinessModel#method_set_style ramp\model\business\BusinessModel::style
-   * @see ramp.model.business.BusinessModel#method_get_style ramp\model\business\BusinessModel::style
+   * @see \ramp\model\business\BusinessModel::style
+   * @see \ramp\model\business\BusinessModel::style
    */
   public function testGetSet_style() : void
   {
@@ -178,7 +178,7 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    * - assert clone id has been set to next avalible uniqie id
    * - assert clone has same properties as cloned excluding id
    * - assert clone property values matches expected results.
-   * @see ramp.model.business.BusinessModel#method_clone ramp\model\business\BusinessModel::clone()
+   * @see \ramp\model\business\BusinessModel::clone()
    */
   public function testClone() : void
   {

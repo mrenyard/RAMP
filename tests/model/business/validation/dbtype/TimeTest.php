@@ -59,11 +59,11 @@ class TimeTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\Time::__construct().
+   * Collection of assertions for ramp\validation\dbtype\Time.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\Time}
-   * @see ramp.model.business.validation.dbtype.Time \ramp\model\business\validation\dbtype\Time
+   * @see \ramp\model\business\validation\dbtype\Time
    */
   public function test__Construct()
   {

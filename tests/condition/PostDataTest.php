@@ -62,12 +62,12 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for \ramp\condition\PostData::__construct().
+   * Collection of assertions for \ramp\condition\PostData.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\core\Collection}
    * - assert is instance of {@see \ramp\condition\PostData}
    * - assert is composed of {@see \ramp\condition\InputDataCondition}s
-   * @see ramp.condition.PostData#method___construct ramp\condition\PostData
+   * @see \ramp\condition\PostData
    */
   public function test__Construct()
   {
@@ -88,7 +88,7 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
    * - assert throws \DomainException when any $postdata NAME does NOT match business model
    *   - with message: *'Invalid name in $postdata does NOT match business model'*
    * - assert where valid produces like for like representation of provied array as PostData object
-   * @see ramp.condition.PostData#method___build ramp\condition\PostData::build()
+   * @see \ramp\condition\PostData::build()
    */
   public function testBuild() : void
   {

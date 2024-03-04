@@ -80,7 +80,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\Relation::__construct().
+   * Collection of assertions for \ramp\model\business\Relation.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\core\iOption}
@@ -90,7 +90,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\business\Relation}
-   * @see ramp.model.business.Relation ramp\model\business\Relation
+   * @see \ramp\model\business\Relation
    */
   public function testConstruct() : void
   {

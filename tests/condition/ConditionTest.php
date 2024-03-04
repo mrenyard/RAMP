@@ -106,7 +106,7 @@ class ConditionTest extends \PHPUnit\Framework\TestCase
    * - assert allows retrieval of 'operator'.
    * - assert retreved is an instance of {@see \ramp\condition\Operator}.
    * - assert retreved is same as provided to constructor.
-   * @see \ramp\condition\Condition::$operator.
+   * @see \ramp\condition\Condition::$operator
    */
   public function testOperator() : void
   {

@@ -54,7 +54,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\core\StrCollection::__construct().
+   * Collection of assertions for ramp\core\StrCollection.
    * - assert is instance of {@see \ramp\core\StrCollection}
    * - assert is instance of {@see \ramp\core\Collection}
    * - assert is instance of {@see \ramp\core\iCollection}
@@ -64,7 +64,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert implements \ArrayAccess
    * - assert throws InvalidAgumentException if any provided arguments are NOT string literal.
    *   - with message: *'All arguments MUST be string literals!'*
-   * @see ramp.core.StrCollection \ramp\core\StrCollection
+   * @see \ramp\core\StrCollection
    */
   public function test__Construct()
   {
@@ -84,7 +84,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert accepts a set of comma seperated string literals
    * - assert each string literal (comma seperated) counts as one item in the collection
    * - assert that and special (_EMPTY,SPACE,COLON,SEMICOLON) exactly same as another.
-   * @see ramp.core.StrCollection#method_set \ramp\core\StrCollection::set()
+   * @see \ramp\core\StrCollection::set()
    */
   public function testSet() : void
   {
@@ -114,7 +114,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert returns instance of {@see \ramp\core\Str}.
    * - assert returns expected concatenated string value of Str.
    * - assert returns expected concatenated string value including provided glue.
-   * @see ramp.core.StrCollection#method_implode \ramp\core\StrCollection::implode()
+   * @see \ramp\core\StrCollection::implode()
    */
   public function testImplode() : void
   {
@@ -131,7 +131,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
   /**
    * Collection of assertions for ramp\core\StrCollection::contains().
    * - assert returns bool where anyone of the containd Str values matches the value of privide Str
-   * @see ramp.core.StrCollection#method_contains \ramp\core\StrCollection::contains()
+   * @see \ramp\core\StrCollection::contains()
    */
   public function testContains() : void
   {
@@ -144,7 +144,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\core\StrCollection::isCompositeType().
    * - assert returns TRUE when $compositeType {@see \ramp\core\Str}
    * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
-   * @see ramp.core.StrCollection#method_isCompositeType \ramp\core\StrCollection::isCompositeType()
+   * @see \ramp\core\StrCollection::isCompositeType()
    */
   public function testIsCompositeType() : void
   {
@@ -160,9 +160,9 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert collection object references occupy SAME position as added
    * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
    *   - with message: *'Offset out of bounds'*
-   * @see ramp.core.StrCollection#method_getIterator \ramp\core\StrCollection::getIterator()
-   * @see ramp.core.StrCollection#method_add \ramp\core\StrCollection::add()
-   * @see ramp.core.StrCollection#method_count \ramp\core\StrCollection::count
+   * @see \ramp\core\StrCollection::getIterator()
+   * @see \ramp\core\StrCollection::add()
+   * @see \ramp\core\StrCollection::count
    */
   public function testIteratorAddCount() : void
   {
@@ -256,7 +256,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    *   - with message: *'[provided object] NOT instanceof [expected type]'*
    * - assert value set with name key is same as retived with same name key
    * - assert value set at index same as retived at index.
-   * @see ramp.core.StrCollection#method_offsetSet \ramp\core\StrCollection::offsetSet()
+   * @see \ramp\core\StrCollection::offsetSet()
    */
   public function testOffsetSet() // : void
   {
@@ -284,7 +284,7 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    * - assert value set at index is no longer retivable at same index.
    * @depends testOffsetSet
    * @param Collection The test object.
-   * @see ramp.core.StrCollection#method_offsetUnset \ramp\core\mocks\CollectionTest\StrCollection::offsetUnset()
+   * @see \ramp\core\mocks\CollectionTest\StrCollection::offsetUnset()
    */
   public function testOffsetUnset(StrCollection $testObject)
   {

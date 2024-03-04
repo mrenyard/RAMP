@@ -56,11 +56,11 @@ class FlagTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\Flag::__construct().
+   * Collection of assertions for ramp\validation\dbtype\Flag.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\Flag}
-   * @see ramp.model.business.validation.dbtype.Flag \ramp\model\business\validation\dbtype\Flag
+   * @see \ramp\model\business\validation\dbtype\Flag
    */
   public function test__Construct()
   {

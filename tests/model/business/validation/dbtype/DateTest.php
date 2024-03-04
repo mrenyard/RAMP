@@ -61,11 +61,11 @@ class DateTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\Date::__construct().
+   * Collection of assertions for ramp\validation\dbtype\Date.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\Date}
-   * @see ramp.model.business.validation.dbtype.Date \ramp\model\business\validation\dbtype\Date
+   * @see \ramp\model\business\validation\dbtype\Date
    */
   public function test__Construct()
   {

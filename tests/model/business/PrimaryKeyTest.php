@@ -93,7 +93,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\Key::__construct().
+   * Collection of assertions for \ramp\model\business\PrimaryKey.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\core\iList}
@@ -103,7 +103,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\buiness\PrimaryKey}   
-   * @see ramp.model.business.Key ramp\model\business\PrimaryKey
+   * @see \ramp\model\business\PrimaryKey
    */
   public function testConstruct() : void
   {
@@ -203,7 +203,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   /**
    * Set 'id' NOT accessable on \ramp\model\business\Key::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
-   * @see ramp.model.business.key\Key#method_set_id ramp\model\business\Key::id
+   * @see \ramp\model\business\Key::id
    */
   public function testSetIdPropertyNotSetException() : void
   {

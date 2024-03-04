@@ -45,7 +45,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   #endregion
 
   /**
-   * Default base constructor assertions \ramp\model\business\Relatable::__construct().
+   * Default base constructor assertions \ramp\model\business\Relatable.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\core\iOption}
@@ -53,7 +53,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert is instance of {@see \Countable}
    * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\business\Relatable}
-   * @see ramp.model.business.Relatable ramp\model\business\Relatable
+   * @see \ramp\model\business\Relatable
    */
   public function testConstruct() : void
   {

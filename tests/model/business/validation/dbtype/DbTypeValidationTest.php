@@ -68,7 +68,7 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\validation\ValidationRule}
    * - assert is instance of {@see \ramp\validation\DbTypeValidation}
-   * @see ramp.validation.DbTypeValidationTest \ramp\validation\DbTypeValidationTest
+   * @see \ramp\validation\DbTypeValidationTest
    */
   public function test__Construct()
   {
@@ -81,8 +81,8 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
    * Collection of assertions for ramp\model\business\validation\DbTypeValidationTest::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
    * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see ramp.model.business.validation.DbTypeValidationTest#method_test \ramp\model\business\validation\DbTypeValidationTest::test()
-   * @see ramp.model.business.validation.DbTypeValidationTest#method_process \ramp\model\business\validation\DbTypeValidationTest::process()
+   * @see \ramp\model\business\validation\DbTypeValidationTest::test()
+   * @see \ramp\model\business\validation\DbTypeValidationTest::process()
    */
   public function testProcess()
   {
