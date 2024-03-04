@@ -41,6 +41,7 @@ use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\dbtype\SmallInt;
 use ramp\model\business\validation\dbtype\TinyInt;
 use ramp\model\business\validation\dbtype\DecimalPointNumber;
+use ramp\model\business\validation\dbtype\Time;
 // use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
@@ -48,6 +49,7 @@ use ramp\model\business\validation\HexidecimalColorCode;
 use ramp\model\business\validation\TelephoneNumber;
 use ramp\model\business\validation\ISOWeek;
 use ramp\model\business\validation\ISOMonth;
+use ramp\model\business\validation\ISOTime;
 // use ramp\model\business\validation\WholeNumber;
 // use ramp\model\business\validation\Currency;
 use ramp\model\business\validation\Password;
@@ -260,8 +262,23 @@ class ComprehensiveRecord extends Record
         new ISOMonth(Str::set('valid month formated (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
         ['-'],
         ['monthYear', 'monthNumber'],
-        new SmallInt(Str::set('4 digit year from '), 0, 9999),
-        new TinyInt(Str::set('2 digit month number from '), 1, 12)
+        new SmallInt(Str::set('a 4 digit year from '), 0, 9999),
+        new TinyInt(Str::set('a 2 digit month number from '), 1, 12)
+      ));
+    }
+    return $this->registered;
+  }
+
+  protected function get_time() : ?RecordComponent
+  {
+    if ($this->register('time', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('expanded description of expected field content'),
+        new Time(Str::set('valid time formated (hh:mm[:ss])'),
+          new ISOTime(Str::set('an appointment slot avalible ever 30min from '),
+            Str::set('08:30'), Str::set('17:30'), (30*60)
+          )
+        )
       ));
     }
     return $this->registered;

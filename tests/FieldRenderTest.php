@@ -41,6 +41,7 @@ require_once '/usr/share/php/ramp/model/business/validation/TelephoneNumber.clas
 require_once '/usr/share/php/ramp/model/business/validation/Password.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ISOWeek.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ISOMonth.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISOTime.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
@@ -366,7 +367,7 @@ class FieldRenderTest extends TestBase
   }
 
   /**
-   * Check rendered output of 'week input field'.
+   * Check rendered output of 'month input field'.
    * - assert 'value' same as relevant record property value.
    * - assert 'type' relates to  field type definition.
    * - assert 'style' is a concatination of type + style as set on documentView.
@@ -399,6 +400,41 @@ class FieldRenderTest extends TestBase
       '<div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:month">Target release</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="any" value="2024-08" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'time input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldTimeRender()
+  {
+    $this->data->time = '16:30';
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->time);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Start Time');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('time', (string)$view->inputType);
+    $view->title = Str::set('Scheduled start time for this appointment.');
+    $this->assertSame(' title="Scheduled start time for this appointment."', (string)$view->attribute('title'));
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:time">Start Time</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:time" name="comprehensive-record:1|1|1:time" type="time" tabindex="0" required="required" pattern="(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="08:30" max="17:30" step="1800" value="16:30" />' . PHP_EOL .
       '        </div>',
       $output
     );

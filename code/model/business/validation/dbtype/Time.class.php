@@ -58,7 +58,8 @@ class Time extends DbTypeValidation
    */
   protected function test($value) : void
   {
-    $format = 'H:i';
+    $format = 'H:i:s';
+    $value = (is_string($value ) && count(explode(':', $value)) != 3) ? $value . ':00' : $value;
     $o = \DateTime::createFromFormat($format, $value);
     if ($o && $o->format($format) === $value) { return; }
     throw new FailedValidationException();
