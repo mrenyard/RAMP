@@ -34,6 +34,7 @@ use ramp\model\business\validation\dbtype\TinyInt;
 use ramp\model\business\validation\dbtype\DecimalPointNumber;
 use ramp\model\business\validation\dbtype\Time;
 use ramp\model\business\validation\dbtype\Date;
+use ramp\model\business\validation\dbtype\DateTime;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
@@ -42,6 +43,7 @@ use ramp\model\business\validation\ISOWeek;
 use ramp\model\business\validation\ISOMonth;
 use ramp\model\business\validation\ISOTime;
 use ramp\model\business\validation\ISODate;
+use ramp\model\business\validation\DateTimeLocal;
 use ramp\model\business\validation\Password;
 
 /**
@@ -282,6 +284,21 @@ class ComprehensiveRecord extends Record
         new Date(Str::set('valid date formated (yyyy-mm-dd)'),
           new ISODate(Str::set('date of birth from '),
             Str::set('1900-01-01'), Str::set('2023-12-31')
+          )
+        )
+      ));
+    }
+    return $this->registered;
+  }
+
+  protected function get_datetime() : ?RecordComponent
+  {
+    if ($this->register('datetime', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('expanded description of expected field content'),
+        new DateTime(Str::set('valid date time formated (yyyy-mm-ddThh:mm:ss)'),
+          new DateTimeLocal(Str::set('Start date and time of your event within the next 18 months, form '),
+            Str::set('2024-03-05T00:00'), Str::set('2025-09-30T00:00')
           )
         )
       ));

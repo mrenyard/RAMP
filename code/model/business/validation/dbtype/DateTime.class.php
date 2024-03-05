@@ -27,30 +27,10 @@ use ramp\model\business\validation\ValidationRule;
 /**
  * DateTime database type validation rule, in the format YYYY-mm-ddThh:mm.
  * Runs code defined test against provided value.
+ * TODO:mrenyard: Add UTC local conversion options on dbtype\DataTime.
  */
 class DateTime extends DbTypeValidation
 {
-  /**
-   * Default constructor for a validation rule of database type DateTime.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myValidationRule = new validation\dbtype\DateTime(
-   *   new validation\SecondValidationRule(
-   *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
-   *     )
-   *   ),
-   *   Str::set('My error message HERE!')
-   * );
-   * ```
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
-   */
-  public function __construct(Str $errorMessage, ValidationRule $subRule)
-  {
-    parent::__construct($errorMessage, $subRule);
-  }
-
   /**
    * Asserts that $value is a valid date time in the format YYYY-mm-ddThh:mm:ss.
    * @param mixed $value Value to be tested.

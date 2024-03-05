@@ -24,16 +24,18 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Exact Date (ISO 8601) entry of a 4 digit year plus a 2 digit month number and 2 digit day of month number (yyyy-mm-dd).
- * @see https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates
+ * Exact Date Time (ISO 8601) entry of a 4 digit year, 2 digit month number and 2 digit day hyphen separated,
+ * followd by 'T' then 2 digit hour, 2 digit minutes and optional 2 digit seconds colon separated (yyyy-mm-ddThh:mm[:ss]).
+ * @see https://en.wikipedia.org/wiki/ISO_8601#Combined_date_and_time_representations
  */
-class ISODate extends RegexValidationRule
+class DateTimeLocal extends RegexValidationRule
 {
   private static $type;
-  // private static $maxlength;
   private $min;
   private $max;
   private $step;
+  private $minDT;
+  private $maxDT;
 
    /**
    * Constructor for month restricted regex pattern validation rule.
@@ -48,28 +50,41 @@ class ISODate extends RegexValidationRule
   public function __construct(Str $errorMessage, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(self::$type)) { self::$type = Str::set('date'); } 
-    // if (!isset(self::$maxlength)) { self::$maxlength = 10; }
-    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', NULL, 'yyyy-mm-dd');
+    if (!isset(self::$type)) { self::$type = Str::set('datetime-local'); } 
+    parent::__construct(
+      $errorMessage, 
+      '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?',
+      NULL,
+      'yyyy-mm-ddThh:mm:ss'
+    );
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }
     } catch (FailedValidationException $e) { $failed = TRUE; }
     if ($min !== NULL && $max !== NULL) {
-      $minYmd = explode('-', (string)$min); $maxYmd = explode('-', (string)$max);
-      if (
-        $failed ||
+      $minDT = explode('T', (string)$min);
+      $maxDT = explode('T', (string)$max);
+      $minYmd = explode('-', $minDT[0]); $maxYmd = explode('-', $maxDT[0]);
+      $minHms = explode(':', $minDT[1]); $minHms[2] = (count($minHms) !== 3) ? '00' :  $minHms[2];
+      $maxHms = explode(':', $maxDT[1]); $maxHms[2] = (count($maxHms) !== 3) ? '00' :  $maxHms[2];
+      if ($failed ||
         ($minYmd[0] > $maxYmd[0]) ||
         ($minYmd[0] == $maxYmd[0] && $minYmd[1] > $maxYmd[1]) ||
-        ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] > $maxYmd[2])
+        ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] > $maxYmd[2]) ||
+        ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] == $maxYmd[2] && $minHms[0] > $maxHms[0]) ||
+        ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] == $maxYmd[2] && $minHms[0] == $maxHms[0] && $minHms[1] > $maxHms[1]) ||
+        ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] == $maxYmd[2] && $minHms[0] == $maxHms[0] && $minHms[1] == $maxHms[1] && $minHms[2] > $maxHms[2])
       ) { throw new \InvalidArgumentException(
           ($e) ? $e->getMessage() :
           'The provided $min and or $max values are badly formatted or illogical $min is greater than $max.'
         );
       }
     }
-    $this->min = $min; $this->max = $max;
-    $this->step = ($step) ? $step : 1; // 1 day
+    $this->minDT = [implode('-', $minYmd), implode(':', $minHms)];
+    $this->maxDT = [implode('-', $maxYmd), implode(':', $maxHms)];
+    $this->min = $min;
+    $this->max = $max;
+    $this->step = ($step) ? $step : 60; // seconds (1min).
   }
 
   /**
@@ -113,19 +128,25 @@ class ISODate extends RegexValidationRule
   {
     parent::test($value);
     $valueDT = explode('T', $value);
-    $valueYmd = explode('-', $value);
-    $minYmd = explode('-', $this->min);
-    $maxYmd = explode('-', $this->max);
+    $valueYmd = explode('-', $valueDT[0]); $minYmd = explode('-', $this->minDT[0]); $maxYmd = explode('-', $this->maxDT[0]);
+    $valueHms = explode(':', $valueDT[1]); $minHms = explode(':', $this->minDT[1]); $maxHms = explode(':', $this->maxDT[1]);
     if (
       (
         ($valueYmd[0] < $maxYmd[0]) || 
-        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] < $maxYmd[1]) || 
-        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] < $maxYmd[2]))
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] < $maxYmd[1]) || 
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] < $maxYmd[2]) ||
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] == $maxYmd[2] && $valueHms[0] < $maxHms[0]) ||
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] == $maxYmd[2] && $valueHms[0] == $maxHms[0] && $valueHms[1] < $maxHms[1]) ||
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] == $maxYmd[2] && $valueHms[0] == $maxHms[0] && $valueHms[1] == $maxHms[1] && $valueHms[2] < $maxHms[2])
+      ) 
       ||
       (
-        ($valueYw[0] > $minYmd[0]) ||
+        ($valueYwd[0] > $minYmd[0]) ||
         ($valueYmd[0] == $minYm[0] && $valueYmd[1] > $minYmd[1]) ||
-        ($valueYmd[0] == $minYm[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] > $minYmd[2])
+        ($valueYmd[0] == $minYm[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] > $minYmd[2]) ||
+        ($valueYmd[0] == $minYmd[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] == $minYmd[2] && $valueHms[0] < $mainms[0]) ||
+        ($valueYmd[0] == $minYmd[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] == $minYmd[2] && $valueHms[0] == $minHms[0] && $valueHms[1] < $minHms[1]) ||
+        ($valueYmd[0] == $minYmd[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] == $minYmd[2] && $valueHms[0] == $minHms[0] && $valueHms[1] == $minHms[1] && $valueHms[2] < $minHms[2])
       )
     ) { return; }
     throw new FailedValidationException('Tested $value outside of $min and $max bounds.');

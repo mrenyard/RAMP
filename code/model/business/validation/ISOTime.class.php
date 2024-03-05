@@ -56,15 +56,14 @@ class ISOTime extends RegexValidationRule
     } catch (FailedValidationException $e) { $failed = TRUE; }
     if ($min !== NULL && $max !== NULL) {
       $minHms = explode(':', (string)$min); $maxHms = explode(':', (string)$max);
-      if (
-        $failed ||
+      if ($failed ||
         ($minHms[0] > $maxHms[0]) ||
         ($minHms[0] == $maxHms[0] && $minHms[1] > $maxHms[1]) ||
         ((isset($minHms[2]) && isset($maxHms[2])) && ($minHms[0] == $maxHms[0] && $minHms[1] == $maxHms[1] && $minHms[2] > $maxHms[2]))
-      ) { throw new \InvalidArgumentException('Provided $min and or $max values are badly formatted or illogical $min is greater than $max.'); }
+      ) { throw new \InvalidArgumentException('The provided $min and or $max values are badly formatted or illogical $min is greater than $max.'); }
     }
     $this->min = $min; $this->max = $max;
-    $this->step = ($step) ? $step : 60;
+    $this->step = ($step) ? $step : 60; // seconds (1min).
   }
 
   /**
