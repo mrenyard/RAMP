@@ -22,18 +22,9 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
-// use ramp\core\StrCollection;
-// use ramp\core\OptionList;
-// use ramp\condition\PostData;
-// use ramp\condition\Filter;
-// use ramp\condition\SQLEnvironment;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
 use ramp\model\business\field\MultipartInput;
-// use ramp\model\business\field\Option;
-// use ramp\model\business\field\SelectOne;
-// use ramp\model\business\field\SelectMany;
-// use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Char;
@@ -42,7 +33,7 @@ use ramp\model\business\validation\dbtype\SmallInt;
 use ramp\model\business\validation\dbtype\TinyInt;
 use ramp\model\business\validation\dbtype\DecimalPointNumber;
 use ramp\model\business\validation\dbtype\Time;
-// use ramp\model\business\validation\dbtype\Flag;
+use ramp\model\business\validation\dbtype\Date;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
@@ -50,8 +41,7 @@ use ramp\model\business\validation\TelephoneNumber;
 use ramp\model\business\validation\ISOWeek;
 use ramp\model\business\validation\ISOMonth;
 use ramp\model\business\validation\ISOTime;
-// use ramp\model\business\validation\WholeNumber;
-// use ramp\model\business\validation\Currency;
+use ramp\model\business\validation\ISODate;
 use ramp\model\business\validation\Password;
 
 /**
@@ -277,6 +267,21 @@ class ComprehensiveRecord extends Record
         new Time(Str::set('valid time formated (hh:mm[:ss])'),
           new ISOTime(Str::set('an appointment slot avalible ever 30min from '),
             Str::set('08:30'), Str::set('17:30'), (30*60)
+          )
+        )
+      ));
+    }
+    return $this->registered;
+  }
+
+  protected function get_date() : ?RecordComponent
+  {
+    if ($this->register('date', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('expanded description of expected field content'),
+        new Date(Str::set('valid date formated (yyyy-mm-dd)'),
+          new ISODate(Str::set('date of birth from '),
+            Str::set('1900-01-01'), Str::set('2023-12-31')
           )
         )
       ));

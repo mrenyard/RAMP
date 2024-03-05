@@ -30,27 +30,6 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Date extends DbTypeValidation
 {
-  /*
-   * Constructor for a validation rule of database type Date.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myValidationRule = new validation\dbtype\Date(
-   *   new validation\SecondValidationRule(
-   *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
-   *     )
-   *   ),
-   *   Str::set('My error message HERE!')
-   * );
-   * ```
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
-   *
-  public function __construct(Str $errorMessage, ValidationRule $subRule)
-  {
-    parent::__construct($errorMessage, $subRule);
-  }*/
-
   /**
    * Asserts that $value is a valid date in the format YYYY-MM-DD.
    * @param mixed $value Value to be tested.

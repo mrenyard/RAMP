@@ -42,6 +42,7 @@ require_once '/usr/share/php/ramp/model/business/validation/Password.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ISOWeek.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ISOMonth.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ISOTime.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISODate.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
@@ -399,7 +400,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '<div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:month">Target release</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="any" value="2024-08" />' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="1" value="2024-08" />' . PHP_EOL .
       '        </div>',
       $output
     );
@@ -435,6 +436,41 @@ class FieldRenderTest extends TestBase
       '<div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
       '          <label for="comprehensive-record:1|1|1:time">Start Time</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:time" name="comprehensive-record:1|1|1:time" type="time" tabindex="0" required="required" pattern="(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="08:30" max="17:30" step="1800" value="16:30" />' . PHP_EOL .
+      '        </div>',
+      $output
+    );
+  }
+
+  /**
+   * Check rendered output of 'date input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldDateRender()
+  {
+    $this->data->date = '2024-03-04'; // born yesterday!
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('input'));
+    $view->setModel($this->testObject->date);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Date of Birth');
+    $this->assertSame('input field', (string)$view->type);
+    $this->assertSame('input field compact', (string)$view->class);
+    $this->assertSame('date', (string)$view->inputType);
+    $view->title = Str::set('The month, day, and year of of your birth.');
+    $this->assertSame(' title="The month, day, and year of of your birth."', (string)$view->attribute('title'));
+    $this->assertNull($view->attribute('placeholder'));
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<div class="date input field compact required" title="The month, day, and year of of your birth.">' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:date">Date of Birth</label>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:date" name="comprehensive-record:1|1|1:date" type="date" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|31)" min="1900-01-01" max="2023-12-31" step="1" value="2024-03-04" />' . PHP_EOL .
       '        </div>',
       $output
     );

@@ -37,10 +37,12 @@ class ISOWeek extends RegexValidationRule
 
    /**
    * Constructor for week restricted regex pattern validation rule.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test,
+   * if providing $min and $max values will be proceeded by $min 'to' $max).
    * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-W00).
    * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-W00).
-   * @param int $step Optional number that specifies the granularity that the value must adhere to.
+   * @param int $step Optional number that specifies the granularity that the value must adhere to,
+   * given in weeks, the default value of step is 1, indicating 1 week.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
   public function __construct(Str $errorMessage, Str $min = NULL, Str $max = NULL, int $step = NULL)

@@ -36,7 +36,8 @@ class ISOTime extends RegexValidationRule
 
    /**
    * Constructor for Time restricted regex pattern validation rule.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test, if providing $min and $max values will be proceeded by $min 'to' $max).
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test,
+   * if providing $min and $max values will be proceeded by $min 'to' $max).
    * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (hh:mm[:ss]).
    * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (hh:mm[:ss]).
    * @param int $step Optional number that specifies the granularity that the value must adhere in number of seconds you want to increment by;
@@ -63,7 +64,7 @@ class ISOTime extends RegexValidationRule
       ) { throw new \InvalidArgumentException('Provided $min and or $max values are badly formatted or illogical $min is greater than $max.'); }
     }
     $this->min = $min; $this->max = $max;
-    $this->step = ($step) ? $step : 'any';
+    $this->step = ($step) ? $step : 60;
   }
 
   /**

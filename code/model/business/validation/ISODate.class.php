@@ -24,13 +24,13 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Exact Month (ISO 8601) entry of a 4 digit year plus a 2 digit month number (yyyy-mm).
+ * Exact Date (ISO 8601) entry of a 4 digit year plus a 2 digit month number and 2 digit day of month number (yyyy-mm-dd).
  * @see https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates
  */
-class ISOMonth extends RegexValidationRule
+class ISODate extends RegexValidationRule
 {
   private static $type;
-  private static $maxlength;
+  // private static $maxlength;
   private $min;
   private $max;
   private $step;
@@ -39,28 +39,28 @@ class ISOMonth extends RegexValidationRule
    * Constructor for month restricted regex pattern validation rule.
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
-   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm).
-   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm).
+   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-dd).
+   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-dd).
    * @param int $step Optional number that specifies the granularity that the value must adhere to,
-   * given in months, the default value of step is 1 month. 
+   * for date inputs, the value of step is given in days with the default of 1, indicating 1 day.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
   public function __construct(Str $errorMessage, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(self::$type)) { self::$type = Str::set('month'); } 
-    if (!isset(self::$maxlength)) { self::$maxlength = 7; }
-    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])', NULL, 'yyyy-mm');
+    if (!isset(self::$type)) { self::$type = Str::set('date'); } 
+    // if (!isset(self::$maxlength)) { self::$maxlength = 10; }
+    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|31)', NULL, 'yyyy-mm-dd');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }
     } catch (FailedValidationException $e) { $failed = TRUE; }
     if ($min !== NULL && $max !== NULL) {
-      $minYm = explode('-', (string)$min); $maxYm = explode('-', (string)$max);
-      if ($failed || ($minYm[0] > $maxYm[0]) || ($minYm[0] == $maxYm[0] && $minYm[1] > $maxYm[1])) { throw new \InvalidArgumentException(); }
+      $minYmd = explode('-', (string)$min); $maxYmd = explode('-', (string)$max);
+      if ($failed || ($minYmd[0] > $maxYmd[0]) || ($minYmd[0] == $maxYmd[0] && $minYmd[1] > $maxYmd[1])) { throw new \InvalidArgumentException(); }
     }
     $this->min = $min; $this->max = $max;
-    $this->step = ($step) ? $step : 1;
+    $this->step = ($step) ? $step : 1; // day
   }
 
   /**
@@ -103,12 +103,20 @@ class ISOMonth extends RegexValidationRule
   protected function test($value) : void
   {
     parent::test($value);
-    $valueYm = explode('-', $value);
-    $minYm = explode('-', $this->min);
-    $maxYm = explode('-', $this->max);
+    $valueYmd = explode('-', $value);
+    $minYmd = explode('-', $this->min);
+    $maxYmd = explode('-', $this->max);
     if (
-      ($valueYw[0] < $maxYm[0] || ($valueYm[0] == $maxYm[0] && $valueYm[1] < $maxYm[1])) ||
-      ($valueYw[0] > $minYm[0] || ($valueYm[0] == $minYm[0] && $valueYm[1] > $minYm[1]))
+      (
+        ($valueYmd[0] < $maxYmd[0]) || 
+        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] < $maxYmd[1]) || 
+        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] < $maxYmd[2]))
+      ||
+      (
+        ($valueYw[0] > $minYmd[0]) ||
+        ($valueYmd[0] == $minYm[0] && $valueYmd[1] > $minYmd[1]) ||
+        ($valueYmd[0] == $minYm[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] > $minYmd[2])
+      )
     ) { return; }
     throw new FailedValidationException();
   }
