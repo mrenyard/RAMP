@@ -114,7 +114,7 @@
                   <li>hasErrors: boolean</li>
                   <li>children: BusinessModel</li>
                   <li>count: int</li>
-                  <li><h5>ManagedRecord API?</h5></li>
+                  <li><h5>iManagedRecord API?</h5></li>
                   <li>primaryKey: PrimaryKey</li>
                   <li>isModified: boolean</li>
                   <li>isValid: boolean</li>
@@ -124,7 +124,7 @@
               <li class="methods"><h4>Methods</h4>
                 <ul contenteditable="true">
                   <li>validate(PostData $data): void</li>
-                  <li><h5>RecordComponentAccess API?</h5></li>
+                  <li><h5>iRecordComponentAccess API?</h5></li>
                   <li>isRequiredField(string $propertyName)</li>
                   <li>getPropertyValue(string $propertyName): mixed</li>
                   <li>setPropertyValue(string $propertyName, $value): void</li>
@@ -348,10 +348,13 @@
                   <li>isEditable: boolean</li>
                   <li>isRequired: boolean</li>
                   <li>value: mixed</li>
-                  <li><h5>iValidationDefinition API?</h5></li>
+                  <li><h5>iClientValidation API?</h5></li>
                   <li>inputType: Str</li>
-                  <li>pattern: Str</li>
-                  <li>maxlength: Str</li>
+                  <li>maxlength: int|null</li>
+                  <li>pattern: Str|null</li>
+                  <li>min: Str|null</li>
+                  <li>max: Str|null</li>
+                  <li>step: Str|null</li>
                 </ul>
               </li>
               <li class="methods"><h4>Methods</h4>
