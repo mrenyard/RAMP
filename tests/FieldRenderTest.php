@@ -35,6 +35,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/Integer.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Flag.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/HexidecimalColorCode.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/TelephoneNumber.class.php';
@@ -508,6 +509,42 @@ class FieldRenderTest extends TestBase
       '          <label for="comprehensive-record:1|1|1:datetime">Event start</label>' . PHP_EOL .
       '          <input id="comprehensive-record:1|1|1:datetime" name="comprehensive-record:1|1|1:datetime" type="datetime-local" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2024-03-04T23:59:59" />' . PHP_EOL .
       '        </div>',
+      $output
+    );
+  }
+
+  /*
+   * Check rendered output of 'checkbox input field'.
+   * - assert 'value' same as relevant record property value.
+   * - assert 'type' relates to  field type definition.
+   * - assert 'style' is a concatination of type + style as set on documentView.
+   * - assert 'title' same as set on documentView.
+   * - assert 'label' on documnentView overrides model label.
+   * - assert render() matches expected format as defined in Templated. 
+   */
+  public function testFieldFlagRender()
+  {
+    $this->data->flag = TRUE;
+    $parentView = RootView::getInstance();
+    $view = new Templated($parentView, Str::set('checkbox-fieldset'));
+    $view->setModel($this->testObject->flag);
+    $view->style = Str::set('compact');
+    $view->label = Str::set('Terms &amp; Conditions');
+    $this->assertSame('flag field', (string)$view->type);
+    $this->assertSame('flag field compact', (string)$view->class);
+    $view->title = Str::set('Please agree to our terms and conditions to continue to use this site.');
+    $this->assertSame(' title="Please agree to our terms and conditions to continue to use this site."', (string)$view->attribute('title'));
+    $view->summary = Str::set('I have read and agree to site terms and conditions.');
+    $this->assertSame('I have read and agree to site terms and conditions.', (string)$view->summary);
+    ob_start();
+    $parentView->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<fieldset class="flag field compact required" title="Please agree to our terms and conditions to continue to use this site.">' . PHP_EOL .
+      '          <legend>Terms &amp; Conditions</legend>' . PHP_EOL .
+      '          <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag:true" type="checkbox" tabindex="0" required="required" checked="checked" />' . PHP_EOL .
+      '          <label for="comprehensive-record:1|1|1:flag">I have read and agree to site terms and conditions.</label>' . PHP_EOL .
+      '        </fieldset>',
       $output
     );
   }

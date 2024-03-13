@@ -25,6 +25,7 @@ use ramp\core\Str;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
 use ramp\model\business\field\MultipartInput;
+use ramp\model\business\field\Flag;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Char;
@@ -35,6 +36,7 @@ use ramp\model\business\validation\dbtype\DecimalPointNumber;
 use ramp\model\business\validation\dbtype\Time;
 use ramp\model\business\validation\dbtype\Date;
 use ramp\model\business\validation\dbtype\DateTime;
+// use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\LowerCaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
@@ -306,15 +308,16 @@ class ComprehensiveRecord extends Record
     return $this->registered;
   }
 
-  // protected function get_flag() : ?RecordComponent
-  // {
-  //   if ($this->register('flag', RecordComponentType::PROPERTY)) {
-  //     $this->flagName = $this->registeredName;
-  //     $this->initiate(new MockFlag($this->registeredName, $this
-  //     ));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_flag() : ?RecordComponent
+  {
+    if ($this->register('flag', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate( 
+        new Flag($this->registeredName, $this,
+        Str::set('expanded description of expected field content')
+      ));
+    }
+    return $this->registered; 
+  }
 
   // protected function get_selectFrom() : ?RecordComponent
   // {

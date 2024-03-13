@@ -45,13 +45,9 @@ switch ((string)$this->type) {
             <span class="error"><?=$error; ?></span><?php } } ?>
           </label>
 <?php break;
-  case 'input field': ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
-            <span class="name"><?=$this->label; ?>:</span>
-            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="text" placeholder="<?=$this->placeholder; ?>" value="<?=$this->value; ?>" tabindex="<?=$tabindex; ?>" />
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>
-            <span class="error"><?=$error; ?></span><?php } } ?>
-          </label>
+  case 'input field': ?><?php include('input.tpl.php'); ?>
+<?php break;
+  case 'flag field': ?><?php include('checkbox-fieldset.tpl.php'); ?>
 <?php break;
   default: ?>
           <p><?=$this->id; ?></p>
