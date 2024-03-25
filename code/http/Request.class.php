@@ -139,7 +139,10 @@ class Request extends RAMPObject implements iBusinessModelDefinition
           $this->filter = Filter::build($this->recordName, $_GET);
         }
       }
-      if ($n > 1) { $this->recordKey = Str::set($model[1]); $view[1] = '~'; }
+      if ($n > 1) {
+        $this->recordKey = Str::set(str_replace(['+','%20'], ' ', $model[1]));
+        $view[1] = '~';
+      }
       if ($n > 2) {
         $this->propertyName = Str::camelCase(Str::set($model[2]), TRUE);
         if (!method_exists($recordClassName, 'get_' . $this->propertyName)) {

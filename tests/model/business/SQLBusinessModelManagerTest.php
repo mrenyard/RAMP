@@ -216,7 +216,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     $this->testObject->update($newRecord);
     // ' (key1, key2, key3, property1, property2) VALUES (:key1, :key2, :key3, :property1, :property2)';
     $expectedLog1 = 'LOG:$preparedStatement: INSERT INTO ' . $this->recordName . 
-      ' (' . $i[0] . ', ' . $i[1] . ', ' . $i[2] . ') VALUES (:' . $i[0] . ', :' . $i[1] . ', :' . $i[2] . ')';      
+      ' (' . $i[0] . ', ' . $i[1] . ', ' . $i[2] . ') VALUES (:' . $i[0] . ', :' . $i[1] . ', :' . $i[2] . ')';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
     // $expectedLog2 = 'LOG:values: A, B, C, valueA, Avalue';
     $expectedLog2 = 'LOG:values: ' . $v[0] . ', ' . $v[1] . ', ' . $v[2] . '';
@@ -257,9 +257,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     \ChromePhp::clear();
     $this->testObject->update($newRecord);
     $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .
-      ' SET property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
+      ' SET key1=:key1, key2=:key2, key3=:key3, property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: valueC, valueD';
+    $expectedLog2 = 'LOG:values: A, B, C, valueC, valueD';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
     $this->assertTrue($newRecord->isValid);
     $this->assertFalse($newRecord->isModified);
@@ -342,10 +342,10 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     \ChromePhp::clear();
     $this->testObject->updateAny();
     $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
-      'property1=:property1, property2=:property2 ' .
+      'key1=:key1, key2=:key2, key3=:key3, property1=:property1, property2=:property2 ' .
       'WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: newValue, valueB';
+    $expectedLog2 = 'LOG:values: A, A, A, newValue, valueB';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
     $this->assertFalse($storedRecord->isNew);
     $this->assertTrue($storedRecord->isValid);
@@ -376,7 +376,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
       $recordWithBadKey = $this->testObject->getBusinessModel(
         new SimpleBusinessModelDefinition($this->recordName, Str::set('A|bad|key'))
       );
-    } catch (\DomainException $expected) {
+    } catch (DataFetchException $expected) {
       $this->assertSame('No matching Record found in data storage!', $expected->getMessage());
       $expectedLog = 'LOG:SQL: SELECT * FROM ' . $this->recordName .
         ' WHERE key1 = "A" AND key2 = "bad" AND key3 = "key";';
@@ -421,9 +421,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     SELF::$NEW_VALUE_B = TRUE;
     $this->testObject->update($property);
     $expectedLog1 = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
-      'property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
+      'key1=:key1, key2=:key2, key3=:key3, property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
     $this->assertSame($expectedLog1, (string)\ChromePhp::getMessages()[0]);
-    $expectedLog2 = 'LOG:values: valueA, newValueB';
+    $expectedLog2 = 'LOG:values: A, A, C, valueA, newValueB';
     $this->assertSame($expectedLog2, (string)\ChromePhp::getMessages()[1]);
   }
 
@@ -528,22 +528,22 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     );
     $allFrom->validate(PostData::build($_POST));
     $this->testObject->update($all);
-    $i = 0;
+    $j = $i = 0;
     foreach ($all as $recordTo)
     {
       $expectedLogStatement = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
-        'property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
-      $this->assertEquals($expectedLogStatement, \ChromePhp::getMessages()[$i++]);
-      $expectedLogValues = 'LOG:values: ' . $recordTo->property1->value . ', ' . $recordTo->property2->value;
-      $this->assertEquals($expectedLogValues, \ChromePhp::getMessages()[$i++]);
+        'key1=:key1, key2=:key2, key3=:key3, property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
+      $this->assertEquals($expectedLogStatement, \ChromePhp::getMessages()[$j++]);
+      $expectedLogValues = 'LOG:values: A, A, ' . $keyBvalues[$i++] . ', ' . $recordTo->property1->value . ', ' . $recordTo->property2->value;
+      $this->assertEquals($expectedLogValues, \ChromePhp::getMessages()[($j++)]);
     }
-    $this->assertEquals(8, $i);
+    $this->assertEquals(4, $i);
     \ChromePhp::clear();
     $this->testObject->updateAny();
     $expectedLogStatement = 'LOG:$preparedStatement: UPDATE ' . $this->recordName .' SET ' .
-      'property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
+      'key1=:key1, key2=:key2, key3=:key3, property1=:property1, property2=:property2 WHERE key1=:key1 AND key2=:key2 AND key3=:key3';
     $this->assertEquals($expectedLogStatement, \ChromePhp::getMessages()[0]);
-    $expectedLogValues = 'LOG:values: valueA, newValueB';
+    $expectedLogValues = 'LOG:values: A, A, E, valueA, newValueB';
     $this->assertEquals($expectedLogValues, \ChromePhp::getMessages()[1]);
     try {
       $this->testObject->getBusinessModel(

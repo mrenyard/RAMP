@@ -45,10 +45,12 @@ switch ((string)$this->type) {
             <span class="error"><?=$error; ?></span><?php } } ?>
           </label>
 <?php break;
-  case 'input field': ?><?php include('input.tpl.php'); ?>
-<?php break;
-  case 'flag field': ?><?php include('checkbox-fieldset.tpl.php'); ?>
-<?php break;
+  case 'input field':
+    include('input.tpl.php');
+    break;
+  case 'flag field':
+    include('checkbox-fieldset.tpl.php');
+    break;
   default: ?>
           <p><?=$this->id; ?></p>
 <?php }

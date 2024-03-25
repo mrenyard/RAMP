@@ -28,7 +28,7 @@ use ramp\model\business\RecordComponentType;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\Alphanumeric;
-use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\LowercaseAlphanumeric;
 
 /**
  * Mock AuthenticatableUnit for testing.
@@ -42,7 +42,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
         Str::set('A special single word used alongside your email to uniquely identify you on our network'),
         new VarChar(
           Str::set('string with a maximum length of '),
-          20, new LowerCaseAlphanumeric(
+          20, new LowercaseAlphanumeric(
             Str::set('lowercase, letter and number charactered')
           )
         )

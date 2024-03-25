@@ -122,7 +122,6 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \ramp\condition\Filter $filter Optional filter to be apply to BusinessModel
    * @param int $fromIndex Optional index of first entry in a collection
    * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
-   * @throws \DomainException When {@see \ramp\model\business\BusinessModel}(s) NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
@@ -140,7 +139,6 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \ramp\core\Str $name Record type to be returned
    * @param \ramp\core\Str $key Primary key of record
    * @return \ramp\model\business\Record Relevant requested Record
-   * @throws \DomainException When {@see \ramp\model\business\Record} of type with $key NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   private function getRecord(Str $name, Str $key) : Record
@@ -174,7 +172,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
           $dataObject = $statementHandle->fetch();
           if (!($dataObject instanceof \stdClass))
           {
-            throw new \DomainException('No matching Record found in data storage!');
+            throw new DataFetchException('No matching Record found in data storage!');
           }
           $record = new $recordFullName($dataObject);
           $this->recordCollection->attach($record);
@@ -195,7 +193,6 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @param \ramp\condition\Filter $filter Optional Filter critera of collection
    * @param int $fromIndex Optional index for first entry of collection
    * @return \ramp\model\business\RecordCollection Relevant requested RecordCollection
-   * @throws \DomainException When {@see \ramp\model\business\RecordCollection} of type NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
   private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
@@ -282,36 +279,45 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   private function updateRecord(Record $record)
   {
-    $values = new \stdClass();
-    $dataObject = $this->getDataObject($record);
-    $comma = Str::set(', '); $colon = Str::COLON();
-    $eqColon = Str::set('=:'); $and = Str::set(' AND ');
-    $properties = Str::_EMPTY(); $placeholders = Str::_EMPTY(); $updateSet = Str::_EMPTY();
-    $propertySubSet = ($record->isNew) ? $record->primaryKey : $record;
-    foreach ($propertySubSet as $property) {
-      $propertyName = (string)$property->name;
-      $properties = $properties->append($property->name)->append($comma);
-      $placeholders = $placeholders->append($colon)->append($property->name)->append($comma);
-      $updateSet = $updateSet->append($property->name)->append($eqColon)->append($property->name)->append($comma);
-      $values->$propertyName = (isset($dataObject->$propertyName)) ? $dataObject->$propertyName : NULL;
+    $comma = $insertProperties = $insertPlaceholders = $and = $whereClause = '';
+    foreach ($record->primaryKey->indexes as $key) {
+      $insertProperties .= $comma . $key; // keyA, keyb, key3
+      $insertPlaceholders .= $comma . ':' . $key; // :keyA, :keyb, :key3
+      $whereClause .= $and . $key . '=:' . $key;
+      $and = ' AND ';
+      $comma = ', ';
     }
-    $properties = $properties->trimEnd($comma);
-    $placeholders = $placeholders->trimEnd($comma);
-    $updateSet = $updateSet->trimEnd($comma);
-    if ($properties === Str::_EMPTY()) { return; }
+    $comma = $properties = $placeholders = $updateSet = '';
+    $dataObject = $this->getDataObject($record);
+    foreach ($dataObject as $property => $value) {
+      $properties .= $comma . $property; // givenName, familyName, age 
+      $placeholders .= $comma . ':' . $property; // :givenName, :familyName, :age
+      $updateSet .= $comma . $property . '=:' . $property; // givenName=:givenName, familyName=:familyName, age=:age
+      $comma = ', ';
+    }
     $recordName = substr_replace(
       (string)$record, '', 0, strlen(SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\')
     );
-    $whereClause = Str::_EMPTY();
-    foreach ($record->primaryKey->indexes as $key) {
-      $whereClause = $whereClause->append($key)->append($eqColon)->append($key)->append($and);
+    if ($record->isNew && $insertProperties != '') {
+      $this->writeToDB(
+        $record,
+        'INSERT INTO ' . $recordName . ' (' . $insertProperties . ') VALUES (' . $insertPlaceholders . ')',
+        $record->primaryKey->asArray
+      );
+    } 
+    if ($properties != '') {
+      $this->writeToDB(
+        $record,
+        'UPDATE ' . $recordName . ' SET ' . $updateSet . ' WHERE ' . $whereClause,
+        (array)$dataObject
+      );
     }
-    $whereClause = $whereClause->trimEnd($and);
-    $preparedStatement = ($record->isNew)?
-      'INSERT INTO '.$recordName.' ('.$properties.') VALUES ('.$placeholders.')':
-      'UPDATE '.$recordName.' SET '.$updateSet.' WHERE ' . $whereClause;
+  }
+
+  private function writeToDB(Record $record, string $preparedStatement, array $values)
+  {
     \ChromePhp::log('$preparedStatement:', $preparedStatement);
-    \ChromePhp::log('values:', (array)$values);
+    \ChromePhp::log('values:', $values);
     $count=0;
     do {
       try {

@@ -38,7 +38,7 @@ use ramp\model\business\validation\dbtype\Date;
 use ramp\model\business\validation\dbtype\DateTime;
 // use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\RegexValidationRule;
-use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\LowercaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
 use ramp\model\business\validation\TelephoneNumber;
 use ramp\model\business\validation\ISOWeek;
@@ -104,7 +104,7 @@ class ComprehensiveRecord extends Record
         Str::set('First single character key element.'),
         new Char(
           Str::set('Character length must be exactly '),
-          1, new LowerCaseAlphanumeric(
+          1, new LowercaseAlphanumeric(
             Str::set('My error message HERE!')
           )
         )
@@ -120,7 +120,7 @@ class ComprehensiveRecord extends Record
       Str::set('Second single character key element.'),
       new Char(
           Str::set('Character length must be exactly '),
-          1, new LowerCaseAlphanumeric(
+          1, new LowercaseAlphanumeric(
             Str::set('My error message HERE!')
           )
         )
@@ -136,7 +136,7 @@ class ComprehensiveRecord extends Record
         Str::set('Third single character key element.'),
         new Char(
           Str::set('Character length must be exactly '),
-          1, new LowerCaseAlphanumeric(
+          1, new LowercaseAlphanumeric(
             Str::set('My error message HERE!')
           )
         )

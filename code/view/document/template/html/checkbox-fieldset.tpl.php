@@ -21,9 +21,10 @@
  * 
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
-?><fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
-          <legend><?=$this->label; ?></legend>
-          <input id="<?=$this->id; ?>" name="<?=$this->id; ?>:true" type="checkbox" tabindex="<?=$tabindex; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=($this->value) ? ' checked="checked"' : ''; ?> />
-          <label for="<?=$this->id; ?>"><?=$this->summary; ?></label>
+?>
+          <fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
+            <legend><?=$this->label; ?></legend>
+            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>:true" type="checkbox" tabindex="<?=$tabindex; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=($this->value) ? ' checked="checked"' : ''; ?> />
+            <label for="<?=$this->id; ?>"><?=$this->summary; ?></label>
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>        <span class="error"><?=$error; ?></span><?php } } ?>
-        </fieldset>
+          </fieldset>

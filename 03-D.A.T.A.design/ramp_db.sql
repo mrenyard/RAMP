@@ -140,10 +140,10 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `ramp_db`.`Address` ;
 
 CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
-  `countryCode` VARCHAR(2) NOT NULL, -- (GB)
+  `countryCode` VARCHAR(2) NOT NULL DEFAULT 'GB', -- (GB)
   `postalCode` VARCHAR(15) NOT NULL, -- (SO16 8EL)
-    -- UK PostCode REGEX max 8chars | US ZIP+4 10chars
-    -- ^(?![QVX])[A-Z]{1}(?![I])[A-Y0-9]{1}[0-9]{1}[ABCDEFGHJKPSTUVWX0-9]{0,1}\s[0-9]{1}(?![CIKMOV])[A-Z]{2}$
+    -- UK PostCode REGEX
+    -- ^([A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}|GIR ?0A{2})$
   `deliveryPointSuffix` VARCHAR(2) NOT NULL,
   -- `addressFileID` VARCHAR(15) NOT NULL,
   -- `extendedAddress` VARCHAR(45) NOT NULL, -- PremisesElements (157)
@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`Address` (
   `organisationName` VARCHAR(60) NULL DEFAULT NULL,
   `departmentName` VARCHAR(60) NULL DEFAULT NULL,
   -- `postOfficeBox` VARCHAR(13) NULL DEFAULT NULL,
-  `PoBoxNumber` SMALLINT NULL DEFAULT 0,
+  `PoBoxNumber` SMALLINT NULL DEFAULT NULL,
   -- `streetAddress` VARCHAR(45) NULL DEFAULT NULL, -- ThoroughfareElements (Oakwood Drive)
   `dependentThoroughfare` VARCHAR(80) NULL DEFAULT NULL,
   `thoroughfare` VARCHAR(80) NULL DEFAULT NULL,

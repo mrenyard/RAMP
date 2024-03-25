@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -19,7 +19,7 @@
  * @version 0.0.9;
  */
 
-$cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
+ $cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
 if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) {
 
   $STYLE_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/style';
@@ -31,24 +31,25 @@ if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) 
     if((strpos($line,';') !== 0) && ( $line !== '')) {
 
 ?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/<?=$line; ?>.css">
-<?php }} if (isset($_GET['scratch'])) { foreach (explode('|', $_GET['scratch']) as $cssScratchFile) { ?>
+<?php }} if (isset($GLOBALS['cssScratch'])) { foreach (explode('|', $GLOBALS['cssScratch']) as $cssScratchFile) { ?>
     <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/scratch/<?=$cssScratchFile; ?>.css">
-<?php unset($_POST['scratch']); }} ?>
-    <script src="<?=$FUNC_SERVER; ?>/libs/modernizr-2.0.6.js"></script>
-    <!--[if lt IE 9]>
-      <script src="<?=$FUNC_SERVER; ?>/libs/nwmatcher-1.2.3.js"></script>
-      <script src="<?=$FUNC_SERVER; ?>/libs/selectivizr-1.0.2.js"></script>
-    <![endif]-->
+<?php }} ?>
+    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
 <?php } else {
 
   $STYLE_SERVER = '//style.'.$_SERVER["HTTP_HOST"];
   $MEDIA_SERVER = '//media.'.$_SERVER["HTTP_HOST"];
   $FUNC_SERVER = '//func.'.$_SERVER["HTTP_HOST"];
-
-?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined.20111116.css">
-    <script src="<?=$FUNC_SERVER; ?>/libs/modernizr-2.0.6.min.js"></script>
-    <!--[if lt IE 9]>
-      <script src="<?=$FUNC_SERVER; ?>/libs/nwmatcher-1.2.3-min.js"></script>
-      <script src="<?=$FUNC_SERVER; ?>/libs/selectivizr-1.0.2.min.js"></script>
-    <![endif]-->
+  $mostRecentDate;
+  $dir =  $_SERVER["DOCUMENT_ROOT"].'/assets/style/';
+  chdir($dir);
+  $matches = glob('combined.*.css');
+  if(is_array($matches) && !empty($matches)){
+    foreach($matches as $match){
+      $date = explode('.', $match)[1];
+      $mostRecentDate = ($mostRecentDate < $date) ? $data : $mostRecentDate;
+    }
+  }
+?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined.<?=$mostRecentDate; ?>.css">
+    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
 <?php } ?>

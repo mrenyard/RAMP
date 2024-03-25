@@ -21,6 +21,7 @@
 namespace ramp;
 
 require_once('load.ini.php');
+if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
 // $session = http\Session::getInstance();
 // try {
 //   $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
@@ -54,25 +55,24 @@ if ((string)$request->modelURN !== '') {
       return;
     } elseif ($request->recordName != NULL)  { // No Records found in data storage redirect to new
       header('HTTP/1.1 307 Temporary Redirect');
-      header('Location: /' . $request->modelURN . '/new');
+      header('Location: /' . strtolower($request->recordName) . '/new/');
       return;
     }
     throw $exception;
   }
   if ($request->method === http\Method::POST()) {
-    // TODO: Add catch for DataExistingEntryException 
-    // try {
+    try {
       $model->validate($request->postData);
-    // } catch (model\business\DataExistingEntryException $exception) {
-    //   header('HTTP/1.1 303 See Other'); // 303 is correctly used as another resource is the corrent entry for this posted data.
-    //   header('Location: /' . str_replace(':', '/', (string)$exception->targetID));
-    //   return;
-    // }
+    } catch (model\business\DataExistingEntryException $exception) {
+      header('HTTP/1.1 303 See Other'); // 303 is correctly used as another resource is the corrent entry for this posted data.
+      header('Location: /' . strtolower($request->recordName) . '/' . strtolower(str_replace(' ', '+', $exception->getTargetKEY())) . '/');
+      return;
+    }
     $modelManager->updateAny();
   }
   if (((string)$request->recordKey) == 'new' && ($model->isValid)) {
-    header('HTTP/1.1 303 See Other'); // The 'new' entry can now be located following post. 
-    header('Location: /' . str_replace(':', '/', (string)$model->id));
+    header('HTTP/1.1 303 See Other'); // The 'new' entry can now be located following post.
+    header('Location: /' . str_replace(':', '/', (string)$model->id) . '/');
     return;
   }
   $view->setModel($model);

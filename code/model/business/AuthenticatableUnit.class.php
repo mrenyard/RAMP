@@ -56,12 +56,4 @@ abstract class AuthenticatableUnit extends Record
     }
     return $this->registered; 
   }
-
-  /**
-   * @ignore
-   */
-  final protected function get_isValid() : bool
-  {
-    return ($this->email->value !== NULL && parent::get_isValid());
-  }
 }

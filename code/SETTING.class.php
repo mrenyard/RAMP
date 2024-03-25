@@ -163,4 +163,10 @@ class SETTING
    * @var bool
    */
   public static $TEST_RESET_SESSION;
+
+  /**
+   * Array of requested scratch style shreets.
+   * @var array
+   */
+  public static $SCRATCH__CSS;
 }

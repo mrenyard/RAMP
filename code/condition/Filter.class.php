@@ -70,6 +70,7 @@ final class Filter extends Collection
     }
     $filter = new Filter();
     foreach ($filters as $name => $value) {
+      $value = str_replace(['+','%20'], ' ', $value);
       $operator = null;
       $a = explode('|', $name);
       if (count($a) > 1) {

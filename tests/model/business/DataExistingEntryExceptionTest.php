@@ -41,7 +41,7 @@ class DataExistingEntryExceptionTest extends \PHPUnit\Framework\TestCase
   public function testConstruct() : void
   {
     try {
-      throw new DataExistingEntryException();
+      throw new DataExistingEntryException('A|B|C');
     } catch (DataExistingEntryException $expected) {
       $this->assertInstanceOf('\RuntimeException', $expected);
       $this->assertInstanceOf('ramp\model\business\DataWriteException', $expected);
@@ -52,16 +52,16 @@ class DataExistingEntryExceptionTest extends \PHPUnit\Framework\TestCase
   }
 
   /**
-   * Throw/construct with a targetID and message.
-   * - assert returned getTargetID() same as provided at construction.
+   * Throw/construct with a targetKEY and message.
+   * - assert returned getTargetKEY() same as provided at construction.
    * - assert returned getMessage() same as provided at construction.
    */
-  public function testExistingEntryID() : void
+  public function testExistingEntryKEY() : void
   {
     try {
       throw new DataExistingEntryException('A|B|C', 'Error message!');
     } catch (DataExistingEntryException $expected) {
-      $this->assertSame('A|B|C', $expected->getTargetID());
+      $this->assertSame('A|B|C', $expected->getTargetKEY());
       $this->assertSame('Error message!', $expected->getMessage());
       return;
     }

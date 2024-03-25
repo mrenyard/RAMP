@@ -133,7 +133,7 @@ class RelationToMany extends Relation
       // if ($level < ResourceRights::VIEW && $level < ResourceRights::EDIT) { throw new Exception;? }
       $new = $with[$i];
       $with[$i] = $this->manager->getBusinessModel(
-        new SimpleBusinessModelDefinition($this->withRecordName, Str::set($exception->getTargetID()))
+        new SimpleBusinessModelDefinition($this->withRecordName, Str::set($exception->getTargetKEY()))
       );
       if ($this->isEditable) { $with->add($new); }
       return;

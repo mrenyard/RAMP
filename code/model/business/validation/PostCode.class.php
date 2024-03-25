@@ -18,20 +18,22 @@
  * @package RAMP
  * @version 0.0.9;
  */
-?>
-    <div id="lightbox"></div>
-    <header role="banner">
-<!-- include header -->
-    </header>
-    <div id="main" role="main">
-      <!-- <header  class="hero circles man-up underhead"><a href="#header" title="Header full description"></a>
-        <h1><?=$this->heading; ?></h1>
-        <figure><img src="/assets/media/wireframe/hero-header.svg" alt="Placeholder image for use when designing" /></figure>
-        <p><?=$this->summary; ?></p>
-        <p class="cta"><a title="Call to action, outline button style" href="/">Download</a></p>
-      </header> -->
-      <?=$this->children ?>
-    </div><!-- #main -->
-    <footer role="contentinfo">
-<!-- include footer -->
-    </footer>
+namespace ramp\model\business\validation;
+
+use ramp\core\Str;
+
+/**
+ * UK PostCode max 8chars regex pattern validation,
+ */
+class PostCode extends RegexValidationRule
+{
+  /**
+   * Constructor for UK PostCode max 8chars regex pattern validation.
+   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param ValidationRule $subRule Addtional rule to be added to *this* test
+   */
+  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  {
+    parent::__construct($errorMessage, '[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', $subRule);
+  }
+}

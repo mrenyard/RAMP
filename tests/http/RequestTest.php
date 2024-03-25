@@ -55,7 +55,7 @@ require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';

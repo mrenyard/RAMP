@@ -20,8 +20,9 @@
  * 
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
-?><div class="<?=$this->inputType; ?> <?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
-          <label for="<?=$this->id; ?>"><?=$this->label; ?></label>
-          <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="<?=$this->inputType; ?>" tabindex="<?=$tabindex; ?>"<?=$this->attribute('placeholder') ?><?=$this->attribute('required'); ?><?=$this->attribute('pattern'); ?><?=$this->attribute('maxlength'); ?><?=$this->attribute('min'); ?><?=$this->attribute('max'); ?><?=$this->attribute('step'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?> value="<?=$this->value; ?>" />
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>        <span class="error"><?=$error; ?></span><?php } } ?>
-        </div>
+?>
+          <div class="<?=$this->inputType; ?> <?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
+            <label for="<?=$this->id; ?>"><?=$this->label; ?></label>
+            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="<?=$this->inputType; ?>" tabindex="<?=$tabindex; ?>"<?=$this->attribute('placeholder') ?><?=$this->attribute('required'); ?><?=$this->attribute('pattern'); ?><?=$this->attribute('maxlength'); ?><?=$this->attribute('min'); ?><?=$this->attribute('max'); ?><?=$this->attribute('step'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?> value="<?=$this->value; ?>" />
+<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>          <span class="error"><?=$error; ?></span><?php } } ?>
+          </div>

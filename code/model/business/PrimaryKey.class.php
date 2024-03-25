@@ -104,17 +104,28 @@ final class PrimaryKey extends RecordComponent
   /**
    * @ignore
    */
-  protected function set_isEditable(bool $value)
+  final protected function get_value()
   {
-    // Changes nothing
+    return ($this->values !== NULL) ?
+      (string)$this->values->implode(Str::BAR()):
+      NULL;
+  }
+
+  final protected function get_asArray() : array
+  {
+    $rtn = array();
+    foreach ($this as $subKey) {
+      $rtn[(string)$subKey->name] = $subKey->value;
+    }
+    return $rtn;
   }
 
   /**
    * @ignore
    */
-  final protected function get_value()
+  protected function set_isEditable(bool $value)
   {
-    return ($this->values !== NULL) ? (string)$this->values->implode(Str::BAR()) : NULL;
+    // Changes nothing
   }
 
   /**
@@ -141,12 +152,12 @@ final class PrimaryKey extends RecordComponent
       } catch (DataFetchException $expected) {
         return;
       }
-      $targetID = $this->parent->primaryKey->value;
+      $targetKEY = $this->parent->primaryKey->value;
       foreach ($this->parent->primaryKey->indexes as $propertyName) {
         $this->parent->setPropertyValue((string)$propertyName, NULL);
       }
       $this->parent->updated();
-      throw new DataExistingEntryException($targetID, 'An entry already exists with this key!');
+      throw new DataExistingEntryException($targetKEY, 'An entry already exists with this key!');
     }
   }
 }

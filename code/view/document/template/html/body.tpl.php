@@ -20,19 +20,16 @@
  */
 ?>
 <!doctype html>
-<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en">  <!--<![endif]-->
+<html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?=$this->title; ?></title>
+    <title><?=$this->title; ?> - <?=\ramp\SETTING::$RAMP_DOMAIN; ?></title>
     <meta name="description" content="<?=$this->summary; ?>">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-<!-- ?php include("head.php"); ? -->
+<?php include("head.php"); ?>
   </head>
   <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>"<?=$this->attribute('class'); ?>>
 <?=$this->children ?>
-<!-- ?php include("scripts.php"); ? -->
+<?php include("scripts.php"); ?>
   </body>
 </html>

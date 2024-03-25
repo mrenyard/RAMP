@@ -72,7 +72,7 @@ final class LoginAccount extends Record
         Str::set('The associated authenticatable Unit\'s primary key'),
         new validation\dbtype\VarChar(
           Str::set('string with a maximun character length of '),
-          20, new validation\LowerCaseAlphanumeric(
+          20, new validation\LowercaseAlphanumeric(
             Str::set('lowercase and alphanumeric')
           )
         )

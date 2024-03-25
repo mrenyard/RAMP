@@ -30,7 +30,7 @@ use ramp\model\business\RecordComponentType;
 // use ramp\model\business\field\Field;
 // use ramp\model\business\field\Input;
 // use ramp\model\business\validation\Alphanumeric;
-// use ramp\model\business\validation\LowerCaseAlphanumeric;
+// use ramp\model\business\validation\LowercaseAlphanumeric;
 // use ramp\model\business\validation\dbtype\VarChar;
 
 /**

@@ -26,17 +26,17 @@ require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/LowerCaseAlphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
 
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\VarChar;
-use ramp\model\business\validation\LowerCaseAlphanumeric;
+use ramp\model\business\validation\LowercaseAlphanumeric;
 
 /**
- * Collection of tests for \ramp\model\business\validation\LowerCaseAlphanumeric.
+ * Collection of tests for \ramp\model\business\validation\LowercaseAlphanumeric.
  */
-class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
+class LowercaseAlphanumericTest extends \PHPUnit\Framework\TestCase
 {
   private $testObject;
 
@@ -45,35 +45,35 @@ class LowerCaseAlphanumericTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new LowerCaseAlphanumeric(Str::set('lowerCase and alphanumeric'));
+    $this->testObject = new LowercaseAlphanumeric(Str::set('lowerCase and alphanumeric'));
     new VarChar(Str::set('string with a maximun character length of '), 40, $this->testObject);
   }
 
   /**
-   * Collection of assertions for ramp\validation\LowerCaseAlphanumeric.
+   * Collection of assertions for ramp\validation\LowercaseAlphanumeric.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\LowerCaseAlphanumeric}
-   * @see \ramp\model\business\validation\LowerCaseAlphanumeric
+   * - assert is instance of {@see \ramp\model\business\validation\LowercaseAlphanumeric}
+   * @see \ramp\model\business\validation\LowercaseAlphanumeric
    */
   public function test__Construct()
   {
     $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
     $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\LowerCaseAlphanumeric', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\LowercaseAlphanumeric', $this->testObject);
   }
 
   /**
-   * Collection of assertions for ramp\model\business\validation\LowerCaseAlphanumeric::process().
+   * Collection of assertions for ramp\model\business\validation\LowercaseAlphanumeric::process().
    * - assert void returned when test successful
    * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see \ramp\model\business\validation\LowerCaseAlphanumeric::process()
+   * @see \ramp\model\business\validation\LowercaseAlphanumeric::process()
    */
   public function testTest()
   {
     $this->assertNull($this->testObject->process('abcdefghijklmnopqrstuvwxyz1234567890'));
     try {
-      $this->testObject->process('Not-LowerCaseAlphanumeric');
+      $this->testObject->process('Not-LowercaseAlphanumeric');
     } catch (FailedValidationException $expected) {
       return;
     }

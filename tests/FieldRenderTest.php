@@ -130,10 +130,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="color input field compact" title="Primary colour, main identifiable brand colour, the core colour, commonly incorporated into a companies logo.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:primary-color">Primary Colour</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:primary-color" name="comprehensive-record:1|1|1:primary-color" type="color" tabindex="0" value="#20771E" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="color input field compact" title="Primary colour, main identifiable brand colour, the core colour, commonly incorporated into a companies logo.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:primary-color">Primary Colour</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:primary-color" name="comprehensive-record:1|1|1:primary-color" type="color" tabindex="0" value="#20771E" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -170,10 +170,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="text input field compact required" title="The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:given-name">First Name</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:given-name" name="comprehensive-record:1|1|1:given-name" type="text" tabindex="0" placeholder="e.g. John" required="required" pattern="([A-Za-z]*){0,20}" maxlength="20" value="Matt" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="text input field compact required" title="The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:given-name">First Name</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:given-name" name="comprehensive-record:1|1|1:given-name" type="text" tabindex="0" placeholder="e.g. John" required="required" pattern="([A-Za-z]*){0,20}" maxlength="20" value="Matt" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -210,10 +210,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}" maxlength="12" value="07744 123123" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:mobile">Mobile Number</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:mobile" name="comprehensive-record:1|1|1:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" required="required" pattern="(?:\+[1-9]{1,3} \(0\)|0)[0-9\- ]{8,12}" maxlength="12" value="07744 123123" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -247,10 +247,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!"#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -284,10 +284,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="number input field compact required" title="A whole number (not a fractional number) that can be positive, negative, or zero">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:whole-number">Whole Number</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:whole-number" name="comprehensive-record:1|1|1:whole-number" type="number" tabindex="0" required="required" min="-32768" max="32767" step="1" value="365" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="number input field compact required" title="A whole number (not a fractional number) that can be positive, negative, or zero">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:whole-number">Whole Number</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:whole-number" name="comprehensive-record:1|1|1:whole-number" type="number" tabindex="0" required="required" min="-32768" max="32767" step="1" value="365" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -322,10 +322,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:currency">Account Balance</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:currency" name="comprehensive-record:1|1|1:currency" type="number" tabindex="0" required="required" min="0" max="999.99" step="0.01" value="365.72" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:currency">Account Balance</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:currency" name="comprehensive-record:1|1|1:currency" type="number" tabindex="0" required="required" min="0" max="999.99" step="0.01" value="365.72" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -361,10 +361,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="week input field compact required" title="The preferred week of fiber optic broadband installation.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:week">Preferred install week</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:week" name="comprehensive-record:1|1|1:week" type="week" tabindex="0" required="required" pattern="([0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3])){8}" min="2024-W06" max="2024-W52" step="any" value="2024-W02" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="week input field compact required" title="The preferred week of fiber optic broadband installation.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:week">Preferred install week</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:week" name="comprehensive-record:1|1|1:week" type="week" tabindex="0" required="required" pattern="([0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3])){8}" min="2024-W06" max="2024-W52" step="any" value="2024-W02" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -400,10 +400,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:month">Target release</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="1" value="2024-08" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:month">Target release</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:month" name="comprehensive-record:1|1|1:month" type="month" tabindex="0" required="required" pattern="([0-9]{4}-(?:0[1-9]|1[0-2])){7}" min="2024-01" max="2024-12" step="1" value="2024-08" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -435,10 +435,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:time">Start Time</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:time" name="comprehensive-record:1|1|1:time" type="time" tabindex="0" required="required" pattern="(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="08:30" max="17:30" step="1800" value="16:30" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:time">Start Time</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:time" name="comprehensive-record:1|1|1:time" type="time" tabindex="0" required="required" pattern="(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="08:30" max="17:30" step="1800" value="16:30" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -470,10 +470,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="date input field compact required" title="The month, day, and year of of your birth.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:date">Date of Birth</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:date" name="comprehensive-record:1|1|1:date" type="date" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])" min="1900-01-01" max="2023-12-31" step="1" value="2024-03-04" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="date input field compact required" title="The month, day, and year of of your birth.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:date">Date of Birth</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:date" name="comprehensive-record:1|1|1:date" type="date" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])" min="1900-01-01" max="2023-12-31" step="1" value="2024-03-04" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -505,10 +505,10 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<div class="datetime-local input field compact required" title="The month, day, year, hour and minte of the start of the event.">' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:datetime">Event start</label>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:datetime" name="comprehensive-record:1|1|1:datetime" type="datetime-local" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2024-03-04T23:59:59" />' . PHP_EOL .
-      '        </div>',
+      '          <div class="datetime-local input field compact required" title="The month, day, year, hour and minte of the start of the event.">' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:datetime">Event start</label>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:datetime" name="comprehensive-record:1|1|1:datetime" type="datetime-local" tabindex="0" required="required" pattern="[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2024-03-04T23:59:59" />' . PHP_EOL .
+      '          </div>' . PHP_EOL . '',
       $output
     );
   }
@@ -540,11 +540,11 @@ class FieldRenderTest extends TestBase
     $parentView->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<fieldset class="flag field compact required" title="Please agree to our terms and conditions to continue to use this site.">' . PHP_EOL .
-      '          <legend>Terms &amp; Conditions</legend>' . PHP_EOL .
-      '          <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag:true" type="checkbox" tabindex="0" required="required" checked="checked" />' . PHP_EOL .
-      '          <label for="comprehensive-record:1|1|1:flag">I have read and agree to site terms and conditions.</label>' . PHP_EOL .
-      '        </fieldset>',
+      '          <fieldset class="flag field compact required" title="Please agree to our terms and conditions to continue to use this site.">' . PHP_EOL .
+      '            <legend>Terms &amp; Conditions</legend>' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag:true" type="checkbox" tabindex="0" required="required" checked="checked" />' . PHP_EOL .
+      '            <label for="comprehensive-record:1|1|1:flag">I have read and agree to site terms and conditions.</label>' . PHP_EOL .
+      '          </fieldset>' . PHP_EOL . '',
       $output
     );
   }

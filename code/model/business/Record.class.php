@@ -123,7 +123,7 @@ abstract class Record extends Relatable
   final protected function get_id() : Str
   {
     $primaryKeyValue = ($this->primaryKey->values === NULL) ?
-      Str::NEW() : $this->primaryKey->values->implode(Str::BAR())->lowercase;
+      Str::NEW() : $this->primaryKey->values->implode(Str::BAR())->replace(Str::SPACE(), Str::PLUS())->lowercase;
     return Str::COLON()->prepend(
       $this->processType((string)$this, TRUE)
     )->append($primaryKeyValue);
@@ -181,7 +181,7 @@ abstract class Record extends Relatable
     $this->active = NULL;
     if (!isset($this->components[$type][$name])) {
       $this->components[$type][$name] = '';
-      if ($type ==  RecordComponentType::PROPERTY && $required) { $this->required[$name] = TRUE; }
+      if ($type ==  RecordComponentType::PROPERTY && $required) { $this->required[$name] = ''; }
       return FALSE;
     }
     if ($this->components[$type][$name] === '') {
@@ -215,6 +215,7 @@ abstract class Record extends Relatable
       $this->components[RecordComponentType::KEY][(string)$o->name] = $o;
     } else if (isset($this->components[RecordComponentType::PROPERTY][(string)$o->name])) {
       $this->components[RecordComponentType::PROPERTY][(string)$o->name] = $o;
+      if ($this->isRequiredField((string)$o->name)) { $this->required[(string)$o->name] = $o; }
     } else if (isset($this->components[RecordComponentType::RELATION][(string)$o->name])) {
       $this->components[RecordComponentType::RELATION][(string)$o->name] = $o;
     }
@@ -343,7 +344,7 @@ abstract class Record extends Relatable
   private function checkRequired() : bool
   {
     foreach ($this->required as $name => $value) {
-      if ($this->dataObject->$name == NULL) { return FALSE; }
+      if (!isset($this->dataObject->$name) || $this->dataObject->$name == NULL) { return FALSE; }
     }
     return TRUE;
   }
