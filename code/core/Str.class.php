@@ -72,7 +72,7 @@ final class Str extends RAMPObject
   private static $PLUS;
 
   /**
-   * Singleton reference to {@see Str} with value 'FK'.
+   * Singleton reference to {@see Str} with value 'FK_'.
    */
   private static $FK;
 
@@ -153,6 +153,7 @@ final class Str extends RAMPObject
         break;
       case '_':
         $s = self::UNDERLINE();
+        break;
       default:
         $s = new Str((string)$value);
     }
@@ -257,7 +258,7 @@ final class Str extends RAMPObject
 
   /**
    * Returns NEW Str ('_')
-   * @return \ramp\core\Str Str object composed KEY ('FK_')
+   * @return \ramp\core\Str Str object composed KEY ('_')
    */
   public static function UNDERLINE() : Str
   {

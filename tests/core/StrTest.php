@@ -325,7 +325,6 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($o1, $o2);
     $this->assertSame('+', (string) $o1);
   }
-
   
   /**
    * Collection of assertions for ramp\core\Str::FK().
@@ -350,6 +349,31 @@ class StrTest extends \PHPUnit\Framework\TestCase
 
     $this->assertEquals($o1, $o2);
     $this->assertSame('fk_', (string) $o1);
+  }
+  
+  /**
+   * Collection of assertions for ramp\core\Str::UNDERLINE().
+   * - assert returns the SAME instance on every call of {@see \ramp\core\Str::UNDERLINE()}
+   * - assert returns the SAME instance on calling set('_')
+   * - assert when cast to (string) returns (string literal '_')
+   * - assert that each is instance of {@see \ramp\core\Str}
+   * @see \ramp\core\Str::UNDERLINE()
+   */
+  public function testUNDERLINE() : void
+  {
+    $o1 = Str::UNDERLINE();
+    $this->assertInstanceOf('ramp\core\Str', $o1);
+
+    $o2 = Str::UNDERLINE();
+    $this->assertInstanceOf('ramp\core\Str', $o2);
+    $this->assertSame($o1, $o2);
+
+    $o3 = Str::set('_');
+    $this->assertInstanceOf('ramp\core\Str', $o3);
+    $this->assertSame($o1, $o3);
+
+    $this->assertEquals($o1, $o2);
+    $this->assertSame('_', (string) $o1);
   }
 
   /**
