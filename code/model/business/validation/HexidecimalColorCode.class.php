@@ -64,13 +64,13 @@ final class HexidecimalColorCode extends ValidationRule
   }
 
   /**
-   * Asserts that $value is lower case and alphanumeric.
+   * Asserts that $value is '#' foll0wed by 3 sets of 2 charactor hexadecimal values.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   protected function test($value) : void
   {
-    if (preg_match('/^#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2}$/', $value)) { return; }
+    if (preg_match('/^(:?#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2})$/', $value)) { return; }
     throw new FailedValidationException();
   }
 }

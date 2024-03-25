@@ -148,10 +148,56 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals('Heading', (string)$this->testObject->summary);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->placeholder);
     $this->assertEquals('Heading', (string)$this->testObject->placeholder);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->placeholder);
-    $this->assertEquals('Heading', (string)$this->testObject->placeholder);
     $this->testObject->placeholder = Str::set('Label');
     $this->assertEquals('Label', (string)$this->testObject->summary);
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\BusinessModel::extendedSummary.
+   * - assert property 'extendedSummary' is settable
+   * - assert property 'extendedSummary' is gettable
+   * - assert returned value instance of {@see \ramp\core\Str}.
+   * - assert returned value matches expected results.
+   * @see \ramp\model\business\BusinessModel::extendedSummary
+   * @see \ramp\model\business\BusinessModel::extendedSummary
+   */
+  public function testGetSet_extendedSummary() : void
+  {
+    $this->testObject->extendedSummary = Str::set('An extended summary');
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->extendedSummary);
+    $this->assertEquals('An extended summary', (string)$this->testObject->extendedSummary);
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\BusinessModel::extendedContent.
+   * - assert property 'extendedContent' is settable
+   * - assert property 'extendedContent' is gettable
+   * - assert returned value instance of {@see \ramp\core\Str}.
+   * - assert returned value matches expected results.
+   * @see \ramp\model\business\BusinessModel::extendedContent
+   * @see \ramp\model\business\BusinessModel::extendedContent
+   */
+  public function testGetSet_extendedContent() : void
+  {
+    $this->testObject->extendedContent = Str::set('An extended content');
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->extendedContent);
+    $this->assertEquals('An extended content', (string)$this->testObject->extendedContent);
+  }
+
+  /**
+   * Collection of assertions for \ramp\model\business\BusinessModel::footnote.
+   * - assert property 'footnote' is settable
+   * - assert property 'footnote' is gettable
+   * - assert returned value instance of {@see \ramp\core\Str}.
+   * - assert returned value matches expected results.
+   * @see \ramp\model\business\BusinessModel::footnote
+   * @see \ramp\model\business\BusinessModel::footnote
+   */
+  public function testGetSet_footnote() : void
+  {
+    $this->testObject->footnote = Str::set('Some footnotes');
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->footnote);
+    $this->assertEquals('Some footnotes', (string)$this->testObject->footnote);
   }
 
   /**

@@ -47,7 +47,7 @@ class Document extends Model
   private $heading;
   private $summary;
   private $extendedSummary;
-  private $exendedContent;
+  private $extendedContent;
   private $footnote;
   private $style;
 
@@ -160,14 +160,14 @@ class Document extends Model
    */
   protected function set_extendedSummary(string $value)
   {
-    // TODO:mrenyard: Safe Sub-HTML validation.
+    // TODO:mrenyard: Safe HTMLight validation.
     $this->extendedSummary = Str::set($value);
   }
 
   /**
    * @ignore
    */
-  protected function get_extendedSummary()
+  protected function get_extendedSummary() : ?Str
   {
     return $this->extendedSummary;
   }
@@ -175,16 +175,16 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_exendedContent(string $value)
+  protected function set_extendedContent(string $value)
   {
-    // TODO:mrenyard: Safe Sub-HTML validation.
+    // TODO:mrenyard: Safe HTMLight validation.
     $this->extendedContent = Str::set($value);
   }
 
   /**
    * @ignore
    */
-  protected function get_exendedContent()
+  protected function get_extendedContent() : ?Str
   {
     return $this->extendedContent;
   }
@@ -194,14 +194,14 @@ class Document extends Model
    */
   protected function set_footnote(string $value)
   {
-    // TODO:mrenyard: Safe Sub-HTML validation.
+    // TODO:mrenyard: Safe HTMLight validation.
     $this->footnote = Str::set($value);
   }
 
   /**
    * @ignore
    */
-  protected function get_footnote()
+  protected function get_footnote() : ?Str
   {
     return $this->footnote;
   }
