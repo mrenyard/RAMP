@@ -38,10 +38,10 @@ class MockBusinessModel extends BusinessModel
   public $errorsTouchCount;
   private $withError;
 
-  public function __construct($withError = FALSE, $aProperty = NULL)
+  public function __construct($withError = FALSE, $aProperty = NULL, $children = NULL)
   {
     $this->aProperty = $aProperty;
-    parent::__construct(NULL);
+    parent::__construct($children);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;

@@ -84,6 +84,24 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
   }
+
+  /**
+   * Base constructor with BusinesModel as child.
+   * -assert foreach returns expected result as passed at construction.
+   * @see \ramp\model\business\BusinessModel
+   */
+  public function testConstructWithChildren()
+  {
+    $children = new MockBusinessModel();
+    $children[0] = new MockBusinessModel();
+    $children[1] = new MockBusinessModel();
+    $children[2] = new MockBusinessModel();
+    $testObject = new MockBusinessModel(NULL, NULL, $children);
+    $i = 0;
+    foreach ($testObject as $child) {
+      $this->assertSame($child, $children[$i++]);
+    }
+  }
   
   #region Sub model setup
   protected function populateSubModelTree()
