@@ -35,7 +35,7 @@ class MultipartInput extends Input
 {
   private static $type; // Str
   private $splits; // string[]
-  private $dataProperties; // array
+  private $dataProperties; // string[]
 
   /**
    * Creates a multipart input field related to a single property with mutiply data storage fields.
@@ -43,23 +43,24 @@ class MultipartInput extends Input
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\model\business\validation\dbtype\DbTypeValidation $formValidation Validation rule to test user submited value against.
-   * @param array $splits List of splits to divide input data into its sub parts from first to last. 
-   * @param \ramp\model\business\validation\dbtype\DbTypeValidation $dataValidation Validation rule to test sub part data before data submition.
+   * @param string[] $splits List of splits to divide input data into its sub parts from first to last. 
+   * @param string[] $dataProperties List of property names mapped in datastore.
+   * @param \ramp\model\business\validation\dbtype\DbTypeValidation,... $dataValidation One or more Validation rule/s to test sub part data before data submition.
    * 
    * ```php
    * new field\Input(Str::set('propertyName'), $parent,
    *   Str::set('Expanded description of expected field content.'),
-   *   new validation\FirstValidationRule(
+   *   new validation\FormValidationRule(
    *     Str::set('expected format'),
-   *     new validation\SecondValidationRule(
+   *     new validation\ExtraSubFormValidationRule(
    *       Str::set('expected format')
    *   ),
    *   ['-'],
-   *   ['firstPart','secondPart'],
-   *   new validation\dbtype\FirstValidationRule(
+   *   ['firstPart','secondPart', ...],
+   *   new validation\dbtype\FirstPartValidationRule(
    *     Str::set('expected format'), ...
    *   ),
-   *   new validation\dbtype\FirstValidationRule(
+   *   new validation\dbtype\SeconPartValidationRule(
    *     Str::set('expected format'), ...
    *   ),
    *   ...

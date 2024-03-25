@@ -44,6 +44,7 @@ use ramp\model\business\validation\FailedValidationException;
  * COLLABORATORS
  * - {@see \ramp\model\business\Record Record}
  * 
+ * @property-read \svetle\core\Str $label Form field label.
  * @property bool $isRequired Check for property is a required field value.
  */
 abstract class Field extends RecordComponent
@@ -64,12 +65,7 @@ abstract class Field extends RecordComponent
   }
 
   /**
-   * Get Label
-   * **DO NOT CALL DIRECTLY, USE:**
-   * ```php
-   * $this->label;
-   * ```
-   * @return \ramp\core\Str Label for *this*
+   * @ignore
    */
   protected function get_label() : Str
   {
