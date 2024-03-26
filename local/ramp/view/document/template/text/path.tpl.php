@@ -18,34 +18,11 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation;
-
-use ramp\core\Str;
-
-/**
- * Regex pattern matching validation.
- */
-class Password extends RegexValidationRule
-{
-  private static $type;
-
-  /**
-   * Constructor for password restricted regex pattern validation.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
-   * @param string $pattern Regex pattern to be validated against.
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
-   */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
-  {
-    if (!isset(self::$type)) { self::$type = Str::set('password'); } 
-    parent::__construct($errorMessage, '[a-zA-Z0-9!#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}', $subRule);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_inputType() : Str
-  {
-    return self::$type;
-  }
+if ($this->hasModel) {
+ print($this . ':' . $this->aProperty .' ');
+  $this->children;
+  return;
 }
+print($this);
+$this->children;
+?>

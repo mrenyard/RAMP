@@ -227,6 +227,35 @@ CREATE TABLE IF NOT EXISTS `ramp_db`.`LOOKUP_Person_Address` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+
+-- -----------------------------------------------------
+-- Table `ramp_db`.`comprehensive`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ramp_db`.`Comprehensive`;
+
+CREATE TABLE IF NOT EXISTS `ramp_db`.`Comprehensive` (
+  `keyA` CHAR(1) NOT NULL,
+  `keyB` CHAR(1) NOT NULL,
+  `keyC` CHAR(1) NOT NULL,
+  `primaryColor` CHAR(7) NULL DEFAULT NULL,
+  `givenName` VARCHAR(20) NULL DEFAULT NULL,
+  `mobile` VARCHAR(12) NULL DEFAULT NULL,
+  `password` VARCHAR(35) NULL DEFAULT NULL,
+  `wholeNumber` SMALLINT NULL DEFAULT NULL,
+  `currency` DECIMAL(5,2) NULL DEFAULT NULL,
+  `weekYear` SMALLINT NULL DEFAULT NULL,
+  `weekNumber` TINYINT NULL DEFAULT NULL,
+  `monthYear` SMALLINT NULL DEFAULT NULL,
+  `monthNumber` TINYINT NULL DEFAULT NULL,
+  `time` TIME NULL DEFAULT NULL,
+  `date` DATE NULL DEFAULT NULL,
+  `datetime` DATETIME NULL DEFAULT NULL,
+  `flag` TINYINT(1) NULL DEFAULT 0,
+  PRIMARY KEY (`keyA`,`keyB`,`keyC`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

@@ -76,7 +76,7 @@ class Char extends DbTypeValidation
   /**
    * Asserts that $value is a string of exactly expected number of characters.
    * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
+   * @throws \ramp\model\business\validation\FailedValidationException When test fails.
    */
   protected function test($value) : void
   {
