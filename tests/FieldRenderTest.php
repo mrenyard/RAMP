@@ -249,7 +249,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '          <div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
       '            <label for="comprehensive-record:1|1|1:password">Password</label>' . PHP_EOL .
-      '            <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
+      '            <input id="comprehensive-record:1|1|1:password" name="comprehensive-record:1|1|1:password" type="password" tabindex="0" placeholder="e.g. N0T-Pa55W0rd" required="required" pattern="[a-zA-Z0-9!#\$%&\(\)+,-.:;<=>\?\[\]\^_`{\|}~]{8,35}" maxlength="35" value="" />' . PHP_EOL .
       '          </div>' . PHP_EOL . '',
       $output
     );

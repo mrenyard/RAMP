@@ -28,7 +28,7 @@ require_once '/usr/share/php/ramp/core/OptionList.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';

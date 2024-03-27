@@ -36,6 +36,6 @@ class AlphanumericStrict extends RegexValidationRule
    */
   public function __construct(Str $errorMessage, ValidationRule $subRule = null)
   {
-    parent::__construct($errorMessage, '[a-zA-Z0-9]*', $subRule);
+    parent::__construct($errorMessage, '[a-zA-Z0-9]', $subRule);
   }
 }

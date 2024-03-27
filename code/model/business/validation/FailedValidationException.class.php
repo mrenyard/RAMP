@@ -18,7 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business;
+namespace ramp\model\business\validation;
 
 use ramp\core\PropertyNotSetException;
 

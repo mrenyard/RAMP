@@ -22,7 +22,7 @@ $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 ?>
 <section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><form method="post">
         <header>
-          <h2><a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a><?=$this->heading; ?></h2>
+          <h2><!-- a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a--><?=$this->heading; ?></h2>
           <p class="note"><?=$this->summary; ?></p>
 <?php if (isset($this->hasErrors) && $this->hasErors) { ?>
           <ol class="error">
@@ -33,8 +33,8 @@ $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 <?php } ?>
         </header>
 <?=$this->children; ?>
-        <footer>
-          <p><?=$this->summary; ?></p>
-        </footer>
+<?php if (isset($this->footnote)) { ?>
+        <footer><p><?=$this->footnote; ?></p></footer>
+<?php } ?>
         <div class="controls"><input type="submit" value="Update" /></div>
       </form></section><!-- #<?=$this->id; ?> -->

@@ -38,7 +38,7 @@ require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 
 require_once '/usr/share/php/tests/ramp/condition/mocks/FilterConditionTest/Field.class.php';
 require_once '/usr/share/php/tests/ramp/condition/mocks/FilterConditionTest/Record.class.php';

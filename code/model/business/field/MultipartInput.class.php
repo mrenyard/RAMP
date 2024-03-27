@@ -110,14 +110,4 @@ class MultipartInput extends Input
     }
     return $rtn;
   }
-
-  /**
-   * Process provided validation rule.
-   * @param mixed $rtn Value to be processed
-   * @throws \ramp\validation\FailedValidationException When test fails.
-   */
-  public function processValidationRule($rtn) : void
-  {
-    $this->validationRule->process($rtn);
-  }
 }

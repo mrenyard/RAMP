@@ -80,7 +80,7 @@ FUNC.hijax.form = function() {
   var _init = function(regex) {
     var i=0,f,reg=/:new/;
     while (f = document.forms[i++]) {
-
+      // f.setAttribute('novalidate');
       // set formType based on form.element.id
 console.log(regex, 'from form')
       if (regex == undefined) { f.formType = ((reg.test(f.id)))? _type.CREATE : _type.UPDATE; }

@@ -22,51 +22,9 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
-// use ramp\model\business\Record;
-// use ramp\model\business\field\Input;
-// use ramp\model\business\field\MultipartInput;
-// use ramp\model\business\field\Flag;
-// use ramp\model\business\RecordComponent;
-// use ramp\model\business\RecordComponentType;
-// use ramp\model\business\validation\dbtype\Char;
-// use ramp\model\business\validation\dbtype\VarChar;
-// use ramp\model\business\validation\dbtype\SmallInt;
-// use ramp\model\business\validation\dbtype\TinyInt;
-// use ramp\model\business\validation\dbtype\DecimalPointNumber;
-// use ramp\model\business\validation\dbtype\Time;
-// use ramp\model\business\validation\dbtype\Date;
-// use ramp\model\business\validation\dbtype\DateTime;
-// use ramp\model\business\validation\RegexValidationRule;
-// use ramp\model\business\validation\LowercaseAlphanumeric;
-// use ramp\model\business\validation\HexidecimalColorCode;
-// use ramp\model\business\validation\TelephoneNumber;
-// use ramp\model\business\validation\ISOWeek;
-// use ramp\model\business\validation\ISOMonth;
-// use ramp\model\business\validation\ISOTime;
-// use ramp\model\business\validation\ISODate;
-// use ramp\model\business\validation\DateTimeLocal;
-// use ramp\model\business\validation\Password;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
- * 
- * protected function get_givenName() : ?RecordComponent
- * {
- *   if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
- *     $this->initiate(new field\Input($this->registeredName, $this,
- *       new validation\dbType\VarChar(20,
- *         new validation\Pattern('[A-Za-z]',
- *           new validation\Special(NULL,
- *             Str::set('This given name is NOT special enough')
- *           ),
- *           Str::set('Please use only Alphanumeric characters')
- *         ),
- *         Str::set('Value Not compatable with datastore')
- *       )
- *       Str::set('The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters')
- *     ));
- *   }
- * }
  * 
  * protected function get_honorificPrefix() : ?RecordComponent
  * {
@@ -89,7 +47,7 @@ use ramp\core\Str;
  * 
  * protected function get_status() : ?RecordComponent
  * {
- *   if ($this->register('status', RecordComponentType::PROPERTY, 0)) {
+ *   if ($this->register('status', RecordComponentType::PROPERTY)) {
  *     $this->initiate(new field\Input($this->registeredName, $this,,,, FALSE));
  *   }
  * }
@@ -102,9 +60,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('First single character key element.'),
         new validation\dbtype\Char(
-          Str::set('Character length must be exactly '),
-          1, new validation\LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+          Str::set('string with a character length of exactly '),
+          1, new validation\AlphanumericStrict(
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -116,11 +74,11 @@ class Comprehensive extends Record
   {
     if ($this->register('keyB', RecordComponentType::KEY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
-      Str::set('Second single character key element.'),
-      new validation\dbtype\Char(
-          Str::set('Character length must be exactly '),
-          1, new validation\LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+        Str::set('Second single character key element.'),
+        new validation\dbtype\Char(
+          Str::set('string with a character length of exactly '),
+          1, new validation\AlphanumericStrict(
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -134,9 +92,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Third single character key element.'),
         new validation\dbtype\Char(
-          Str::set('Character length must be exactly '),
-          1, new validation\LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+          Str::set('string with a character length of exactly '),
+          1, new validation\AlphanumericStrict(
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -150,7 +108,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Main thematic colour of presentation.'),
         new validation\dbtype\Char(
-          Str::set('Character length must be exactly '),
+          Str::set('string with a character length of exactly '),
           7, new validation\HexidecimalColorCode(
             Str::set('My error message HERE!')
           )
@@ -163,13 +121,13 @@ class Comprehensive extends Record
 
   protected function get_givenName() : ?RecordComponent
   {
-    if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('givenName', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The name by which you are refered by, in western culture usually your first name.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum length of '),
+          Str::set('string with a maximum charactor length of '),
           20, new validation\RegexValidationRule(
-            Str::set('single word with only latin alphabet charactered'),
+            Str::set('single latin alphabetical word'),
             '[A-Za-z]*'
           )
         )
@@ -180,13 +138,13 @@ class Comprehensive extends Record
 
   protected function get_mobile() : ?RecordComponent
   {
-    if ($this->register('mobile', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('mobile', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum length of '),
-          12, new validation\TelephoneNumber(
-            Str::set('My error message HERE!')
+          Str::set('string with a maximum charactor length of '),
+          20, new validation\TelephoneNumber(
+            Str::set('valid telephone number')
           )
         )
       ));
@@ -196,11 +154,11 @@ class Comprehensive extends Record
 
   protected function get_password() : ?RecordComponent
   {
-    if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('password', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum length of '),
+          Str::set('string with a maximum charactor length of '),
           35, new validation\Password(
             Str::set('My error message HERE!')
           )
@@ -212,7 +170,7 @@ class Comprehensive extends Record
 
   protected function get_wholeNumber() : ?RecordComponent
   {
-    if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('wholeNumber', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The non fractional number related to this query'),
         new validation\dbtype\SmallInt(Str::set('number from '))
@@ -223,7 +181,7 @@ class Comprehensive extends Record
 
   protected function get_currency() : ?RecordComponent
   {
-    if ($this->register('currency', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('currency', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The ammount of money in UK pounds and pence that you have access to.'),
         new validation\dbtype\DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)
@@ -234,7 +192,7 @@ class Comprehensive extends Record
 
   protected function get_week() : ?RecordComponent
   {
-    if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('week', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
@@ -249,7 +207,7 @@ class Comprehensive extends Record
 
   protected function get_month() : ?RecordComponent
   {
-    if ($this->register('month', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('month', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\ISOMonth(Str::set('valid month formated (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
@@ -264,7 +222,7 @@ class Comprehensive extends Record
 
   protected function get_time() : ?RecordComponent
   {
-    if ($this->register('time', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('time', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Time(Str::set('valid time formated (hh:mm[:ss])'),
@@ -279,7 +237,7 @@ class Comprehensive extends Record
 
   protected function get_date() : ?RecordComponent
   {
-    if ($this->register('date', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('date', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Date(Str::set('valid date formated (yyyy-mm-dd)'),
@@ -294,7 +252,7 @@ class Comprehensive extends Record
 
   protected function get_datetime() : ?RecordComponent
   {
-    if ($this->register('datetime', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('datetime', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\DateTime(Str::set('valid date time formated (yyyy-mm-ddThh:mm:ss)'),
@@ -309,7 +267,7 @@ class Comprehensive extends Record
 
   protected function get_flag() : ?RecordComponent
   {
-    if ($this->register('flag', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('flag', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate( new field\Flag($this->registeredName, $this,
         Str::set('expanded description of expected field content')
       ));

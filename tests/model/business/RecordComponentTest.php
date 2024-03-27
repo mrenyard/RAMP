@@ -47,7 +47,7 @@ require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';

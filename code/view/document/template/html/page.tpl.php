@@ -21,17 +21,22 @@
 ?>
     <div id="lightbox"></div>
     <header role="banner">
-<!-- include header -->
+<?php include("header.php"); ?>
     </header>
     <div id="main" role="main">
-      <!-- <header  class="hero circles man-up underhead"><a href="#header" title="Header full description"></a>
+      <header><a href="#header" title="Header full description"></a>
         <h1><?=$this->heading; ?></h1>
-        <figure><img src="/assets/media/wireframe/hero-header.svg" alt="Placeholder image for use when designing" /></figure>
         <p><?=$this->summary; ?></p>
-        <p class="cta"><a title="Call to action, outline button style" href="/">Download</a></p>
-      </header> -->
+      </header>
+      <section id="section-one"><a href="#section-one" title="Section one description">#</a>
+        <p>...</p>
+      </section>
       <?=$this->children ?>
+      <section id="section-two"><a href="#section-two" title="Section two description">#</a>
+        <p>...</p>
+      </section>
     </div><!-- #main -->
+<?php include("site-navigation.php"); ?>
     <footer role="contentinfo">
-<!-- include footer -->
+<?php include("footer.php"); ?>
     </footer>

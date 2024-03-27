@@ -42,7 +42,7 @@ require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/http/Session.class.php';
 require_once '/usr/share/php/ramp/http/Unauthorized401Exception.class.php';
 require_once '/usr/share/php/ramp/model/Model.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';

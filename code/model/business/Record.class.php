@@ -181,7 +181,7 @@ abstract class Record extends Relatable
     $this->active = NULL;
     if (!isset($this->components[$type][$name])) {
       $this->components[$type][$name] = '';
-      if ($type ==  RecordComponentType::PROPERTY && $required) { $this->required[$name] = ''; }
+      if ($type === RecordComponentType::KEY || ($type === RecordComponentType::PROPERTY && $required)) { $this->required[$name] = ''; }
       return FALSE;
     }
     if ($this->components[$type][$name] === '') {

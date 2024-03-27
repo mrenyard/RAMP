@@ -62,6 +62,22 @@ class Person extends AuthenticatableUnit
     return $this->registered; 
   }
 
+  protected function get_familyName() : ?RecordComponent
+  {
+    if ($this->register('familyName', RecordComponentType::PROPERTY)) { //, TRUE)) {
+      $this->initiate(new field\Input($this->registeredName, $this,
+        Str::set('expanded description of expected field content'),
+        new validation\dbtype\VarChar(
+          Str::set('string with a maximum charactor length of '),
+          45, new validation\Alphanumeric(
+            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+          ),
+        )
+      ));
+    }
+    return $this->registered; 
+  }
+
   protected function get_givenName() : ?RecordComponent
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY)) { //, TRUE)) {
@@ -92,22 +108,6 @@ class Person extends AuthenticatableUnit
       ));
     }
     return $this->registered;
-  }
-
-  protected function get_familyName() : ?RecordComponent
-  {
-    if ($this->register('familyName', RecordComponentType::PROPERTY)) { //, TRUE)) {
-      $this->initiate(new field\Input($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
-          ),
-        )
-      ));
-    }
-    return $this->registered; 
   }
 
   protected function get_honorificSuffix() : ?RecordComponent

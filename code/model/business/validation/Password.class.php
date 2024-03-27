@@ -38,7 +38,7 @@ class Password extends RegexValidationRule
   public function __construct(Str $errorMessage, ValidationRule $subRule = null)
   {
     if (!isset(self::$type)) { self::$type = Str::set('password'); } 
-    parent::__construct($errorMessage, '[a-zA-Z0-9!#\$%&\(\)+,-./:;<=>\?\[\]\^_`{\|}~]{8,35}', $subRule);
+    parent::__construct($errorMessage, '[a-zA-Z0-9!#$%&\(\)+,-\.:;<=>?\[\]\^*_\{\|\}\{~@]{8,35}', $subRule);
   }
 
   /**

@@ -49,7 +49,7 @@ use ramp\core\Str;
 abstract class ValidationRule extends RAMPObject
 {
   private static $defaultInputType;
-  private $errorMessage;
+  private $errorHint;
   private $subRule;
 
   /**
@@ -69,13 +69,13 @@ abstract class ValidationRule extends RAMPObject
    *   )
    * );
    * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test
    * @param ValidationRule $subRule Addtional rule to be added to *this* test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
+  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
     if (!isset(self::$defaultInputType)) { self::$defaultInputType = Str::set('text'); }
-    $this->errorMessage = $errorMessage;
+    $this->errorHint = $errorHint;
     $this->subRule = $subRule;
   }
 
@@ -136,6 +136,16 @@ abstract class ValidationRule extends RAMPObject
   }
 
   /**
+   * @ignore
+   */
+  protected function get_hint() : ?Str
+  {
+    return ($this->subRule) ? 
+      $this->subRule->hint->append($this->errorHint->prepend(Str::SPACE())) :
+        $this->errorHint;
+  }
+
+  /**
    * Runs code defined test against provided value.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
@@ -153,7 +163,7 @@ abstract class ValidationRule extends RAMPObject
       $this->test($value);
       if (isset($this->subRule)) { $this->subRule->process($value); }
     } catch (FailedValidationException $exception) {
-      throw new FailedValidationException((string)$this->errorMessage);
+      throw new FailedValidationException();
     }
   }
 }

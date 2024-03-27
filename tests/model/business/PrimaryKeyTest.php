@@ -34,7 +34,7 @@ require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';

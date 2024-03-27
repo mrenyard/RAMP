@@ -24,7 +24,7 @@ namespace tests\ramp\model\business\validation\dbtype;
 require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DecimalPointNumber.class.php';
