@@ -133,7 +133,7 @@ final class PrimaryKey extends RecordComponent
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    * @throws \ramp\model\business\DataExistingEntryException An entry already exists with this key!
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     if ($this->values !== NULL) { return; } // Once set cannot be changed
     parent::validate($postdata); // Look to validate any sub keys.

@@ -36,7 +36,6 @@ use ramp\model\business\validation\dbtype\DecimalPointNumber;
 use ramp\model\business\validation\dbtype\Time;
 use ramp\model\business\validation\dbtype\Date;
 use ramp\model\business\validation\dbtype\DateTime;
-// use ramp\model\business\validation\dbtype\Flag;
 use ramp\model\business\validation\RegexValidationRule;
 use ramp\model\business\validation\LowercaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
@@ -103,9 +102,9 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('First single character key element.'),
         new Char(
-          Str::set('Character length must be exactly '),
+          Str::set('string with a total character length of exactly '),
           1, new LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -118,10 +117,10 @@ class ComprehensiveRecord extends Record
     if ($this->register('keyB', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
       Str::set('Second single character key element.'),
-      new Char(
-          Str::set('Character length must be exactly '),
+        new Char(
+          Str::set('string with a total character length of exactly '),
           1, new LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -135,9 +134,9 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('Third single character key element.'),
         new Char(
-          Str::set('Character length must be exactly '),
+          Str::set('string with a total character length of exactly '),
           1, new LowercaseAlphanumeric(
-            Str::set('My error message HERE!')
+            Str::set('strictly latin alphabetical or numeric')
           )
         )
       ));
@@ -151,9 +150,9 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('Main thematic colour of presentation.'),
         new Char(
-          Str::set('Character length must be exactly '),
+          Str::set('character length must be exactly '),
           7, new HexidecimalColorCode(
-            Str::set('My error message HERE!')
+            Str::set('representing the luminescent gradiant of red, green and blue, a hash followed by three pairs of hexadecimal (0 through 9 to F) character')
           )
         ),
         
@@ -168,7 +167,7 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The name by which you are refered by, in western culture usually your first name.'),
         new VarChar(
-          Str::set('string with a maximum length of '),
+          Str::set('string with a maximum charactor length of '),
           20, new RegexValidationRule(
             Str::set('single word with only latin alphabet charactered'),
             '[A-Za-z]*'
@@ -185,9 +184,9 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new VarChar(
-          Str::set('string with a maximum length of '),
-          12, new TelephoneNumber(
-            Str::set('My error message HERE!')
+          Str::set('string with a maximum charactor length of '),
+          20, new TelephoneNumber(
+            Str::set('valid telephone number')
           )
         )
       ));
@@ -201,9 +200,9 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new VarChar(
-          Str::set('string with a maximum length of '),
+          Str::set('string with a maximum charactor length of '),
           35, new Password(
-            Str::set('My error message HERE!')
+            Str::set("8 charactor minimum alphanumeric and special charactors (!#$%&+,-.:;<=>?[]^*_{|}{~@')")
           )
         )
       ));
@@ -216,7 +215,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The non fractional number related to this query'),
-        new SmallInt(Str::set('number from '))
+        new SmallInt(Str::set('whole number from '))
       ));
     }
     return $this->registered; 
@@ -227,7 +226,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('currency', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The ammount of money in UK pounds and pence that you have access to.'),
-        new DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)
+        new DecimalPointNumber(Str::set('place decimal point number'), 2, 5)
       ));
     }
     return $this->registered; 
@@ -269,7 +268,7 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new Time(Str::set('valid time formated (hh:mm[:ss])'),
-          new ISOTime(Str::set('an appointment slot avalible ever 30min from '),
+          new ISOTime(Str::set('an appointment slot avalible ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
         )
@@ -284,7 +283,7 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new Date(Str::set('valid date formated (yyyy-mm-dd)'),
-          new ISODate(Str::set('date of birth from '),
+          new ISODate(Str::set('date of birth'),
             Str::set('1900-01-01'), Str::set('2023-12-31')
           )
         )

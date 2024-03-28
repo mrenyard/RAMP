@@ -88,7 +88,7 @@ class RecordB extends Record
   //   }
   // }
 
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     $this->validateCount++;
     parent::validate($postdata);

@@ -99,7 +99,7 @@ class RelationToOne extends Relation
    * @param \ramp\condition\PostData $key Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     parent::validate($postdata);
     $with = $this->getWith();

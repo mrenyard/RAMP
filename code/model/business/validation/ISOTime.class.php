@@ -27,7 +27,7 @@ use ramp\model\business\validation\FailedValidationException;
  * Time (ISO 8601) uses the 24-hour clock system, the basic format is (hh:mm[:ss]).
  * @see https://en.wikipedia.org/wiki/ISO_8601#Times
  */
-class ISOTime extends RegexValidationRule
+class ISOTime extends FormatBasedValidationRule
 {
   private static $type;
   private $min;
@@ -49,7 +49,11 @@ class ISOTime extends RegexValidationRule
   {
     $failed = FALSE;
     if (!isset(self::$type)) { self::$type = Str::set('time'); }
-    parent::__construct($errorMessage, '(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?', NULL, 'hh:mm:ss');
+    // TODO:mrenyard: Internationalise 'from' & 'to'.
+    $errorMessage = (isset($min) && isset($max)) ?
+      $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorMessage;  
+    parent::__construct($errorMessage, '(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?', 'hh:mm:ss');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }

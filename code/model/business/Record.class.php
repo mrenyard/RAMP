@@ -243,7 +243,7 @@ abstract class Record extends Relatable
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     // if (!$this->isEditable) {
     //   $this->errorCollection= new StrCollection($this->id . ' is NOT editable!');
@@ -287,7 +287,7 @@ abstract class Record extends Relatable
    * Sets the value of a given property.
    * **DO NOT USE, METHOD TO ONLY BE CALLED FROM CHILD FIELD**
    * @param string $propertyName Name of property to be set.
-   * @param mixed The value to be set on provided property.
+   * @param mixed|NULL The value to be set on provided property or NULL to initiate. 
    */
   public function setPropertyValue(string $propertyName, $value = NULL) : void
   {

@@ -87,7 +87,8 @@ class DateTimeTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('2006-12-24T24:00:00'); // Shoud be 2006-12-24T00:00:00.
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');

@@ -27,7 +27,7 @@ use ramp\model\business\validation\FailedValidationException;
  * Exact Week (ISO 8601) entry of a 4 digit year plus a 2 digit week number in that year (yyyy-W00).
  * @see https://en.wikipedia.org/wiki/ISO_8601#Week_dates
  */
-class ISOWeek extends RegexValidationRule
+class ISOWeek extends FormatBasedValidationRule
 {
   private static $type;
   private static $maxlength;
@@ -50,7 +50,11 @@ class ISOWeek extends RegexValidationRule
     $failed = FALSE;
     if (!isset(self::$type)) { self::$type = Str::set('week'); } 
     if (!isset(self::$maxlength)) { self::$maxlength = 8; }
-    parent::__construct($errorMessage, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3])', NULL, 'yyyy-Www');
+    // TODO:mrenyard: Internationalise 'from' & 'to'.
+    $errorMessage = (isset($min) && isset($max)) ?
+      $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorMessage;
+    parent::__construct($errorMessage, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3]){1}', 'yyyy-W00');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }

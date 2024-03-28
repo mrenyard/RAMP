@@ -69,7 +69,7 @@ class DecimalPointNumber extends DbTypeValidation
       $step = $step . '0';
     }
     $this->step = $step;
-    parent::__construct($errorMessage, NULL);
+    parent::__construct(Str::set($point)->append(Str::SPACE())->append($errorMessage), NULL);
   }
 
   /**

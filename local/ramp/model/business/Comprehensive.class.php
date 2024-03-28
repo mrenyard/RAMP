@@ -60,7 +60,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('First single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a character length of exactly '),
+          Str::set('string with a total character length of exactly '),
           1, new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
@@ -76,7 +76,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Second single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a character length of exactly '),
+          Str::set('string with a total character length of exactly '),
           1, new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
@@ -92,7 +92,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Third single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a character length of exactly '),
+          Str::set('string with a total character length of exactly '),
           1, new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
@@ -110,7 +110,7 @@ class Comprehensive extends Record
         new validation\dbtype\Char(
           Str::set('string with a character length of exactly '),
           7, new validation\HexidecimalColorCode(
-            Str::set('My error message HERE!')
+            Str::set('representing the luminescent gradiant of red, green and blue, a hash followed by three pairs of hexadecimal (0 through 9 to F) character ')
           )
         ),
         
@@ -123,12 +123,12 @@ class Comprehensive extends Record
   {
     if ($this->register('givenName', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
-        Str::set('The name by which you are refered by, in western culture usually your first name.'),
+        Str::set('The name by which you are refered to; in Western culture usually your first name.'),
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           20, new validation\RegexValidationRule(
             Str::set('single latin alphabetical word'),
-            '[A-Za-z]*'
+            '[A-Za-z\-]*'
           )
         )
       ));
@@ -160,7 +160,7 @@ class Comprehensive extends Record
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           35, new validation\Password(
-            Str::set('My error message HERE!')
+            Str::set("8 charactor minimum alphanumeric and special charactors (!#$%&+,-.:;<=>?[]^*_{|}{~@')")
           )
         )
       ));
@@ -173,7 +173,7 @@ class Comprehensive extends Record
     if ($this->register('wholeNumber', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The non fractional number related to this query'),
-        new validation\dbtype\SmallInt(Str::set('number from '))
+        new validation\dbtype\SmallInt(Str::set('whole number from '))
       ));
     }
     return $this->registered; 
@@ -184,7 +184,7 @@ class Comprehensive extends Record
     if ($this->register('currency', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The ammount of money in UK pounds and pence that you have access to.'),
-        new validation\dbtype\DecimalPointNumber(Str::set('My error message HERE!'), 2, 5)
+        new validation\dbtype\DecimalPointNumber(Str::set('place decimal point number'), 2, 5)
       ));
     }
     return $this->registered; 
@@ -193,9 +193,9 @@ class Comprehensive extends Record
   protected function get_week() : ?RecordComponent
   {
     if ($this->register('week', RecordComponentType::PROPERTY)) { //, TRUE)) {
-      $this->initiate(new field\MultipartInput($this->registeredName, $this,
+      $this->initiate(new field\MultipartInput($this->registeredName, $this, 
         Str::set('expanded description of expected field content'),
-        new validation\ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
+        new validation\ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2022-W01'), Str::set('2024-W52')),
         ['-W'],
         ['weekYear', 'weekNumber'],
         new validation\dbtype\SmallInt(Str::set('4 digit year from '), 0, 9999),
@@ -226,7 +226,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Time(Str::set('valid time formated (hh:mm[:ss])'),
-          new validation\ISOTime(Str::set('an appointment slot avalible ever 30min from '),
+          new validation\ISOTime(Str::set('an appointment slot avalible ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
         )

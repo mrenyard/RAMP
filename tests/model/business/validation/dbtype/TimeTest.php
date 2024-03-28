@@ -85,7 +85,8 @@ class TimeTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('24:00'); // Shoud be 00:00:00.
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');

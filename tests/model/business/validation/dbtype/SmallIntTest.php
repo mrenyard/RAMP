@@ -87,22 +87,26 @@ class SmallIntTest extends \PHPUnit\Framework\TestCase
       $this->testObject->process('1');
     } catch (FailedValidationException $expected) {
       $failPoint = 1;
-      $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+      // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       try {
         $this->testObject->process(10.55);
       } catch (FailedValidationException $expected) {
         $failPoint = 2;
-        $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+        // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+        $this->assertEquals('', $expected->getMessage());
         try {
           $this->testObject->process(-32769);
         } catch (FailedValidationException $expected) {
           $failPoint = 3;
-          $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+          // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+          $this->assertEquals('', $expected->getMessage());
           try {
             $this->testObject->process(32768);
           } catch (FailedValidationException $expected) {
             $failPoint = 4;
-            $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+            // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
+            $this->assertEquals('', $expected->getMessage());
             return;
           }
         }

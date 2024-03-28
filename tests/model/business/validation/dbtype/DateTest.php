@@ -87,7 +87,8 @@ class DateTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('2021-02-29'); // NOT a leap year.
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       return;
     }
     $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');

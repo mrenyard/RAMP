@@ -21,8 +21,11 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\core\StrCollection;
+use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\validation\RegexValidationRule;
+use ramp\model\business\validation\FormatBasedValidationRule;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 use ramp\model\business\validation\dbtype\Char;
 use ramp\model\business\validation\dbtype\VarChar;
@@ -35,7 +38,7 @@ class MultipartInput extends Input
 {
   private static $type; // Str
   private $splits; // string[]
-  private $dataProperties; // string[]
+  private $parts; // [valueLength, propertyName, validationRule];
 
   /**
    * Creates a multipart input field related to a single property with mutiply data storage fields.
@@ -67,7 +70,7 @@ class MultipartInput extends Input
    * );
    * ```
    */
-  public function __construct(Str $name, Record $parent, Str $title, RegexValidationRule $formValidation, array $splits, array $dataProperties, DbTypeValidation ...$dataValidation)
+  public function __construct(Str $name, Record $parent, Str $title, FormatBasedValidationRule $formValidation, array $splits, array $dataProperties, DbTypeValidation ...$dataValidation)
   {
     if (!isset(self::$type)) { self::$type = Str::set('input field'); }
     $this->splits = $splits;
@@ -76,14 +79,15 @@ class MultipartInput extends Input
     if ($format == NULL || count($fparts) != count($dataProperties)) {
       throw new \InvalidArgumentException('');
     }
+    // TODO:mrenyard: Internationalise 'total length' & 'maxinmum length'
     parent::__construct($name, $parent, $title, ($format) ?
-      new Char(Str::_EMPTY(), strlen($format), $formValidation) :
-        new VarChar(Str::_EMPTY(), 250, $formValidation)
+      new Char(Str::set('total charactors: '), strlen($format), $formValidation) :
+        new VarChar(Str::set('maxinmum charactors: '), 250, $formValidation)
     );
     $i = 0;
-    $this->dataProperties = [];
+    $this->parts = [];
     foreach($dataProperties as $property) {
-      $this->dataProperties[$i] = [strlen($fparts[$i]), $property];
+      $this->parts[$i] = [strlen($fparts[$i]), $property, $dataValidation[$i]];
       $i++;
     }
   }
@@ -102,12 +106,53 @@ class MultipartInput extends Input
   protected function get_value()
   {
     $i = 0; $rtn = '';
-    foreach ($this->dataProperties as $propMeta) {
-      if ($this->dataProperties[0][1] != $propMeta[1]) { $rtn .= $this->splits[$i]; }
-      $value = $this->parent->getPropertyValue($propMeta[1]);
-      $rtn .= (is_int($value)) ? str_pad($value, $propMeta[0], '0',  STR_PAD_LEFT) : $value;
+    foreach ($this->parts as $propMeta) {
+      $valueLength = $propMeta[0];
+      $propertyName = $propMeta[1];
+      $validationRule = $propMeta[2];
+      if ($this->parts[0][1] != $propertyName) { $rtn .= $this->splits[$i]; }
+      $value = $this->parent->getPropertyValue($propertyName);
+      $rtn .= (is_int($value)) ? str_pad($value, $valueLength, '0',  STR_PAD_LEFT) : $value;
       if (count($this->splits) > ($i+1)) { $i++; }
     }
     return $rtn;
+  }
+
+  /**
+   * Validate postdata against this and update accordingly.
+   * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
+   *  to be assessed for validity and imposed on *this* business model.
+   */
+  public function validate(PostData $postdata, $update = TRUE) : void
+  {
+    foreach ($postdata as $inputdata)
+    {
+      if ((string)$inputdata->attributeURN == (string)$this->id)
+      {
+        if (!$this->isEditable) { return; }
+        parent::validate($postdata, FALSE);
+        if ($this->hasErrors) { return; }
+        $i = 0;
+        $remainder = $inputdata->value;
+        foreach ($this->parts as $propMeta) {
+          if (count($this->splits) > $i) { $split = $this->splits[$i++]; }
+          $valueLength = $propMeta[0];
+          $propertyName = $propMeta[1];
+          $validationRule = $propMeta[2];
+          if (strlen($remainder) !== $valueLength) {
+            $valueRemender= str_split($remainder, $valueLength);
+            $value = $valueRemender[0];
+            $remainder = str_split($valueRemender[1], strlen($split))[1];              
+          } else {
+            $value = $remainder;
+          }
+          try {
+            $this->parent->setPropertyValue($propertyName, $value);
+          } catch (FailedValidationException $exception) {
+            throw new Exception('MultipartInput \'' . $name . '\' FormatBasedValidationRule NOT compatatible with ' . $propertyName . ' DbTypeValidation!');
+          }
+        }
+      }
+    }
   }
 }

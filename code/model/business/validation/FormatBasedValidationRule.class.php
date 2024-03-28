@@ -21,31 +21,21 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Password restricted regex pattern matching validation.
+ * ISO format based regex pattern matching validation.
  */
-class Password extends RegexValidationRule
+class FormatBasedValidationRule extends RegexValidationRule
 {
-  private static $type;
-
-  /**
-   * Constructor for password restricted regex pattern validation.
+   /**
+   * Constructor ISO format based regex pattern matching validation..
    * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
    * @param string $pattern Regex pattern to be validated against.
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
+   * @param string $format Required format profile based on ISO standards.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  public function __construct(Str $errorMessage, string $pattern, string $format)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('password'); } 
-    parent::__construct($errorMessage, '[a-zA-Z0-9!#$%&\(\)+,-\.:;<=>?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_inputType() : Str
-  {
-    return self::$type;
+    parent::__construct($errorMessage,$pattern, NULL, $format);
   }
 }

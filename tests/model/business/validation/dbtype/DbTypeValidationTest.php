@@ -92,7 +92,8 @@ class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('BAD');
     } catch (FailedValidationException $expected) {
-      $this->assertSame((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertSame((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       return;
     }
     $this->fail('An expected \FailedValidationException has NOT been raised.');

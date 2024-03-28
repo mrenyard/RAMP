@@ -27,7 +27,7 @@ use ramp\model\business\validation\FailedValidationException;
  * Exact Date (ISO 8601) entry of a 4 digit year plus a 2 digit month number and 2 digit day of month number (yyyy-mm-dd).
  * @see https://en.wikipedia.org/wiki/ISO_8601#Calendar_dates
  */
-class ISODate extends RegexValidationRule
+class ISODate extends FormatBasedValidationRule
 {
   private static $type;
   // private static $maxlength;
@@ -50,7 +50,11 @@ class ISODate extends RegexValidationRule
     $failed = FALSE;
     if (!isset(self::$type)) { self::$type = Str::set('date'); } 
     // if (!isset(self::$maxlength)) { self::$maxlength = 10; }
-    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', NULL, 'yyyy-mm-dd');
+    // TODO:mrenyard: Internationalise 'from' & 'to'.
+    $errorMessage = (isset($min) && isset($max)) ?
+      $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorMessage;
+    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', 'yyyy-mm-dd');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }

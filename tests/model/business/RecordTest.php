@@ -416,7 +416,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($testObject->isRequiredField('alpha'));
 
     $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call (bata)
-    $this->assertFalse($testObject->isRequiredField('beta'));
+    $this->assertTrue($testObject->isRequiredField('beta'));
     $this->assertNotSame($expectedAlphaField, $testObject->registered);
     $expectedBetaField = new MockField(Str::set('beta'), $testObject);
     try {

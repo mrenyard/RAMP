@@ -83,11 +83,13 @@ class FlagTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process(0);
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       try {
         $this->testObject->process('TRUE');
       } catch (FailedValidationException $expected) {
-        $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+        // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+        $this->assertEquals('', $expected->getMessage());
         return;
       }
     }

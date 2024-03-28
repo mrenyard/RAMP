@@ -108,8 +108,9 @@ abstract class Field extends RecordComponent
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
+   * @param bool $update Default is to update on succesful validation, TRUE to skip.
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
@@ -123,8 +124,10 @@ abstract class Field extends RecordComponent
           $this->errorCollection->add(Str::set($exception->getMessage()));
           return;
         }
-        $value = (\is_array($inputdata->value)) ? implode('|', $inputdata->value) : $inputdata->value;
-        $this->parent->setPropertyValue((string)$this->name, $value);
+        if ($update) {
+          $value = (\is_array($inputdata->value)) ? implode('|', $inputdata->value) : $inputdata->value;
+          $this->parent->setPropertyValue((string)$this->name, $value);
+        }
         return;
       }
     }

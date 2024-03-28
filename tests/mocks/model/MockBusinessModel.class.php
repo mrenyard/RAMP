@@ -58,7 +58,7 @@ class MockBusinessModel extends BusinessModel
     return $this->aProperty;
   }
 
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     $this->validateCount++;
     parent::validate($postdata);

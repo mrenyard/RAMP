@@ -54,7 +54,7 @@ class MockFlag extends Flag
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     $this->validateCount++;
     parent::validate($postdata);

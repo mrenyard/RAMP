@@ -38,6 +38,6 @@ class LowercaseAlphanumeric extends RegexValidationRule
    */
   public function __construct(Str $errorMessage, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorMessage, '[a-z0-9_\-]', $subRule);
+    parent::__construct($errorMessage, '[a-z0-9_\-]*', $subRule);
   }
 }

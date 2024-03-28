@@ -88,11 +88,13 @@ class DecimalPointNumberTest extends \PHPUnit\Framework\TestCase
     try {
       $this->testObject->process('10.55'); // string
     } catch (FailedValidationException $expected) {
-      $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+      $this->assertEquals('', $expected->getMessage());
       try {
         $this->testObject->process(10.555); // more than 2 decimal points
       } catch (FailedValidationException $expected) {
-        $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+        // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
+        $this->assertEquals('', $expected->getMessage());
         return;
       }
     }

@@ -102,7 +102,7 @@ class RelationToMany extends Relation
    * @param \ramp\condition\PostData $key Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
-  public function validate(PostData $postdata) : void
+  public function validate(PostData $postdata, $update = TRUE) : void
   {
     $with = $this->getWith();
     // No validation unless a valid Parent (NOT new) and at allowed editing depth (Parent == current web address).
