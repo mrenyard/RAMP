@@ -140,7 +140,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
         }
       }
       if ($n > 1) {
-        $this->recordKey = Str::set(str_replace(['+','%20'], ' ', $model[1]));
+        $this->recordKey = Str::set(str_replace(['+', '%20'], ' ', str_replace(['%7C', '%7c'], '|', $model[1])));
         $view[1] = '~';
       }
       if ($n > 2) {
