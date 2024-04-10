@@ -1,8 +1,8 @@
 FUNC.js - Frontend Utilities for Networked Client
 ==================================================
 
-**Written originally to complement The RAMP platform
-with frontend interactive, immersive and dynamic 
+**Written to complement The RAMP platform with
+frontend interactive, immersive and dynamic 
 content, through the use of RAMP's serverside
 Hijax-centric Platform. FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable
@@ -20,18 +20,25 @@ within an 'assets' folder.
 ```
   |
   +-- public_html       (website root folder)
-  | |-- ...
-  | |-- index.html      (static homepage)?
-  | |-- controller.php  (RAMP controller file)
-  | |-- assets
-  |   +-- func        <-- HELLO from FUNC.js.
-  |     |-- docs
-  |     |-- extlibs
-  |     |-- mods
-  |     |-- core.js
-  |     +-- core-full.js
-  |
-  +-- ramp.ini          (local initialization file)
+  |  |-- index.html      (static homepage)?
+  |  +-- controller.php  (RAMP controller file)
+  |  +-- assets
+  |  |  +-- func        <-- HELLO from FUNC.js.
+  |  |  +-- docs
+  |  |  +-- extlibs
+  |  |  +-- mods
+  |  |  |  +-- full
+  |  |  |  |  |-- core.lib.js
+  |  |  |  |  |-- ...
+  |  |  |  |  --- [module].js 
+  |  |  |  |-- core.lib.js
+  |  |  |  |-- ...
+  |  |  |  --- [module].js
+  |  |  |-- init.js
+  |  |  --- init-full.js
+  |  +-- style
+  |  +-- media
+  --- ramp.ini        (local initialization file)
 ```
 Then add the below code to the bottom of any relevant
 template and any or all pages on your site.
@@ -39,9 +46,9 @@ template and any or all pages on your site.
 ```html
       ...
     </footer>
-    <script src="/assets/func/core.js"></script>
+    <script src="/assets/func/init.js"></script>
     <script defer>
-FUNC.init.register('diagram', 'FUNC.diagram');
+FUNC.init.register('diagram', 'FUNC.diagram'), ['core',];
 FUNC.init.run();
     </script>
   </body>
@@ -59,10 +66,17 @@ FUNC.modsPath = '/assets/func/mods/';
 
 As you wish to use more modules across your website/application
 you will want to register them by adding new `FUNC.init.resgister`
-statements above `FUNC.init.run()` and below any dependancies.
+statements above `FUNC.init.run()` with the following paramaters:
 ```javascript
-FUNC.init.register([HtmlClassName:string], [FuncModule:string]);
+FUNC.init.register({HtmlClassName:string}, {FuncModuleName:string}, {[{FuncLibraryName:string}, ...]]:array});
 ```
+1. HtmlClassName - Identifing HtmlClass:name, this className will
+need to be present with your HTML DOM to activate relevant modual.
+2. FuncModuleName - Modual name to be exacuted against each
+relevant HtmlEntity fragment (e.g. `FUNC.diagram`).
+3. FUNC[library][:array] List of dependent library names ordered
+in loading propriety (e.g. `['core', 'event']`).
+
 
 EXPLORING FUNC.js APIs in Developer Tools Console
 --------------------------------------------------
@@ -86,14 +100,14 @@ The current package version number.
 FUNC.version;
 ```
 
-The 'init' registration system.
+The 'init' registration system (init.js|init-full.js).
 ```javascript
 FUNC.init;
-FUNC.init.register(..., ...)
+FUNC.init.register(..., ..., [..., ...])
 FUNC.init.run();
 ```
 
-The 'core' library 
+The 'core' library (mods/core.js|mods/full.core.js).
 ```javascript
 FUNC.core;
 FUNC.core.[...];
@@ -104,8 +118,8 @@ you will begin to understand more about its API.
 Most packages will add content depending on the
 pages DOM under `FUNC.my.[moduleName][index]`,
 and all will add a constructor function under
-`FUNC.[moduleName][index]` with some modules
-adding module constants within the same space;
+`FUNC.[moduleName]` with some modules and
+libaries adding constants within the same space;
 
 ```javascript
 FUNC.my.[moduleName][index];
@@ -117,7 +131,17 @@ you will find API documentaion within the adjacent docs folder.
 
 Matt Renyard.
 
+List of avalible Libaries
+--------------------------------------------------
+- [Base Classes and the INIT System (init.js)](docs/init.md)
+- [Library of Commonly Used Functionality Across FUNC Modules (FUNC.core)](docs/core.md)
+- [DOM Useful Document Object Model manipulisation that tie-in with the strict HTML5 stlye used on RAMP (FUNC.dom)](docs/dom.md)
+- [Event Library, dragNdrop or register complex events with a start,move and end (FUNC.event)](docs/event.md)
+- ...hijax
+- ...
+
 List of avalible Modules
 --------------------------------------------------
-- [Library of Commonly Used Functionality Across FUNC Modules (FUNC.core.js)](docs/core.md)
-- [Manipulate, Draw and Arrange a Range of Diagrams (FUNC.diagram.js)](docs/diagram.md)
+- ...forms
+- [Manipulate, Draw and Arrange a Range of Diagrams (FUNC.diagram)](docs/diagram.md)
+- ...

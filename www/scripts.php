@@ -21,13 +21,13 @@
  * @version 0.0.9;
  */
 if (strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) { ?>
-    <script src="/assets/func/core-full.js"></script>
+    <script src="/assets/func/init-full.js"></script>
     <script defer>
 FUNC.modsPath = '/assets/func/mods/full/';
 <?php } else { ?>
-    <script src="/assets/func/core-full.js"></script>
+    <script src="/assets/func/init.js"></script>
     <script defer>
 <?php } ?>
-FUNC.init.register('diagram', 'FUNC.diagram');
+FUNC.init.register('sort', 'FUNC.sort', ['event']);
 FUNC.init.run();
     </script>
