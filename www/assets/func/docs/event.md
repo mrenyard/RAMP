@@ -21,3 +21,5 @@ Sequential Action Managment.
 
 Easy Drag 'N' Drop.
 --------------------------------------------------
+
+[demo](drop.html)
