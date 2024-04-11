@@ -1,4 +1,4 @@
-FUNC.event (`mods/event.lib.js`|`modes/full/event.libs.js`)
+FUNC.event (`mods/event.lib.js`|`mods/full/event.libs.js`)
 ==================================================================
 Event Library, dragNdrop or register complex events
 with a startAction, moveAction and endAction.
@@ -21,3 +21,10 @@ Sequential Action Managment.
 
 Easy Drag 'N' Drop.
 --------------------------------------------------
+
+[demo](drag.html)
+
+Useful and Related Content
+--------------------------------------------------
+ - [Using Namspace placeholders](./init.md#using-namespaces-within-your-local-namespace).
+

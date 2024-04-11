@@ -1,4 +1,4 @@
-FUNC.core (`mods/core.lib.js`|`modes/full/core.libs.js`)
+FUNC.core (`mods/core.lib.js`|`mods/full/core.libs.js`)
 ==================================================================
 Library of Commonly Used Functionality Across FUNC Modules.
 ==================================================================
@@ -19,3 +19,7 @@ Appends a space to non trivial strings.
 ```javascript
   FUNC.core.sp(v);
 ```
+Useful and Related Content
+--------------------------------------------------
+ - [Using Namspace placeholders](./init.md#using-namespaces-within-your-local-namespace).
+

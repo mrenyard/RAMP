@@ -4,7 +4,9 @@ Base Classes (Base, Enum, Exception, Collection) and the INIT System.
 ==================================================================
 
 **FUNC init file includes definitions for its commonly used Base,
-Enum, Exception and Collection Classes as well as the init system.**
+Enum, Exception and Collection Classes as well as the init system.
+A system that ensure per page, dom spesific, modules are requested
+and loaded along with any required libaraies on a per nessasary bases.**
 
  * @author Matt Renyard (twitter: @mrenyard)
  * @package func.Base (Base Class)
@@ -55,3 +57,6 @@ FUNC.[newModule] = function(elm)
   ...
 }
 ```
+Useful and Related Content
+--------------------------------------------------
+

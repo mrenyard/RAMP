@@ -1,4 +1,4 @@
-FUNC.dom (`mods/dom.lib.js`|`modes/full/dom.libs.js`)
+FUNC.dom (`mods/dom.lib.js`|`mods/full/dom.libs.js`)
 ==================================================================
 Useful Document Object Model (DOM) Manipulation, optimised
 to work with and tie-into the strict HTML5 style used on RAMP.
@@ -21,6 +21,7 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
       ...
       <section id="[attrabute-id:title]" class="[moduleName] [class-list:values]">
         <header><h2>[AttrabuteId:title]</h2></header>
+        ...
       </section>
       ...
     </div>
@@ -31,3 +32,7 @@ Create new `[HtmlElement:section]` within `[HtmlElement:#main]` optionally load 
 ```javascript
 FUNC.core.addSection(title, type, moduleName);
 ```
+
+Useful and Related Content
+--------------------------------------------------
+ - [Using Namspace placeholders](./init.md#using-namespaces-within-your-local-namespace).

@@ -133,5 +133,5 @@ UML Classes are formated as below
 ```
 Useful and Related Content
 --------------------------------------------------
- - [Using Namspace placeholders](./core.md#using-namespaces-within-your-local-namespace).
+ - [Using Namspace placeholders](./init.md#using-namespaces-within-your-local-namespace).
 
