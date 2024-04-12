@@ -22,8 +22,6 @@ Sequential Action Managment.
 Easy Drag 'N' Drop.
 --------------------------------------------------
 
-[demo](drag.html)
-
 Useful and Related Content
 --------------------------------------------------
  - [Using Namspace placeholders](./init.md#using-namespaces-within-your-local-namespace).
