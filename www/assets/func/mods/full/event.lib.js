@@ -43,14 +43,14 @@ FUNC.event = function(elm)
   };
 
   /**
-   * Returns relevant (NOT stating) dropzone under x,y cords.
+   * Returns any relevant dropzone under x,y cords.
    * @param {HTMLElement} activeElement
    * @param {FUNC.Collection} dropZones 
    * @param {int} x X coordinate.
    * @param {int} y Y coordinate.
-   * @returns {HTMLElement|null} dropzone or null where relevant.sort
+   * @returns {HTMLElement|null} dropzone or null where relevant.
    */
-  var withinNewDropzone = function(activeElement, zones, x, y)
+  var getActiveDropzone = function(zones, x, y)
   {
     y = (y - window.scrollY); // adjust for scroll position.
     zones.rewind();
@@ -164,7 +164,7 @@ FUNC.event = function(elm)
           e.stopPropagation();
           if (activeElement.draggable) {
             if (snap != null) { window.clearTimeout(snap); snap = null; }
-            let o = withinNewDropzone(activeElement, dropZones, e.X, e.Y);
+            let o = getActiveDropzone(dropZones, e.X, e.Y);
             if (o != null) {
               if (o.sibling === null) {
                 o.zone.appendChild(target);
@@ -186,7 +186,7 @@ FUNC.event = function(elm)
         e.stopPropagation();
         if (snap != null) { window.clearTimeout(snap); snap = null; }
         if (activeElement.draggable) {
-          let o = withinNewDropzone(activeElement, dropZones, e.X, e.Y);
+          let o = getActiveDropzone(dropZones, e.X, e.Y);
           let space = ((s = activeElement.nextSibling) && s.nodeType == 3) ? activeElement.nextSibling : null;
           if (o !== null) {
             if (o.sibling === null) {
@@ -238,5 +238,5 @@ FUNC.event = function(elm)
   })
 
   //- PUBLIC ACCESS
-  return {register, dragNdrop};
+  return {addListeners, register, dragNdrop, getActiveDropzone};
 }();
