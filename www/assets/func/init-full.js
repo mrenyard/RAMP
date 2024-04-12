@@ -16,6 +16,7 @@ FUNC.Base = class
     if (eval(this[s]) !== undefined) { throw new Error('\"' + s + '()" METHOD' + ' is Abstract!'); }
     if (this.constructor.name == s) { throw new Error('":' + s + '" CLASS is Abstract!'); }
   }
+  constructor() { this.abstract('Base'); }
 };
 
 /**
@@ -71,7 +72,7 @@ FUNC.Collection = class extends FUNC.Base
 {
   /**
    * Create from 
-   * @param {HtmlElement[]} elms 
+   * @param {HtmlCollection} elms 
    * @returns {Collection}
    */
   static createFrom(elms) {
@@ -111,8 +112,8 @@ FUNC.Collection = class extends FUNC.Base
 FUNC.init = function()
 {
   //- LOCAL VARIBLES
-  var inits = [], dList = [], libsLock = true, lock = true,
-      dev = (window.location.hostname.split('.')[0] == 'dev');
+  var inits = [], dList = [], mList = [],
+      libsLock, lock, dev = (window.location.hostname.split('.')[0] == 'dev');
 
   //- GLOBAL OBJECT
   FUNC.my = FUNC.my || {};
@@ -122,8 +123,8 @@ FUNC.init = function()
   //- LOCAL METHODS
   var loadLibs = function(ds)
   {
-    for (let i=0, j=ds.length; i<j; i++) { d = ds[i]
-      if (dList[d] == null) {
+    for (let i=0, j=ds.length; i<j; i++) { let d = ds[i]
+      if (dList[d] == undefined) {
         let o = document.createElement('script');
         o.setAttribute('id', 'script-' + d)
         o.setAttribute('src', FUNC.modsPath + d + '.lib.js')
@@ -133,26 +134,30 @@ FUNC.init = function()
     }
   }
 
-  var loadModule = function(cN)
+  var loadModule = function(mN)
   {
-    if (libsLock) { return setTimeout(function() { loadModule(cN); }, 100); }
-    let o = document.createElement('script');
-    o.setAttribute('id', 'script-' + cN)
-    o.setAttribute('src', FUNC.modsPath + cN + '.js')
-    document.body.append(o);
+    if (libsLock) { return setTimeout(function() { loadModule(mN); }, 100); }
+    if (mList[mN] == undefined) {
+      let o = document.createElement('script');
+      o.setAttribute('id', 'script-' + mN)
+      o.setAttribute('src', FUNC.modsPath + mN + '.js')
+      document.body.append(o);
+      mList[mN] = true;
+    }
   }
 
   /**
    * Register potentual FUNC modules needed site wide, only loads those scripts actually need per page.
    * @param {srting} {cN: className} - Identifing HtmlClass:name for modual use. 
-   * @param {string} {fn: FUNC[module]} Modual name to be exacuted against each relevant HtmlEntity (fragment).
+   * @param {string} {mN: {moduleName]} Modual name to be exacuted against each relevant HtmlEntity (fragment).
    * @param {string[]} {ds: dependencies} - FUNC[library][:array] List of dependent library names ordered in loading propriety.
    */
-  var register = function(cN, fn, ds)
+  var register = function(cN, mN, ds)
   {
     let e = document.getElementsByClassName(cN)
     if (e.length > 0) {
       lock = true;
+      libsLock = true;
       loadLibs(ds);
       (function libsExist() {
         for (let i=0, j=ds.length; i<j; i++) { let d = ds[i];
@@ -160,10 +165,10 @@ FUNC.init = function()
         }
         libsLock = false;
       }());
-      loadModule(cN);
+      loadModule(mN);
       (function modExists() {
-        if (eval(fn) == undefined) { return setTimeout(modExists, 100); }  
-        inits[inits.length] = { name: cN, instances: e, action: eval(fn) };
+        if (eval('FUNC.' + mN) == undefined) { return setTimeout(modExists, 100); }  
+        inits[inits.length] = { name: mN, instances: e, action: eval('FUNC.' + mN) };
         lock = false;
       }());
     }

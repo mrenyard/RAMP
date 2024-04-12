@@ -68,13 +68,13 @@ As you wish to use more modules across your website/application
 you will want to register them by adding new `FUNC.init.resgister`
 statements above `FUNC.init.run()` with the following paramaters:
 ```javascript
-FUNC.init.register({HtmlClassName:string}, {FuncModuleName:string}, {[{FuncLibraryName:string}, ...]]:array});
+FUNC.init.register({HtmlClassName:string}, {moduleName:string}, {[{libraryName:string}, ...]]:array});
 ```
 1. HtmlClassName - Identifing HtmlClass:name, this className will
 need to be present with your HTML DOM to activate relevant modual.
-2. FuncModuleName - Modual name to be exacuted against each
+2. ModuleName - Modual name to be exacuted against each
 relevant HtmlEntity fragment (e.g. `FUNC.diagram`).
-3. FUNC[library][:array] List of dependent library names ordered
+3. [libraryName, ...]{:array} List of dependent library names ordered
 in loading propriety (e.g. `['core', 'event']`).
 
 
