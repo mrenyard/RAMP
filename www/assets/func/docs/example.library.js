@@ -13,8 +13,7 @@ FUNC.version = FUNC.version || .1;
 FUNC.libraryName = function(elm)
 {
   //- USE (dependant namespaces)
-  var _ = FUNC.module,
-      N = FUNC.Enum,
+  var N = FUNC.Enum,
       Ex = FUNC.Exception;
 
   //- SHARED PRIVATE VARABLES

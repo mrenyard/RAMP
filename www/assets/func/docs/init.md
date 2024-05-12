@@ -53,7 +53,7 @@ FUNC.Base Abstract Class Inherited Universally.
 
 To indicate that a class in abstract use the following declaration
 within you constructor imediatly after super(). The fist action
-within any constructor being to call super().
+within any constructor, being to call super().
 ```javascript
   const MyClass = class extends FUNC.Base
   {

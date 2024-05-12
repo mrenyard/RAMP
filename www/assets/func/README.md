@@ -1,8 +1,8 @@
-FUNC.js - Frontend Utilities for Networked Client
+FUNC.js - Front-end Utilities for Networked Client
 ==================================================
 
 **Written to complement The RAMP platform with
-frontend interactive, immersive and dynamic 
+front-end interactive, immersive and dynamic 
 content, through the use of RAMP's serverside
 Hijax-centric Platform. FUNC.js brings a range of
 Javascript (ECMAScript) modules that are capable

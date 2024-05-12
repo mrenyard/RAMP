@@ -1,32 +1,24 @@
 /**
- * FUNC.js - Frontend Utilities for Networked Client (JavaScript).
+ * FUNC.js - Frontend Utilities for Networked Client (js).
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package func.hijax
+ * @package func.event
  * @version 0.1;
  */
 var FUNC = window.FUNC || {};
 FUNC.version = FUNC.version || .1;
 
 /**
+ * Event library (register, dargNdrop).
  */
-FUNC.hijax = function() {
-
-  if (typeof XMLHttpRequest === 'undefined') {
-    XMLHttpRequest = function () {
-      try {
-        return new ActiveXObject('Msxml2.XMLHTTP.6.0');
-      } catch (e) {}
-      try {
-        return new ActiveXObject('Msxml2.XMLHTTP.3.0');
-      } catch (e) {}
-      try {
-        return new ActiveXObject('Microsoft.XMLHTTP');
-      } catch (e) {}
-      return false;
-    };
-  }
-
-  var _handleResponse = function(request) {
+FUNC.hijax = function(elm)
+{
+  //- USE (dependant namespaces)
+  //- PRIVATE VARABLES
+  //- LOCAL METHODS
+  //- INITIALISE
+    
+  //- LOCAL METHODS.
+  var handleResponse = function(request) {
     if (request.readyState == 4) {
       var responsePlain = request.responseText;
       switch (request.status) {
@@ -71,7 +63,22 @@ FUNC.hijax = function() {
     return false;
   };
 
-  return {
-    handleResponse: function(request) { return _handleResponse(request); }
-  };
+  //- INITIALISE
+  if (typeof XMLHttpRequest === 'undefined') {
+    XMLHttpRequest = function () {
+      try {
+        return new ActiveXObject('Msxml2.XMLHTTP.6.0');
+      } catch (e) {}
+      try {
+        return new ActiveXObject('Msxml2.XMLHTTP.3.0');
+      } catch (e) {}
+      try {
+        return new ActiveXObject('Microsoft.XMLHTTP');
+      } catch (e) {}
+      return false;
+    };
+  }
+
+  //- PUBLIC ACCESS
+  return { handleResponse };
 }();

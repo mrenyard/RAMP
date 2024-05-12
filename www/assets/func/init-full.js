@@ -117,7 +117,6 @@ FUNC.init = function()
 
   //- GLOBAL OBJECT
   FUNC.my = FUNC.my || {};
-  FUNC.domMain = document.getElementById('main');
   FUNC.modsPath = FUNC.modsPath || '/assets/func/mods/' + ((dev) ? 'full/' : '');
 
   //- LOCAL METHODS
@@ -158,13 +157,15 @@ FUNC.init = function()
     if (e.length > 0) {
       lock = true;
       libsLock = true;
-      loadLibs(ds);
-      (function libsExist() {
-        for (let i=0, j=ds.length; i<j; i++) { let d = ds[i];
-          if (eval('FUNC.' + d) == undefined) { return setTimeout(libsExist, 100); }
-        }
-        libsLock = false;
-      }());
+      if (ds !== undefined) {
+        loadLibs(ds);
+        (function libsExist() {
+          for (let i=0, j=ds.length; i<j; i++) { let d = ds[i];
+            if (eval('FUNC.' + d) == undefined) { return setTimeout(libsExist, 100); }
+          }
+          libsLock = false;
+        }());
+      }
       loadModule(mN);
       (function modExists() {
         if (eval('FUNC.' + mN) == undefined) { return setTimeout(modExists, 100); }  

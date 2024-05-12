@@ -125,19 +125,21 @@ FUNC.event = function(elm)
     });
   };
 
-  var dragNdrop = function(draggableElement, dropZones, dropHandler)
+  var dragNdrop = function(draggableElement, dropZones, dropHandler, clickEvent = null)
   {
     let snap = null, oX, oY;
     draggableElement.draggable = false;
     if (!(dropZones instanceof List)) {
       throw new Ex(Ex.types.at('UnexpectedArgument'), 'Argument MUST be instanceof FUNC.Collection');
     }
+    if (clickEvent) { draggableElement.addEventListener('click', clickEvent); }
     register(draggableElement,
       function(e, activeElement) // EventStart
       {
         e.stopPropagation();
         snap = window.setTimeout(function()
         {
+          e.stopImmediatePropagation();
           oY = (activeElement.clientHeight/2);
           oX = (activeElement.clientWidth/2);
           moving = activeElement.cloneNode(true);
@@ -150,10 +152,11 @@ FUNC.event = function(elm)
           activeElement.classList.add('placeholder');
           activeElement.parentNode.appendChild(moving);
           window.clearTimeout(snap); snap = null;
-        }, (.125 * 1000));
+        }, (.25 * 1000));
       },
       function(e, activeElement) // EventMove
       {
+        e.stopPropagation();
         if (!target || target.tagName != activeElement.tagName) {
           target = document.createElement(activeElement.tagName);          
           target.setAttribute('id', 'target');
@@ -161,8 +164,8 @@ FUNC.event = function(elm)
         target.classList = activeElement.classList;
         target.classList.replace('placeholder', 'target');
         if (touchMove(e)) {
-          e.stopPropagation();
           if (activeElement.draggable) {
+            e.stopImmediatePropagation();
             if (snap != null) { window.clearTimeout(snap); snap = null; }
             let o = getActiveDropzone(dropZones, e.X, e.Y);
             if (o != null) {
@@ -178,7 +181,7 @@ FUNC.event = function(elm)
               moving.style.top = (e.Y - window.scrollY - oY) + 'px';
               moving.style.left = (e.X - oX) + 'px';
             }
-        }
+          }
         }
       },
       function(e, activeElement) // EventEnd
@@ -186,6 +189,7 @@ FUNC.event = function(elm)
         e.stopPropagation();
         if (snap != null) { window.clearTimeout(snap); snap = null; }
         if (activeElement.draggable) {
+          e.stopImmediatePropagation();
           let o = getActiveDropzone(dropZones, e.X, e.Y);
           let space = ((s = activeElement.nextSibling) && s.nodeType == 3) ? activeElement.nextSibling : null;
           if (o !== null) {
@@ -203,7 +207,7 @@ FUNC.event = function(elm)
           activeElement.draggable = false;
           moving.parentNode.removeChild(moving);
           if (o != null || activeElement == null) { dropHandler(o.zone, activeElement); }
-        }
+        } else if (clickEvent) { clickEvent(e); }
       }
     );
   };

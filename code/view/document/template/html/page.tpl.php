@@ -19,11 +19,19 @@
  * @version 0.0.9;
  */
 ?>
-    <div id="lightbox"></div>
+    <dialog id="modal" open><form method="post">
+      <header>
+        <h2>Modal Dialog</h2>
+        <button value="cancel" formmethod="dialog">X</button>
+      </header>
+      <footer>
+        <button autofocus formmethod="dialog">OK</button>
+      </footer>
+    </form></dialog>
     <header role="banner">
 <?php include("header.php"); ?>
     </header>
-    <div id="main" role="main">
+    <main id="main">
       <header><a href="#header" title="Header full description"></a>
         <h1><?=$this->heading; ?></h1>
         <p><?=$this->summary; ?></p>
@@ -35,7 +43,7 @@
       <section id="section-two"><a href="#section-two" title="Section two description">#</a>
         <p>...</p>
       </section>
-    </div><!-- #main -->
+    </main>
 <?php include("site-navigation.php"); ?>
     <footer role="contentinfo">
 <?php include("footer.php"); ?>
