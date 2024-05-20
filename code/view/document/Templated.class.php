@@ -43,6 +43,7 @@ use ramp\view\document\DocumentView;
  * - {@see \ramp\model\document\DocumentModel}
  * 
  * @property-write \ramp\core\Str $templateType Set/Change type of template (text|html|pdf) used as part of path to definite view to render().
+ * @property-read \ramp\core\Str $template Set/Change type of template (text|html|pdf) used as part of path to definite view to render().
  * @property-read bool $hasModel Returns full template path of template to render().
  */
 class Templated extends DocumentView
@@ -106,7 +107,7 @@ class Templated extends DocumentView
   /**
    * @ignore
    */
-  protected function get_template()
+  protected function get_template() //: string
   {
     return $this->templatePath;
   }

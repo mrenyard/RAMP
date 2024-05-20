@@ -29,7 +29,7 @@ if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset(
 //   header('HTTP/1.1 401 Unauthorized');
 //   $authenticationForm = new view\AuthenticationForm($exception->getMessage());
 //   $authenticationForm->setModel($session->loginAccount);
-//   view\RootView::getInstance()->render();
+//   view\WebRoot::getInstance()->render();
 //   return;
 // }
 try {
@@ -84,5 +84,5 @@ if($request->expectsFragment) {
   sleep(rand(1,6)); // TODO:mrenyard:Remove Line
   $view->render();
 } else {
-  view\RootView::getInstance()->render();
+  view\WebRoot::getInstance()->render();
 }

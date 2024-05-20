@@ -20,11 +20,12 @@
  */
 namespace ramp\view;
 
+use ramp\core\Str;
 use ramp\view\View;
 use ramp\model\Model;
 
 /**
- * Top level view, defined once per HTTP request
+ * Top level view (Singelton)
  */
 final class RootView extends View
 {
@@ -47,8 +48,10 @@ final class RootView extends View
    */
   public static function reset()
   {
-    RootView::getInstance()->viewCollection = NULL;
+    self::$instance = NULL;
   }
+
+  // protected function get_children() : void { /* OVERRIDDEN */ }
 
   /**
    * Render relevant output from child views

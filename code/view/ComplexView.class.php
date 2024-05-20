@@ -96,12 +96,14 @@ abstract class ComplexView extends ChildView
    * @param bool $cascade Set model for child views.
    * @throws \BadMethodCallException Model already set violation.
    */
-  final public function setModel(BusinessModel $model, bool $cascade = TRUE)
+  public function setModel(BusinessModel $model, bool $cascade = TRUE)
   {
     if (isset($this->model)) { throw new \BadMethodCallException('model already set violation'); }
     $this->model = $model;
-
     if (!$cascade) { return; }
+    // TODO:mrenyard: Fix tests and reinstate code.
+    // $web = WebRoot::getInstance();
+    // if ($web->pageType != PageType::DATA) { $web->type = PageType::DATA; }
 
     if ($model instanceof \Traversable) {
       if (!($model instanceof \Countable)) { // @codeCoverageIgnoreStart

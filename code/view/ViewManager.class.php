@@ -56,8 +56,8 @@ class ViewManager extends RAMPObject
     if (isset($$viewFunc)) { return $$viewFunc(); }*/
 
     // DEFAULT VIEW IF NON DEFINED
-    $body = new document\Templated(RootView::getInstance(), Str::set('body'));
-    $page = new document\Templated($body, Str::set('page'));
+    // $body = new document\Templated(RootView::getInstance(), Str::set('body'));
+    $page = new document\Templated(WebRoot::getInstance(), Str::set('page'));
     $sectionForm = new document\Templated($page, Str::set('section-form'));
     $record = new document\Templated($sectionForm, Str::set('record'));
     $fieldRelation = new document\Templated($record, Str::set('field-relation'));

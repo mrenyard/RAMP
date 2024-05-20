@@ -67,7 +67,7 @@ abstract class View extends RAMPObject
    *  </section>
    * ```
    */
-  final public function get_children() : void
+  protected function get_children() : void
   {
     if (!isset($this->viewCollection)) { return; }
     foreach ($this->viewCollection as $view) {
@@ -79,7 +79,7 @@ abstract class View extends RAMPObject
    * Add a child View
    * @param View $view Child View to be sequentially added to this. 
    */
-  final public function add(View $view)
+  public function add(View $view)
   {
     if (!isset($this->viewCollection)) {
       $this->viewCollection = new Collection(Str::set('ramp\view\View'), TRUE);
