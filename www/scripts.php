@@ -22,12 +22,10 @@
  */
 if (strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) { ?>
     <script src="/assets/func/init-full.js"></script>
-    <script defer>
+    <script>
 FUNC.modsPath = '/assets/func/mods/full/';
 <?php } else { ?>
-    <script src="/assets/func/init.js"></script>
-    <script defer>
+    <script src="//func.<?=\ramp\SETTING::$RAMP_DOMAIN; ?>/init.js"></script>
+    <script>
 <?php } ?>
-FUNC.init.register('sort', 'FUNC.sort', ['event']);
-FUNC.init.run();
     </script>

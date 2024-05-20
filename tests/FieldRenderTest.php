@@ -113,8 +113,7 @@ class FieldRenderTest extends TestBase
   public function testFieldColorRender()
   {
     $this->data->primaryColor = '#20771E';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->primaryColor);
     $view->style = Str::set('compact');
     $view->label = Str::set('Primary Colour');
@@ -128,7 +127,7 @@ class FieldRenderTest extends TestBase
     );
     $this->assertSame('Primary Colour', (string)$view->label);
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="color input field compact" title="Primary colour, main identifiable brand colour, the core colour, commonly incorporated into a companies logo.">' . PHP_EOL .
@@ -152,8 +151,7 @@ class FieldRenderTest extends TestBase
   public function testFieldTextRender()
   {
     $this->data->givenName = 'Matt';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->givenName);
     $view->style = Str::set('compact');
     $view->label = Str::set('First Name');
@@ -169,7 +167,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(' placeholder="e.g. John"', (string)$view->attribute('placeholder'));
     $this->assertSame('First Name', (string)$view->label);
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="text input field compact required" title="The name by which you are refered by, in western culture usually your first name, a single word consisting only upper and lower case letters">' . PHP_EOL .
@@ -193,8 +191,7 @@ class FieldRenderTest extends TestBase
   public function testFieldTelRender()
   {
     $this->data->mobile = '07744 123123';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->mobile);
     $view->style = Str::set('compact');
     $view->label = Str::set('Mobile Number');
@@ -210,7 +207,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(' placeholder="e.g. 07744 123456"', (string)$view->attribute('placeholder'));
     $this->assertSame('Mobile Number', (string)$view->label);
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="tel input field compact required" title="The series of numbers that you dial when you are making a telephone call to a mobile phone">' . PHP_EOL .
@@ -233,8 +230,7 @@ class FieldRenderTest extends TestBase
    */
   public function testFieldPasswordRender()
   {
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->password);
     $view->style = Str::set('compact');
     $this->assertSame('input field', (string)$view->type);
@@ -248,7 +244,7 @@ class FieldRenderTest extends TestBase
     $view->placeholder = Str::set('e.g. N0T-Pa55W0rd');
     $this->assertSame(' placeholder="e.g. N0T-Pa55W0rd"', (string)$view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="password input field compact required" title="A word, phrase, or string of characters intended to differentiate you as an authorized user for the purpose of permitting access">' . PHP_EOL .
@@ -272,8 +268,7 @@ class FieldRenderTest extends TestBase
   public function testFieldNumberRender()
   {
     $this->data->wholeNumber = '365';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->wholeNumber);
     $view->style = Str::set('compact');
     $this->assertSame('input field', (string)$view->type);
@@ -286,7 +281,7 @@ class FieldRenderTest extends TestBase
     );
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="number input field compact required" title="A whole number (not a fractional number) that can be positive, negative, or zero">' . PHP_EOL .
@@ -310,8 +305,7 @@ class FieldRenderTest extends TestBase
   public function testFieldCurrencyRender()
   {
     $this->data->currency = '365.72';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->currency);
     $view->style = Str::set('compact');
     $view->label = Str::set('Account Balance');
@@ -325,7 +319,7 @@ class FieldRenderTest extends TestBase
     );
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="number input field compact required" title="The amount of money present in your primary named account during the current accounting period in UK pounds sterling.">' . PHP_EOL .
@@ -350,8 +344,7 @@ class FieldRenderTest extends TestBase
   {
     $this->data->weekYear = 2024;
     $this->data->weekNumber = 2;
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->week);
     $view->style = Str::set('compact');
     $view->label = Str::set('Preferred install week');
@@ -365,7 +358,7 @@ class FieldRenderTest extends TestBase
     );
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="week input field compact required" title="The preferred week of fiber optic broadband installation.">' . PHP_EOL .
@@ -390,8 +383,7 @@ class FieldRenderTest extends TestBase
   {
     $this->data->monthYear = 2024;
     $this->data->monthNumber = 8;
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->month);
     $view->style = Str::set('compact');
     $view->label = Str::set('Target release');
@@ -405,7 +397,7 @@ class FieldRenderTest extends TestBase
     );
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="month input field compact required" title="The target month for the next release edition of our software.">' . PHP_EOL .
@@ -429,8 +421,7 @@ class FieldRenderTest extends TestBase
   public function testFieldTimeRender()
   {
     $this->data->time = '16:30';
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->time);
     $view->style = Str::set('compact');
     $view->label = Str::set('Start Time');
@@ -441,7 +432,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(' title="Scheduled start time for this appointment."', (string)$view->attribute('title'));
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
@@ -465,8 +456,7 @@ class FieldRenderTest extends TestBase
   public function testFieldDateRender()
   {
     $this->data->date = '2024-03-04'; // born yesterday!
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->date);
     $view->style = Str::set('compact');
     $view->label = Str::set('Date of Birth');
@@ -477,7 +467,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(' title="The month, day, and year of of your birth."', (string)$view->attribute('title'));
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="date input field compact required" title="The month, day, and year of of your birth.">' . PHP_EOL .
@@ -501,8 +491,7 @@ class FieldRenderTest extends TestBase
   public function testFieldDateTimeRender()
   {
     $this->data->datetime = '2024-03-04T23:59:59'; // Days end!
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('input'));
+    $view = new Templated(RootView::getInstance(), Str::set('input'));
     $view->setModel($this->testObject->datetime);
     $view->style = Str::set('compact');
     $view->label = Str::set('Event start');
@@ -513,7 +502,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(' title="The month, day, year, hour and minte of the start of the event."', (string)$view->attribute('title'));
     $this->assertNull($view->attribute('placeholder'));
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <div class="datetime-local input field compact required" title="The month, day, year, hour and minte of the start of the event.">' . PHP_EOL .
@@ -537,8 +526,7 @@ class FieldRenderTest extends TestBase
   public function testFieldFlagRender()
   {
     $this->data->flag = TRUE;
-    $parentView = RootView::getInstance();
-    $view = new Templated($parentView, Str::set('checkbox-fieldset'));
+    $view = new Templated(RootView::getInstance(), Str::set('checkbox-fieldset'));
     $view->setModel($this->testObject->flag);
     $view->style = Str::set('compact');
     $view->label = Str::set('Terms &amp; Conditions');
@@ -549,7 +537,7 @@ class FieldRenderTest extends TestBase
     $view->summary = Str::set('I have read and agree to site terms and conditions.');
     $this->assertSame('I have read and agree to site terms and conditions.', (string)$view->summary);
     ob_start();
-    $parentView->render();
+    $view->render();
     $output = ob_get_clean();
     $this->assertSame(
       '          <fieldset class="flag field compact required" title="Please agree to our terms and conditions to continue to use this site.">' . PHP_EOL .

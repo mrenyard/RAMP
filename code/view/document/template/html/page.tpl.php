@@ -18,33 +18,31 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp\view;
+
+$page = WebRoot::getInstance();
+$data = ($page->type == PageType::DATA);
+$index = (!$data && $page->type == PageType::INDEX);
 ?>
-    <dialog id="modal" open><form method="post">
-      <header>
-        <h2>Modal Dialog</h2>
-        <button value="cancel" formmethod="dialog">X</button>
-      </header>
-      <footer>
-        <button autofocus formmethod="dialog">OK</button>
-      </footer>
-    </form></dialog>
-    <header role="banner">
-<?php include("header.php"); ?>
-    </header>
-    <main id="main">
-      <header><a href="#header" title="Header full description"></a>
+    <main id="main"><?php if ($data) { ?><form action="post"><a href="#main"<?=$this->attribute('title'); ?>>#</a>
+      <h1><?=$this->heading; ?></h1>
+<?=$this->children; ?>
+    </form></main>
+<?php } else { ?>
+
+      <header><a href="#main"<?=$this->attribute('title'); ?>>#</a>
         <h1><?=$this->heading; ?></h1>
         <p><?=$this->summary; ?></p>
+<?=$this->extendedSummary; ?>
       </header>
-      <section id="section-one"><a href="#section-one" title="Section one description">#</a>
-        <p>...</p>
-      </section>
-      <?=$this->children ?>
-      <section id="section-two"><a href="#section-two" title="Section two description">#</a>
-        <p>...</p>
-      </section>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae obcaecati aliquam est commodi velit ab consequatur quaerat veniam consequuntur sapiente quisquam distinctio asperiores officia dolorum illo fugiat, quia, inventore placeat!</p>
+      <div class="text input field">
+        <label for="t1">Label</label>
+        <input id="t1" name="t1" type="text" tabindex="0" placeholder="[PLACEHOLDER]" required="required" pattern="[a-zA-Z _\-:]*">
+        <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore?<span>
+      </div>            
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae obcaecati aliquam est commodi velit ab consequatur quaerat veniam consequuntur sapiente quisquam distinctio asperiores officia dolorum illo fugiat, quia, inventore placeat!</p>
+<?=$this->extendedContent; ?>
+<?php if (!$index) { $this->children; } ?>
     </main>
-<?php include("site-navigation.php"); ?>
-    <footer role="contentinfo">
-<?php include("footer.php"); ?>
-    </footer>
+<?php if ($index) { $this->children; } } ?>

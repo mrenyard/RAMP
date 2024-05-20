@@ -18,6 +18,8 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp\view;
+$site = WebRoot::getInstance();
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -25,11 +27,20 @@
     <meta charset="utf-8">
     <title><?=$this->title; ?> - <?=\ramp\SETTING::$RAMP_DOMAIN; ?></title>
     <meta name="description" content="<?=$this->summary; ?>">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
 <?php include("head.php"); ?>
   </head>
-  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>"<?=$this->attribute('class'); ?>>
-<?=$this->children ?>
+  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>">
+<?=$site->dialog; ?>
+    <header id="top"><a tabindex="-1" href="#top">top</a>
+<?php include("header.php"); ?>
+    </header>
+<?=$site->main; ?>
+<?php include("site-navigation.php"); ?>
+    <footer id="contentinfo">
+<?php include("footer.php"); ?>
+    </footer>
+<?=$site->dataLists; ?>
 <?php include("scripts.php"); ?>
   </body>
 </html>

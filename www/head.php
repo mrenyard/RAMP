@@ -18,8 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-
- $cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
+$cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
 if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) {
 
   $STYLE_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/style';
@@ -41,15 +40,15 @@ if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) 
   $MEDIA_SERVER = '//media.'.$_SERVER["HTTP_HOST"];
   $FUNC_SERVER = '//func.'.$_SERVER["HTTP_HOST"];
   $mostRecentDate;
-  $dir =  $_SERVER["DOCUMENT_ROOT"].'/assets/style/';
+  $dir =  $_SERVER["DOCUMENT_ROOT"].'/assets/style/combined/';
   chdir($dir);
-  $matches = glob('combined.*.css');
+  $matches = glob('*.css');
   if(is_array($matches) && !empty($matches)){
     foreach($matches as $match){
-      $date = explode('.', $match)[1];
+      $date = explode('.', $match)[0];
       $mostRecentDate = ($mostRecentDate < $date) ? $data : $mostRecentDate;
     }
   }
-?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined.<?=$mostRecentDate; ?>.css">
+?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined/<?=$mostRecentDate; ?>.css">
     <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
 <?php } ?>
