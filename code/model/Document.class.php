@@ -33,8 +33,11 @@ use ramp\model\Model;
  * @property \svetle\core\Str $title Title of document / fragment
  * @property \svetle\core\Str $heading Heading of document / fragment
  * @property \svetle\core\Str $label Synonym for heading (on form fields)
- * @property \svetle\core\Str $summary Overview, intro or description 
+ * @property \svetle\core\Str $summary Overview, intro or description (single paragraph).
  * @property \svetle\core\Str $placeholder Synonym for summary (on form fields)
+ * @property \svetle\core\Str $extendedSummary additional paragraphs to summary (optional/HTMLight).
+ * @property \svetle\core\Str $extendedContent Main body of content (HTMLight).
+ * @property \svetle\core\Str $footnote Footer contained content info: referances, index, glossery, disclamer.
  * @property \svetle\core\Str $style Look, sub group or class.
  */
 class Document extends Model
