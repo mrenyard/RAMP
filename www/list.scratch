@@ -1,0 +1,27 @@
+<?php
+/**
+ * Svelte - Rapid web application development using best practice.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ */
+?>
+<h1>Development List</h1>
+<ol>
+  <li><a href="/test?scratch=mrenyard|wireframe">Page Layout</a></li>
+  <li><a href="/assets/style/?scratch=mrenyard">Style Guid and CSS Design Patterns</a></li>
+  <li><a href="https://style.ramp.matt-laptop.lan/img/svg.php/icon-settings/0,200,200">SVG icon colors</a></li>
+  <li><a href="https://media.ramp.matt-laptop.lan/sized.php/500x300">Sized SVG images</a></li>
+  <li><a href="/person/?scratch=mrenyard">form css mrenyard(scratch)</a></li>
+  <li><a href="/assets/func/docs/drag">Drag 'n' drop event test</a></li>
+  <li><a href="/class-diagram.html">Experimental Class Diagram</a></li>
+</ol>
