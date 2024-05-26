@@ -1,0 +1,40 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Default CSS Manifest base on Snook's
+;Scalable and Modular Architecture for CSS
+;http://smacss.com/book/
+
+;Primary HTML elements such as the body,
+;form tags, links...
+base
+
+;Whitespace, Spacing Base Font Size,
+;based on viewport.
+;spacing.css
+
+;How the page is divided into sections
+;including headers, footers, sidebars...
+;layout
+
+;Discrete, reusable, modular components,
+;usually denoted with a module class name e.g.
+;navigation bars, product lists, contact forms...
+modual-page-nav-search
+;modual-form
+;modual-form-radio-range
+;modual-form-radio-select
+;modual-form-survey
+;modual-hash
+;modual-lightbox
+;modual-nav
+
+;Reoccuring colour palete for text, links,
+;buttons and background-images...
+;theme-wireframe
+
+;How thing may change based of user interaction
+;or through JavaScript DOM changes,
+;e.g. errors, hidden, expanded, active
+;state
+
+;
+;print

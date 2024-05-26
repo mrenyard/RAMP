@@ -1,7 +1,9 @@
 <?php
 /**
- * This file CAN BE EDITED to extend, remove or modifiy
- * the link you wish to make accesable through the main site / application naviagation menu.
+ * This file CAN be edited and modifiy to rebrand your logo, straplines, or other 'top of page' visual branding elements.
+ * 
+ * We recommend keeping the elements 'non interactive' using tabindex="-1" where applicable
+ * to avoid interfering with accessible tab ordering.
  * 
  * -----------------------------------------------------------------------------------------------------
  * RAMP - Rapid web application development environment for building flexible, customisable web systems.
@@ -23,11 +25,7 @@
  * @version 0.0.9;
  */
 ?>
-      <h2>Site Navigation</h2>
-      <ul>
-        <li><a href="#" title="[title]">[1]</a></li>
-        <li><a href="#" title="[title]">[2]</a></li>
-        <li><a href="#" title="[title]">[3]</a></li>
-        <li><a href="#" title="[title]">[4]</a></li>
-        <li><a href="#" title="[title]">[5]</a></li>
-      </ul>
+      <figure class="logo">
+        <a tabindex="-1" href="/" rel="home"><img src="//media.<?=\ramp\SETTING::$RAMP_DOMAIN; ?>/tmp/logo.svg" alt=""></a>
+        <figcaption>Lorem ipsum dolor sit amet consectetur adipisicing. Praesentium dicta repellendus vero!<sup>TM</sup></figcaption>
+      </figure>

@@ -4,11 +4,13 @@
   color: rgb(0 0 0 / .5) !important;
   filter: grayscale(amount) !important;
   border-color: rgb(0 0 0 / .5) !important;
-  background-color: rgba(0 0 0 / .2) !important;
+  background-color: rgba(0 0 0 / .05) !important;
 }
-body, body > * {
+body, a, label {
+  color: rgb(0 0 0);
   background-image: none !important;
   background-color: rgb(255 255 255) !important;
 }
+body > * > * > * { background-color: rgb(255 0 0 / .1) !important; }
 img { opacity: .2 !important; }
 /*** END ***/
