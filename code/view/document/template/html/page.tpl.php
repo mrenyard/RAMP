@@ -34,13 +34,6 @@ $index = (!$data && $page->type == PageType::INDEX);
         <p><?=$this->summary; ?></p>
 <?=$this->extendedSummary; ?>
       </header>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae obcaecati aliquam est commodi velit ab consequatur quaerat veniam consequuntur sapiente quisquam distinctio asperiores officia dolorum illo fugiat, quia, inventore placeat!</p>
-      <div class="text input field">
-        <label for="t1">Label</label>
-        <input id="t1" name="t1" type="text" tabindex="0" placeholder="[PLACEHOLDER]" required="required" pattern="[a-zA-Z _\-:]*">
-        <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore?</span>
-      </div>            
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae obcaecati aliquam est <a href="//bbc.co.uk/news" title="External link for the British Brodcasting Company">commodi velit</a> ab consequatur quaerat veniam consequuntur sapiente quisquam distinctio asperiores officia dolorum illo fugiat, quia, inventore placeat!</p>
 <?=$this->extendedContent; ?>
 <?php if (!$index) { $this->children; } ?>
     </main>
