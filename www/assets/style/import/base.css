@@ -1,39 +1,50 @@
-/*
+/**
  * base.css
  *
  * Default CSS Manifest modified from Snook's
  * Scalable and Modular Architecture for CSS
  * http://smacss.com/book/
  */
-
 /* ===============================================================================================
   BASE   - Primary HTML elements such as the body, form tags, links...
   ============================================================================================ */
 
 
-/* https://www.joshwcomeau.com/css/custom-css-reset/ */
+  /* https://www.joshwcomeau.com/css/custom-css-reset/ */
   *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; overscroll-behavior: contain; }
+  * { margin: 0; } /* overscroll-behavior: contain; }*/
   nav ul, nav ol { padding: 0; }
   body {
+    overflow-x: hidden;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 16px;
-    line-height: calc(1.2em + .5rem);
+    font-size: 16px; line-height: calc(1.2rem + .5em);
     -webkit-font-smoothing: antialiased;
   }
   img, picture, video, canvas, svg {
     display: block;
     max-width: 100%;
     margin: 0 auto;
-  }
+    background-color: rgb(0 0 0 / .125);
+  } main > img { margin: 0; }
   input, button, textarea, select { font: inherit; }
-  p, h1, h2, h3, h4, h5, h6 {
-    overflow-wrap: break-word;
-    hyphens: auto;
-  } p > :any-link { hyphens: none; }
+  p, h1, h2, h3, h4, h5, h6 { padding: 0;
+  } main > h1, main > header > h1 {
+    line-height: 2.5rem; 
+    text-transform: capitalize;
+  } h1, h2, h3, h4, h5, h6 {
+    margin: 1rem 0 .25em;
+    letter-spacing: .05em;
+  } p { margin: 0 0 .5rem; max-width: 36em; }
+  p > :any-link { hyphens: none; }
+  blockquote { position: relative;
+    margin: 2rem auto; padding: 0 2.5rem;
+    max-width: 34em; text-align: center;
+  } blockquote::before, blockquote::after {
+    position: absolute;
+    top: .75rem; font-size: 4rem;
+  } blockquote::before { content: '\201C'; left: 0;
+  } blockquote::after { content: '\201D'; right: 0; }
   :root { accent-color: var(--accent-color); }
-  :empty:not(img, input, textarea) { display: none; }
-  html { scroll-snap-type: y proximity; }
   a[href] { text-decoration: none;
   } p a[href] { text-decoration: underline; }
   a[href*="//"]::after {
@@ -43,4 +54,14 @@
     color: inherit; background-color: currentColor;
     mask: var(--icon-x12-external) top center / .75rem no-repeat;
   } 
+  header > p { font-weight: bold; }
+  form > header > p { font-weight: normal; }
   input, textarea { caret-color: var(--accent-color); }
+  fieldset { padding: var(--block-spacing) 0; }
+  nav > ol, nav > ul { list-style: none; }
+  figure { margin: 1rem 0; border-radius: .25rem;
+    background-color: rgb(0 0 0 / .25);
+    overflow: hidden; }
+  figure > figcaption { text-align: center; }
+  figure > img { object-fit: cover; }
+

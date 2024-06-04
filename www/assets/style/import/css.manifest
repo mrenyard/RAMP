@@ -7,13 +7,9 @@
 ;form tags, links...
 base
 
-;Whitespace, Spacing Base Font Size,
-;based on viewport.
-;spacing.css
-
 ;How the page is divided into sections
 ;including headers, footers, sidebars...
-;layout
+layout
 
 ;Discrete, reusable, modular components,
 ;usually denoted with a module class name e.g.

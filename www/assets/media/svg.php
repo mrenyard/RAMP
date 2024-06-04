@@ -1,7 +1,7 @@
 <?php
 /**
  * Content-Type image/svg+xml
- * /img/svg.php/[type]-x[size]-[name]/[r],[g],[b]/[scale]
+ * /svg.php/[type]-x[size]-[name]/[r],[g],[b]/[scale]
  */
 header('Content-Type: image/svg+xml');
 $path = explode('/',strtolower(trim($_SERVER["PATH_INFO"],'/')));

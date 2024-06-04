@@ -11,6 +11,8 @@ body, a, label {
   background-image: none !important;
   background-color: rgb(255 255 255) !important;
 }
-body > * > * > * { background-color: rgb(255 0 0 / .1) !important; }
+p, h1, h2, h3, blockquote, address {
+  background-color: rgb(255 0 0 / .1) !important;
+}
 img { opacity: .2 !important; }
 /*** END ***/
