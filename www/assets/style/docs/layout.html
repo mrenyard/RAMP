@@ -8,23 +8,24 @@
     <link rel="stylesheet" href="../import/icons.css.php">
     <link rel="stylesheet" href="../import/base.css">
     <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/layout-form.css">
     <style>
       @import url(../scratch/wireframe.css);
-      body > header { height: 22vh; }
-      header.hero,
-      body > main > form {
+      header.hero {
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-      }    
+        flex-direction: column;
+      }
+      body > main > form:only-child > * { background-color: rgb(200 200 200) !important; }
     </style>
   </head>
   <body id="ramp-matt-laptop-lan">
     <header>
       <div id="logo">[HEADER]</div>
     </header>
-    <main id="main">
+    <main>
       <header class="hero">
         <h1>MAIN HEADER (HERO)</h1>
       </header>
@@ -33,7 +34,7 @@
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
       </header>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam libero dignissimos eum recusandae laudantium iste, accusantium asperiores quidem nemo perferendis odit ipsam temporibus sequi, expedita amet enim aperiam, deleniti rerum!</p>
-      <section class="breakout">
+      <section>
         <h2>[SECTION ONE]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit eum est maiores aut, iste fuga ut ipsum inventore quaerat deleniti, soluta rem dicta quis optio at! Reiciendis iste atque doloribus.</p>
         <blockquote>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam optio nobis qui, tempora provident, quidem obcaecati quod maxime sed cumque repellendus sapiente assumenda aliquid non animi libero soluta odit porro?</blockquote>
@@ -43,7 +44,8 @@
         <h2>[SECTION TWO]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio iure dolor quasi iste accusamus aspernatur, maiores corporis enim harum blanditiis officia facilis alias similique. Iusto dicta distinctio debitis accusamus earum.</p>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In eaque officiis, culpa nesciunt quas id vel aspernatur ducimus, neque voluptatum reprehenderit mollitia expedita ex? Nihil amet labore modi neque illo?</p>
-      </section><section>
+      </section>
+      <section class="breakout">
         <h2>[SECTION THREE]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt minima ea asperiores labore architecto voluptate neque ipsa nostrum. Vel facilis nisi, vitae architecto inventore placeat officiis reiciendis quasi nemo id!</p>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet nesciunt temporibus omnis molestias voluptate voluptatum error explicabo eos at, nisi nostrum possimus nam aliquam doloremque ad culpa quasi officiis saepe!</p>
@@ -58,18 +60,48 @@
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet nesciunt temporibus omnis molestias voluptate voluptatum error explicabo eos at, nisi nostrum possimus nam aliquam doloremque ad culpa quasi officiis saepe!</p>
       </section>
     </main>
+    <main><form>
+      <header>
+        <h1>APPLICATION (DATA&nbsp;FORM)</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis odio itaque et eaque exercitationem vel adipisci beatae unde suscipit. Accusamus voluptates ratione sunt quae animi provident eveniet, aliquid cumque optio.</p>
+      </header>
+      <fieldset>
+        <legend>one</legend>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla nemo eum ab quod, repudiandae ratione numquam eius labore explicabo aspernatur. Vel pariatur facere, possimus maxime iusto deserunt quisquam neque aliquam!</p>
+      </fieldset>
+      <fieldset>
+        <legend>two</legend>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod cumque ad consequuntur aperiam doloremque, nesciunt neque architecto recusandae nemo in nostrum maxime incidunt, expedita consectetur suscipit molestiae sint reprehenderit quisquam.</p>
+      </fieldset>
+      <fieldset>
+        <legend>three</legend>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel accusantium aliquam tempora provident soluta nisi, ducimus expedita non iure minus recusandae temporibus totam delectus tenetur quae nihil. Quasi, eligendi reiciendis!</p>
+      </fieldset>
+      <footer>
+        <!-- <input type="submit" value="Update"> -->
+      </footer>
+    </form></main>
     <article>
-      <h1>[SPECIAL ARTICLE ONE]</h1>
+      <header>
+        <h1>[SPECIAL ARTICLE ONE]</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
     </article>
     <article>
-      <h1>[SPECIAL ARTICLE TWO]</h1>
+      <header class="hero">
+        <h1>[SPECIAL ARTICLE TWO]</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
     </article>
     <article>
-      <h1>[SPECIAL ARTICLE THREE]</h1>
+      <header>
+        <h1>[SPECIAL ARTICLE THREE]</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
     </article>
@@ -91,15 +123,14 @@
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
       </article>
       <article>
-        <h1>[SITE ARTICLE FOUR]</h1>
+        <h1>[SITE ARTICLE FIVE]</h1>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+      </article>
+      <article>
+        <h1>[SITE ARTICLE SIX]</h1>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
       </article>
     </aside>
-    <main><form>
-      <header>
-        <h1>APPLICATION (DATA&nbsp;FORM)</h1>
-      </header>
-    </form></main>
     <nav id="main-naviagation"></nav>
     <footer id="contentinfo">
       <nav>
@@ -118,3 +149,4 @@
       <address>[ADDRESS]</address>
     </footer>
   </body>
+ 

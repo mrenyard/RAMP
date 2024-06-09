@@ -6,13 +6,14 @@
  * http://smacss.com/book/
  */
 /* ==============================================================================================
-  LAYOUT  - How the page is divided into sections including headers, footers, sidebars...
+  LAYOUT  - How the page is divided into sections including header, main, aside, nav, footer.
          example: screen-width:1024/16px : @media only screen and (min-width: 64em) { }
   ============================================================================================ */
 
   
   :root {
     --block-spacing: .125rem;
+    --header-height: 3rem;
     --hero-height: 100vw;
   } @media  screen and (min-width: 32rem) { /*512px*/
     :root { --block-spacing: .25rem; }
@@ -25,6 +26,17 @@
     }
   } @media  screen and (min-width: 48rem) { /*768px*/
     :root { --block-spacing: 1rem; }
+  }
+
+  body.data, body:has( > header.hero ) {
+    scroll-snap-type: y mandatory;
+  } body > header.hero {
+    scroll-snap-stop: always;
+    scroll-snap-align: end;
+    scroll-margin-block-end: var(--header-height);
+  } body.data > main:has( > form:only-child ) {
+    scroll-snap-stop: always;
+    scroll-snap-align: start;
   }
 
   body {
@@ -61,17 +73,13 @@
     }    
   }
 
-  body > *:not(a, nav, main, body > article) {
-    display: grid;
-    grid-template-columns: subgrid;
-    padding: var(--block-spacing) 0;
-  } body > header, body > footer {
-    grid-area: full; grid-row: auto;
+  body > a, body > nav { position: fixed;
+  } body > *:not(a, nav, main, body > article) {
+    display: grid; grid-template-columns: subgrid;
   } body > main {
-    grid-area: main; grid-row: 2;
+    grid-area: main; grid-row: auto;
   } body > aside, body > article {
     grid-area: main; grid-row: auto;
-  } body > nav { position: fixed;
   } body > header, body > footer {
     grid-area: full; grid-row: auto;
   } body > header > * {
@@ -82,19 +90,21 @@
     body > main, body > aside, body > article,
     body > footer > * {
       grid-column: main-left / span 2; grid-row: auto;
-    }
-    body > footer > address { grid-area: main-left; }
-    body > footer > nav { grid-area: main-right; }
+    } body > footer > address { grid-area: main-left;
+    } body > footer > nav { grid-area: main-right; }
   } @media screen and (min-width: 70rem) { /*1120px*/
-    body > main > header.hero {
+    body:not(.index) > main > header.hero {
       position: relative; z-index: 1;
       width: calc(150% + (var(--block-spacing)/2));
     }
-    body > #site-aside {
+    body.index > main { grid-column: main-left / span 3; }
+    body.index > #site-aside {
+      grid-column: main-left / span 3; grid-row: auto;
+    } body:not(.index) > #site-aside {
       display: flex; flex-direction: column;
       gap: var(--block-spacing);
       grid-area: aside; grid-row: 2;
-    } body:has( > main > header.hero ) > aside {
+    } body:not(.index):has( > main > header.hero ) > aside {
       margin-top: var(--hero-height);
     }
     body > article {grid-column: main-left / span 3; }
@@ -104,11 +114,22 @@
     }
   }
 
+  body > header { height: var(--header-height); }
+
   body > main:has( > form:only-child ) {
-    display: grid; grid-row: auto; grid-area: app;
+    display: grid; grid-area: full;
+    margin: var(--block-spacing) 0;
+  } body.data > main:has( > form:only-child ) { grid-row: 2; }
+  /* body > main > form { padding: var(--block-spacing); }    */
+
+  body > article { 
     margin: var(--block-spacing) calc(var(--block-spacing)*-1);
+    padding: var(--block-spacing);
   }
-  body > main > form { padding: var(--block-spacing); }
+
+  body > main > form {
+    height: calc(100svh - (var(--header-height) + (var(--block-spacing)*2)));
+  }
 
   header.hero {
     height: var(--hero-height);
@@ -118,10 +139,3 @@
     width: 100vw; height: var(--hero-height);
     background: inherit;
   }
-
-  body > article { 
-    margin: var(--block-spacing) calc(var(--block-spacing)*-1);
-    padding: var(--block-spacing);
-  }
-
-  body > main > form { height: 96svh; }
