@@ -29,7 +29,8 @@ if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset(
     <meta charset="utf-8">
     <title>Style Guide and CSS Design Patterns of a RAMP Application - <?=\ramp\SETTING::$RAMP_DOMAIN; ?></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
-<?php include("../../../head.php"); ?>
+    <link rel="stylesheet" href="//style.ramp.matt-laptop.lan/import/icons.css.php">
+    <link rel="stylesheet" href="//style.ramp.matt-laptop.lan/import/base.css">
   </head>
   <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="content-page">
     <main id="main">
