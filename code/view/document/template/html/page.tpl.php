@@ -24,7 +24,7 @@ $page = WebRoot::getInstance();
 $data = ($page->type == PageType::DATA);
 $index = (!$data && $page->type == PageType::INDEX);
 ?>
-    <main id="main"><?php if ($data) { ?><form action="post"><a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a>
+    <main id="main"><?php if ($data) { ?><form action="post"><!--a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a-->
       <h1><?=$this->heading; ?></h1>
 <?=$this->children; ?>
     </form></main>

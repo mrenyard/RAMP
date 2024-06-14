@@ -87,7 +87,8 @@
   } body > footer > * {
     grid-area: main; grid-row: auto;
   } @media  screen and (min-width: 42rem) { /*672px*/
-    body > main, body > aside, body > article,
+    body > main { grid-column: main-left / span 3; }
+    body > main:has( ~ aside ), body > aside, body > article,
     body > footer > * {
       grid-column: main-left / span 2; grid-row: auto;
     } body > footer > address { grid-area: main-left;
@@ -116,21 +117,6 @@
 
   body > header { height: var(--header-height); }
 
-  body > main:has( > form:only-child ) {
-    display: grid; grid-area: full;
-    margin: var(--block-spacing) 0;
-  } body.data > main:has( > form:only-child ) { grid-row: 2; }
-  /* body > main > form { padding: var(--block-spacing); }    */
-
-  body > article { 
-    margin: var(--block-spacing) calc(var(--block-spacing)*-1);
-    padding: var(--block-spacing);
-  }
-
-  body > main > form {
-    height: calc(100svh - (var(--header-height) + (var(--block-spacing)*2)));
-  }
-
   header.hero {
     height: var(--hero-height);
     overflow: visible;
@@ -138,4 +124,121 @@
     content: ''; position: absolute; z-index: -1;
     width: 100vw; height: var(--hero-height);
     background: inherit;
+  }
+
+  form:has(> fieldset:last-of-type:nth-of-type(1)) { --c: 1; }
+  form:has(> fieldset:last-of-type:nth-of-type(2)) { --c: 2; }
+  form:has(> fieldset:last-of-type:nth-of-type(3)) { --c: 3; }
+  form:has(> fieldset:last-of-type:nth-of-type(4)) { --c: 4; }
+  form:has(> fieldset:last-of-type:nth-of-type(5)) { --c: 5; }
+  form:has(> fieldset:last-of-type:nth-of-type(6)) { --c: 6; }
+  form:has(> fieldset:last-of-type:nth-of-type(7)) { --c: 7; }
+  form:has(> fieldset:last-of-type:nth-of-type(8)) { --c: 8; }
+  form:has(> fieldset:last-of-type:nth-of-type(9)) { --c: 9; }
+  form:has(> fieldset:last-of-type:nth-of-type(10)) { --c: 10; }
+
+  body > main:has( > form:only-child ) {
+    position: relative;
+    display: grid; grid-area: full;
+    padding-top: var(--block-spacing);
+  } body.data > main:has( > form:only-child ) { grid-row: 2; }
+  
+  main > form:only-child {
+    position: relative; display: flex;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    scroll-timeline: --card-timeline x;
+    /* scroll-timeline: --cards y; */
+    /* scroll-timeline: --cards horizontal; */
+    padding-inline: var(--block-spacing);
+    column-gap: var(--block-spacing);
+    height: calc(100svh - var(--header-height) - var(--block-spacing));
+  }
+  main > form:only-child > *:not( footer, a:first-child ) {
+    scroll-snap-align: start start;
+    scroll-snap-stop: always;
+    scroll-margin-top: calc(var(--header-height) + var(--block-spacing));
+    scroll-margin-left: var(--block-spacing);
+    overflow-y: scroll;
+    scrollbar-width: none;
+    margin-bottom: 2.5rem;
+    padding-inline: var(--block-spacing);
+    min-width: calc(100vw - (var(--block-spacing)*2));
+  } main > form:only-child > footer {
+    position: absolute;
+    height: 2.5rem;
+    text-align: right;
+    padding-block: .125rem;
+    bottom: 0; left: 0; right: 0;
+    width: calc((100svw * (var(--c) + 1)) - (var(--block-spacing) * var(--c)));
+    border-top: solid rgb(255 255 255 / .75) .125rem;
+    box-shadow: 1rem -1rem 2rem rgb(0 0 0 / .5);
+  }
+  main > form:only-child > footer > input {
+    position: relative; right: .5rem;
+  }
+
+  body > article { 
+    padding: var(--block-spacing);
+    margin: var(--block-spacing) calc(var(--block-spacing)*-1);
+  }
+
+  
+  main > a:first-child,
+  body > header > a:first-child,
+  form > header > a:first-child,
+  fieldset > a:first-child,
+  section > a:first-child,
+  article > a:first-child,
+  aside > a:first-child {
+    position: absolute; z-index: 1;
+    width: 2.5em; height: 2.5rem;
+  }
+
+  form > header > a:first-child,
+  form > fieldset > a:first-child {
+    position: absolute; display: block;
+    text-indent: 2.5rem; overflow: hidden;
+    margin-left: calc((3rem + (var(--block-spacing)*2)) * -1);
+    bottom: .75rem;
+  } form > header:has( + fieldset:target ) > a:first-child,
+    form > fieldset:has( + fieldset:target ) > a:first-child {
+    margin-left: calc(100svw + var(--block-spacing));
+  }
+
+  footer > input {
+    position: relative;
+    top: -1rem;
+    border: none;
+    padding-inline: .5rem;
+    margin-right: var(--block-spacing);
+    text-transform: uppercase;
+    text-shadow: .05rem .05rem rgb(255 255 255 / .5);
+    height: 2.5rem; line-height: 2.5rem;
+  }
+
+  fieldset > legend {
+    float: left; width: 100%;
+  }
+  
+  body > main > form:only-child::before {
+    content: '';
+    position: absolute; z-index: 10;
+    bottom: .25rem; left: 0;
+    width: 100%; height: .25rem; 
+    background-color: white !important;
+  }
+  @supports (animation-timeline: --card-timeline) {
+    body > main > form:only-child::before {
+      width: 0%;
+      animation: card-progress linear;
+      animation-duration: 1ms; /* Firefox requires this to apply the animation */
+      animation-timeline: --card-timeline;
+    } 
+  }
+
+  @keyframes card-progress {
+    from { width: 0%; }
+    to { width: 500%; }
   }

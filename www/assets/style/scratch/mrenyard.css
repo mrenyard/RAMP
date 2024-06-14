@@ -5,7 +5,6 @@
  * Scalable and Modular Architecture for CSS
  * http://smacss.com/book/
  */
-
 /* ===============================================================================================
   BASE   - Primary HTML elements such as the body, form tags, links...
   ============================================================================================ */
@@ -116,18 +115,42 @@
     padding: var(--full-padding);
     color: var(--primary-contrast-color);
   }
-  #top > figure.logo img {
-    /* margin: 0 auto; */
-    /* max-height: 11.75rem; */
-    aspect-ratio: 1/1;
+  #top > figure.logo > a {
+    background-color: blue;
+    display: block;
+    position: relative;
+    width: 100vw; height: 100vw;
+    /* background-image: url(../../media/tmp/logo.svg);
+    background-position: bottom left;
+    background-size: 100% 100%;
+    animation: linear logo-scale both;
+    animation-timeline: scroll(y); */
+
+    /* aspect-ratio: 1/1; */
+  } #top > figure.logo > a > img {
+    display: block;
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100vw;
+    /* animation: linear --logo-scale forwards;
+    animation-timeline: scroll(y);
+    animation-range-start: var(--top-drop);
+    animation-range-end: 75vh; */
+    background-color: grey;
   }
   #top > figure.logo figcaption {
+    opacity: 1;
+    animation: linear --fade-out forwards;
+    animation-timeline: scroll();
+    animation-range-start: 0;
+    animation-range-end: 50vh;
     background-color: transparent;
-  } @media only screen and (min-width: 34.25rem) {
+  }
+  
+  /*@media only screen and (min-width: 34.25rem) {
     #top > figure.logo {
       display: flex;
       align-items: center;
-      /* width: calc(100% - 3rem); */
     }
     #top > figure.logo > * {
       width: 33%;
@@ -138,10 +161,9 @@
       align-self: middle;
       vertical-align: center;
       padding-left: 1rem;
-      /* padding-top: .5rem; */
       padding-top: var(--full-padding);
     }
-  }
+  }*/
 
 
   /** #main **/
@@ -283,7 +305,17 @@
          e.g. errors, hidden, expanded, active
   ============================================================================================ */
 
-@keyframes traverse-left-right {
+@keyframes --logo-scale {
+  from { transform-origin: bottom left; transform: scale(1); }  
+  to { transform-origin: bottom left; transform: scale(.1); }
+}
+
+@keyframes --fade-out {
+  from { opacity: .9; }  
+  to { opacity: .1; }  
+}
+
+  @keyframes traverse-left-right {
   0% { right: auto; left: var(--full-padding); }
   1%{ right: calc(99% - var(--icon-button-size)); left: auto; }
   100% { margin-right: 3rem; left: auto; right: 0%;}

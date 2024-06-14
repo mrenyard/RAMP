@@ -32,23 +32,16 @@
   form > fieldset:nth-of-type(9) { --i: 9 }
   form > fieldset:nth-of-type(10) { --i: 10 }
 
-  main:has( > form:only-child ) {
-    position: relative;
-  }
   main > form:only-child {
-    display: flex;
-    overflow-x: scroll;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory; 
-    scroll-timeline: --timeline x;
     text-align: center;
-  } main > form:only-child:before { background-color: lightgray !important;
+    scroll-timeline: --timeline x;
+  } main > form:only-child:before {
     content: ''; z-index: 2;
     width: .5rem; height: .5rem;
     border-radius: .25rem;
     margin: 0 auto;
     position: absolute;
-    bottom: calc(.375rem + (var(--block-spacing)));
+    bottom: calc(2.25rem + var(--block-spacing));
     left: calc(50% + .5rem  + var(--dot));
     --trans-pos: calc(var(--c) * .625rem);
     --trans-neg: calc((var(--c)*-1) * .625rem);
@@ -56,24 +49,13 @@
     animation-timeline: --timeline;
   }
 
-  main > form:only-child > * { background-color: lightgray !important;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    scroll-margin-inline: var(--block-spacing);
-    margin: 0 var(--block-spacing);
-    padding: var(--block-spacing);
-    margin-bottom: calc(1.5em + var(--block-spacing));
-    min-width: calc(100svw - (var(--block-spacing)*2));
+  main > form:only-child > * {
     border-radius: .75rem .75rem 0 0; border: none 0;
-  } main > form:only-child > footer {
-    position: absolute;
-    height: 1.5rem;
-    text-align: center;
-    margin: 0; bottom: 0;
-    left: var(--block-spacing);
-    right: var(--block-spacing);
-    border-radius: 0 0 .75rem .75rem;
   }
+   /* main > form:only-child > footer {
+    text-align: center;
+    border-radius: 0 0 .75rem .75rem;
+  } */
 
 
   form > fieldset {
@@ -83,7 +65,8 @@
     position: absolute; z-index: 1;
     width: .75rem; height: .75rem;
     border-radius: .375rem;
-    left: calc(50% + var(--oeo)); bottom: calc(.25rem + var(--block-spacing));
+    left: calc(50% + var(--oeo));
+    bottom: calc(2.125rem + var(--block-spacing));
     background-color: white !important;
   } form > fieldset:nth-child(odd):before {
     left: calc(50% + (var(--offset) * 1.25rem) + var(--oeo));

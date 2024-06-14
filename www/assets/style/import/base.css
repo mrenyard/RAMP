@@ -27,13 +27,14 @@
     max-width: 100%;
     height: auto;
     font-style: italic;
-    shape-margin: .75rem;
+    shape-margin: .25rem;
     background-size: cover;
     background-repeat: no-repeat;
-    background-color: rgb(0 0 0 / .5);
+    background-color: rgb(0 0 0 / .125);
   } main > img { margin: 0; }
   input, button, textarea, select { font: inherit; }
-  p, h1, h2, h3, h4, h5, h6 { padding: 0;
+  p, h1, h2, h3, h4, h5, h6 {
+    padding: 0; max-width: 36em;
   } main > h1, main > header > h1 {
     line-height: 2.5rem; 
     text-transform: capitalize;
@@ -41,9 +42,8 @@
     margin: 1rem 0 .25em;
     letter-spacing: .05em;
     text-wrap: balance;
-  }
-  p {
-    margin: 0 0 .5rem; max-width: 36em;
+  } p {
+    margin: 0 0 .5rem;
     text-wrap: pretty;
   }
   p > :any-link { hyphens: none; }
@@ -53,6 +53,7 @@
   } blockquote::before, blockquote::after {
     position: absolute;
     top: .75rem; font-size: 4rem;
+    text-wrap: balance;
   } blockquote::before { content: '\201C'; left: 0;
   } blockquote::after { content: '\201D'; right: 0; }
   :root { accent-color: var(--accent-color); }
@@ -68,22 +69,17 @@
   header > p { font-weight: bold; }
   form > header > p { font-weight: normal; }
   input, textarea { caret-color: var(--accent-color); }
-  fieldset { padding: var(--block-spacing) 0; }
+  fieldset { padding: var(--block-spacing) 0; border: none 0; }
   nav > ol, nav > ul { list-style: none; }
   figure {
     display: inline-block;
-    margin: 1rem auto; text-align: center;
-    background-color: rgb(0 0 0 / .25);
-    overflow: hidden; border-radius: .75rem;
+    text-align: center;
+    margin-block: var(--block-spacing);
+    margin-inline: calc(var(--block-spacing)*-1);
   }
   figure > img, figure > picture, 
   figure > video, figure > svg {
-    margin: .5rem; max-width: calc(100% - 1rem);
-    border: solid rgb(255 255 255 / .75) .125rem;
-    overflow: hidden; border-radius: .5rem;
-    color: rgb(255 255 255 / .75);
+    margin: var(--block-spacing) var(--block-spacing) 0;
+    max-width: calc(100% - (var(--block-spacing)*2));
   }
-  figcaption { min-height: 2rem; line-height: 1.5rem; }
-  @media (prefers-reduced-motion: no-preference) {
-    :has(:target) { scroll-behavior: smooth; }
-  }
+  figcaption { min-height: 1.75rem; line-height: 1.5rem; }

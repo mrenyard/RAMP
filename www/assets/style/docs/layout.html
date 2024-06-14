@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="../import/icons.css.php">
     <link rel="stylesheet" href="../import/base.css">
     <link rel="stylesheet" href="../import/layout.css">
-    <link rel="stylesheet" href="../import/layout-form.css">
     <style>
       @import url(../scratch/wireframe.css);
       header.hero {
@@ -18,14 +17,14 @@
         text-align: center;
         flex-direction: column;
       }
-      body > main > form:only-child > * { background-color: rgb(200 200 200) !important; }
+      /* body > main > form:only-child > * { background-color: rgb(200 200 200) !important; } */
     </style>
   </head>
   <body id="ramp-matt-laptop-lan">
     <header>
       <div id="logo">[HEADER]</div>
     </header>
-    <main>
+    <main id="content:main"><a href="#content:main" title="Here for Page Main content: Hero content page">#</a>
       <header class="hero">
         <h1>MAIN HEADER (HERO)</h1>
       </header>
@@ -60,25 +59,25 @@
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eveniet nesciunt temporibus omnis molestias voluptate voluptatum error explicabo eos at, nisi nostrum possimus nam aliquam doloremque ad culpa quasi officiis saepe!</p>
       </section>
     </main>
-    <main><form>
-      <header>
+    <main id="record:main"><form>
+      <header id="person:notes"><a href="#person:notes">#</a>
         <h1>APPLICATION (DATA FORM)</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis odio itaque et eaque exercitationem vel adipisci beatae unde suscipit. Accusamus voluptates ratione sunt quae animi provident eveniet, aliquid cumque optio.</p>
       </header>
-      <fieldset>
+      <fieldset id="person:new"><a href="#person:new">#</a>
         <legend>one</legend>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla nemo eum ab quod, repudiandae ratione numquam eius labore explicabo aspernatur. Vel pariatur facere, possimus maxime iusto deserunt quisquam neque aliquam!</p>
       </fieldset>
-      <fieldset>
+      <fieldset id="person:new:family"><a href="#person:new:family">#</a>
         <legend>two</legend>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quod cumque ad consequuntur aperiam doloremque, nesciunt neque architecto recusandae nemo in nostrum maxime incidunt, expedita consectetur suscipit molestiae sint reprehenderit quisquam.</p>
       </fieldset>
-      <fieldset>
+      <fieldset id="person:new:residents"><a href="#person:new:residents">#</a>
         <legend>three</legend>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel accusantium aliquam tempora provident soluta nisi, ducimus expedita non iure minus recusandae temporibus totam delectus tenetur quae nihil. Quasi, eligendi reiciendis!</p>
       </fieldset>
       <footer>
-        <!-- <input type="submit" value="Update"> -->
+        <input type="submit" value="Update">
       </footer>
     </form></main>
     <article>
