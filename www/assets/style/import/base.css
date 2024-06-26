@@ -12,16 +12,51 @@
   BASE   - Primary HTML elements such as the body, form tags, links...
   ============================================================================================ */
 
-
-  *, *::before, *::after { box-sizing: border-box; }
+  :root { 
+    scroll-behavior: smooth;
+    accent-color: var(--accent-color);
+  } :root, *, *::before, *::after { box-sizing: border-box; }
+  html { position: relative; overflow-x: hidden; scrollbar-gutter: stable; }
   * { margin: 0; }
-  nav ul, nav ol { padding: 0; }
   body {
-    overflow-x: hidden;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px; line-height: calc(1.2rem + .5em);
     -webkit-font-smoothing: antialiased;
   }
+  ul, ol {
+    padding-bottom: 1rem;
+  } nav ul, nav ol, menu ul, menu ol {
+    padding: 0;
+  } nav li, menu li { list-style: none; }
+  :any-link { color: var(--accent-color); }
+  a[href] { text-decoration: none;
+  } p a[href] { text-decoration: underline; }
+  a[href*="//"]::after {
+    content: ''; display: inline-block;
+    width: 1.25rem; height: 1rem;
+    text-indent: .75rem; overflow: hidden;
+    color: inherit; background-color: currentColor;
+    mask: var(--icon-x12-external) top center / .75rem no-repeat;
+  } 
+  input, button, textarea, select { font: inherit; }
+  p, h1, h2, h3, h4, h5, h6 {
+    padding: 0; max-width: 36em;
+  } main > h1, main > header > h1 {
+    line-height: 2.5rem; 
+    text-transform: capitalize;
+  } h1, h2, h3, h4, h5, h6 {
+    margin: 1rem 0 0;
+    letter-spacing: .05em;
+    text-wrap: balance;
+  } p {
+    margin-bottom: .75rem;
+    text-wrap: pretty;
+  } p:last-child {
+    margin-bottom: .25rem;
+  } img + p {
+    margin-top: .75rem;
+  }
+  p > :any-link { hyphens: none; }
   img, picture, video, canvas, svg {
     vertical-align: middle;
     max-width: 100%;
@@ -32,21 +67,6 @@
     background-repeat: no-repeat;
     background-color: rgb(0 0 0 / .125);
   } main > img { margin: 0; }
-  input, button, textarea, select { font: inherit; }
-  p, h1, h2, h3, h4, h5, h6 {
-    padding: 0; max-width: 36em;
-  } main > h1, main > header > h1 {
-    line-height: 2.5rem; 
-    text-transform: capitalize;
-  } h1, h2, h3, h4, h5, h6 {
-    margin: 1rem 0 .25em;
-    letter-spacing: .05em;
-    text-wrap: balance;
-  } p {
-    margin: 0 0 .5rem;
-    text-wrap: pretty;
-  }
-  p > :any-link { hyphens: none; }
   blockquote { position: relative;
     margin: 2rem auto; padding: 0 2.5rem;
     max-width: 34em; text-align: center;
@@ -56,30 +76,26 @@
     text-wrap: balance;
   } blockquote::before { content: '\201C'; left: 0;
   } blockquote::after { content: '\201D'; right: 0; }
-  :root { accent-color: var(--accent-color); }
-  a[href] { text-decoration: none;
-  } p a[href] { text-decoration: underline; }
-  a[href*="//"]::after {
-    content: ''; display: inline-block;
-    width: 1.25rem; height: 1rem;
-    text-indent: .75rem; overflow: hidden;
-    color: inherit; background-color: currentColor;
-    mask: var(--icon-x12-external) top center / .75rem no-repeat;
-  } 
   header > p { font-weight: bold; }
   form > header > p { font-weight: normal; }
   input, textarea { caret-color: var(--accent-color); }
   fieldset { padding: var(--block-spacing) 0; border: none 0; }
-  nav > ol, nav > ul { list-style: none; }
   figure {
     display: inline-block;
     text-align: center;
+    margin-inline: calc(var(--inline-spacing)*-1);
     margin-block: var(--block-spacing);
-    margin-inline: calc(var(--block-spacing)*-1);
-  }
-  figure > img, figure > picture, 
-  figure > video, figure > svg {
-    margin: var(--block-spacing) var(--block-spacing) 0;
-    max-width: calc(100% - (var(--block-spacing)*2));
+    padding-top: var(--inline-spacing);
+    padding-inline: var(--inline-spacing);
   }
   figcaption { min-height: 1.75rem; line-height: 1.5rem; }
+
+  :is(main, aside, article, section) > a:first-child,
+  main > form:only-child > a:first-child {
+    position: relative;
+    float: left; width: 1rem;
+    margin-left: -100rem;
+  } :is(main, aside, article, section) > a:first-child:focus,
+    main > form:only-child > a:first-child:focus {
+    margin-left: 0;
+  }

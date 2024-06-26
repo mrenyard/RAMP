@@ -4,6 +4,8 @@
  * Default CSS Manifest modified from Snook's
  * Scalable and Modular Architecture for CSS
  * http://smacss.com/book/
+ *
+ * HTML5 Structured layout defualts
  */
 /* ==============================================================================================
   LAYOUT  - How the page is divided into sections including header, main, aside, nav, footer.
@@ -12,72 +14,90 @@
 
   
   :root {
-    --block-spacing: .125rem;
-    --header-height: 3rem;
-    --hero-height: 100vw;
+    --block-spacing: 1.5rem;
+    --inline-spacing: .25rem;
+    --header-height: 3.25rem;
+    --hero-height: 80vh;
   } @media  screen and (min-width: 32rem) { /*512px*/
-    :root { --block-spacing: .25rem; }
+    :root {
+      --inline-spacing: .5rem;
+    }
   } @media screen and (orientation: landscape) {
     :root { --hero-height: 75vh; }
-  } @media  screen and (min-width: 45rem) { /*720px*/
+  } @media  screen and (min-width: 43rem) { /*688px*/
     :root {
-      --block-spacing: .5rem;
+      --inline-spacing: .75rem;
       --hero-height: 75vh;
     }
   } @media  screen and (min-width: 48rem) { /*768px*/
-    :root { --block-spacing: 1rem; }
+    :root {
+      --inline-spacing: 1rem;
+      --block-spacing: 2rem;
+    }
+  }  @media  screen and (min-width: 78rem) { /*1248px*/
+    :root {
+      --inline-spacing: 2em;
+    }
   }
 
+  :target {
+    scroll-margin-block-start: 4rem;
+  }
   body.data, body:has( > header.hero ) {
     scroll-snap-type: y mandatory;
   } body > header.hero {
     scroll-snap-stop: always;
     scroll-snap-align: end;
+    scroll-margin-block-start: unset;
     scroll-margin-block-end: var(--header-height);
-  } body.data > main:has( > form:only-child ) {
-    scroll-snap-stop: always;
-    scroll-snap-align: start;
+  } body > main:has( > form:only-child ) {
+    scroll-margin-block-start: var(--header-height);
   }
 
   body {
-    position: relative;
       display: grid;
       grid-template-columns:
-        [full-start] var(--block-spacing)
+        [full-start] 0
           [app-start] 0
             [main] 1fr
           0 [app-end]
-        var(--block-spacing) [full-end];
+        0 [full-end];
       grid-template-rows: auto;
-      column-gap: var(--block-spacing);
-    } @media  screen and (min-width: 42rem) { /*672px*/
+      column-gap: var(--inline-spacing);
+    } @media  screen and (min-width: 43rem) { /* 688px */
     body {
       grid-template-columns:
-        [full-start] var(--block-spacing)
+        [full-start] 0
           [app-start] auto
               [main-left] 20rem
               [main-right] 20rem
           auto [app-end]
-        var(--block-spacing) [full-end];
+        0 [full-end];
     } 
   } @media screen and (min-width: 70rem) { /*1120px*/
     body {
       grid-template-columns:
-      [full-start] var(--block-spacing)
+      [full-start] 0
           [app-start] auto
               [main-left] 20rem
               [main-right] 20rem
               [aside] 20rem
           auto [app-end]
-        var(--block-spacing) [full-end];
+        0 [full-end];
     }    
   }
 
-  body > a, body > nav { position: fixed;
-  } body > *:not(a, nav, main, body > article) {
+
+  body > nav {
+    position: fixed; z-index: 1;
+    top: .375rem; right: .375rem;
+    width: 2.5rem; height: 2.5rem;
+  } body > *:not(header, nav, main, article) {
     display: grid; grid-template-columns: subgrid;
   } body > main {
     grid-area: main; grid-row: auto;
+  } body > main:has( > form:only-child ) {
+    grid-area: app; grid-row: auto;
   } body > aside, body > article {
     grid-area: main; grid-row: auto;
   } body > header, body > footer {
@@ -86,159 +106,147 @@
     grid-area: app; grid-row: auto;
   } body > footer > * {
     grid-area: main; grid-row: auto;
-  } @media  screen and (min-width: 42rem) { /*672px*/
-    body > main { grid-column: main-left / span 3; }
-    body > main:has( ~ aside ), body > aside, body > article,
-    body > footer > * {
+  } body:has( aside ) figure { padding-inline: 0;
+  } body:has( aside ) figure > img,
+    body:has( aside ) figure > picture, 
+    body:has( aside ) figure > video,
+    body:has( aside ) figure > svg {
+    width: calc(100% - (var(--inline-spacing)*2));
+  } @media screen and (min-width: 43rem) { /* 688px */
+    body > main { grid-column: main-left / span 3;
+  } body > main:has( ~ aside ), body > aside, body > article,
+    body > footer > address, body > footer > nav,
+    body > aside > footer, body > aside > header {
       grid-column: main-left / span 2; grid-row: auto;
-    } body > footer > address { grid-area: main-left;
-    } body > footer > nav { grid-area: main-right; }
+  }
+    body > footer > address { grid-area: main-left; grid-row: auto;
+  } body > footer > nav { grid-area: main-right; grid-row: auto; }    
   } @media screen and (min-width: 70rem) { /*1120px*/
     body:not(.index) > main > header.hero {
-      position: relative; z-index: 1;
-      width: calc(150% + (var(--block-spacing)/2));
-    }
-    body.index > main { grid-column: main-left / span 3; }
-    body.index > #site-aside {
-      grid-column: main-left / span 3; grid-row: auto;
-    } body:not(.index) > #site-aside {
-      display: flex; flex-direction: column;
-      gap: var(--block-spacing);
-      grid-area: aside; grid-row: 2;
-    } body:not(.index):has( > main > header.hero ) > aside {
-      margin-top: var(--hero-height);
-    }
-    body > article {grid-column: main-left / span 3; }
-    body > footer > nav {
-      grid-column: main-right / span 2;
-      columns: 2; column-gap: var(--block-spacing);
-    }
+      position: relative;
+      width: calc(150% + (var(--inline-spacing)/2));
+  } body.index > main { grid-column: main-left / span 3; }
+    body.index > aside, body.index > aside > footer,
+    body.index > aside > header {
+    grid-column: main-left / span 3; grid-row: auto;
+  } body:not(.index) > aside {
+    display: flex; flex-direction: column;
+    column-gap: var(--inline-spacing);
+    grid-area: aside; grid-row: 2;
+  } body:not(.index):has( > main > header.hero ) > aside {
+    margin-top: var(--hero-height);
+  }
+  body > article {grid-column: main-left / span 3; }
+  body > footer > address {
+    grid-column: main-left / span 1; grid-row: auto;
+  } body > footer > nav {
+    grid-column: main-right / span 2; grid-row: auto;
+    columns: 2; column-gap: var(--inline-spacing);
+  }
+  body:not( .index):has( aside ) img{ max-width: calc(100% - var(--inline-spacing)); }
+  body:not( .index):has( aside ) figure { max-width: 100%; }
+  } @media screen and (min-width: 78rem) {
+  body:not( .index):has( aside ) img{ max-width: 100%; }
+  body:not( .index):has( aside ) figure {
+    max-width: calc(100% + 1rem);
+    margin-inline: -1rem; padding-top: 1rem;
+   }
+  body:not( .index):has( aside ) figure > img,
+  body:not( .index):has( aside ) figure > picture,
+  body:not( .index):has( aside ) figure > video,
+  body:not( .index):has( aside ) figure > svg {
+    width: calc(100% - 2rem); }
   }
 
-  body > header { height: var(--header-height); }
+  
+  h1, header { margin-bottom: calc(var(--block-spacing)/2);
+  } body > header { margin-bottom: 0;
+    height: var(--header-height);
+    background-color: var(--primary-color);
+  }
+  footer { margin-top: calc(var(--block-spacing)/2); }
+  
+  article { margin-bottom: var(--block-spacing);
+  } body > article { 
+    padding: var(--inline-spacing);
+    margin-inline: calc(var(--inline-spacing)*-1);
+    --post-highlight-color: var(--primary-color);
+    background-color: var(--post-highlight-color);
+  } main + article {
+    margin-top: var(--linline-spacing);
+  } aside > article { padding: .75rem;
+  } @media screen and (min-width: 44rem) { /* 688px */
+    aside > article { margin-inline: -.75rem;
+    } aside > article:nth-last-of-type(even) { margin-right: 0; 
+    } aside > article:nth-last-of-type(odd) { margin-left: 0; 
+    }
+  } @media  screen and (min-width: 46rem) { /*736px*/
+    body > article { 
+      padding: var(--block-spacing);
+      margin-inline: calc(var(--block-spacing)*-1);
+    } main + article {
+      margin-top: var(--block-spacing);
+    }
+  } @media screen and (min-width: 70rem) { /*1120px*/
+    aside > article { margin-inline: -.75rem;
+    } aside > article:nth-last-of-type(even) { margin-right: -.75rem; 
+    } aside > article:nth-last-of-type(odd) { margin-left: -.75rem;
+    } body.index > aside > article { margin-inline: 0;
+    }
+    body.index > aside { margin-inline: -.75rem; }
+    body.index > aside > header, body.index > aside > footer { margin-inline: .75rem }
+  }
 
-  header.hero {
-    height: var(--hero-height);
+  /** Full breakout background **/
+  body > main {
+    position: relative; z-index: 1;
+    padding-bottom: 2rem;
+    color: var(--text-color);
+    --post-highlight-color: transparent;
+    background-color: var(--complementary-canvas);
+  }
+  body > main::before,
+  body > main::after {
+    content: ''; top: 0;
+    position: absolute; z-index: -2;
+    width: 50vw; height: 100%;
+    background-color: inherit;
+    right: 50%; left: auto;
+  } body > main::after {
+    left: 50%; right: auto;
+  } @media screen and (min-width: 70rem) {
+    body:not(.index):has(aside) > main::after { left: 75%; }
+    body:not(.index):has(aside) > main:has( > form:only-child )::after { left: 50%; }
+    body:not(.index) > aside { z-index: 1; }
+  }
+  body > main,
+  body:not(.index) > aside {
+    padding-bottom: 2rem;
+  }
+
+
+  header.hero,
+  header.hero::before {
+    min-height: 15rem; height: var(--hero-height);
+  } header.hero {
     overflow: visible;
   } header.hero::before {
-    content: ''; position: absolute; z-index: -1;
-    width: 100vw; height: var(--hero-height);
-    background: inherit;
-  }
-
-  form:has(> fieldset:last-of-type:nth-of-type(1)) { --c: 1; }
-  form:has(> fieldset:last-of-type:nth-of-type(2)) { --c: 2; }
-  form:has(> fieldset:last-of-type:nth-of-type(3)) { --c: 3; }
-  form:has(> fieldset:last-of-type:nth-of-type(4)) { --c: 4; }
-  form:has(> fieldset:last-of-type:nth-of-type(5)) { --c: 5; }
-  form:has(> fieldset:last-of-type:nth-of-type(6)) { --c: 6; }
-  form:has(> fieldset:last-of-type:nth-of-type(7)) { --c: 7; }
-  form:has(> fieldset:last-of-type:nth-of-type(8)) { --c: 8; }
-  form:has(> fieldset:last-of-type:nth-of-type(9)) { --c: 9; }
-  form:has(> fieldset:last-of-type:nth-of-type(10)) { --c: 10; }
-
-  body > main:has( > form:only-child ) {
-    position: relative;
-    display: grid; grid-area: full;
-    padding-top: var(--block-spacing);
-  } body.data > main:has( > form:only-child ) { grid-row: 2; }
-  
-  main > form:only-child {
-    position: relative; display: flex;
-    overflow-x: scroll;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-    scroll-timeline: --card-timeline x;
-    /* scroll-timeline: --cards y; */
-    /* scroll-timeline: --cards horizontal; */
-    padding-inline: var(--block-spacing);
-    column-gap: var(--block-spacing);
-    height: calc(100svh - var(--header-height) - var(--block-spacing));
-  }
-  main > form:only-child > *:not( footer, a:first-child ) {
-    scroll-snap-align: start start;
-    scroll-snap-stop: always;
-    scroll-margin-top: calc(var(--header-height) + var(--block-spacing));
-    scroll-margin-left: var(--block-spacing);
-    overflow-y: scroll;
-    scrollbar-width: none;
-    margin-bottom: 2.5rem;
-    padding-inline: var(--block-spacing);
-    min-width: calc(100vw - (var(--block-spacing)*2));
-  } main > form:only-child > footer {
+    content: ''; z-index: -1;
     position: absolute;
-    height: 2.5rem;
-    text-align: right;
-    padding-block: .125rem;
-    bottom: 0; left: 0; right: 0;
-    width: calc((100svw * (var(--c) + 1)) - (var(--block-spacing) * var(--c)));
-    border-top: solid rgb(255 255 255 / .75) .125rem;
-    box-shadow: 1rem -1rem 2rem rgb(0 0 0 / .5);
-  }
-  main > form:only-child > footer > input {
-    position: relative; right: .5rem;
+    width: 100vw;
+    background: inherit;
+  } body > header,
+    body > header.hero::before {
+    max-height: 100vw;
   }
 
-  body > article { 
-    padding: var(--block-spacing);
-    margin: var(--block-spacing) calc(var(--block-spacing)*-1);
-  }
 
-  
-  main > a:first-child,
-  body > header > a:first-child,
-  form > header > a:first-child,
-  fieldset > a:first-child,
-  section > a:first-child,
-  article > a:first-child,
-  aside > a:first-child {
-    position: absolute; z-index: 1;
-    width: 2.5em; height: 2.5rem;
-  }
-
-  form > header > a:first-child,
-  form > fieldset > a:first-child {
-    position: absolute; display: block;
-    text-indent: 2.5rem; overflow: hidden;
-    margin-left: calc((3rem + (var(--block-spacing)*2)) * -1);
-    bottom: .75rem;
-  } form > header:has( + fieldset:target ) > a:first-child,
-    form > fieldset:has( + fieldset:target ) > a:first-child {
-    margin-left: calc(100svw + var(--block-spacing));
-  }
-
-  footer > input {
-    position: relative;
-    top: -1rem;
+  footer > a:last-child,
+  nav li > a,
+  menu > li > *:only-child {
+    display: inline-block;
+    text-align: center;
+    min-width: 2.5rem;
+    padding-inline: .375rem;
     border: none;
-    padding-inline: .5rem;
-    margin-right: var(--block-spacing);
-    text-transform: uppercase;
-    text-shadow: .05rem .05rem rgb(255 255 255 / .5);
-    height: 2.5rem; line-height: 2.5rem;
-  }
-
-  fieldset > legend {
-    float: left; width: 100%;
-  }
-  
-  body > main > form:only-child::before {
-    content: '';
-    position: absolute; z-index: 10;
-    bottom: .25rem; left: 0;
-    width: 100%; height: .25rem; 
-    background-color: white !important;
-  }
-  @supports (animation-timeline: --card-timeline) {
-    body > main > form:only-child::before {
-      width: 0%;
-      animation: card-progress linear;
-      animation-duration: 1ms; /* Firefox requires this to apply the animation */
-      animation-timeline: --card-timeline;
-    } 
-  }
-
-  @keyframes card-progress {
-    from { width: 0%; }
-    to { width: 500%; }
   }

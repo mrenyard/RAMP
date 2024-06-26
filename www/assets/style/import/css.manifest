@@ -14,14 +14,9 @@ layout
 ;Discrete, reusable, modular components,
 ;usually denoted with a module class name e.g.
 ;navigation bars, product lists, contact forms...
+modual-stickyfoot-footnotes
+modual-article-more-overlay
 modual-page-nav-search
-;modual-form
-;modual-form-radio-range
-;modual-form-radio-select
-;modual-form-survey
-;modual-hash
-;modual-lightbox
-;modual-nav
 
 ;Reoccuring colour palete for text, links,
 ;buttons and background-images...

@@ -24,22 +24,34 @@
  * @version 0.0.9;
  */
 ?>
-      <address>[Address]</address>
+      <address>
+        RAMP App FOSS Foundation.<br>
+        c/o Justified Web Marketng Ltd.<br>
+        157 Oakwood Drive,<br>
+        Southampton<br>
+        SO16 8EL.<br>
+        United Kingdom.
+      </address>
       <nav>
-        <ol>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-          <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</li>
-        </ol>
-    </nav>
+        <h2>Site Information &amp; Useful Links</h2>
+        <ul>
+          <li>legal, copyright, privacy etc.
+            <ul>
+              <li><a href="#">Link One</a></li>
+              <li><a href="#">Link Two</a></li>
+              <li><a href="#">Link Three</a></li>
+              <li><a href="#">Link Four</a></li>
+              <li><a href="#">Link Five</a></li>
+              <li><a href="#">Link Six</a></li>
+            </ul>
+          </li>
+          <li>Socal Media
+            <ul style="display: flex;">
+              <li><a href="//x.com/mrenyard">x</a></li>
+              <li><a href="//www.instagram.com//mrenyard">Instagram</a></li>
+              <li><a href="//github.com/mrenyard">GitHub</a></li>
+            </ul>
+          </li>
+          <li><a href="#top" title="Jump back to Top-of-page (in-page Navigation), this is the last link on this page.">top</a></li>
+        </ul>
+      </nav>

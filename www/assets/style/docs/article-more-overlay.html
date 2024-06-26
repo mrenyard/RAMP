@@ -2,31 +2,66 @@
 <html class="no-js" lang="zxx">
   <head>
     <meta charset="utf-8">
-    <title>Base Styles</title>
+    <title>Base Layout Style</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
     <link rel="stylesheet" href="../import/icons.css.php">
     <link rel="stylesheet" href="../import/base.css">
     <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/modual-stickyfoot-footnotes.css">
+    <link rel="stylesheet" href="../import/modual-article-more-overlay.css">
     <style>
-      :root { --accent-color: rgb(0 0 255); }
-      main { margin: 0 .25rem; max-width: 50rem; } 
-      @media screen and (min-width: 50rem) {
-        main { margin: 0 auto; }
+      :root {
+        --top-drop: 10rem;
+        --popup-right: 3rem;
+
+        --primary-color: rgb(169 169 169);
+        --primary-contrast-color: rgb(255 255 255);
+        
+        --secondary-color: rgb(211 211 211);
+        --secondary-contrast-color: rgb(255 255 255);
+        
+        --complementary-canvas: rgb(255 255 255);
+        --text-color: rgb(33 33 33);
+        
+        --accent-color: rgb(0 0 255);
+        --accent-contrast: rgb(255 255 255);
+        
+        --highlight-color: rgb(255 255 100);
+      }
+      main > form:only-child, article, figure {
+        color: var(--primary-contrast-color);
+        --post-highlight-color: var(--primary-color);
+        background-color: var(--post-highlight-color);
+      }
+      header.hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        background-color: var(--secondary-color);
+      }
+      body > nav {
+        overflow: hidden;
+        background-color: var(--secondary-color);
+        text-align: center; line-height: 2.5rem;
+      }
+      body > nav > h2 {
+        color: white;
+        margin: 0; line-height: 2.5rem;
       }
     </style>
   </head>
-  <body>
-    <header id="top"></header>
-    <main id="#main"><a href="#main" title="Here for Page Main content on: Base Styles">#</a>
-      <header>
-        <h1>The quick brown fox jumped over the lazy dog</h1>
+  <body id="ramp-matt-laptop-lan" class="data">
+    <header id="top">
+      <div id="logo">[HEADER]</div>
+    </header>
+    <main id="main"><a href="#main" title="Here for Page Main content on: Article Overlay Read More Link Demo">#</a>
+      <header class="hero">
+        <h1>MAIN HEADER (HERO)</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus saepe omnis placeat commodi labore consequuntur unde facere quo, asperiores inventore quia! Fugiat, beatae quibusdam! Consectetur minus et beatae cumque quis?</p>
       </header>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta inventore corporis rem est laboriosam consectetur alias deleniti error blanditiis accusantium. Dolores, suscipit nam nihil rem magnam explicabo nobis reiciendis. Sequi!</p>
-      <h2>The quick brown fox jumped over the lazy dog</h2>
-      <h3>The quick brown fox jumped over the lazy dog</h3>
-      <h4>The quick brown fox jumped over the lazy dog</h4>
       <section id="placeholder:1"><a href="#placeholder:1" title="Here for: The quick brown fox jumped over the lazy dog">#</a>
         <header>
           <h2>The quick brown fox jumped over the lazy dog</h2>
@@ -55,13 +90,12 @@
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolorum quia amet totam animi ut distinctio minus cum in laborum odit libero, error voluptas labore saepe aliquam obcaecati aspernatur modi! A.</p>
           </section>
         </section>
-      </section>
-      <section id="placeholder:4"><a href="#placeholder:4" title="Here for: The quick brown fox jumped over the lazy dog">#</a>
-        <h2>The quick brown fox jumped over the lazy dog</h2>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore suscipit necessitatibus consequatur libero voluptate ex dolores voluptas dolorum assumenda explicabo, quas architecto earum fugiat ducimus voluptatem rerum velit delectus numquam.</p>
         <img src="//media.ramp.matt-laptop.lan/tmp/sized.php/1024x600" width="1024" height="600" alt="Green leafy digital art wallpaper.">
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur provident porro <del>fugiat aspernatur</del> ad earum, veritatis voluptates asperiores laudantium accusantium facere, quidem quam sapiente nobis delectus magni incidunt nulla temporibus.</p>
         <p>Lorem ipsum<sup>TM</sup> dolor sit amet consectetur adipisicing elit. Molestiae unde voluptatibus minus enim rerum. Voluptate, ipsam a, perferendis, consequatur nostrum magnam quos maiores esse facere iste praesentium quidem? Quod, sunt.</p>
+      </section>
+      <section id="placeholder:4"><a href="#placeholder:4" title="Here for: The quick brown fox jumped over the lazy dog">#</a>
         <h2>The quick brown fox jumped over the lazy dog</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum aut debitis optio quaerat quidem <a href="//bbc.co.uk/news" title="External link for BBC News">illo nihil</a> cupiditate, ipsam, provident omnis quibusdam sapiente perspiciatis repellat distinctio minima beatae a veritatis aliquam?</p>
         <blockquote>reprehenderit animi debitis ipsa id laboriosam necessitatibus adipisci, sunt a quasi aperiam nulla aliquam?</blockquote>
@@ -94,5 +128,88 @@
          <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
       </footer>
     </main>
+    <article id="article:one"><a href="#article:one" title="Here for: SPECIAL ARTICLE ONE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE ONE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:two"><a href="#article:two" title="Here for: SPECIAL ARTICLE TWO">#</a>
+      <header class="hero">
+        <h2>[SPECIAL ARTICLE TWO]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:three"><a href="#article:three" title="Here for: SPECIAL ARTICLE THREE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE THREE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>
+    </article>
+    <aside id="site-aside"><a href="#site-aside" title="Here for other more related content">#</a>
+      <header><h2>[ASIDE]</h2></header>
+      <article id="catagory:one"><a href="#catagory:one" title="Here for: SITE CATAGORY ONE">#</a>
+        <header><h2>[SITE ARTICLE ONE]</h2></header>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <article id="catagory:two"><a href="#catagory:two" title="Here for: SITE CATAGORY TWO">#</a>
+        <header><h2>[SITE ARTICLE TWO]</h2></header>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur nisi eaque mollitia est esse, provident voluptas consequuntur dolores, id vero facilis minus assumenda quam laboriosam officiis enim vitae reprehenderit sunt?</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <article id="catagory:three"><a href="#catagory:three" title="Here for: SITE CATAGORY THREE">#</a>
+        <header><h2>[SITE ARTICLE THREE]</h2></header>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <article id="catagory:four"><a href="#catagory:four" title="Here for: SITE CATAGORY FOUR">#</a>
+        <header><h2>[SITE ARTICLE FOUR]</h2></header>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <article id="catagory:five"><a href="#catagory:five" title="Here for: SITE CATAGORY FIVE">#</a>
+        <header><h2>[SITE ARTICLE FIVE]</h2></header>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <article id="catagory:six"><a href="#catagory:six" title="Here for: SITE CATAGORY SIX">#</a>
+        <header><h2>[SITE ARTICLE SIX]</h2></header>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
+      </article>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+     </footer>
+    </aside>
+    <nav id="site-nav">
+      <h2>N</h2>
+    </nav>
+    <footer id="contentinfo">
+      <address>[ADDRESS]</address>
+      <nav>
+        <ul>
+          <li><a href="#">Link One</a></li>
+          <li><a href="#">Link Two</a></li>
+          <li><a href="#">Link Three</a></li>
+          <li><a href="#">Link Four</a></li>
+          <li><a href="#">Link Five</a></li>
+          <li><a href="#">Link Six</a></li>
+          <li><a href="#">Link Seven</a></li>
+          <li><a href="#">Link Eight</a></li>
+          <li><a href="#">Link Nine</a></li>
+        </ul>
+      </nav>
+    </footer>
   </body>
-</html>

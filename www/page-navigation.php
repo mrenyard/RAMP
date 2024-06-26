@@ -31,9 +31,10 @@
  * descriptive precursors in the links associated title attribute:
  * 1) 'Jump to ...' - Used with most in-page links to assist in navigating within a page.
  * 2) 'Skip to ...' - Simalar to 'Jump to ...' but with the indication that you are bypassing content ahead. 
- * 3) 'Here to|for ...' - Anchor links that denote the start of a section of content.
- * 4) 'External link to|for ...' - These links will navigate you away from this website to another site.
- * 5) Internal links should/will usually contain the words 'this ...(site|application)' or 'for more on...'
+ * 3) 'Back to ...' - when returning to content that was previously jumped from.
+ * 4) 'Here for ...' - Anchor links that denote the start of a section of content.
+ * 5) 'External link to|for ...' - These links will navigate you away from this website to another site.
+ * 6) Internal links should/will usually contain the words 'this ...(site|application)' or 'for more on...'
  */
 ?>
       <nav>

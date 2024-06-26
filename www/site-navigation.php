@@ -23,7 +23,7 @@
  * @version 0.0.9;
  */
 ?>
-      <h2>Site Navigation</h2>
+      <h2>N</h2>
       <ul>
         <li><a href="#" title="[title]">[1]</a></li>
         <li><a href="#" title="[title]">[2]</a></li>

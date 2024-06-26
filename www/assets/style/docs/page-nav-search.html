@@ -2,16 +2,37 @@
 <html class="no-js" lang="zxx">
   <head>
     <meta charset="utf-8">
-    <title>Base Layout Style</title>
-    <meta name="description" content="">
+    <title>In-page Navigation and Site Search</title>
+    <meta name="description" content="In-page Navigation and Site Search - style.rampapp.org">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
     <link rel="stylesheet" href="../import/icons.css.php">
     <link rel="stylesheet" href="../import/base.css">
     <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/modual-stickyfoot-footnotes.css">
+    <link rel="stylesheet" href="../import/modual-article-more-overlay.css">
+    <link rel="stylesheet" href="../import/modual-page-nav-search.css">
     <style>
-      @import url(../scratch/wireframe.css);
+      :root {
+        --popup-right: 3.25rem;
+
+        --primary-color: rgb(169 169 169);
+        --primary-contrast: rgb(255 255 255);
+        
+        --secondary-color: rgb(211 211 211);
+        --secondary-contrast: rgb(255 255 255);
+        
+        --text-color: rgb(33 33 33);
+        --complementary-canvas: rgb(255 255 255);
+        
+        --accent-color: rgb(0 0 255);
+        --accent-contrast: rgb(255 255 255);
+        
+        --highlight-color: rgb(255 255 100);
+      }
       main > form:only-child, article, figure {
-        background-color: rgba(0, 0, 0, 0.06);
+        color: var(--primary-contrast-color);
+        --post-highlight-color: var(--primary-color);
+        background-color: var(--post-highlight-color);
       }
       header.hero {
         display: flex;
@@ -19,19 +40,44 @@
         justify-content: center;
         text-align: center;
         flex-direction: column;
+        background-color: var(--secondary-color);
+      }
+      body > nav {
+        overflow: hidden;
+        background-color: var(--secondary-color);
+        text-align: center; line-height: 2.5rem;
+      }
+      body > nav > h2 {
+        color: white;
+        margin: 0; line-height: 2.5rem;
       }
     </style>
   </head>
   <body id="ramp-matt-laptop-lan">
-    <header class="hero">
+    <header id="top">
+      <nav>
+        <ul id="quick-links">
+          <li><a href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
+          <li><a href="#main" title="Skip to Page Main content: In-page Navigation and Site Search">Main Content</a></li>
+          <li><a href="#site-nav" title="Jump to Full Site Map (Navigation)">Site Navigation</a></li>
+          <li><a href="#contentinfo" title="Jump to Site Information: contact address, legal, copyright and privacy statement etc.">Site Information</a></li>
+        </ul>
+        <form id="quick-search" method="get" action="/search#results">
+          <div class="search input field">
+            <label for="query" title="Here to search RampApp.org for the latest content, data and more.">Search</label>
+            <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
+            <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi aliquam, voluptates ad ex ab laborum eveniet quia eos quibusdam deserunt similique ducimus molestias corporis odit ratione laudantium quis nesciunt? Ullam.</span>
+          </div>            
+          <input type="submit" value="Go">
+        </form>
+      </nav>
       <div id="logo">[HEADER]</div>
     </header>
     <main id="main"><a href="#main" title="Here for Page Main content on: Base Layout Style">#</a>
-      <header>
-        <h1>MAIN HEADER</h1>
+      <header class="hero">
+        <h1>MAIN HEADER (HERO)</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus saepe omnis placeat commodi labore consequuntur unde facere quo, asperiores inventore quia! Fugiat, beatae quibusdam! Consectetur minus et beatae cumque quis?</p>
       </header>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta inventore corporis rem est laboriosam consectetur alias deleniti error blanditiis accusantium. Dolores, suscipit nam nihil rem magnam explicabo nobis reiciendis. Sequi!</p>
       <section id="placeholder:1"><a href="#placeholder:1" title="Here for: The quick brown fox jumped over the lazy dog">#</a>
         <header>
           <h2>The quick brown fox jumped over the lazy dog</h2>
@@ -98,6 +144,35 @@
          <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
       </footer>
     </main>
+    <article id="article:one"><a href="#article:one" title="Here for: SPECIAL ARTICLE ONE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE ONE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:two"><a href="#article:two" title="Here for: SPECIAL ARTICLE TWO">#</a>
+      <header class="hero">
+        <h2>[SPECIAL ARTICLE TWO]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:three"><a href="#article:three" title="Here for: SPECIAL ARTICLE THREE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE THREE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>
+    </article>
     <aside id="site-aside"><a href="#site-aside" title="Here for other more related content">#</a>
       <header><h2>[ASIDE]</h2></header>
       <article id="catagory:one"><a href="#catagory:one" title="Here for: SITE CATAGORY ONE">#</a>
@@ -153,4 +228,5 @@
         </ul>
       </nav>
     </footer>
-   </body>
+  </body>
+ 

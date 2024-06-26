@@ -1,8 +1,8 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="zxx">
   <head>
     <meta charset="utf-8">
-    <title>Base Layout Style</title>
+    <title>Layout Index Page Style</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
     <link rel="stylesheet" href="../import/icons.css.php">
@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="../import/layout.css">
     <style>
       @import url(../scratch/wireframe.css);
-      header.hero,
-      body > main > form {
+      main > form:only-child, article, figure {
+        background-color: rgba(0, 0, 0, 0.06);
+      }
+      header.hero {
         display: flex;
         align-items: center;
         justify-content: center;
         text-align: center;
-      } header.hero {
         flex-direction: column;
       }
     </style>
@@ -25,65 +26,83 @@
     <header>
       <div id="logo">[HEADER]</div>
     </header>
-    <main id="main">
+    <main id="#main"><a href="#main" title="Here for Page Main content on: Layout Index Page Styles">#</a>
       <header>
         <h1>MAIN HEADER</h1>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
       </header>
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam libero dignissimos eum recusandae laudantium iste, accusantium asperiores quidem nemo perferendis odit ipsam temporibus sequi, expedita amet enim aperiam, deleniti rerum!</p>
     </main>
-    <article>
+    <article id="article:one"><a href="#article:one" title="Here for: SPECIAL ARTICLE ONE">#</a>
       <header>
-        <h1>[SPECIAL ARTICLE ONE]</h1>
+        <h2>[SPECIAL ARTICLE ONE]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
       </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
     </article>
-    <article>
+    <article id="article:two"><a href="#article:two" title="Here for: SPECIAL ARTICLE TWO">#</a>
       <header>
-        <h1>[SPECIAL ARTICLE TWO]</h1>
+        <h2>[SPECIAL ARTICLE TWO]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
       </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
     </article>
-    <article>
+    <article id="article:three"><a href="#article:three" title="Here for: SPECIAL ARTICLE THREE">#</a>
       <header>
-        <h1>[SPECIAL ARTICLE THREE]</h1>
+        <h2>[SPECIAL ARTICLE THREE]</h2>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
       </header>
       <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
-      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>
     </article>
-    <aside id="site-aside">
-      <article>
-        <h1>[SITE ARTICLE ONE]</h1>
+    <aside id="site-aside"><a href="#site-aside" title="Here for other more related content">#</a>
+      <header><h2>[ASIDE]</h2></header>
+      <article id="catagory:one"><a href="#catagory:one" title="Here for: SITE CATAGORY ONE">#</a>
+        <header><h2>[SITE ARTICLE ONE]</h2></header>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
-      <article class="breakout">
-        <h1>[SITE ARTICLE TWO]</h1>
+      <article id="catagory:two"><a href="#catagory:two" title="Here for: SITE CATAGORY TWO">#</a>
+        <header><h2>[SITE ARTICLE TWO]</h2></header>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Pariatur nisi eaque mollitia est esse, provident voluptas consequuntur dolores, id vero facilis minus assumenda quam laboriosam officiis enim vitae reprehenderit sunt?</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
-      <article>
-        <h1>[SITE ARTICLE THREE]</h1>
+      <article id="catagory:three"><a href="#catagory:three" title="Here for: SITE CATAGORY THREE">#</a>
+        <header><h2>[SITE ARTICLE THREE]</h2></header>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
-      <article>
-        <h1>[SITE ARTICLE FOUR]</h1>
+      <article id="catagory:four"><a href="#catagory:four" title="Here for: SITE CATAGORY FOUR">#</a>
+        <header><h2>[SITE ARTICLE FOUR]</h2></header>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
-      <article>
-        <h1>[SITE ARTICLE FIVE]</h1>
+      <article id="catagory:five"><a href="#catagory:five" title="Here for: SITE CATAGORY FIVE">#</a>
+        <header><h2>[SITE ARTICLE FIVE]</h2></header>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
-      <article>
-        <h1>[SITE ARTICLE SIX]</h1>
+      <article id="catagory:six"><a href="#catagory:six" title="Here for: SITE CATAGORY SIX">#</a>
+        <header><h2>[SITE ARTICLE SIX]</h2></header>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit repellendus, laboriosam voluptas ut illo hic praesentium dolore nam sequi quidem modi quasi autem ad, officiis, soluta natus nesciunt unde odit.</p>
+        <footer><a class="overlay" href="#">more&hellip;</a></footer>
       </article>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+     </footer>
     </aside>
-    <nav id="main-naviagation"></nav>
+    <nav id="site-nav">
+      <h2>N</h2>
+    </nav>
     <footer id="contentinfo">
+      <address>[ADDRESS]</address>
       <nav>
         <ul>
           <li><a href="#">Link One</a></li>
@@ -97,6 +116,6 @@
           <li><a href="#">Link Nine</a></li>
         </ul>
       </nav>
-      <address>[ADDRESS]</address>
     </footer>
   </body>
+ 

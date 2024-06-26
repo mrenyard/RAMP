@@ -1,0 +1,129 @@
+/**
+ * modual-stickyfoot-footnotes.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ *
+ * Footnote referances
+ * Footer list (with animated target definitions)
+ * Footer stick menu (section indexs - app controls etc.)
+ * Overlay action link (more...)
+ * Back-to-top link.
+ */
+ /* ==============================================================================================
+  MODUALS - Discrete, reusable, modular components, usually denoted with a module class name
+         e.g. product lists, contact forms...
+  ============================================================================================ */
+
+
+  /** footnote referance **/
+  body > * { counter-reset: footnotes; }
+  body > * a[id*="fn-ref:"] {
+    counter-increment: footnotes;
+    text-decoration: none;
+    color: inherit;
+    cursor: default;
+    outline: none;
+  } body > * a[id*="fn-ref:"]:target,
+    body > * a[id*="fn-ref:"]:active,
+    body > * a[id*="fn-ref:"]:focus {
+    background-color: var(--highlight-color);
+  }
+  body > * a[id*="fn-ref:"]::after {
+    content: '[' counter(footnotes) ']';
+    vertical-align: super;
+    font-size: .6em;
+    margin-left: 2px;
+    color: var(--accent-color);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+
+  /** stick footer **/
+  body > * > footer,
+  body > main > form:only-child > footer {
+    position: sticky; bottom: .25rem;
+    width: auto; height: .75rem;
+    border-bottom: solid rgb(0 0 0 / .125) .0625rem;
+  } body > * > footer:has( > menu ),
+    body > main > form:only-child > footer:has( > menu ) {
+    margin-top: 2.5rem;
+  } body > * > footer:has( > ol.footnotes ) {
+    margin-top: 0;
+  }
+
+  /** footnote list **/
+  footer > ol.footnotes {
+    float: left;
+    line-height: 1.1rem;
+    font-size: .9rem; list-style: none;
+    margin-top: .75rem;
+    padding: .5rem 0 0;
+  } footer:has( > menu ) > ol.footnotes {
+    padding-bottom: 2.5rem;
+  }
+  footer > ol.footnotes > li {
+    counter-increment: fn-defs;
+  }
+  footer > ol.footnotes > li > a { color: inherit;
+  } footer > ol.footnotes > li > a:target {
+    position: fixed;
+    bottom: -10rem; max-width: 40em;
+    padding: .5rem 2.75rem .5rem .5rem; margin-right: calc(var(--inline-spacing)*3);
+    box-shadow: .125rem .125rem .5rem rgb(0 0 0 / .25);
+    background-color: var(--highlight-color);
+    text-wrap: pretty;
+    --slide-to: 1.25rem;
+    animation: fn-slide-up .5s ease-in forwards;
+  } @media screen and (min-width: 40rem) {
+    footer > ol.footnotes > li > a:target {
+    padding-right: .5rem;
+    }
+  } footer:has( > menu ) > ol.footnotes > li > a:target {
+    padding-right: .5rem;
+    --slide-to: 3.5rem;
+  } @keyframes fn-slide-up {
+    from { bottom: -10rem; }
+    to { bottom: var(--slide-to); }
+  }
+  footer > ol.footnotes > li > a::before {
+    content: counter(fn-defs) '. ';
+  }
+  footer > ol.footnotes > li > a::after {
+    content: "\21A9";
+  }
+  
+
+  /** footer stick menu + back-to-top link **/
+  footer > menu,
+  footer > a:last-child {
+    position: sticky; bottom: 1rem;
+    margin-top: -2.125rem;
+  }
+  footer > menu {
+    float: left;
+    width: calc(100% - 2.75rem); height: 2.5rem;
+    display: flex; flex-direction: row;
+    flex-wrap: wrap; align-items: end;
+    padding: 0; gap: .125rem;
+  }
+
+  footer > menu > li > *,
+  footer > a:last-child {
+    height: 2.5rem; line-height: 2.5rem;
+    break-after: always;
+ /* box-shadow: .125rem .125rem .5rem rgb(0 0 0 / .25); */
+  } footer > a:last-child {
+    float: right; margin-right: -.125rem;
+    background-color: rgb(0 0 0 / .125);
+  } footer > menu > li > * {
+    color: var(--primary-contrast);
+    background-color: var(--primary-color);
+  }
+
+  p:has( + footer > a:last-child )::after {
+    content: ''; width: 7rem;
+    display: inline-block;
+  }

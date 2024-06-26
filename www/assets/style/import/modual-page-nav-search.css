@@ -1,0 +1,187 @@
+/**
+ * modual-page-nav-search.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ *
+ * Expose page navigation links; below top-of-page.
+ * Placeholder tabs.
+ * Section target highlighting.
+ */
+ /* ==============================================================================================
+  MODUALS - Discrete, reusable, modular components, usually denoted with a module class name
+         e.g. product lists, contact forms...
+  ============================================================================================ */
+
+
+  body {
+    --top-drop: 6.5rem;
+    position: absolute; z-index: 1;
+    top: 0; right: 0; bottom: 0; left: 0;
+    transition: top .5s ease-in;
+  } body.kill-transition {
+    transition: none;
+  } body:has(#top > nav > ul:focus-within),
+    body:has(#top:target > nav > ul) {
+    top: var(--top-drop);
+  }
+
+  /** header (#top) **/
+  #top {
+    position: relative;
+    box-shadow: 0 -1.5rem 2rem rgb(0 0 0 / .5)
+  } #top:has( ul:focus-within ) ~ *:target {
+    scroll-margin-top: var(--top-drop);
+  }
+
+  /** #quick(-links|-search) container **/
+  #top > nav {
+    position: absolute;
+    top: .25rem; right: var(--popup-right);
+    bottom: .375rem; left: .375rem;
+  }
+
+  /** #quick-links **/
+  #quick-links {
+    position: fixed; z-index: -1;
+    display: flex; gap: .125rem;
+    flex-direction: column;
+    height: var(--top-drop);
+    top: calc(var(--top-drop)*-1);
+    right: 0; left: 0;
+    text-align: center;
+    margin: 0 auto;
+    padding-inline: var(--popup-right);
+    padding-top: .125rem;
+    transition: top .5s ease-in;
+  } #top:target #quick-links,
+    #quick-links:focus-within { top: 0;
+  }
+  #quick-links > li {
+    height: 3rem;
+    padding: .25rem;
+    overflow: hidden;
+  } #quick-links > li:nth-of-type(2) {
+    margin-inline: -2.875rem;
+  } #quick-links > li:nth-of-type(3),
+    #quick-links > li:nth-of-type(4) {
+    position: absolute; top: .125rem;
+    width: 3rem; 
+  } #quick-links > li:nth-of-type(3) { right: .125rem;
+  } #quick-links > li:nth-of-type(4) { left: .125rem;
+  }
+  #quick-links > li > a {
+    width: 100%; height: 2.5rem;
+    line-height: 2.5rem; break-after: always;
+    color: var(--secondary-contrast);
+    background-color: var(--secondary-color);
+  } #quick-links > li:nth-of-type(3) > a,
+    #quick-links > li:nth-of-type(4) > a {
+    width: 2.5rem; text-indent: 2.5rem;
+  } #quick-links > li:nth-of-type(3) > a {
+    background-color: transparent;
+  } @media screen and (min-width: 32rem) { /* 448px */
+    body { --top-drop: 3.5rem; }
+    #quick-links { display: block; }
+    #quick-links > li {
+      display: inline-block;
+      max-width: 15rem; width: 49%;
+      /* margin-inline: 0; */
+    } #quick-links > li:nth-of-type(2) { margin-inline: 0;
+    }
+  } @media screen and (min-width: 49rem) { /* 784px */
+    #quick-links { padding-inline: auto; gap: 1rem; }
+  }
+
+  /** #quick-search **/
+  #quick-search {
+    position: sticky;
+    /* top: .25rem; float: right; */
+    top: .375rem; float: right;
+    overflow: hidden;
+    width: 2.5rem; height: 2.5rem;
+    background-color: var(--primary-color);
+    border-radius: var(--border-radius);
+    transition: width 1s ease-out;
+  } #quick-search:focus-within {
+    width: 100%;
+  } #quick-search > .field,
+    #quick-search > input[type="submit"] {
+    display: inline-block;
+    position: absolute; top: 0;
+    min-width: 2.5rem; height: 2.5rem;
+    overflow: hidden;
+    border: 0 none;
+    color: var(--primary-contrast-color);
+    background-color: var(--secondary-color);
+  } #quick-search > .field {
+    z-index: 1; left: 0; right: 2.5rem;
+  } #quick-search > input[type="submit"] {
+    z-index: 0; right: 0; outline: none;
+    color: var(--secondary-contrast);
+  }
+  #quick-search > .field > * {
+    display: inline-flex;
+    float: left;
+  } #quick-search > .field > label {
+    max-width: 2.5rem; height: 2.5rem;
+    text-indent: 2.5rem; overflow: hidden;
+    color: white; background-color: currentColor;
+    mask: var(--icon-x16-search-glass) center center / 1rem no-repeat;
+    cursor: pointer;
+  } #query {
+    position: absolute; z-index: -1;
+    top: 0; right: 0; bottom: 0; left: 2.5rem;
+    margin: 0; padding: 0;
+    border: none; outline: none;
+    background-color: rgb(255 255 255 / .75);
+    scroll-margin-block-start: var(--inline-spacing);
+    transition: padding .25s  ease-out .5s;
+  } #quick-search:focus-within #query {
+    /* padding: 0 var(--inline-spacing); */
+    padding: 0 .5rem;
+  }
+  #quick-search > .field > .hint { max-height: 66%; bottom: -66%;
+  } #quick-search > .field:focus-within > .hint { bottom: 0;
+  }
+
+  
+  /** In-page (bookmark) placholders **/
+  main, aside, article, section {
+    scroll-margin-block-start: 2rem;
+  } :is(aside, article, section):target {
+    background-color: var(--post-highlight-color);
+    animation: fade-highlight 2s ease-out forwards;
+  }
+  :is(main, aside, article, section) > a:first-child,
+  main > form:only-child > a:first-child {
+    float: left; z-index: 1;
+    width: 1.25rem; height: 1.25rem;
+    color: var(--accent-contrast);
+    margin-right: .625rem; margin-bottom: -1.25rem; margin-left: -100rem;
+    text-indent: .1875rem; line-height: 1.25rem;
+    box-shadow: .25rem .25rem .5rem rgb(0 0 0 / .75);
+    background-color: var(--accent-color);
+  } :is(main, aside, article, section) > a:first-child:focus,
+    main > form:only-child > a:first-child:focus {
+    width: 2rem;
+    border-radius: 0 .5rem .5rem 0;
+    transition: .25s ease-out;
+    transition-property: width, height;
+    margin-left: 0; margin-bottom: auto;
+  } main > a:first-child:focus {
+    margin-top: 1.25rem;
+  } :is(main, aside, article, section):has( > header.hero ) > a:first-child:focus,
+    main > form:only-child > a:first-child:focus,
+    body > aside > a:first-child:focus,
+    body > aside > article > a:first-child:focus {
+    width: 1.25rem; height: 2rem;
+    margin-top: 0; margin-bottom: -2rem; margin-left: .5rem;
+    border-radius: 0 0 .5rem .5rem;
+  }
+
+  @keyframes fade-highlight {
+    from { background-color: var(--highlight-color); }
+    to { background-color: var(--post-highlight-color); }
+  }

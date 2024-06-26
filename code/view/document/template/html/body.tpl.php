@@ -40,21 +40,19 @@ $site = WebRoot::getInstance();
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
 <?php include("head.php"); ?>
   </head>
-  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>">
+  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>"><!-- $site->pageCategory -->
 <?=$site->dialog; ?>
-    <header id="top"><a tabindex="-1" href="#top" title="Here for Top-of-page (in-page Navigation)">top</a>
+    <header id="top">
 <?php include("header-logo.php"); ?>
 <?php include("page-navigation.php"); ?>
     </header>
 <?=$site->main; ?>
-    <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
     <nav id="site-nav"><!--a href="#site-nav" title="Here for Full Site Map (Navigation)">#</a-->
 <?php include("site-navigation.php"); ?>
     </nav>
     <footer id="contentinfo"><a href="#contentinfo" title="Here for Site Information: contact address, legal, copyright and privacy statement etc.">#</a>
 <?php include("footer.php"); ?>
     </footer>
-    <a href="#top" title="Jump back to Top-of-page (in-page Navigation), this is the last link on this page.">top</a>
 <?=$site->dataLists; ?>
 <?php include("scripts.php"); ?>
   </body>

@@ -20,28 +20,51 @@ namespace ramp;
 $red = (isset($_POST['red'])) ? $_POST['red'] : 255;
 $green = (isset($_POST['green'])) ? $_POST['green'] : 255;
 $blue = (isset($_POST['blue'])) ? $_POST['blue'] : 255;
-require_once('../../../load.ini.php');
-if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
+// require_once('../../../load.ini.php');
+// if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Style Guide and CSS Design Patterns of a RAMP Application - <?=\ramp\SETTING::$RAMP_DOMAIN; ?></title>
+    <title>Style Guide and CSS Design Patterns of a RAMP Application</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content">
-    <link rel="stylesheet" href="//style.ramp.matt-laptop.lan/import/icons.css.php">
-    <link rel="stylesheet" href="//style.ramp.matt-laptop.lan/import/base.css">
+    <link rel="stylesheet" href="../import/icons.css.php">
+    <link rel="stylesheet" href="../import/base.css">
+    <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/modual-stickyfoot-footnotes.css">
+    <link rel="stylesheet" href="../import/modual-page-nav-search.css">
+    <style>
+.gallery {
+  display: grid; gap: 2rem;
+  grid-columns: main-left / span 2;
+  grid-template-columns: repeat(auto-fit, 12rem);
+  max-width: calc(100% - 15rem);
+}
+.gallery > header, .gallery > footer {
+  grid-column: 1 / span all; grid-row: auto;
+}
+.gallery > figure {
+
+  margin: 0; padding: 0 0 1rem;
+  min-width: 12rem; height: 100%;
+  align-items: center;
+  display: flex; flex-direction: column;
+  background-color: rgb(0 0 0 / .25);
+  border-radius: 1rem;
+}
+.gallery > figure > img {
+  width: 2rem; max-width: 100%;
+  height: 9rem; margin-bottom: -2em;
+  background-color: transparent;
+}
+    </style>
   </head>
-  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="content-page">
-    <main id="main">
+  <body>
+    <main id="main"><form method="post" class="gallery">
       <header><a href="#main" title="Full set of icons avalible with RAMP">#</a>
-        <h1>Full Icon Set</h1>
-        <!-- <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iusto iure id fuga dolore ea ullam, iste cumque aliquam maxime impedit soluta. Omnis, dolor veritatis. Optio veritatis veniam ullam libero tenetur.</p> -->
+        <h1>Full Dymanic ICON Set (icon-*)</h1>
       </header>
-      <section class="box gallery icons">
-        <header>
-          <h2>Dymanic ICON Set (icon-*)</h2>  
-        </header>
 <?php
 $dir =  '../img/dynamic/';
 chdir($dir);
@@ -63,15 +86,17 @@ if(is_array($matches) && !empty($matches)){
     // $rescaleSize = ($size * $scale);
 ?>
       <figure class="icon" id="<?=$file; ?>">
-        <a href="#<?=$file; ?>"><img src="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2"></a>
-        <figcaption><?=$fileName; ?></figcaption>
+        <img src="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2">
+        <figcaption><a href="#<?=$file; ?>"><?=$fileName; ?></a></figcaption>
       </figure>
 <?php }} ?>
-        <footer><form method="post">
-          <input type="number" name="red" min="0" max="255">&nbsp;<input type="number" name="green" min="0" max="255">&nbsp;<input type="number" name="blue" min="0" max="255">
-          <input type="submit" value="Set preffered RGB icon color">
-        </form></footer>
-      </section>
-    </main>
+    </section>
+    <footer>
+        <menu>
+          <li><input type="number" name="red" min="0" max="255" size="4">&nbsp;<input type="number" name="green" min="0" max="255" size="4">&nbsp;<input type="number" name="blue" min="0" max="255" size="4"></li>
+          <li><input type="submit" value="Set preffered RGB icon color"></li>
+        </menu>
+      </footer>
+    </form></main>
   </body>
 </html>
