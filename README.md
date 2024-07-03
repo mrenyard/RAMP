@@ -29,10 +29,10 @@ Advanced server side functionality can be developed in
 isolation, tested against use cases, and dropped into the
 system where and when needed.
 
-Coding Standards matter to us, from semantic HTML5, CSS3,
-and best practices Object Orientated Programming (OOP);
-with self explanatory method names, common API's and
-encapsulation.
+Coding Standards matter to us, from semantic HTML5, CSS3
+(Baseline 2023), and best practices Object Orientated
+Programming (OOP); with self explanatory method names,
+common API's and encapsulation.
 
 Progressive Enhancement principles are promoted and used
 throughout. Designed with consideration for modern
