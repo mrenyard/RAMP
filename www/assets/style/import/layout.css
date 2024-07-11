@@ -12,241 +12,233 @@
          example: screen-width:1024/16px : @media only screen and (min-width: 64em) { }
   ============================================================================================ */
 
-  
-  :root {
-    --block-spacing: 1.5rem;
-    --inline-spacing: .25rem;
-    --header-height: 3.25rem;
-    --hero-height: 80vh;
-  } @media  screen and (min-width: 32rem) { /*512px*/
-    :root {
-      --inline-spacing: .5rem;
-    }
+
+:root {
+  --block-spacing: 1.5rem;
+  --inline-spacing: .25rem;
+  --header-height: 3.25rem;
+  --hero-height: 80vh;
+  --popup-right: 3.25rem;
+  @media  screen and (min-width: 32rem) { /*512px*/
+  --inline-spacing: .5rem;
   } @media screen and (orientation: landscape) {
-    :root { --hero-height: 75vh; }
+  --hero-height: 75vh;
   } @media  screen and (min-width: 43rem) { /*688px*/
-    :root {
-      --inline-spacing: .75rem;
-      --hero-height: 75vh;
-    }
+  --inline-spacing: .75rem;
+  --hero-height: 75vh;
   } @media  screen and (min-width: 48rem) { /*768px*/
-    :root {
-      --inline-spacing: 1rem;
-      --block-spacing: 2rem;
-    }
-  }  @media  screen and (min-width: 78rem) { /*1248px*/
-    :root {
-      --inline-spacing: 2em;
-    }
+  --inline-spacing: 1rem;
+  --block-spacing: 2rem;
+  } @media  screen and (min-width: 78rem) { /*1248px*/
+  --inline-spacing: 2em;
   }
+}
 
-  :target {
-    scroll-margin-block-start: 4rem;
-  }
-  body.data, body:has( > header.hero ) {
-    scroll-snap-type: y mandatory;
-  } body > header.hero {
-    scroll-snap-stop: always;
-    scroll-snap-align: end;
-    scroll-margin-block-start: unset;
-    scroll-margin-block-end: var(--header-height);
-  } body > main:has( > form:only-child ) {
-    scroll-margin-block-start: var(--header-height);
-  }
+:target { scroll-margin-block-start: 4rem; }
+body.data, body:has( > header.hero ) {
+  scroll-snap-type: y mandatory;
+} body > header.hero {
+  scroll-snap-stop: always;
+  scroll-snap-align: end;
+  scroll-margin-block-start: unset;
+  scroll-margin-block-end: var(--header-height);
+} body > main:has( > form:only-child ) {
+  scroll-margin-block-start: var(--header-height);
+} body > article:has( > form:only-child ) {
+  scroll-margin-block-start: 0;
+}
 
-  body {
-      display: grid;
-      grid-template-columns:
-        [full-start] 0
-          [app-start] 0
-            [main] 1fr
-          0 [app-end]
-        0 [full-end];
-      grid-template-rows: auto;
-      column-gap: var(--inline-spacing);
-    } @media  screen and (min-width: 43rem) { /* 688px */
-    body {
-      grid-template-columns:
-        [full-start] 0
-          [app-start] auto
-              [main-left] 20rem
-              [main-right] 20rem
-          auto [app-end]
-        0 [full-end];
-    } 
-  } @media screen and (min-width: 70rem) { /*1120px*/
-    body {
-      grid-template-columns:
-      [full-start] 0
-          [app-start] auto
-              [main-left] 20rem
-              [main-right] 20rem
-              [aside] 20rem
-          auto [app-end]
-        0 [full-end];
-    }    
+body {
+  display: grid;
+  grid-template-columns:
+    [full-start] 0
+      [app-start] 0
+        [main] 1fr
+      0 [app-end]
+    0 [full-end];
+  grid-template-rows: auto;
+  column-gap: var(--inline-spacing);
+  @media  screen and (min-width: 43rem) { /* 688px */
+  grid-template-columns:
+    [full-start] 0
+      [app-start] auto
+          [main-left] 20rem
+          [main-right] 20rem
+      auto [app-end]
+    0 [full-end];
   }
+  @media screen and (min-width: 70rem) { /*1120px*/
+  grid-template-columns:
+  [full-start] 0
+      [app-start] auto
+          [main-left] 20rem
+          [main-right] 20rem
+          [aside] 20rem
+      auto [app-end]
+    0 [full-end];
+  }
+}
 
 
-  body > nav {
-    position: fixed; z-index: 1;
-    top: .375rem; right: .375rem;
-    width: 2.5rem; height: 2.5rem;
-  } body > *:not(header, nav, main, article) {
-    display: grid; grid-template-columns: subgrid;
-  } body > main {
-    grid-area: main; grid-row: auto;
-  } body > main:has( > form:only-child ) {
-    grid-area: app; grid-row: auto;
-  } body > aside, body > article {
-    grid-area: main; grid-row: auto;
-  } body > header, body > footer {
-    grid-area: full; grid-row: auto;
-  } body > header > * {
-    grid-area: app; grid-row: auto;
-  } body > footer > * {
-    grid-area: main; grid-row: auto;
-  } body:has( aside ) figure { padding-inline: 0;
-  } body:has( aside ) figure > img,
-    body:has( aside ) figure > picture, 
-    body:has( aside ) figure > video,
-    body:has( aside ) figure > svg {
-    width: calc(100% - (var(--inline-spacing)*2));
-  } @media screen and (min-width: 43rem) { /* 688px */
-    body > main { grid-column: main-left / span 3;
-  } body > main:has( ~ aside ), body > aside, body > article,
-    body > footer > address, body > footer > nav,
-    body > aside > footer, body > aside > header {
-      grid-column: main-left / span 2; grid-row: auto;
+body > nav {
+  position: fixed; z-index: 1;
+  top: .375rem; right: .375rem;
+  width: 2.5rem; height: 2.5rem;
+} body > *:not(header, nav, main, article) {
+  display: grid; grid-template-columns: subgrid;
+} body > main, body > aside, body > article {
+  grid-area: main; grid-row: auto;
+} body > :is(main, article):has( > form:only-child ) {
+  grid-area: app; grid-row: auto;
+} body > header, body > footer {
+  grid-area: full; grid-row: auto;
+}
+body > header > * { grid-area: app; grid-row: auto; }
+body > footer > * { grid-area: main; grid-row: auto; }
+  
+@media screen and (min-width: 43rem) { /* 688px */
+  body > main { grid-column: main-left / span 3; }
+  body > main:has( ~ aside ), body > aside, body > article,
+  body > aside > footer, body > aside > header {
+    grid-column: main-left / span 2; grid-row: auto;
   }
-    body > footer > address { grid-area: main-left; grid-row: auto;
-  } body > footer > nav { grid-area: main-right; grid-row: auto; }    
-  } @media screen and (min-width: 70rem) { /*1120px*/
-    body:not(.index) > main > header.hero {
-      position: relative;
-      width: calc(150% + (var(--inline-spacing)/2));
-  } body.index > main { grid-column: main-left / span 3; }
-    body.index > aside, body.index > aside > footer,
-    body.index > aside > header {
+  body > footer > address { grid-area: main-left; grid-row: auto; }
+  body > footer > nav { grid-area: main-right; grid-row: auto; }
+}
+
+@media screen and (min-width: 70rem) { /*1120px*/
+  body:not( .index ) > main > header.hero {
+    position: relative;
+    width: calc(150% + (var(--inline-spacing)/2));
+  }
+  body.index > main { grid-column: main-left / span 3; }
+  body.index > aside, body.index > aside > footer,
+  body.index > aside > header {
     grid-column: main-left / span 3; grid-row: auto;
-  } body:not(.index) > aside {
+  } body:not( .index ) > aside {
     display: flex; flex-direction: column;
     column-gap: var(--inline-spacing);
     grid-area: aside; grid-row: 2;
-  } body:not(.index):has( > main > header.hero ) > aside {
+  } body:not( .index ):has( > main > header.hero ) > aside {
     margin-top: var(--hero-height);
   }
-  body > article {grid-column: main-left / span 3; }
+  body > article { grid-column: main-left / span 3; }
   body > footer > address {
     grid-column: main-left / span 1; grid-row: auto;
   } body > footer > nav {
     grid-column: main-right / span 2; grid-row: auto;
     columns: 2; column-gap: var(--inline-spacing);
   }
-  body:not( .index):has( aside ) img{ max-width: calc(100% - var(--inline-spacing)); }
-  body:not( .index):has( aside ) figure { max-width: 100%; }
-  } @media screen and (min-width: 78rem) {
-  body:not( .index):has( aside ) img{ max-width: 100%; }
-  body:not( .index):has( aside ) figure {
-    max-width: calc(100% + 1rem);
-    margin-inline: -1rem; padding-top: 1rem;
-   }
-  body:not( .index):has( aside ) figure > img,
-  body:not( .index):has( aside ) figure > picture,
-  body:not( .index):has( aside ) figure > video,
-  body:not( .index):has( aside ) figure > svg {
-    width: calc(100% - 2rem); }
-  }
+}
 
-  
-  h1, header { margin-bottom: calc(var(--block-spacing)/2);
-  } body > header { margin-bottom: 0;
-    height: var(--header-height);
-    background-color: var(--primary-color);
+body:has( aside ) figure {
+  padding-inline: 0;
+  > img, > picture,  > video, > svg {
+    width: calc(100% - (var(--inline-spacing)*2));
+    @media screen and (min-width: 78rem) {
+    width: calc(100% - 2rem);
+    }
   }
-  footer { margin-top: calc(var(--block-spacing)/2); }
-  
-  article { margin-bottom: var(--block-spacing);
-  } body > article { 
-    padding: var(--inline-spacing);
-    margin-inline: calc(var(--inline-spacing)*-1);
-    --post-highlight-color: var(--primary-color);
-    background-color: var(--post-highlight-color);
-  } main + article {
-    margin-top: var(--linline-spacing);
-  } aside > article { padding: .75rem;
-  } @media screen and (min-width: 44rem) { /* 688px */
-    aside > article { margin-inline: -.75rem;
-    } aside > article:nth-last-of-type(even) { margin-right: 0; 
-    } aside > article:nth-last-of-type(odd) { margin-left: 0; 
-    }
-  } @media  screen and (min-width: 46rem) { /*736px*/
-    body > article { 
-      padding: var(--block-spacing);
-      margin-inline: calc(var(--block-spacing)*-1);
-    } main + article {
-      margin-top: var(--block-spacing);
-    }
-  } @media screen and (min-width: 70rem) { /*1120px*/
-    aside > article { margin-inline: -.75rem;
-    } aside > article:nth-last-of-type(even) { margin-right: -.75rem; 
-    } aside > article:nth-last-of-type(odd) { margin-left: -.75rem;
-    } body.index > aside > article { margin-inline: 0;
-    }
-    body.index > aside { margin-inline: -.75rem; }
-    body.index > aside > header, body.index > aside > footer { margin-inline: .75rem }
-  }
+}
 
-  /** Full breakout background **/
-  body > main {
-    position: relative; z-index: 1;
-    padding-bottom: 2rem;
-    color: var(--text-color);
-    --post-highlight-color: transparent;
-    background-color: var(--complementary-canvas);
+body:not( .index ):has( aside ) {
+  @media screen and (min-width: 78rem) {
+    img { max-width: 100%; }
+    figure { max-width: calc(100% + 1rem); margin-inline: -1rem; padding-top: 1rem; }
   }
-  body > main::before,
-  body > main::after {
+  @media screen and (min-width: 70rem) { /*1120px*/
+    img{ max-width: calc(100% - var(--inline-spacing)); }
+    figure { max-width: 100%; }
+  }
+}
+
+h1, header { margin-bottom: calc(var(--block-spacing)/2);
+} body > header { margin-bottom: 0;
+  height: var(--header-height);
+  background-color: var(--primary-color);
+}
+footer { margin-top: calc(var(--block-spacing)/2); }
+
+article { margin-bottom: var(--block-spacing);
+} body > article { 
+  padding: var(--inline-spacing);
+  margin-inline: calc(var(--inline-spacing)*-1);
+  --post-highlight-color: var(--primary-color);
+  background-color: var(--post-highlight-color);
+} main + article {
+  margin-top: var(--linline-spacing);
+} aside > article { padding: .75rem;
+} @media screen and (min-width: 44rem) { /* 688px */
+  aside > article { margin-inline: -.75rem;
+  } aside > article:nth-last-of-type(even) { margin-right: 0; 
+  } aside > article:nth-last-of-type(odd) { margin-left: 0; }
+} @media  screen and (min-width: 46rem) { /*736px*/
+  body > article { 
+    padding: var(--block-spacing);
+    margin-inline: calc(var(--block-spacing)*-1);
+  } main + article { margin-top: var(--block-spacing); }
+} @media screen and (min-width: 70rem) { /*1120px*/
+  aside > article { margin-inline: -.75rem;
+  } aside > article:nth-last-of-type(even) { margin-right: -.75rem; 
+  } aside > article:nth-last-of-type(odd) { margin-left: -.75rem;
+  } body.index > aside > article { margin-inline: 0; }
+  body.index > aside { margin-inline: -.75rem; }
+  body.index > aside > header, body.index > aside > footer { margin-inline: .75rem }
+}
+
+/** Full breakout background **/
+body > main {
+  position: relative; z-index: 1;
+  padding-bottom: 2rem;
+  color: var(--text-color, black);
+  --post-highlight-color: var(--complementary-canvas, white);
+  background-color: var(--post-highlight-color);
+  &::before, &::after {
     content: ''; top: 0;
     position: absolute; z-index: -2;
     width: 50vw; height: 100%;
     background-color: inherit;
+  } &::before {
     right: 50%; left: auto;
-  } body > main::after {
+  } &::after {
     left: 50%; right: auto;
-  } @media screen and (min-width: 70rem) {
-    body:not(.index):has(aside) > main::after { left: 75%; }
-    body:not(.index):has(aside) > main:has( > form:only-child )::after { left: 50%; }
-    body:not(.index) > aside { z-index: 1; }
   }
-  body > main,
-  body:not(.index) > aside {
-    padding-bottom: 2rem;
-  }
+}
+@media screen and (min-width: 70rem) {
+  body:not(.index):has(aside) > main::after { width: 75vw; }
+  /* body:not(.index):has(aside) > main:has( > form:only-child )::after { left: 50%; } */
+  body:not(.index) > aside { z-index: 1; }
+}
+body > main,
+body:not(.index) > aside {
+  padding-bottom: 2rem;
+}
 
 
-  header.hero,
-  header.hero::before {
-    min-height: 15rem; height: var(--hero-height);
-  } header.hero {
-    overflow: visible;
-  } header.hero::before {
-    content: ''; z-index: -1;
-    position: absolute;
-    width: 100vw;
-    background: inherit;
-  } body > header,
-    body > header.hero::before {
-    max-height: 100vw;
-  }
+header.hero,
+header.hero::before {
+  min-height: 15rem; height: var(--hero-height);
+} header.hero {
+  overflow: visible;
+} header.hero::before {
+  content: ''; z-index: -1;
+  position: absolute;
+  width: 100vw;
+  background: inherit;
+} body > header,
+  body > header.hero::before {
+  max-height: 100vw;
+}
 
 
-  footer > a:last-child,
-  nav li > a,
-  menu > li > *:only-child {
-    display: inline-block;
-    text-align: center;
-    min-width: 2.5rem;
-    padding-inline: .375rem;
-    border: none;
-  }
+footer > a:last-child,
+menu > li > *:only-child,
+nav li > a {
+  display: inline-block;
+  text-align: center;
+  min-width: 2.5rem;
+  padding-inline: .375rem;
+  border: none;
+} footer > a:last-child {
+  float: right;
+}

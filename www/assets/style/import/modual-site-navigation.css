@@ -1,0 +1,29 @@
+/**
+ * modual-site-navigation.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ *
+ */
+ /* ==============================================================================================
+  MODUALS - Discrete, reusable, modular components, usually denoted with a module class name
+         e.g. product lists, contact forms...
+  ============================================================================================ */
+
+
+#site-nav {
+  overflow: hidden;
+  text-align: center; line-height: 2.5rem;
+  color: var(--secondary-contrast);
+  background-color: var(--secondary-color);
+  &:focus, &:focus-within { animation: site-nav .5s ease-out forwards; }
+  > h2 { margin: 0; line-height: 2.5rem; }
+}
+#site-nav > h2, #site-nav > li > a { cursor: pointer; }
+
+@keyframes site-nav {
+  0% { height: 2.5rem; }
+  99% { height: calc(100svh - 3.5rem); }
+  100% { overflow: visible; height: auto; bottom: 3.5rem; }
+}

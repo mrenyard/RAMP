@@ -14,7 +14,7 @@
 main > form:only-child, article, figure {
   background-color: rgba(0, 0, 0, 0.06);
 }
-main > form:only-child {
+article > form:only-child {
   > header {
     display: flex;
     align-items: center;
@@ -41,9 +41,16 @@ main > form:only-child {
     <header id="top">
       <div id="logo">[HEADER]</div>
     </header>
-    <main id="main"><form action="#main" method="post"><a href="#main" title="Here for Page Main content on: Application (DATA) Style">#</a>
+    <main id="#main"><a href="#main" title="Here for Page Main content on: Layout Index Page Styles">#</a>
       <header>
-        <h1>APPLICATION (DATA FORM)</h1>
+        <h1>MAIN HEADER</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam libero dignissimos eum recusandae laudantium iste, accusantium asperiores quidem nemo perferendis odit ipsam temporibus sequi, expedita amet enim aperiam, deleniti rerum!</p>
+    </main>
+    <article id="app:one"><form action="#app:one" method="post"><a href="#app:one" title="Here for: SUB APPLICATION (DATA FORM)">#</a>
+      <header>
+        <h1>SUB APPLICATION (DATA FORM)</h1>
       </header>
       <footer>
         <menu>
@@ -53,7 +60,7 @@ main > form:only-child {
         </menu>
         <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
       </footer>
-    </form></main>
+    </form></article>
     <nav id="site-nav">
       <h2>N</h2>
     </nav>

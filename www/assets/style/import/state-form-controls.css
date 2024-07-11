@@ -1,0 +1,253 @@
+/**
+ * state-form-controls.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ * 
+ */
+/* ===============================================================================================
+   STATE   - How thing may change based of user interaction or through JavaScript DOM changes,
+             e.g. errors, hidden, expanded, active
+   ============================================================================================ */
+
+
+/** .field (hijax indicator) **/
+.js .field > .ind {
+  display: block; position: absolute;
+  top: 1rem; right: 0;
+  width: 1.75rem; height: 2rem;
+  padding-left: 1.875rem;
+  overflow: hidden;
+  text-align: center; line-height: 1rem;
+  background-color: transparent;
+
+  &.verified,
+  &.error {
+    opacity: 0; z-index: -1;
+    animation-iteration-count: 1;
+    animation-name: inFadeOut;
+    animation-duration: 5s;
+  }
+  &::before {
+    content: '';
+    display: block; position: absolute;
+    top: .3125rem; right: .1925rem;
+    width: 1.5rem; height: 1.5rem;
+    font-size: 1.625rem; line-height: 1.25rem;
+    border-radius: 50%;
+    border: none 0;
+  }
+  &.verifying::before {
+    border: dotted .2rem var(--accent-color, rgb(0, 120, 215));;
+    animation-iteration-count: infinite;
+    animation-name: spinAndPulse;
+    animation-duration: 1.5s;
+  }
+  &.verified::before {
+    content: '\2713';
+    color: var(--primary-contrast, white);
+    background-color: var(--primary-color, green);
+  }
+  &.error::before {
+    content: '\2717';
+    color: var(--error-contrast, white); 
+    background-color: var(--error-color, red);  
+  }
+}
+@keyframes inFadeOut {
+  from { opacity: 1; z-index: 1; }
+  50% { opacity: 1; z-index: 1; }
+  to { opacity: 0; z-index: 1; }
+}
+@keyframes outFadeIn {
+  from { opacity: 0; }
+  50% { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes spinAndPulse {
+  from { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(.5) rotate(180deg); }
+  to { transform: scale(1) rotate(360deg); }
+}
+
+
+/** .field.file (active upload) **
+.js .field.file.checking > label:first-child {
+  background: linear-gradient(60deg, white, transparent, white, transparent, white);
+  background-size: 200% 100%;
+  animation: bgSwipe 1s linear infinite;
+}
+@keyframes bgSwipe {
+  0% { background-position: 100% 100%; }
+  100% { background-position: 0% 0%; }
+}*/
+
+/** .js .field.range (value indivator) **/
+.js .field.range {
+  &:not( .rate )::after {
+    content: attr(data-value);
+    position: absolute;
+    top: 0; right: 0;
+    width: 3.25rem; height: 3rem;
+    text-align: center; line-height: 3.875rem;
+  }
+  &.percent::after { content: attr(data-value) '%'; }
+  &:has( input ~ .ind.verifying )::after {
+    content: '';
+  }
+  &:has( input:disabled )::after {
+    color: rgb(115 115 115);
+  }
+  &:has( input ~ .ind )::after {
+    animation-iteration-count: 1;
+    animation-name: outFadeIn;
+    animation-duration: 7.5s;
+    animation-direction: forwards;
+  }
+  &:not( .rate ) > label + input[type="range"] {
+    width: calc(100% - 3.75rem);
+  }
+}
+
+.js .field.range.rate {
+  --split: 0%;
+  &[data-value="1"] { --split: 10%; }
+  &[data-value="2"] { --split: 20%; }
+  &[data-value="3"] { --split: 30%; }
+  &[data-value="4"] { --split: 40%; }
+  &[data-value="5"] { --split: 50%; }
+  &[data-value="6"] { --split: 60%; }
+  &[data-value="7"] { --split: 70%; }
+  &[data-value="8"] { --split: 80%; }
+  &[data-value="9"] { --split: 90%; }
+  &[data-value="10"]{ --split: 100%; }
+  background-color: rgb(0 0 0 / .25);
+  > input[type="range"] {
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    top: 0; left: 0;
+    width: 12rem; height: 2rem;
+    margin-left: 0;
+    border-radius: 0;
+    cursor: pointer;
+    outline: none;
+  }
+  &::after {
+    content: '';
+    position: absolute; z-index: 1;
+    top: 1rem; bottom: 0; left: 0;
+    width: 12rem;
+    background: linear-gradient(
+      to right,
+      gold 0%,
+      gold var(--split),
+      rgb(255 255 255 / .5) var(--split),
+      rgb(255 255 255 / .5) 100%
+    );
+    mask-image:
+      var(--icon-x16-star),
+      var(--icon-x16-star),
+      var(--icon-x16-star),
+      var(--icon-x16-star),
+      var(--icon-x16-star);
+    mask-position:
+      0 0,
+      25% 0,
+      50% 0,
+      75% 0,
+      100% 0;
+    mask-size:
+      2.8rem 2rem,
+      2.8rem 2rem,
+      2.8rem 2rem,
+      2.8rem 2rem,
+      2.8rem 2rem;
+    mask-repeat: no-repeat;
+  }
+  &:has(input ~ .ind)::after {
+    animation: none;
+  }
+}
+
+/*
+fieldset.toolbar {
+} fieldset.toolbar:focus-within {
+  outline: none;
+} fieldset.toolbar > .field:focus-within {
+  outline-width: .125rem;
+} fieldset.toolbar > .field:last-of-type {
+  margin-left: auto;
+}
+fieldset.toolbar > .field.select > select {
+  width: 100%;
+  height: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  background-color: transparent;
+  border: none;
+}
+
+.field.editor > label {
+  /* bottom: auto; *
+  height: 1rem;
+}
+.field.editor > fieldset.toolbar {
+  gap: 0;
+  padding-top: 1rem;
+  border-bottom: solid rgba(255,255,255,.75) .125rem;
+}
+.field.editor > fieldset.toolbar > legend {
+  display: none;
+} .field.editor > fieldset.toolbar > .field {
+  max-width: 3rem;
+  padding: 0;
+  outline: none;
+  border-radius: 0;
+} .field.editor > fieldset.toolbar > .field.select {
+  min-width: 16.5rem; max-width: 18rem;
+} .field.editor > fieldset.toolbar.compact > .field {
+  height: 2rem;
+  border-top-width: 2rem;
+}
+.field.editor > fieldset.toolbar > .field > button {
+  margin : 0; padding: 0;
+  width: 100%; height: 2rem;
+  border: none 0;
+  border-radius: 0;
+  background-color: transparent;
+  outline: none 0;
+}
+.field.editor > fieldset.toolbar > .field > select:focus,
+.field.editor > fieldset.toolbar > .field > button:focus {
+  background-color: rgba(0,0,0,.125);
+}
+.field.editor > fieldset.toolbar.compact > .field > label:last-child {
+  display: none;
+}
+
+.field.icon > button {
+  background: 50% 50% / 1.5rem 1.5rem no-repeat;
+} .field.icon > button[id*=":bold"] {
+  background-image: url(/assets/style/img/ui/icon/bold.svg)
+} .field.icon > button[id*=":italic"] {
+  background-image: url(/assets/style/img/ui/icon/italic.svg)
+} .field.icon > button[id*="underline"] {
+  background-image: url(/assets/style/img/ui/icon/underline.svg)
+} .field.icon > button[id*=":strike"] {
+  background-image: url(/assets/style/img/ui/icon/strike.svg)
+} .field.icon > button[id*=":list-unordered"] {
+  background-image: url(/assets/style/img/ui/icon/list.svg)
+} .field.icon > button[id*=":list-ordered"] {
+  background-image: url(/assets/style/img/ui/icon/list-num.svg)
+} .field.icon > button[id*=":sub"] {
+  background-image: url(/assets/style/img/ui/icon/subscript.svg)
+} .field.icon > button[id*=":sup"] {
+  background-image: url(/assets/style/img/ui/icon/supscript.svg)
+} .field.icon > button[id*=":link"] {
+  background-image: url(/assets/style/img/ui/icon/link.svg)
+}
+fieldset.toolbar > .field.icon:has( button[id*=":underline"] ) {
+  min-width: 3.5rem;
+}*/

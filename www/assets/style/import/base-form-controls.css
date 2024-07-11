@@ -1,0 +1,198 @@
+/**
+ * base-form-controls.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ * 
+ */
+/* ===============================================================================================
+  BASE   - Primary HTML elements such as the body, form tags, links...
+  ============================================================================================ */
+
+
+  ::-webkit-datetime-edit-ampm-field:focus,
+  ::-webkit-datetime-edit-day-field:focus,
+  ::-webkit-datetime-edit-hour-field:focus,
+  ::-webkit-datetime-edit-millisecond-field:focus,
+  ::-webkit-datetime-edit-minute-field:focus,
+  ::-webkit-datetime-edit-month-field:focus,
+  ::-webkit-datetime-edit-second-field:focus,
+  ::-webkit-datetime-edit-week-field:focus,
+  ::-webkit-datetime-edit-year-field:focus,
+  ::-webkit-datetime-edit-text:focus {
+    color: var(--accent-contrast, white);
+    background-color: var(--accent-color, rgb(0, 120, 215));
+  }
+  ::-moz-color-swatch { border: none 0;
+  } ::-webkit-color-swatch { border: none 0; }
+  input[type="text"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+  }
+
+   /** input[type=range] (reset & clear) **/
+  input[type="range"] {
+    appearance: none; /* Hides the slider so that custom slider can be made */
+    width: 100%; /* Specific width is required for Firefox. */
+    background: transparent; /* Otherwise white in Chrome */
+  } input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+  } input[type="range"]::-ms-track {
+    width: 100%;
+    cursor: pointer;
+    /* Hides the slider so custom styles can be added */
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+  }
+  /** input[type=range]::thumb **/
+  /* Special styling for WebKit/Blink */
+  input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    border: .1rem solid rgba(0,0,0,.25);
+    width: 1rem; height: 1.5rem;
+    /* border-radius: .25rem; */
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    margin-top: -.6rem; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    box-shadow: .1rem .1rem .1rem rgba(0,0,0,.75), 0 0 .1rem rgba(0,0,0,.5); /* Add cool effects to your sliders! */
+  } /* All the same stuff for Firefox */
+    input[type="range"]::-moz-range-thumb {
+    box-shadow: .1rem .1rem .1rem rgba(0,0,0,.75), 0 0 .1rem rgba(0,0,0,.5);
+    border: .1rem solid rgba(0,0,0,.25);
+    width: 1rem; height: 1.5rem;
+    /* border-radius: .25rem; */
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+  } /* All the same stuff for IE */
+  input[type="range"]::-ms-thumb {
+    box-shadow: .1rem .1rem .1rem rgba(0,0,0,.75), 0 0 .1rem rgba(0,0,0,.5);
+    border: .1rem solid rgba(0,0,0,.25);
+    width: 1rem; height: 1.5rem;
+    /* border-radius: .25rem; */
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+  }
+  /** input[type=range]::track **/
+  input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: .625rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    border: .1rem solid rgba(255,255,255,.75);
+  } input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: .625rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    border: .1rem solid rgba(255,255,255,.75);
+  } input[type="range"]::-ms-track {
+    width: 100%;
+    height: .625rem;
+    cursor: pointer;
+    background-color: var(--primary-color);
+    border-color: transparent;
+    border-width: 1rem 0;
+    color: transparent;
+  } input[type="range"]::-ms-fill-lower {
+    background-color: rgba(255,255,255,.25);
+    border: .1rem solid rgba(255,255,255,.75);
+  } input[type="range"]:focus::-ms-fill-lower {
+    background: var(--primary-color);
+  } input[type="range"]::-ms-fill-upper {
+    background-color: var(--primary-color);
+    border: .1rem solid rgba(255,255,255,.75);
+  } input[type="range"]:focus::-ms-fill-upper {
+    background-color: rgba(255,255,255,.5);
+  }
+
+  /** input[type=color] **/
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  } input[type="color"]::-webkit-color-swatch {
+    border: none;
+  } input[type="color"] {
+    appearance: none;
+    padding: 0;
+    border: none;
+  }*/
+
+  /** input[type=radio][type=checkbox] **/
+  input[type="radio"],
+  input[type="checkbox"] {
+    position: absolute; z-index: -100;
+    opacity: 0;
+  }
+  input[type="radio"] + label,
+  input[type="checkbox"] + label {
+    display: inline-block;
+  }/*legend + input[type="checkbox"] + label {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }*/
+  input[type="radio"] + label::before,
+  input[type="checkbox"] + label::before {
+    content: '';
+    display: inline-block;
+    width: .9rem; height: 1rem;
+    padding-left:  .1rem;
+    margin: 0 .25rem;
+    line-height: .675rem; font-size: 1.625rem;
+    vertical-align: bottom;
+    cursor: pointer;
+    border: solid rgba(0,0,0,.5) .1rem;
+    color: var(--text-color); background-color: white;
+  } input[type="radio"] + label::before {
+    border-radius: 50%;
+  } input[type="radio"]:focus:checked + label::before {
+    border-color: var(--accent-contrast, white);
+  } input[type="radio"]:checked + label::before {
+    background-color: var(--accent-color, rgb(0, 120, 215));;
+  } input[type="checkbox"]:checked + label::before {
+    content: ' \2713';
+    color: var(--text-color); 
+  }
+
+  /* select arrows */
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--primary-color) 50%),
+      linear-gradient(135deg, var(--primary-color) 50%, transparent 50%),
+      linear-gradient(to right, transparent, transparent);
+    background-position:
+      calc(100% - 1.01rem) 50%,
+      calc(100% - .5rem) 50%,
+      100% 100%;
+    background-size:
+      .5rem .51rem,
+      .51rem .51rem,
+      2rem 2rem;
+      background-repeat: no-repeat;
+  } select:focus {
+    background-image:
+      linear-gradient(45deg, transparent 50%, rgba(0,0,0,.75) 50%),
+      linear-gradient(135deg, rgba(0,0,0,.75) 50%, transparent 50%),
+      linear-gradient(to right, white, white);
+    background-size:
+      .5rem .5rem,
+      .51rem .51rem,
+      2.125rem 2rem;
+  } .field.error > select:focus {
+    background-image:
+      linear-gradient(45deg, transparent 50%, white 50%),
+      linear-gradient(135deg, white 50%, transparent 50%),
+      linear-gradient(to right, var(--error-color, red), var(--error-color, red));
+  } .field > select:user-invalid:focus {
+    background-image:
+      linear-gradient(45deg, transparent 50%, white 50%),
+      linear-gradient(135deg, white 50%, transparent 50%),
+      linear-gradient(to right, var(--error-color, red), var(--error-color, red));
+  }

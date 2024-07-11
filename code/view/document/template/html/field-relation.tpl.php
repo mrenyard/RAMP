@@ -37,7 +37,7 @@ switch ((string)$this->type) {
   case 'select-one select-from': ?>
           <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <span class="name"><?=$this->label; ?></span>
-            <select id="<?=$this->id; ?>" name="<?=$this->id; ?>" required="required" tabindex="<?=$tabindex; ?>"><?php foreach ($this->options as $option) { ?>
+            <select id="<?=$this->id; ?>" name="<?=$this->id; ?>"<?=($this->isRequired)? ' required size="' . $this->count . '"' : ''; ?> tabindex="<?=$tabindex; ?>"><?php foreach ($this->options as $option) { ?>
               <option value="<?=$option->key; ?>"<?=($option->isSelected)? ' selected':''; ?>><?=$option->description; ?></option><?php } ?>
 
             </select>

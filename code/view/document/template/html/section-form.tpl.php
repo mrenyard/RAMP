@@ -20,7 +20,7 @@
  */
 $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 ?>
-<section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><form method="post">
+<section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><form action="#<?=$this->id; ?>" method="post">
         <header>
           <h2><!-- a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a--><?=$this->heading; ?></h2>
           <p class="note"><?=$this->summary; ?></p>

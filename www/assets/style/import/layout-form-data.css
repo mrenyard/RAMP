@@ -1,0 +1,489 @@
+/**
+ * layout-form-data.css
+ *
+ * Default CSS Manifest modified from Snook's
+ * Scalable and Modular Architecture for CSS
+ * http://smacss.com/book/
+ *
+ */
+/* ==============================================================================================
+  LAYOUT  - How the page is divided into sections including header, main, aside, nav, footer.
+         example: screen-width:1024/16px : @media only screen and (min-width: 64em) { }
+  ============================================================================================ */
+
+
+input, select { padding: 0 .0675rem 0 .375rem; }
+::-moz-color-swatch { border: none 0;
+} ::-webkit-color-swatch { border: none 0; }
+input[type="color"] { appearance: none; padding: 0; }
+input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type="number"] { padding-right: .375rem; }
+input[type="number"]:disabled { appearance: textfield; }
+input[type=checkbox]:disabled ~ label { color: rgb(115 115 115); }
+input[type="range"] {
+  margin-left: .375rem; padding: 0;
+  max-width: calc(100% - .75rem);
+} input[type="range"]:has( ~ .ind.verifying) {
+  max-width: calc(100% - 2.25rem);
+}
+select { appearance: none; }
+
+
+.field.meter > label:first-child + meter {
+  width: calc(100% - .75rem);
+  margin-inline: .375rem;
+}
+
+/** .field **/
+.field {
+  position: relative;
+  display: inline-block;
+  margin-block: .0625rem; padding-top: 1.125rem;
+  min-width: 2rem; width: 100%; height: 3rem;
+  vertical-align: top;
+  background-color: rgba(255,255,255,.5);
+  outline: none 0;
+  &.select-many, &:has( select ) {
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--primary-color, black) 50%),
+      linear-gradient(135deg, var(--primary-color, black) 50%, transparent 50%),
+      linear-gradient(to right, transparent, transparent);
+    background-position:
+      calc(100% - .95rem) 1.75rem,
+      calc(100% - .45rem) 1.75rem,
+      100% 100%;
+    background-size:
+      .5rem .51rem,
+      .51rem .51rem,
+      2rem 2rem;
+    background-repeat: no-repeat;
+    &:has( select:first-child ) {
+      background-position:
+        calc(100% - .95rem) .75rem,
+        calc(100% - .45rem) .75rem,
+        100% 100%;
+    }
+    &:has( .verifying ) { background-image: none; }
+  }
+  &.select-many {
+    &::before {
+      content: "-- " attr(data-placeholder) " --";
+      display: block;
+      height: 3rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-transform: lowercase;
+      padding: .125rem 2.25rem 0 .5rem;
+    }
+    &:has( input:checked )::before {
+      content: "-- " attr(data-placeholder-selected) ":";
+    }
+    &:has( .ind.verifying )::before { color: rgb(115 115 115); }
+    > ul, > ol {
+      position: absolute; z-index: -1;
+      top: 3rem; left: 0; width: 99.5%;
+      list-style: none; padding: .25rem;
+      background-color: white;
+      border: solid rgb(0 0 0 / .25) .0625rem; border-radius: .1875rem;
+      box-shadow: .0625rem .0625rem .125rem rgb(0 0 0 / .125);
+    }
+    &:not( :has( input:checked ), .error ) {
+      > legend {
+        bottom: 0;
+        font-size: 1.25rem;
+        line-height: 3.25rem;
+        padding-left: .75rem;
+      }
+      &:focus-within {
+        > legend {
+          bottom: auto;
+          font-size: .7rem;
+          line-height: 1rem;
+          padding-left: .25rem;  
+        }
+      }
+    }
+    &:focus-within {
+      > legend {
+        bottom: auto;
+        font-size: .7rem;
+        line-height: 1rem;
+        padding-left: .25rem;  
+      }
+      > ul, ol { z-index: 4; }
+    }
+  }
+  &:has( button:first-child ) {
+    > button {
+      vertical-align: top;
+      width: 100%; height: 1.825rem;
+      border: none; outline: none;
+    }
+    > label { position: relative; }
+  }
+  &.list {
+    height: auto;
+    > ol , > ul {
+      list-style: none;
+      padding: 0 .125rem .125rem;
+      > li {
+        line-height: 1.75rem;
+        padding: 0 .25rem .25rem;
+        &:nth-of-type(odd) { background-color: rgb(0 0 0 / .125); }
+        &:nth-of-type(even) { background-color: rgb(255 255 255 / .125); }
+        > meter { width: 30%;
+         + label  { min-width: calc(100% - 30% - .375rem); }
+        }
+      }
+    }
+  }
+  &.required {
+    &::after {
+      content: '\2731';
+      display: block;
+      position: absolute; z-index: 2;
+      top: 0; right: 0;
+      width: auto; height: 1rem; line-height: 1rem;
+      padding: 0 .25rem .125rem 0;
+      text-align: right; font-size: .6rem;
+    } &.error::after,
+    &:has( input:user-invalid )::after { color: white; }
+  }
+  &.error, &:has( input:user-invalid ) {
+    > label:first-child,
+    > legend:first-child {
+      overflow: visible;
+      color: var(--error-contrast, white);
+      background-color: var(--error-color, red);    
+    }
+  }
+  &:not( .flag ) > label,
+  > legend {
+    display: block; position: absolute; z-index: 1;
+    top: 0; right: 0; bottom: auto; left: 0;
+    padding: 0 1rem 0 .25rem;
+    line-height: 1rem; white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    font-size: .7rem; font-weight: normal;
+    background-color: white;
+    transition-duration:  .25s;
+    transition-timing-function: ease-in-out;
+    transition-property: bottom, font-size, line-height, padding-left;
+    &:last-child {
+      top: auto; bottom: 0;
+      text-align: center;
+      padding: 0 .25rem;
+      animation: none;
+    }
+  }
+  > input, > select {
+    text-overflow: ellipsis;
+    background-color: rgba(255,255,255,.25);
+    &, &:not([type="file"]) {
+      width: 100%; height: 1.875rem;
+      border: none 0; outline: none 0;
+    }
+  }
+  > select {
+    padding-right: 1.875rem;
+    text-overflow: ellipsis;  
+  }
+  &.flag {
+    display: flex;
+    > input {
+      width: auto; height: auto;
+      padding-top: 1rem;
+      margin-inline: .5rem;
+    }
+    > label {
+      position: absolute; top: 1.125rem;
+      padding: 0 1.875rem .25rem 1.75rem;
+      max-width: 99.5%; height: 1.5rem;
+      line-height: 1.5rem;
+      overflow: hidden;
+    }
+    &:focus-within, &:hover {
+      > input { z-index: 4; }
+      > label {
+        z-index: 3; height: auto;
+        background-color: white;
+        border: solid rgb(0 0 0 / .25) .0625rem; border-radius: .1875rem;
+        box-shadow: .0625rem .0625rem .125rem rgb(0 0 0 / .125);
+      }
+    }
+  }
+  > .hint {
+    display: block;
+    position: fixed; z-index: 100;
+    right: var(--popup-right);
+    bottom: -33%; left: 0;
+    height: fit-content; max-height: 33%;
+    max-width: 40em;
+    text-wrap: balance;
+    line-height: 1.375rem;
+    overflow-y: auto;
+    padding: var(--inline-spacing);
+    background-color: var(--complementary-canvas, white);
+    border: solid;
+    border-width: .75rem .75rem 0 0;
+    border-color: var(--primary-color);
+    box-shadow: .5rem .5rem 1rem rgb(0 0 0 / .5);
+    transition: bottom 1s ease-out;
+    &::first-letter { text-transform: capitalize; }
+  }
+  &:focus-within {
+    outline: solid var(--accent-color, rgb(0, 120, 215)) .125rem;
+    &.error, &:has( input:user-invalid ) {
+      outline-color: var(--error-color, red);
+      > .hint { bottom: 0; }
+      &[title]::before { /** error (title) dialogue **/
+        content: attr(title);
+        position: absolute; z-index: 2;
+        right: -.5rem; bottom: 95%; left: -15.5%;
+        padding: .75rem .5rem .5rem;
+        line-height: 1.375em;
+        font-weight: normal;
+        font-size: .8rem; 
+        text-wrap: pretty;
+        border-radius: .25rem;
+        color:var(--error-contrast, white);
+        background-color: var(--error-color, red);
+        box-shadow: .125rem .125rem .5rem rgba(0,0,0,.5);
+      } &.required::before { /** error (title) dialogue **/
+        right: 0; border-radius: .25rem .25rem 0 .25rem;
+      }
+      &.required::after { /** requiered **/
+        content: 'Required \2731';
+        padding-left:  .5rem;
+        border-radius: 0 0 .25rem .25rem;
+        background-color: var(--error-color, red);
+        box-shadow: .125rem .28rem .125rem -.125rem rgba(0,0,0,.5);
+      }
+      > input {
+        background-color: var(--error-contrast, white);
+        &::selection {
+          color: var(--error-contrast, white);
+          background-color: var(--error-color, red);
+        }
+      }
+    }
+  }
+  &:has( input:not( [value], [type="color"]), :where(select > option[disabled]:checked)) {
+    > label:first-child {
+      bottom: 0;
+      font-size: 1.25rem;
+      line-height: 3.25rem;
+      padding-left: .75rem;
+    }
+  }
+  li {
+    height: 1.875rem; line-height: 1.25rem;
+    padding: .25rem .25rem;
+    &:hover, &:focus-within {
+      background-color: rgb(0 0 55 / .125);
+    }
+    > label {
+      display: inline-block;
+      min-width: calc(100% - 1.25rem);
+    }
+  }
+} div.field { /* weighted */
+  &.error, &:focus-within, &:has( input:user-valid, input:user-invalid ) {
+    > label:first-child {
+      bottom: auto;
+      font-size: .7rem;
+      line-height: 1rem;
+      padding-left: .25rem;    
+    }
+  }
+}
+
+fieldset.toolbar {
+  position: relative;
+  display: flex; flex-wrap: wrap;
+  padding-block: 1.0625rem .0625rem;
+  column-gap: .125rem;
+  > legend {
+    position: absolute;
+    top: 0; right: 0; left: 0;
+    line-height: 1rem; font-size: .7rem;
+    background-color: white;
+  }
+  > *:not(legend) {
+    height: 2.825rem; width: fit-content;
+    padding: 0;
+  }
+  > :last-child { margin-left: auto; }
+}
+
+/** .list of radio or checkboxes *
+.list li,
+.list li {
+  min-height: 1.75rem;
+  line-height: 2rem;
+} .list.checkbox li:focus-within {
+  color: var(--accent-contrast, white);
+  background-color: var(--accent-color, rgb(0, 120, 215));
+}
+/** fiedset of radio or checkboxes **
+fieldset input[type="radio"] + label,
+fieldset input[type="checkbox"] + label {
+  display: block;
+  padding-left: 1.75rem;
+} 
+fieldset.bool input[type="checkbox"] + label::before,
+fieldset.radio.list li > input[type="radio"] + label::before,
+fieldset.checkbox.list li > input[type="checkbox"] + label::before {
+  position: absolute;
+  top: .375rem;
+  left: 0;
+}
+
+.list, .list li { position: relative; }
+
+/** form > fieldset > .list **
+form > fieldset > div.list,
+fieldset.list {
+  display: inline-block;
+  position: relative;
+  margin: .25rem; padding: 1.25rem 0 0;
+  vertical-align: top;
+  /* border-radius: .25rem; *
+  background-color: rgba(255,255,255,.5);
+}
+form > fieldset > div.list > ol,
+form > fieldset > div.list > ul,
+fieldset.list > ol,
+fieldset.list > ul {
+  list-style: none;
+  margin: 0 .25rem .25rem;
+  padding-left: 0;
+} form > fieldset > div.radio.list > ol,
+  form > fieldset > div.radio.list > ul,
+  fieldset.radio.list > ol,
+  fieldset.radio.list > ul {
+  column-gap: .25rem;
+  column-width: 10rem;
+}
+
+/** .field.image **
+.field.image,
+.field.image > label,
+.field.image > input[type="image"] {
+  padding: 0;
+  text-align: center;
+} .field.image.half {
+  float: right;
+  height: auto;
+} .field.image.icon {
+  width: 2rem;
+} /** .field.image > label **
+  .field.image > label {
+  height: 1rem;
+} .field.image > label:first-child {
+  padding: 0 .25rem;
+} .field.image > label:last-child {
+  display: block;
+  height: 1rem; line-height: 1rem;
+  white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+  font-size: .7rem; font-weight: normal;
+  background-color: white;
+  /* border-radius: 0 0 .25rem .25rem; *
+}
+
+
+/** .field.file **
+.field.file { height: 3.75rem; background-color: transparent; }
+.field.file > input[type="file"] {
+  /* margin-left: 80%; *
+  width: 0; height: 0;
+  float: right;
+  /* overflow: hidden; *
+} /** .field.file > label **
+.field.file > label,
+.field.file.error > label:first-child,
+.field.file:focus-within > label:first-child,
+.field.file:has( input:user-invalid ) > label:first-child {
+  top: 0; right: 0; bottom: 0; left: 0;
+  padding: 0 7.25rem 0 .7rem;
+  font-size: 1.25rem; line-height: 3.25rem;
+  /* border-radius: .25rem; *
+  color: var(--text-color);
+  background-color: rgba(255,255,255,.5);
+  /** small **
+  font-size: .7rem;
+  line-height: .75rem;
+  padding: .1rem .25rem 2.25rem;
+  font-weight: bold;
+} .field.file.error:focus-within > label:first-child,
+  .field.file:has( input:user-invalid ):focus-within > label:first-child {
+  background-color: white;
+} .field.file.bad > label:first-child {
+  font-weight: bold;
+  background-color: white;
+  color: var(--error-primary-color);
+} /** EVENT MESSAGES: before label **
+  .field.file > label::before { content: attr(data-message-ready) ' ';
+} .field.file.active > label::before { content:  attr(data-message-active) ' ';
+} .field.file.good > label::before { content:  attr(data-message-good) ' ';
+} .field.file.bad > label::before { content:  attr(data-message-bad) ' ';
+} /** BUTTON - .field.label > label::after **
+  .field.file > label::after {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; width: 7rem;
+  content: attr(data-message-button);
+  font-weight: normal;
+  text-align: center; line-height: 2.75rem;
+  cursor: pointer;
+  color: var(--primary-contrast-color);
+  background-color: var(--primary-color);
+  /* border-radius: .25rem; *
+  border-style: solid; border-width: .1rem;
+  border-color: rgba(255,255,255,.5) rgba(0,0,0,.25) rgba(0,0,0,.25) rgba(255,255,255,.5);
+  /** small **
+  top: .85rem;
+  left: -.1rem;
+  width: auto;
+  font-size: 1.25rem;
+} .field.file.error > label::after,
+  .field.file.bad > label::after{
+  color: var(--error-contrast, white);
+  background-color: var(--error-color, red);
+} .field.file:has( input:user-invalid ) > label:first-child::after { background-color: var(--error-primary-color)
+} /** .field.file::after (required) **
+.field.file.required::after,
+.field.file.required.error::after { color: white; }
+.field.file.required.error:focus-within::before { bottom: calc(100% - .25rem); }
+
+/** fieldset.bool > label **
+fieldset.bool > input[type="checkbox"] + label {
+  margin-top: 1rem;
+  line-height: 1rem;
+}
+fieldset.bool > input[type="checkbox"] + label::before {
+  top: 1.375rem; left: .25rem;
+}
+
+/** .field.meter **
+.field.meter > label:first-child + meter {
+  width: calc(100% - 1rem);
+  margin: 1.5rem .5rem 0;
+}
+
+/** .field.textarea **
+.field.textarea {
+  height: auto;
+}
+.field.textarea:focus-within > label:first-child {
+  bottom: auto;
+}
+.field.textarea > textarea {
+  width: 100%;
+  padding: .5rem;
+  border: none 0;
+  background-color: transparent;
+  overflow-y: hidden;
+} .field.textarea > label:first-child + textarea {
+  margin-top: 1rem;
+}

@@ -187,7 +187,7 @@
     text-align: center;
     line-height: 2.75rem;
     border-radius: var(--border-radius);
-    background-color: var(--dark-primary-color);
+    background-color: var(--secondary-color);
   } #site-nav:target,
     #site-nav:focus-within {
     bottom: 4rem; height: auto;
@@ -243,7 +243,7 @@
   width: 3rem; height: 3rem;
   margin: 2rem auto 1.5rem;
   border-radius: var(--border-radius);
-  background-color: var(--dark-primary-color);
+  background-color: var(--secondary-color);
 }
 
 
@@ -259,7 +259,7 @@
     --text-color: rgb(10 10 10);
     --primary-color: rgb(0 128 0);
     --primary-contrast-color: rgb(255, 255, 255);
-    --dark-primary-color: rgb(0 99 0);
+    --secondary-color: rgb(0 99 0);
     --darker-primary-color: rgb(0 33 0);
     --darker-primary-contrast-color: rgb(200 200 200);
     --selection-txt-color: rgb(255 255 255);
@@ -283,7 +283,7 @@
     --text-color: rgb(10,10,10);
     --primary-color: green;
     --primary-contrast-color: white;
-    --dark-primary-color: rgb(0, 99, 0);
+    --secondary-color: rgb(0, 99, 0);
     --darker-primary-color: rgb(0 33 0);
     --darker-primary-contrast-color: rgb(200 200 200);
     --selection-txt-color: white;

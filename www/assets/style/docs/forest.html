@@ -2,35 +2,106 @@
 <html class="no-js" lang="zxx">
   <head>
     <meta charset="utf-8">
-    <title>Base Hero Content Style</title>
-    <meta name="description" content="">
+    <title>In-page Navigation and Site Search</title>
+    <meta name="description" content="In-page Navigation and Site Search - style.rampapp.org">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
     <link rel="stylesheet" href="../import/icons.css.php">
     <link rel="stylesheet" href="../import/base.css">
     <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/modual-stickyfoot-footnotes.css">
+    <link rel="stylesheet" href="../import/modual-article-more-overlay.css">
+    <link rel="stylesheet" href="../import/modual-page-nav-search.css">
+    <link rel="stylesheet" href="../import/modual-site-navigation.css">
     <style>
-@import url(../scratch/wireframe.css);
-main > form:only-child, article, figure {
-  background-color: rgba(0, 0, 0, 0.06);
-}
-header.hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-}
+      :root {
+        --popup-right: 3.25rem;
+
+        --primary-color: rgb(65, 42, 42);
+        --primary-contrast: rgb(255 255 255);
+
+        --secondary-color: rgb(0 100 0);
+        --secondary-contrast: rgb(255 255 255);
+
+        --text-color: rgb(33 33 33);
+        --complementary-canvas: rgb(255 255 225);
+
+        --accent-color: rgb(255 177 59);
+        --accent-contrast: rgb(255 255 255);
+
+        --highlight-color: rgb(255 255 100);
+      }
+      body {
+        /* https://projects.verou.me/css3patterns/#carbon-fibre */
+        background:
+          radial-gradient(black 15%, transparent 16%) 0 0,
+          radial-gradient(black 15%, transparent 16%) 8px 8px,
+          radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 0 1px,
+          radial-gradient(rgba(255,255,255,.1) 15%, transparent 20%) 8px 9px;
+        background-color: rgb(40, 40, 40);
+        background-size:16px 16px;
+        background-attachment: fixed;
+      }
+      main > form:only-child, article, figure {
+        color: var(--primary-contrast);
+        --post-highlight-color: var(--primary-color);
+        background-color: var(--post-highlight-color);
+      }
+      header.hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        background-color: green;
+      } body > article > header.hero {
+        background-image: url(//media.ramp.matt-laptop.lan/tmp/wallpaper.jpg);
+        text-shadow: 2px 2px 4px rgb(0 0 0);
+        color: white;
+      }
+      body > article > header.hero::before {
+        background: inherit; filter: blur(1rem);
+      }
+      body > :is(main, article) > form:only-child > header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 90svh;
+      }
+      :is(main, article) > form:only-child > footer > menu {
+        display: flex; gap: .125rem;
+        padding: 0;
+      }
+      :is(main, article) > form:only-child > footer > menu > li > * {
+        line-height: 2.5rem;
+        height: 2.5rem;
+      }
     </style>
   </head>
-  <body id="ramp-matt-laptop-lan">
-    <header>
+  <body id="ramp-matt-laptop-lan" class="content">
+    <header id="top">
+      <nav>
+        <ul id="quick-links">
+          <li><a href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
+          <li><a href="#main" title="Skip to Page Main content: In-page Navigation and Site Search">Main Content</a></li>
+          <li><a href="#site-nav" title="Jump to Full Site Map (Navigation)">Site Navigation</a></li>
+          <li><a href="#contentinfo" title="Jump to Site Information: contact address, legal, copyright and privacy statement etc.">Site Information</a></li>
+        </ul>
+        <form id="quick-search" method="get" action="/search#results">
+          <div class="search input field">
+            <label for="query" title="Here to search RampApp.org for the latest content, data and more.">Search</label>
+            <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
+            <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi aliquam, voluptates ad ex ab laborum eveniet quia eos quibusdam deserunt similique ducimus molestias corporis odit ratione laudantium quis nesciunt? Ullam.</span>
+          </div>            
+          <input type="submit" value="Go">
+        </form>
+      </nav>
       <div id="logo">[HEADER]</div>
     </header>
-    <main id="#main"><a href="#main" title="Here for Page Main content on: Hero Content Styles">#</a>
+    <main id="main"><a href="#main" title="Here for Page Main content on: Forest Test Theme">#</a>
       <header class="hero">
         <h1>MAIN HEADER (HERO)</h1>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus saepe omnis placeat commodi labore consequuntur unde facere quo, asperiores inventore quia! Fugiat, beatae quibusdam! Consectetur minus et beatae cumque quis?</p>
       </header>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta inventore corporis rem est laboriosam consectetur alias deleniti error blanditiis accusantium. Dolores, suscipit nam nihil rem magnam explicabo nobis reiciendis. Sequi!</p>
       <section id="placeholder:1"><a href="#placeholder:1" title="Here for: The quick brown fox jumped over the lazy dog">#</a>
         <header>
           <h2>The quick brown fox jumped over the lazy dog</h2>
@@ -39,7 +110,7 @@ header.hero {
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit eum <a id="fn-ref:maiores" href="#fn-def:maiores" title="Jump to Footnote definition">est maiores</a> aut, iste fuga ut ipsum inventore quaerat deleniti, soluta rem dicta quis optio at! Reiciendis iste atque doloribus.</p>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur provident porro fugiat aspernatur ad earum, veritatis voluptates asperiores laudantium accusantium facere, quidem quam sapiente nobis delectus magni incidunt nulla temporibus.</p>
         <figure>
-          <img src="//media.ramp.matt-laptop.lan/tmp/sized.php/1024x400" alt="Green leafy digital art wallpaper." width="1024" height="400">
+          <img src="//media.ramp.matt-laptop.lan/tmp/wallpaper.jpg" alt="Green leafy digital art wallpaper." width="1024" height="400">
           <figcaption>Favourate Wallpaper</figcaption>
         </figure>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae unde voluptatibus minus enim rerum. Voluptate, ipsam a, perferendis, consequatur nostrum magnam quos maiores esse facere iste praesentium quidem? Quod, sunt.</p>
@@ -60,7 +131,7 @@ header.hero {
           </section>
         </section>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Tempore suscipit necessitatibus consequatur libero voluptate ex dolores voluptas dolorum assumenda explicabo, quas architecto earum fugiat ducimus voluptatem rerum velit delectus numquam.</p>
-        <img src="//media.ramp.matt-laptop.lan/tmp/sized.php/1024x600" width="1024" height="600" alt="Green leafy digital art wallpaper.">
+        <img src="//media.ramp.matt-laptop.lan/tmp/wallpaper.jpg" width="1024" height="600" alt="Green leafy digital art wallpaper.">
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Consequuntur provident porro <del>fugiat aspernatur</del> ad earum, veritatis voluptates asperiores laudantium accusantium facere, quidem quam sapiente nobis delectus magni incidunt nulla temporibus.</p>
         <p>Lorem ipsum<sup>TM</sup> dolor sit amet consectetur adipisicing elit. Molestiae unde voluptatibus minus enim rerum. Voluptate, ipsam a, perferendis, consequatur nostrum magnam quos maiores esse facere iste praesentium quidem? Quod, sunt.</p>
       </section>
@@ -71,7 +142,7 @@ header.hero {
         <p>Lorem ipsum dolor sit amet consectetur. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt <a id="fn-ref:repellendus" href="#fn-def:repellendus" title="Jump to footnote definition">repellendus ex provident</a> exercitationem.</p>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti, neque? Placeat accusamus repudiandae eligendi quae deserunt! Laboriosam nostrum quos <a href="#">temporibus</a> impedit rem! Natus, amet? Doloremque voluptate et nam sed soluta.</p>
         <figure>
-          <img src="//media.ramp.matt-laptop.lan/tmp/sized.php/1024x480" alt="Green leafy digital art wallpaper." width="1024" height="480">
+          <img src="//media.ramp.matt-laptop.lan/tmp/wallpaper.jpg" alt="Green leafy digital art wallpaper." width="1024" height="480">
           <figcaption><a href="#">Favourate Wallpaper</a></figcaption>
         </figure>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit architecto aspernatur neque iusto, similique doloremque dicta non officiis voluptatibus culpa? Architecto itaque in nostrum illo reprehenderit omnis veniam inventore dolor?</p>
@@ -97,6 +168,48 @@ header.hero {
          <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
       </footer>
     </main>
+    <article id="app:one"><form action="#app:one" method="post"><a href="#app:one" title="Here for: SUB APPLICATION (DATA FORM)">#</a>
+      <header>
+        <h1>SUB APPLICATION (DATA FORM)</h1>
+      </header>
+      <footer>
+        <menu>
+          <li><a href="#">&laquo;</a></li>
+          <li><input type="submit" value="Update"></li>
+          <li><a href="#">&raquo;</a></li>
+        </menu>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>
+    </form></article>
+    <article id="article:one"><a href="#article:one" title="Here for: SPECIAL ARTICLE ONE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE ONE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:two"><a href="#article:two" title="Here for: SPECIAL ARTICLE TWO">#</a>
+      <header class="hero">
+        <h2>[SPECIAL ARTICLE TWO]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer><a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a></footer>
+    </article>
+    <article id="article:three"><a href="#article:three" title="Here for: SPECIAL ARTICLE THREE">#</a>
+      <header>
+        <h2>[SPECIAL ARTICLE THREE]</h2>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia, amet laboriosam! Veniam debitis cupiditate voluptatum obcaecati sequi quod hic nisi neque? Pariatur minima architecto sed molestiae ex at, necessitatibus voluptatibus.</p>
+      </header>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem.</p>
+      <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste quibusdam in perferendis quia perspiciatis dolores commodi officia, fugit obcaecati incidunt, quae rem vero dolorem veritatis sunt repellendus ex provident exercitationem. <a class="overlay" href="#">more&hellip;</a></p>
+      <footer>
+        <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>
+    </article>
     <aside id="site-aside"><a href="#site-aside" title="Here for other more related content">#</a>
       <header><h2>[ASIDE]</h2></header>
       <article id="catagory:one"><a href="#catagory:one" title="Here for: SITE CATAGORY ONE">#</a>
@@ -133,8 +246,14 @@ header.hero {
         <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
      </footer>
     </aside>
-    <nav id="site-nav">
+    <nav id="site-nav" tabindex="-1">
       <h2>N</h2>
+      <ol>
+        <li><a href="site-navigation.html">[1]</a></li>
+        <li><a href="site-navigation.html">[2]</a></li>
+        <li><a href="site-navigation.html">[3]</a></li>
+        <li><a href="site-navigation.html">[4]</a></li>
+      </ol>
     </nav>
     <footer id="contentinfo">
       <address>[ADDRESS]</address>
@@ -152,4 +271,5 @@ header.hero {
         </ul>
       </nav>
     </footer>
-   </body>
+  </body>
+ 

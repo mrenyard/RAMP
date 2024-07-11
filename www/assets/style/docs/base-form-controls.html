@@ -1,0 +1,855 @@
+<!doctype html>
+<html class="js" lang="zxx">
+  <head>
+    <meta charset="utf-8">
+    <title>Base Styles for Form Controls</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
+    <link rel="stylesheet" href="../import/icons.css.php">
+    <link rel="stylesheet" href="../import/base.css">
+    <link rel="stylesheet" href="../import/layout.css">
+    <link rel="stylesheet" href="../import/layout-form-data.css">
+    <link rel="stylesheet" href="../import/state-form-controls.css">
+    <style>
+/* @import url(../scratch/wireframe.css); */
+body > main {
+  margin: 0 auto;
+  > form:only-child {
+    padding: .125rem;
+    display: grid; column-gap: .125rem;
+    grid-template-columns: repeat(5, 13.75rem);
+    background-color: rgb(200, 200, 200);
+    margin-bottom: 3rem;
+    > .wide { grid-column: auto / span 2; }
+    > .url { grid-column: auto / span 3; }
+    > .toolbar { grid-column: auto / span 5; }
+  }
+}      
+#stop-animation {
+  position:absolute; top: 0; right: 0;
+  &:checked ~ fieldset .field {
+     > .ind { opacity: 1; z-index: 1; animation: none; }
+     &:not( .rate ):has( input ~ .ind )::after { opacity: 0; }
+  }
+}
+.no-js .ind { display: none; }
+    </style>
+  </head>
+  <body>
+    <header id="top"></header>
+    <main id="#main"><form action="#main" method="post">
+      <input id="stop-animation" name="stop-animation" type="checkbox">
+      <fieldset id="comprehensive:new">
+        <legend>NEW</legend>
+        <div class="color input field" title="Main thematic colour of presentation.">
+          <label for="comprehensive:new:primary-color">Primary Color</label>
+          <input id="comprehensive:new:primary-color" name="comprehensive:new:primary-color" type="color" tabindex="0">
+        </div>
+        <div class="text input field required" title="The name by which you are refered to; in Western culture usually your first name.">
+          <label for="comprehensive:new:given-name">Given Name</label>
+          <input id="comprehensive:new:given-name" name="comprehensive:new:given-name" type="text" tabindex="0" placeholder="e.g. John" required pattern="([A-Za-z\-]*){0,20}" maxlength="20">
+        </div>
+        <div class="tel input field" title="The number used to contact (call or text) said particular persons mobile device.">
+          <label for="comprehensive:new:mobile">Mobile</label>
+          <input id="comprehensive:new:mobile" name="comprehensive:new:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" pattern="(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}" maxlength="20">
+        </div>
+        <div class="text input field required" title="A uniquely identified electronic mailbox at which you receive written messages.">
+          <label for="comprehensive:new:email">Email</label>
+          <input id="comprehensive:new:email" name="comprehensive:new:email" type="text" tabindex="0" placeholder="e.g. jsmith@domain.com" required maxlength="150">
+        </div>
+        <div class="password input field" title="The secret word or phrase that you wish to used to confirm your identity and gain access.">
+          <label for="comprehensive:new:password">Password</label>
+          <input id="comprehensive:new:password" name="comprehensive:new:password" type="password" tabindex="0" placeholder="e.g. N0t-Pa55w0rd!" pattern="[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}" maxlength="35">
+        </div>
+        <div class="number input field" title="The non fractional number related to this query">
+          <label for="comprehensive:new:whole-number">Whole Number</label>
+          <input id="comprehensive:new:whole-number" name="comprehensive:new:whole-number" type="number" tabindex="0" placeholder="e.g. 42" min="-32768" max="32767" step="1">
+        </div>
+        <div class="number input field" title="The ammount of money in UK pounds and pence that you have access to.">
+          <label for="comprehensive:new:currency">Currency</label>
+          <input id="comprehensive:new:currency" name="comprehensive:new:currency" type="number" tabindex="0" placeholder="e.g. 10.50" min="0" max="999.99" step="0.01">
+        </div>
+        <div class="week input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:week">Week</label>
+          <input id="comprehensive:new:week" name="comprehensive:new:week" type="week" tabindex="0" required min="2022-W01" max="2024-W52" step="any">
+        </div>
+        <div class="month input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:month">Month</label>
+          <input id="comprehensive:new:month" name="comprehensive:new:month" type="month" tabindex="0" required min="2024-01" max="2024-12" step="1">
+        </div>
+        <div class="time input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:time">Time</label>
+          <input id="comprehensive:new:time" name="comprehensive:new:time" type="time" tabindex="0" required min="08:30" max="17:30" step="1800">
+        </div>
+        <div class="date input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:date">Date</label>
+          <input id="comprehensive:new:date" name="comprehensive:new:date" type="date" tabindex="0" required min="1900-01-01" max="2023-12-31" step="1">
+        </div>
+        <div class="datetime-local input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:datetime">Datetime</label>
+          <input id="comprehensive:new:datetime" name="comprehensive:new:datetime" type="datetime-local" tabindex="0" required min="2024-03-05T00:00" max="2025-09-30T00:00" step="60">
+        </div>
+        <div class="percent range field" title="Expanded description of expected field content">
+          <label for="comprehensive:new:percentage">Percentage range</label>
+          <input id="comprehensive:new:percentage" name="comprehensive:new:percentage" type="range">
+        </div>
+        <div class="special range field" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="M">
+          <label for="comprehensive:new:alphabet">Range special</label>
+          <input id="comprehensive:new:alphabet" name="comprehensive:new:alphabet" type="range">
+        </div>
+        <div class="select field required" title="Expanded description of expected field content">
+          <label for="comprehensive:new:select-one">Select One</label>
+          <select id="comprehensive:new:select-one" name="comprehensive:new:select-one" required>
+            <option selected disabled> -- select an item -- </option>
+            <option value="1">Item one</option>
+            <option value="2" >Item two</option>
+            <option value="3" >Item three</option>
+          </select>
+        </div>
+        <fieldset class="checkbox select-many field required compact" data-placeholder="Select from avalible" data-placeholder-selected="See selected" tabindex="-1">
+          <legend>Select Many</legend>
+          <ul>
+            <li>
+              <input id="comprehensive:new:select-many:item1" name="comprehensive:new:select-many:item1" type="checkbox">
+              <label for="comprehensive:new:select-many:item1">Item one</label>
+            </li>
+            <li>
+              <input id="comprehensive:new:select-many:item2" name="comprehensive:new:select-many:item2" type="checkbox">
+              <label for="comprehensive:new:select-many:item2">Item two</label>
+            </li>
+            <li>
+              <input id="comprehensive:new:select-many:item3" name="comprehensive:new:select-many:item3" type="checkbox">
+              <label for="comprehensive:new:select-many:item3">Item three</label>
+            </li>
+          </ul>
+        </fieldset>
+        <fieldset class="flag field required" title="You must agree to terms and conditions to continue to use this site">
+          <legend>Terms &amp; conditions (flag)</legend>
+          <input id="comprehensive:new:flag" name="comprehensive:new:flag:true" type="checkbox" tabindex="0" required>
+          <label for="comprehensive:new:flag">I have read and agree to site terms and conditions.</label>
+        </fieldset>
+        <div class="rate range field" title="Expanded description of expected field content">
+          <label for="comprehensive:new:star">Rating</label>
+          <input id="comprehensive:new:star" name="comprehensive:new:star" type="range" min="1" max="10" value="0">
+        </div>
+      </fieldset>
+      <fieldset id="comprehensive:existing">
+        <legend>Existing</legend>
+        <div class="color input field" title="Main thematic colour of presentation.">
+          <label for="comprehensive:existing:primary-color">Primary Color</label>
+          <input id="comprehensive:existing:primary-color" name="comprehensive:existing:primary-color" type="color" tabindex="0" value="#800080">
+        </div>
+        <div class="text input field required" title="The name by which you are refered to; in Western culture usually your first name.">
+          <label for="comprehensive:existing:given-name">Given Name</label>
+          <input id="comprehensive:existing:given-name" name="comprehensive:existing:given-name" type="text" tabindex="0" placeholder="e.g. John" required pattern="([A-Za-z\-]*){0,20}" maxlength="20" value="Matt">
+        </div>
+        <div class="tel input field" title="The number used to contact (call or text) said particular persons mobile device.">
+          <label for="comprehensive:existing:mobile">Mobile</label>
+          <input id="comprehensive:existing:mobile" name="comprehensive:existing:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" pattern="(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}" maxlength="20" value="07744 123123">
+        </div>
+        <div class="text input field required" title="A uniquely identified electronic mailbox at which you receive written messages.">
+          <label for="comprehensive:existing:email">Email</label>
+          <input id="comprehensive:existing:email" name="comprehensive:existing:email" type="text" tabindex="0" placeholder="e.g. jsmith@domain.com" required maxlength="150" value="renyard.m@gmail.com">
+        </div>
+        <div class="password input field" title="The secret word or phrase that you wish to used to confirm your identity and gain access.">
+          <label for="comprehensive:existing:password">Password</label>
+          <input id="comprehensive:existing:password" name="comprehensive:existing:password" type="password" tabindex="0" placeholder="e.g. N0t-Pa55w0rd!" pattern="[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\|%~@ ]{8,35}" maxlength="35" value="">
+        </div>
+        <div class="number input field" title="The non fractional number related to this query">
+          <label for="comprehensive:existing:whole-number">Whole Number</label>
+          <input id="comprehensive:existing:whole-number" name="comprehensive:existing:whole-number" type="number" tabindex="0" placeholder="e.g. 42" min="-32768" max="32767" step="1" value="168">
+        </div>
+        <div class="number input field" title="The ammount of money in UK pounds and pence that you have access to.">
+          <label for="comprehensive:existing:currency">Currency</label>
+          <input id="comprehensive:existing:currency" name="comprehensive:existing:currency" type="number" tabindex="0" placeholder="e.g. 10.50" min="0" max="999.99" step="0.01" value="12.75">
+        </div>
+        <div class="week input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:week">Week</label>
+          <input id="comprehensive:existing:week" name="comprehensive:existing:week" type="week" tabindex="0" required min="2022-W01" max="2024-W52" step="any" value="2022-W15">
+        </div>
+        <div class="month input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:month">Month</label>
+          <input id="comprehensive:existing:month" name="comprehensive:existing:month" type="month" tabindex="0" required min="2024-01" max="2024-12" step="1" value="2024-10">
+        </div>
+        <div class="time input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:time">Time</label>
+          <input id="comprehensive:existing:time" name="comprehensive:existing:time" type="time" tabindex="0" required min="08:30" max="17:30" step="1800" value="13:30">
+        </div>
+        <div class="date input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:date">Date</label>
+          <input id="comprehensive:existing:date" name="comprehensive:existing:date" type="date" tabindex="0" required min="1900-01-01" max="2023-12-31" step="1" value="2023-06-21">
+        </div>
+        <div class="datetime-local input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:datetime">Datetime</label>
+          <input id="comprehensive:existing:datetime" name="comprehensive:existing:datetime" type="datetime-local" tabindex="0" required min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2023-06-21T05:35">
+        </div>
+        <div class="percent range field" title="Expanded description of expected field content" data-value="25">
+          <label for="comprehensive:existing:percentage">Percentage range</label>
+          <input id="comprehensive:existing:percentage" name="comprehensive:existing:percentage" type="range" value="25">
+        </div>
+        <div class="special range field" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="w">
+          <label for="comprehensive:existing:alphabet">Range special</label>
+          <input id="comprehensive:existing:alphabet" name="comprehensive:existing:alphabet" type="range" min="0" max="25" step="1" value="22">
+        </div>
+        <div class="select field required" title="Expanded description of expected field content">
+          <label for="comprehensive:existing:select-one">Select One</label>
+          <select id="comprehensive:existing:select-one" name="comprehensive:existing:select-one" required>
+            <option disabled> -- select an item -- </option>
+            <option value="1">Item one</option>
+            <option value="2" selected>Item two</option>
+            <option value="3">Item three</option>
+          </select>
+        </div>
+        <fieldset class="checkbox select-many field required compact" data-placeholder="Select from avalible" data-placeholder-selected="See selected" tabindex="-1">
+          <legend>Select Many</legend>
+          <ul>
+            <li>
+              <input id="comprehensive:existing:select-many:item1" name="comprehensive:existing:select-many:item1" type="checkbox" checked>
+              <label for="comprehensive:existing:select-many:item1">Item one</label>
+            </li>
+            <li>
+              <input id="comprehensive:existing:select-many:item2" name="comprehensive:existing:select-many:item2" type="checkbox">
+              <label for="comprehensive:existing:select-many:item2">Item two</label>
+            </li>
+            <li>
+              <input id="comprehensive:existing:select-many:item3" name="comprehensive:existing:select-many:item3" type="checkbox">
+              <label for="comprehensive:existing:select-many:item3">Item three</label>
+            </li>
+          </ul>
+        </fieldset>
+        <fieldset class="flag field required" title="You must agree to terms and conditions to continue to use this site">
+          <legend>Terms &amp; conditions (flag)</legend>
+          <input id="comprehensive:existing:flag" name="comprehensive:existing:flag:true" type="checkbox" tabindex="0" required checked>
+          <label for="comprehensive:existing:flag">I have read and agree to site terms and conditions.</label>
+        </fieldset>
+        <div class="rate range field" title="Expanded description of expected field content" data-value="3">
+          <label for="comprehensive:existing:star">Rating</label>
+          <input id="comprehensive:existing:star" name="comprehensive:existing:star" type="range" min="1" max="10" value="3">
+        </div>
+      </fieldset>
+      <fieldset id="comprehensive:verifying">
+        <legend>Verifying</legend>
+        <div class="color input field" title="Main thematic colour of presentation.">
+          <label for="comprehensive:verifying:primary-color">Primary Color</label>
+          <input id="comprehensive:verifying:primary-color" name="comprehensive:verifying:primary-color" type="color" tabindex="0" value="#800080" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:primary-color:ind">&hellip;Verifying</span>
+        </div>
+        <div class="text input field required" title="The name by which you are refered to; in Western culture usually your first name.">
+          <label for="comprehensive:verifying:given-name">Given Name</label>
+          <input id="comprehensive:verifying:given-name" name="comprehensive:verifying:given-name" type="text" tabindex="0" placeholder="e.g. John" required pattern="([A-Za-z\-]*){0,20}" maxlength="20" value="Matt" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:given-name:ind">&hellip;Verifying</span>
+        </div>
+        <div class="tel input field" title="The number used to contact (call or text) said particular persons mobile device.">
+          <label for="comprehensive:verifying:mobile">Mobile</label>
+          <input id="comprehensive:verifying:mobile" name="comprehensive:verifying:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" pattern="(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}" maxlength="20" value="07744 123123" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:mobile:ind">&hellip;Verifying</span>
+        </div>
+        <div class="text input field required" title="A uniquely identified electronic mailbox at which you receive written messages.">
+          <label for="comprehensive:verifying:email">Email</label>
+          <input id="comprehensive:verifying:email" name="comprehensive:verifying:email" type="text" tabindex="0" placeholder="e.g. jsmith@domain.com" required maxlength="150" value="renyard.m@gmail.com" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:email:ind">&hellip;Verifying</span>
+        </div>
+        <div class="password input field" title="The secret word or phrase that you wish to used to confirm your identity and gain access.">
+          <label for="comprehensive:verifying:password">Password</label>
+          <input id="comprehensive:verifying:password" name="comprehensive:verifying:password" type="password" tabindex="0" placeholder="e.g. N0t-Pa55w0rd!" pattern="[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}" maxlength="35" value="" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:password:ind">&hellip;Verifying</span>
+        </div>
+        <div class="number input field" title="The non fractional number related to this query">
+          <label for="comprehensive:verifying:whole-number">Whole Number</label>
+          <input id="comprehensive:verifying:whole-number" name="comprehensive:verifying:whole-number" type="number" tabindex="0" placeholder="e.g. 42" min="-32768" max="32767" step="1" value="168" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:whole-number:ind">&hellip;Verifying</span>
+        </div>
+        <div class="number input field" title="The ammount of money in UK pounds and pence that you have access to.">
+          <label for="comprehensive:verifying:currency">Currency</label>
+          <input id="comprehensive:verifying:currency" name="comprehensive:verifying:currency" type="number" tabindex="0" placeholder="e.g. 10.50" min="0" max="999.99" step="0.01" value="12.75" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:currency:ind">&hellip;Verifying</span>
+        </div>
+        <div class="week input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:week">Week</label>
+          <input id="comprehensive:verifying:week" name="comprehensive:verifying:week" type="week" tabindex="0" required min="2022-W01" max="2024-W52" step="any" value="2022-W15" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:week:ind">&hellip;Verifying</span>
+        </div>
+        <div class="month input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:month">Month</label>
+          <input id="comprehensive:verifying:month" name="comprehensive:verifying:month" type="month" tabindex="0" required min="2024-01" max="2024-12" step="1" value="2024-10" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:month:ind">&hellip;Verifying</span>
+        </div>
+        <div class="time input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:time">Time</label>
+          <input id="comprehensive:verifying:time" name="comprehensive:verifying:time" type="time" tabindex="0" required min="08:30" max="17:30" step="1800" value="13:30" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:time:ind">&hellip;Verifying</span>
+        </div>
+        <div class="date input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:date">Date</label>
+          <input id="comprehensive:verifying:date" name="comprehensive:verifying:date" type="date" tabindex="0" required min="1900-01-01" max="2023-12-31" step="1" value="2023-06-21" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:date:ind">&hellip;Verifying</span>
+        </div>
+        <div class="datetime-local input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:datetime">Datetime</label>
+          <input id="comprehensive:verifying:datetime" name="comprehensive:verifying:datetime" type="datetime-local" tabindex="0" required min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2023-06-21T05:35" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:datetime:ind">&hellip;Verifying</span>
+        </div>
+        <div class="percent range field" title="Expanded description of expected field content" data-value="50">
+          <label for="comprehensive:verifying:percentage">Percentage range</label>
+          <input id="comprehensive:verifying:percentage" name="comprehensive:verifying:percentage" type="range" value="50" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:percentage:ind">&hellip;Verifying</span>
+        </div>
+        <div class="special range field" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="Q">
+          <label for="comprehensive:verifying:alphabet">Range special</label>
+          <input id="comprehensive:verifying:alphabet" name="comprehensive:verifying:alphabet" type="range" min="0" max="25" step="1" value="16" disabled>
+        </div>
+        <div class="select field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verifying:select-one">Select One</label>
+          <select id="comprehensive:verifying:select-one" name="comprehensive:verifying:select-one" required disabled>
+            <option disabled> -- select an item -- </option>
+            <option value="1">Item one</option>
+            <option value="2" selected>Item two</option>
+            <option value="3">Item three</option>
+          </select>
+          <span class="ind verifying" id="comprehensive:verifying:select-one:ind">&hellip;Verifying</span>
+        </div>
+        <fieldset class="checkbox select-many field required compact" data-placeholder="Select from avalible" data-placeholder-selected="See selected" tabindex="-1">
+          <legend>Select Many</legend>
+          <ul>
+            <li>
+              <input id="comprehensive:verifying:select-many:item1" name="comprehensive:verifying:select-many:item1" type="checkbox" checked disabled>
+              <label for="comprehensive:verifying:select-many:item1">Item one</label>
+            </li>
+            <li>
+              <input id="comprehensive:verifying:select-many:item2" name="comprehensive:verifying:select-many:item2" type="checkbox" disabled>
+              <label for="comprehensive:verifying:select-many:item2">Item two</label>
+            </li>
+            <li>
+              <input id="comprehensive:verifying:select-many:item3" name="comprehensive:verifying:select-many:item3" type="checkbox" disabled>
+              <label for="comprehensive:verifying:select-many:item3">Item three</label>
+            </li>
+          </ul>
+          <span class="ind verifying" id="comprehensive:verifying:select-many:ind">&hellip;Verifying</span>
+        </fieldset>
+        <fieldset class="flag field required" title="You must agree to terms and conditions to continue to use this site">
+          <legend>Terms &amp; conditions (flag)</legend>
+          <input id="comprehensive:verifying:flag" name="comprehensive:verifying:flag:true" type="checkbox" tabindex="0" required checked disabled>
+          <label for="comprehensive:verifying:flag">I have read and agree to site terms and conditions.</label>
+          <span class="ind verifying" id="comprehensive:verifying:flag:ind">&hellip;Verifying</span>
+        </fieldset>
+        <div class="rate range field" title="Expanded description of expected field content" data-value="6">
+          <label for="comprehensive:verifying:star">Rating</label>
+          <input id="comprehensive:verifying:star" name="comprehensive:verifying:star" type="range" min="1" max="10" value="6" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:star:ind">&hellip;Verifying</span>
+        </div>
+      </fieldset>
+      <fieldset id="comprehensive:verified">
+        <legend>Verified</legend>
+        <div class="color input field" title="Main thematic colour of presentation.">
+          <label for="comprehensive:verified:primary-color">Primary Color</label>
+          <input id="comprehensive:verified:primary-color" name="comprehensive:verified:primary-color" type="color" tabindex="0" value="#800080">
+          <span class="ind verified" id="comprehensive:verified:primary-color:ind">&check; Verified</span>
+        </div>
+        <div class="text input field required" title="The name by which you are refered to; in Western culture usually your first name.">
+          <label for="comprehensive:verified:given-name">Given Name</label>
+          <input id="comprehensive:verified:given-name" name="comprehensive:verified:given-name" type="text" tabindex="0" placeholder="e.g. John" required pattern="([A-Za-z\-]*){0,20}" maxlength="20" value="Matt">
+          <span class="ind verified" id="comprehensive:verified:given-name:ind">&check; Verified</span>
+        </div>
+        <div class="tel input field" title="The number used to contact (call or text) said particular persons mobile device.">
+          <label for="comprehensive:verified:mobile">Mobile</label>
+          <input id="comprehensive:verified:mobile" name="comprehensive:verified:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" pattern="(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}" maxlength="20" value="07744 123123">
+          <span class="ind verified" id="comprehensive:verified:mobile:ind">&check; Verified</span>
+        </div>
+        <div class="text input field required" title="A uniquely identified electronic mailbox at which you receive written messages.">
+          <label for="comprehensive:verified:email">Email</label>
+          <input id="comprehensive:verified:email" name="comprehensive:verified:email" type="text" tabindex="0" placeholder="e.g. jsmith@domain.com" required maxlength="150" value="renyard.m@gmail.com">
+          <span class="ind verified" id="comprehensive:verified:email:ind">&check; Verified</span>
+        </div>
+        <div class="password input field" title="The secret word or phrase that you wish to used to confirm your identity and gain access.">
+          <label for="comprehensive:verified:password">Password</label>
+          <input id="comprehensive:verified:password" name="comprehensive:verified:password" type="password" tabindex="0" placeholder="e.g. N0t-Pa55w0rd!" pattern="[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}" maxlength="35" value="">
+          <span class="ind verified" id="comprehensive:verified:password:ind">&check; Verified</span>
+        </div>
+        <div class="number input field" title="The non fractional number related to this query">
+          <label for="comprehensive:verified:whole-number">Whole Number</label>
+          <input id="comprehensive:verified:whole-number" name="comprehensive:verified:whole-number" type="number" tabindex="0" placeholder="e.g. 42" min="-32768" max="32767" step="1" value="168">
+          <span class="ind verified" id="comprehensive:verified:whole-number:ind">&check; Verified</span>
+        </div>
+        <div class="number input field" title="The ammount of money in UK pounds and pence that you have access to.">
+          <label for="comprehensive:verified:currency">Currency</label>
+          <input id="comprehensive:verified:currency" name="comprehensive:verified:currency" type="number" tabindex="0" placeholder="e.g. 10.50" min="0" max="999.99" step="0.01" value="12.75">
+          <span class="ind verified" id="comprehensive:verified:currency:ind">&check; Verified</span>
+        </div>
+        <div class="week input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:week">Week</label>
+          <input id="comprehensive:verified:week" name="comprehensive:verified:week" type="week" tabindex="0" required min="2022-W01" max="2024-W52" step="any" value="2022-W15">
+          <span class="ind verified" id="comprehensive:verified:week:ind">&check; Verified</span>
+        </div>
+        <div class="month input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:month">Month</label>
+          <input id="comprehensive:verified:month" name="comprehensive:verified:month" type="month" tabindex="0" required min="2024-01" max="2024-12" step="1" value="2024-10">
+          <span class="ind verified" id="comprehensive:verified:month:ind">&check; Verified</span>
+        </div>
+        <div class="time input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:time">Time</label>
+          <input id="comprehensive:verified:time" name="comprehensive:verified:time" type="time" tabindex="0" required min="08:30" max="17:30" step="1800" value="13:30">
+          <span class="ind verified" id="comprehensive:verified:time:ind">&check; Verified</span>
+        </div>
+        <div class="date input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:date">Date</label>
+          <input id="comprehensive:verified:date" name="comprehensive:verified:date" type="date" tabindex="0" required min="1900-01-01" max="2023-12-31" step="1" value="2023-06-21">
+          <span class="ind verified" id="comprehensive:verified:date:ind">&check; Verified</span>
+        </div>
+        <div class="datetime-local input field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:datetime">Datetime</label>
+          <input id="comprehensive:verified:datetime" name="comprehensive:verified:datetime" type="datetime-local" tabindex="0" required min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="2023-06-21T05:35">
+          <span class="ind verified" id="comprehensive:verified:datetime:ind">&check; Verified</span>
+        </div>
+        <div class="percent range field" title="Expanded description of expected field content" data-value="75">
+          <label for="comprehensive:verified:percentage">Percentage range</label>
+          <input id="comprehensive:verified:percentage" name="comprehensive:verified:percentage" type="range" value="75">
+          <span class="ind verified" id="comprehensive:verified:percentage:ind">&check; Verified</span>
+        </div>
+        <div class="special range field" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="H">
+          <label for="comprehensive:verified:alphabet">Range special</label>
+          <input id="comprehensive:verified:alphabet" name="comprehensive:verified:alphabet" type="range" min="0" max="25" step="1" value="7">
+          <span class="ind verified" id="comprehensive:verified:alphabet:ind">&check; Verified</span>
+        </div>
+        <div class="select field required" title="Expanded description of expected field content">
+          <label for="comprehensive:verified:select-one">Select One</label>
+          <select id="comprehensive:verified:select-one" name="comprehensive:verified:select-one" required>
+            <option disabled> -- select an item -- </option>
+            <option value="1">Item one</option>
+            <option value="2" selected>Item two</option>
+            <option value="3">Item three</option>
+          </select>
+          <span class="ind verified" id="comprehensive:verified:select-one:ind">&check; Verified</span>
+        </div>
+        <fieldset class="checkbox select-many field required compact" data-placeholder="Select from avalible" data-placeholder-selected="See selected" tabindex="-1">
+          <legend>Select Many</legend>
+          <ul>
+            <li>
+              <input id="comprehensive:verified:select-many:item1" name="comprehensive:verified:select-many:item1" type="checkbox" checked>
+              <label for="comprehensive:verified:select-many:item1">Item one</label>
+            </li>
+            <li>
+              <input id="comprehensive:verified:select-many:item2" name="comprehensive:verified:select-many:item2" type="checkbox">
+              <label for="comprehensive:verified:select-many:item2">Item two</label>
+            </li>
+            <li>
+              <input id="comprehensive:verified:select-many:item3" name="comprehensive:verified:select-many:item3" type="checkbox">
+              <label for="comprehensive:verified:select-many:item3">Item three</label>
+            </li>
+          </ul>
+          <span class="ind verified" id="comprehensive:verified:select-many:ind">&check; Verified</span>
+        </fieldset>
+        <fieldset class="flag field required" title="You must agree to terms and conditions to continue to use this site">
+          <legend>Terms &amp; conditions (flag)</legend>
+          <input id="comprehensive:verified:flag" name="comprehensive:verified:flag:true" type="checkbox" tabindex="0" required checked>
+          <label for="comprehensive:verified:flag">I have read and agree to site terms and conditions.</label>
+          <span class="ind verified" id="comprehensive:verified:flag:ind">&check; Verified</span>
+        </fieldset>
+        <div class="rate range field" title="Expanded description of expected field content" data-value="10">
+          <label for="comprehensive:verified:star">Rating</label>
+          <input id="comprehensive:verified:star" name="comprehensive:verified:star" type="range" min="1" max="10" value="10">
+          <span class="ind verified" id="comprehensive:verified:start:ind">&check; Verified</span>
+        </div>
+      </fieldset>
+      <fieldset id="comprehensive:error">
+        <legend>Errored</legend>
+        <div class="color input field error" title="Main thematic colour of presentation.">
+          <label for="comprehensive:error:primary-color">Primary Color</label>
+          <input id="comprehensive:error:primary-color" name="comprehensive:error:primary-color" type="color" tabindex="0" value="">
+          <span class="ind error" id="comprehensive:error:primary-color:ind">&cross; Error! Correct format is</span>
+          <span class="hint">a hash followed by three pairs of hexadecimal (0 through 9 to F) representing the luminescent gradiant of red, green and blue, character string with a character length of exactly 7.<em> Previous value was: #000000.</em></span>
+        </div>
+        <div class="text input field required error" title="The name by which you are refered to; in Western culture usually your first name.">
+          <label for="comprehensive:error:given-name">Given Name</label>
+          <input id="comprehensive:error:given-name" name="comprehensive:error:given-name" type="text" tabindex="0" placeholder="e.g. John" required pattern="([A-Za-z\-]*){0,20}" maxlength="20" value="">
+          <span class="ind error" id="comprehensive:error:given-name:ind">&cross; Error! Correct format is</span>
+          <span class="hint">single latin alphabetical word string with a maximum character length of 20. <em>Previous value was: Matt.</em></span>
+        </div>
+        <div class="tel input field error" title="The number used to contact (call or text) said particular persons mobile device.">
+          <label for="comprehensive:error:mobile">Mobile</label>
+          <input id="comprehensive:error:mobile" name="comprehensive:error:mobile" type="tel" tabindex="0" placeholder="e.g. 07744 123456" pattern="(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}" maxlength="20" value="">
+          <span class="ind error" id="comprehensive:error:mobile:ind">&cross; Error! Correct format is</span>
+          <span class="hint">valid telephone number string with a maximum character length of 20. <em>Previous value was: 07744 123123.</em></span>
+        </div>
+        <div class="text input field required error" title="A uniquely identified electronic mailbox at which you receive written messages.">
+          <label for="comprehensive:error:email">Email</label>
+          <input id="comprehensive:error:email" name="comprehensive:error:email" type="text" tabindex="0" placeholder="e.g. jsmith@domain.com" required maxlength="150" value="">
+          <span class="ind error" id="comprehensive:error:email:ind">&cross; Error! Correct format is</span>
+          <span class="hint">validly formatted email address string with a maximun character length of 150. <em>Previous value was: renyard.m@gmail.com.</em></span>
+        </div>
+        <div class="password input field error" title="The secret word or phrase that you wish to used to confirm your identity and gain access.">
+          <label for="comprehensive:error:password">Password</label>
+          <input id="comprehensive:error:password" name="comprehensive:error:password" type="password" tabindex="0" placeholder="e.g. N0t-Pa55w0rd!" pattern="[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}" maxlength="35" value="">
+          <span class="ind error" id="comprehensive:error:password:ind">&cross; Error! Correct format is</span>
+          <span class="hint">8 character minimum alphanumeric and special characters (!#$%&+,-.:;?[]^*_{|}{~@') string with a maximum character length of 35.</span>
+        </div>
+        <div class="number input field error" title="The non fractional number related to this query">
+          <label for="comprehensive:error:whole-number">Whole Number</label>
+          <input id="comprehensive:error:whole-number" name="comprehensive:error:whole-number" type="number" tabindex="0" placeholder="e.g. 42" min="-32768" max="32767" step="1" value="">
+          <span class="ind error" id="comprehensive:error:whole-number:ind">&cross; Error! Correct format is</span>
+          <span class="hint">whole number from -32768 to 32767.</span>
+        </div>
+        <div class="number input field error" title="The ammount of money in UK pounds and pence that you have access to.">
+          <label for="comprehensive:error:currency">Currency</label>
+          <input id="comprehensive:error:currency" name="comprehensive:error:currency" type="number" tabindex="0" placeholder="e.g. 10.50" min="0" max="999.99" step="0.01" value="">
+          <span class="ind error" id="comprehensive:error:currency:ind">&cross; Error! Correct format is</span>
+          <span class="hint">2 place decimal point number.</span>
+        </div>
+        <div class="week input field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:week">Week</label>
+          <input id="comprehensive:error:week" name="comprehensive:error:week" type="week" tabindex="0" required min="2022-W01" max="2024-W52" step="any" value="">
+          <span class="ind error" id="comprehensive:error:week:ind">&cross; Error! Correct format is</span>
+          <span class="hint">valid week formatted (yyyy-W00) from 2022-W01 to 2024-W52 total characters: 8. <em>Previous value was: 2022-W15.</em></span>
+        </div>
+        <div class="month input field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:month">Month</label>
+          <input id="comprehensive:error:month" name="comprehensive:error:month" type="month" tabindex="0" required min="2024-01" max="2024-12" step="1" value="">
+          <span class="ind error" id="comprehensive:error:month:ind">&cross; Error! Correct format is</span>
+          <span class="hint">valid month formatted (yyyy-mm) from 2024-01 to 2024-12 total characters: 7.</span>
+        </div>
+        <div class="time input field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:time">Time</label>
+          <input id="comprehensive:error:time" name="comprehensive:error:time" type="time" tabindex="0" required min="08:30" max="17:30" step="1800" value="">
+          <span class="ind error" id="comprehensive:error:time:ind">&cross; Error! Correct format is</span>
+          <span class="hint">an appointment slot avalible ever 30min from 08:30 to 17:30 valid time formatted (hh:mm[:ss]).</span>
+        </div>
+        <div class="date input field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:date">Date</label>
+          <input id="comprehensive:error:date" name="comprehensive:error:date" type="date" tabindex="0" required min="1900-01-01" max="2023-12-31" step="1" value="">
+          <span class="ind error" id="comprehensive:error:date:ind">&cross; Error! Correct format is</span>
+          <span class="hint">date of birth from  from 1900-01-01 to 2023-12-31 valid date formatted (yyyy-mm-dd). <em>Previous value was: 2023-06-21.</em></span>
+        </div>
+        <div class="datetime-local input field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:datetime">Datetime</label>
+          <input id="comprehensive:error:datetime" name="comprehensive:error:datetime" type="datetime-local" tabindex="0" required min="2024-03-05T00:00" max="2025-09-30T00:00" step="60" value="">
+          <span class="ind error" id="comprehensive:error:datetime:ind">&cross; Error! Correct format is</span>
+          <span class="hint">start date and time of your event within the next 18 months from 2024-03-05T00:00 to 2025-09-30T00:00 valid date time formatted (yyyy-mm-ddThh:mm:ss).</span>
+        </div>
+        <div class="percent range field error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:percentage">Percentage range</label>
+          <input id="comprehensive:error:percentage" name="comprehensive:error:percentage" type="range" value="0">
+          <span class="ind error" id="comprehensive:error:percentage:ind">&cross; Error!</span>
+        </div>
+        <div class="special range field error" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="M">
+          <label for="comprehensive:error:alphabet">Range special</label>
+          <input id="comprehensive:error:alphabet" name="comprehensive:error:alphabet" type="range" value="0">
+          <span class="ind error" id="comprehensive:error:alphabet:ind">&cross; Error!</span>
+        </div>
+        <div class="select field required error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:select-one">Select One</label>
+          <select id="comprehensive:error:select-one" name="comprehensive:error:select-one" required>
+            <option selected disabled> -- select an item -- </option>
+            <option value="1">Item one</option>
+            <option value="2">Item two</option>
+            <option value="3">Item three</option>
+          </select>
+          <span class="ind error" id="comprehensive:error:select-one:ind">&cross; Error!</span>
+        </div>
+        <fieldset class="checkbox select-many field required error" data-placeholder="Select from avalible" data-placeholder-selected="See selected" tabindex="-1">
+          <legend>Select Many</legend>
+          <ul>
+            <li>
+              <input id="comprehensive:error:select-many:item1" name="comprehensive:error:select-many:item1" type="checkbox">
+              <label for="comprehensive:error:select-many:item1">Item one</label>
+            </li>
+            <li>
+              <input id="comprehensive:error:select-many:item2" name="comprehensive:error:select-many:item2" type="checkbox">
+              <label for="comprehensive:error:select-many:item2">Item two</label>
+            </li>
+            <li>
+              <input id="comprehensive:error:select-many:item3" name="comprehensive:error:select-many:item3" type="checkbox">
+              <label for="comprehensive:error:select-many:item3">Item three</label>
+            </li>
+          </ul>
+          <span class="ind error" id="comprehensive:error:select-many:ind">&cross; Error!</span>
+        </fieldset>
+        <fieldset class="flag field required error" title="You must agree to terms and conditions to continue to use this site">
+          <legend>Terms &amp; conditions (flag)</legend>
+          <input id="comprehensive:error:flag" name="comprehensive:error:flag:true" type="checkbox" tabindex="0" required>
+          <label for="comprehensive:error:flag">I have read and agree to site terms and conditions.</label>
+          <span class="ind error" id="comprehensive:error:flag:ind">&cross; Error!</span>
+        </fieldset>
+        <div class="rate range field error" title="Expanded description of expected field content">
+          <label for="comprehensive:error:star">Rating</label>
+          <input id="comprehensive:error:star" name="comprehensive:error:star" type="range" min="1" max="10" value="0">
+          <span class="ind error" id="comprehensive:error:stat:ind">&cross; Error!</span>
+        </div>
+      </fieldset>
+      <div class="url field" data-message="Please ensure Web Address change correctly formatted">
+        <label for="comprehensive:new:url">Web Address</label>
+        <input id="comprehensive:new:url" name="comprehensive:new:url" placeholder="e.g. https://www.domain-name.com/top-article" type="url">
+        <!-- <span class="ind" id="comprehensive:new:url:ind"></span> -->
+      </div>
+      <div class="search field wide"></div>
+      <div class="image field button" style="height: 10.625rem;"></div>
+      <fieldset class="checkbox list field required wide" title="Expanded description of expected field content">
+        <legend>List of multi selectable checkboxes (unordered)</legend>
+        <ul>
+          <li>
+            <input id="comprehensive:checkbox-list1:item1" name="comprehensive:checkbox-list1:item1" type="checkbox">
+            <label for="comprehensive:checkbox-list1:item1">An Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list1:item2" name="comprehensive:checkbox-list1:item2" type="checkbox">
+            <label for="comprehensive:checkbox-list1:item2">Another Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list1:item3" name="comprehensive:checkbox-list1:item3" type="checkbox">
+            <label for="comprehensive:checkbox-list1:item3">This Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list1:item4" name="comprehensive:checkbox-list1:item4" type="checkbox">
+            <label for="comprehensive:checkbox-list1:item4">That Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list1:item5" name="comprehensive:checkbox-list1:item5" type="checkbox">
+            <label for="comprehensive:checkbox-list1:item5">Them Option of Four Select Any Relevant</label>
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset class="checkbox list field required wide error" title="Expanded description of expected field content">
+        <legend>List of multi selectable checkboxes (ordered)</legend>
+        <ol>
+          <li>
+            <input id="comprehensive:checkbox-list2:item1" name="comprehensive:checkbox-list2:item1" type="checkbox">
+            <label for="comprehensive:checkbox-list2:item1">An Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list2:item2" name="comprehensive:checkbox-list2:item2" type="checkbox">
+            <label for="comprehensive:checkbox-list2:item2">Another Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list2:item3" name="comprehensive:checkbox-list2:item3" type="checkbox">
+            <label for="comprehensive:checkbox-list2:item3">This Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list2:item4" name="comprehensive:checkbox-list2:item4" type="checkbox">
+            <label for="comprehensive:checkbox-list2:item4">That Option of Four Select Any Relevant</label>
+          </li>
+          <li>
+            <input id="comprehensive:checkbox-list2:item5" name="comprehensive:checkbox-list2:item5" type="checkbox">
+            <label for="comprehensive:checkbox-list2:item5">Them Option of Four Select Any Relevant</label>
+          </li>
+        </ol>
+      </fieldset>
+      <div class="image field button" style="height: 10.625rem;"></div>
+      <fieldset class="radio list field required wide" title="Expanded description of expected field content">
+        <legend>List of single choose radio (ordered)</legend>
+        <ol>
+          <li>
+            <input id="comprehensive:radio-list1:this" name="comprehensive:radio-list1" type="radio">
+            <label for="comprehensive:radio-list1:this">This thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list1:that" name="comprehensive:radio-list1" type="radio">
+            <label for="comprehensive:radio-list1:that">That thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list1:something" name="comprehensive:radio-list1" type="radio">
+            <label for="comprehensive:radio-list1:something">Something else</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list1:another" name="comprehensive:radio-list1" type="radio">
+            <label for="comprehensive:radio-list1:another">Another thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list1:anything" name="comprehensive:radio-list1" type="radio">
+            <label for="comprehensive:radio-list1:anything">Anything at all</label>
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset class="radio list field required wide error" title="Expanded description of expected field content">
+        <legend>List of single choose radio (unordered)</legend>
+        <ul>
+          <li>
+            <input id="comprehensive:radio-list2:this" name="comprehensive:radio-list2" type="radio">
+            <label for="comprehensive:radio-list2:this">This thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list2:that" name="comprehensive:radio-list2" type="radio">
+            <label for="comprehensive:radio-list2:that">That thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list2:something" name="comprehensive:radio-list2" type="radio">
+            <label for="comprehensive:radio-list2:something">Something else</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list2:another" name="comprehensive:radio-list2" type="radio">
+            <label for="comprehensive:radio-list2:another">Another thing</label>
+          </li>
+          <li>
+            <input id="comprehensive:radio-list2:anything" name="comprehensive:radio-list2" type="radio">
+            <label for="comprehensive:radio-list2:anything">Anything at all</label>
+          </li>
+        </ul>
+      </fieldset>
+      <fieldset class="toolbar">
+        <legend>Editor Toolbar (writer):</legend>
+        <div class="icon button field" title="Strongly emphasize text (bold)">
+          <button id="person:new:blog:bold" type="button"></button>
+          <label for="person:new:blog:bold">Bold</label>
+        </div>
+        <div class="icon button field" title="Emphasize text (italic)">
+          <button id="person:new:blog:italic" type="button"></button>
+          <label for="person:new:blog:italic">Italic</label>
+        </div>
+        <div class="icon button field" title="Underline text">
+          <button id="person:new:blog:underline" type="button"></button>
+          <label for="person:new:blog:underline">Underline</label>
+        </div>
+        <div class="icon button field" title="Mark as quote">
+          <button id="person:new:blog:q" type="button"></button>
+          <label for="person:new:blog:q">Quote</label>
+        </div>
+        <div class="icon button field" title="Strike through text">
+          <button id="person:new:blog:strike" type="button"></button>
+          <label for="person:new:blog:strike">Strike</label>
+        </div>
+        <div class="icon button field" title="Make text superscrip">
+          <button id="person:new:blog:sup" type="button"></button>
+          <label for="person:new:blog:sup">Sup</label>
+        </div>
+        <div class="icon button field" title="Make text subscrip">
+          <button id="person:new:blog:sub" type="button"></button>
+          <label for="person:new:blog:sub">Sub</label>
+        </div>
+        <div class="icon button field" title="Unordered list of items (bullet)">
+          <button id="person:new:blog:list-unordered" type="button"></button>
+          <label for="person:new:blog:list-unordered">-List</label>
+        </div>
+        <div class="icon button field" title="Ordered list of items (numbered)">
+          <button id="person:new:blog:list-ordered" type="button"></button>
+          <label for="person:new:blog:list-ordered">#List</label>
+        </div>
+        <div class="icon button field" title="Footnote (mark and add)">
+          <button id="person:new:blog:footnote" type="button"></button>
+          <label for="person:new:blog:footnote">Note</label>
+        </div>
+        <div class="icon button field" title="Mark as abbreviation or acronym">
+          <button id="person:new:blog:abbr" type="button"></button>
+          <label for="person:new:blog:abbr">ABBR</label>
+        </div>
+        <div class="icon button field" title="Mark as code (inline)">
+          <button id="person:new:blog:code" type="button"></button>
+          <label for="person:new:blog:code">Code</label>
+        </div>
+        <div class="icon button field" title="Add hyperlink">
+          <button id="person:new:blog:link" type="button"></button>
+          <label for="person:new:blog:link">Link</label>
+        </div>
+        <div class="icon button field" title="Add media (image, video, )">
+          <button id="person:new:blog:figure" type="button"></button>
+          <label for="person:new:blog:figure">Media</label>
+        </div>
+        <div class="select field">
+          <select id="person:new:blog:level">
+            <option value="p" selected>Paragraph (normal)</option>
+            <optgroup label="Headings">
+              <option value="h2">Heading</option>
+              <option value="h3">Sub Heading</option>
+              <option value="h4">Sub sub Heading</option>
+            </optgroup>
+            <optgroup label="Lists">
+              <option value="ul-li">Unordered List (Bullet)</option>
+              <option value="ol-li">Ordered List (Numbered)</option>
+            </optgroup>
+            <optgroup label="Feature">
+              <option value="blockquote">Blockquote</option>
+              <option value="table">Tabular Data</option>
+              <option value="pre-code">Specially Formatted Text (code)</option>
+            </optgroup>
+          </select>    
+          <label for="person:new:blog:level">Level</label>
+        </div>
+      </fieldset>
+      <fieldset class="list field wide">
+        <legend>List of metered (GCSE Results)</legend>
+        <ol>
+          <li>
+            <meter id="exam:literature:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="8">(Grade 8)</meter>
+            <label for="exam:literature:grade">GCSE English Literature</label>
+          </li>
+          <!-- <li>
+            <meter id="exam:english:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="7">(Grade 7)</meter>
+            <label for="exam:english:grade">GCSE English Language</label>
+          </li> -->
+          <li>
+            <meter id="exam:maths:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="7">(Grade 7)</meter>
+            <label for="exam:maths:grade">GCSE Mathmatics</label>  
+          </li>
+          <li>
+            <meter id="exam:physics:grade" min="0" max="9" low="3.5" high="6.5" optimum="6" value="7">(Grade 7)</meter>
+            <label for="exam:physics:grade">GCSE Physics (Science 1)</label>
+          </li>
+          <li>
+            <meter id="exam:computing:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="6">(Grade 6)</meter>
+            <label for="exam:computing:grade">GCSE Computing</label>
+          </li>
+          <!-- <li>
+            <meter id="exam:art:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="5">(Grade 5)</meter>
+            <label for="exam:art:grade">GCSE Art and Design</label>
+          </li>
+          <li>
+            <meter id="exam:history:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="4">(Grade 4)</meter>
+            <label for="exam:history:grade">GCSE  History</label>
+          </li> -->
+          <li>
+            <meter id="exam:pe:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="2">(Grade 2)</meter>
+            <label for="exam:pe:grade">GCSE Physical Education</label>
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset id="output:meter-gtb">
+        <div class="meter field">
+          <label for="comprehensive:meter-gtb:low">Metered (e.g. disk space)</label>
+          <meter id="comprehensive:meter-gtb:low" min="0" max="100" low="60" high="79" optimum="50" value="50">50% used disk space</meter>
+        </div>
+        <div class="meter field">
+          <label for="comprehensive:meter-gtb:mid">Metered (e.g. disk space)</label>
+          <meter id="comprehensive:meter-gtb:mid" min="0" max="100" low="60" high="79" optimum="50" value="70">70% used disk space</meter>
+        </div>
+        <div class="meter field">
+          <label for="comprehensive:meter-gtb:heigh">Metered (e.g. disk space)</label>
+          <meter id="comprehensive:meter-gtb:heigh" min="0" max="100" low="60" high="79" optimum="50" value="80">80% used disk space</meter>
+        </div>
+        <div class="field">
+          <!-- <div class="icon button field">
+            <label for="person:new:blog:list-ordered"># List</label>
+          </div>
+          <div class="icon button field">
+            <label for="person:new:blog:sup">Sup</label>
+          </div>
+          <div class="icon button field">
+            <label for="person:new:blog:sub">Sub</label>
+          </div>           -->
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="field"></div>
+        <div class="field"></div>
+        <div class="field"></div>
+      </fieldset>
+      <fieldset>
+        <div class="field"></div>
+        <div class="field"></div>
+        <div class="field"></div>
+      </fieldset>
+    </form></main>
+    <datalist id="datalist:honorific-prefix">
+      <option value="Mr.">
+      <option value="Mrs.">
+      <option value="Miss">
+      <option value="Ms.">
+      <option value="Mx">
+      <option value="Dr.">
+      <option value="Prof.">
+      <option value="Rev.">
+      <option value="Rav.">
+      <option value="Imam">
+      <option value="Sir">
+      <option value="Lady">
+      <option value="Lord">
+      <option value="Captain">
+      <option value="Cllr.">
+    </datalist>
+  </body>
+</html>

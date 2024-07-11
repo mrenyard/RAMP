@@ -40,28 +40,25 @@ $blue = (isset($_POST['blue'])) ? $_POST['blue'] : 255;
   grid-columns: main-left / span 2;
   grid-template-columns: repeat(auto-fit, 12rem);
   max-width: calc(100% - 15rem);
-}
-.gallery > header, .gallery > footer {
-  grid-column: 1 / span all; grid-row: auto;
-}
-.gallery > figure {
-
-  margin: 0; padding: 0 0 1rem;
-  min-width: 12rem; height: 100%;
-  align-items: center;
-  display: flex; flex-direction: column;
-  background-color: rgb(0 0 0 / .25);
-  border-radius: 1rem;
-}
-.gallery > figure > img {
-  width: 2rem; max-width: 100%;
-  height: 9rem; margin-bottom: -2em;
-  background-color: transparent;
+  > header, > footer { grid-column: 1 / span all; grid-row: auto;}
+  > figure {
+    margin: 0; padding: 0 0 1rem;
+    min-width: 12rem; height: 100%;
+    align-items: center;
+    display: flex; flex-direction: column;
+    background-color: rgb(0 0 0 / .25);
+    border-radius: 1rem;
+    > img {
+      width: 2rem; max-width: 100%;
+      height: 9rem; margin-bottom: -2em;
+      background-color: transparent;
+    }
+  }
 }
     </style>
   </head>
   <body>
-    <main id="main"><form method="post" class="gallery">
+    <main id="main"><form action="#main" method="post" class="gallery">
       <header><a href="#main" title="Full set of icons avalible with RAMP">#</a>
         <h1>Full Dymanic ICON Set (icon-*)</h1>
       </header>
@@ -87,7 +84,7 @@ if(is_array($matches) && !empty($matches)){
 ?>
       <figure class="icon" id="<?=$file; ?>">
         <img src="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2">
-        <figcaption><a href="#<?=$file; ?>"><?=$fileName; ?></a></figcaption>
+        <figcaption><a href="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2"><?=$fileName; ?></a></figcaption>
       </figure>
 <?php }} ?>
     </section>
