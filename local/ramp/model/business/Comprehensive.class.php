@@ -121,14 +121,30 @@ class Comprehensive extends Record
 
   protected function get_givenName() : ?RecordComponent
   {
-    if ($this->register('givenName', RecordComponentType::PROPERTY)) { //, TRUE)) {
+    if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The name by which you are refered to; in Western culture usually your first name.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
+          Str::set('string with a maximum character length of '),
           20, new validation\RegexValidationRule(
             Str::set('single latin alphabetical word'),
             '[A-Za-z\-]*'
+          )
+        )
+      ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_email() : ?RecordComponent
+  {
+    if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new field\Input($this->registeredName, $this,
+        Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
+        new validation\dbtype\VarChar(
+          Str::set('string with a maximun character length of '),
+          150,  new validation\EmailAddress(
+            Str::set('validly formatted email address')
           )
         )
       ));
@@ -142,7 +158,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
+          Str::set('string with a maximum character length of '),
           20, new validation\TelephoneNumber(
             Str::set('valid telephone number')
           )
@@ -158,9 +174,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
+          Str::set('string with a maximum character length of '),
           35, new validation\Password(
-            Str::set("8 charactor minimum alphanumeric and special charactors (!#$%&+,-.:;<=>?[]^*_{|}{~@')")
+            Str::set("8 character minimum alphanumeric and special characters (!#$%&+,-.:;?[]^*_{|}{~@')")
           )
         )
       ));
@@ -195,7 +211,7 @@ class Comprehensive extends Record
     if ($this->register('week', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\MultipartInput($this->registeredName, $this, 
         Str::set('expanded description of expected field content'),
-        new validation\ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2022-W01'), Str::set('2024-W52')),
+        new validation\ISOWeek(Str::set('valid week formatted (yyyy-W00)'), Str::set('2022-W01'), Str::set('2024-W52')),
         ['-W'],
         ['weekYear', 'weekNumber'],
         new validation\dbtype\SmallInt(Str::set('4 digit year from '), 0, 9999),
@@ -210,11 +226,11 @@ class Comprehensive extends Record
     if ($this->register('month', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\ISOMonth(Str::set('valid month formated (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
+        new validation\ISOMonth(Str::set('valid month formatted (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
         ['-'],
         ['monthYear', 'monthNumber'],
-        new validation\dbtype\SmallInt(Str::set('a 4 digit year from '), 0, 9999),
-        new validation\dbtype\TinyInt(Str::set('a 2 digit month number from '), 1, 12)
+        new validation\dbtype\SmallInt(Str::set('a 4 digit year'), 0, 9999),
+        new validation\dbtype\TinyInt(Str::set('a 2 digit month number'), 1, 12)
       ));
     }
     return $this->registered;
@@ -225,7 +241,7 @@ class Comprehensive extends Record
     if ($this->register('time', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\Time(Str::set('valid time formated (hh:mm[:ss])'),
+        new validation\dbtype\Time(Str::set('valid time formatted (hh:mm[:ss])'),
           new validation\ISOTime(Str::set('an appointment slot avalible ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
@@ -240,7 +256,7 @@ class Comprehensive extends Record
     if ($this->register('date', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\Date(Str::set('valid date formated (yyyy-mm-dd)'),
+        new validation\dbtype\Date(Str::set('valid date formatted (yyyy-mm-dd)'),
           new validation\ISODate(Str::set('date of birth from '),
             Str::set('1900-01-01'), Str::set('2023-12-31')
           )
@@ -255,8 +271,8 @@ class Comprehensive extends Record
     if ($this->register('datetime', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\DateTime(Str::set('valid date time formated (yyyy-mm-ddThh:mm:ss)'),
-          new validation\DateTimeLocal(Str::set('Start date and time of your event within the next 18 months, form '),
+        new validation\dbtype\DateTime(Str::set('valid date time formatted (yyyy-mm-ddThh:mm:ss)'),
+          new validation\DateTimeLocal(Str::set('Start date and time of your event within the next 18 months'),
             Str::set('2024-03-05T00:00'), Str::set('2025-09-30T00:00')
           )
         )
