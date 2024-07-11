@@ -36,6 +36,6 @@ class FormatBasedValidationRule extends RegexValidationRule
    */
   public function __construct(Str $errorMessage, string $pattern, string $format)
   {
-    parent::__construct($errorMessage,$pattern, NULL, $format);
+    parent::__construct($errorMessage, $pattern, NULL, $format);
   }
 }
