@@ -68,6 +68,8 @@ abstract class DocumentView extends ComplexView
     }
     if ($this->hasModel) {
       if ($propertyName == 'required') { return ($this->isRequired) ? Str::set(' required="required"') : NULL; }
+      if ($propertyName == 'value' && ($this->hasErrors || $this->inputType == 'password')) { return Str::set(' value=""'); }
+
       // if (
       //   ((string)$this->type == 'input field' && $propertyName == 'placeholder') &&
       //     ((string)$this->inputType != 'text' && (string)$this->inputType != 'search' && (string)$this->inputType != 'url' &&
@@ -87,7 +89,7 @@ abstract class DocumentView extends ComplexView
     }
     if ($value !== NULL && (!($value instanceof \ramp\core\Str))) { $value = Str::set((string)$value); }
     return ($value) ? $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')) : NULL;
-}
+  }
 
   /**
    * Allows C# type access to properties.
