@@ -88,8 +88,12 @@ footer > ol.footnotes {
 
 
 /** footer stick menu + back-to-top link **/
-footer > menu,
-footer > a:last-child {
+footer > a:last-child,
+body > footer > a:last-child {
+  position: fixed; z-index: 10;
+  bottom: .5rem; right: .5rem;
+}
+footer > menu {
   position: sticky; bottom: 1rem;
   margin-top: -2.125rem;
 }

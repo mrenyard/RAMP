@@ -39,7 +39,6 @@ body.data, body:has( > header.hero ) {
   scroll-snap-type: y mandatory;
 } body > header.hero {
   scroll-snap-stop: always;
-  scroll-snap-align: end;
   scroll-margin-block-start: unset;
   scroll-margin-block-end: var(--header-height);
 } body > main:has( > form:only-child ) {
@@ -49,6 +48,10 @@ body.data, body:has( > header.hero ) {
 }
 
 body {
+  /* position: absolute; z-index: 1;
+  top: 0; right: 0; left: 0;
+  overflow-x: hidden; */
+
   display: grid;
   grid-template-columns:
     [full-start] 0
@@ -95,6 +98,10 @@ body > nav {
 }
 body > header > * { grid-area: app; grid-row: auto; }
 body > footer > * { grid-area: main; grid-row: auto; }
+body > footer > a:last-child {
+  position: absolute;
+  bottom: .5rem; right: .5rem;
+}
   
 @media screen and (min-width: 43rem) { /* 688px */
   body > main { grid-column: main-left / span 3; }
@@ -175,7 +182,7 @@ article { margin-bottom: var(--block-spacing);
 } @media  screen and (min-width: 46rem) { /*736px*/
   body > article { 
     padding: var(--block-spacing);
-    margin-inline: calc(var(--block-spacing)*-1);
+    /* margin-inline: calc(var(--block-spacing)*-1); */
   } main + article { margin-top: var(--block-spacing); }
 } @media screen and (min-width: 70rem) { /*1120px*/
   aside > article { margin-inline: -.75rem;

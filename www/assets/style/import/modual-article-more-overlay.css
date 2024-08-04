@@ -12,7 +12,7 @@
 
 
 article {
-  :has( a.overlay ) {
+  &:has( a.overlay ) {
     position: relative;
     box-shadow: .125rem .125rem .5rem rgb(0 0 0 / .25);
     > p:last-of-type::after {
@@ -41,4 +41,3 @@ article {
   padding-bottom: 3.75rem;
   }
 }
-

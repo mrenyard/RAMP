@@ -17,7 +17,8 @@
 
 body {
   position: absolute; z-index: 1;
-  top: 0; right: 0; bottom: 0; left: 0;
+  top: 0; right: 0; left: 0;
+  /* overflow-x: hidden; */
   transition: top .5s ease-in;
   --top-drop: 6.5rem;
   @media screen and (min-width: 32rem) { /* 448px */

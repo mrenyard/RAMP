@@ -27,6 +27,11 @@ input[type="range"] {
   max-width: calc(100% - 2.25rem);
 }
 select { appearance: none; }
+textarea {
+  min-width: 100%; max-width: 100%;
+  padding-inline: .25rem;
+  border: none;
+}
 
 
 .field.meter > label:first-child + meter {
@@ -116,10 +121,18 @@ select { appearance: none; }
   &:has( button:first-child ) {
     > button {
       vertical-align: top;
-      width: 100%; height: 1.825rem;
+      width: 100%; min-height: 1.825rem;
       border: none; outline: none;
     }
     > label { position: relative; }
+  }
+  &.image {
+    padding: 0;
+    height: fit-content;
+    > input[type="image"] {
+      height: revert-layer;
+      margin-bottom: .75rem;
+   }
   }
   &.list {
     height: auto;
@@ -268,7 +281,7 @@ select { appearance: none; }
       }
     }
   }
-  &:has( input:not( [value], [type="color"]), :where(select > option[disabled]:checked)) {
+  &:not( .file ):has( input:not( [value], [type="color"]), :where(select > option[disabled]:checked)) {
     > label:first-child {
       bottom: 0;
       font-size: 1.25rem;
@@ -316,105 +329,22 @@ fieldset.toolbar {
   > :last-child { margin-left: auto; }
 }
 
-/** .list of radio or checkboxes *
-.list li,
-.list li {
-  min-height: 1.75rem;
-  line-height: 2rem;
-} .list.checkbox li:focus-within {
-  color: var(--accent-contrast, white);
-  background-color: var(--accent-color, rgb(0, 120, 215));
-}
-/** fiedset of radio or checkboxes **
-fieldset input[type="radio"] + label,
-fieldset input[type="checkbox"] + label {
-  display: block;
-  padding-left: 1.75rem;
-} 
-fieldset.bool input[type="checkbox"] + label::before,
-fieldset.radio.list li > input[type="radio"] + label::before,
-fieldset.checkbox.list li > input[type="checkbox"] + label::before {
-  position: absolute;
-  top: .375rem;
-  left: 0;
-}
-
-.list, .list li { position: relative; }
-
-/** form > fieldset > .list **
-form > fieldset > div.list,
-fieldset.list {
-  display: inline-block;
-  position: relative;
-  margin: .25rem; padding: 1.25rem 0 0;
-  vertical-align: top;
-  /* border-radius: .25rem; *
-  background-color: rgba(255,255,255,.5);
-}
-form > fieldset > div.list > ol,
-form > fieldset > div.list > ul,
-fieldset.list > ol,
-fieldset.list > ul {
-  list-style: none;
-  margin: 0 .25rem .25rem;
-  padding-left: 0;
-} form > fieldset > div.radio.list > ol,
-  form > fieldset > div.radio.list > ul,
-  fieldset.radio.list > ol,
-  fieldset.radio.list > ul {
-  column-gap: .25rem;
-  column-width: 10rem;
-}
-
-/** .field.image **
-.field.image,
-.field.image > label,
-.field.image > input[type="image"] {
-  padding: 0;
-  text-align: center;
-} .field.image.half {
-  float: right;
-  height: auto;
-} .field.image.icon {
-  width: 2rem;
-} /** .field.image > label **
-  .field.image > label {
-  height: 1rem;
-} .field.image > label:first-child {
-  padding: 0 .25rem;
-} .field.image > label:last-child {
-  display: block;
-  height: 1rem; line-height: 1rem;
-  white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-  font-size: .7rem; font-weight: normal;
-  background-color: white;
-  /* border-radius: 0 0 .25rem .25rem; *
-}
-
-
-/** .field.file **
-.field.file { height: 3.75rem; background-color: transparent; }
+/** .field.file **/
+.field.file { height: 4rem; background-color: transparent; }
 .field.file > input[type="file"] {
-  /* margin-left: 80%; *
   width: 0; height: 0;
   float: right;
-  /* overflow: hidden; *
-} /** .field.file > label **
+} /** .field.file > label **/
 .field.file > label,
 .field.file.error > label:first-child,
 .field.file:focus-within > label:first-child,
 .field.file:has( input:user-invalid ) > label:first-child {
   top: 0; right: 0; bottom: 0; left: 0;
-  padding: 0 7.25rem 0 .7rem;
-  font-size: 1.25rem; line-height: 3.25rem;
-  /* border-radius: .25rem; *
   color: var(--text-color);
   background-color: rgba(255,255,255,.5);
-  /** small **
   font-size: .7rem;
-  line-height: .75rem;
-  padding: .1rem .25rem 2.25rem;
+  line-height: 1rem;
+  padding: .1rem .25rem 3rem;
   font-weight: bold;
 } .field.file.error:focus-within > label:first-child,
   .field.file:has( input:user-invalid ):focus-within > label:first-child {
@@ -423,26 +353,25 @@ fieldset.list > ul {
   font-weight: bold;
   background-color: white;
   color: var(--error-primary-color);
-} /** EVENT MESSAGES: before label **
+} /** EVENT MESSAGES: before label **/
   .field.file > label::before { content: attr(data-message-ready) ' ';
 } .field.file.active > label::before { content:  attr(data-message-active) ' ';
 } .field.file.good > label::before { content:  attr(data-message-good) ' ';
 } .field.file.bad > label::before { content:  attr(data-message-bad) ' ';
-} /** BUTTON - .field.label > label::after **
+} /** BUTTON - .field.label > label::after **/
   .field.file > label::after {
   position: absolute;
-  top: 0; right: 0; bottom: 0; width: 7rem;
+  top: 1rem; right: 0; bottom: 0; width: 7rem;
   content: attr(data-message-button);
   font-weight: normal;
-  text-align: center; line-height: 2.75rem;
+  text-align: center; line-height: 3rem;
   cursor: pointer;
   color: var(--primary-contrast-color);
   background-color: var(--primary-color);
-  /* border-radius: .25rem; *
   border-style: solid; border-width: .1rem;
   border-color: rgba(255,255,255,.5) rgba(0,0,0,.25) rgba(0,0,0,.25) rgba(255,255,255,.5);
-  /** small **
-  top: .85rem;
+  /** small **/
+  /* top: 1rem; */
   left: -.1rem;
   width: auto;
   font-size: 1.25rem;
@@ -455,35 +384,4 @@ fieldset.list > ul {
 .field.file.required::after,
 .field.file.required.error::after { color: white; }
 .field.file.required.error:focus-within::before { bottom: calc(100% - .25rem); }
-
-/** fieldset.bool > label **
-fieldset.bool > input[type="checkbox"] + label {
-  margin-top: 1rem;
-  line-height: 1rem;
-}
-fieldset.bool > input[type="checkbox"] + label::before {
-  top: 1.375rem; left: .25rem;
-}
-
-/** .field.meter **
-.field.meter > label:first-child + meter {
-  width: calc(100% - 1rem);
-  margin: 1.5rem .5rem 0;
-}
-
-/** .field.textarea **
-.field.textarea {
-  height: auto;
-}
-.field.textarea:focus-within > label:first-child {
-  bottom: auto;
-}
-.field.textarea > textarea {
-  width: 100%;
-  padding: .5rem;
-  border: none 0;
-  background-color: transparent;
-  overflow-y: hidden;
-} .field.textarea > label:first-child + textarea {
-  margin-top: 1rem;
-}
+*/

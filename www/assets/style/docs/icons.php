@@ -17,11 +17,9 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  */
 namespace ramp;
-$red = (isset($_POST['red'])) ? $_POST['red'] : 255;
-$green = (isset($_POST['green'])) ? $_POST['green'] : 255;
-$blue = (isset($_POST['blue'])) ? $_POST['blue'] : 255;
-// require_once('../../../load.ini.php');
-// if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
+$red = (isset($_POST['red'])) ? $_POST['red'] : 0;
+$green = (isset($_POST['green'])) ? $_POST['green'] : 0;
+$blue = (isset($_POST['blue'])) ? $_POST['blue'] : 0;
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
@@ -70,21 +68,10 @@ if(is_array($matches) && !empty($matches)){
   foreach($matches as $match){
     $file = \str_replace('.svg.php', '', $match);
     $fileName = \str_replace('icon-', '', $file);
-    // $path = explode('/',strtolower(trim($_SERVER["PATH_INFO"],'/')));
-    // $file = explode('-', $path[0]);
-    // $type = array_shift($file);
-    // $size = str_replace('x','', array_shift($file));
-    // $name = implode('-', $file);
-    // $fillColor = explode(',', $path[1]);
-    // $fillColorRed = $fillColor[0];
-    // $fillColorGreen = $fillColor[1];
-    // $fillColorBlue = $fillColor[2];
-    // $scale = isset($path[2]) ? $path[2] : 1;
-    // $rescaleSize = ($size * $scale);
 ?>
       <figure class="icon" id="<?=$file; ?>">
         <img src="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2">
-        <figcaption><a href="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/2"><?=$fileName; ?></a></figcaption>
+        <figcaption><a href="../img/svg.php/<?=$file; ?>/<?=$red; ?>,<?=$green; ?>,<?=$blue; ?>/5"><?=$fileName; ?></a></figcaption>
       </figure>
 <?php }} ?>
     </section>

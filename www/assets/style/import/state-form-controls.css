@@ -141,8 +141,8 @@
     width: 12rem;
     background: linear-gradient(
       to right,
-      gold 0%,
-      gold var(--split),
+      rgb(255, 215, 0) 0%,
+      rgb(255, 215, 0) var(--split),
       rgb(255 255 255 / .5) var(--split),
       rgb(255 255 255 / .5) 100%
     );

@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../import/layout-form-data.css">
     <link rel="stylesheet" href="../import/state-form-controls.css">
     <style>
-/* @import url(../scratch/wireframe.css); */
 body > main {
   margin: 0 auto;
   > form:only-child {
@@ -22,17 +21,20 @@ body > main {
     margin-bottom: 3rem;
     > .wide { grid-column: auto / span 2; }
     > .url { grid-column: auto / span 3; }
-    > .toolbar { grid-column: auto / span 5; }
+    > .editor { grid-column: auto / span 5; }
   }
 }      
-#stop-animation {
+.js #stop-animation {
   position:absolute; top: 0; right: 0;
   &:checked ~ fieldset .field {
-     > .ind { opacity: 1; z-index: 1; animation: none; }
-     &:not( .rate ):has( input ~ .ind )::after { opacity: 0; }
+    > .ind { opacity: 1; z-index: 1; animation: none; }
   }
 }
 .no-js .ind { display: none; }
+.js .field.range.rate.hearts::after {
+  mask-image: var(--icon-x16-heart), var(--icon-x16-heart), var(--icon-x16-heart), var(--icon-x16-heart), var(--icon-x16-heart);
+  background: linear-gradient( to right, rgb(253, 85, 113) 0%, rgb(253, 85, 113) var(--split), rgb(255 255 255 / .5) var(--split), rgb(255 255 255 / .5) 100% );
+}
     </style>
   </head>
   <body>
@@ -297,6 +299,7 @@ body > main {
         <div class="special range field" title="Expanded description of expected field content" data-steps="A B C D E F G H I J K L M N O P Q R S T U V W X Y Z" data-value="Q">
           <label for="comprehensive:verifying:alphabet">Range special</label>
           <input id="comprehensive:verifying:alphabet" name="comprehensive:verifying:alphabet" type="range" min="0" max="25" step="1" value="16" disabled>
+          <span class="ind verifying" id="comprehensive:verifying:alphabet:ind">&hellip;Verifying</span>
         </div>
         <div class="select field required" title="Expanded description of expected field content">
           <label for="comprehensive:verifying:select-one">Select One</label>
@@ -579,8 +582,13 @@ body > main {
         <input id="comprehensive:new:url" name="comprehensive:new:url" placeholder="e.g. https://www.domain-name.com/top-article" type="url">
         <!-- <span class="ind" id="comprehensive:new:url:ind"></span> -->
       </div>
-      <div class="search field wide"></div>
-      <div class="image field button" style="height: 10.625rem;"></div>
+      <div class="search field wide">[SEARCH]</div>
+      <div class="image button field" title="Person portrait icon">
+        <button id="comprehensive:button:profile" name="comprehensive:button:profile">
+          <img width="151" height="151" alt="User profile picture" src="https://media.ramp.matt-laptop.lan/img/svg.php/outline-x48-profile/0,0,0/2">
+        </button>
+        <label for="comprehensive:button:profile">Button IMG</label>
+      </div>
       <fieldset class="checkbox list field required wide" title="Expanded description of expected field content">
         <legend>List of multi selectable checkboxes (unordered)</legend>
         <ul>
@@ -631,7 +639,10 @@ body > main {
           </li>
         </ol>
       </fieldset>
-      <div class="image field button" style="height: 10.625rem;"></div>
+      <div class="image field">
+        <input id="comprehensive:image:profile" name="comprehensive:image:profil" type="image" width="151" height="151" alt="Circle" src="https://media.ramp.matt-laptop.lan/img/svg.php/shape-x16-circle/0,0,0/1">
+        <label for="comprehensive:image:profile">Input IMG</label>
+      </div>
       <fieldset class="radio list field required wide" title="Expanded description of expected field content">
         <legend>List of single choose radio (ordered)</legend>
         <ol>
@@ -682,85 +693,89 @@ body > main {
           </li>
         </ul>
       </fieldset>
-      <fieldset class="toolbar">
-        <legend>Editor Toolbar (writer):</legend>
-        <div class="icon button field" title="Strongly emphasize text (bold)">
-          <button id="person:new:blog:bold" type="button"></button>
-          <label for="person:new:blog:bold">Bold</label>
-        </div>
-        <div class="icon button field" title="Emphasize text (italic)">
-          <button id="person:new:blog:italic" type="button"></button>
-          <label for="person:new:blog:italic">Italic</label>
-        </div>
-        <div class="icon button field" title="Underline text">
-          <button id="person:new:blog:underline" type="button"></button>
-          <label for="person:new:blog:underline">Underline</label>
-        </div>
-        <div class="icon button field" title="Mark as quote">
-          <button id="person:new:blog:q" type="button"></button>
-          <label for="person:new:blog:q">Quote</label>
-        </div>
-        <div class="icon button field" title="Strike through text">
-          <button id="person:new:blog:strike" type="button"></button>
-          <label for="person:new:blog:strike">Strike</label>
-        </div>
-        <div class="icon button field" title="Make text superscrip">
-          <button id="person:new:blog:sup" type="button"></button>
-          <label for="person:new:blog:sup">Sup</label>
-        </div>
-        <div class="icon button field" title="Make text subscrip">
-          <button id="person:new:blog:sub" type="button"></button>
-          <label for="person:new:blog:sub">Sub</label>
-        </div>
-        <div class="icon button field" title="Unordered list of items (bullet)">
-          <button id="person:new:blog:list-unordered" type="button"></button>
-          <label for="person:new:blog:list-unordered">-List</label>
-        </div>
-        <div class="icon button field" title="Ordered list of items (numbered)">
-          <button id="person:new:blog:list-ordered" type="button"></button>
-          <label for="person:new:blog:list-ordered">#List</label>
-        </div>
-        <div class="icon button field" title="Footnote (mark and add)">
-          <button id="person:new:blog:footnote" type="button"></button>
-          <label for="person:new:blog:footnote">Note</label>
-        </div>
-        <div class="icon button field" title="Mark as abbreviation or acronym">
-          <button id="person:new:blog:abbr" type="button"></button>
-          <label for="person:new:blog:abbr">ABBR</label>
-        </div>
-        <div class="icon button field" title="Mark as code (inline)">
-          <button id="person:new:blog:code" type="button"></button>
-          <label for="person:new:blog:code">Code</label>
-        </div>
-        <div class="icon button field" title="Add hyperlink">
-          <button id="person:new:blog:link" type="button"></button>
-          <label for="person:new:blog:link">Link</label>
-        </div>
-        <div class="icon button field" title="Add media (image, video, )">
-          <button id="person:new:blog:figure" type="button"></button>
-          <label for="person:new:blog:figure">Media</label>
-        </div>
-        <div class="select field">
-          <select id="person:new:blog:level">
-            <option value="p" selected>Paragraph (normal)</option>
-            <optgroup label="Headings">
-              <option value="h2">Heading</option>
-              <option value="h3">Sub Heading</option>
-              <option value="h4">Sub sub Heading</option>
-            </optgroup>
-            <optgroup label="Lists">
-              <option value="ul-li">Unordered List (Bullet)</option>
-              <option value="ol-li">Ordered List (Numbered)</option>
-            </optgroup>
-            <optgroup label="Feature">
-              <option value="blockquote">Blockquote</option>
-              <option value="table">Tabular Data</option>
-              <option value="pre-code">Specially Formatted Text (code)</option>
-            </optgroup>
-          </select>    
-          <label for="person:new:blog:level">Level</label>
-        </div>
-      </fieldset>
+      <div class="editor">
+        <fieldset class="toolbar">
+          <legend>Editor Toolbar (writer):</legend>
+          <div class="icon button field" title="Strongly emphasize text (bold)">
+            <button id="person:new:blog:bold" type="button"></button>
+            <label for="person:new:blog:bold">Bold</label>
+          </div>
+          <div class="icon button field" title="Emphasize text (italic)">
+            <button id="person:new:blog:italic" type="button"></button>
+            <label for="person:new:blog:italic">Italic</label>
+          </div>
+          <div class="icon button field" title="Underline text">
+            <button id="person:new:blog:underline" type="button"></button>
+            <label for="person:new:blog:underline">Underline</label>
+          </div>
+          <div class="icon button field" title="Mark as quote">
+            <button id="person:new:blog:q" type="button"></button>
+            <label for="person:new:blog:q">Quote</label>
+          </div>
+          <div class="icon button field" title="Strike through text">
+            <button id="person:new:blog:strike" type="button"></button>
+            <label for="person:new:blog:strike">Strike</label>
+          </div>
+          <div class="icon button field" title="Make text superscrip">
+            <button id="person:new:blog:sup" type="button"></button>
+            <label for="person:new:blog:sup">Sup</label>
+          </div>
+          <div class="icon button field" title="Make text subscrip">
+            <button id="person:new:blog:sub" type="button"></button>
+            <label for="person:new:blog:sub">Sub</label>
+          </div>
+          <div class="icon button field" title="Unordered list of items (bullet)">
+            <button id="person:new:blog:list-unordered" type="button"></button>
+            <label for="person:new:blog:list-unordered">-List</label>
+          </div>
+          <div class="icon button field" title="Ordered list of items (numbered)">
+            <button id="person:new:blog:list-ordered" type="button"></button>
+            <label for="person:new:blog:list-ordered">#List</label>
+          </div>
+          <div class="icon button field" title="Footnote (mark and add)">
+            <button id="person:new:blog:footnote" type="button"></button>
+            <label for="person:new:blog:footnote">Note</label>
+          </div>
+          <div class="icon button field" title="Mark as abbreviation or acronym">
+            <button id="person:new:blog:abbr" type="button"></button>
+            <label for="person:new:blog:abbr">ABBR</label>
+          </div>
+          <div class="icon button field" title="Mark as code (inline)">
+            <button id="person:new:blog:code" type="button"></button>
+            <label for="person:new:blog:code">Code</label>
+          </div>
+          <div class="icon button field" title="Add hyperlink">
+            <button id="person:new:blog:link" type="button"></button>
+            <label for="person:new:blog:link">Link</label>
+          </div>
+          <div class="icon button field" title="Add media (image, video, )">
+            <button id="person:new:blog:figure" type="button"></button>
+            <label for="person:new:blog:figure">Media</label>
+          </div>
+          <div class="select field">
+            <select id="person:new:blog:level">
+              <option value="p" selected>Paragraph (normal)</option>
+              <optgroup label="Headings">
+                <option value="h2">Heading</option>
+                <option value="h3">Sub Heading</option>
+                <option value="h4">Sub sub Heading</option>
+              </optgroup>
+              <optgroup label="Lists">
+                <option value="ul-li">Unordered List (Bullet)</option>
+                <option value="ol-li">Ordered List (Numbered)</option>
+              </optgroup>
+              <optgroup label="Feature">
+                <option value="blockquote">Blockquote</option>
+                <option value="table">Tabular Data</option>
+                <option value="pre-code">Specially Formatted Text (code)</option>
+              </optgroup>
+            </select>    
+            <label for="person:new:blog:level">Level</label>
+          </div>
+        </fieldset>
+        <textarea></textarea>
+        <output></output>
+      </div>
       <fieldset class="list field wide">
         <legend>List of metered (GCSE Results)</legend>
         <ol>
@@ -768,10 +783,6 @@ body > main {
             <meter id="exam:literature:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="8">(Grade 8)</meter>
             <label for="exam:literature:grade">GCSE English Literature</label>
           </li>
-          <!-- <li>
-            <meter id="exam:english:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="7">(Grade 7)</meter>
-            <label for="exam:english:grade">GCSE English Language</label>
-          </li> -->
           <li>
             <meter id="exam:maths:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="7">(Grade 7)</meter>
             <label for="exam:maths:grade">GCSE Mathmatics</label>  
@@ -784,14 +795,10 @@ body > main {
             <meter id="exam:computing:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="6">(Grade 6)</meter>
             <label for="exam:computing:grade">GCSE Computing</label>
           </li>
-          <!-- <li>
+          <li>
             <meter id="exam:art:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="5">(Grade 5)</meter>
             <label for="exam:art:grade">GCSE Art and Design</label>
           </li>
-          <li>
-            <meter id="exam:history:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="4">(Grade 4)</meter>
-            <label for="exam:history:grade">GCSE  History</label>
-          </li> -->
           <li>
             <meter id="exam:pe:grade" min="0" max="9" low="3.5" high="6.5" optimum="7" value="2">(Grade 2)</meter>
             <label for="exam:pe:grade">GCSE Physical Education</label>
@@ -799,6 +806,10 @@ body > main {
         </ol>
       </fieldset>
       <fieldset id="output:meter-gtb">
+        <div class="hearts rate range field" title="Expanded description of expected field content" data-value="7">
+          <label for="comprehensive:existing:heart">Rating (modified)</label>
+          <input id="comprehensive:existing:heart" name="comprehensive:existing:hart" type="range" min="1" max="10" value="7">
+        </div>
         <div class="meter field">
           <label for="comprehensive:meter-gtb:low">Metered (e.g. disk space)</label>
           <meter id="comprehensive:meter-gtb:low" min="0" max="100" low="60" high="79" optimum="50" value="50">50% used disk space</meter>
@@ -811,25 +822,26 @@ body > main {
           <label for="comprehensive:meter-gtb:heigh">Metered (e.g. disk space)</label>
           <meter id="comprehensive:meter-gtb:heigh" min="0" max="100" low="60" high="79" optimum="50" value="80">80% used disk space</meter>
         </div>
-        <div class="field">
-          <!-- <div class="icon button field">
-            <label for="person:new:blog:list-ordered"># List</label>
-          </div>
-          <div class="icon button field">
-            <label for="person:new:blog:sup">Sup</label>
-          </div>
-          <div class="icon button field">
-            <label for="person:new:blog:sub">Sub</label>
-          </div>           -->
+      </fieldset>
+      <fieldset>
+        <div class="file field required active" data-message="Please ensure File Upload change correctly formatted">
+          <label for="person:new:video" data-message-button="Browse" data-message-ready="Choose" data-message-active="Uploading" data-message-good="Uploaded" data-message-bad="ERROR with">Profile Video...</label>
+          <input id="person:new:video" name="person:new:video" required="required" type="file" capture="user" accept="video/mp4, video/3gpp, video/quicktime, video/x-msvideo, video/x-ms-wmv">
+        </div>
+        <div class="field file required active" data-message="Please ensure File Upload change correctly formatted">
+          <label for="person:new:profile" data-message-button="Browse" data-message-ready="Choose" data-message-active="Uploading" data-message-good="Uploaded" data-message-bad="ERROR with">Profile Picture...</label>
+          <input id="person:new:profile" name="person:new:profile" required="required" type="file" capture="user" accept="image/png, image/jpeg">
+        </div>
+        <div class="field file required" data-message="Please ensure File Upload change correctly formatted">
+          <label for="person:new:file" data-message-button="Browse" data-message-ready="Choose" data-message-active="Uploading" data-message-good="Uploaded" data-message-bad="ERROR with">File...</label>
+          <input id="person:new:file" name="person:new:file" required="required" type="file" accept="image/png, image/jpeg">
         </div>
       </fieldset>
       <fieldset>
-        <div class="field"></div>
-        <div class="field"></div>
-        <div class="field"></div>
-      </fieldset>
-      <fieldset>
-        <div class="field"></div>
+        <div class="field file required error" data-message="Please ensure File Upload change correctly formatted">
+          <label for="person:new:cv" data-message-button="Browse" data-message-ready="Choose" data-message-active="Uploading" data-message-good="Uploaded" data-message-bad="ERROR with">Curriculum Vitae...</label>
+          <input id="person:new:cv" name="person:new:cv" required="required" type="file" accept="application/pdf, application/vnd.oasis.opendocument.text, application/vnd.openxmlformats, application/msword">
+        </div>
         <div class="field"></div>
         <div class="field"></div>
       </fieldset>

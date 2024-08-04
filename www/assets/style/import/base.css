@@ -19,6 +19,25 @@
 } :root, *, *::before, *::after { box-sizing: border-box; }
 html { position: relative; overflow-x: hidden; scrollbar-gutter: stable; }
 
+::-webkit-datetime-edit-ampm-field:focus,
+::-webkit-datetime-edit-day-field:focus,
+::-webkit-datetime-edit-hour-field:focus,
+::-webkit-datetime-edit-millisecond-field:focus,
+::-webkit-datetime-edit-minute-field:focus,
+::-webkit-datetime-edit-month-field:focus,
+::-webkit-datetime-edit-second-field:focus,
+::-webkit-datetime-edit-week-field:focus,
+::-webkit-datetime-edit-year-field:focus,
+::-webkit-datetime-edit-text:focus {
+  color: var(--accent-contrast, white);
+  background-color: var(--accent-color, rgb(0, 120, 215));
+}
+::-moz-color-swatch { border: none 0;
+} ::-webkit-color-swatch { border: none 0; }
+input[type="text"]::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
 * { margin: 0; }
 
 body {
@@ -110,5 +129,5 @@ main > form:only-child > a:first-child {
 
 ::selection  {
   color: var(--accent-contrast, white);
-  background-color: var(--accent-color, rgb(0, 120, 215));;
+  background-color: var(--accent-color, rgb(0, 120, 215));
 }
