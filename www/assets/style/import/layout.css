@@ -35,7 +35,7 @@
 }
 
 :target { scroll-margin-block-start: 4rem; }
-body.data, body:has( > header.hero ) {
+body.data-page, body:has( > header.hero ) {
   scroll-snap-type: y mandatory;
 } body > header.hero {
   scroll-snap-stop: always;
@@ -87,7 +87,7 @@ body > nav {
   position: fixed; z-index: 1;
   top: .375rem; right: .375rem;
   width: 2.5rem; height: 2.5rem;
-} body > *:not(header, nav, main, article) {
+} body > *:not(header, nav, main, article, script) {
   display: grid; grid-template-columns: subgrid;
 } body > main, body > aside, body > article {
   grid-area: main; grid-row: auto;
@@ -114,19 +114,19 @@ body > footer > a:last-child {
 }
 
 @media screen and (min-width: 70rem) { /*1120px*/
-  body:not( .index ) > main > header.hero {
+  body:not( .index-page ) > main > header.hero {
     position: relative;
     width: calc(150% + (var(--inline-spacing)/2));
   }
-  body.index > main { grid-column: main-left / span 3; }
-  body.index > aside, body.index > aside > footer,
-  body.index > aside > header {
+  body.index-page > main { grid-column: main-left / span 3; }
+  body.index-page > aside, body.index > aside > footer,
+  body.index-page > aside > header {
     grid-column: main-left / span 3; grid-row: auto;
-  } body:not( .index ) > aside {
+  } body:not( .index-page ) > aside {
     display: flex; flex-direction: column;
     column-gap: var(--inline-spacing);
     grid-area: aside; grid-row: 2;
-  } body:not( .index ):has( > main > header.hero ) > aside {
+  } body:not( .index-page ):has( > main > header.hero ) > aside {
     margin-top: var(--hero-height);
   }
   body > article { grid-column: main-left / span 3; }
@@ -148,7 +148,7 @@ body:has( aside ) figure {
   }
 }
 
-body:not( .index ):has( aside ) {
+body:not( .index-page ):has( aside ) {
   @media screen and (min-width: 78rem) {
     img { max-width: 100%; }
     figure { max-width: calc(100% + 1rem); margin-inline: -1rem; padding-top: 1rem; }
@@ -188,9 +188,9 @@ article { margin-bottom: var(--block-spacing);
   aside > article { margin-inline: -.75rem;
   } aside > article:nth-last-of-type(even) { margin-right: -.75rem; 
   } aside > article:nth-last-of-type(odd) { margin-left: -.75rem;
-  } body.index > aside > article { margin-inline: 0; }
-  body.index > aside { margin-inline: -.75rem; }
-  body.index > aside > header, body.index > aside > footer { margin-inline: .75rem }
+  } body.index-page > aside > article { margin-inline: 0; }
+  body.index-page > aside { margin-inline: -.75rem; }
+  body.index-page > aside > header, body.index-page > aside > footer { margin-inline: .75rem }
 }
 
 /** Full breakout background **/
@@ -212,12 +212,12 @@ body > main {
   }
 }
 @media screen and (min-width: 70rem) {
-  body:not(.index):has(aside) > main::after { width: 75vw; }
-  /* body:not(.index):has(aside) > main:has( > form:only-child )::after { left: 50%; } */
-  body:not(.index) > aside { z-index: 1; }
+  body:not(.index-page):has(aside) > main::after { width: 75vw; }
+  /* body:not(.index-page):has(aside) > main:has( > form:only-child )::after { left: 50%; } */
+  body:not(.index-page) > aside { z-index: 1; }
 }
 body > main,
-body:not(.index) > aside {
+body:not(.index-page) > aside {
   padding-bottom: 2rem;
 }
 
