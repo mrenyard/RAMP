@@ -1,0 +1,58 @@
+#!/bin/bash -u
+SCRIPT=`readlink -f $0`; SCRIPTPATH=`dirname "$SCRIPT"`; cd "$SCRIPTPATH";
+PROCESS_TYPE=; if [ "$#" -eq 0 ]; then PROCESS_TYPE="--build"; else PROCESS_TYPE=${1}; fi
+case ${PROCESS_TYPE} in
+  "--deploy") ;&
+  "--purge") ;&
+  "--build")
+    if [ "$0" != "./package" ]; then
+      echo "Must be run from containing directory NOT $0";
+      exit 1;
+    fi
+    if [[ $EUID -ne 0 ]]; then
+       echo "This script must be run as root" 1>&2;
+       exit 1;
+    fi
+    case ${PROCESS_TYPE} in
+    "--deploy") ;&
+    "--purge") ;&
+    "--build")
+      echo "BUILDING..."
+      if [ -f ramp-0.1_all.deb ]; then
+        rm -f ramp-0.1_all.deb;
+      fi
+      sudo rsync -avv code/ debian/usr/share/php/ramp;
+      sudo chown -R root:root debian/usr;
+      sudo chmod -R 664 debian/usr/share/php/ramp/;
+      sudo dpkg-deb --build debian;
+      echo "renaming 'debian.deb' to 'ramp-0.1_all.deb'";
+      mv debian.deb ../../Code/Compiled/deb-packages/ramp-0.1_all.deb;
+      sudo chmod 775 ../../Code/Compiled/deb-packages/ramp-0.1_all.deb;
+      sudo chown ${SUDO_USER}:developer ../../Code/Compiled/deb-packages/ramp-0.1_all.deb
+      sudo chown -R ${SUDO_USER}:${SUDO_USER} debian;
+      sudo chmod -R 775 debian/usr/share/php/ramp/
+      sudo rm -R debian/usr/share/php/ramp/
+      echo "BUILD SUCCESFULLY COMPLETED!";
+      ;;
+    esac
+    case ${PROCESS_TYPE} in
+    "--deploy") ;&
+    "--purge")
+      echo "PURGING...nothing to purge";
+      # echo "PURGE ...COMPLETED!";
+      ;;
+    esac
+    case ${PROCESS_TYPE} in
+    "--deploy")
+      echo "DEPLOYING..."
+      echo "  ...not to be deployed in production enviroment!"
+      echo "  TRY: 'sudo ln -s code /usr/share/php/ramp'"
+      echo "NOT DEPLOYED!";
+      ;;
+    esac
+    ;;
+  *)
+    echo "USAGE: ...";
+    exit 1
+    ;;
+esac
