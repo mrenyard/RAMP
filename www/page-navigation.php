@@ -40,13 +40,13 @@
       <nav>
         <ul id="quick-links">
           <li><a href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
-          <li><a href="#main" title="Skip to Page Main content: <?=$this->title; ?>">Main Content</a></li>
+          <li><a href="#main" title="Skip to Page Main content: In-page Navigation and Site Search">Main Content</a></li>
           <li><a href="#site-nav" title="Jump to Full Site Map (Navigation)">Site Navigation</a></li>
           <li><a href="#contentinfo" title="Jump to Site Information: contact address, legal, copyright and privacy statement etc.">Site Information</a></li>
         </ul>
-        <form id="quick-search" method="get" action="/search#results"><label for="query" title="Use this sites search feature to search for the latest content, contacts, data or more.">Search</label>
+        <form id="quick-search" method="get" action="/search#results">
           <div class="search input field">
-            <label for="query" title="Here to search <?=\ramp\SETTING::$RAMP_DOMAIN; ?> for the latest content, data and more.">Search</label>
+            <label for="query" title="Here to search RampApp.org for the latest content, data and more.">Search</label>
             <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
             <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi aliquam, voluptates ad ex ab laborum eveniet quia eos quibusdam deserunt similique ducimus molestias corporis odit ratione laudantium quis nesciunt? Ullam.</span>
           </div>            

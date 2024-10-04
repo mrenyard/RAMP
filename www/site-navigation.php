@@ -24,10 +24,10 @@
  */
 ?>
       <h2>N</h2>
-      <ul>
+      <ol>
         <li><a href="#" title="[title]">[1]</a></li>
         <li><a href="#" title="[title]">[2]</a></li>
         <li><a href="#" title="[title]">[3]</a></li>
         <li><a href="#" title="[title]">[4]</a></li>
         <li><a href="#" title="[title]">[5]</a></li>
-      </ul>
+      </ol>

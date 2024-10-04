@@ -18,23 +18,14 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\view;
-
-$page = WebRoot::getInstance();
-$data = ($page->type == PageType::DATA);
-$index = (!$data && $page->type == PageType::INDEX);
-?>
-    <main id="main"><?php if ($data) { ?><form action="#main" method="post"><a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a>
-      <h1><?=$this->heading; ?></h1>
-<?=$this->children; ?>
-    </form></main>
-<?php } else { ?><a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a>
+?><form method="post">
       <header>
-        <h1><?=$this->heading; ?></h1>
-        <p><?=$this->summary; ?></p>
-<?=$this->extendedSummary; ?>
+        <h2><?=$this->heading; ?></h2>
+        <button formmethod="dialog">X</button>
       </header>
-<?=$this->extendedContent; ?>
-<?php if (!$index) { $this->children; } ?>
-    </main>
-<?php if ($index) { $this->children; } } ?>
+      
+      <footer>
+        <button formmethod="dialog">Cancel</button>
+        <button>Confirm</button>
+      </footer>
+    </form>

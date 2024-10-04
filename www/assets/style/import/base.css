@@ -79,6 +79,9 @@ p, h1, h2, h3, h4, h5, h6 {
 } img + p { margin-top: .75rem;
 } header > p { font-weight: bold;
 } form > header > p { font-weight: normal; }
+form > header h2:has( + p ) { display: inline-block; }
+form > header h2 + p { display: inline; }
+form > header h2 + p::before { content: " - "; }
 
 img, picture, video, canvas, svg {
   vertical-align: middle;

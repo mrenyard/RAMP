@@ -25,7 +25,8 @@
  * @version 0.0.9;
  */
 ?>
-      <figure class="logo">
+      <div id="logo">[HEADER]</div>
+      <!-- <figure class="logo">
         <a tabindex="-1" href="/" rel="home"><img src="//media.<?=\ramp\SETTING::$RAMP_DOMAIN; ?>/tmp/logo.svg" alt=""></a>
         <figcaption>Lorem ipsum dolor sit amet consectetur adipisicing. Praesentium dicta repellendus vero!<sup>TM</sup></figcaption>
-      </figure>
+      </figure> -->

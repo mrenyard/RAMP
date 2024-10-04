@@ -45,7 +45,7 @@ class WebRoot extends View
   private $modal;
     
   protected function set_type(PageType $type) { $this->pageType = $type; }
-  protected function get_type() : PageType { return (isset($this->pageType)) ? $this->pageType : PageType::CONTENT; }
+  protected function get_type() : PageType { return (isset($this->pageType)) ? $this->pageType : PageType::DATA; }
   protected function get_pageType() : string { return $this->type->value . '-page'; }
   protected function get_dialog() { $this->dialog->render(); }
   protected function get_main() { $this->main->render(); }
@@ -99,7 +99,7 @@ class WebRoot extends View
   }
 
   public function clearModal() { $this->modal = NULL; }
-  
+
   public function render() { $this->body->render(); }
   public function __clone() { throw new \BadMethodCallException('Cloning is not allowed'); }
 }
