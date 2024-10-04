@@ -1,6 +1,9 @@
 #!/bin/bash -u
+# Edit 'SAVE_PATH' to your preferred save location.
+SAVE_PATH="../../Code/Compiled/deb-packages/";
 SCRIPT=`readlink -f $0`; SCRIPTPATH=`dirname "$SCRIPT"`; cd "$SCRIPTPATH";
 PROCESS_TYPE=; if [ "$#" -eq 0 ]; then PROCESS_TYPE="--build"; else PROCESS_TYPE=${1}; fi
+if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
 case ${PROCESS_TYPE} in
   "--deploy") ;&
   "--purge") ;&
@@ -26,10 +29,10 @@ case ${PROCESS_TYPE} in
       sudo chmod -R 664 debian/usr/share/php/ramp/;
       sudo dpkg-deb --build debian;
       echo "renaming 'debian.deb' to 'ramp-0.1_all.deb'";
-      mv debian.deb ../../Code/Compiled/deb-packages/ramp-0.1_all.deb;
-      sudo chmod 775 ../../Code/Compiled/deb-packages/ramp-0.1_all.deb;
-      sudo chown ${SUDO_USER}:developer ../../Code/Compiled/deb-packages/ramp-0.1_all.deb
-      sudo chown -R ${SUDO_USER}:${SUDO_USER} debian;
+      mv debian.deb ${SAVE_PATH}ramp-0.1_all.deb;
+      sudo chmod 775 ${SAVE_PATH}ramp-0.1_all.deb;
+      sudo chown ${USER}:developer ${SAVE_PATH}ramp-0.1_all.deb
+      sudo chown -R ${USER}:${USER} debian;
       sudo chmod -R 775 debian/usr/share/php/ramp/
       sudo rm -R debian/usr/share/php/ramp/
       echo "BUILD SUCCESFULLY COMPLETED!";
