@@ -119,10 +119,19 @@ FUNC.dom = function()
   };
 
   //- INITIALISE
-  if (modal != null && modal.open == true) {
-    modal.open = false; modal.showModal();
+  if (modal != null) {
+    if (modal.open == true) { modal.open = false; modal.showModal(); }
+    modal.classList.add('ready');
+    let f = modal.querySelector('footer')
+    if (f != null) {
+      let bs = f.querySelectorAll('button');
+      if (bs != null) {
+        dB1 = bs[0]; dB2 = bs[1];
+      }
+    }
+    dH = modal.querySelector('h2');
   }
-  // if (modal == null) {
+  // else {
   //   modal = buildSection(sectionType.DIALOG_FORM, 'Modal Dialog', 2);
   //   let x = document.createElement('button'),
   //    h = modal.querySelector('header'),
@@ -134,10 +143,6 @@ FUNC.dom = function()
   //   dH = h.querySelector('h2');
   //   document.body.insertBefore(modal, document.body.firstElementChild);
   // }
-  modal.classList.add('ready');
-  let bs = modal.querySelector('footer').querySelectorAll('button');
-  dB1 = bs[0]; dB2 = bs[1];
-  dH = modal.querySelector('h2');
 
   dialog.open = function() { modal.showModal(); }
   dialog.close = function() { modal.close(); }

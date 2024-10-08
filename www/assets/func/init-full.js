@@ -147,13 +147,13 @@ FUNC.init = function()
 
   /**
    * Register potentual FUNC modules needed site wide, only loads those scripts actually need per page.
-   * @param {srting} {cN: className} - Identifing HtmlClass:name for modual use. 
+   * @param {srting} {qS: querySelector:string} - Identifing HtmlClass:name for modual use. 
    * @param {string} {mN: {moduleName]} Modual name to be exacuted against each relevant HtmlEntity (fragment).
    * @param {string[]} {ds: dependencies} - FUNC[library][:array] List of dependent library names ordered in loading propriety.
    */
-  var register = function(cN, mN, ds)
+  var register = function(qS, mN, ds)
   {
-    let e = document.getElementsByClassName(cN)
+    let e = document.querySelectorAll(qS);
     if (e.length > 0) {
       lock = true;
       libsLock = true;
