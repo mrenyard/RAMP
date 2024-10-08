@@ -10,29 +10,28 @@
  */
 
 function compress($buffer) {
-  /* remove comments */
-  $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
-  /* remove tabs, spaces, newlines, etc. */
-  $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $buffer);
+  $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer); // remove comments
+  $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $buffer); // remove tabs, spaces, newlines, etc.
   return $buffer;
 }
 
-ob_start("compress");
 if (file_exists('import/css.manifest')) {
+  if (!file_exists('combined')) { mkdir('combined'); }
+  ob_start("compress");
   foreach (file('import/css.manifest') as $line){
     $line = trim($line);
     if((strpos($line,';') !== 0) && ($line !== '')) {
       include('import/'.$line.'.css');
     }
   }
+  $allcss = ob_get_contents();
+  ob_end_clean();
+
+  $allcss = compress($allcss);
+  $fileName = 'combined/'.date('Y-d-m').'.css';
+  $cssfile = fopen($fileName, 'wb');
+  fwrite($cssfile, $allcss);
+  fclose($cssfile);
+
+  return $fileName;
 }
-$allcss = ob_get_contents();
-ob_end_clean();
-
-$allcss = compress($allcss);
-$fileName = 'combined.'.date('Y-d-m').'.css';
-$cssfile = fopen($fileName, 'wb');
-fwrite($cssfile, $allcss);
-fclose($cssfile);
-
-return $fileName;

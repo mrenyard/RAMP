@@ -48,16 +48,18 @@ if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) 
   $STYLE_SERVER = '//style.'.$_SERVER["HTTP_HOST"];
   $MEDIA_SERVER = '//media.'.$_SERVER["HTTP_HOST"];
   $FUNC_SERVER = '//func.'.$_SERVER["HTTP_HOST"];
-  $mostRecentDate;
+  $mostRecentDate = '2000-01-01'; // date before RAMP
   $dir =  $_SERVER["DOCUMENT_ROOT"].'/assets/style/combined/';
   chdir($dir);
   $matches = glob('*.css');
-  if(is_array($matches) && !empty($matches)){
+  if (is_array($matches) && !empty($matches)){
     foreach($matches as $match){
       $date = explode('.', $match)[0];
-      $mostRecentDate = ($mostRecentDate < $date) ? $data : $mostRecentDate;
+      $mostRecentDate = ($mostRecentDate < $date) ? $date : $mostRecentDate;
     }
   }
 ?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined/<?=$mostRecentDate; ?>.css">
+    <!-- TODO:mrenyard: Auto add into combined/YYYY-mm-DD.css -->
+    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/icons.css.php">
     <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
 <?php } ?>
