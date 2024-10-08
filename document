@@ -1,2 +1,2 @@
-sudo -S php8.2 phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php -i tests/core/mocks/ -i tests/condition/mocks/ -i tests/http/mocks/ -i tests/view/mocks/ -i tests/mocks/ --visibility=public,protected
-sudo -S php8.2 -d xdebug.mode=coverage phpunit.phar --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
+sudo -S php phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php -i tests/core/mocks/ -i tests/condition/mocks/ -i tests/http/mocks/ -i tests/view/mocks/ -i tests/mocks/ --visibility=public,protected
+sudo -S php -d xdebug.mode=coverage phpunit.phar --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code

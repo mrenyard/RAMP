@@ -1,1 +1,1 @@
-sudo -S php8.2 -d xdebug.mode=coverage  phpunit.phar --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
+sudo -S php -d xdebug.mode=coverage  phpunit.phar --coverage-html $HOME/Code/Documentation/coverage $HOME/Projects/RAMP/tests --whitelist $HOME/Projects/RAMP/code
