@@ -93,39 +93,39 @@ class BadPDOConnectionTest extends \PHPUnit\Framework\TestCase
       {
         $i++;
         if ($i === 1) {
-          $this->AssertSame( // Query to check uniqness of primary key. 
+          $this->assertSame( // Query to check uniqness of primary key. 
             'LOG:SQL: SELECT * FROM MockMinRecord WHERE MockMinRecord.key1 = "B" AND MockMinRecord.key2 = "B" AND MockMinRecord.key3 = "C" LIMIT 0, 4;',
             $message
           );
           continue;
         }
         if ($i === 2) {
-          $this->AssertSame( // PreparedStatement ready for update to datastore.
+          $this->assertSame( // PreparedStatement ready for update to datastore.
             'LOG:$preparedStatement: INSERT INTO MockMinRecord (key1, key2, key3) VALUES (:key1, :key2, :key3)',
             $message
           );
           continue;
         }
         if ($i === 3) { // Values for update to datastore.
-          $this->AssertSame('LOG:values: B, B, C', $message);
+          $this->assertSame('LOG:values: B, B, C', $message);
           continue;
         }
         if ($i === 4 || $i === 8 || $i == 12) { // Start of GROUP Unable to write to data store
-          $this->AssertSame('GROUP:Unable to write to data store ' . ++$j, $message);
+          $this->assertSame('GROUP:Unable to write to data store ' . ++$j, $message);
           continue;
         }
         if ($i === 5 || $i === 9 || $i == 13) { // LOG:STATEMENT: INSERT
-            $this->AssertSame('LOG:STATEMENT: INSERT INTO MockMinRecord (key1, key2, key3) VALUES (:key1, :key2, :key3)',
+            $this->assertSame('LOG:STATEMENT: INSERT INTO MockMinRecord (key1, key2, key3) VALUES (:key1, :key2, :key3)',
             $message
           );
           continue;
         }
         if ($i === 6 || $i === 10 || $i == 14) { // LOG:Retryed delay
-          $this->AssertSame('LOG:Retryed after ' . $j . ' second(s).', $message);
+          $this->assertSame('LOG:Retryed after ' . $j . ' second(s).', $message);
           continue;
         }
         if ($i === 7 || $i === 11 || $i == 15) {
-          $this->AssertSame('GROUPEND:', $message);
+          $this->assertSame('GROUPEND:', $message);
           continue;
         }
       }
