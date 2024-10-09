@@ -1,0 +1,6 @@
+{
+  "phpunit.phpunit": "phpunit.phar",
+  "phpunit.paths": {
+    "$HOME/Projects/RAMP/tests/*Test.php"
+  }
+}
