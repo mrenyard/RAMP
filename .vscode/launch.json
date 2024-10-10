@@ -37,7 +37,7 @@
             ],
             "program": "",
             "cwd": "${workspaceRoot}/www",
-            "port": 80,
+            "port": 9003,
             "serverReadyAction": {
                 "pattern": "Development Server \\(http://localhost:([0-9]+)\\) started",
                 "uriFormat": "http://localhost:%s",
