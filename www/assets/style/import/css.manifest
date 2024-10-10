@@ -10,7 +10,7 @@ base
 ;How the page is divided into sections
 ;including headers, footers, sidebars...
 layout
-layout-form-data.css
+layout-form-data
 
 ;Discrete, reusable, modular components,
 ;usually denoted with a module class name e.g.
@@ -18,7 +18,7 @@ layout-form-data.css
 modual-stickyfoot-footnotes
 modual-article-more-overlay
 modual-page-nav-search
-modual-site-navigation.css
+modual-site-navigation
 
 ;Reoccuring colour palete for text, links,
 ;buttons and background-images...
@@ -28,7 +28,7 @@ modual-site-navigation.css
 ;or through JavaScript DOM changes,
 ;e.g. errors, hidden, expanded, active
 ;state
-state-form-controls.css
+state-form-controls
 
 ;
 ;print
