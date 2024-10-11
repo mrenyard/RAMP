@@ -66,9 +66,9 @@ final class Email extends Templated
     $header = $from . $replay . $params;
 
     if (mail($this->email->value, $this->title, $message, $header)) {
-      if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::info('e-mail sent Succesfully to ' . $this->email->value); }
+      if (DEV_MODE) { \ChromePhp::info('e-mail sent Succesfully to ' . $this->email->value); }
     } else {
-      if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::error('Failed to send e-mail'); }
+      if (DEV_MODE) { \ChromePhp::error('Failed to send e-mail'); }
       // TODO:mrenyard: try fix sendmail and retry
       // TODO:mrenyard: else log error for admin
     }
