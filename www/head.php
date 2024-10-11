@@ -27,7 +27,7 @@
  * @version 0.0.9;
  */
 $cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
-if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) {
+if (DEV_MODE && file_exists($cssManifest)) {
 
   $STYLE_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/style';
   $MEDIA_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/media';
@@ -38,7 +38,7 @@ if ((strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) && file_exists($cssManifest)) 
     if((strpos($line,';') !== 0) && ( $line !== '')) {
 
 ?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/<?=$line; ?>.css">
-<?php }} if (isset($GLOBALS['cssScratch'])) { foreach (explode('|', $GLOBALS['cssScratch']) as $cssScratchFile) { ?>
+<?php }} if (isset(\ramp\SETTING::$SCRATCH__CSS)) { foreach (\ramp\SETTING::$SCRATCH__CSS as $cssScratchFile) { ?>
     <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/scratch/<?=$cssScratchFile; ?>.css">
 <?php }} ?>
     <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/icons.css.php">

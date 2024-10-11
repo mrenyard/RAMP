@@ -22,7 +22,11 @@ namespace ramp;
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
 
-defined('DEV_MODE') || define('DEV_MODE', false);
+defined('DEV_MODE') || define('DEV_MODE', (explode('.', $_SERVER['HTTP_HOST'])[0] == 'dev'));
+if (DEV_MODE && isset($_GET['scratch'])) {
+  SETTING::$SCRATCH__CSS = explode('|', $_GET['scratch']);
+  unset($_GET['scratch']);
+}
 
 $config = parse_ini_file(__DIR__.'/../ramp.ini', \TRUE);
 foreach ($config as $sectionName => $section) {
@@ -42,5 +46,5 @@ spl_autoload_register(function ($class_name) {
   $local_path = SETTING::$RAMP_LOCAL_DIR . '/' . $class_name . '.class.php';
   $core_path = '/usr/share/php/'. $class_name . '.class.php';
   if (file_exists($local_path)) { require_once($local_path); }
-  if (file_exists($core_path)) { require_once($core_path); }  
+  else if (file_exists($core_path)) { require_once($core_path); }  
 }, TRUE, TRUE);

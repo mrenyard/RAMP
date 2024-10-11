@@ -18,7 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-if (strpos($_SERVER["HTTP_HOST"], 'dev.') === 0) { ?>
+if (DEV_MODE) { ?>
     <script src="/assets/func/init-full.js"></script>
     <script>
 FUNC.modsPath = '/assets/func/mods/full/';

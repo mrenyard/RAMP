@@ -21,7 +21,6 @@
 namespace ramp;
 
 require_once('load.ini.php');
-if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
 // $session = http\Session::getInstance();
 // try {
 //   $session->authorizeAs(model\business\LoginAccountType::REGISTERED());
