@@ -23,6 +23,7 @@ namespace tests\ramp\view;
 
 require_once '/usr/share/php/tests/ramp/view/ViewTest.php';
 
+require_once '/usr/share/php/ramp/view/RootView.class.php';
 require_once '/usr/share/php/ramp/view/ChildView.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/view/MockChildView.class.php';

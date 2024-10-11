@@ -23,6 +23,11 @@ namespace tests\ramp\view;
 
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
 
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/iList.class.php';
+require_once '/usr/share/php/ramp/core/oList.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/view/View.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/view/MockView.class.php';
 

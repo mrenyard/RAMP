@@ -23,13 +23,42 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
 
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/iList.class.php';
+require_once '/usr/share/php/ramp/core/iCollection.class.php';
+require_once '/usr/share/php/ramp/core/oList.class.php';
+require_once '/usr/share/php/ramp/core/Collection.class.php';
+require_once '/usr/share/php/ramp/core/Str.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SQLBusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/ChromePhp.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/BadRecord.class.php';
 
 use ramp\SETTING;

@@ -29,15 +29,21 @@ require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Filter.class.php';
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 
@@ -49,6 +55,7 @@ use ramp\model\business\BusinessModel;
 use ramp\model\business\field\Option;
 
 use tests\ramp\mocks\core\MockOption;
+use tests\ramp\mocks\model\MockSelectFrom;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockBusinessModel;

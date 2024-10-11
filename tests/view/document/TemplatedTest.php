@@ -24,7 +24,10 @@ namespace tests\ramp\view\document;
 require_once '/usr/share/php/tests/ramp/view/document/DocumentViewTest.php';
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
+// require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
+
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 
 use ramp\SETTING;
 use ramp\core\RAMPObject;
@@ -49,7 +52,9 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   #region Setup
   protected function preSetup() : void { 
     SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
-    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = '\tests\ramp\mocks\model';
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+
     if (!\str_contains(get_include_path(), SETTING::$RAMP_LOCAL_DIR)) {
       \set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path());
     }  

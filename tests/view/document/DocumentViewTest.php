@@ -21,8 +21,56 @@
  */
 namespace tests\ramp\view\document;
 
+require_once '/usr/share/php/tests/ramp/view/ComplexViewTest.php';
+
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/ramp/condition/Filter.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/Condition.class.php';
+require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+require_once '/usr/share/php/ramp/model/Document.class.php';
+require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/view/MockDocumentView.class.php';
@@ -32,8 +80,8 @@ use ramp\core\Str;
 use ramp\view\RootView;
 
 use tests\ramp\mocks\model\MockRecord;
-use tests\ramp\mocks\view\MockDocumentView;
 use tests\ramp\mocks\model\MockBusinessModel;
+use tests\ramp\mocks\view\MockDocumentView;
 
 /**
  * Collection of tests for \ramp\view\ComplexView.

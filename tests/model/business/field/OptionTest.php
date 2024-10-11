@@ -22,7 +22,48 @@
 namespace tests\ramp\model\business\field;
 
 require_once '/usr/share/php/tests/ramp/model/business/BusinessModelTest.php';
+
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/core/iOption.class.php';
+require_once '/usr/share/php/ramp/core/OptionList.class.php';
+require_once '/usr/share/php/ramp/condition/Operator.class.php';
+require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+require_once '/usr/share/php/ramp/condition/Environment.class.php';
+require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
+require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
+require_once '/usr/share/php/ramp/model/business/Relatable.class.php';
+require_once '/usr/share/php/ramp/model/business/Relation.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+require_once '/usr/share/php/ramp/model/business/Record.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

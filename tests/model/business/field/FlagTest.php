@@ -21,7 +21,9 @@
  */
 namespace tests\ramp\model\business\field;
 
-require_once '/usr/share/php/tests/ramp/model/business/field/FlagTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/FieldTest.php';
+
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Flag.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

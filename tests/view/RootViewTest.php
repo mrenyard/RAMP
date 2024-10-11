@@ -23,6 +23,8 @@ namespace tests\ramp\view;
 
 require_once '/usr/share/php/tests/ramp/view/ViewTest.php';
 
+require_once '/usr/share/php/ramp/view/RootView.class.php';
+
 use \ramp\view\RootView;
 
 use ramp\core\RAMPObject;

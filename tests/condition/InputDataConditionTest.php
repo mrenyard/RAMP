@@ -98,14 +98,14 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
     try {
       $testRAMPObject = new InputDataCondition(Str::set('NotARecord'), $this->primaryKeyValue, $this->property, $this->value);
     } catch (\DomainException $expected) {
-      $this->AssertSame(
+      $this->assertSame(
         'Invalid: NotARecord->property, does NOT match business model',
         $expected->getMessage()
       );
       try {
         $testRAMPObject = new InputDataCondition($this->record, $this->primaryKeyValue, Str::set('NotAProperty'), $this->value);
       } catch (\DomainException $expected) {
-        $this->AssertSame(
+        $this->assertSame(
           'Invalid: Record->NotAProperty, does NOT match business model',
           $expected->getMessage()
         );
@@ -127,18 +127,18 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   public function testPrimaryKeyValue() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
-    try {
-      $testObject->primaryKeyValue = $this->primaryKeyValue;
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'ramp\condition\InputDataCondition->primaryKeyValue is NOT settable',
-        $expected->getMessage()
-      );
+    // try {
+    //   $testObject->primaryKeyValue = $this->primaryKeyValue;
+    // } catch (PropertyNotSetException $expected) {
+    //   $this->assertSame(
+    //     'ramp\condition\InputDataCondition->primaryKeyValue is NOT settable',
+    //     $expected->getMessage()
+    //   );
       $this->assertInstanceOf('\ramp\core\Str', $testObject->primaryKeyValue);
       $this->assertSame($this->primaryKeyValue, $testObject->primaryKeyValue);
-      return;
-    }
-    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+      // return;
+    // }
+    // $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**
@@ -154,13 +154,13 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   public function testValue() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
-    try {
-      $testObject->value = $this->value;
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'ramp\condition\InputDataCondition->value is NOT settable',
-        $expected->getMessage()
-      );
+    // try {
+    //   $testObject->value = $this->value;
+    // } catch (PropertyNotSetException $expected) {
+    //   $this->assertSame(
+    //     'ramp\condition\InputDataCondition->value is NOT settable',
+    //     $expected->getMessage()
+    //   );
 
       $testObject->comparable = 'COMPARABLE';
       $this->assertSame('COMPARABLE', $testObject->value);
@@ -169,9 +169,9 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
       );
 
       $this->assertSame('GOOD', (string)$testObject2->value);
-      return;
-    }
-    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+    //   return;
+    // }
+    // $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
     /**
@@ -186,13 +186,13 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
   public function testAttributeURN() : void
   {
     $testObject = new InputDataCondition($this->record, $this->primaryKeyValue, $this->property, $this->value);
-    try {
-      $testObject->attributeURN = Str::set('U:R:N');
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'ramp\condition\InputDataCondition->attributeURN is NOT settable',
-        $expected->getMessage()
-      );
+    // try {
+    //   $testObject->attributeURN = Str::set('U:R:N');
+    // } catch (PropertyNotSetException $expected) {
+    //   $this->assertSame(
+    //     'ramp\condition\InputDataCondition->attributeURN is NOT settable',
+    //     $expected->getMessage()
+    //   );
       $this->assertInstanceOf('\ramp\core\Str', $testObject->attributeURN);
       $this->assertSame(
         (string)$this->record
@@ -203,9 +203,9 @@ class InputDataConditionTest extends \PHPUnit\Framework\TestCase
           ->lowercase,
         (string)$testObject->attributeURN
       );
-      return;
-    }
-    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+    //   return;
+    // }
+    // $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
 
   /**

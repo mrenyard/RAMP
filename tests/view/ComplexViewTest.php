@@ -21,6 +21,10 @@
  */
 namespace tests\ramp\view;
 
+require_once '/usr/share/php/tests/ramp/view/ChildViewTest.php';
+
+require_once '/usr/share/php/ramp/model/Model.class.php';
+require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/view/MockComplexView.class.php';
