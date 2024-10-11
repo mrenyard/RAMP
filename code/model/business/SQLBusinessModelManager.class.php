@@ -96,7 +96,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       } catch (\PDOException $pdoException) {
         $count++;
         sleep($count);
-        if (isset($DEV_MODE) && $DEV_MODE ) { \ChromePhp::log('Database Connection FAILED - Retryed after '.$count.'second(s)'); }
+        if (DEV_MODE) { \ChromePhp::log('Database Connection FAILED - Retryed after '.$count.'second(s)'); }
       }
     } while ($count < 3);
     throw $pdoException; // @codeCoverageIgnoreEnd
@@ -164,7 +164,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
         $whereClause = $whereClause->trimEnd($and);
         $sql = 'SELECT * FROM ' . $name . ' WHERE ' . $whereClause . ';';
-        \ChromePhp::log('SQL:', $sql);
+        if (DEV_MODE) { \ChromePhp::log('SQL:', $sql); }
         try {
           $this->connect();
           $statementHandle = $this->databaseHandle->query($sql);
@@ -202,7 +202,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     if ($filter) { $sql.= ' WHERE ' . $filter(SQLEnvironment::getInstance()); }
     $limit = ($fromIndex)? $fromIndex . ', ' .($this->maxResults + $fromIndex) : '0, '.$this->maxResults;
     $sql.= ' LIMIT '. $limit . ';';
-    \ChromePhp::log('SQL:', $sql);
+    if (DEV_MODE) { \ChromePhp::log('SQL:', $sql); }
     try {
       $this->connect();
       $statementHandle = $this->databaseHandle->query($sql);
@@ -316,8 +316,10 @@ final class SQLBusinessModelManager extends BusinessModelManager
 
   private function writeToDB(Record $record, string $preparedStatement, array $values)
   {
-    \ChromePhp::log('$preparedStatement:', $preparedStatement);
-    \ChromePhp::log('values:', $values);
+    if (DEV_MODE ) { 
+      \ChromePhp::log('$preparedStatement:', $preparedStatement);
+      \ChromePhp::log('values:', $values);
+    }
     $count=0;
     do {
       try {
@@ -329,7 +331,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
       } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
         $count++;
         sleep($count);
-        if (defined('DEV_MODE') && DEV_MODE) {
+        if (DEV_MODE) {
           \ChromePhp::group('Unable to write to data store '.$count);
           \ChromePhp::log('STATEMENT: '. $preparedStatement);
           \ChromePhp::log('Retryed after ' . $count . ' second(s).');
