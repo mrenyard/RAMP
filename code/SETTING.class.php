@@ -165,6 +165,12 @@ class SETTING
   public static $TEST_RESET_SESSION;
 
   /**
+   * Boolean operating in Develpment Mode Environment.
+   * @var bool
+   */
+  public static $DEV_MODE;
+
+  /**
    * Array of requested scratch style shreets.
    * @var array
    */
