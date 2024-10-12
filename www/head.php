@@ -27,7 +27,7 @@
  * @version 0.0.9;
  */
 $cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
-if (DEV_MODE && file_exists($cssManifest)) {
+if (\ramp\SETTING::$DEV_MODE && file_exists($cssManifest)) {
 
   $STYLE_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/style';
   $MEDIA_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/media';

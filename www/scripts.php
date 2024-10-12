@@ -18,7 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-if (DEV_MODE) { ?>
+if (\ramp\SETTING::$DEV_MODE) { ?>
     <script src="/assets/func/init-full.js"></script>
     <script>
 FUNC.modsPath = '/assets/func/mods/full/';
