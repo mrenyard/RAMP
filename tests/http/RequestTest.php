@@ -21,8 +21,9 @@
  */
 namespace tests\ramp\http;
 
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
@@ -69,6 +70,7 @@ require_once '/usr/share/php/ramp/http/Method.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/http/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/http/MockRecord.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\http\Request;
 use ramp\http\Method;
@@ -86,27 +88,35 @@ use ramp\model\business\HttpBusinessModelManager;
 /**
  * Collection of tests for \ramp\http\Request.
  */
-class RequestTest extends \PHPUnit\Framework\TestCase {
+class RequestTest extends \tests\ramp\core\ObjectTest {
 
   private $record;
   private $key;
 
-  /**
-   * Setup - PHP varable that fake a basic HTTP Response.
-   */
-  public function setUp() : void
+  private function reset()
   {
     Request::reset();
     $_GET = array();
     $_POST = array();
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['QUERY_STRING'] = null;
+  }
+
+  #region Setup
+  protected function preSetup() : void {
     \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/tests/mocks/http';
     set_include_path( "'" . \ramp\SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path() );
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'ramp\model\business';
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
   }
+  protected function getTestObject() : RAMPObject {
+    $this->reset();
+    $_SERVER['REQUEST_URI'] = '/';
+    return Request::current();
+  }
+  protected function postSetup() : void { }
+  #endregion
 
   /**
    * Collection of assertions for ramp\http\Request::__construct().
@@ -115,13 +125,11 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    * - assert is instance of {@see \ramp\http\Request}
    * @see \ramp\request\http\Request
    */
-  public function test__construct()
+  public function testConstruct() : void
   {
-    $_SERVER['REQUEST_URI'] = '/';
-    $testObject = Request::current();
-    $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('ramp\model\business\iBusinessModelDefinition', $testObject);
-    $this->assertInstanceOf('ramp\http\Request', $testObject);
+    parent::testConstruct();
+    $this->assertInstanceOf('ramp\model\business\iBusinessModelDefinition', $this->testObject);
+    $this->assertInstanceOf('ramp\http\Request', $this->testObject);
   }
 
 
@@ -135,6 +143,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   {
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Invalid: NonRecord, does NOT match business model');
+    $this->reset();
     $_SERVER['REQUEST_URI'] = '/non-record';
     $testObject = Request::current();
   }
@@ -149,6 +158,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   {
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Invalid: MockRecord->badProperty, does NOT match business model');
+    $this->reset();
     $_SERVER['REQUEST_URI'] = '/mock-record/key/bad-property';
     $testObject = Request::current();
   }
@@ -165,6 +175,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
   {
     $this->expectException(\DomainException::class);
     $this->expectExceptionMessage('Invalid: MockRecord->propertyNot, does NOT match business model');
+    $this->reset();
     $_SERVER['REQUEST_URI'] = '/mock-record/?property-not=valueOK';
     $_SERVER['QUERY_STRING'] = 'property-not=valueOK';
     $_GET['property-not'] = 'valueOK';
@@ -206,6 +217,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function testGETRecordCollection()
   {
+    $this->reset();
     $_SERVER['REQUEST_URI'] = '/mock-record/?property-a=valueA&property-b=valueB&property-c=valueC&from=100';
     $_SERVER['QUERY_STRING'] = 'property-a=valueA&property-b=valueB&property-c=valueC&from=100';
     $_GET['property-a'] = 'valueA';
@@ -271,6 +283,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function testPOSTRecord()
   {
+    $this->reset();
     $_SERVER['HTTP_X_REQUESTED_WITH'] = 'NotXmlHTTPRequest';
     $_SERVER['REQUEST_METHOD'] = 'POST';
     $_SERVER['REQUEST_URI'] = '/mock-record/key/';
@@ -343,6 +356,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function test_POSTProperty()
   {
+    $this->reset();
     $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XmlHTTPRequest';
     $_SERVER['REQUEST_METHOD'] = 'POST';
     $_SERVER['REQUEST_URI'] = '/mock-record/key/property-b/';
@@ -386,6 +400,7 @@ class RequestTest extends \PHPUnit\Framework\TestCase {
    */
   public function testRecordKeyLoggedinAccount()
   {
+    $this->reset();
     $_SERVER['REQUEST_URI'] = '/mock-record/~/property-b/';    $dataObject = new \stdClass();
     $testObject = Request::current();
     $this->assertInstanceOf('ramp\core\Str', $testObject->recordKey);

@@ -681,5 +681,6 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertEquals($_POST, $additionalPostdata);
     $this->assertTrue(isset($manager->updateLog['ramp\model\business\AnAuthenticatableUnit:newperson']));
     $this->assertTrue(isset($manager->updateLog['ramp\model\business\LoginAccount:newperson']));
+    unset($_SESSION);
   }
 }

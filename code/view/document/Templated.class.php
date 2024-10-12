@@ -20,6 +20,7 @@
  */
 namespace ramp\view\document;
 
+use ramp\SETTING;
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
 use ramp\view\View;
@@ -119,7 +120,7 @@ class Templated extends DocumentView
    */
   public function render()
   {
-    if ((defined('DEV_MODE') && DEV_MODE) && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'page.tpl.php'))) {
+    if (SETTING::$DEV_MODE && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'page.tpl.php'))) {
       include 'template/'. $this->templateType .'/info.tpl.php';
     }
     include $this->template;

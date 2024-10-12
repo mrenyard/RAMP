@@ -188,6 +188,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
+  #region Specialist Tests
   /**
    * Minimumal BusinessModel initial state.
    * - assert property 'type' is gettable:
@@ -282,7 +283,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $objectOutOfScope = ($objectOutOfScope !== NULL) ? $objectOutOfScope : new AnObject();
     $this->expectException(\InvalidArgumentException::class);
     $errorMessage = ($errorMessage !== NULL) ? $errorMessage : $objectOutOfScope . ' NOT instanceof ' . $minAllowedType;
-    // $this->expectExceptionMessage($errorMessage);
+    $this->expectExceptionMessage($errorMessage);
     $this->testObject[0] = $objectOutOfScope;
   }
 
@@ -390,4 +391,5 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame('Error MESSAGE BadValue Submited!', (string)$errors[$i++]);
     } while  ($i < $errors->count);
   }
+  #endregion
 }

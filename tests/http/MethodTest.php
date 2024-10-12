@@ -21,7 +21,8 @@
  */
 namespace tests\ramp\http;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/http/Method.class.php';
 
@@ -35,7 +36,7 @@ use tests\ramp\mocks\http\ExtendedMethod;
 /**
  * Collection of tests for \ramp\http\Method.
  */
-class MethodTest extends \PHPUnit\Framework\TestCase {
+class MethodTest extends \tests\ramp\core\ObjectTest {
 
   /**
    * Collection of assertions for \ramp\http\Method::GET().

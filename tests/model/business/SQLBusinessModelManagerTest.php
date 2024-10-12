@@ -86,6 +86,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
 
   #region Setup
   protected function preSetup() : void {
+    SETTING::$DEV_MODE = TRUE;
     $DIR = '/usr/share/php/tests/ramp/mocks/model';
     \copy($DIR . '/copy_database.db', $DIR . '/database.db');
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
@@ -132,7 +133,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
-   */
+   *
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -142,7 +143,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * Bad property (name) NOT accessable on \ramp\model\Model::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
-   */
+   *
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -157,7 +158,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * ```
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
-   */
+   *
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -167,11 +168,11 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * Correct return of ramp\model\Model::__toString().
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
-   */
+   *
   public function testToString() : void
   {
     parent::testToString();
-  }
+  }*/
   #endregion
 
   /**
@@ -193,9 +194,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny().
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
+  #[Depends('testConstruct')]
   public function testGetBusinessModelNewRecord() : void
   {
-    \ChromePhp::clear();
     $newRecord = $this->testObject->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('MockMinRecord'), Str::NEW())
     );
@@ -327,6 +328,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   returns referance to same Record without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
+  #[Depends('testGetBusinessModelNewRecord')]
   public function testGetBusinessModelStoredRecord() : void
   {
     $recordKey = Str::set('A|A|A');
@@ -399,6 +401,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   - with message: *'No matching Record(s) found in data storage!'*
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
+  #[Depends('testGetBusinessModelStoredRecord')]
   public function testGetBusinessModelRecordNotStored() : void
   {
     try {
@@ -430,6 +433,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    *   $propertyName) returns referance to same Field without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
+  #[Depends('testGetBusinessModelRecordNotStored')]
   public function testGetBusinessModelProperty() : void
   {
     $recordKey = Str::set('A|A|C');
@@ -481,6 +485,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * - assert update(ALL) runs update on full Record collection.
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
    */
+  #[Depends('testGetBusinessModelProperty')]
   public function testGetBusinessModelCollection() : void
   {
     $all = $this->testObject->getBusinessModel(new SimpleBusinessModelDefinition($this->recordName));
@@ -622,9 +627,9 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\model\business\SQLBusinessModelManager::update()
    * @see \ramp\model\business\SQLBusinessModelManager::updateAny()
    */
+  #[Depneds('testGetBusinessModelCollection')]
   public function EXTRADataWriteException()
   {
-    defined('DEV_MODE') || define('DEV_MODE', TRUE);
     $badRecord = $this->testObject->getBusinessModel(
       new SimpleBusinessModelDefinition(Str::set('BadRecord'), Str::set('new'))
     );

@@ -70,6 +70,7 @@ final class Filter extends Collection
     }
     $filter = new Filter();
     foreach ($filters as $name => $value) {
+      $value = ($value === NULL)? '' : $value;
       $value = str_replace(['+','%20'], ' ', $value);
       $operator = null;
       $a = explode('|', $name);
@@ -89,7 +90,7 @@ final class Filter extends Collection
       }
       $record = Str::camelCase($recordName);
       $property = Str::camelCase(Str::set($name), TRUE);
-      $values = explode('|', $value);
+      if ($value !== NULL) { $values = explode('|', $value); }
       if ((!isset($operator)) && (count($values) > 1)) {
         if (!isset($filter->subOrGroups)) {
           $filter->subOrGroups = new Collection(Str::set($filter));

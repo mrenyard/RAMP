@@ -27,7 +27,7 @@ class DataExistingEntryException extends DataWriteException
 {
   private $targetKEY;
 
-  public function __construct(string $targetKEY, string $message = NULL, int $code = 0, Throwable $previous = NULL) {
+  public function __construct(string $targetKEY, string $message = '', int $code = 0, Throwable $previous = NULL) {
     $this->targetKEY = $targetKEY;
     parent::__construct($message, $code, $previous);
   }
