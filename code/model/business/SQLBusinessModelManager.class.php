@@ -240,7 +240,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    *  was not initially retrieved using *this* BusinessModelManager
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
-  public function update(BusinessModel $model)
+  public function update(BusinessModel $model) : void
   {
     if ($model instanceof \ramp\model\business\RecordCollection) {
       foreach ($model as $record) { $this->updateRecord($record); }
@@ -277,7 +277,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    *  was not initially retrieved using *this* BusinessModelManager
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
-  private function updateRecord(Record $record)
+  private function updateRecord(Record $record) : void
   {
     $comma = $insertProperties = $insertPlaceholders = $and = $whereClause = '';
     foreach ($record->primaryKey->indexes as $key) {
@@ -349,7 +349,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * - {@see \ramp\model\business\Record::isModified}
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
-  public function updateAny()
+  public function updateAny() : void
   {
     foreach ($this->recordCollection as $record) {
       if ($record->isModified && $record->isValid) {

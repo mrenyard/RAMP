@@ -62,7 +62,7 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordCollection.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
@@ -91,7 +91,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
   #region Setup
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     RootView::reset(); 
   }
   protected function getTestObject() : RAMPObject { return new MockDocumentView(RootView::getInstance()); }

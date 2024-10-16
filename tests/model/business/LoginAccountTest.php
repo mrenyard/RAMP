@@ -58,7 +58,7 @@ require_once '/usr/share/php/ramp/model/business/AuthenticatableUnit.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccountType.class.php';
 require_once '/usr/share/php/ramp/model/business/LoginAccount.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/AnAuthenticatableUnit.class.php';
 
 use ramp\core\Str;
@@ -66,7 +66,7 @@ use ramp\model\business\LoginAccount;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\SimpleBusinessModelDefinition;
 
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for ramp\model\business\LoginAccount.
@@ -81,10 +81,10 @@ class LoginAccountTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_AUTHENTICATABLE_UNIT = 'AnAuthenticatableUnit';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     \ramp\SETTING::$SECURITY_PASSWORD_SALT = 'It\'s been a hard day\'s night And I\'ve been working like a dog';
     $this->dataObject = new \stdClass();
     $this->testObject = new LoginAccount($this->dataObject);

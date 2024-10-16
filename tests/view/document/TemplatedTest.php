@@ -53,7 +53,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   protected function preSetup() : void { 
     SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
 
     if (!\str_contains(get_include_path(), SETTING::$RAMP_LOCAL_DIR)) {
       \set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path());

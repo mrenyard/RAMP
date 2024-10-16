@@ -34,7 +34,7 @@ use ramp\model\business\field\Option;
 use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockBusinessModel;
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 use tests\ramp\mocks\model\MockSelectFrom;
 
 /**
@@ -44,9 +44,9 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
 {
   #region Setup
   protected function preSetup() : void {
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
   }

@@ -74,7 +74,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
 
 use ramp\core\RAMPObject;
@@ -91,7 +91,7 @@ use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRecordComponent;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\Record.
@@ -109,9 +109,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['QUERY_STRING'] = null;
     $_SERVER['REQUEST_URI'] = '/mock-record/new';
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->dataObject = new \StdClass();

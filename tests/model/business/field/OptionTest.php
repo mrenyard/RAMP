@@ -54,7 +54,7 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
@@ -79,7 +79,7 @@ use tests\ramp\mocks\core\AnObject;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockSelectFrom;
 use tests\ramp\mocks\model\MockOption;
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\field\Option.
@@ -95,9 +95,9 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Setup
   protected function preSetup() : void {
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \stdClass();
     $this->record = new MockRecord($this->dataObject);
     $this->field = $this->record->selectFrom;

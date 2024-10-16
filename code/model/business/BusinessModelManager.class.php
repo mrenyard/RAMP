@@ -56,11 +56,11 @@ abstract class BusinessModelManager extends RAMPObject
    *  was not initially retrieved using *this* BusinessModelManager
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
-  abstract public function update(BusinessModel $model);
+  abstract public function update(BusinessModel $model) : void;
 
   /**
    * Ensure update of anything out of sync within data store.
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
-  abstract public function updateAny();
+  abstract public function updateAny() : void;
 }

@@ -46,7 +46,7 @@ use tests\ramp\mocks\model\MockMinRecord;
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockRelationToOne;
 use tests\ramp\mocks\model\MockRelationToMany;
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\RelationToOne.
@@ -63,9 +63,9 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
     $_SERVER['REQUEST_METHOD'] = 'GET';
     $_SERVER['QUERY_STRING'] = null;
     $_SERVER['REQUEST_URI'] = '/mock-record/new';
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
     $this->name = $this->record->relationBetaName;

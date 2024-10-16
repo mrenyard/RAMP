@@ -43,7 +43,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationA.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMinRecord.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -58,7 +58,7 @@ use tests\ramp\mocks\model\MockRecordMockRelation;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockMinRecord;
 use tests\ramp\mocks\model\MockMinRecordCollection;
-use tests\ramp\mocks\model\MockBusinessModelManager;
+use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for \ramp\model\business\Relation.
@@ -67,9 +67,9 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
   protected function preSetup() : void {
-    MockBusinessModelManager::reset();
+    MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockBusinessModelManager';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->dataObject->fk = NULL;
     $this->record = new MockRecordMockRelation($this->dataObject);

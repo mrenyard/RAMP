@@ -173,7 +173,7 @@ class HttpBusinessModelManager extends BusinessModelManager
    * @throws \InvalidArgumentException when {@see \ramp\model\business\BusinessModel}
    *  was not initially retrieved using this BusinessModelManager
    */
-  public function update(BusinessModel $model)
+  public function update(BusinessModel $model) : void
   {
     $this->updateLog[get_class($model) . ':' . $model->primaryKey->value] = 'updated ' . date('H:i:s');
     $model->updated();
@@ -182,7 +182,7 @@ class HttpBusinessModelManager extends BusinessModelManager
   /**
    * Ensure update of any out of sync Models with any permanent data store.
    */
-  public function updateAny()
+  public function updateAny() : void
   {
     if (isset($this->existingLogin) && $this->existingLogin->isModified && $this->existingLogin->isValid) { $this->update($this->existingLogin); }
   }

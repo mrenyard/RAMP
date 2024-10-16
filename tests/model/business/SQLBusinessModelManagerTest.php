@@ -21,7 +21,8 @@
  */
 namespace tests\ramp\model\business;
 
-require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+// require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/BusinessModelManagerTest.php';
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
@@ -77,7 +78,7 @@ use tests\ramp\mocks\model\MockMinRecord;
 /**
  * Collection of tests for \ramp\model\business\SQLBusinessModelManager.
  */
-class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
+class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessModelManagerTest
 {
   private static $NEW_VALUE = FALSE;
   private static $NEW_VALUE_B = FALSE;
@@ -117,7 +118,6 @@ class SQLBusinessModelManagerTest extends \tests\ramp\core\ObjectTest
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\BusinessModelManager', $this->testObject);
     $this->assertInstanceOf('ramp\model\business\SQLBusinessModelManager', $this->testObject);
     try {
       $fail = clone $this->testObject;
