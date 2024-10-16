@@ -25,11 +25,7 @@
           <directory>../code</directory>
       </include>
   </source>
-  <coverage
-    includeUncoveredFiles="true"
-    pathCoverage="false"
-    ignoreDeprecatedCodeUnits="true"
-    disableCodeCoverageIgnore="true">
+  <coverage>
     <report>
       <html outputDirectory="../../../Code/Documentation/coverage/" lowUpperBound="50" highLowerBound="90"/>
     </report>
