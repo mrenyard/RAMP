@@ -119,7 +119,7 @@ body > footer > a:last-child {
     width: calc(150% + (var(--inline-spacing)/2));
   }
   body.index-page > main { grid-column: main-left / span 3; }
-  body.index-page > aside, body.index > aside > footer,
+  body.index-page > aside, body.index-page > aside > footer,
   body.index-page > aside > header {
     grid-column: main-left / span 3; grid-row: auto;
   } body:not( .index-page ) > aside {
