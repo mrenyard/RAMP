@@ -164,17 +164,17 @@ h1, header { margin-bottom: calc(var(--block-spacing)/2);
   height: var(--header-height);
   background-color: var(--primary-color);
 }
-footer { margin-top: calc(var(--block-spacing)/2); }
+/* footer { margin-top: calc(var(--block-spacing)/2); } */
 
 article { margin-bottom: var(--block-spacing);
 } body > article { 
-  padding: var(--inline-spacing);
+  padding-inline: var(--inline-spacing);
   margin-inline: calc(var(--inline-spacing)*-1);
   --post-highlight-color: var(--primary-color);
   background-color: var(--post-highlight-color);
 } main + article {
   margin-top: var(--linline-spacing);
-} aside > article { padding: .75rem;
+} aside > article { padding: 0 .75rem .75rem;
 } @media screen and (min-width: 44rem) { /* 688px */
   aside > article { margin-inline: -.75rem;
   } aside > article:nth-last-of-type(even) { margin-right: 0; 
@@ -182,7 +182,7 @@ article { margin-bottom: var(--block-spacing);
 } @media  screen and (min-width: 46rem) { /*736px*/
   body > article { 
     padding: var(--block-spacing);
-    /* margin-inline: calc(var(--block-spacing)*-1); */
+    padding-bottom: calc(var(--block-spacing)/2);
   } main + article { margin-top: var(--block-spacing); }
 } @media screen and (min-width: 70rem) { /*1120px*/
   aside > article { margin-inline: -.75rem;
@@ -244,7 +244,6 @@ nav li > a {
   display: inline-block;
   text-align: center;
   min-width: 2.5rem;
-  padding-inline: .375rem;
   border: none;
 } footer > a:last-child {
   float: right;

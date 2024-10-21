@@ -361,5 +361,5 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   {
     parent::testErrorReportingPropagation($message);
   }
-#endregion
+  #endregion
 }

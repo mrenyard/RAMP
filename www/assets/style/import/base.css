@@ -75,7 +75,7 @@ p, h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
 } p {
   text-wrap: pretty; margin-bottom: .75rem;
-  &:last-child { margin-bottom: .25rem; }
+  &:last-child, &:has( + footer ) { margin-bottom: .25rem; }
 } img + p { margin-top: .75rem;
 } header > p { font-weight: bold;
 } form > header > p { font-weight: normal; }
