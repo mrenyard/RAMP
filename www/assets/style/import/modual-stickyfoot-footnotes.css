@@ -67,12 +67,11 @@ footer > ol.footnotes {
         text-wrap: pretty;
         --slide-to: 1.75rem;
         animation: fn-slide-up .5s ease-in forwards;
-        @media screen and (min-width: 40rem) {
-          padding-right: .5rem;
-        }
-        &::after {
-          content: ''; float: right;
-          width: 2.25rem; height: 1.1rem;
+        @media screen and (max-width: 40rem) {
+          &::after {
+            content: ''; float: right;
+            width: 2.25rem; height: 1.1rem;
+          }
         }
       }
       &::before { content: counter(fn-defs) '. '; }
