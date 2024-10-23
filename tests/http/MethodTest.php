@@ -28,6 +28,7 @@ require_once '/usr/share/php/ramp/http/Method.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/http/ExtendedMethod.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\http\Method;
 
@@ -36,16 +37,24 @@ use tests\ramp\mocks\http\ExtendedMethod;
 /**
  * Collection of tests for \ramp\http\Method.
  */
-class MethodTest extends \tests\ramp\core\ObjectTest {
+class MethodTest extends \tests\ramp\core\ObjectTest
+{
+  #region Setup
+  protected function getTestObject() : RAMPObject { return ExtendedMethod::SUCCEED(); }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\http\Method::GET().
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\http\Method}
    * - assert throws InvalidArgumentException When first constructor arguments NOT an int
    *   - with message: *'[className]::constructor expects first argument of type int.'*
    * @see \ramp\http\Method::__construct()
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
+    parent::testConstruct();
+    $this->assertInstanceOf('ramp\http\Method', $this->testObject);
     try {
       $o = ExtendedMethod::FAIL();
     } catch (\InvalidArgumentException $expected) {
@@ -58,6 +67,54 @@ class MethodTest extends \tests\ramp\core\ObjectTest {
     $this->fail('An expected \InvalidArgumentException has NOT been raised');
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+  #endregion
+
+  #region New Specialist Tests
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    $this->assertSame('VERB', (string)$this->testObject);
+  }
+
   /**
    * Collection of assertions for \ramp\http\Method::GET().
    * - assert is instance of {@see \ramp\core\RAMPObject}
@@ -68,7 +125,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest {
    */
   public function testGet() : void
   {
-    $testObject = Method::get();
+    $testObject = Method::GET();
     $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
     $this->assertInstanceOf('\ramp\http\Method', $testObject);
     $this->assertSame(Method::GET(), $testObject);
@@ -176,4 +233,5 @@ class MethodTest extends \tests\ramp\core\ObjectTest {
     $this->assertSame(Method::DELETE(), $testObject);
     $this->assertSame('DELETE', (string)$testObject);
   }
+  #endregion
 }
