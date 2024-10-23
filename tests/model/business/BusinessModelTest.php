@@ -188,7 +188,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
-  #region Specialist Tests
+  #region New Specialist Tests
   /**
    * Minimumal BusinessModel initial state.
    * - assert property 'type' is gettable:
@@ -379,7 +379,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call
@@ -388,7 +388,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertSame(count($this->childErrorIndexes), $errors->count);
     $i = 0;
     do {
-    $this->assertSame('Error MESSAGE BadValue Submited!', (string)$errors[$i++]);
+    $this->assertSame($message, (string)$errors[$i++]);
     } while  ($i < $errors->count);
   }
   #endregion

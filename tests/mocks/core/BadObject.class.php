@@ -19,7 +19,7 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\core\mocks\CollectionTest;
+namespace tests\ramp\mocks\core;
 
 use ramp\core\RAMPObject;
 

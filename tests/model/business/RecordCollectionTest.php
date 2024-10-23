@@ -272,9 +272,9 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
   #endregion
 

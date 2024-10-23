@@ -304,9 +304,9 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Key::getErrors()
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
 
   /**

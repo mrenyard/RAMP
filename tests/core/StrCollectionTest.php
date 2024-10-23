@@ -21,37 +21,32 @@
  */
 namespace tests\ramp\core;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/core/StrCollection.class.php';
+require_once '/usr/share/php/tests/ramp/core/CollectionTest.php';
 
-require_once '/usr/share/php/tests/ramp/core/mocks/CollectionTest/BadObject.class.php';
+require_once '/usr/share/php/ramp/core/StrCollection.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
+use ramp\core\iList;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 
-use tests\ramp\core\mocks\CollectionTest\BadObject;
+use tests\ramp\mocks\core\BadObject;
 
 /**
  * Collection of tests for \ramp\core\StrCollection.
  */
-class StrCollectionTest extends \PHPUnit\Framework\TestCase
+class StrCollectionTest extends \tests\ramp\core\CollectionTest
 {
-  private $testObject;
-
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    $this->testObject = StrCollection::set();
+    $this->typeName = Str::set('ramp\core\Str');
+    $this->expectedAtNameIndex = Str::_EMPTY();
+    $this->expectedAt0Index = Str::SPACE();
   }
+  protected function getTestObject() : RAMPObject { return StrCollection::set(); }
+  #endregion
 
   /**
    * Collection of assertions for ramp\core\StrCollection.
@@ -66,18 +61,136 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
    *   - with message: *'All arguments MUST be string literals!'*
    * @see \ramp\core\StrCollection
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\core\StrCollection', $this->testObject);
-    $this->assertInstanceOf('ramp\core\Collection', $this->testObject);
-    $this->assertInstanceOf('ramp\core\iCollection', $this->testObject);
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
-    $this->assertInstanceOf('\Countable', $this->testObject);
-    $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertSame(0, $this->testObject->count);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\StrCollection::isCompositeType().
+   * - assert returns TRUE when $compositeType {@see \ramp\core\Str}
+   * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
+   * @see \ramp\core\StrCollection::isCompositeType()
+   */
+  public function testIsCompositeType() : void
+  {
+    parent::testIsCompositeType();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\List::offsetSet().
+   * - assert {@see \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert value set with name key is same as retived with same name key
+   * - assert value set at index same as retived at index.
+   * @see \ramp\mocks\core\List::offsetSet()
+   */
+  public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\core\Str') : iList
+  {
+    return parent::testOffsetSet($message);
+  }
+
+  /**
+   * Collection of assertions for ramp\core\oList::offsetUnset().
+   * - assert value unset with name key is no longer retivable with same name key
+   * - assert value set at index is no longer retivable at same index.
+   * @depends testOffsetSet
+   * @param iList The test object.
+   * @param string Expected child type.
+   * @see \ramp\mocks\core\List::offsetUnset()
+   */
+  public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\core\Str') : void
+  {
+    parent::testOffsetUnset($testObject, $expectedChildType);
+  }
+
+    /**
+   * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
+   * - assert handle unpopulated {@see \ramp\core\Collection} iteration without fail
+   * - assert {@see \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert Count equal to number of objects added.
+   * - assert collection object references occupy SAME position as added
+   * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   *   - with message: *'Offset out of bounds'*
+   * @see \ramp\core\Collection::getIterator()
+   * @see \ramp\core\Collection::add()
+   * @see \ramp\core\Collection::count
+   */
+  public function testIteratorAddCount($message = NULL, $o1 = NULL, $o2 = NULL, $o3 = NULL, $o4 = NULL) : void
+  {
+    parent::testIteratorAddCount(
+      ($message !== NULL) ? $message : 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\core\Str',
+      ($o1 !== NULL) ? $o1 : Str::COLON(),
+      ($o2 !== NULL) ? $o2 : Str::SEMICOLON(),
+      ($o3 !== NULL) ? $o3 : Str::BAR(),
+      ($o4 !== NULL) ? $o4 : Str::NEW()
+    );
+  }
+
+  /**
+   * Collection of assertions for ramp\core\OptionList::__clone().
+   * - assert Cloning (default) composite collection is referenced only
+   * @see \ramp\mocks\core\Collection::__clone()
+   * @see \ramp\mocks\core\Collection::__clone()
+   */
+  public function testClone() : void
+  {
+    $copy = clone $this->testObject;
+    $this->assertNotSame($copy, $this->testObject);
+    $this->assertEquals($copy, $this->testObject);
+  }
+  #endregion
+
+  #region New Specialised Tests
   /**
    * Collection of assertions for ramp\core\StrCollection::set().
    * - assert accepts a single string literal
@@ -139,160 +252,5 @@ class StrCollectionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse($testObject->contains(Str::set('bicycle')));
     $this->assertTrue($testObject->contains(Str::set('motorbike')));
   }
-
-  /**
-   * Collection of assertions for ramp\core\StrCollection::isCompositeType().
-   * - assert returns TRUE when $compositeType {@see \ramp\core\Str}
-   * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
-   * @see \ramp\core\StrCollection::isCompositeType()
-   */
-  public function testIsCompositeType() : void
-  {
-    $this->assertTrue($this->testObject->isCompositeType(Str::set('ramp\core\Str')));
-    $this->assertFalse($this->testObject->isCompositeType(Str::set('\not\Str')));
-  }
-
-  /**
-   * Collection of assertions for ramp\core\StrCollection::getIterator(), add() and count.
-   * - assert handle unpopulated {@see \ramp\core\StrCollection} iteration without fail
-   * - assert {@see \ramp\core\StrCollection::add()} only accepts {@see \ramp\core\Str}
-   * - assert Count equal to number of objects added.
-   * - assert collection object references occupy SAME position as added
-   * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
-   *   - with message: *'Offset out of bounds'*
-   * @see \ramp\core\StrCollection::getIterator()
-   * @see \ramp\core\StrCollection::add()
-   * @see \ramp\core\StrCollection::count
-   */
-  public function testIteratorAddCount() : void
-  {
-    foreach ($this->testObject as $o)
-    {
-      $this->fail('Unexpected iteration of empty Collection');
-    }
-    $this->assertEquals(0, $this->testObject->count);
-    $this->assertEquals(0, $this->testObject->count());
-    try {
-      $this->testObject->add(new BadObject());
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertSame(
-        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof ramp\core\Str',
-        $expected->getMessage()
-      );
-      $i = 0; $j = 0;
-      $o1 = Str::set('item' . $i++);
-      $this->testObject->add($o1);
-      foreach ($this->testObject as $o)
-      {
-        $j++;
-        if ($j === 1) { $this->assertSame($o1, $o); }
-      }
-      $this->assertSame(1, $j);
-      $this->assertEquals(1, $this->testObject->count);
-      $this->assertEquals(1, $this->testObject->count());
-      $o2 = Str::set('item' . $i++);
-      $this->testObject->add($o2);
-      $j = 0;
-      foreach ($this->testObject as $o)
-      {
-        $j++;
-        if ($j === 1) { $this->assertSame($o1, $o); }
-        if ($j === 2) { $this->assertSame($o2, $o); }
-      }
-      $this->assertSame(2, $j);
-      $this->assertSame($o2, $this->testObject[1]);
-      $this->assertEquals(2, $this->testObject->count);
-      $j = 0;
-      $o3 = Str::set('item' . $i++);
-      $this->testObject->add($o3);
-      foreach ($this->testObject as $o)
-      {
-        $j++;
-        if ($j === 1) { $this->assertSame($o1, $o); }
-        if ($j === 2) { $this->assertSame($o2, $o); }
-        if ($j === 3) { $this->assertSame($o3, $o); }
-      }
-      $this->assertSame(3, $j);
-      $this->assertEquals(3, $this->testObject->count);
-      $this->assertEquals(3, $this->testObject->count());
-      $o4 = Str::set('item' . $i++);
-      $this->testObject->add($o4);
-      $j = 0;
-      foreach ($this->testObject as $o)
-      {
-        $j++;
-        if ($j === 1) { $this->assertSame($o1, $o); }
-        if ($j === 2) { $this->assertSame($o2, $o); }
-        if ($j === 3) { $this->assertSame($o3, $o); }
-        if ($j === 4) { $this->assertSame($o4, $o); }
-      }
-      $this->assertSame(4, $j);
-      $this->assertEquals(4, $this->testObject->count);
-      $this->assertEquals(4, $this->testObject->count());
-      $this->assertFalse(isset($this->testObject[4]));
-      $this->assertTrue(isset($this->testObject[3]));
-      $this->assertSame($o4, $this->testObject[3]);
-      $this->assertTrue(isset($this->testObject[2]));
-      $this->assertSame($o3, $this->testObject[2]);
-      $this->assertTrue(isset($this->testObject[1]));
-      $this->assertSame($o2, $this->testObject[1]);
-      $this->assertTrue(isset($this->testObject[0]));
-      $this->assertSame($o1, $this->testObject[0]);
-      try {
-        $this->testObject[4];
-      } catch (\OutOfBoundsException $expected) {
-        $this->assertSame('Offset out of bounds', $expected->getMessage());
-        return;
-      }
-      $this->fail('An expected \OutOfBoundsException has NOT been raised.');
-      return;
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for ramp\core\StrCollection::offsetSet().
-   * - assert {@see \ramp\core\StrCollection::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
-   *   - with message: *'[provided object] NOT instanceof [expected type]'*
-   * - assert value set with name key is same as retived with same name key
-   * - assert value set at index same as retived at index.
-   * @see \ramp\core\StrCollection::offsetSet()
-   */
-  public function testOffsetSet() // : void
-  {
-    $expectedAtNameIndex = Str::set('named');
-    $expectedAt0Index = Str::set('indexed');
-    $this->testObject['name'] = $expectedAtNameIndex;
-    $this->testObject[0] = $expectedAt0Index;
-    try {
-      $this->testObject['name'] = new BadObject();
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertSame(
-        'tests\ramp\core\mocks\CollectionTest\BadObject NOT instanceof ramp\core\Str',
-        $expected->getMessage()
-      );
-      $this->assertSame($expectedAtNameIndex, $this->testObject['name']);
-      $this->assertSame($expectedAt0Index, $this->testObject[0]);
-      return $this->testObject;
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
-  }
-
-  /**
-   * Collection of assertions for ramp\core\StrCollection::offsetUnset().
-   * - assert value unset with name key is no longer retivable with same name key
-   * - assert value set at index is no longer retivable at same index.
-   * @depends testOffsetSet
-   * @param Collection The test object.
-   * @see \ramp\core\mocks\CollectionTest\StrCollection::offsetUnset()
-   */
-  public function testOffsetUnset(StrCollection $testObject)
-  {
-    $this->assertInstanceOf('ramp\core\Str', $testObject['name']);
-    $this->assertInstanceOf('ramp\core\Str', $testObject[0]);
-    unset($testObject['name']);
-    unset($testObject[0]);
-    $this->assertFalse(isset($testObject['name']));
-    $this->assertFalse(isset($testObject[0]));
-  }
+  #endregion
 }

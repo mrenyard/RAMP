@@ -318,7 +318,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Selected value NOT an avalible option!') : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->field->validate($this->postData)); // Call
@@ -327,7 +327,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertSame(count($this->childErrorIndexes), $errors->count);
     $i = 0;
     do {
-    $this->assertSame('Selected value NOT an avalible option!', (string)$errors[$i++]);
+      $this->assertSame($message, (string)$errors[$i++]);
     } while  ($i < $errors->count);
   }
   #endregion

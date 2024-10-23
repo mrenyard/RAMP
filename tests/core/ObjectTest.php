@@ -63,6 +63,7 @@ class ObjectTest extends TestBase
     $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
   }
 
+  #region New Specialist Tests
   /**
    * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -114,4 +115,5 @@ class ObjectTest extends TestBase
   {
     $this->assertSame(get_class($this->testObject), (string)$this->testObject);
   }
+  #endregion
 }

@@ -19,12 +19,12 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\core\mocks\ListTest;
+namespace tests\ramp\mocks\core;
 
 use ramp\core\RAMPObject;
 
 /**
- * Another Concreate implementation of \ramp\core\Object for testing against.
+ * Not a \ramp\core\iOption for testing against.
  * .
  */
-class BadObject extends RAMPObject { }
+class NotAnOption extends RAMPObject { }

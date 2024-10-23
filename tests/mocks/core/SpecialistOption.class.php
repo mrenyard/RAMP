@@ -22,34 +22,49 @@
 namespace tests\ramp\mocks\core;
 
 use ramp\core\RAMPObject;
+use ramp\core\iOption;
+use ramp\core\Str;
 
 /**
- * Concreate implementation of \ramp\core\Object for testing against.
+ * Concrete implementation of \ramp\core\iOption for testing against.
  * .
  */
-class AnObject extends RAMPObject {
-
-  private $aProperty;
-
+class SpecialistOption extends RAMPObject implements iOption
+{
   /**
-   * Used to varify cloned value
+   * Constructor for new instance of SimpleOption.
+   * @param \ramp\core\Str $id String value to be set for id.
+   * @param \ramp\core\Str $description String value to be set for description.
    */
-  public $property;
-
-  /**
-   * Test getter for AnObject::aProeprty
-   */
-  protected function get_aProperty()
+  public function __construct($key, Str $description)
   {
-    return $this->aProperty;
   }
 
   /**
-   * Test setter for AnObject::aProperty
-   * @param mixed $value Value to set on {@see #aProperty}
+   * A test getter for SpecialistOption::get_id
    */
-  protected function set_aProperty($value)
+  public function get_id() : Str
   {
-    $this->aProperty = $value;
+  }
+
+  /**
+   * A test getter for SpecialistOption::get_key
+   */
+  public function get_key() : int
+  {
+  }
+
+  /**
+   * A test getter for SpecialistOption::get_description
+   */
+  public function get_description() : Str
+  {
+  }
+
+  /**
+   * A test getter for SpecialistOption::get_isSelected
+   */
+  public function get_isSelected() : bool
+  {
   }
 }

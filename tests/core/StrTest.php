@@ -21,14 +21,14 @@
  */
 namespace tests\ramp\core;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -38,15 +38,23 @@ use ramp\core\PropertyNotSetException;
 /**
  * Collection of tests for \ramp\core\Str.
  */
-class StrTest extends \PHPUnit\Framework\TestCase
+class StrTest extends \tests\ramp\core\ObjectTest
 {
+  #region Setup
+  protected function getTestObject() : RAMPObject { return Str::set(); }
+  #endregion
+
   /**
-   * Default base constructor.
+   * Default base constructor assertions \ramp\core\Str.
+   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\Str}
    * - assert is private inaccessable
    * @see \ramp\core\Str
    */
-  public function test__construct()
+  public function testConstruct() : void
   {
+    parent::testConstruct();
+    $this->assertInstanceOf('ramp\core\Str', $this->testObject);
     try {
       $testObject = new Str();
     } catch (\Throwable $expected) {
@@ -56,6 +64,54 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->fail('An expected Error: Call to private ramp\core\Str::__construct() has NOT been raised.');
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    $this->assertSame('', (string)$this->testObject);
+  }
+  #endregion
+  
+  #region New Specialist Tests
   /**
    * Collection of assertions Str::$lowercase.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'lowercase'
@@ -651,4 +707,5 @@ class StrTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue($testObject->contains($searchSubstrings));
     $this->assertFalse($testObject2->contains($searchSubstrings));
   }
+  #endregion
 }

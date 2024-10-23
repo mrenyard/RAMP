@@ -285,10 +285,10 @@ class RelationToManyTest extends \tests\ramp\model\business\RelationTest
    * - assert a single collection containing relevant sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     $this->testObject->isEditable = TRUE;
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
 
   /**

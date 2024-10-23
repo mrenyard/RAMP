@@ -333,9 +333,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\RecordComponent::$errors
    */
-  public function testErrorReportingPropagation() : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation();
+    parent::testErrorReportingPropagation($message);
   }
   #endregion
 
