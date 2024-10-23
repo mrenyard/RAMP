@@ -23,21 +23,19 @@ within an 'assets' folder.
   |  |-- index.html      (static homepage)?
   |  +-- controller.php  (RAMP controller file)
   |  +-- assets
-  |  |  +-- func        <-- HELLO from FUNC.js.
-  |  |  +-- docs
-  |  |  +-- extlibs
-  |  |  +-- mods
-  |  |  |  +-- full
-  |  |  |  |  |-- core.lib.js
-  |  |  |  |  |-- ...
-  |  |  |  |  --- [module].js 
-  |  |  |  |-- core.lib.js
-  |  |  |  |-- ...
-  |  |  |  --- [module].js
-  |  |  |-- init.js
-  |  |  --- init-full.js
-  |  +-- style
-  |  +-- media
+  |     +-- func        <-- HELLO from FUNC.js.
+  |     |  +-- docs
+  |     |  +-- extlibs
+  |     |  +-- mods
+  |     |  |  +-- full
+  |     |  |     +-- core.lib.js
+  |     |  |     +-- [module].js 
+  |     |  |     +-- [library].lib.js
+  |     |  |     +-- ...
+  |     |  +-- init.js
+  |     |  +-- init-full.js
+  |     +-- style
+  |     +-- media
   --- ramp.ini        (local initialization file)
 ```
 Then add the below code to the bottom of any relevant
