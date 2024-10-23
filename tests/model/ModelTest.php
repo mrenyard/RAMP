@@ -24,6 +24,7 @@ namespace tests\ramp\model;
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
 
 require_once '/usr/share/php/ramp/model/Model.class.php';
+
 require_once '/usr/share/php/tests/ramp/mocks/model/MockModel.class.php';
 
 use ramp\core\RAMPObject;

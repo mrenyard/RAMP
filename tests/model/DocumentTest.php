@@ -21,31 +21,27 @@
  */
 namespace tests\ramp\model;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/model/ModelTest.php';
+
 require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/model/Model.class.php';
 require_once '/usr/share/php/ramp/model/Document.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\Document;
 
 /**
  * Collection of tests for \ramp\model\document\Document.
  */
-class DocumentTest extends \PHPUnit\Framework\TestCase
+class DocumentTest extends \tests\ramp\model\ModelTest
 {
-  private static $NEXT_ID = 1;
-  private $testObject;
+  protected static $NEXT_ID = 1;
 
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
-  {
-    self::$NEXT_ID = 1;
-    Document::reset();
-    $this->testObject = new Document();
-  }
+  #region Setup
+  protected function preSetup() : void { self::$NEXT_ID = 1; Document::reset(); }
+  protected function getTestObject() : RAMPObject { return new Document(); }
+  protected function postSetup() : void { }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\model\document\Document.
@@ -56,11 +52,58 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
    */
   public function testConstruct() : void
   {
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('\ramp\model\Model', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('\ramp\model\Document', $this->testObject);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Collection of assertions for \ramp\model\business\BusinessModel::id.
    * - assert property 'id' is gettable
@@ -254,4 +297,5 @@ class DocumentTest extends \PHPUnit\Framework\TestCase
     $this->assertSame($this->testObject->style, $cloneObject->style);
     $this->assertEquals((string)$expectedStyle, (string)$cloneObject->style);
   }
+  #endegion
 }
