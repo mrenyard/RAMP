@@ -21,60 +21,49 @@
  */
 namespace tests\ramp\condition;
 
-require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/condition/Condition.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Environment.class.php';
-require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
+require_once '/usr/share/php/tests/ramp/condition/BusinessConditionTest.php';
+
 require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterConditionTest/Field.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterConditionTest/Record.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterConditionTest/MockEnvironment.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Field.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Record.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/ConcreteEnvironment.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
-use ramp\condition\FilterCondition;
+use ramp\core\PropertyNotSetException;
 use ramp\condition\Operator;
 use ramp\condition\SQLEnvironment;
+use ramp\condition\FilterCondition;
 
-use tests\ramp\condition\mocks\FilterConditionTest\MockEnvironment;
+use tests\ramp\mocks\condition\ConcreteEnvironment;
 
 /**
  * Collection of tests for \ramp\condition\FilterCondition.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\FilterConditionTest\MockEnvironment}
- * - {@see \tests\ramp\condition\mocks\FilterConditionTest\Property}
- * - {@see \tests\ramp\condition\mocks\FilterConditionTest\Record}
+ * - {@see \tests\ramp\mocks\condition\ConcreteEnvironment}
+ * - {@see \tests\ramp\mocks\condition\Property}
+ * - {@see \tests\ramp\mocks\condition\Record}
  */
-class FilterConditionTest extends \PHPUnit\Framework\TestCase {
+class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
+{
+  protected $comparable;
 
-  private $record;
-  private $property;
-  private $comparable;
-
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
-  {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterConditionTest';
+  #region Setup
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
     $this->record = Str::set('Record');
-    $this->property = Str::set('property');
+    $this->property = Str::set('propertyA');
+    $this->operator = Operator::EQUAL_TO();
     $this->comparable = 'GOOD';
   }
+  protected function getTestObject() : RAMPObject {
+    return new FilterCondition($this->record, $this->property, $this->comparable);
+  }
+  protected function postSetup() : void { $this->attribute = $this->testObject->attribute; }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\FilterCondition.
@@ -83,24 +72,18 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
    * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert is instance of {@see \ramp\condition\FilterCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
-   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
-   * - assert throws \DomainException when $value does Not validate against associated property
-   *   - with message: *'Supplied argument does Not validate against associated property'*
+   *   - with message: *'Invalid $record $property $comparable arguments, do NOT match business model'*
    * @see \ramp\condition\FilterCondition
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $testObject = new FilterCondition($this->record, $this->property, $this->comparable);
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\condition\Condition', $testObject);
-    $this->assertInstanceOf('\ramp\condition\BusinessCondition', $testObject);
-    $this->assertInstanceOf('\ramp\condition\FilterCondition', $testObject);
-
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\condition\FilterCondition', $this->testObject);
     try {
       $testObject = new FilterCondition(Str::set('NotARecord'), $this->property, 'GOOD');
     } catch (\DomainException $expected) {
       $this->AssertSame(
-        'Invalid: NotARecord->property, does NOT match business model',
+        'Invalid: NotARecord->propertyA, does NOT match business model',
         $expected->getMessage()
       );
       return;
@@ -108,6 +91,131 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
     $this->fail('An expected \DomianException has NOT been raised');
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for BusinessCondition::$attribute.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
+   *   - with message: *'[className]->attribute is NOT settable'*
+   * - assert allows retrieval of 'attribute'
+   * - assert retrieved is a {@see \ramp\core\Str}
+   * - assert 'attribute' SAME as provided at contruction.
+   * - assert 'attribute' is composite of [record]->[property]
+   * @see \ramp\condition\Condition::$attribute
+   */
+  public function testAttribute() : void
+  {
+    parent::testAttribute();
+    $this->assertSame('Record->propertyA', (string)$this->attribute);
+  }
+
+  /**
+   * Collection of assertions for BusinessCondition::$operator.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'operator'
+   *   - with message: *'[className]->operator is NOT settable'*.
+   * - assert allows retrieval of 'operator'.
+   * - assert retreved is an instance of {@see \ramp\condition\Operator}.
+   * - assert retreved is same as provided to constructor.
+   * @see \ramp\condition\Condition::$operator
+   */
+  public function testOperator() : void
+  {
+    parent::testOperator();
+  }
+
+  /**
+   * Collection of assertions for BusinessCondition::$comparable.
+   * - assert 'comparable' default is NULL
+   * - assert allows setting of 'comparable'
+   * - assert allows retrieval of 'comparable'
+   * - assert 'comparable' equal to recently set
+   * - assert 'comparable' equal to that provided at creation
+   * @see \ramp\condition\Condition::$comparable
+   */
+  public function testComparable() : void
+  {
+    $this->assertSame('GOOD', $this->testObject->comparable);
+    $this->testObject->comparable = 'valueA';
+    $this->assertSame('valueA', $this->testObject->comparable);
+
+    $this->testObject2 = new FilterCondition($this->record, $this->property, 'COMPARABLE');
+    $this->assertSame('COMPARABLE', $this->testObject2->comparable);
+  }
+
+  /**
+   * Collection of assertions for BusinessCondition::$record.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'record'
+   *   - with message: *'[className]->record is NOT settable'*
+   * - assert allows retrieval of 'record'
+   * - assert 'record' is a {@see \ramp\core\Str}
+   * - assert 'record' equal to provided at creation
+   * @see \ramp\condition\BusinessCondition::$record
+   */
+  public function testRecord() : void
+  {
+    parent::testRecord();
+  }
+
+  /**
+   * Collection of assertions for BusinessCondition::$property.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'property'
+   *   - with message: *'[className]->property is NOT settable'*
+   * - assert allows retrieval of 'property'
+   * - assert 'property' is a {@see \ramp\core\Str}
+   * - assert 'property' equal to provided at creation
+   * @see \ramp\condition\BusinessCondition::$property
+   */
+  public function testProperty() : void
+  {
+    parent::testProperty();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Collection of assertions for \ramp\condition\FilterCondition::__invoke().
    * - assert returns expected string with SQLEnvironment operation values in the form:
@@ -135,68 +243,68 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
     $openingParenthesisOperator = Operator::OPENING_PARENTHESIS();
     $closingParenthesisOperator = Operator::CLOSING_PARENTHESIS();
 
-    $SQLEnvironment = SQLEnvironment::getInstance();
-    $MockEnvironment = MockEnvironment::getInstance();
+    $sqlEnvironment = SQLEnvironment::getInstance();
+    $concreteEnvironment = ConcreteEnvironment::getInstance();
 
-    $testObject = new FilterCondition($this->record, $this->property, $this->comparable);
+    $testObject = $this->testObject;
     $testObjectNonDefaultOperator = new FilterCondition(
       $this->record, $this->property, $this->comparable, $nonDefaultOperator
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($SQLEnvironment) . $this->property .
-          $equalToOperator($SQLEnvironment) . $openingParenthesisOperator($SQLEnvironment) .
-            $this->comparable . $closingParenthesisOperator($SQLEnvironment),
+      $this->record . $memberAccessOperator($sqlEnvironment) . $this->property .
+          $equalToOperator($sqlEnvironment) . $openingParenthesisOperator($sqlEnvironment) .
+            $this->comparable . $closingParenthesisOperator($sqlEnvironment),
       $testObject()
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($SQLEnvironment) . $this->property .
-          $nonDefaultOperator($SQLEnvironment) . $openingParenthesisOperator($SQLEnvironment) .
-            $this->comparable . $closingParenthesisOperator($SQLEnvironment),
+      $this->record . $memberAccessOperator($sqlEnvironment) . $this->property .
+          $nonDefaultOperator($sqlEnvironment) . $openingParenthesisOperator($sqlEnvironment) .
+            $this->comparable . $closingParenthesisOperator($sqlEnvironment),
       $testObjectNonDefaultOperator()
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($MockEnvironment) . $this->property .
-          $equalToOperator($MockEnvironment) . $openingParenthesisOperator($MockEnvironment) .
-            $this->comparable . $closingParenthesisOperator($MockEnvironment),
-      $testObject($MockEnvironment)
+      $this->record . $memberAccessOperator($concreteEnvironment) . $this->property .
+          $equalToOperator($concreteEnvironment) . $openingParenthesisOperator($concreteEnvironment) .
+            $this->comparable . $closingParenthesisOperator($concreteEnvironment),
+      $testObject($concreteEnvironment)
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($MockEnvironment) . $this->property .
-          $nonDefaultOperator($MockEnvironment) . $openingParenthesisOperator($MockEnvironment) .
-            $this->comparable . $closingParenthesisOperator($MockEnvironment),
-      $testObjectNonDefaultOperator($MockEnvironment)
+      $this->record . $memberAccessOperator($concreteEnvironment) . $this->property .
+          $nonDefaultOperator($concreteEnvironment) . $openingParenthesisOperator($concreteEnvironment) .
+            $this->comparable . $closingParenthesisOperator($concreteEnvironment),
+      $testObjectNonDefaultOperator($concreteEnvironment)
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($SQLEnvironment) . $this->property .
-          $equalToOperator($SQLEnvironment) . $openingParenthesisOperator($SQLEnvironment) .
-            'NEW COMPARABLE' . $closingParenthesisOperator($SQLEnvironment),
+      $this->record . $memberAccessOperator($sqlEnvironment) . $this->property .
+          $equalToOperator($sqlEnvironment) . $openingParenthesisOperator($sqlEnvironment) .
+            'NEW COMPARABLE' . $closingParenthesisOperator($sqlEnvironment),
       $testObject(null, 'NEW COMPARABLE')
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($SQLEnvironment) . $this->property .
-          $nonDefaultOperator($SQLEnvironment) . $openingParenthesisOperator($SQLEnvironment) .
-            'NEW COMPARABLE' . $closingParenthesisOperator($SQLEnvironment),
+      $this->record . $memberAccessOperator($sqlEnvironment) . $this->property .
+          $nonDefaultOperator($sqlEnvironment) . $openingParenthesisOperator($sqlEnvironment) .
+            'NEW COMPARABLE' . $closingParenthesisOperator($sqlEnvironment),
       $testObjectNonDefaultOperator(null, 'NEW COMPARABLE')
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($MockEnvironment) . $this->property .
-          $equalToOperator($MockEnvironment) . $openingParenthesisOperator($MockEnvironment) .
-            'NEW COMPARABLE' . $closingParenthesisOperator($MockEnvironment),
-      $testObject($MockEnvironment, 'NEW COMPARABLE')
+      $this->record . $memberAccessOperator($concreteEnvironment) . $this->property .
+          $equalToOperator($concreteEnvironment) . $openingParenthesisOperator($concreteEnvironment) .
+            'NEW COMPARABLE' . $closingParenthesisOperator($concreteEnvironment),
+      $testObject($concreteEnvironment, 'NEW COMPARABLE')
     );
 
     $this->assertSame(
-      $this->record . $memberAccessOperator($MockEnvironment) . $this->property .
-          $nonDefaultOperator($MockEnvironment) . $openingParenthesisOperator($MockEnvironment) .
-            'NEW COMPARABLE' . $closingParenthesisOperator($MockEnvironment),
-      $testObjectNonDefaultOperator($MockEnvironment, 'NEW COMPARABLE')
+      $this->record . $memberAccessOperator($concreteEnvironment) . $this->property .
+          $nonDefaultOperator($concreteEnvironment) . $openingParenthesisOperator($concreteEnvironment) .
+            'NEW COMPARABLE' . $closingParenthesisOperator($concreteEnvironment),
+      $testObjectNonDefaultOperator($concreteEnvironment, 'NEW COMPARABLE')
     );
 
     try {
@@ -218,4 +326,5 @@ class FilterConditionTest extends \PHPUnit\Framework\TestCase {
     }
     $this->fail('An expected \DomainException has NOT been raised');
   }
+  #endregion
 }

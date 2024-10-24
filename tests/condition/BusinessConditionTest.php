@@ -21,57 +21,52 @@
  */
 namespace tests\ramp\condition;
 
+require_once '/usr/share/php/tests/ramp/condition/ConditionTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
 require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/condition/Condition.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Environment.class.php';
 require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/Record.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/BusinessConditionTest/ConcreteBusinessCondition.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Record.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/ConcreteBusinessCondition.class.php';
 
+use \ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
 use ramp\condition\Operator;
 
-use tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition;
+use tests\ramp\mocks\condition\ConcreteBusinessCondition;
 
 /**
  * Collection of tests for \ramp\condition\BusinessCondition.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition}
- * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\Property}
- * - {@see \tests\ramp\condition\mocks\BusinessConditionTest\Record}
+ * - {@see \tests\ramp\mocks\condition\ConcreteBusinessCondition}
+ * - {@see \tests\ramp\mocks\condition\Property}
+ * - {@see \tests\ramp\mocks\condition\Record}
  */
-class BusinessConditionTest extends \PHPUnit\Framework\TestCase
+class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
 {
-  private $property;
-  private $record;
-  private $operator;
+  protected $property;
+  protected $record;
 
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
-  {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\BusinessConditionTest';
+  #region Setup
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
     $this->record = Str::set('Record');
-    $this->property = Str::set('property');
+    $this->property = Str::set('propertyA');
     $this->operator = Operator::EQUAL_TO();
-    $this->expectedAttribute = $this->property->prepend($this->record->append(Str::set('->')));
   }
+  protected function getTestObject() : RAMPObject {
+    return new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
+  }
+  protected function postSetup() : void { $this->attribute = $this->testObject->attribute; }
+  #endregion
 
   /**
    * Default base constructor.
@@ -80,24 +75,23 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    * - assert is instance of {@see \ramp\condition\BusinessCondition}
    * - assert throws \DomainException when Supplied arguments DO NOT match business model
    *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
+   * - assert throws \DomainException when Supplied arguments DO NOT match business model
+   *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * @see \ramp\condition\BusinessCondition
    */
-  public function test__construct()
+  public function testConstruct() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\condition\Condition', $testObject);
-    $this->assertInstanceOf('\ramp\condition\BusinessCondition', $testObject);
-
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\condition\BusinessCondition', $this->testObject);
     try {
-      $testObject = new ConcreteBusinessCondition(Str::set('NotARecord'), $this->property, $this->operator);
+      $testObject1 = new ConcreteBusinessCondition(Str::set('NotARecord'), $this->property, $this->operator);
     } catch (\DomainException $expected) {
       $this->AssertSame(
-        'Invalid: NotARecord->property, does NOT match business model',
+        'Invalid: NotARecord->propertyA, does NOT match business model',
         $expected->getMessage()
       );
       try {
-        $testObject = new ConcreteBusinessCondition($this->record, Str::set('NotAProperty'), $this->operator);
+        $testObject2 = new ConcreteBusinessCondition($this->record, Str::set('NotAProperty'), $this->operator);
       } catch (\DomainException $expected) {
         $this->AssertSame(
           'Invalid: Record->NotAProperty, does NOT match business model',
@@ -109,30 +103,66 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
     $this->fail('An expected \DomianException has NOT been raised');
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
   /**
    * Collection of assertions for BusinessCondition::$attribute.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'attribute'
    *   - with message: *'[className]->attribute is NOT settable'*
    * - assert allows retrieval of 'attribute'
    * - assert retrieved is a {@see \ramp\core\Str}
-   * - assert 'attribute' is composite of [property]->[property]
-   * @see \ramp\condition\Condition::attribute
+   * - assert 'attribute' SAME as provided at contruction.
+   * - assert 'attribute' is composite of [record]->[property]
+   * @see \ramp\condition\Condition::$attribute
    */
   public function testAttribute() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    $this->assertInstanceOf('\ramp\core\Str', $testObject->attribute);
-    try {
-      $testObject->attribute = Str::set($this->expectedAttribute);
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->attribute is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertEquals($this->expectedAttribute, $testObject->attribute);
-      return;
-    }
-    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+    parent::testAttribute();
+    $this->assertSame('Record->propertyA', (string)$this->attribute);
   }
 
   /**
@@ -146,19 +176,7 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function testOperator() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    try {
-      $testObject->operator = $this->operator;
-    } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->operator is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\condition\Operator', $testObject->operator);
-      $this->assertSame($this->operator, $testObject->operator);
-      return;
-    }
-    $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
+    parent::testOperator();
   }
 
   /**
@@ -172,15 +190,16 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function testComparable() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
-    $this->assertNull($testObject->comparable);
-    $testObject->comparable = 'GOOD';
-    $this->assertSame('GOOD', $testObject->comparable);
+    $this->assertNull($this->testObject->comparable);
+    $this->testObject->comparable = 'GOOD';
+    $this->assertSame('GOOD', $this->testObject->comparable);
 
-    $testObject2 = new ConcreteBusinessCondition($this->record, $this->property, $this->operator, 'COMPARABLE');
-    $this->assertSame('COMPARABLE', $testObject2->comparable);
+    $this->testObject2 = new ConcreteBusinessCondition($this->record, $this->property, $this->operator, 'COMPARABLE');
+    $this->assertSame('COMPARABLE', $this->testObject2->comparable);
   }
+  #endregion
 
+  #region New Specialist Tests
   /**
    * Collection of assertions for BusinessCondition::$record.
    * - assert throws {@see \ramp\core\PropertyNotSetException} trying to set 'record'
@@ -192,15 +211,12 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function testRecord() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     try {
-      $testObject->record = $this->record;
+      $this->testObject->record = $this->record;
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->record is NOT settable', $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $testObject->record);
-      $this->assertSame($this->record, $testObject->record);
+      $this->assertSame(get_class($this->testObject) . '->record is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->record);
+      $this->assertSame($this->record, $this->testObject->record);
       return;
     }
     $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
@@ -217,17 +233,15 @@ class BusinessConditionTest extends \PHPUnit\Framework\TestCase
    */
   public function testProperty() : void
   {
-    $testObject = new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
     try {
-      $testObject->property = $this->property;
+      $this->testObject->property = $this->property;
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\BusinessConditionTest\ConcreteBusinessCondition->property is NOT settable', $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $testObject->property);
-      $this->assertSame($this->property, $testObject->property);
+      $this->assertSame(get_class($this->testObject) . '->property is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->property);
+      $this->assertSame($this->property, $this->testObject->property);
       return;
     }
     $this->fail('An expected ramp\core\PropertyNotSetException has NOT been raised');
   }
+  #endregion
 }

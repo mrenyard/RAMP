@@ -41,8 +41,8 @@ use tests\ramp\mocks\core\BadObject;
  * List of tests for \ramp\core\List.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\ListTest\AnObject}
- * - {@see \tests\ramp\condition\mocks\ListTest\BadObject}
+ * - {@see \tests\ramp\mocks\condition\AnObject}
+ * - {@see \tests\ramp\mocks\condition\BadObject}
  */
 class ListTest extends \tests\ramp\core\ObjectTest
 {
@@ -62,12 +62,12 @@ class ListTest extends \tests\ramp\core\ObjectTest
 
   /**
    * Collection of assertions for ramp\core\List.
-   * - assert is instance of {@see \ramp\core\List}
-   * - assert is instance of {@see \ramp\core\iList}
    * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \ramp\core\oList}
    * - assert implements \IteratorAggregate
-   * - assert implements \Countable
    * - assert implements \ArrayAccess
+   * - assert implements \Countable
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\core\List
@@ -75,10 +75,11 @@ class ListTest extends \tests\ramp\core\ObjectTest
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\core\oList', $this->testObject);
     $this->assertInstanceOf('ramp\core\iList', $this->testObject);
+    $this->assertInstanceOf('ramp\core\oList', $this->testObject);
     $this->assertInstanceOf('\IteratorAggregate', $this->testObject);
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
+    $this->assertInstanceOf('\Countable', $this->testObject);
     try {
       $this->testObject = new oList(Str::set('\not\a\Class'));
     } catch (\InvalidArgumentException $expected) {

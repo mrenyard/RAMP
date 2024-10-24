@@ -38,8 +38,8 @@ use tests\ramp\mocks\core\BadObject;
  * Collection of tests for \ramp\core\Collection.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\CollectionTest\AnObject}
- * - {@see \tests\ramp\condition\mocks\CollectionTest\BadObject}
+ * - {@see \tests\ramp\mocks\condition\AnObject}
+ * - {@see \tests\ramp\mocks\condition\BadObject}
  */
 class CollectionTest extends \tests\ramp\core\ListTest
 {
@@ -55,12 +55,14 @@ class CollectionTest extends \tests\ramp\core\ListTest
   
   /**
    * Collection of assertions for ramp\core\Collection.
-   * - assert is instance of {@see \ramp\core\Collection}
-   * - assert is instance of {@see \ramp\core\iCollection}
    * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \ramp\core\oList}
+   * - assert is instance of {@see \ramp\core\iCollection}
+   * - assert is instance of {@see \ramp\core\Collection}
    * - assert implements \IteratorAggregate
-   * - assert implements \Countable
    * - assert implements \ArrayAccess
+   * - assert implements \Countable
    * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
    *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\core\Collection
@@ -70,7 +72,6 @@ class CollectionTest extends \tests\ramp\core\ListTest
     parent::testConstruct();
     $this->assertInstanceOf('ramp\core\Collection', $this->testObject);
     $this->assertInstanceOf('ramp\core\iCollection', $this->testObject);
-    $this->assertInstanceOf('\Countable', $this->testObject);
     try {
       $this->testObject = new Collection(Str::set('\not\a\Class'));
     } catch (\InvalidArgumentException $expected) {

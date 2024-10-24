@@ -41,7 +41,7 @@ use tests\ramp\mocks\core\AnObject;
  * Collection of tests for \ramp\core\RAMPObject.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\ObjectTest\AnObject}
+ * - {@see \tests\ramp\mocks\condition\AnObject}
  */
 class ObjectTest extends TestBase
 {

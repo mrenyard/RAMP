@@ -21,14 +21,10 @@
  */
 namespace tests\ramp\condition;
 
+require_once '/usr/share/php/tests/ramp/core/CollectionTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
@@ -38,49 +34,179 @@ require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
 require_once '/usr/share/php/ramp/condition/InputDataCondition.class.php';
 require_once '/usr/share/php/ramp/condition/PostData.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/PostDataTest/Field.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/PostDataTest/Record.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Field.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Record.class.php';
 
+use \ramp\core\RAMPObject;
+use \ramp\core\iList;
 use \ramp\core\Str;
 use \ramp\condition\PostData;
+use \ramp\condition\InputDataCondition;
 
 /**
  * Collection of tests for \ramp\condition\PostData.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\PostDataTest\Property}
- * - {@see \tests\ramp\condition\mocks\PostDataTest\Record}
+ * - {@see \tests\ramp\mocks\condition\Property}
+ * - {@see \tests\ramp\mocks\condition\Record}
  */
-class PostDataTest extends \PHPUnit\Framework\TestCase
+class PostDataTest extends \tests\ramp\core\CollectionTest
 {
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
-  {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\PostDataTest';
+  #region Setup
+  protected function preSetup() : void {
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
+    $this->typeName = Str::set('ramp\condition\InputDataCondition');
+    $this->record = Str::set('Record');
+    $this->expectedAtNameIndex = new InputDataCondition($this->record, Str::NEW(), Str::set('propertyA'), 'ValueA');
+    $this->expectedAt0Index = new InputDataCondition($this->record, Str::NEW(), Str::set('propertyB'), 'ValueA');
   }
+  protected function getTestObject() : RAMPObject { return new PostData(); }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\condition\PostData.
    * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \ramp\core\oList}
+   * - assert is instance of {@see \ramp\core\iCollection}
    * - assert is instance of {@see \ramp\core\Collection}
-   * - assert is instance of {@see \ramp\condition\PostData}
-   * - assert is composed of {@see \ramp\condition\InputDataCondition}s
+   * - assert is instance of {@see \ramp\condition\Filter}
+   * - assert implements \IteratorAggregate
+   * - assert implements \ArrayAccess
+   * - assert implements \Countable
+   * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
+   *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\condition\PostData
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $testObject = new PostData();
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\core\Collection', $testObject);
-    $this->assertInstanceOf('\ramp\condition\PostData', $testObject);
-
-    $this->assertTrue($testObject->isCompositeType(
-      Str::set('ramp\condition\InputDataCondition')
-    ));
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\condition\PostData', $this->testObject);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\StrCollection::isCompositeType().
+   * - assert returns TRUE when $compositeType {@see \ramp\core\Str}
+   * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
+   * @see \ramp\core\StrCollection::isCompositeType()
+   */
+  public function testIsCompositeType() : void
+  {
+    parent::testIsCompositeType();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\List::offsetSet().
+   * - assert {@see \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert value set with name key is same as retived with same name key
+   * - assert value set at index same as retived at index.
+   * @see \ramp\mocks\core\List::offsetSet()
+   */
+  public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\condition\InputDataCondition') : iList
+  {
+    return parent::testOffsetSet($message);
+  }
+
+  /**
+   * Collection of assertions for ramp\core\oList::offsetUnset().
+   * - assert value unset with name key is no longer retivable with same name key
+   * - assert value set at index is no longer retivable at same index.
+   * @depends testOffsetSet
+   * @param iList The test object.
+   * @param string Expected child type.
+   * @see \ramp\mocks\core\List::offsetUnset()
+   */
+  public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\condition\InputDataCondition') : void
+  {
+    parent::testOffsetUnset($testObject, $expectedChildType);
+  }
+
+    /**
+   * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
+   * - assert handle unpopulated {@see \ramp\core\Collection} iteration without fail
+   * - assert {@see \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert Count equal to number of objects added.
+   * - assert collection object references occupy SAME position as added
+   * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   *   - with message: *'Offset out of bounds'*
+   * @see \ramp\core\Collection::getIterator()
+   * @see \ramp\core\Collection::add()
+   * @see \ramp\core\Collection::count
+   */
+  public function testIteratorAddCount($message = NULL, $o1 = NULL, $o2 = NULL, $o3 = NULL, $o4 = NULL) : void
+  {
+    parent::testIteratorAddCount(
+      ($message !== NULL) ? $message : 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\condition\InputDataCondition',
+      ($o1 !== NULL) ? $o1 : new InputDataCondition($this->record, Str::NEW(), Str::set('propertyA'), 'ValueA'),
+      ($o2 !== NULL) ? $o2 : new InputDataCondition($this->record, Str::NEW(), Str::set('propertyB'), 'ValueB'),
+      ($o3 !== NULL) ? $o3 : new InputDataCondition($this->record, Str::NEW(), Str::set('propertyC'), 'ValueC'),
+      ($o4 !== NULL) ? $o4 : new InputDataCondition($this->record, Str::NEW(), Str::set('propertyInt'), 'ValueInt')
+    );
+  }
+
+  /**
+   * Collection of assertions for ramp\core\OptionList::__clone().
+   * - assert Cloning (default) composite collection is referenced only
+   * @see \ramp\mocks\core\Collection::__clone()
+   * @see \ramp\mocks\core\Collection::__clone()
+   */
+  public function testClone() : void
+  {
+    $copy = clone $this->testObject;
+    $this->assertNotSame($copy, $this->testObject);
+    $this->assertEquals($copy, $this->testObject);
+  }
+  #endregion
+
+  #region New Specalist Tests
   /**
    * Collection of assertions for \ramp\condition\PostData::build().
    * - assert throws \DomainException when any $postdata NAME is NOT in correct form
@@ -131,4 +257,5 @@ class PostDataTest extends \PHPUnit\Framework\TestCase
     }
     $this->fail('An expected \DomainException has NOT been raised');
   }
+  #endregion
 }

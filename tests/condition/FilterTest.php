@@ -21,15 +21,10 @@
  */
 namespace tests\ramp\condition;
 
+require_once '/usr/share/php/tests/ramp/core/CollectionTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/iList.class.php';
-require_once '/usr/share/php/ramp/core/oList.class.php';
-require_once '/usr/share/php/ramp/core/iCollection.class.php';
-require_once '/usr/share/php/ramp/core/Collection.class.php';
 require_once '/usr/share/php/ramp/core/StrCollection.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/condition/Operator.class.php';
 require_once '/usr/share/php/ramp/condition/Condition.class.php';
 require_once '/usr/share/php/ramp/condition/BusinessCondition.class.php';
@@ -41,38 +36,42 @@ require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/Field.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/Record.class.php';
-require_once '/usr/share/php/tests/ramp/condition/mocks/FilterTest/MockEnvironment.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Field.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/Record.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/ConcreteEnvironment.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
+use ramp\core\iList;
 use ramp\condition\Filter;
 use ramp\condition\Operator;
 use ramp\condition\SQLEnvironment;
+use ramp\condition\FilterCondition;
 
-use tests\ramp\condition\mocks\FilterTest\MockEnvironment;
+use tests\ramp\mocks\condition\ConcreteEnvironment;
 
 /**
  * Collection of tests for \ramp\condition\Filter.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\FilterTest\MockEnvironment}
- * - {@see \tests\ramp\condition\mocks\FilterTest\Property}
- * - {@see \tests\ramp\condition\mocks\FilterTest\Record}
+ * - {@see \tests\ramp\mocks\condition\MockEnvironment}
+ * - {@see \tests\ramp\mocks\condition\Property}
+ * - {@see \tests\ramp\mocks\condition\Record}
  */
-class FilterTest extends \PHPUnit\Framework\TestCase
+class FilterTest extends \tests\ramp\core\CollectionTest
 {
   private $record;
   private $goodArray;
   private $complexArray;
 
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\condition\mocks\FilterTest';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
+    $this->typeName = Str::set('ramp\condition\FilterCondition');
     $this->record = Str::set('Record');
+    $this->expectedAtNameIndex = new FilterCondition($this->record, Str::set('propertyA'));
+    $this->expectedAt0Index = new FilterCondition($this->record, Str::set('propertyB'));
 
     $this->goodArray = array(
       'property-a' => 'valueA',
@@ -91,27 +90,153 @@ class FilterTest extends \PHPUnit\Framework\TestCase
     $this->multiPartPrimaryArray = array(
       'key' => '1:2:3'
     );
+
   }
+  protected function getTestObject() : RAMPObject { return new Filter(); }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\condition\Filter::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \ramp\core\oList}
+   * - assert is instance of {@see \ramp\core\iCollection}
    * - assert is instance of {@see \ramp\core\Collection}
    * - assert is instance of {@see \ramp\condition\Filter}
-   * - assert is composite type {@see \ramp\condition\FilterCondition}
+   * - assert implements \IteratorAggregate
+   * - assert implements \ArrayAccess
+   * - assert implements \Countable
+   * - assert throws InvalidAgumentException if provided Str is NOT an accessible class name
+   *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\condition\Filter
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $testObject = new Filter();
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\core\Collection', $testObject);
-    $this->assertInstanceOf('\ramp\condition\Filter', $testObject);
-
-    $this->assertTrue($testObject->isCompositeType(
-      Str::set('ramp\condition\FilterCondition')
-    ));
+    parent::testConstruct();
+    $this->assertInstanceOf('\ramp\condition\Filter', $this->testObject);
   }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\StrCollection::isCompositeType().
+   * - assert returns TRUE when $compositeType {@see \ramp\core\Str}
+   * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
+   * @see \ramp\core\StrCollection::isCompositeType()
+   */
+  public function testIsCompositeType() : void
+  {
+    parent::testIsCompositeType();
+  }
+
+  /**
+   * Collection of assertions for ramp\core\List::offsetSet().
+   * - assert {@see \ramp\core\List::OffsetSet()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert value set with name key is same as retived with same name key
+   * - assert value set at index same as retived at index.
+   * @see \ramp\mocks\core\List::offsetSet()
+   */
+  public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\condition\FilterCondition') : iList
+  {
+    return parent::testOffsetSet($message);
+  }
+
+  /**
+   * Collection of assertions for ramp\core\oList::offsetUnset().
+   * - assert value unset with name key is no longer retivable with same name key
+   * - assert value set at index is no longer retivable at same index.
+   * @depends testOffsetSet
+   * @param iList The test object.
+   * @param string Expected child type.
+   * @see \ramp\mocks\core\List::offsetUnset()
+   */
+  public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\condition\FilterCondition') : void
+  {
+    parent::testOffsetUnset($testObject, $expectedChildType);
+  }
+
+    /**
+   * Collection of assertions for ramp\core\Collection::getIterator(), add() and count.
+   * - assert handle unpopulated {@see \ramp\core\Collection} iteration without fail
+   * - assert {@see \ramp\core\Collection::add()} only accepts predefined types, throws \InvalidArgumentException
+   *   - with message: *'[provided object] NOT instanceof [expected type]'*
+   * - assert Count equal to number of objects added.
+   * - assert collection object references occupy SAME position as added
+   * - assert {@see \ramp\core\Collection::offsetGet}($outOfBoundsOffset) throws \OutOfBoundsException
+   *   - with message: *'Offset out of bounds'*
+   * @see \ramp\core\Collection::getIterator()
+   * @see \ramp\core\Collection::add()
+   * @see \ramp\core\Collection::count
+   */
+  public function testIteratorAddCount($message = NULL, $o1 = NULL, $o2 = NULL, $o3 = NULL, $o4 = NULL) : void
+  {
+    parent::testIteratorAddCount(
+      ($message !== NULL) ? $message : 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\condition\FilterCondition',
+      ($o1 !== NULL) ? $o1 : new FilterCondition($this->record, Str::set('propertyA')),
+      ($o2 !== NULL) ? $o2 : new FilterCondition($this->record, Str::set('propertyB')),
+      ($o3 !== NULL) ? $o3 : new FilterCondition($this->record, Str::set('propertyC')),
+      ($o4 !== NULL) ? $o4 : new FilterCondition($this->record, Str::set('propertyInt')),
+    );
+  }
+
+  /**
+   * Collection of assertions for ramp\core\OptionList::__clone().
+   * - assert Cloning (default) composite collection is referenced only
+   * @see \ramp\mocks\core\Collection::__clone()
+   * @see \ramp\mocks\core\Collection::__clone()
+   */
+  public function testClone() : void
+  {
+    $copy = clone $this->testObject;
+    $this->assertNotSame($copy, $this->testObject);
+    $this->assertEquals($copy, $this->testObject);
+  }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\condition\Filter::build().
@@ -266,7 +391,7 @@ class FilterTest extends \PHPUnit\Framework\TestCase
     $closingParenthesisOperator = Operator::CLOSING_PARENTHESIS();
 
     $SQLEnvironment = SQLEnvironment::getInstance();
-    $MockEnvironment = MockEnvironment::getInstance();
+    $concreteEnvironment = ConcreteEnvironment::getInstance();
 
     $testObject = Filter::build($this->record, $this->goodArray);
 
@@ -286,15 +411,15 @@ class FilterTest extends \PHPUnit\Framework\TestCase
     $expectedMock = Str::_EMPTY();
     foreach ($this->goodArray as $name => $value) {
       $expectedMock = $expectedMock->append(
-        Str::set($this->record . $memberAccessOperator($MockEnvironment) .
-          Str::camelCase(Str::set($name), TRUE) . $equalToOperator($MockEnvironment) .
-            $openingParenthesisOperator($MockEnvironment) . $value .
-              $closingParenthesisOperator($MockEnvironment) . $andOperator($MockEnvironment)
+        Str::set($this->record . $memberAccessOperator($concreteEnvironment) .
+          Str::camelCase(Str::set($name), TRUE) . $equalToOperator($concreteEnvironment) .
+            $openingParenthesisOperator($concreteEnvironment) . $value .
+              $closingParenthesisOperator($concreteEnvironment) . $andOperator($concreteEnvironment)
         )
       );
     }
-    $expectedMock = $expectedMock->trimEnd(Str::set($andOperator($MockEnvironment)));
-    $this->assertSame((string)$expectedMock, $testObject($MockEnvironment));
+    $expectedMock = $expectedMock->trimEnd(Str::set($andOperator($concreteEnvironment)));
+    $this->assertSame((string)$expectedMock, $testObject($concreteEnvironment));
 
     $testObject = Filter::build($this->record, $this->complexArray);
 

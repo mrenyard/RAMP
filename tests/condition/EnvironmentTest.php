@@ -21,36 +21,38 @@
  */
 namespace tests\ramp\condition;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/Environment.class.php';
 
-require_once '/usr/share/php/tests/ramp/condition/mocks/EnvironmentTest/ConcreteEnvironment.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/condition/ConcreteEnvironment.class.php';
 
+use \ramp\core\RAMPObject;
 use \ramp\core\Str;
 use \ramp\core\PropertyNotSetException;
 
-use tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment;
+use tests\ramp\mocks\condition\ConcreteEnvironment;
 
 /**
  * Collection of tests for \ramp\condition\Environment.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment}
+ * - {@see \tests\ramp\mocks\condition\ConcreteEnvironment}
  */
-class EnvironmentTest extends \PHPUnit\Framework\TestCase
+class EnvironmentTest extends \tests\ramp\core\ObjectTest
 {
-  private $testInstance;
+  protected $instance;
+  protected $className;
 
-  /**
-   * Setup - add variables
-   */
-  public function setUp() : void
-  {
-    $this->testInstance = ConcreteEnvironment::getInstance();
+  #region Setup
+  protected function preSetup() : void {
+    $this->instance = ConcreteEnvironment::getInstance();
+    $this->className = 'tests\ramp\mocks\condition\ConcreteEnvironment';
   }
+  protected function getTestObject() : RAMPObject { return ConcreteEnvironment::getInstance(); }
+  #endregion
 
   /**
    * Collection of assertions for \ramp\condition\Environment::getInstance().
@@ -61,20 +63,68 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert returns the SAME instance on every call.
    * @see \ramp\condition\Environment\getInstance()
    */
-  public function testGetInstance()
+  public function testConstruct() : void
   {
     try {
-      $testObject = new ConcreteEnvironment();
+      $o = new ConcreteEnvironment();
     } catch (\Error $expected) {
-      $this->assertInstanceOf('\ramp\condition\Environment', $this->testInstance);
-      $this->assertInstanceOf('\ramp\condition\iEnvironment', $this->testInstance);
-      $this->assertInstanceOf('\ramp\core\RAMPObject', $this->testInstance);
-      $this->assertSame(ConcreteEnvironment::getInstance(), $this->testInstance);
+      parent::testConstruct();
+      $this->assertInstanceOf('\ramp\condition\Environment', $this->testObject);
+      $this->assertInstanceOf('\ramp\condition\iEnvironment', $this->testObject);
+      $this->assertSame($this->instance, $this->testObject);
       return;
     }
     $this->fail('An expected \Error has NOT been raised');
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+  #endregion
+
+  #region Specialist Tests
   /**
    * Collection of assertions for \ramp\condition\Environment::$memberAccess.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'memberAccess'
@@ -84,17 +134,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$memberAccess
    */
-  public function testMemberAccess()
+  public function testMemberAccess($expectedOutput = 'memberAccess') : void
   {
     try {
-      $this->testInstance->memberAccess = Str::set('not settable');
+      $this->testObject->memberAccess = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->memberAccess is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->memberAccess);
-      $this->assertSame('memberAccess', (string)$this->testInstance->memberAccess);
+      $this->assertSame($this->className . '->memberAccess is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->memberAccess);
+      $this->assertSame($expectedOutput, (string)$this->testObject->memberAccess);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -109,17 +156,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$assignment
    */
-  public function testAssignment()
+  public function testAssignment($expectedOutput = 'assignment') : void
   {
     try {
-      $this->testInstance->assignment = Str::set('not settable');
+      $this->testObject->assignment = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->assignment is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->assignment);
-      $this->assertSame('assignment', (string)$this->testInstance->assignment);
+      $this->assertSame($this->className . '->assignment is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->assignment);
+      $this->assertSame($expectedOutput, (string)$this->testObject->assignment);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -134,17 +178,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$equalTo
    */
-  public function testEqualTo()
+  public function testEqualTo($expectedOutput = ' equalTo ') : void
   {
     try {
-      $this->testInstance->equalTo = Str::set('not settable');
+      $this->testObject->equalTo = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->equalTo is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->equalTo);
-      $this->assertSame(' equalTo ', (string)$this->testInstance->equalTo);
+      $this->assertSame($this->className . '->equalTo is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->equalTo);
+      $this->assertSame($expectedOutput, (string)$this->testObject->equalTo);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -159,17 +200,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$notEqualTo
    */
-  public function testNotEqualTo()
+  public function testNotEqualTo($expectedOutput = ' notEqualTo ') : void
   {
     try {
-      $this->testInstance->notEqualTo = Str::set('not settable');
+      $this->testObject->notEqualTo = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->notEqualTo is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->notEqualTo);
-      $this->assertSame(' notEqualTo ', (string)$this->testInstance->notEqualTo);
+      $this->assertSame($this->className . '->notEqualTo is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->notEqualTo);
+      $this->assertSame($expectedOutput, (string)$this->testObject->notEqualTo);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -183,17 +221,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$lessThan
    */
-  public function testLessThan()
+  public function testLessThan($expectedOutput = ' lessThan ') : void
   {
     try {
-      $this->testInstance->lessThan = Str::set('not settable');
+      $this->testObject->lessThan = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->lessThan is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->lessThan);
-      $this->assertSame(' lessThan ', (string)$this->testInstance->lessThan);
+      $this->assertSame($this->className . '->lessThan is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->lessThan);
+      $this->assertSame($expectedOutput, (string)$this->testObject->lessThan);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -207,17 +242,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$greaterThan
    */
-  public function testGreaterThan()
+  public function testGreaterThan($expectedOutput = ' greaterThan ') : void
   {
     try {
-      $this->testInstance->greaterThan = Str::set('not settable');
+      $this->testObject->greaterThan = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->greaterThan is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->greaterThan);
-      $this->assertSame(' greaterThan ', (string)$this->testInstance->greaterThan);
+      $this->assertSame($this->className . '->greaterThan is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->greaterThan);
+      $this->assertSame($expectedOutput, (string)$this->testObject->greaterThan);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -232,17 +264,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$and
    */
-  public function testAnd()
+  public function testAnd($expectedOutput = ' and ') : void
   {
     try {
-      $this->testInstance->and = Str::set('not settable');
+      $this->testObject->and = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->and is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->and);
-      $this->assertSame(' and ', (string)$this->testInstance->and);
+      $this->assertSame($this->className . '->and is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->and);
+      $this->assertSame($expectedOutput, (string)$this->testObject->and);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -257,17 +286,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$or
    */
-  public function testOr()
+  public function testOr($expectedOutput = ' or ') : void
   {
     try {
-      $this->testInstance->or = Str::set('not settable');
+      $this->testObject->or = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->or is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->or);
-      $this->assertSame(' or ', (string)$this->testInstance->or);
+      $this->assertSame($this->className . '->or is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->or);
+      $this->assertSame($expectedOutput, (string)$this->testObject->or);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -282,17 +308,14 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$openingParenthesis
    */
-  public function testOpeningParenthesis()
+  public function testOpeningParenthesis($expectedOutput = 'openingParenthesis') : void
   {
     try {
-      $this->testInstance->openingParenthesis = Str::set('not settable');
+      $this->testObject->openingParenthesis = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->openingParenthesis is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->openingParenthesis);
-      $this->assertSame('openingParenthesis', (string)$this->testInstance->openingParenthesis);
+      $this->assertSame($this->className . '->openingParenthesis is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->openingParenthesis);
+      $this->assertSame($expectedOutput, (string)$this->testObject->openingParenthesis);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
@@ -307,19 +330,61 @@ class EnvironmentTest extends \PHPUnit\Framework\TestCase
    * - assert retreved is same string as provided at construction.
    * @see \ramp\condition\Environment::$closingParenthesis
    */
-  public function testClosingParenthesis()
+  public function testClosingParenthesis($expectedOutput = 'closingParenthesis') : void
   {
     try {
-      $this->testInstance->closingParenthesis = Str::set('not settable');
+      $this->testObject->closingParenthesis = Str::set('not settable');
     } catch (PropertyNotSetException $expected) {
-      $this->assertSame(
-        'tests\ramp\condition\mocks\EnvironmentTest\ConcreteEnvironment->closingParenthesis is NOT settable',
-        $expected->getMessage()
-      );
-      $this->assertInstanceOf('\ramp\core\Str', $this->testInstance->closingParenthesis);
-      $this->assertSame('closingParenthesis', (string)$this->testInstance->closingParenthesis);
+      $this->assertSame($this->className . '->closingParenthesis is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->closingParenthesis);
+      $this->assertSame($expectedOutput, (string)$this->testObject->closingParenthesis);
       return;
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
+
+  /**
+   * Collection of assertions for \ramp\condition\Environment::$openingGroupingParenthesis.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'openingGroupingParenthesis'
+   *   - with message: *'[className]->memberAccess is NOT settable'*.
+   * - assert allows retrieval of 'openingGroupingParenthesis'.
+   * - assert retreved is an instance of {@see \ramp\core\Str}.
+   * - assert retreved is same string as provided at construction.
+   * @see \ramp\condition\Environment::$openingGroupingParenthesis
+   */
+  public function testOpeningGroupingParenthesis($expectedOutput = 'openingGroupingParenthesis') : void
+  {
+    try {
+      $this->testObject->openingGroupingParenthesis = Str::set('not settable');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame($this->className . '->openingGroupingParenthesis is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->openingGroupingParenthesis);
+      $this->assertSame($expectedOutput, (string)$this->testObject->openingGroupingParenthesis);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
+  }
+
+  /**
+   * Collection of assertions for \ramp\condition\Environment::$closingGroupingParenthesis.
+   * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'closingGroupingParenthesis'
+   *   - with message: *'[className]->closingGroupingParenthesis is NOT settable'*.
+   * - assert allows retrieval of 'closingGroupingParenthesis'.
+   * - assert retreved is an instance of {@see \ramp\core\Str}.
+   * - assert retreved is same string as provided at construction.
+   * @see \ramp\condition\Environment::$closingGroupingParenthesis
+   */
+  public function testClosingGroupingParenthesis($expectedOutput = 'closingGroupingParenthesis') : void
+  {
+    try {
+      $this->testObject->closingGroupingParenthesis = Str::set('not settable');
+    } catch (PropertyNotSetException $expected) {
+      $this->assertSame($this->className . '->closingGroupingParenthesis is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\ramp\core\Str', $this->testObject->closingGroupingParenthesis);
+      $this->assertSame($expectedOutput, (string)$this->testObject->closingGroupingParenthesis);
+      return;
+    }
+    $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
+  }
+  #endregion
 }
