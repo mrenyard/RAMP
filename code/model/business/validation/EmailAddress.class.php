@@ -20,6 +20,7 @@
  */
 namespace ramp\model\business\validation;
 
+use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
@@ -28,6 +29,29 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class EmailAddress extends ValidationRule
 {
+  private $placeholder;
+
+  /**
+   * Constructor for email address format validation.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new validation\dbtype\VarChar(
+   *   Str::set('string with a maximun character length of '),
+   *   150,  new validation\EmailAddress(
+   *     Str::set('validly formatted email address'),
+   *     Str::set('e.g. jsmith@domain.com')
+   *   )
+   * );
+   * ```
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
+   */
+  public function __construct(Str $errorHint, Str $placeholder)
+  {
+    $this->placeholder = $placeholder;
+    parent::__construct($errorHint);
+  }
+
   /**
    * Asserts that $value is format of valid email address.
    * @param mixed $value Value to be tested.

@@ -49,7 +49,8 @@ abstract class AuthenticatableUnit extends Record
         new validation\dbtype\VarChar(
           Str::set('string with a maximun character length of '),
           150,  new validation\EmailAddress(
-            Str::set('validly formatted email address')
+            Str::set('validly formatted email address'),
+            Str::set('e.g. jsmith@domain.com')
           )
         )
       ));

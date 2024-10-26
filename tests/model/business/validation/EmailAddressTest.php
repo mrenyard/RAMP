@@ -44,7 +44,10 @@ class EmailAddressTest extends \PHPUnit\Framework\TestCase
    */
   public function setUp() : void
   {
-    $this->testObject = new EmailAddress(Str::set('string with a maximun character length of '));
+    $this->testObject = new EmailAddress(
+      Str::set('string with a maximun character length of '),
+      Str::set('e.g. jsmith@domain.com')
+    );
   }
 
   /**

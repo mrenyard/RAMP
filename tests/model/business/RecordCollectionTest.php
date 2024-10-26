@@ -71,7 +71,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->testObject->add(new MockMinRecord());
     $record2 = new MockMinRecord();
@@ -82,7 +82,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
     $this->postData = new PostData();
     $this->childErrorIndexes = array(1);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-min-record record', (string)$this->testObject[0]->type);
@@ -212,9 +212,9 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\BusinessModel::offsetSet()
    */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
-    parent::testOffsetSetTypeCheckException($MinAllowedType, $objectOutOfScope, $errorMessage);
+    parent::testOffsetSetTypeCheckException('ramp\model\business\Record', $objectOutOfScope, $errorMessage);
   }
 
   /**
@@ -226,7 +226,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockMinRecord());
   }

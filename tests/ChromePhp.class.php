@@ -31,23 +31,23 @@ class ChromePhp
     self::$messages = array();
   }
 
-  public static function getMessages()
+  public static function getMessages() : array
   {
     return self::$messages;
   }
 
-  public static function log(string $label, $message = null)
+  public static function log(string $label, $message = null) : void
   {
     $message = (isset($message)) ? (is_array($message)) ? ' ' . implode(', ', $message) : ' ' . $message : '';
     self::$messages[count(self::$messages)] = 'LOG:' . $label . $message;
   }
 
-  public static function group(string $message)
+  public static function group(string $message) : void
   {
     self::$messages[count(self::$messages)] = 'GROUP:' . $message;
   }
 
-  public static function groupEnd()
+  public static function groupEnd() : void
   {
     self::$messages[count(self::$messages)] = 'GROUPEND:';
   }

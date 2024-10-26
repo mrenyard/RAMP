@@ -28,6 +28,7 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class RegexValidationRule extends ValidationRule
 {
+  private $placeholder;
   private $pattern;
   private $format;
 
@@ -50,6 +51,7 @@ class RegexValidationRule extends ValidationRule
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
    * @param string $format Optional format profile based on ISO standards.
    */
+  // public function __construct(Str $errorMessage, Str $placeholder, string $pattern, ValidationRule $subRule = null, string $format = NULL)
   public function __construct(Str $errorMessage, string $pattern, ValidationRule $subRule = null, string $format = NULL)
   {
     $this->pattern = $pattern;

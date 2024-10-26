@@ -23,34 +23,34 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
-require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Environment.class.php';
-require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
+// require_once '/usr/share/php/ramp/SETTING.class.php';
+// require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
+// require_once '/usr/share/php/ramp/condition/Environment.class.php';
+// require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
+// require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/URNQueryEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Operator.class.php';
-require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-require_once '/usr/share/php/ramp/condition/Filter.class.php';
-require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
+// require_once '/usr/share/php/ramp/condition/Operator.class.php';
+// require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
+// require_once '/usr/share/php/ramp/condition/Filter.class.php';
+// require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
+// require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
-require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
-require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
-require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
-require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
-require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
-require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+// require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
+// require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
+// require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
+// require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
+// require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
+// require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
+// require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
+// require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -83,26 +83,23 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
+    // name?
   }
-  protected function getTestObject() : RAMPObject {
-    return $this->record->primaryKey;
-  }
-  protected function postSetup() : void {
-    $this->expectedChildCountNew = 3;
-  }
+  protected function getTestObject() : RAMPObject {  return $this->record->primaryKey; }
+  protected function postSetup() : void { $this->expectedChildCountNew = 3; }
   #endregion
 
   /**
    * Collection of assertions for \ramp\model\business\PrimaryKey.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
-   * - assert is instance of {@see \ramp\core\iList}
-   * - assert is instance of {@see \IteratorAggregate}
-   * - assert is instance of {@see \Countable}
-   * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\buiness\PrimaryKey}   
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\PrimaryKey
    */
   public function testConstruct() : void
@@ -112,7 +109,9 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function buildConstructorWithChildren() : BusinessModel { return $this->getTestObject(); }
+
+  protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
@@ -122,7 +121,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     ));
     $this->childErrorIndexes = array(1);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
@@ -241,6 +240,31 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
+   * Offset addition minimum type checking test
+   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope
+   *   and expected associated record and unique to 'Key' propertyName.
+   * @see \ramp\model\business\Key::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(?string $MinAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
+  {
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent(Str::set('primaryKey'), $this->record),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent(Str::set('NotApropertyName'), $this->record),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+    parent::testOffsetSetTypeCheckException(
+      'ramp\model\business\field\Field',
+      new MockRecordComponent(Str::set('primaryKey'), new MockRecord()),
+      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
+  }
+
+  /**
    * Index editing of children through \ramp\model\business\Key::offsetSet and
    * for \ramp\model\business\Key::offsetUnset.
    * - assert successful use of offsetSet
@@ -250,7 +274,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::offsetSet()
    * @see \ramp\model\business\Key::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('KeyA'), $this->record));
   }
@@ -310,27 +334,6 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'record' NOT accessable ramp\model\business\Key::record.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
-   * @see \ramp\model\business\Key::record
-   */
-  public function testSetParentRecordPropertyNotSetException() : void
-  {
-    parent::testSetParentRecordPropertyNotSetException();
-  }
-
-  /**
-   * Set 'propertyName' NOT accessable ramp\model\business\Key::propertyName.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
-   * @see \ramp\model\business\Key::propertyName
-   */
-  public function testSetParentPropertyNamePropertyNotSetException() : void
-  {
-    parent::testSetParentPropertyNamePropertyNotSetException();
-  }
-  #endregion
-  
-  /**
    * Hold a collection of reference back to parent (Record), name value and id.
    * - assert parent same as passed to constructor.
    * - assert name same as passed to constructor.
@@ -363,30 +366,38 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Offset addition minimum type checking test
-   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope
-   *   and expected associated record and unique to 'Key' propertyName.
-   * @see \ramp\model\business\Key::offsetSet()
+   * RecordComponent (default) value returns same as parent Record::getPropertyValue(name).
+   * - assert current record->getPropertyValue and RecordComponent->value return same instance.
+   * @see \ramp\model\business\RecordComponent::$value
+   * @see \ramp\model\business\Record::getPropertyValue()
    */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testRecordComponentValue() : void
   {
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent(Str::set('primaryKey'), $this->record),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent(Str::set('NotApropertyName'), $this->record),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\field\Field',
-      new MockRecordComponent(Str::set('primaryKey'), new Record()),
-      'Adding properties to Key through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-    );
+    $this->assertSame($this->record->getPropertyValue('primaryKey'), $this->testObject->value);
   }
 
+  /**
+   * Set 'record' NOT accessable ramp\model\business\Key::record.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
+   * @see \ramp\model\business\Key::record
+   */
+  public function testSetParentRecordPropertyNotSetException() : void
+  {
+    parent::testSetParentRecordPropertyNotSetException();
+  }
+
+  /**
+   * Set 'propertyName' NOT accessable ramp\model\business\Key::propertyName.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
+   * @see \ramp\model\business\Key::propertyName
+   */
+  public function testSetParentPropertyNamePropertyNotSetException() : void
+  {
+    parent::testSetParentPropertyNamePropertyNotSetException();
+  }
+  #endregion
+  
+  #region New Specialist Tests
   /**
    * Test state changes for indexs, values, and value following before, during and after validation.
    * - assert compound key indexes and values based on parent record state
@@ -451,4 +462,5 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
       'mock-record:new:keyC' => 2
     )));
   }
+  #endregion
 }

@@ -44,6 +44,7 @@ use ramp\model\business\validation\Alphanumeric;
  */
 class MockRecord extends Record
 {
+  private $requiered;
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
@@ -62,8 +63,9 @@ class MockRecord extends Record
   public $selectManyList;
   public $selectManyName;
 
-  public function __construct(\stdClass $dataObject = null)
+  public function __construct(\stdClass $dataObject = null, bool $setAllFieldsRequiered = FALSE)
   {
+    $this->requiered = $setAllFieldsRequiered;
     $this->relationAlphaName = Str::set('relationAlpha');
     $this->relationBetaName = Str::set('relationBeta');
     $this->relationGammaWithRecordName = Str::set('MockMinRecord');
@@ -113,7 +115,7 @@ class MockRecord extends Record
 
   protected function get_aProperty() : ?RecordComponent
   {
-    if ($this->register('aProperty', RecordComponentType::PROPERTY)) {
+    if ($this->register('aProperty', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->propertyName = $this->registeredName;
       $this->initiate(new MockField($this->propertyName, $this));
     }
@@ -122,7 +124,7 @@ class MockRecord extends Record
 
   protected function get_input() : ?RecordComponent
   {
-    if ($this->register('input', RecordComponentType::PROPERTY)) {
+    if ($this->register('input', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->inputName = $this->registeredName;
       $this->initiate(new MockInput($this->registeredName, $this,
         Str::set('Expanded description of expected field content.'),
@@ -130,7 +132,7 @@ class MockRecord extends Record
           Str::set('Error MESSAGE BadValue Submited!'),
           new MockValidationRule(
             Str::set('Error MESSAGE BadValue Submited!')
-          ), NULL)
+          ))
       ));
     }
     return $this->registered; 
@@ -138,17 +140,16 @@ class MockRecord extends Record
 
   protected function get_flag() : ?RecordComponent
   {
-    if ($this->register('flag', RecordComponentType::PROPERTY)) {
+    if ($this->register('flag', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->flagName = $this->registeredName;
-      $this->initiate(new MockFlag($this->registeredName, $this
-      ));
+      $this->initiate(new MockFlag($this->registeredName, $this));
     }
     return $this->registered;
   }
 
   protected function get_selectFrom() : ?RecordComponent
   {
-    if ($this->register('selectFrom', RecordComponentType::PROPERTY)) {
+    if ($this->register('selectFrom', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectFromName = $this->registeredName;
       $this->selectFromList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
       $this->selectFromList->add(new MockOption(0, Str::set('Please choose:')));
@@ -161,7 +162,7 @@ class MockRecord extends Record
 
   protected function get_selectOne() : ?RecordComponent
   {
-    if ($this->register('selectOne', RecordComponentType::PROPERTY)) {
+    if ($this->register('selectOne', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectOneName = $this->registeredName;
       $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
       $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
@@ -174,7 +175,7 @@ class MockRecord extends Record
 
   protected function get_selectMany() : ?RecordComponent
   {
-    if ($this->register('selectMany', RecordComponentType::PROPERTY)) {
+    if ($this->register('selectMany', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectManyName = $this->registeredName;
       $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
       $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
@@ -188,7 +189,7 @@ class MockRecord extends Record
 
   protected function get_relationAlpha() : ?RecordComponent
   {
-    if ($this->register((string)$this->relationAlphaName, RecordComponentType::RELATION)) {
+    if ($this->register((string)$this->relationAlphaName, RecordComponentType::RELATION, $this->requiered)) {
       $this->initiate(new MockRelationToMany(
         $this->registeredName,
         $this,
@@ -201,7 +202,7 @@ class MockRecord extends Record
 
   protected function get_relationBeta() : ?RecordComponent
   {
-     if ($this->register((string)$this->relationBetaName, RecordComponentType::RELATION)) {
+     if ($this->register((string)$this->relationBetaName, RecordComponentType::RELATION, $this->requiered)) {
       $this->initiate(new MockRelationToOne(
         $this->registeredName,
         $this,

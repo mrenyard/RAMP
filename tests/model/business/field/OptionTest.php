@@ -86,12 +86,13 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
  */
 class OptionTest extends \tests\ramp\model\business\BusinessModelTest
 {
-  protected $expectedChildCountNew;
-  protected $expectedChildCountExisting;
-  protected $childErrorIndexes;
+  // protected $expectedChildCountNew;
+  // protected $expectedChildCountExisting;
+  // protected $childErrorIndexes;
   protected $dataObject;
-  protected $postData;
+  // protected $postData;
   protected $record;
+  protected $field;
 
   #region Setup
   protected function preSetup() : void {
@@ -125,7 +126,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
   }
   
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 0;
     $this->childErrorIndexes = array(0);
@@ -133,7 +134,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
       'mock-record:new:select-from' => 3
     ));
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertFalse(isset($this->testObject[0]));
   }
@@ -255,7 +256,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\Record::offsetSet()
    * @see \ramp\model\business\Record::offsetUnsSet()
    */
-  public function testOffsetSetTypeCheckException(string $minAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException($minAllowedType, $objectOutOfScope, $errorMessage);
   }
@@ -269,7 +270,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset($o);
   }
@@ -332,6 +333,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
   }
   #endregion
 
+  #region New Specialist Tests
   /**
    * Check Option initial state.
    * - assert $key is expected value and type.
@@ -391,4 +393,5 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
     $this->expectExceptionMessage('Must set parentField before calling isSelected.');
     $testObject->isSelected;
   }
+  #endregion
 }

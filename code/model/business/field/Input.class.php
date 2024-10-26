@@ -49,7 +49,6 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
 class Input extends Field
 {
   private $validationRule;
-  private $placehiolder;
   private $title;
 
   /**
@@ -70,13 +69,11 @@ class Input extends Field
    * );
    * ```
    */
-  // public function __construct(Str $name, Record $parent, Str $title, Str $placeholder, DbTypeValidation $validationRule, bool $editable = TRUE)
   public function __construct(Str $name, Record $parent, Str $title, DbTypeValidation $validationRule, bool $editable = TRUE)
   {
     $this->title = $title;
-    // $this->placeholder = $placeholder;
     $this->validationRule = $validationRule;
-    parent::__construct($name, $parent, NULL, $editable);
+    parent::__construct($name, $parent, $editable);
   }
 
   /**
@@ -156,11 +153,11 @@ class Input extends Field
 
   /**
    * @ignore
-   *
-  protected function get_placeholder() : Str
+   */
+  protected function get_placeholder() : ?Str
   {
-    return $this->placeholder;
-  }*/
+    return $this->validationRule->placeholder;
+  }
 
   /**
    * Process provided validation rule.

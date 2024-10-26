@@ -52,6 +52,17 @@ abstract class BusinessModel extends Model implements iList
    * Base constructor for Business Models.
    * @param \ramp\model\business\BusinessModel $children business models.
    */
+  public function __construct() //BusinessModel $children = NULL)
+  {
+      $this->children = (stripos(get_class($this), 'Collection') === (\strlen(get_class($this)) - \strlen('Collection'))) ?
+        new Collection(Str::set(preg_replace('/Collection$/', '', get_class($this)))):
+        new Collection(Str::set(__NAMESPACE__ . '\BusinessModel'));
+  }
+
+  /**
+   * Base constructor for Business Models.
+   * @param \ramp\model\business\BusinessModel $children business models.
+   *
   public function __construct(BusinessModel $children = NULL)
   {
       $this->children = ($children == NULL)?
@@ -59,7 +70,7 @@ abstract class BusinessModel extends Model implements iList
           new Collection(Str::set(preg_replace('/Collection$/', '', get_class($this)))):
           new Collection(Str::set(__NAMESPACE__ . '\BusinessModel')):
         $children;
-  }
+  }*/
 
   /**
    * @ignore

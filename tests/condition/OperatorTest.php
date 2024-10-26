@@ -117,7 +117,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
   }
   #endregion
 
-  #region New Specalist Tests
+  #region New Specialist Tests
   /**
    * Collection of assertions for \ramp\condition\Operator::MEMBER_ACCESS().
    * - assert returns expected specilized 'member access' instance of Operator.

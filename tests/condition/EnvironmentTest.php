@@ -212,6 +212,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
+
   /**
    * Collection of assertions for \ramp\condition\Environment::$lessThan.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'lessThan'
@@ -233,6 +234,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised');
   }
+
   /**
    * Collection of assertions for \ramp\condition\Environment::&greaterThan.
    * - assert throws {@see \ramp\core\PropertyNotSetException} when trying to set 'greaterThan'

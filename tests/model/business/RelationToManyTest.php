@@ -86,13 +86,13 @@ class RelationToManyTest extends \tests\ramp\model\business\RelationTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->postData = PostData::build(array('mock-min-record:a|b|e:property-2' => 'BadValue'));
     $this->expectedChildCountExisting = 4;
     $this->childErrorIndexes = array(1);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $i = 0;
     foreach ($this->testObject as $record) { $i++;
@@ -223,7 +223,7 @@ class RelationToManyTest extends \tests\ramp\model\business\RelationTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\BusinessModel::offsetSet()
    */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $MinAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException('Relatable', new MockBusinessModel, 'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!');
   }
@@ -237,7 +237,7 @@ class RelationToManyTest extends \tests\ramp\model\business\RelationTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     $this->expectException(\InvalidArgumentException::class);
     parent::testOffsetSetOffsetUnset(new MockRecord());

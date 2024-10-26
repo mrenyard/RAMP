@@ -54,6 +54,7 @@ use tests\ramp\mocks\model\MockBusinessModelCollection;
  */
 class BusinessModelTest extends \tests\ramp\model\ModelTest
 {
+  protected $constructorChildren;
   protected $expectedChildCountNew;
   protected $expectedChildCountExisting;
   protected $childErrorIndexes;
@@ -68,11 +69,11 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * Default base constructor assertions \ramp\model\business\BusinessModel.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
+   * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\core\iList}
    * - assert is instance of {@see \IteratorAggregate}
-   * - assert is instance of {@see \Countable}
    * - assert is instance of {@see \ArrayAccess}
-   * - assert is instance of {@see \ramp\model\business\BusinessModel}
+   * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\BusinessModel
    */
   public function testConstruct() : void
@@ -84,27 +85,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\ArrayAccess', $this->testObject);
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
   }
-
-  /**
-   * Base constructor with BusinesModel as child.
-   * -assert foreach returns expected result as passed at construction.
-   * @see \ramp\model\business\BusinessModel
-   */
-  public function testConstructWithChildren()
-  {
-    $children = new MockBusinessModel();
-    $children[0] = new MockBusinessModel();
-    $children[1] = new MockBusinessModel();
-    $children[2] = new MockBusinessModel();
-    $testObject = new MockBusinessModel(NULL, NULL, $children);
-    $i = 0;
-    foreach ($testObject as $child) {
-      $this->assertSame($child, $children[$i++]);
-    }
-  }
   
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new MockBusinessModel();
     $this->testObject[1] = new MockBusinessModel();
@@ -114,7 +97,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->childErrorIndexes = array(1,2);
     $this->postData = new PostData();
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
@@ -188,7 +171,6 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     return ($hyphenate)? Str::hyphenate($type) : $type;
   }
 
-  #region New Specialist Tests
   /**
    * Minimumal BusinessModel initial state.
    * - assert property 'type' is gettable:
@@ -277,14 +259,18 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @see \ramp\model\business\Record::offsetSet()
    * @see \ramp\model\business\Record::offsetUnsSet()
    */
-  public function testOffsetSetTypeCheckException(string $minAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = new AnObject(), ?string $errorMessage = NULL) : void
   {
-    $minAllowedType = ($minAllowedType !== NULL) ? 'ramp\model\business\BusinessModel' : $minAllowedType;
-    $objectOutOfScope = ($objectOutOfScope !== NULL) ? $objectOutOfScope : new AnObject();
-    $this->expectException(\InvalidArgumentException::class);
-    $errorMessage = ($errorMessage !== NULL) ? $errorMessage : $objectOutOfScope . ' NOT instanceof ' . $minAllowedType;
-    $this->expectExceptionMessage($errorMessage);
-    $this->testObject[0] = $objectOutOfScope;
+    $minAllowedType = ($minAllowedType === NULL) ? 'ramp\model\business\BusinessModel' : $minAllowedType;
+    $objectOutOfScope = ($objectOutOfScope === NULL) ? new AnObject() : $objectOutOfScope;
+    $errorMessage = ($errorMessage === NULL) ? "$objectOutOfScope NOT instanceof $minAllowedType" : $errorMessage;
+    try {
+      $this->testObject[0] = $objectOutOfScope;
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertSame($errorMessage, $expected->getMessage());
+      return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised.');
   }
 
   /**
@@ -296,7 +282,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     $o = (isset($o)) ? $o : new MockBusinessModel();
     $i = $this->testObject->count;

@@ -52,7 +52,7 @@ final class PrimaryKey extends RecordComponent
   public function __construct(Record $parent)
   {
     if (!isset(self::$name)) { self::$name = Str::set('primaryKey'); }
-    parent::__construct(self::$name, $parent, NULL, FALSE);
+    parent::__construct(self::$name, $parent, FALSE);
   }
 
   /**

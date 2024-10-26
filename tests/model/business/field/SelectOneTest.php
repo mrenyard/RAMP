@@ -40,18 +40,9 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
 {
   #region Setup
-  protected function preSetup() : void {
-    MockSqlBusinessModelManager::reset();
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
-    $this->dataObject = new \StdClass();
-    $this->record = new MockRecord($this->dataObject);
-  }
-  protected function getTestObject() : RAMPObject {
-    return $this->record->selectOne;
-  }
+  protected function getTestObject() : RAMPObject { return $this->record->selectOne; }
   protected function postSetup() : void {
-    $this->name = Str::set('selectOne');
+    $this->name = $this->record->selectOneName;
     $this->expectedChildCountNew = 3;
   }
   #endregion
@@ -76,7 +67,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 3;
     $this->postData = PostData::build(array(
@@ -84,7 +75,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
     ));
     $this->childErrorIndexes = array(0);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertSame($this->record->selectOneList[0], $this->testObject[0]);
     $this->assertSame($this->record->selectOneList[1], $this->testObject[1]);
@@ -203,7 +194,16 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
-
+  }
+  
+  /**
+   * Offset addition \BadMethodCallException test.
+   * - assert {@see https://www.php.net/manual/class.badmethodcallexception.php \BadMethodCallException} thrown.
+   * @see \ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
+  {
+    parent::testOffsetSetTypeCheckException($minAllowedType, $objectOutOfScope, $errorMessage);
   }
 
   /**
@@ -215,7 +215,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
   }
@@ -235,6 +235,35 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
+  }
+
+  /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert validate method returns void (null) when called.
+   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
+   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
+   * - assert propagates through child/grandchild until reaches one that has recorded errors.
+   * @see \ramp\model\business\BusinessModel::validate()
+   * @see \ramp\model\business\BusinessModel::$hasErrors
+   */
+  public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
+  {
+    parent::testTouchValidityAndErrorMethods($touchCountTest);
+  }
+
+  /**
+   * Error reporting within complex models.
+   * - assert following validate(), the expected iCollection of error messages returned from
+   *    getErrors() are as expected, depending on which level they are called.
+   * - assert any following call to hasErrors returns the same collection of messages as previously.
+   * - assert a single collection containing all errors including children and grandchildren
+   *    of top testObject returned when called on testObject.
+   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
+   * @see \ramp\model\business\BusinessModel::$errors
+   */
+  public function testErrorReportingPropagation($message = 'Selected value NOT an avalible option!') : void
+  {
+    parent::testErrorReportingPropagation($message);
   }
 
   /**
@@ -298,6 +327,16 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   }
 
   /**
+   * Collection of assertions for \ramp\model\business\field\Field::isRequired.
+   * - assert isRequired defaults TRUE when explicitly set at registration.
+   * @see \ramp\model\business\field\Field::isRequired
+   */
+  public function testCheckIsRequiredWhenSet() : void
+  {
+    parent::testCheckIsRequiredWhenSet();
+  }
+
+  /**
    * Collection of assertions for \ramp\model\business\field\Field::label.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
    * - assert property 'label' is gettable.
@@ -317,45 +356,6 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }*/
-
-  /**
-   * Offset addition \BadMethodCallException test.
-   * - assert {@see https://www.php.net/manual/class.badmethodcallexception.php \BadMethodCallException} thrown.
-   * @see \ramp\model\business\Record::offsetSet()
-   */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
-  {
-    parent::testOffsetSetTypeCheckException($MinAllowedType, $objectOutOfScope, $errorMessage);
-  }
-
-  /**
-   * Touch Validity checking and error checking within complex models.
-   * - assert validate method returns void (null) when called.
-   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
-   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
-   * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @see \ramp\model\business\BusinessModel::validate()
-   * @see \ramp\model\business\BusinessModel::$hasErrors
-   */
-  public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
-  {
-    parent::testTouchValidityAndErrorMethods($touchCountTest);
-  }
-
-  /**
-   * Error reporting within complex models.
-   * - assert following validate(), the expected iCollection of error messages returned from
-   *    getErrors() are as expected, depending on which level they are called.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * - assert a single collection containing all errors including children and grandchildren
-   *    of top testObject returned when called on testObject.
-   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @see \ramp\model\business\BusinessModel::$errors
-   */
-  public function testErrorReportingPropagation($message = 'Selected value NOT an avalible option!') : void
-  {
-    parent::testErrorReportingPropagation($message);
-  }
 
   /**
    * InvalidArgumentException reported when 3rd argument on constructor NOT compositeType \ramp\model\business\field\Option.

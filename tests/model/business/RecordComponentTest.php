@@ -111,19 +111,18 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     $this->name = Str::set('aProperty');
   }
   protected function getTestObject() : RAMPObject { return new MockRecordComponent($this->name, $this->record); }
-  protected function postSetup() : void { $this->expectedChildCountNew = 0; }
   #endregion
 
   /**
    * Collection of assertions for \ramp\model\business\RecordComponent::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
-   * - assert is instance of {@see \ramp\core\iList}
-   * - assert is instance of {@see \IteratorAggregate}
-   * - assert is instance of {@see \Countable}
-   * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\RecordComponent
    */
   public function testConstruct() : void
@@ -133,27 +132,6 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
-  {
-    $this->testObject[0] = new MockBusinessModel();
-    $this->testObject[1] = new MockBusinessModel();
-    $this->testObject[1][0] = new MockBusinessModel(TRUE);
-    $this->testObject[2] = new MockBusinessModel(TRUE);
-    $this->expectedChildCountExisting = 3;
-    $this->childErrorIndexes = array(1,2);
-    $this->postData = new PostData();
-  }
-  protected function complexModelIterationTypeCheck()
-  {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
-  }
   #endregion
 
   #region Inherited Tests
@@ -271,9 +249,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\Record::offsetSet()
    */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $MinAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
-    parent::testOffsetSetTypeCheckException($MinAllowedType, $objectOutOfScope, $errorMessage);
+    parent::testOffsetSetTypeCheckException('ramp\model\business\BusinessModel', $objectOutOfScope, $errorMessage);
   }
 
   /**
@@ -285,7 +263,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset($o);
   }
@@ -339,6 +317,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
   #endregion
 
+  #region New Spesalit Tests
   /**
    * Hold reference back to associated parent Record, propertyName and value.
    * - assert record as passed to constructor.
@@ -391,4 +370,5 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     $this->expectExceptionMessage(get_class($this->testObject) . '->' . $name .' is NOT settable');
     $this->testObject->$name = 'PARENTPROPERTYNAME';
   }
+  #region
 }

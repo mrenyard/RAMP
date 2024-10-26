@@ -39,7 +39,7 @@ class MockRelatable extends Relatable
 
   public function __construct($withError = FALSE)
   {
-    parent::__construct(NULL);
+    parent::__construct();
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;

@@ -53,7 +53,7 @@ abstract class Relation extends RecordComponent
   {
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->manager = $MODEL_MANAGER::getInstance();
-    parent::__construct($name, $parent, NULL, $editable);
+    parent::__construct($name, $parent, $editable);
   }
 
   protected function getWith() : ?Relatable  { return $this->with; }

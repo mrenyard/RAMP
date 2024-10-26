@@ -206,7 +206,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
   }
   #endregion
 
-  #region New Specalist Tests
+  #region New Specialist Tests
   /**
    * Collection of assertions for \ramp\condition\PostData::build().
    * - assert throws \DomainException when any $postdata NAME is NOT in correct form

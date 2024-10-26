@@ -142,7 +142,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->assertTrue($this->testObject->isNew);
     $this->testObject->setPropertyValue(Str::set('keyA'), 3);
@@ -160,7 +160,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->childErrorIndexes = array(0);
     $this->assertSame(0, $this->testObject->aProperty->validateCount);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
@@ -306,7 +306,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::offsetSet()
    * @see \ramp\model\business\Record::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject));
   }
@@ -374,7 +374,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\Record::offsetSet()
    */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException(
       'ramp\model\business\RecordComponent',
@@ -460,6 +460,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - assert returned value matches expected result value of 'new' when new.
    * - assert contained dataObject properties match requirements.
    *   - assert 'keyA' property NULL. 
+   * - assert each key 'Field' in 'primaryKey' set to isRequered.
    * @see \ramp\model\business\Record::isNew
    * @see \ramp\model\business\Record::isValid
    * @see \ramp\model\business\Record::isModified
@@ -478,7 +479,10 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($keys[1], $this->testObject->keyB);
     $this->assertSame($keys[2], $this->testObject->keyC);
     $i = 0;
-    foreach($this->testObject as $key) { $this->assertSame($keys[$i++], $key); }
+    foreach($this->testObject as $key) {
+      $this->assertSame($keys[$i++], $key);
+      $this->assertTrue($key->isRequired);
+    }
     $this->assertSame($this->expectedChildCountNew, $i);
     $this->assertObjectHasProperty('keyA', $this->dataObject);
     $this->assertObjectHasProperty('keyB', $this->dataObject);

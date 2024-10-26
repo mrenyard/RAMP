@@ -23,30 +23,6 @@ namespace tests\ramp\model\business\field;
 
 require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
-require_once '/usr/share/php/ramp/core/iOption.class.php';
-require_once '/usr/share/php/ramp/core/OptionList.class.php';
-require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-require_once '/usr/share/php/ramp/condition/Filter.class.php';
-require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Field.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Flag.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
-require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
-require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
-require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
-require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
-
-require_once '/usr/share/php/tests/ramp/mocks/core/MockOption.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockField.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockSelectFrom.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
-
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\Collection;
@@ -54,7 +30,7 @@ use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\field\Option;
 
-use tests\ramp\mocks\core\MockOption;
+use tests\ramp\mocks\model\MockOption;
 use tests\ramp\mocks\model\MockSelectFrom;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
@@ -75,9 +51,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
   }
-  protected function getTestObject() : RAMPObject {
-    return $this->record->aProperty;
-  }
+  protected function getTestObject() : RAMPObject { return $this->record->aProperty; }
   protected function postSetup() : void {
     $this->name = $this->record->propertyName;
     $this->expectedChildCountNew = 0;
@@ -85,14 +59,16 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #endregion
 
   /**
-    * Collection of assertions for \ramp\model\business\field\Field::__construct().
+   * Collection of assertions for \ramp\model\business\field\Field::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
-   * - assert is instance of {@see \IteratorAggregate}
-   * - assert is instance of {@see \Countable}
-   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\field\Field}
+   * - assert is instance of {@see \ramp\core\iList}
+   * - assert is instance of {@see \IteratorAggregate}
+   * - assert is instance of {@see \ArrayAccess}
+   * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\field\Field
    */
   public function testConstruct() : void
@@ -102,7 +78,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   #region Sub model setup
-  protected function populateSubModelTree()
+  protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 0'));
     $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 1'));
@@ -113,7 +89,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     ));
     $this->childErrorIndexes = array(1);
   }
-  protected function complexModelIterationTypeCheck()
+  protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
     $this->assertSame('option business-model', (string)$this->testObject[0]->type);
@@ -235,7 +211,20 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
+  }
 
+  /**
+   * Offset addition minimum type checking test
+   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
+   * @see \ramp\model\business\Record::offsetSet()
+   */
+  public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
+  {
+    parent::testOffsetSetTypeCheckException(
+      '\ramp\core\iOption',
+      new MockBusinessModel(),
+      'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
+    );
   }
 
   /**
@@ -247,7 +236,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
-  public function testOffsetSetOffsetUnset(BusinessModel $o = NULL)
+  public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
   }
@@ -267,6 +256,46 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
+  }
+
+  /**
+   * Touch Validity checking and error checking within complex models.
+   * - assert validate method returns void (null) when called.
+   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
+   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
+   * - assert propagates through child/grandchild until reaches one that has recorded errors.
+   * @see \ramp\model\business\BusinessModel::validate()
+   * @see \ramp\model\business\BusinessModel::$hasErrors
+   */
+  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
+  {
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    if ($touchCountTest) {
+      $this->assertSame(1, $this->testObject->validateCount);
+      $this->assertSame(1, $this->testObject->hasErrorsCount);
+    }
+  }
+  
+  /**
+   * Error reporting within complex models.
+   * - assert following validate(), the expected iCollection of error messages returned from
+   *    getErrors() are as expected, depending on which level they are called.
+   * - assert any following call to hasErrors returns the same collection of messages as previously.
+   * - assert a single collection containing all errors including children and grandchildren
+   *    of top testObject returned when called on testObject.
+   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
+   * @see \ramp\model\business\BusinessModel::$errors
+   */
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
+  {
+    $this->populateSubModelTree();
+    $this->assertNull($this->testObject->validate($this->postData)); // Call
+    $this->assertTrue($this->testObject->hasErrors);
+    $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
+    // TODO:mrenyard: re test one error messaging re implemented;
+    // $this->assertSame($message, (string)$this->testObject->errors[0]);
   }
 
   /**
@@ -313,6 +342,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
   #endregion
 
+  #region New Specialist Tests
   /**
    * Minimumal Field initial 'new' state.
    * - assert property 'id' is gettable:
@@ -321,6 +351,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    *     - lowercase and hypenated colon seperated [class-name]:[key].
    * - assert isEditable matches expected values, some defaults are NOT overridable:
    *   - assert always returns TRUE while state is 'new' (no primaryKey value)
+   * - assert isRequired defaults FALSE (as NOT explicitly set at registration).
    * @see \ramp\model\business\Record::id
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
@@ -329,6 +360,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
+    $this->assertFalse($this->testObject->isRequired);
     // isEdiatable always remains TRUE while state is 'new'
     $this->assertTrue($this->testObject->isEditable);
     // even after requested change.
@@ -357,6 +389,18 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
+   * Collection of assertions for \ramp\model\business\field\Field::isRequired.
+   * - assert isRequired defaults TRUE when explicitly set at registration.
+   * @see \ramp\model\business\field\Field::isRequired
+   */
+  public function testCheckIsRequiredWhenSet() : void
+  {
+    $testRecord = new MockRecord($this->dataObject, TRUE);
+    $fieldName = (string)$this->name;
+    $this->assertTrue($testRecord->$fieldName->isRequired);
+  }
+
+  /**
    * Collection of assertions for \ramp\model\business\field\Field::label.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'label'
    * - assert property 'label' is gettable.
@@ -376,65 +420,5 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }*/
-
-  /**
-   * Offset addition minimum type checking test
-   * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
-   * @see \ramp\model\business\Record::offsetSet()
-   */
-  public function testOffsetSetTypeCheckException(string $MinAllowedType = NULL, RAMPObject $objectOutOfScope = NULL, string $errorMessage = NULL)
-  {
-    try {
-      parent::testOffsetSetTypeCheckException(
-        '\ramp\core\iOption',
-        new MockBusinessModel(),
-        'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
-      );
-    } catch (\InvalidArgumentException $expected) { }
-    parent::testOffsetSetTypeCheckException(
-      'ramp\model\business\BusinessModel',
-      new MockOption(0, Str::set('DESCRIPTION')),
-      'tests\ramp\mocks\core\MockOption NOT instanceof ramp\model\business\BusinessModel'
-    );
-  }
-
-  /**
-   * Touch Validity checking and error checking within complex models.
-   * - assert validate method returns void (null) when called.
-   * - assert validate method is propagated through (touched on) testsObject and all of its children and grandchildren.
-   * - assert returns True when any child/grandchild has recorded (a simulated) errors.
-   * - assert propagates through child/grandchild until reaches one that has recorded errors.
-   * @see \ramp\model\business\BusinessModel::validate()
-   * @see \ramp\model\business\BusinessModel::$hasErrors
-   */
-  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
-  {
-    $this->populateSubModelTree();
-    $this->assertNull($this->testObject->validate($this->postData)); // Call
-    $this->assertTrue($this->testObject->hasErrors);
-    if ($touchCountTest) {
-      $this->assertSame(1, $this->testObject->validateCount);
-      $this->assertSame(1, $this->testObject->hasErrorsCount);
-    }
-  }
-
-  /**
-   * Error reporting within complex models.
-   * - assert following validate(), the expected iCollection of error messages returned from
-   *    getErrors() are as expected, depending on which level they are called.
-   * - assert any following call to hasErrors returns the same collection of messages as previously.
-   * - assert a single collection containing all errors including children and grandchildren
-   *    of top testObject returned when called on testObject.
-   * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
-   * @see \ramp\model\business\BusinessModel::$errors
-   */
-  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
-  {
-    $this->populateSubModelTree();
-    $this->assertNull($this->testObject->validate($this->postData)); // Call
-    $this->assertTrue($this->testObject->hasErrors);
-    $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
-    // TODO:mrenyard: re test one error messaging re implemented;
-    // $this->assertSame($message, (string)$this->testObject->errors[0]);
-  }
+  #endregion
 }

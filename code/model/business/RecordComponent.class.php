@@ -50,12 +50,13 @@ abstract class RecordComponent extends BusinessModel
    * @param \ramp\model\business\Record $parent Record parent of *this* RecordComponent.
    * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
    */
-  public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
+  // public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
+  public function __construct(Str $name, Record $parent, bool $editable = NULL)
   {
     $this->name = $name;
     $this->parent = $parent;
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct($children);
+    parent::__construct(); //$children);
   }
 
   /**
