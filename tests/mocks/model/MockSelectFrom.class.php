@@ -37,9 +37,9 @@ class MockSelectFrom extends SelectFrom
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, OptionList $options)
+  public function __construct(Str $name, Record $parent, Str $title, OptionList $options)
   {
-    parent::__construct($name, $parent, $options);
+    parent::__construct($name, $parent, $title, $options);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }

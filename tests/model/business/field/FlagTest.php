@@ -45,6 +45,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
   protected function getTestObject() : RAMPObject { return $this->record->flag; }
   protected function postSetup() : void {
     $this->name = $this->record->flagName;
+    $this->title = $this->record->title;
     $this->expectedChildCountNew = 0;
   }
   #endregion

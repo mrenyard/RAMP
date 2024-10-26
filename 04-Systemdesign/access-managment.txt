@@ -51,34 +51,46 @@ AdministratorAccount
 DATABASE_TABLE: ResourceAccess
 ------------------------------
 URN                 = person
-ownerAccess         = NO
-ownerEdit           = NO
-groupLevelAccess    = 4
-groupLevelEdit      = 5
-ownerAffliateAccess = YES
-ownerAffilateEdit   = NO
-allAccess           = NO
-allEdit             = NO
+ownerAccess         = NO       0
+ownerEdit           = NO       0
+groupLevelAccess    = 4        4
+groupLevelEdit      = 5        5
+ownerAffliateAccess = YES      1
+ownerAffilateEdit   = NO       0
+allAccess           = NO       0
+allEdit             = NO       0
 code                = 00451000
 
 URN                 = person:~
-ownerAccess         = YES
-ownerEdit           = YES
-groupLevelAccess    = 4
-groupLevelEdit      = 6
-ownerAffliateAccess = YES
-ownerAffilateEdit   = YES
-allAccess           = NO
-allEdit             = NO
+ownerAccess         = YES      1
+ownerEdit           = YES      1
+groupLevelAccess    = 4        4
+groupLevelEdit      = 6        6
+ownerAffliateAccess = YES      1
+ownerAffilateEdit   = YES      1
+allAccess           = NO       0
+allEdit             = NO       0
 code                = 11461100
 
 URN                 = craft:new
-ownerAccess         = YES
-ownerEdit           = YES
-groupLevelAccess    = 2
-groupLevelEdit      = 2
-ownerAffliateAccess = YES
-ownerAffilateEdit   = YES
-allAccess           = NO
-allEdit             = NO
+ownerAccess         = YES      1
+ownerEdit           = YES      1
+groupLevelAccess    = 2        2
+groupLevelEdit      = 2        2
+ownerAffliateAccess = YES      1
+ownerAffilateEdit   = YES      1
+allAccess           = NO       0
+allEdit             = NO       0
 code                = 11221100
+
+URN                 = craft:~
+ownerAccess         = YES      1
+ownerEdit           = NO       0
+groupLevelAccess    = 2        2
+groupLevelEdit      = 4        4
+ownerAffliateAccess = YES      1
+ownerAffilateEdit   = NO       0
+allAccess           = NO       0
+allEdit             = NO       0
+code                = 1024100
+

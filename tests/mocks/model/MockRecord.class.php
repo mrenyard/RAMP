@@ -62,6 +62,7 @@ class MockRecord extends Record
   public $selectOneName;
   public $selectManyList;
   public $selectManyName;
+  public $title;
 
   public function __construct(\stdClass $dataObject = null, bool $setAllFieldsRequiered = FALSE)
   {
@@ -71,6 +72,7 @@ class MockRecord extends Record
     $this->relationGammaWithRecordName = Str::set('MockMinRecord');
     $this->relationGammaWithPropertyName = Str::set('relationDelta');
     $this->selectDescriptionOne = Str::set('DESCRIPTION ONE');
+    $this->title = Str::set('Expanded description of expected field content.');
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -92,7 +94,7 @@ class MockRecord extends Record
   protected function get_keyA() : ?RecordComponent
   {
     if ($this->register('keyA', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -100,7 +102,7 @@ class MockRecord extends Record
   protected function get_keyB() : ?RecordComponent
   {
     if ($this->register('keyB', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -108,7 +110,7 @@ class MockRecord extends Record
   protected function get_keyC() : ?RecordComponent
   {
     if ($this->register('keyC', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -117,7 +119,8 @@ class MockRecord extends Record
   {
     if ($this->register('aProperty', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->propertyName = $this->registeredName;
-      $this->initiate(new MockField($this->propertyName, $this));
+      $this->initiate(new MockField(
+        $this->propertyName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -126,8 +129,8 @@ class MockRecord extends Record
   {
     if ($this->register('input', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->inputName = $this->registeredName;
-      $this->initiate(new MockInput($this->registeredName, $this,
-        Str::set('Expanded description of expected field content.'),
+      $this->initiate(new MockInput(
+        $this->registeredName, $this, $this->title,
         new Text(
           Str::set('Error MESSAGE BadValue Submited!'),
           new MockValidationRule(
@@ -142,7 +145,8 @@ class MockRecord extends Record
   {
     if ($this->register('flag', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->flagName = $this->registeredName;
-      $this->initiate(new MockFlag($this->registeredName, $this));
+      $this->initiate(new MockFlag(
+        $this->registeredName, $this, $this->title));
     }
     return $this->registered;
   }
@@ -155,7 +159,10 @@ class MockRecord extends Record
       $this->selectFromList->add(new MockOption(0, Str::set('Please choose:')));
       $this->selectFromList->add(new MockOption(1, $this->selectDescriptionOne));
       $this->selectFromList->add(new MockOption(2, Str::set('DESCRIPTION TWO')));  
-      $this->initiate(new MockSelectFrom($this->registeredName, $this, $this->selectFromList));
+      $this->initiate(new MockSelectFrom($this->registeredName, $this,
+        Str::set('Expanded description of expected field content.'),
+        $this->selectFromList
+      ));
     }
     return $this->registered; 
   }
@@ -168,7 +175,10 @@ class MockRecord extends Record
       $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
       $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
-      $this->initiate(new SelectOne($this->registeredName, $this, $this->selectOneList));
+      $this->initiate(new SelectOne($this->registeredName, $this,
+        Str::set('Expanded description of expected field content.'),
+        $this->selectOneList
+      ));
     }
     return $this->registered; 
   }
@@ -182,7 +192,10 @@ class MockRecord extends Record
       $this->selectManyList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
-      $this->initiate(new SelectMany($this->registeredName, $this, $this->selectManyList));
+      $this->initiate(new SelectMany($this->registeredName, $this,
+        Str::set('Expanded description of expected field content.'),
+        $this->selectManyList
+      ));
     }
     return $this->registered; 
   }

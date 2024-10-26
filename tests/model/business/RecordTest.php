@@ -308,7 +308,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    */
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
-    parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject));
+    parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject, Str::set('title')));
   }
 
   /**
@@ -417,8 +417,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::PROPERTY, TRUE)); // First call
     $this->assertTrue($testObject->doRegister('alpha', RecordComponentType::PROPERTY, TRUE)); // Second call
     $this->assertSame('alpha', (string)$testObject->registeredName);
-    $expectedAlphaField = new MockField($testObject->registeredName, $testObject);
-    $testObject->doInitiate($expectedAlphaField); // Initiate
+    $expectedAlphaField = new MockField($testObject->registeredName, $testObject, Str::set('title'));
+    $testObject->doInitiate($expectedAlphaField); // Initiate'
     $actualField = $testObject->registered;
     $this->assertSame($expectedAlphaField, $actualField);
     $this->assertFalse($testObject->doRegister('alpha', RecordComponentType::PROPERTY)); // Third call
@@ -428,14 +428,14 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($testObject->doRegister('beta', RecordComponentType::KEY)); // First call (bata)
     $this->assertTrue($testObject->isRequiredField('beta'));
     $this->assertNotSame($expectedAlphaField, $testObject->registered);
-    $expectedBetaField = new MockField(Str::set('beta'), $testObject);
+    $expectedBetaField = new MockField(Str::set('beta'), $testObject, Str::set('title'));
     try {
       $testObject->doInitiate($expectedBetaField); // BAD initiate without 2x register().
     } catch (\BadMethodCallException $expected) {
       $this->assertTrue($testObject->doRegister('beta', RecordComponentType::KEY)); // Second call (bata)
       $this->assertSame('Method call MUST be proceded by register() (x2) as documented!', $expected->getMessage());
       try {
-        $testObject->doInitiate(new MockField($testObject->registeredName, new MockRecord())); // BAD parent - NOT $testRecord.
+        $testObject->doInitiate(new MockField($testObject->registeredName, new MockRecord(), Str::set('title'))); // BAD parent - NOT $testRecord.
       } catch (\InvalidArgumentException $expected) {
         $this->assertSame('Invalid RecordComponent argument (1), $parent does NOT match this Record.', $expected->getMessage());
         return;

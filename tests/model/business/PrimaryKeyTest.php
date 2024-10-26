@@ -276,7 +276,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    */
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
-    parent::testOffsetSetOffsetUnset(new MockField(Str::set('KeyA'), $this->record));
+    parent::testOffsetSetOffsetUnset(new MockField(Str::set('KeyA'), $this->record, $this->record->title));
   }
 
   /**

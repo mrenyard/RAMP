@@ -42,16 +42,10 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class InputTest extends \tests\ramp\model\business\field\FieldTest
 {
   #region Setup
-  // protected function preSetup() : void {
-  //   MockSqlBusinessModelManager::reset();
-  //   \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-  //   \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
-  //   $this->dataObject = new \StdClass();
-  //   $this->record = new MockRecord($this->dataObject);
-  // }
   protected function getTestObject() : RAMPObject { return $this->record->input; }
   protected function postSetup() : void {
     $this->name = $this->record->inputName;
+    $this->title = $this->record->title;
     $this->expectedChildCountNew = 0;
   }
   #endregion
@@ -373,6 +367,13 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   #endregion
 
   #region New Specialist Tests
-  
+  /**
+   * TODO:mrenyard: Add the other attributes (pattern, maxlength, min, max. hint, placeholder).
+   *
+  public function testInputAttributeAccess()
+  {
+    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject->title);
+    // $this->assertEquals('Expanded description of expected field content.', (string)$this->testObject->title);
+  }*/
   #endregion
 }

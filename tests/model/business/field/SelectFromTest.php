@@ -47,6 +47,7 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
   protected function getTestObject() : RAMPObject { return $this->record->selectFrom; }
   protected function postSetup() : void {
     $this->name = $this->record->selectFromName;
+    $this->title = $this->record->title;
     $this->expectedChildCountNew = 3;
   }
   #endregion
@@ -381,6 +382,6 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
     $options = new OptionList();
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('OptionList $options compositeType MUST be \ramp\model\business\field\Option');
-    $testObject = new MockSelectFrom(Str::set('badSelectFrom'), $this->record, $options);
+    $testObject = new MockSelectFrom(Str::set('badSelectFrom'), $this->record, Str::set('title'), $options);
   }
 }

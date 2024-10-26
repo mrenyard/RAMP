@@ -43,10 +43,11 @@ class Flag extends Field
    * Creates boolean field related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
+   * @param \ramp\core\Str $title An expanded description of expected field content.
    */
-  public function __construct(Str $name, Record $parent)
+  public function __construct(Str $name, Record $parent, Str $title)
   {
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, $title);
   }
 
   /**

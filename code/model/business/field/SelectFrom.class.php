@@ -46,13 +46,13 @@ abstract class SelectFrom extends Field
    * Base constructor for Field related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
+   * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\core\OptionList $options Collection of field\Options, either suggestions or to select from.
    * @throws \InvalidArgumentException When OptionList CastableType is NOT field\Option or highter.
    */
-  public function __construct(Str $name, Record $parent, OptionList $options, Str $title = NULL)
-  // public function __construct(Str $name, Record $parent, OptionList $options)
+  public function __construct(Str $name, Record $parent, Str $title, OptionList $options)
   {
-    parent::__construct($name ,$parent);
+    parent::__construct($name ,$parent, $title);
     if ($options != null) {
       if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
         throw new \InvalidArgumentException('OptionList $options compositeType MUST be \ramp\model\business\field\Option'); 

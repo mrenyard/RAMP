@@ -21,6 +21,7 @@
  */
 namespace ramp\model\business;
 
+use ramp\core\Str;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
@@ -34,7 +35,7 @@ class MockRecord extends Record
   protected function get_propertyA() : ?RecordComponent
   {
     if ($this->register('propertyA', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, Str::set()));
     }
     return $this->registered;
   }
@@ -42,7 +43,7 @@ class MockRecord extends Record
   protected function get_propertyB()
   {
     if ($this->register('propertyB', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, Str::set()));
     }
     return $this->registered;
   }
@@ -50,7 +51,7 @@ class MockRecord extends Record
   protected function get_propertyC() : ?RecordComponent
   {
     if ($this->register('propertyC', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, Str::set()));
     }
     return $this->registered;
   }

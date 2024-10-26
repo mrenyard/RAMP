@@ -75,7 +75,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   {
     $this->testObject->add(new MockMinRecord());
     $record2 = new MockMinRecord();
-    $record2[0] = new MockField(Str::set('field'), $record2);
+    $record2[0] = new MockField(Str::set('field'), $record2, Str::set('title'));
     $this->testObject->add($record2);
     $this->testObject->add(new MockMinRecord(NULL, TRUE));
     $this->expectedChildCountExisting = 3;

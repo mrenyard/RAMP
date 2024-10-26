@@ -21,6 +21,7 @@
  */
 namespace tests\ramp\mocks\model;
 
+use ramp\core\Str;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
@@ -39,6 +40,7 @@ class MockMinRecord extends Record
   public $errorsTouchCount;
   public $propertyName;
   private $withError;
+  private $title;
 
   public function __construct($dataObject = NULL, $withError = FALSE)
   {
@@ -46,6 +48,7 @@ class MockMinRecord extends Record
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;
     $this->withError = $withError;
+    $this->title = Str::set('Expanded description of expected field content.');
     parent::__construct($dataObject);
   }
 
@@ -64,7 +67,7 @@ class MockMinRecord extends Record
   protected function get_key1() : ?RecordComponent
   {
     if ($this->register('key1', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -72,7 +75,7 @@ class MockMinRecord extends Record
   protected function get_key2() : ?RecordComponent
   {
     if ($this->register('key2', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -80,7 +83,7 @@ class MockMinRecord extends Record
   protected function get_key3() : ?RecordComponent
   {
     if ($this->register('key3', RecordComponentType::KEY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -88,7 +91,7 @@ class MockMinRecord extends Record
   protected function get_property1() : ?RecordComponent
   {
     if ($this->register('property1', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title));
     }
     return $this->registered; 
   }
@@ -96,7 +99,7 @@ class MockMinRecord extends Record
   protected function get_property2() : ?RecordComponent
   {
     if ($this->register('property2', RecordComponentType::PROPERTY)) {
-      $this->initiate(new MockField($this->registeredName, $this, $this->withError));
+      $this->initiate(new MockField($this->registeredName, $this, $this->title, $this->withError));
     }
     return $this->registered; 
   }

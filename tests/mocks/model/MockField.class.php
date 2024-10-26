@@ -38,9 +38,9 @@ class MockField extends Field
   public $errorsTouchCount;
   private $withError;
 
-  public function __construct(Str $name, Record $parent, $withError = FALSE)
+  public function __construct(Str $name, Record $parent, Str $title, $withError = FALSE)
   {
-    parent::__construct($name, $parent);
+    parent::__construct($name, $parent, $title);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
     $this->errorsTouchCount = 0;

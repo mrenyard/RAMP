@@ -107,7 +107,11 @@ final class LoginAccount extends Record
   protected function get_loginAccountType() : ?RecordComponent
   {
     if ($this->register('loginAccountType', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new field\SelectOne($this->registeredName, $this, new LoginAccountType()));
+      $this->initiate(new field\SelectOne(
+        $this->registeredName, $this,
+        Str::set('Level of access afforded to user related to their role'),
+        new LoginAccountType()
+      ));
     }
     return $this->registered; 
   }

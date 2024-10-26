@@ -45,24 +45,25 @@ use ramp\model\business\validation\FailedValidationException;
  * - {@see \ramp\model\business\Record Record}
  * 
  * @property-read \svetle\core\Str $label Form field label.
+ * @property-read \svetle\core\Str $title Title text representing advisory information related this form control.
  * @property bool $isRequired Check for property is a required field value.
  */
 abstract class Field extends RecordComponent
 {
+  private $title;
   private $errorCollection;
 
   /**
    * Base constructor for Field related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property
-   * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
+   * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param bool $editable Optional set preferance for editability.
-   * @throws \InvalidArgumentException When $children OptionList CastableType is NOT field\Option or highter.
    */
-  // public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = TRUE)
-  public function __construct(Str $name, Record $parent, bool $editable = TRUE)
+  public function __construct(Str $name, Record $parent, Str $title, bool $editable = TRUE)
+  // public function __construct(Str $name, Record $parent, bool $editable = TRUE)
   {
-    // parent::__construct($name, $parent, $children, $editable);
+    $this->title = $title;
     parent::__construct($name, $parent, $editable);
   }
 
@@ -88,6 +89,14 @@ abstract class Field extends RecordComponent
       );
     }
     parent::offsetSet($offset, $object);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_title() : Str
+  {
+    return $this->title;
   }
 
   /**
