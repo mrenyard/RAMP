@@ -21,27 +21,29 @@
  */
 namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/MockValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FirstValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/SecondValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/ThirdValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/PlaceholderValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/PatternValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MaxlengthValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MinMaxStepValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/FailOnBadValidationRule.class.php';
 
-use ramp\core\Str;
 use ramp\core\RAMPObject;
+use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
-use tests\ramp\model\business\validation\MockValidationRule;
-use tests\ramp\model\business\validation\FirstValidationRule;
-use tests\ramp\model\business\validation\SecondValidationRule;
-use tests\ramp\model\business\validation\ThirdValidationRule;
-use tests\ramp\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockValidationRule;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\validation\ValidationRule.
@@ -49,21 +51,120 @@ use tests\ramp\model\business\validation\FailOnBadValidationRule;
  * COLLABORATORS
  * - {@see \tests\ramp\validation\MockValidationRule}
  */
-class ValidationRuleTest extends \PHPUnit\Framework\TestCase
+class ValidationRuleTest extends \tests\ramp\core\ObjectTest
 {
+  protected $maxlength;
+  protected $specialAppendHint;
+  protected $hint5;
+  protected $hint4;
+  protected $hint3;
+  protected $hint2;
+  protected $hint1;
+
+  #region Setup
+  protected function preSetup() : void
+  {
+    $this->maxlength = 4;
+    $this->hint6 = Str::set('anything NOT BadValue');
+    $this->hint5 = Str::set('under 4 chars');
+    $this->hint4 = Str::set('hinted AAAA');
+    $this->hint3 = Str::set('maxlength');
+    $this->hint2 = Str::set('not BAD');
+    $this->hint1 = Str::set('within min, max and step');
+  }
+  protected function getTestObject() : RAMPObject {
+    return new MockValidationRule($this->hint6,
+      new PlaceholderValidationRule($this->hint5,
+        new PatternValidationRule($this->hint4,
+          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+            new FailOnBadValidationRule($this->hint2,
+              new MinMaxStepValidationRule($this->hint1)
+            )
+          )
+        )
+      )
+    );
+  }
+  #endregion
+
+  #region Sub process template
+  protected function doAttributeValueConfirmation()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
+      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
+      (string)$this->testObject->hint
+    );
+    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
+    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
+    $this->assertSame($this->maxlength, $this->testObject->maxlength);
+    $this->assertSame(MockValidationRule::$patternValue, $this->testObject->pattern);
+    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
+    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
+    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
+  }
+  #endregion
+  
   /**
    * Collection of assertions for ramp\validation\ValidationRule.
    * - assert is instance of {@see \ramp\core\RAMPObject}
-   * - assert is instance of {@see \ramp\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * @see \ramp\validation\ValidationRule
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $testObject = new MockValidationRule(Str::set('formate error message/hint'));
-    $this->assertInstanceOf('ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $testObject);
+    parent::testConstruct();
+    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+  #endregion
+  
+  #region New Specialist Tests
   /**
    * Collection of assertions for ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
@@ -71,96 +172,24 @@ class ValidationRuleTest extends \PHPUnit\Framework\TestCase
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
-  public function testProcess()
+  public function testProcess($badValue = 'BAD', $goodValue = 'GOOD', $failPoint = 5, $ruleCount = 6,
+    $failMessage = 'FailOnBadValidationRule has been given the value BAD'
+  ) : void
   {
     MockValidationRule::reset();
-    $testObject = new MockValidationRule(Str::set('formate error message/hint'));
-    $testObject->process('GOOD');
-    $this->assertSame(1, MockValidationRule::$testCallCount);
-    MockValidationRule::reset();
-    $testObject = new MockValidationRule(
-      Str::set('formate error message/hint'),
-      new MockValidationRule(
-        Str::set('formate error message/hint'),
-        new MockValidationRule(
-          Str::set('formate error message/hint'),
-          new MockValidationRule(
-            Str::set('formate error message/hint'),
-            new MockValidationRule(
-              Str::set('formate error message/hint')
-            )
-          )
-        )
-      )
-    );
-    $testObject->process('GOOD');
-    $this->assertSame(5, MockValidationRule::$testCallCount);
-    FirstValidationRule::reset();
-    SecondValidationRule::reset();
-    ThirdValidationRule::reset();
-    $testObject = new FirstValidationRule(
-      Str::set('formate error message/hint'),
-      new SecondValidationRule(
-        Str::set('formate error message/hint'),
-        new ThirdValidationRule(
-          Str::set('formate error message/hint')
-        )
-      )
-    );
-    $testObject->process('GOOD');
-    $this->assertSame(1, FirstValidationRule::$testCallCount);
-    $this->assertSame(1, SecondValidationRule::$testCallCount);
-    $this->assertSame(1, ThirdValidationRule::$testCallCount);
-    FirstValidationRule::reset();
-    SecondValidationRule::reset();
-    ThirdValidationRule::reset();
-    FailOnBadValidationRule::reset();
-    $testObject = new FirstValidationRule(
-      Str::set('formate error message/hint'),
-      new SecondValidationRule(
-        Str::set('formate error message/hint'),
-        new ThirdValidationRule(
-          Str::set('formate error message/hint'),
-          new FailOnBadValidationRule(
-            Str::set('formate error message/hint')
-          )
-        )
-      )
-    );
     try {
-      $testObject->process('BAD');
+      $this->testObject->process($badValue);
     } catch (FailedValidationException $expected) {
-      // $this->assertSame(
-      //   'formate error message/hint', $expected->getMessage()
-      // );
-      $this->assertEquals('', $expected->getMessage());
-      $this->assertSame(1, FirstValidationRule::$testCallCount);
-      $this->assertSame(1, SecondValidationRule::$testCallCount);
-      $this->assertSame(1, ThirdValidationRule::$testCallCount);
-      $this->assertSame(1, FailOnBadValidationRule::$testCallCount);
-      FirstValidationRule::reset();
-      SecondValidationRule::reset();
-      ThirdValidationRule::reset();
-      FailOnBadValidationRule::reset();
-      $testObject = new FirstValidationRule(
-        Str::set('formate error message/hint'),
-        new SecondValidationRule(
-          Str::set('formate error message/hint'),
-          new ThirdValidationRule(
-            Str::set('formate error message/hint'),
-            new FailOnBadValidationRule(
-              Str::set('formate error message/hint')
-            )
-          )
-        )
-      );
-      $testObject->process('GOOD');
-      $this->assertSame(1, FirstValidationRule::$testCallCount);
-      $this->assertSame(1, SecondValidationRule::$testCallCount);
-      $this->assertSame(1, ThirdValidationRule::$testCallCount);
-      $this->assertSame(1, FailOnBadValidationRule::$testCallCount);
+      $this->assertEquals($failMessage, $expected->getMessage());
+      $this->assertSame($failPoint, MockValidationRule::$testCallCount);
+      $this->doAttributeValueConfirmation();
+
+      MockValidationRule::reset();
+      $this->testObject->process($goodValue);
+      $this->assertSame($ruleCount, MockValidationRule::$testCallCount);
       return;
-    }
+    }      
     $this->fail('An expected \FailedValidationException has NOT been raised.');
   }
+  #endregion
 }

@@ -36,24 +36,27 @@ class Char extends DbTypeValidation
    * Default constructor for a validation rule of database type Char.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
-   * $myValidationRule = new validation\dbtype\Char(
-   *   20,
-   *   new validation\SecondValidationRule(
-   *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
+   * $myRule = new dbtype\Char(
+   *   20, Str::set('Format error message/hint'),
+   *   new SecondValidationRule(
+   *     Str::set('Format error message/hint'),
+   *     new ThirdValiationRule(
+   *       Str::set('Format error message/hint'),
+   *       new ForthValidationRule(
+   *         Str::set('Format error message/hint')
+   *       )
    *     )
-   *   ),
-   *   Str::set('My error message HERE!')
+   *   )
    * );
    * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful prior to $length.
-   * @param int $length Exact number of characters expected
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param int $length Exact number of characters expected.
+   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added.
    */
-  public function __construct(Str $errorMessage, int $length, ValidationRule $subRule)
+  public function __construct(Str $errorHint, int $length, ValidationRule $subRule)
   {
     $this->length = $length;
-    parent::__construct(Str::set($this->length)->prepend($errorMessage), $subRule);
+    parent::__construct(Str::set($this->length)->prepend($errorHint), $subRule);
   }
 
   /**
@@ -70,7 +73,7 @@ class Char extends DbTypeValidation
    */
   protected function get_maxlength() : ?int
   {
-    return (parent::get_maxlength() == NULL) ? NULL : $this->length;
+    return $this->length;
   }
 
   /**

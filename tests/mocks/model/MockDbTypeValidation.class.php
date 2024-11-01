@@ -19,29 +19,27 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\validation;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
-use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\dbtype\DbTypeValidation;
 
 /**
- * Concreate implementation of \ramp\validation\ValidationRule for testing against.
+ * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
  * .
  */
-class FirstValidationRule extends ValidationRule
+class MockDbTypeValidation extends DbTypeValidation
 {
-  public static $testCallCount = 0;
-
-  public static function reset()
-  {
-    self::$testCallCount = 0;
-  }
-
   /**
-   * {@inheritdoc }
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
    */
   protected function test($value) : void
   {
-    self::$testCallCount++;
+    MockValidationRule::$testCallCount++;
+    if ($value === 'BadValue') {
+      throw new FailedValidationException('MockDbValidationRule has been given the value BadValue');
+    }
   }
 }

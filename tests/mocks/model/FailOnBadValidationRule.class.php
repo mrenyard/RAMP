@@ -19,29 +19,27 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\validation;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
-use ramp\model\business\validation\ValidationRule;
+use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Concreate implementation of \ramp\validation\model\business\ValidationRule for testing against.
+ * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class MockValidationRule extends ValidationRule
+class FailOnBadValidationRule extends MockValidationRule
 {
-  public static $testCallCount = 0;
-
-  public static function reset()
-  {
-    self::$testCallCount = 0;
-  }
+  protected function get_inputType() : Str { return SELF::$inputTypeValue; }
 
   /**
-   * {@inheritdoc }
+   * {@inheritdoc}
    */
   protected function test($value) : void
   {
     self::$testCallCount++;
+    if ($value === 'BAD') {
+      throw new FailedValidationException('FailOnBadValidationRule has been given the value BAD');
+    }
   }
 }

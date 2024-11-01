@@ -41,14 +41,14 @@ class DecimalPointNumber extends DbTypeValidation
    * Default constructor for a validation rule of database type DecimalPointNumber.
    * ```php
    * $myValidationRule = new validation\dbtype\DecimalPointNumber(
-   *   Str::set('My error message HERE!'), 2, 5
+   *   Str::set(' place decimal point number.'), 2, 5
    * );
    * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $point Number of places from decimal point expected
    * @param int $precision Number of digets including decimal places that are storable places from decimal point expected
    */
-  public function __construct(Str $errorMessage, int $point, int $precision = NULL)
+  public function __construct(Str $errorHint, int $point, int $precision = NULL)
   {
     if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
     $this->precision = ($precision) ? $precision : 65; 
@@ -69,7 +69,7 @@ class DecimalPointNumber extends DbTypeValidation
       $step = $step . '0';
     }
     $this->step = $step;
-    parent::__construct(Str::set($point)->append(Str::SPACE())->append($errorMessage), NULL);
+    parent::__construct(Str::set($point)->append(Str::SPACE())->append($errorHint), NULL);
   }
 
   /**

@@ -21,81 +21,120 @@
  */
 namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/ValidationRuleTest.php';
+
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/MockDbTypeValidation.class.php';
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeValidation.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
-use tests\ramp\model\business\validation\MockDbTypeValidation;
-use tests\ramp\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockDbTypeValidation;
+use tests\ramp\mocks\model\MockValidationRule;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\DbTypeValidation.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\validation\MockValidationRule}
+ * - {@see \tests\ramp\validation\MockDbValidationRule}
  */
-class DbTypeValidationTest extends \PHPUnit\Framework\TestCase
+class DbTypeValidationTest extends \tests\ramp\model\business\validation\ValidationRuleTest
 {
-  private $testObject;
-  private $errorMessage;
-
-  /**
-   * Set-up.
-   */
-  public function setUp() : void
-  {
-    $this->errorMessage = Str::set('database error message HERE!');
-    $this->testObject = new MockDbTypeValidation(
-      $this->errorMessage,
-      new FailOnBadValidationRule(Str::set('extra error message HERE!'))
+  #region Setup
+  protected function getTestObject() : RAMPObject {
+    return new MockDbTypeValidation($this->hint6,
+      new PlaceholderValidationRule($this->hint5,
+        new PatternValidationRule($this->hint4,
+          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+            new FailOnBadValidationRule($this->hint2,
+              new MinMaxStepValidationRule($this->hint1)
+            )
+          )
+        )
+      )
     );
-    FailOnBadValidationRule::reset();
-    MockDbTypeValidation::reset();
   }
+  #endregion
 
   /**
    * Collection of assertions for ramp\validation\DbTypeValidation::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
-   * - assert is instance of {@see \ramp\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
+   * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\dbtype\DbTypeValidation}
    * @see \ramp\validation\DbTypeValidationTest
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
-   * Collection of assertions for ramp\model\business\validation\DbTypeValidationTest::process() and test().
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
    * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see \ramp\model\business\validation\DbTypeValidationTest::test()
-   * @see \ramp\model\business\validation\DbTypeValidationTest::process()
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
    */
-  public function testProcess()
+  public function testProcess(
+    $badValue = 'BAD', $goodValue = 'GOOD', $failPoint = 5, $ruleCount = 6,
+    $failMessage = 'FailOnBadValidationRule has been given the value BAD'
+  ) : void
   {
-    $this->assertNull($this->testObject->process('GOOD'));
-    $this->assertSame(1, MockDbTypeValidation::$testCallCount);
-    $this->assertSame(1, FailOnBadValidationRule::$testCallCount);
-    try {
-      $this->testObject->process('BAD');
-    } catch (FailedValidationException $expected) {
-      // $this->assertSame((string)$this->errorMessage, $expected->getMessage());
-      $this->assertEquals('', $expected->getMessage());
-      return;
-    }
-    $this->fail('An expected \FailedValidationException has NOT been raised.');
+    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
   }
+  #endregion
 }

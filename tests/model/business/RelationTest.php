@@ -98,7 +98,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertInstanceOf('\ramp\model\business\Relation', $this->testObject);
   }
   
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->postData = new PostData();

@@ -20,7 +20,6 @@
  * @version 0.0.9;
  */
 namespace tests\ramp\model\business;
-//tests\ramp\model\business\BusinessModelManagerTest
 
 require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
 
@@ -100,6 +99,4 @@ class BusinessModelManagerTest extends \tests\ramp\core\ObjectTest
     parent::testToString();
   }
   #endregion
-
-
 }

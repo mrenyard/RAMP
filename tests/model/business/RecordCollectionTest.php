@@ -70,7 +70,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\model\business\RecordCollection', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->testObject->add(new MockMinRecord());

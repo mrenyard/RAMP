@@ -21,76 +21,147 @@
  */
 namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/DbTypeValidationTest.php';
+
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/Date.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeDate.class.php';
 
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\Date;
 
-use tests\ramp\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockDbTypeDate;
+use tests\ramp\mocks\model\MockValidationRule;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\Date.
  */
-class DateTest extends \PHPUnit\Framework\TestCase
+class DateTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValidationTest
 {
-  private $testObject;
-  private $errorMessage;
-
-  /**
-   * Setup
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    $this->maxLength = 10;
-    $this->errorMessage = Str::set('valid date formated yyyy-mm-dd');
-    $this->testObject = new Date(
-      $this->errorMessage,
-      new FailOnBadValidationRule(
-        Str::set('extra error message HERE!')
+    $this->maxlength = 4;
+    $this->hint6 = Str::set('anything NOT BadValue');
+    $this->hint5 = Str::set('under 4 chars');
+    $this->hint4 = Str::set('hinted AAAA');
+    $this->hint3 = Str::set('maxalength');
+    $this->hint2 = Str::set('not BAD');
+    $this->hint1 = Str::set('within min, max and step');
+  }
+  protected function getTestObject() : RAMPObject {
+    return new MockDbTypeDate($this->hint6,
+      new PlaceholderValidationRule($this->hint5,
+        new PatternValidationRule($this->hint4,
+          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+            new FailOnBadValidationRule($this->hint2,
+              new MinMaxStepValidationRule($this->hint1)
+            )
+          )
+        )
       )
     );
   }
+  #endregion
+  
+  #region Sub process template
+  protected function doAttributeValueConfirmation()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
+      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
+      (string)$this->testObject->hint
+    );
+    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
+    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
+    $this->assertSame($this->maxlength, $this->testObject->maxlength);
+    $this->assertSame(MockValidationRule::$patternValue, $this->testObject->pattern);
+    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
+    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
+    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
+  }
+  #endregion
 
   /**
    * Collection of assertions for ramp\validation\dbtype\Date.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
    * - assert is instance of {@see \ramp\model\business\validation\Date}
    * @see \ramp\model\business\validation\dbtype\Date
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\Date', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
-   * Collection of assertions for ramp\model\business\validation\dbtype\Date::process().
-   * - assert void returned when test successful
-   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see \ramp\model\business\validation\dbtype\Date::process()
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
    */
-  public function testTest()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
-    $this->assertNull($this->testObject->process('2006-12-24'));
-    try {
-      $this->testObject->process('2021-02-29'); // NOT a leap year.
-    } catch (FailedValidationException $expected) {
-      // $this->assertEquals((string)$this->errorMessage, $expected->getMessage());
-      $this->assertEquals('', $expected->getMessage());
-      return;
-    }
-    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
+    parent::testPropertyNotSetExceptionOn__set();
   }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testProcess( // badValue (NOT a leap year).
+    $badValue = '2021-02-29', $goodValue = '2006-12-24', $failPoint = 1, $ruleCount = 6,
+    $failMessage = ''
+  ) : void
+  {
+    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+  }
+  #endregion
 }

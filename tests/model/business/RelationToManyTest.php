@@ -85,7 +85,7 @@ class RelationToManyTest extends \tests\ramp\model\business\RelationTest
     $this->assertInstanceOf('\ramp\model\business\RelationToMany', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->postData = PostData::build(array('mock-min-record:a|b|e:property-2' => 'BadValue'));

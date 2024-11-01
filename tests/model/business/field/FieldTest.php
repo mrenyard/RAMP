@@ -80,7 +80,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertInstanceOf('\ramp\model\business\field\Field', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 0'));

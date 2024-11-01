@@ -66,7 +66,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
     $this->assertInstanceOf('\ramp\model\business\field\SelectMany', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 4;

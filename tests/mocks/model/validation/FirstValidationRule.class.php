@@ -28,7 +28,7 @@ use ramp\model\business\validation\ValidationRule;
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class SecondValidationRule extends ValidationRule
+class PlaceholderValidationRule extends ValidationRule
 {
   public static $testCallCount = 0;
 

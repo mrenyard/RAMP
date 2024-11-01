@@ -70,7 +70,7 @@ class SelectFromTest extends \tests\ramp\model\business\field\FieldTest
     $this->assertInstanceOf('\ramp\model\business\field\SelectFrom', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->dataObject->keyA = '1';

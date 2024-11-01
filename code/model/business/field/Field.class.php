@@ -61,7 +61,6 @@ abstract class Field extends RecordComponent
    * @param bool $editable Optional set preferance for editability.
    */
   public function __construct(Str $name, Record $parent, Str $title, bool $editable = TRUE)
-  // public function __construct(Str $name, Record $parent, bool $editable = TRUE)
   {
     $this->title = $title;
     parent::__construct($name, $parent, $editable);

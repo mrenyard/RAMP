@@ -36,16 +36,16 @@ class Integer extends DbTypeValidation
 
   /**
    * Default constructor for a validation rule of database type Interger between -2147483648 and 2147483647.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $min Optional minimum value that is acceptable and valid.
    * @param int $max Optional maximum value that is acceptable and valid.
    * @param int $step Optional number that specifies the granularity that the value must adhere to.
    * @throws \InvalidArgumentException When $min or $max exceed limits.
    */
-  public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, int $min = NULL, int $max = NULL, int $step = NULL)
   {
     if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
-    if (($max !== NULL && $max > 2147483647) || ($min !== NULL && $min < -2147483648)) {
+    if (($max !== NULL && $max > 2147483647) || ($min !== NULL && $min < -2147483648) || ($max < $min)) {
       throw new \InvalidArgumentException('$max has exceded 2147483647 and or $min is less than -2147483648');
     }
     //TODO:mrenyard: add localisation inclusiveNumberPreposition.
@@ -54,8 +54,9 @@ class Integer extends DbTypeValidation
     $this->max = ($max) ? $max : 2147483647;
     $this->step = ($step) ? $step : 1;
     parent::__construct(
-      $errorMessage->append(
-        $inclusiveNumberPreposition->prepend(Str::set($min))->append(Str::set($max))
+      $errorHint->append($inclusiveNumberPreposition
+        ->prepend(Str::set($this->min))
+        ->append(Str::set($this->max))
       ),
       NULL
     );

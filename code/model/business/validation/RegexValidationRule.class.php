@@ -46,17 +46,17 @@ class RegexValidationRule extends ValidationRule
    *   )
    * );
    * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
    * @param string $format Optional format profile based on ISO standards.
    */
   // public function __construct(Str $errorMessage, Str $placeholder, string $pattern, ValidationRule $subRule = null, string $format = NULL)
-  public function __construct(Str $errorMessage, string $pattern, ValidationRule $subRule = null, string $format = NULL)
+  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = null, string $format = NULL)
   {
     $this->pattern = $pattern;
     $this->format = $format;
-    parent::__construct($errorMessage, $subRule);
+    parent::__construct($errorHint, $subRule);
   }
 
   /**

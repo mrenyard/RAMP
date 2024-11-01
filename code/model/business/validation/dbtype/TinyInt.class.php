@@ -30,17 +30,17 @@ class TinyInt extends Integer
 {
   /**
    * Default constructor for a validation rule of database type Interger between -128 and 127.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $min Optional minimum value that is acceptable and valid.
    * @param int $max Optional maximum value that is acceptable and valid.
    * @param int $step Optional number that specifies the granularity that the value must adhere to.
    * @throws \InvalidArgumentException When $min or $max exceed limits.
    */
-  public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, int $min = NULL, int $max = NULL, int $step = NULL)
   {
-    if (($max !== NULL && $max > 127) || ($min !== NULL && $min < -128)) {
+    if (($max !== NULL && $max > 127) || ($min !== NULL && $min < -128) || ($max < $min)) {
       throw new \InvalidArgumentException('$max has exceded 127 and or $min is less than -128');
     }
-    parent::__construct($errorMessage, ($min) ? $min : -128, ($max) ? $max : 127, ($step) ? $step : 1);
+    parent::__construct($errorHint, ($min) ? $min : -128, ($max) ? $max : 127, ($step) ? $step : 1);
   }
 }

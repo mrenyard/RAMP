@@ -52,8 +52,8 @@ class Column extends Record
   protected function get_selectType() : string
   {
     $tableName = Str::set($this->name);
-    return ($tableName->contains(StrCollection::set('Collection', 'List')))? 2 : 
-      ($tableName->contains(StrCollection::set('Type', 'Status','Code')))? 1 : 0;
+    return ($tableName->contains(StrCollection::set('Collection', 'List'))) ? 2 : 
+      (($tableName->contains(StrCollection::set('Type', 'Status','Code'))) ? 1 : 0);
   }
 
   protected function get_isForeignKey()
@@ -69,7 +69,7 @@ class Column extends Record
         
   protected function get_dataType() : string
   {
-    $message = "Str::set('My error message HERE!')";
+    $message = "Str::set('Format error message/hint')";
     $values = \explode('(', trim($this->getPropertyValue('COLUMN_TYPE'), ')'));
     switch ($values[0]) {
       case 'varchar':

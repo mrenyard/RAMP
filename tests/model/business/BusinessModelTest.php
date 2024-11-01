@@ -86,7 +86,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
     $this->assertInstanceOf('\ramp\model\business\BusinessModel', $this->testObject);
   }
   
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new MockBusinessModel();

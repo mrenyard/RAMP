@@ -34,12 +34,12 @@ final class HTMLight extends ValidationRule
 
   /**
    * Constructor for HexidecimalColorCode validation.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
-  public function __construct(Str $errorMessage, array $tags)
+  public function __construct(Str $errorHint, array $tags)
   {
     if (!isset(self::$type)) { self::$type = Str::set('textarea html-editor'); } 
-    parent::__construct($errorMessage);
+    parent::__construct($errorHint);
   }
 
   /**

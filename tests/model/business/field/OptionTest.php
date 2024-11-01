@@ -125,7 +125,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertInstanceOf('\ramp\model\business\field\Option', $this->testObject);
   }
   
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 0;

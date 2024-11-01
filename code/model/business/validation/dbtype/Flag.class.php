@@ -27,17 +27,23 @@ use ramp\model\business\validation\ValidationRule;
 /**
  * Flag database type validation rule, TRUE or FALSE.
  * Runs code defined test against provided value.
+ * @property-read ?\ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
  */
 class Flag extends DbTypeValidation
 {
   /**
    * Default constructor for a validation rule of database type Flag.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
-  public function __construct(Str $errorMessage)
+  public function __construct(Str $errorHint)
   {
-    parent::__construct($errorMessage);
+    parent::__construct($errorHint);
   }
+
+  /**
+   * @ignore
+   */
+  protected function get_inputType() : Str { return Str::_EMPTY(); }
 
   /**
    * Asserts that $value is a boolean, TRUE or FALSE.

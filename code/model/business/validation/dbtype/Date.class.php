@@ -26,8 +26,14 @@ use ramp\model\business\validation\ValidationRule;
 
 /**
  * Date database type validation rule, in the format YYYY-mm-dd.
- * Runs code defined test against provided value.
- */
+ * ValidationRules can be wrapped within each other to form a more complex set of tests:
+ * ```php
+ * $myRule = new dbtype\Date(
+ *   Str::set('Format error message/hint'),
+ *   new ISODate(Str::set('Format error message/hint'), ...)
+ * );
+ * ```
+*/
 class Date extends DbTypeValidation
 {
   /**

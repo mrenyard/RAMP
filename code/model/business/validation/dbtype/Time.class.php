@@ -40,15 +40,15 @@ class Time extends DbTypeValidation
    *       new validation\ForthValidationRule()
    *     )
    *   ),
-   *   Str::set('My error message HERE!')
+   *   Str::set('Format error message/hint')
    * );
    * ```
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule)
+  public function __construct(Str $errorHint, ValidationRule $subRule)
   {
-    parent::__construct($errorMessage, $subRule);
+    parent::__construct($errorHint, $subRule);
   }
 
   /**

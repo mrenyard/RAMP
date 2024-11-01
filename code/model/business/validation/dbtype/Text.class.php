@@ -27,33 +27,49 @@ use ramp\model\business\validation\ValidationRule;
 /**
  * Text database type validation rule, a string of characters from 0 to 16383.
  * Runs code defined test against provided value.
+ * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
 class Text extends DbTypeValidation
 {
-  private $size;
+  private $maxlength;
 
   /**
    * Default constructor for a validation rule of database type Text.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myValidationRule = new validation\dbtype\Text(
-   *   NULL,
+   *   Str::set('Format error message/hint'), NULL|n,
    *   new validation\SecondValidationRule(
    *     new validation\ThirdValiationRule(
    *       new validation\ForthValidationRule()
    *     )
-   *   ),
-   *   Str::set('My error message HERE!')
+   *   )
    * );
    * ```
-   * @param int $size Maximum number of characters from 0 to 16383
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param int $maxlength Maximum number of characters from 1 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule, int $size = NULL)
+  public function __construct(Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
-    $this->size = (isset($size) && $size <= 16383) ? $size : 16383;
-    parent::__construct(Str::set($size)->prepend($errorMessage), $subRule);
+    $this->maxlength = ($maxlength !== NULL && $maxlength <= 16383) ? $maxlength : 16383;
+    parent::__construct($errorHint, $subRule);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?int
+  {
+    return (parent::get_maxlength() !== NULL && parent::get_maxlength() <= $this->maxlength) ? parent::get_maxlength() : $this->maxlength;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_hint() : ?Str
+  {
+    return Str::set($this->get_maxlength())->prepend(parent::get_hint());
   }
 
   /**
@@ -63,7 +79,7 @@ class Text extends DbTypeValidation
    */
   protected function test($value) : void
   {
-    if (is_string($value) && strlen($value) <= $this->size) { return; }
+    if (is_string($value) && strlen($value) <= $this->maxlength) { return; }
     throw new FailedValidationException();
   }
 }

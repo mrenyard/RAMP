@@ -61,6 +61,7 @@ footer > ol.footnotes {
       &:target {
         position: fixed;
         bottom: -10rem; max-width: 40em;
+        left: .5rem;
         padding: .5rem; margin-right: calc(var(--inline-spacing)*3);
         box-shadow: .125rem .125rem .5rem rgb(0 0 0 / .25);
         background-color: var(--highlight-color, yellow);;

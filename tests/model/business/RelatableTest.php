@@ -61,7 +61,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertInstanceOf('\ramp\model\business\Relatable', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new MockBusinessModel();

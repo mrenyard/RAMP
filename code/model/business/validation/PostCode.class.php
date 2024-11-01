@@ -29,11 +29,11 @@ class PostCode extends RegexValidationRule
 {
   /**
    * Constructor for UK PostCode max 8chars regex pattern validation.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  public function __construct(Str $errorHint, ValidationRule $subRule = null)
   {
-    parent::__construct($errorMessage, '[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', $subRule);
+    parent::__construct($errorHint, '[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', $subRule);
   }
 }

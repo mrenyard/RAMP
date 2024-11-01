@@ -21,6 +21,7 @@
  */
 namespace tests\ramp\mocks\model;
 
+use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
@@ -31,10 +32,21 @@ use ramp\model\business\validation\ValidationRule;
 class MockValidationRule extends ValidationRule
 {
   public static $testCallCount = 0;
+  public static $inputTypeValue;
+  public static $patternValue;
+  public static $placeholderValue;
+  public static $minValue;
+  public static $maxValue;
+  public static $stepValue;
 
-  public static function reset()
-  {
-    self::$testCallCount = 0;
+  public static function reset() {
+    SELF::$testCallCount = 0;
+    SELF::$inputTypeValue = Str::set('INPUT_TYPE');
+    SELF::$patternValue = Str::set('PATTERN');
+    SELF::$placeholderValue = Str::set('PLACEHOLDER');
+    SELF::$minValue = Str::set('MIN');
+    SELF::$maxValue = Str::set('MAX');
+    SELF::$stepValue = Str::set('STEP');
   }
 
   /**
@@ -46,7 +58,7 @@ class MockValidationRule extends ValidationRule
   {
     self::$testCallCount++;
     if ($value === 'BadValue') {
-      throw new FailedValidationException();
+      throw new FailedValidationException('MockValidationRule has been given the value BadValue');
     }
   }
 }

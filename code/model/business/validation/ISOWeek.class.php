@@ -37,7 +37,7 @@ class ISOWeek extends FormatBasedValidationRule
 
    /**
    * Constructor for week restricted regex pattern validation rule.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test,
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
    * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-W00).
    * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-W00).
@@ -45,7 +45,7 @@ class ISOWeek extends FormatBasedValidationRule
    * given in weeks, the default value of step is 1, indicating 1 week.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
-  public function __construct(Str $errorMessage, Str $min = NULL, Str $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
     if (!isset(self::$type)) { self::$type = Str::set('week'); } 
@@ -54,7 +54,7 @@ class ISOWeek extends FormatBasedValidationRule
     $errorMessage = (isset($min) && isset($max)) ?
       $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
         $errorMessage;
-    parent::__construct($errorMessage, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3]){1}', 'yyyy-W00');
+    parent::__construct($errorHint, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3]){1}', 'yyyy-W00');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }

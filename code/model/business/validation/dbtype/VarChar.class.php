@@ -43,17 +43,17 @@ class VarChar extends DbTypeValidation
    *       new validation\ForthValidationRule()
    *     )
    *   ),
-   *   Str::set('My error message HERE!')
+   *   Str::set('Format error message/hint')
    * );
    * ```
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $maxlength Maximum number of characters from 0 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    */
-  public function __construct(Str $errorMessage, int $maxlength, ValidationRule $subRule)
+  public function __construct(Str $errorHint, int $maxlength, ValidationRule $subRule)
   {
     $this->maxlength = $maxlength;
-    parent::__construct(Str::set($maxlength)->prepend($errorMessage), $subRule);
+    parent::__construct(Str::set($maxlength)->prepend($errorHint), $subRule);
   }
 
   /**

@@ -28,7 +28,7 @@ use ramp\model\business\validation\ValidationRule;
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class ThirdValidationRule extends ValidationRule
+class MinMaxStepValidationRule extends ValidationRule
 {
   public static $testCallCount = 0;
 

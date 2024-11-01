@@ -100,7 +100,7 @@ class RelationToOneTest extends \tests\ramp\model\business\RelationTest
     $this->assertInstanceOf('\ramp\model\business\RelationToOne', $this->testObject);
   }
   
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->testObject->with = new RecordCollection();

@@ -108,7 +108,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertInstanceOf('\ramp\model\business\PrimaryKey', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function buildConstructorWithChildren() : BusinessModel { return $this->getTestObject(); }
 
   protected function populateSubModelTree() : void

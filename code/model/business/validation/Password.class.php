@@ -31,14 +31,14 @@ class Password extends RegexValidationRule
 
   /**
    * Constructor for password restricted regex pattern validation.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test..
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  public function __construct(Str $errorHint, ValidationRule $subRule = null)
   {
     if (!isset(self::$type)) { self::$type = Str::set('password'); } 
-    parent::__construct($errorMessage, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
+    parent::__construct($errorHint, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
   }
 
   /**

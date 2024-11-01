@@ -131,7 +131,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
     $this->assertInstanceOf('\ramp\model\business\RecordComponent', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   #endregion
 
   #region Inherited Tests

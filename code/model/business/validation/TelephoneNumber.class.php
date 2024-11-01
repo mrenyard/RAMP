@@ -32,13 +32,13 @@ class TelephoneNumber extends RegexValidationRule
 
    /**
    * Constructor for telephone number restricted regex pattern validation.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
   public function __construct(Str $errorMessage)
   {
     if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
     if (!isset(self::$maxlength)) { self::$maxlength = Str::set('20'); }
-    parent::__construct($errorMessage, '(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}');
+    parent::__construct($errorHint, '(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}');
   }
 
   /**

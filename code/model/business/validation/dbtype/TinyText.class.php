@@ -27,9 +27,13 @@ use ramp\model\business\validation\ValidationRule;
 /**
  * TinyText database type validation rule, a string of characters from 0 to 255.
  * Runs code defined test against provided value.
+ * @property-read ?int $maxlength The maximum allowed value length.
+ * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
 class TinyText extends DbTypeValidation
 {
+  private $maxlength;
+
   /**
    * Default constructor for a validation rule of database type TinyText.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
@@ -40,15 +44,32 @@ class TinyText extends DbTypeValidation
    *       new validation\ForthValidationRule()
    *     )
    *   ),
-   *   Str::set('My error message HERE!')
+   *   Str::set('Format error message/hint')
    * );
    * ```
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule)
+  public function __construct(Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
-    parent::__construct($errorMessage, $subRule);
+    $this->maxlength = ($maxlength !== NULL && $maxlength <= 255) ? $maxlength : 255;
+    parent::__construct($errorHint, $subRule);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?int
+  {
+    return (parent::get_maxlength() !== NULL && parent::get_maxlength() <= $this->maxlength) ? parent::get_maxlength() : $this->maxlength;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_hint() : ?Str
+  {
+    return Str::set($this->get_maxlength())->prepend(parent::get_hint());
   }
 
   /**

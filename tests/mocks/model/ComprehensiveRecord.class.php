@@ -237,7 +237,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new ISOWeek(Str::set('valid week formated (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
+        new ISOWeek(Str::set('valid week formatd (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
         ['-W'],
         ['weekYear', 'weekNumber'],
         new SmallInt(Str::set('4 digit year from '), 0, 9999),
@@ -252,7 +252,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('month', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new MultipartInput($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new ISOMonth(Str::set('valid month formated (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
+        new ISOMonth(Str::set('valid month formatd (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
         ['-'],
         ['monthYear', 'monthNumber'],
         new SmallInt(Str::set('a 4 digit year from '), 0, 9999),
@@ -267,7 +267,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('time', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new Time(Str::set('valid time formated (hh:mm[:ss])'),
+        new Time(Str::set('valid time formatd (hh:mm[:ss])'),
           new ISOTime(Str::set('an appointment slot avalible ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
@@ -282,7 +282,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('date', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new Date(Str::set('valid date formated (yyyy-mm-dd)'),
+        new Date(Str::set('valid date formatd (yyyy-mm-dd)'),
           new ISODate(Str::set('date of birth'),
             Str::set('1900-01-01'), Str::set('2023-12-31')
           )
@@ -297,7 +297,7 @@ class ComprehensiveRecord extends Record
     if ($this->register('datetime', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new DateTime(Str::set('valid date time formated (yyyy-mm-ddThh:mm:ss)'),
+        new DateTime(Str::set('valid date time formatd (yyyy-mm-ddThh:mm:ss)'),
           new DateTimeLocal(Str::set('Start date and time of your event within the next 18 months, form '),
             Str::set('2024-03-05T00:00'), Str::set('2025-09-30T00:00')
           )

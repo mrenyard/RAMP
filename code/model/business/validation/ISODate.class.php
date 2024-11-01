@@ -37,7 +37,7 @@ class ISODate extends FormatBasedValidationRule
 
    /**
    * Constructor for month restricted regex pattern validation rule.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test,
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
    * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-dd).
    * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-dd).
@@ -45,7 +45,7 @@ class ISODate extends FormatBasedValidationRule
    * for date inputs, the value of step is given in days with the default of 1, indicating 1 day.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
-  public function __construct(Str $errorMessage, Str $min = NULL, Str $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
     if (!isset(self::$type)) { self::$type = Str::set('date'); } 
@@ -54,7 +54,7 @@ class ISODate extends FormatBasedValidationRule
     $errorMessage = (isset($min) && isset($max)) ?
       $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
         $errorMessage;
-    parent::__construct($errorMessage, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', 'yyyy-mm-dd');
+    parent::__construct($errorHint, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', 'yyyy-mm-dd');
     try {
       if ($min) { parent::test($min); }
       if ($max) { parent::test($max); }

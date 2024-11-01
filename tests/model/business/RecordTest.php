@@ -141,7 +141,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\model\business\Record', $this->testObject);
   }
 
-  #region Sub model setup
+  #region Sub model templates model setup
   protected function populateSubModelTree() : void
   {
     $this->assertTrue($this->testObject->isNew);

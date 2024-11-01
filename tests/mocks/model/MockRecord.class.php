@@ -132,7 +132,7 @@ class MockRecord extends Record
       $this->initiate(new MockInput(
         $this->registeredName, $this, $this->title,
         new Text(
-          Str::set('Error MESSAGE BadValue Submited!'),
+          Str::set('Error MESSAGE BadValue Submited!'), NULL,
           new MockValidationRule(
             Str::set('Error MESSAGE BadValue Submited!')
           ))

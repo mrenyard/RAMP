@@ -30,17 +30,17 @@ class SmallInt extends Integer
 {
   /**
    * Default constructor for a validation rule of database type Interger between -32768 and 32767.
-   * @param \ramp\core\Str $errorMessage Message to be displayed when tests unsuccessful
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $min Optional minimum value that is acceptable and valid.
    * @param int $max Optional maximum value that is acceptable and valid.
    * @param int $step Optional number that specifies the granularity that the value must adhere to.
    * @throws \InvalidArgumentException When $min or $max exceed limits.
    */
-  public function __construct(Str $errorMessage, int $min = NULL, int $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, int $min = NULL, int $max = NULL, int $step = NULL)
   {
-    if (($max !== NULL && $max > 32767) || ($min !== NULL && $min < -32768)) {
+    if (($max !== NULL && $max > 32767) || ($min !== NULL && $min < -32768) || ($max < $min)) {
       throw new \InvalidArgumentException('$max has exceded 32767 and or $min is less than -32768');
     }
-    parent::__construct($errorMessage, ($min) ? $min : -32768, ($max) ? $max : 32767, ($step) ? $step : 1);
+    parent::__construct($errorHint, ($min) ? $min : -32768, ($max) ? $max : 32767, ($step) ? $step : 1);
   }
 }

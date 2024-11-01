@@ -29,8 +29,6 @@ require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/core/AnObject.class.php';
 
-use tests\ramp\TestBase;
-
 use ramp\core\RAMPObject;
 use ramp\core\BadPropertyCallException;
 use ramp\core\PropertyNotSetException;
@@ -43,7 +41,7 @@ use tests\ramp\mocks\core\AnObject;
  * COLLABORATORS
  * - {@see \tests\ramp\mocks\condition\AnObject}
  */
-class ObjectTest extends TestBase
+class ObjectTest extends \tests\ramp\TestBase
 {
   protected $testObject;
 

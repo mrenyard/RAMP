@@ -21,99 +21,163 @@
  */
 namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Integer.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/IntegerTest.php';
+
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/SmallInt.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeSmallInt.class.php';
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/mocks/ValidationRuleTest/FailOnBadValidationRule.class.php';
-
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\SmallInt;
 
-use tests\ramp\model\business\validation\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockDbTypeSmallInt;
+use tests\ramp\mocks\model\MockValidationRule;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\SmallInt.
  */
-class SmallIntTest extends \PHPUnit\Framework\TestCase
+class SmallIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
 {
-  private $testObject;
-  private $maxLength;
-  private $errorMessage;
-
-  /**
-   * Setup
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    $this->errorMessage = Str::set('number from ');
-    $this->testObject = new SmallInt($this->errorMessage);
+    $this->specialAppendHint = '-32768 to 32767';
+    $this->hint1 = Str::set('a number from ');
   }
+  protected function getTestObject() : RAMPObject { return new MockDbTypeSmallInt($this->hint1); }
+  #endregion
+  
+  #region Sub process template
+  protected function doAttributeValueConfirmation()
+  {
+    $this->assertEquals($this->hint1 . $this->specialAppendHint, (string)$this->testObject->hint);
+    $this->assertSame('number', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertEquals('-32768', (string)$this->testObject->min);
+    $this->assertEquals('32767', (string)$this->testObject->max);
+    $this->assertEquals('1', (string)$this->testObject->step);
+  }
+  #endregion
 
   /**
    * Collection of assertions for ramp\validation\dbtype\SmallInt::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\dbtype\DbTypeValidation}
+   * - assert is instance of {@see \ramp\model\business\validation\DbTypeValidation}
+   * - assert is instance of {@see \ramp\model\business\validation\dbtypr\Integer}
    * - assert is instance of {@see \ramp\model\business\validation\dbtype\SmallInt}
+   * - assert throws \InvalidArgumentException when supplied argument 'max' exceeds 2147483647.
+   * - assert throws \InvalidArgumentException when supplied argument 'min' below -2147483648.
+   * - assert throws \InvalidArgumentException when supplied arguments 'min' 'max' are out of alignment.
+   *   - with message: *'$max has exceded 32767 and or $min is less than -32768'*
    * @see \ramp\model\business\validation\dbtype\SmallInt
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\SmallInt', $this->testObject);
-  }
-
-  /**
-   * Collection of assertions for ramp\model\business\validation\dbtype\SmallInt::process().
-   * - assert void returned when test successful
-   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see \ramp\model\business\validation\dbtype\SmallInt::process()
-   */
-  public function testTest()
-  {
-    $failPoint = 0;
-    $this->assertNull($this->testObject->process(0));
-    $this->assertNull($this->testObject->process(-32768));
-    $this->assertNull($this->testObject->process(32767));
     try {
-      $this->testObject->process('1');
-    } catch (FailedValidationException $expected) {
-      $failPoint = 1;
-      // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
-      $this->assertEquals('', $expected->getMessage());
+      new MockDbTypeSmallInt($this->hint1, 0, 32768);
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertsame('$max has exceded 32767 and or $min is less than -32768', $expected->getMessage());
       try {
-        $this->testObject->process(10.55);
-      } catch (FailedValidationException $expected) {
-        $failPoint = 2;
-        // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
-        $this->assertEquals('', $expected->getMessage());
+        new MockDbTypeSmallInt($this->hint1, -32769, 0);
+      } catch (\InvalidArgumentException $expected) {
+        $this->assertsame('$max has exceded 32767 and or $min is less than -32768', $expected->getMessage());
         try {
-          $this->testObject->process(-32769);
-        } catch (FailedValidationException $expected) {
-          $failPoint = 3;
-          // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
-          $this->assertEquals('', $expected->getMessage());
-          try {
-            $this->testObject->process(32768);
-          } catch (FailedValidationException $expected) {
-            $failPoint = 4;
-            // $this->assertEquals($this->errorMessage . '-32768 to 32767', $expected->getMessage());
-            $this->assertEquals('', $expected->getMessage());
-            return;
-          }
+          new MockDbTypeSmallInt($this->hint1, 1, 0);
+        } catch (\InvalidArgumentException $expected) {
+          $this->assertsame('$max has exceded 32767 and or $min is less than -32768', $expected->getMessage());
+          return;
         }
       }
     }
-    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised at: ' . $failPoint .'.');
+    $this->fail('An expected \InvalidArgumentException has NOT been raised');
   }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testProcess( // upper limit.
+    $badValue = 32768, $goodValue = 32767, $failPoint = 1, $ruleCount = 1,
+    $failMessage = ''
+  ) : void
+  {
+    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+  }
+
+  /**
+   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\model\business\validation\validation\ValidationRule::test()
+   * @see \ramp\model\business\validation\validation\ValidationRule::process()
+   */
+  public function testProcessExtra( // lower limit
+    $badValue = -32769, $goodValue = -32767, $failPoint = 1, $ruleCount = 1,
+    $failMessage = ''
+  ) : void
+  {
+    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+  }
+  #endregion
 }

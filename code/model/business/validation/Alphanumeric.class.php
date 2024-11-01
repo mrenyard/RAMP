@@ -31,11 +31,11 @@ class Alphanumeric extends RegexValidationRule
   /**
    * Constructor for alphnumaric regex pattern validation,
    * containung ONLY letters, numbers, hypens or underscores, a single word.
-   * @param \ramp\core\Str $errorMessage Message to be displayed on failing test
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
-  public function __construct(Str $errorMessage, ValidationRule $subRule = null)
+  public function __construct(Str $errorHint, ValidationRule $subRule = null)
   {
-    parent::__construct($errorMessage, '[a-zA-Z0-9_\-]*', $subRule);
+    parent::__construct($errorHint, '[a-zA-Z0-9_\-]*', $subRule);
   }
 }

@@ -39,12 +39,13 @@ use ramp\core\Str;
  * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
 
 
- * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read ?\ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
  * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
- * @property-read ?int $maxlength Regex pattern used in this validation rule.
+ * @property-read ?int $maxlength The maximum allowed value length.
  * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
+ * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
 abstract class ValidationRule extends RAMPObject
 {
@@ -69,8 +70,8 @@ abstract class ValidationRule extends RAMPObject
    *   )
    * );
    * ```
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test
-   * @param ValidationRule $subRule Addtional rule to be added to *this* test.
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test..
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
@@ -90,17 +91,17 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_pattern() : ?Str
+  protected function get_placeholder() : ?Str
   {
-    return ($this->subRule) ? $this->subRule->pattern : NULL;
+    return ($this->subRule) ? $this->subRule->placeholder : NULL;
   }
 
   /**
    * @ignore
    */
-  protected function get_placeholder() : ?Str
+  protected function get_pattern() : ?Str
   {
-    return ($this->subRule) ? $this->subRule->placeholder : NULL;
+    return ($this->subRule) ? $this->subRule->pattern : NULL;
   }
 
   /**
@@ -159,11 +160,7 @@ abstract class ValidationRule extends RAMPObject
    */
   public function process($value)
   {
-    try {
-      $this->test($value);
-      if (isset($this->subRule)) { $this->subRule->process($value); }
-    } catch (FailedValidationException $exception) {
-      throw new FailedValidationException();
-    }
+    $this->test($value);
+    if (isset($this->subRule)) { $this->subRule->process($value); }
   }
 }
