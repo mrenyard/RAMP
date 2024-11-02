@@ -39,16 +39,16 @@ final class RootView extends View
    */
   public static function getInstance()
   {
-    if (!isset(self::$instance)) { self::$instance = new RootView(); }
-    return self::$instance;
+    if (!isset(SELF::$instance)) { SELF::$instance = new RootView(); }
+    return SELF::$instance;
   }
 
   /**
    * TODO:mrenyard: Add documentation and test
    */
-  public static function reset()
+  public static function reset() : void
   {
-    self::$instance = NULL;
+    SELF::$instance = NULL;
   }
 
   // protected function get_children() : void { /* OVERRIDDEN */ }
@@ -56,7 +56,7 @@ final class RootView extends View
   /**
    * Render relevant output from child views
    */
-  public function render()
+  public function render() : void
   {
     $this->children;
   }

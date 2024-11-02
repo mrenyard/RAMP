@@ -35,7 +35,7 @@ final class HexidecimalColorCode extends ValidationRule
    */
   public function __construct(Str $errorMessage)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('color'); } 
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('color'); } 
     parent::__construct($errorHint);
   }
 
@@ -44,7 +44,7 @@ final class HexidecimalColorCode extends ValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

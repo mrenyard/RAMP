@@ -79,7 +79,7 @@ abstract class View extends RAMPObject
    * Add a child View
    * @param View $view Child View to be sequentially added to this. 
    */
-  public function add(View $view)
+  public function add(View $view) : void
   {
     if (!isset($this->viewCollection)) {
       $this->viewCollection = new Collection(Str::set('ramp\view\View'), TRUE);
@@ -92,7 +92,7 @@ abstract class View extends RAMPObject
    * Render relevant output.
    * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
    */
-  abstract public function render();
+  abstract public function render() : void;
 
   /**
    * Defines amendments post copy, cloning.

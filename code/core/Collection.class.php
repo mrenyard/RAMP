@@ -68,7 +68,7 @@ class Collection extends oList implements iCollection
    * Ensures when in Deep Cloning Mode that composite collection is cloned or in
    * Shallow Cloning Mode (default) composite collection is referenced only.
    */
-  public function __clone() : void
+  public function __clone()
   {
     if ($this->deepClone) {
       $new = array();

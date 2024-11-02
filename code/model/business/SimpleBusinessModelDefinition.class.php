@@ -39,7 +39,7 @@ class SimpleBusinessModelDefinition extends RAMPObject implements iBusinessModel
    * @param \ramp\core\Str $recordKey Value for RecordKey
    * @param \ramp\core\Str $propertyName Value for PropertyName
    */
-  public function __construct(Str $recordName, Str $recordKey = null, Str $propertyName = null)
+  public function __construct(Str $recordName, Str $recordKey = NULL, Str $propertyName = NULL)
   {
     $this->recordName = $recordName;
     $this->recordKey = $recordKey;

@@ -62,11 +62,11 @@ class Templated extends DocumentView
    * @param \ramp\core\Str $templateType Type of template (text|html|pdf) used as part of path to definite view to render().
    * @throws \InvalidArgumentException When provided arguments do NOT translate to a valid file path.
    */
-  public function __construct(View $parent, Str $templateName, Str $templateType = null)
+  public function __construct(View $parent, Str $templateName, Str $templateType = NULL)
   {
     parent::__construct($parent);
     $this->templateName = $templateName;
-    $this->templateType = ($templateType == null) ? Str::set('html') : $templateType;
+    $this->templateType = ($templateType == NULL) ? Str::set('html') : $templateType;
     try {
       $this->updateTemplatePath();
     } catch (\BadMethodCallException $exception) {
@@ -74,7 +74,7 @@ class Templated extends DocumentView
     }
   }
 
-  private function updateTemplatePath()
+  private function updateTemplatePath() : void
   {
     $template  = 'ramp/view/document/template';
     $template .= '/' . $this->templateType . '/' . $this->templateName . '.tpl.php';
@@ -93,7 +93,7 @@ class Templated extends DocumentView
   /**
    * @ignore
    */
-  protected function set_templateType(Str $value)
+  protected function set_templateType(Str $value) : void
   {
     $oldValue = $this->templateType; 
     $this->templateType = $value;
@@ -108,7 +108,7 @@ class Templated extends DocumentView
   /**
    * @ignore
    */
-  protected function get_template() //: string
+  protected function get_template() : string
   {
     return $this->templatePath;
   }
@@ -118,7 +118,7 @@ class Templated extends DocumentView
    * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
-  public function render()
+  public function render() : void
   {
     if (SETTING::$DEV_MODE && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'page.tpl.php'))) {
       include 'template/'. $this->templateType .'/info.tpl.php';

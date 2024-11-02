@@ -57,7 +57,7 @@ class Option extends BusinessModel implements iOption
    * Sets relationship to parent field for use by isSelected.
    * @param \ramp\model\business\field\SelectFrom $value Parent field.
    */
-  public function setParentField(SelectFrom $value)
+  public function setParentField(SelectFrom $value) : void
   {
     $this->parentField = $value;
   }

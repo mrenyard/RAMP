@@ -66,27 +66,27 @@ use ramp\condition\PostData;
  */
 abstract class Record extends Relatable
 {
-  private $awatingInitOn; // string
-  private $active; // Record
-  private $components; // array
-  private $primaryKey; // Key
-  private $dataObject; // stdClass
-  private $modified; // bool
-  private $validAtSource; // bool
-  private $required; // array
+  private ?string $awatingInitOn;
+  private ?RecordComponent $active;
+  private array $components;
+  private PrimaryKey $primaryKey;
+  private \stdClass $dataObject;
+  private bool $modified;
+  private bool $validAtSource;
+  private array $required;
 
   /**
    * Creates record, new or with encapsulated source data contained.
    * @param \stdClass $dataObject Simple data container
    */
-  public function __construct(\stdClass $dataObject = null)
+  public function __construct(\stdClass $dataObject = NULL)
   {
     parent::__construct();
     $this->awatingInitOn = NULL;
     $this->active = NULL;
     $this->components = array(array(), array(), array());
     $this->primaryKey = new PrimaryKey($this);
-    $this->dataObject = (isset($dataObject))? $dataObject : new \stdClass();
+    $this->dataObject = ($dataObject !== NULL)? $dataObject : new \stdClass();
     $this->modified = FALSE;
     $this->validAtSource = FALSE;
     $this->required = array();
@@ -104,7 +104,7 @@ abstract class Record extends Relatable
       $this->primaryKey[$this->primaryKey->count] = $this->$name;
       if (!isset($this->dataObject->$name)) { $this->dataObject->$name = NULL; }
     }
-    if ($this->primaryKey->value != NULL) { $this->validAtSource = TRUE; }
+    if ($this->primaryKey->value !== NULL) { $this->validAtSource = TRUE; }
     $i = 0;
     foreach ($this->components[RecordComponentType::PROPERTY] as $name => $o) {
       $this[$i] = $this->$name;
@@ -160,7 +160,7 @@ abstract class Record extends Relatable
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     if (!($object instanceof \ramp\model\business\RecordComponent)) {
       throw new \InvalidArgumentException(
@@ -278,7 +278,7 @@ abstract class Record extends Relatable
    * @param string $propertyName Name of property.
    * @return mixed The value of property assosiated with requested property.
    */
-  public function getPropertyValue(string $propertyName)
+  public function getPropertyValue(string $propertyName) : string|int|float|bool|NULL
   {
     return (isset($this->dataObject->$propertyName)) ? $this->dataObject->$propertyName : NULL;
   }
@@ -335,7 +335,7 @@ abstract class Record extends Relatable
    * Set this as updated.
    * **METHOD TO ONLY BE CALLED FROM BUSINESSMODELMANGER**
    */
-  public function updated()
+  public function updated() : void
   {
     $this->validAtSource = ($this->primaryKey->value === NULL) ? FALSE : ($this->checkRequired());
     $this->modified = FALSE;

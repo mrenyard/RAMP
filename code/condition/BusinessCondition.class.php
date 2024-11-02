@@ -61,7 +61,7 @@ abstract class BusinessCondition extends Condition
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
    * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
-  public function __construct(Str $record, Str $property, Operator $operator, $comparable = null)
+  public function __construct(Str $record, Str $property, Operator $operator, $comparable = NULL)
   {
     $recordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $record;
     if (

@@ -83,7 +83,7 @@ abstract class BusinessModel extends Model implements iList
    * @param \ramp\core\Boolean $hyphenate Whether model type should be returned hyphenated
    * @return \ramp\core\Str *This* business model type (without namespace)
    */
-  static protected function processType($classFullName, bool $hyphenate = null) : Str
+  static protected function processType($classFullName, bool $hyphenate = NULL) : Str
   {
     $pathNode = explode('\\', $classFullName);
     $modelName = explode('_', array_pop($pathNode));
@@ -115,7 +115,7 @@ abstract class BusinessModel extends Model implements iList
    * @return \ramp\model\business\BusinessModel Object located at provided index.
    * @throws \OutOfBoundsException When nothing located at provided index.
    */
-  final public function offsetGet($offset)
+  final public function offsetGet($offset) : BusinessModel
   {
     return $this->children[$offset];
   }
@@ -135,7 +135,7 @@ abstract class BusinessModel extends Model implements iList
    * @param mixed $offset Index to place provided object.
    * @param mixed $object RAMPObject to be placed at provided index.
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     $this->children->offsetSet($offset, $object);
   }
@@ -145,7 +145,7 @@ abstract class BusinessModel extends Model implements iList
    * @param mixed $offset API to match \ArrayAccess interface
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  public function offsetUnset($offset)
+  public function offsetUnset($offset) : void
   {
     unset($this->children[$offset]);
   }

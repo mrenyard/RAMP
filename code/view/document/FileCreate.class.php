@@ -57,7 +57,7 @@ final class FileCreate extends Templated
    * @param \ramp\core\Str $fullFileName Full file name including extension (type) to be writen or replaced.
    * @throws \InvalidArgumentException When provided arguments do NOT translate to a valid file path.
    */
-  public function __construct(View $parent, Str $templateName, Str $templateType = null, Str $fullFileName)
+  public function __construct(View $parent, Str $templateName, Str $templateType = NULL, Str $fullFileName)
   {
     $templateType = ($templateType == NULL) ? Str::set('text') : $templateType;
     $this->fullFileName = $fullFileName;
@@ -69,7 +69,7 @@ final class FileCreate extends Templated
    * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
-  final public function render()
+  final public function render() : void
   {
     // catch the rendered output so we can wrire it to file.
     ob_start();

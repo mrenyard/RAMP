@@ -63,7 +63,7 @@ class RelationLookup extends Relation
     parent::__construct($name, $parent);
   }
 
-  public function add(Record $object)
+  public function add(Record $object) : void
   {
     $this[$this->count] = $object;
   }
@@ -71,7 +71,7 @@ class RelationLookup extends Relation
   /**
    *
    */
-  final protected function get_object()
+  final protected function get_object() : RecordCollection
   {
     $i = 0;
     $filterArray = array();

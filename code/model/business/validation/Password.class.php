@@ -35,9 +35,9 @@ class Password extends RegexValidationRule
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test..
    */
-  public function __construct(Str $errorHint, ValidationRule $subRule = null)
+  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('password'); } 
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('password'); } 
     parent::__construct($errorHint, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
   }
 
@@ -46,6 +46,6 @@ class Password extends RegexValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 }

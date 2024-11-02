@@ -57,7 +57,7 @@ abstract class Relation extends RecordComponent
   }
 
   protected function getWith() : ?Relatable  { return $this->with; }
-  protected function setWith(?Relatable $value)
+  protected function setWith(?Relatable $value) : void
   {
     $this->with = $value;
     if ($value) { parent::setChildren($value); }
@@ -80,7 +80,7 @@ abstract class Relation extends RecordComponent
     while ($toPK->valid() && $fromPK->valid()) {
       $keys[$i] = (string)$toPK->current()->name; 
       $value = $fromPropertyName->prepend(Str::FK())
-        ->append(self::processType($to)->prepend(Str::UNDERLINE()))
+        ->append(SELF::processType($to)->prepend(Str::UNDERLINE()))
         ->append($toPK->current()->name->prepend(Str::UNDERLINE()));
       $keyMap[$keys[$i]] = (string)$value;
       $fromPK->next(); $toPK->next();
@@ -95,7 +95,7 @@ abstract class Relation extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet BLOKED!
    */
-  final public function offsetSet($offset, $object)
+  final public function offsetSet($offset, $object) : void
   {
     throw new \InvalidArgumentException('Adding properties through offsetSet BLOKED!');
   }

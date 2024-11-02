@@ -43,7 +43,7 @@ use ramp\model\Model;
 class Document extends Model
 {
   private static $NEXT_ID = 0;
-  public static function reset() { self:: $NEXT_ID = 0; }
+  public static function reset() { SELF:: $NEXT_ID = 0; }
 
   private $id;
   private $title;
@@ -59,13 +59,13 @@ class Document extends Model
    */
   public function __construct()
   {
-    $this->id = Str::set('uid' . ++self::$NEXT_ID);
+    $this->id = Str::set('uid' . ++SELF::$NEXT_ID);
   }
 
   /**
    * @ignore
    */
-  protected function set_id(Str $value)
+  protected function set_id(Str $value) : void
   {
     $this->id = $value;
   }
@@ -81,7 +81,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_title(Str $value)
+  protected function set_title(Str $value) : void
   {
     $this->title = $value;
   }
@@ -97,7 +97,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_heading(Str $value)
+  protected function set_heading(Str $value) : void
   {
     $this->heading = $value;
   }
@@ -113,7 +113,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_label(Str $value)
+  protected function set_label(Str $value) : void
   {
     $this->set_heading($value);
   }
@@ -129,7 +129,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_summary(Str $value)
+  protected function set_summary(Str $value) : void
   {
     $this->summary = $value;
   }
@@ -145,7 +145,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_placeholder(Str $value)
+  protected function set_placeholder(Str $value) : void
   {
     $this->set_summary($value);
   }
@@ -161,7 +161,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_extendedSummary(string $value)
+  protected function set_extendedSummary(string $value) : void
   {
     // TODO:mrenyard: Safe HTMLight validation.
     $this->extendedSummary = Str::set($value);
@@ -178,7 +178,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_extendedContent(string $value)
+  protected function set_extendedContent(string $value) : void
   {
     // TODO:mrenyard: Safe HTMLight validation.
     $this->extendedContent = Str::set($value);
@@ -195,7 +195,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_footnote(string $value)
+  protected function set_footnote(string $value) : void
   {
     // TODO:mrenyard: Safe HTMLight validation.
     $this->footnote = Str::set($value);
@@ -212,7 +212,7 @@ class Document extends Model
   /**
    * @ignore
    */
-  protected function set_style(Str $value)
+  protected function set_style(Str $value) : void
   {
     $this->style = $value;
   }
@@ -230,6 +230,6 @@ class Document extends Model
    */
   public function __clone()
   {
-    $this->id = Str::set('uid' . ++self::$NEXT_ID);
+    $this->id = Str::set('uid' . ++SELF::$NEXT_ID);
   }
 }

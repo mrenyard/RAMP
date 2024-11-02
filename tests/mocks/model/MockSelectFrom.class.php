@@ -44,7 +44,7 @@ class MockSelectFrom extends SelectFrom
     $this->hasErrorsCount = 0;
   }
 
-  public function reset()
+  public function reset() : void
   {
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;

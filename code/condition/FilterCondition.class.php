@@ -54,12 +54,12 @@ final class FilterCondition extends BusinessCondition
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
    * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
-  public function __construct(Str $record, Str $property, $comparable = null, Operator $operator = null)
+  public function __construct(Str $record, Str $property, $comparable = NULL, Operator $operator = NULL)
   {
     parent::__construct(
       $record,
       $property,
-      (isset($operator)) ? $operator : Operator::EQUAL_TO(),
+      ($operator !== NULL) ? $operator : Operator::EQUAL_TO(),
       $comparable
     );
   }
@@ -99,12 +99,12 @@ final class FilterCondition extends BusinessCondition
    *  property's processValidationRules()
    * @return string Representation of *this* filter based on provided target environment
    */
-  public function __invoke(iEnvironment $targetEnvironment = null, $comparable = null) : string
+  public function __invoke(iEnvironment $targetEnvironment = NULL, $comparable = NULL) : string
   {
-    $targetEnvironment = (isset($targetEnvironment)) ?
+    $targetEnvironment = ($targetEnvironment !== NULL) ?
       $targetEnvironment : SQLEnvironment::getInstance();
 
-    if (isset($comparable)) { $this->set_comparable($comparable); }
+    if ($comparable !== NULL) { $this->set_comparable($comparable); }
 
     $memberAccessOperator = Operator::MEMBER_ACCESS();
     $primaryOperationOperator = $this->operator;

@@ -18,7 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
-$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
+$tabindex = ($this->hasErrors)? 1:0;
 switch ($this->type) {
   case 'option business-model': ?>
               <option value="<?=$this->key; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>

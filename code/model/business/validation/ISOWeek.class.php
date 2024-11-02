@@ -48,12 +48,12 @@ class ISOWeek extends FormatBasedValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(self::$type)) { self::$type = Str::set('week'); } 
-    if (!isset(self::$maxlength)) { self::$maxlength = 8; }
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('week'); } 
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 8; }
     // TODO:mrenyard: Internationalise 'from' & 'to'.
-    $errorMessage = (isset($min) && isset($max)) ?
-      $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
-        $errorMessage;
+    $errorHint = ($min !== NULL && $max !== NULL) ?
+      $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorHint;
     parent::__construct($errorHint, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3]){1}', 'yyyy-W00');
     try {
       if ($min) { parent::test($min); }
@@ -74,7 +74,7 @@ class ISOWeek extends FormatBasedValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

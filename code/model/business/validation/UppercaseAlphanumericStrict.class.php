@@ -34,7 +34,7 @@ class UppercaseAlphanumericStrict extends RegexValidationRule
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
-  public function __construct(Str $errorHint, ValidationRule $subRule = null)
+  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
     parent::__construct($errorHint, '[A-Z0-9]*', $subRule);
   }

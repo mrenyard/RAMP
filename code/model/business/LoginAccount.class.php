@@ -113,7 +113,7 @@ final class LoginAccount extends Record
         new LoginAccountType()
       ));
     }
-    return $this->registered; 
+    return $this->registered;
   }
 
   /**
@@ -125,7 +125,7 @@ final class LoginAccount extends Record
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $auPK = $this->getPropertyValue('auPK');
     if (!isset($this->authenticatableUnit)) {
-      $key = Str::set((isset($auPK))? $auPK : 'new');
+      $key = Str::set(($auPK !== NULL)? $auPK : 'new');
       $this->authenticatableUnit = $MODEL_MANAGER::getInstance()->getBusinessModel(
         new SimpleBusinessModelDefinition(Str::set(SETTING::$RAMP_AUTHENTICATABLE_UNIT), $key)
       );  
@@ -155,7 +155,7 @@ final class LoginAccount extends Record
    * ```
    *
    * @param string $propertyName Name of property (handled internally)
-   * @return mixed|void The value of requested property
+   * @return mixed The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
@@ -188,7 +188,7 @@ final class LoginAccount extends Record
    * @throws \BadMethodCallException When NOT new
    * @throws \InvalidArgumentException When provided argument NOT in valid state.
    */
-  public function createFor(AuthenticatableUnit $authenticatableUnit)
+  public function createFor(AuthenticatableUnit $authenticatableUnit) : void
   {
     if (!$this->isNew) { throw new \BadMethodCallException('Method NOT allowed on existing LoginAccount!'); }
     if (!$authenticatableUnit->isValid) { throw new \InvalidArgumentException('$authenticatableUnit MUST be in Valid state'); }
@@ -222,7 +222,7 @@ final class LoginAccount extends Record
    * Set and encrypt password
    * @param string $unencryptedPassword Password to be encrypted and set
    */
-  public function setPassword(string $unencryptedPassword)
+  public function setPassword(string $unencryptedPassword) : void
   {
     $this->unencryptedPassword = $unencryptedPassword;
     $this->setPropertyValue(

@@ -36,8 +36,8 @@ class TelephoneNumber extends RegexValidationRule
    */
   public function __construct(Str $errorMessage)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('tel'); } 
-    if (!isset(self::$maxlength)) { self::$maxlength = Str::set('20'); }
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('tel'); } 
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = Str::set('20'); }
     parent::__construct($errorHint, '(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}');
   }
 
@@ -46,7 +46,7 @@ class TelephoneNumber extends RegexValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**
@@ -54,6 +54,6 @@ class TelephoneNumber extends RegexValidationRule
    */
   protected function get_maxlength() : ?int
   {
-    return self::$maxlength;
+    return SELF::$maxlength;
   }
 }

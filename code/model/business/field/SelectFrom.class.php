@@ -53,7 +53,7 @@ abstract class SelectFrom extends Field
   public function __construct(Str $name, Record $parent, Str $title, OptionList $options)
   {
     parent::__construct($name ,$parent, $title);
-    if ($options != null) {
+    // if ($options != NULL) {
       if (!$options->isCompositeType('\ramp\model\business\field\Option')) {
         throw new \InvalidArgumentException('OptionList $options compositeType MUST be \ramp\model\business\field\Option'); 
       }
@@ -62,6 +62,6 @@ abstract class SelectFrom extends Field
         $option->setParentField($this);
         $this[$i++] = $option;
       }
-    }
+    // }
   }  
 }

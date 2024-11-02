@@ -57,7 +57,7 @@ class RelationToOne extends Relation
     $this->setWith(NULL);
     $this->withRecordName = $withRecordName;
     $withRecordClassName = \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $withRecordName;
-    $this->keyMap = self::buildMapping($parent, new $withRecordClassName(), $name);
+    $this->keyMap = SELF::buildMapping($parent, new $withRecordClassName(), $name);
     if (
       (string)$parent->id == 'mock-record:new' || (string)$parent->id == 'mock-record:1|1|1'
       || (string)$parent->id == 'mock-record:2|2|2' || (string)$parent->id == 'mock-record:3|3|3'

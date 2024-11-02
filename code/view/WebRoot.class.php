@@ -73,16 +73,16 @@ class WebRoot extends View
    * Get instance - same instance (singleton) within same HTTP request.
    * @return WebView Singelton instance of WebRoot
    */
-  public static function getInstance()
+  public static function getInstance() : WebRoot
   {
-    if (!isset(self::$instance)) { self::$instance = new WebRoot(); }
-    return self::$instance;
+    if (!isset(SELF::$instance)) { SELF::$instance = new WebRoot(); }
+    return SELF::$instance;
   }
 
-  public static function reset()
+  public static function reset() : void
   {
     RootView::getInstance()->reset();
-    self::$instance = NULL;
+    SELF::$instance = NULL;
   }
 
   public function add(View $view) : void { $this->main->add($view); }
@@ -100,6 +100,6 @@ class WebRoot extends View
 
   public function clearModal() { $this->modal = NULL; }
 
-  public function render() { $this->body->render(); }
+  public function render() : void { $this->body->render(); }
   public function __clone() { throw new \BadMethodCallException('Cloning is not allowed'); }
 }

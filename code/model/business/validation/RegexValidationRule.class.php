@@ -51,8 +51,8 @@ class RegexValidationRule extends ValidationRule
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
    * @param string $format Optional format profile based on ISO standards.
    */
-  // public function __construct(Str $errorMessage, Str $placeholder, string $pattern, ValidationRule $subRule = null, string $format = NULL)
-  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = null, string $format = NULL)
+  // public function __construct(Str $errorMessage, Str $placeholder, string $pattern, ValidationRule $subRule = NULL, string $format = NULL)
+  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = NULL, string $format = NULL)
   {
     $this->pattern = $pattern;
     $this->format = $format;

@@ -50,7 +50,7 @@ class DecimalPointNumber extends DbTypeValidation
    */
   public function __construct(Str $errorHint, int $point, int $precision = NULL)
   {
-    if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('number'); }
     $this->precision = ($precision) ? $precision : 65; 
     $this->point = ($point && $point < $precision) ? $point: $precision;
     $this->min = 0;
@@ -77,7 +77,7 @@ class DecimalPointNumber extends DbTypeValidation
    */
   protected function get_inputType() : Str
   {
-    return self::$inputType;
+    return SELF::$inputType;
   }
 
   /**

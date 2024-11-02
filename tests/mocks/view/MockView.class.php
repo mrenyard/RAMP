@@ -30,7 +30,7 @@ class MockView extends View
 {
   public $viewOnlyTesting;
 
-  public function render()
+  public function render() : void
   {
     print($this . ' ');
     $this->children;

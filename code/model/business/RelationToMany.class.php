@@ -86,7 +86,7 @@ class RelationToMany extends Relation
   /**
    * @ignore
    */
-  final protected function set_isEditable(bool $value)
+  final protected function set_isEditable(bool $value) : void
   {
     $with = $this->getWith();
     if ($value === TRUE && isset($with[(count($with) - 1)]) && (!($with[(count($with) - 1)]->isNew))) {

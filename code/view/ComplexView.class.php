@@ -63,7 +63,7 @@ abstract class ComplexView extends ChildView
    *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
    * ```
    * @param string $propertyName Name of property (handled internally)
-   * @return mixed|void The value of requested property
+   * @return array|string|int|float|bool|NULL $value The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
@@ -142,7 +142,7 @@ abstract class ComplexView extends ChildView
    * Render relevant output.
    * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
    */
-  abstract public function render();
+  abstract public function render() : void;
 
   /**
    * Defines amendments post copy, cloning.
@@ -152,7 +152,7 @@ abstract class ComplexView extends ChildView
    */
   public function __clone()
   {
-    $this->model = null;
+    $this->model = NULL;
     parent::__clone();
   }
 }

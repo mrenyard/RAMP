@@ -44,7 +44,7 @@ class Integer extends DbTypeValidation
    */
   public function __construct(Str $errorHint, int $min = NULL, int $max = NULL, int $step = NULL)
   {
-    if (!isset(self::$inputType)) { self::$inputType = Str::set('number'); }
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('number'); }
     if (($max !== NULL && $max > 2147483647) || ($min !== NULL && $min < -2147483648) || ($max < $min)) {
       throw new \InvalidArgumentException('$max has exceded 2147483647 and or $min is less than -2147483648');
     }
@@ -67,7 +67,7 @@ class Integer extends DbTypeValidation
    */
   protected function get_inputType() : Str
   {
-    return self::$inputType;
+    return SELF::$inputType;
   }
 
   /**

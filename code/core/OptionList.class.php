@@ -45,7 +45,7 @@ class OptionList extends Collection
   {
     $compositeType = ($iOptionCastableType == NULL)? Str::set('ramp\core\iOption') : $iOptionCastableType;
     parent::__construct($compositeType);
-    if (isset($iOptionCastableCollection)) {
+    if ($iOptionCastableCollection !== NULL) {
       foreach ($iOptionCastableCollection as $option) {
         parent::add($option);
       }

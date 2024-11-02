@@ -74,9 +74,7 @@ final class Session extends RAMPObject
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->loginAccount = (isset($_SESSION['loginAccount']))? $_SESSION['loginAccount'] :
-    $this->modelManager->getBusinessModel(
-      new SimpleBusinessModelDefinition(Str::set('LoginAccount'), Str::set('new'))
-    );
+      $this->modelManager->getBusinessModel(new SimpleBusinessModelDefinition(Str::set('LoginAccount'), Str::set('new')));
     $this->accountEmailFilter = new Filter();
     $this->accountEmailCondition = new FilterCondition(Str::set('LoginAccount'), Str::set('email'));
     $this->accountEmailFilter->add($this->accountEmailCondition);
@@ -102,10 +100,10 @@ final class Session extends RAMPObject
    */
   public static function getInstance() : Session
   {
-    if (!isset(self::$instance) || SETTING::$TEST_RESET_SESSION == TRUE) {
-      self::$instance = new Session();
+    if (!isset(SELF::$instance) || SETTING::$TEST_RESET_SESSION == TRUE) {
+      SELF::$instance = new Session();
     }
-    return self::$instance;
+    return SELF::$instance;
   }
 
   /**
@@ -116,15 +114,15 @@ final class Session extends RAMPObject
    */
   public static function authorizedAs(int $authorizationLevel) : bool
   {
-    if(!isset(self::$instance)) {
+    if(!isset(SELF::$instance)) {
       throw new \BadMethodCallException(
         'Session::instance() MUST be called before Session::authorizedAs().'
       );
     }
     return (
-      (isset(self::$instance->loginAccount)) &&
-      (self::$instance->loginAccount->isValid) &&
-      (self::$instance->loginAccount->loginAccountType->value->key >= $authorizationLevel)
+      (isset(SELF::$instance->loginAccount)) &&
+      (SELF::$instance->loginAccount->isValid) &&
+      (SELF::$instance->loginAccount->loginAccountType->value->key >= $authorizationLevel)
     );
   }
 
@@ -169,9 +167,9 @@ final class Session extends RAMPObject
    * - SHOULD NEVER REACH HERE! (0)
    * @throws BadMethodCallException Session::instance() MUST be called prior to use
    */
-  public function authorizeAs(int $authorizationLevel)
+  public function authorizeAs(int $authorizationLevel) : void
   {
-    if (self::authorizedAs($authorizationLevel))
+    if (SELF::authorizedAs($authorizationLevel))
     {
       // Already authenticated with sufficient authority
       unset($_POST['login-password']);
@@ -182,7 +180,7 @@ final class Session extends RAMPObject
     $this->attemptAccess($authorizationLevel);
   }
 
-  private function attemptAccess(int $authorizationLevel)
+  private function attemptAccess(int $authorizationLevel) : void
   {
     $this->loginAccount->forcePasswordField = TRUE;
     if (!isset($_POST) || count($_POST) < 1) // GET request
@@ -295,7 +293,7 @@ final class Session extends RAMPObject
    * Accessor to logingAccount
    * @return \ramp\model\business\LoginAccount loginAccount LoginAccount for authentication and authorization
    */
-  protected function get_loginAccount()
+  protected function get_loginAccount() : LoginAccount
   {
     return $this->loginAccount;
   }

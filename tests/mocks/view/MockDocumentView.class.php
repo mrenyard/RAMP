@@ -30,7 +30,7 @@ class MockDocumentView extends DocumentView
 {
   public $viewOnlyTesting;
 
-  public function render()
+  public function render() : void
   {
     if ($this->viewOnlyTesting === TRUE) {
       print($this . ' ');

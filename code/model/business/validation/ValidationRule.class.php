@@ -75,7 +75,7 @@ abstract class ValidationRule extends RAMPObject
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    if (!isset(self::$defaultInputType)) { self::$defaultInputType = Str::set('text'); }
+    if (!isset(SELF::$defaultInputType)) { SELF::$defaultInputType = Str::set('text'); }
     $this->errorHint = $errorHint;
     $this->subRule = $subRule;
   }
@@ -85,7 +85,7 @@ abstract class ValidationRule extends RAMPObject
    */
   protected function get_inputType() : Str
   {
-    return ($this->subRule) ? $this->subRule->inputType : self::$defaultInputType;
+    return ($this->subRule) ? $this->subRule->inputType : SELF::$defaultInputType;
   }
 
   /**
@@ -158,7 +158,7 @@ abstract class ValidationRule extends RAMPObject
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
-  public function process($value)
+  public function process($value) : void
   {
     $this->test($value);
     if (isset($this->subRule)) { $this->subRule->process($value); }

@@ -101,12 +101,12 @@ final class InputDataCondition extends BusinessCondition
    *  associated property's processValidationRules()
    * @return string Representation of *this* input data statement based on target environment
    */
-  public function __invoke(iEnvironment $targetEnvironment = null, $value = null) : string
+  public function __invoke(iEnvironment $targetEnvironment = NULL, $value = NULL) : string
   {
-    $targetEnvironment = (isset($targetEnvironment)) ?
+    $targetEnvironment = ($targetEnvironment !== NULL) ?
       $targetEnvironment : URNQueryEnvironment::getInstance();
 
-    if (isset($value)) { $this->comparable = $value; }
+    if ($value !== NULL) { $this->comparable = $value; }
 
     $primaryOperationOperator = $this->operator;
     $memberAccessOperator = Operator::MEMBER_ACCESS();

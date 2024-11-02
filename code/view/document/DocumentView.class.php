@@ -149,7 +149,7 @@ abstract class DocumentView extends ComplexView
    *  <p>Some text about <?=$this->aProperty; ?>, or something</p>"
    * ```
    * @param string $propertyName Name of property (handled internally)
-   * @return mixed|void The value of requested property
+   * @return mixed The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   final public function __get($propertyName)

@@ -31,7 +31,7 @@ class MockComplexView extends ComplexView
 {
   public $viewOnlyTesting;
 
-  public function render()
+  public function render() : void
   {
     if ($this->viewOnlyTesting === TRUE) {
       print($this . ' ');

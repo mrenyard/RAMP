@@ -33,6 +33,8 @@ use ramp\model\business\validation\dbtype\VarChar;
 /**
  * MultipartInput field related to a single property with mutiply data storage fields
  * (e.g. week actual (year + weekNumber) month actual (year + monthNumber)).
+ * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read array|string|int|float|bool|NULL $value Returns value held by relevant property of associated record.
  */
 class MultipartInput extends Input
 {
@@ -72,7 +74,7 @@ class MultipartInput extends Input
    */
   public function __construct(Str $name, Record $parent, Str $title, FormatBasedValidationRule $formValidation, array $splits, array $dataProperties, DbTypeValidation ...$dataValidation)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('input field'); }
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('input field'); }
     $this->splits = $splits;
     $format = $formValidation->format;
     $fparts = preg_split('/(' . implode('|', $splits) . ')/', $format);
@@ -97,7 +99,7 @@ class MultipartInput extends Input
    */
   protected function get_type() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

@@ -32,7 +32,7 @@ final class Dump extends ChildView
   /**
    * Render relevant output as raw object data
    */
-  public function render()
+  public function render() : void
   {
     echo '<pre>';
     var_dump($this);

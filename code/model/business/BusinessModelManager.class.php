@@ -47,7 +47,7 @@ abstract class BusinessModelManager extends RAMPObject
    * @throws \DomainException When {@see \ramp\model\business\BusinessModel}(s) NOT found
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  abstract public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel;
+  abstract public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = NULL, $fromIndex = NULL) : BusinessModel;
 
   /**
    * Update {@see BusinessModel} to any permanent data store

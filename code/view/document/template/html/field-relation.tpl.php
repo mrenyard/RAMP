@@ -19,7 +19,7 @@
  * @version 0.0.9;
  * 
  */
-$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
+$tabindex = ($this->hasErrors)? 1:0;
 switch ((string)$this->type) {
   case 'relation record-component': ?>
           <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>

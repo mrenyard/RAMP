@@ -50,13 +50,13 @@ class DateTimeLocal extends RegexValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(self::$type)) { self::$type = Str::set('datetime-local'); } 
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('datetime-local'); } 
       // TODO:mrenyard: Internationalise 'from' & 'to'.
-      $errorMessage = (isset($min) && isset($max)) ?
-        $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
-          $errorMessage;  
+      $errorHint = ($min != NULL && $max !== NULL) ?
+        $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+          $errorHint;  
     parent::__construct(
-      $errorMessage, 
+      $errorHint, 
       '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?',
       NULL,
       'yyyy-mm-ddThh:mm:ss'
@@ -96,7 +96,7 @@ class DateTimeLocal extends RegexValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

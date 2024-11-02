@@ -80,7 +80,7 @@ abstract class Field extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     if (!($object instanceof \ramp\core\iOption)) {
       throw new \InvalidArgumentException(

@@ -72,7 +72,7 @@ final class Filter extends Collection
     foreach ($filters as $name => $value) {
       $value = ($value === NULL)? '' : $value;
       $value = str_replace(['+','%20'], ' ', $value);
-      $operator = null;
+      $operator = NULL;
       $a = explode('|', $name);
       if (count($a) > 1) {
         $name = $a[0];
@@ -91,20 +91,21 @@ final class Filter extends Collection
       $record = Str::camelCase($recordName);
       $property = Str::camelCase(Str::set($name), TRUE);
       if ($value !== NULL) { $values = explode('|', $value); }
-      if ((!isset($operator)) && (count($values) > 1)) {
+      if (($operator === NULL) && (count($values) > 1)) {
         if (!isset($filter->subOrGroups)) {
           $filter->subOrGroups = new Collection(Str::set($filter));
         }
         $subFilter = new Filter();
         $filter->subOrGroups->add($subFilter);
         foreach ($values as $comparable) {
-          $subFilter->add(new FilterCondition($record, $property, $comparable, null));
+          $subFilter->add(new FilterCondition($record, $property, $comparable, NULL));
         }
       } else {
         foreach ($values as $comparable) {
           $filter->add(
             new FilterCondition(
-              $record, $property, $comparable, ((isset($operator)) ? $operator : null)
+              // $record, $property, $comparable, (($operator !== NULL) ? $operator : NULL)
+              $record, $property, $comparable, $operator
             )
           );
         }
@@ -118,23 +119,23 @@ final class Filter extends Collection
    * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target, default SQL.
    * @return string representation of *this* based on provided target environment
    */
-  public function __invoke(iEnvironment $targetEnvironment = null) : string
+  public function __invoke(iEnvironment $targetEnvironment = NULL) : string
   {
     $andOperator = Operator::AND();
-    $environmentTargettedAndOperator  = (isset($targetEnvironment)) ?
+    $environmentTargettedAndOperator  = ($targetEnvironment !== NULL) ?
       $andOperator($targetEnvironment) : $andOperator(SQLEnvironment::getInstance());
 
     $orOperator = Operator::OR();
-    $environmentTargettedOrOperator  = (isset($targetEnvironment)) ?
+    $environmentTargettedOrOperator  = ($targetEnvironment !== NULL) ?
       $orOperator($targetEnvironment) : $orOperator(SQLEnvironment::getInstance());
 
     $openingGroupingParenthesisOperator = Operator::OPENING_GROUPING_PARENTHESIS();
-    $environmentTargettedOpeningGroupingParenthesisOperator  = (isset($targetEnvironment)) ?
+    $environmentTargettedOpeningGroupingParenthesisOperator  = ($targetEnvironment !== NULL) ?
       $openingGroupingParenthesisOperator($targetEnvironment) :
         $openingGroupingParenthesisOperator(SQLEnvironment::getInstance());
 
     $closingGroupingParenthesisOperator = Operator::CLOSING_GROUPING_PARENTHESIS();
-    $environmentTargettedClosingGroupingParenthesisOperator  = (isset($targetEnvironment)) ?
+    $environmentTargettedClosingGroupingParenthesisOperator  = ($targetEnvironment !== NULL) ?
       $closingGroupingParenthesisOperator($targetEnvironment) :
         $closingGroupingParenthesisOperator(SQLEnvironment::getInstance());
 

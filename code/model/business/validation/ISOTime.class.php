@@ -48,11 +48,11 @@ class ISOTime extends FormatBasedValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(self::$type)) { self::$type = Str::set('time'); }
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('time'); }
     // TODO:mrenyard: Internationalise 'from' & 'to'.
-    $errorMessage = (isset($min) && isset($max)) ?
-      $errorMessage->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
-        $errorMessage;  
+    $errorHint = ($min !== NULL && $max !== NULL) ?
+      $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorHint;  
     parent::__construct($errorHint, '(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?', 'hh:mm:ss');
     try {
       if ($min) { parent::test($min); }
@@ -75,7 +75,7 @@ class ISOTime extends FormatBasedValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

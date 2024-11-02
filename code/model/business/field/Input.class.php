@@ -80,7 +80,7 @@ class Input extends Field
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
   }

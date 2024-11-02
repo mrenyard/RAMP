@@ -128,31 +128,31 @@ final class Str extends RAMPObject
     switch((string)$value) {
       case NULL:
       case '':
-        $s = self::_EMPTY();
+        $s = SELF::_EMPTY();
         break;
       case ' ':
-        $s = self::SPACE();
+        $s = SELF::SPACE();
         break;
       case ':':
-        $s = self::COLON();
+        $s = SELF::COLON();
         break;
       case ';':
-        $s = self::SEMICOLON();
+        $s = SELF::SEMICOLON();
         break;
       case '|':
-        $s = self::BAR();
+        $s = SELF::BAR();
         break;
       case 'new':
-        $s = self::NEW();
+        $s = SELF::NEW();
         break;
       case '+':
-        $s = self::PLUS();
+        $s = SELF::PLUS();
         break;
       case 'fk_':
-        $s = self::FK();
+        $s = SELF::FK();
         break;
       case '_':
-        $s = self::UNDERLINE();
+        $s = SELF::UNDERLINE();
         break;
       default:
         $s = new Str((string)$value);
@@ -166,10 +166,10 @@ final class Str extends RAMPObject
    */
   public static function _EMPTY() : Str
   {
-    if (!isset(self::$EMPTY)) {
-      self::$EMPTY = new Str('');
+    if (!isset(SELF::$EMPTY)) {
+      SELF::$EMPTY = new Str('');
     }
-    return self::$EMPTY;
+    return SELF::$EMPTY;
   }
 
   /**
@@ -178,10 +178,10 @@ final class Str extends RAMPObject
    */
   public static function SPACE() : Str
   {
-    if (!isset(self::$SPACE)) {
-      self::$SPACE = new Str(' ');
+    if (!isset(SELF::$SPACE)) {
+      SELF::$SPACE = new Str(' ');
     }
-    return self::$SPACE;
+    return SELF::$SPACE;
   }
 
   /**
@@ -190,10 +190,10 @@ final class Str extends RAMPObject
    */
   public static function COLON() : Str
   {
-    if (!isset(self::$COLON)) {
-      self::$COLON = new Str(':');
+    if (!isset(SELF::$COLON)) {
+      SELF::$COLON = new Str(':');
     }
-    return self::$COLON;
+    return SELF::$COLON;
   }
 
   /**
@@ -202,10 +202,10 @@ final class Str extends RAMPObject
    */
   public static function SEMICOLON() : Str
   {
-    if (!isset(self::$SEMICOLON)) {
-      self::$SEMICOLON = new Str(';');
+    if (!isset(SELF::$SEMICOLON)) {
+      SELF::$SEMICOLON = new Str(';');
     }
-    return self::$SEMICOLON;
+    return SELF::$SEMICOLON;
   }
 
   /**
@@ -214,10 +214,10 @@ final class Str extends RAMPObject
    */
   public static function BAR() : Str
   {
-    if (!isset(self::$BAR)) {
-      self::$BAR = new Str('|');
+    if (!isset(SELF::$BAR)) {
+      SELF::$BAR = new Str('|');
     }
-    return self::$BAR;
+    return SELF::$BAR;
   }
 
   /**
@@ -226,10 +226,10 @@ final class Str extends RAMPObject
    */
   public static function NEW() : Str
   {
-    if (!isset(self::$NEW)) {
-      self::$NEW = new Str('new');
+    if (!isset(SELF::$NEW)) {
+      SELF::$NEW = new Str('new');
     }
-    return self::$NEW;
+    return SELF::$NEW;
   }
 
   /**
@@ -238,10 +238,10 @@ final class Str extends RAMPObject
    */
   public static function PLUS() : Str
   {
-    if (!isset(self::$PLUS)) {
-      self::$PLUS = new Str('+');
+    if (!isset(SELF::$PLUS)) {
+      SELF::$PLUS = new Str('+');
     }
-    return self::$PLUS;
+    return SELF::$PLUS;
   }
 
   /**
@@ -250,10 +250,10 @@ final class Str extends RAMPObject
    */
   public static function FK() : Str
   {
-    if (!isset(self::$FK)) {
-      self::$FK = new Str('fk_');
+    if (!isset(SELF::$FK)) {
+      SELF::$FK = new Str('fk_');
     }
-    return self::$FK;
+    return SELF::$FK;
   }
 
   /**
@@ -262,10 +262,10 @@ final class Str extends RAMPObject
    */
   public static function UNDERLINE() : Str
   {
-    if (!isset(self::$UNDERLINE)) {
-      self::$UNDERLINE = new Str('_');
+    if (!isset(SELF::$UNDERLINE)) {
+      SELF::$UNDERLINE = new Str('_');
     }
-    return self::$UNDERLINE;
+    return SELF::$UNDERLINE;
   }
 
   /**
@@ -275,7 +275,7 @@ final class Str extends RAMPObject
    */
   public function append(Str $value) : Str
   {
-    if ($this === self::_EMPTY()){ return $value; } // cannot append to an empty string
+    if ($this === SELF::_EMPTY()){ return $value; } // cannot append to an empty string
     return Str::set(($this->value . $value));
   }
 
@@ -286,7 +286,7 @@ final class Str extends RAMPObject
    */
   public function prepend(Str $value) : Str
   {
-    if ($this === self::_EMPTY()){ return $value; } // cannot prepend to an empty string
+    if ($this === SELF::_EMPTY()){ return $value; } // cannot prepend to an empty string
     return Str::set(($value . $this->value));
   }
 
@@ -298,7 +298,7 @@ final class Str extends RAMPObject
   public function trimEnd(Str $value = NULL) : Str
   {
     // cannot remove from an empty string
-    if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
+    if ($this === SELF::_EMPTY() || $value == SELF::_EMPTY()){ return $this; }
     $value = ($value === NULL)? Str::SPACE() : $value;
     $value =  Str::set(substr_replace((string)$this, '', strrpos((string)$this, (string)$value),));
     return ((string)$value == (string)$this)? $this : $value;
@@ -312,7 +312,7 @@ final class Str extends RAMPObject
   public function trimStart(Str $value = NULL) : Str
   {
     // cannot remove from an empty string
-    if ($this === self::_EMPTY() || $value == self::_EMPTY()){ return $this; }
+    if ($this === SELF::_EMPTY() || $value == SELF::_EMPTY()){ return $this; }
     $value = ($value === NULL)? Str::SPACE() : $value;
     $value = Str::set(substr_replace((string)$this, '', 0, strlen((string)$value)));
     return ((string)$value == (string)$this)? $this : $value;
@@ -341,7 +341,7 @@ final class Str extends RAMPObject
    */
   public static function camelCase(Str $value, bool $lowerCaseFirstLetter = \NULL) : Str
   {
-    if ($value === self::_EMPTY()){ return $value; } // cannot camelCase an empty string
+    if ($value === SELF::_EMPTY()){ return $value; } // cannot camelCase an empty string
     $value = str_replace(' ', '', ucwords(str_replace('-', ' ', (string)$value)));
     if ($lowerCaseFirstLetter !== \NULL && $lowerCaseFirstLetter) { $value = lcfirst($value); }
     return Str::set($value);
@@ -354,7 +354,7 @@ final class Str extends RAMPObject
    */
   public static function hyphenate(Str $value) : Str
   {
-    if ($value === self::_EMPTY()){ return $value; } // cannot hyphenate an empty string
+    if ($value === SELF::_EMPTY()){ return $value; } // cannot hyphenate an empty string
     $value = preg_replace('/(([A-Z]{1})+)/', ' $0', $value);
     $value = strtolower(trim(preg_replace('/\s+/', '-', $value), '-'));
     return Str::set($value);
@@ -367,7 +367,7 @@ final class Str extends RAMPObject
    */
   public function contains(StrCollection $searchSubstrings) : bool
   {
-    if ($this === self::_EMPTY()){ return FALSE; } // cannot search an empty string
+    if ($this === SELF::_EMPTY()){ return FALSE; } // cannot search an empty string
     foreach($searchSubstrings as $searchSubstring) {
         if (stripos((string)$this, (string)$searchSubstring) !== FALSE) { return TRUE; }
     }
@@ -381,7 +381,7 @@ final class Str extends RAMPObject
   public function explode(Str $separator) : StrCollection
   {
     $value = StrCollection::set();
-    if ($this === self::_EMPTY()){ return $value->add($this); } // cannot explode an empty string
+    if ($this === SELF::_EMPTY()){ return $value->add($this); } // cannot explode an empty string
     foreach (explode((string)$separator, $this->value) as $part) { $value->add(Str::set($part)); }
     return $value;
   }

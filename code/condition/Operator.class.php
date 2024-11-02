@@ -61,10 +61,10 @@ class Operator extends RAMPObject
    */
   public static function MEMBER_ACCESS() : Operator
   {
-    if (!isset(self::$MEMBER_ACCESS)) {
-      self::$MEMBER_ACCESS = new Operator('memberAccess');
+    if (!isset(SELF::$MEMBER_ACCESS)) {
+      SELF::$MEMBER_ACCESS = new Operator('memberAccess');
     }
-    return self::$MEMBER_ACCESS;
+    return SELF::$MEMBER_ACCESS;
   }
 
   /**
@@ -73,10 +73,10 @@ class Operator extends RAMPObject
    */
   public static function ASSIGNMENT() : Operator
   {
-    if (!isset(self::$ASSIGNMENT)) {
-      self::$ASSIGNMENT = new Operator('assignment');
+    if (!isset(SELF::$ASSIGNMENT)) {
+      SELF::$ASSIGNMENT = new Operator('assignment');
     }
-    return self::$ASSIGNMENT;
+    return SELF::$ASSIGNMENT;
   }
 
   /**
@@ -85,10 +85,10 @@ class Operator extends RAMPObject
    */
   public static function EQUAL_TO() : Operator
   {
-    if (!isset(self::$EQUAL_TO)) {
-      self::$EQUAL_TO = new Operator('equalTo');
+    if (!isset(SELF::$EQUAL_TO)) {
+      SELF::$EQUAL_TO = new Operator('equalTo');
     }
-    return self::$EQUAL_TO;
+    return SELF::$EQUAL_TO;
   }
 
   /**
@@ -97,10 +97,10 @@ class Operator extends RAMPObject
    */
   public static function NOT_EQUAL_TO() : Operator
   {
-    if (!isset(self::$NOT_EQUAL_TO)) {
-      self::$NOT_EQUAL_TO = new Operator('notEqualTo');
+    if (!isset(SELF::$NOT_EQUAL_TO)) {
+      SELF::$NOT_EQUAL_TO = new Operator('notEqualTo');
     }
-    return self::$NOT_EQUAL_TO;
+    return SELF::$NOT_EQUAL_TO;
   }
 
   /**
@@ -109,10 +109,10 @@ class Operator extends RAMPObject
    */
   public static function LESS_THAN() : Operator
   {
-    if (!isset(self::$LESS_THAN)) {
-      self::$LESS_THAN = new Operator('lessThan');
+    if (!isset(SELF::$LESS_THAN)) {
+      SELF::$LESS_THAN = new Operator('lessThan');
     }
-    return self::$LESS_THAN;
+    return SELF::$LESS_THAN;
   }
 
   /**
@@ -121,10 +121,10 @@ class Operator extends RAMPObject
    */
   public static function GREATER_THAN() : Operator
   {
-    if (!isset(self::$GREATER_THAN)) {
-      self::$GREATER_THAN = new Operator('greaterThan');
+    if (!isset(SELF::$GREATER_THAN)) {
+      SELF::$GREATER_THAN = new Operator('greaterThan');
     }
-    return self::$GREATER_THAN;
+    return SELF::$GREATER_THAN;
   }
 
   /**
@@ -133,10 +133,10 @@ class Operator extends RAMPObject
    */
   public static function AND() : Operator
   {
-    if (!isset(self::$AND)) {
-      self::$AND = new Operator('and');
+    if (!isset(SELF::$AND)) {
+      SELF::$AND = new Operator('and');
     }
-    return self::$AND;
+    return SELF::$AND;
   }
 
   /**
@@ -145,10 +145,10 @@ class Operator extends RAMPObject
    */
   public static function OR() : Operator
   {
-    if (!isset(self::$OR)) {
-      self::$OR = new Operator('or');
+    if (!isset(SELF::$OR)) {
+      SELF::$OR = new Operator('or');
     }
-    return self::$OR;
+    return SELF::$OR;
   }
 
   /**
@@ -157,10 +157,10 @@ class Operator extends RAMPObject
    */
   public static function OPENING_PARENTHESIS() : Operator
   {
-    if (!isset(self::$OPENING_PARENTHESIS)) {
-      self::$OPENING_PARENTHESIS = new Operator('openingParenthesis');
+    if (!isset(SELF::$OPENING_PARENTHESIS)) {
+      SELF::$OPENING_PARENTHESIS = new Operator('openingParenthesis');
     }
-    return self::$OPENING_PARENTHESIS;
+    return SELF::$OPENING_PARENTHESIS;
   }
 
   /**
@@ -169,10 +169,10 @@ class Operator extends RAMPObject
    */
   public static function CLOSING_PARENTHESIS() : Operator
   {
-    if (!isset(self::$CLOSING_PARENTHESIS)) {
-      self::$CLOSING_PARENTHESIS = new Operator('closingParenthesis');
+    if (!isset(SELF::$CLOSING_PARENTHESIS)) {
+      SELF::$CLOSING_PARENTHESIS = new Operator('closingParenthesis');
     }
-    return self::$CLOSING_PARENTHESIS;
+    return SELF::$CLOSING_PARENTHESIS;
   }
 
   /**
@@ -181,10 +181,10 @@ class Operator extends RAMPObject
    */
   public static function OPENING_GROUPING_PARENTHESIS() : Operator
   {
-    if (!isset(self::$OPENING_GROUPING_PARENTHESIS)) {
-      self::$OPENING_GROUPING_PARENTHESIS = new Operator('openingGroupingParenthesis');
+    if (!isset(SELF::$OPENING_GROUPING_PARENTHESIS)) {
+      SELF::$OPENING_GROUPING_PARENTHESIS = new Operator('openingGroupingParenthesis');
     }
-    return self::$OPENING_GROUPING_PARENTHESIS;
+    return SELF::$OPENING_GROUPING_PARENTHESIS;
   }
 
   /**
@@ -193,10 +193,10 @@ class Operator extends RAMPObject
    */
   public static function CLOSING_GROUPING_PARENTHESIS() : Operator
   {
-    if (!isset(self::$CLOSING_GROUPING_PARENTHESIS)) {
-      self::$CLOSING_GROUPING_PARENTHESIS = new Operator('closingGroupingParenthesis');
+    if (!isset(SELF::$CLOSING_GROUPING_PARENTHESIS)) {
+      SELF::$CLOSING_GROUPING_PARENTHESIS = new Operator('closingGroupingParenthesis');
     }
-    return self::$CLOSING_GROUPING_PARENTHESIS;
+    return SELF::$CLOSING_GROUPING_PARENTHESIS;
   }
 
   /**
@@ -204,7 +204,7 @@ class Operator extends RAMPObject
    * @param \ramp\condition\iEnvironment $targetEnvironment Environment to target.
    * @return string Representation of operator based on provided target environment
    */
-  public function __invoke(iEnvironment $targetEnvironment = null) : string
+  public function __invoke(iEnvironment $targetEnvironment = NULL) : string
   {
     $type = $this->type;
     return $targetEnvironment->$type;

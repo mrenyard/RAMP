@@ -71,17 +71,17 @@ final class SQLBusinessModelManager extends BusinessModelManager
    */
   public static function getInstance() : BusinessModelManager
   {
-    if (!isset(self::$instance))
+    if (!isset(SELF::$instance))
     {
-      self::$instance = new SQLBusinessModelManager();
+      SELF::$instance = new SQLBusinessModelManager();
     }
-    return self::$instance;
+    return SELF::$instance;
   }
 
   /**
    * Connect to PDO DataStore as $this->databaseHandle.
    */
-  private function connect()
+  private function connect() : void
   {
     $count=0;
     do {
@@ -124,7 +124,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = null, $fromIndex = null) : BusinessModel
+  public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = NULL, $fromIndex = NULL) : BusinessModel
   {
     if (!$definition->recordKey)
     {
@@ -195,7 +195,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @return \ramp\model\business\RecordCollection Relevant requested RecordCollection
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
-  private function getCollection(Str $recordName, Filter $filter = null, $fromIndex = null) : RecordCollection
+  private function getCollection(Str $recordName, Filter $filter = NULL, $fromIndex = NULL) : RecordCollection
   {
     $recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $sql = 'SELECT * FROM '. $recordName;
@@ -314,7 +314,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
     }
   }
 
-  private function writeToDB(Record $record, string $preparedStatement, array $values)
+  private function writeToDB(Record $record, string $preparedStatement, array $values) : void
   {
     if (SETTING::$DEV_MODE) { 
       \ChromePhp::log('$preparedStatement:', $preparedStatement);

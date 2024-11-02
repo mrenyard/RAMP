@@ -36,7 +36,7 @@ use ramp\core\Str;
  * @property-read \ramp\core\Str $name Related parent record associated property name.
  * @property-read \ramp\model\business\Record $parent Related parent Record associated with this component.
  * @property bool $isEditable Editability flag of *this*, some defaults are NOT overridable.
- * @property-read mixed $value Returns value held by relevant property of associated record.
+ * @property-read array|string|int|float|bool|NULL $value Returns value held by relevant property of associated record.
  */
 abstract class RecordComponent extends BusinessModel
 {
@@ -101,7 +101,7 @@ abstract class RecordComponent extends BusinessModel
   /**
    * @ignore
    */
-  protected function set_isEditable(bool $value)
+  protected function set_isEditable(bool $value) : void
   {
     $this->editable = ($this->isEditable && $value == FALSE) ? FALSE : TRUE; //NULL;
   }

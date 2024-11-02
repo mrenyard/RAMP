@@ -42,7 +42,7 @@ class LoginAccountType extends OptionList
    */
   public function __construct()
   {
-    parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
+    parent::__construct(NULL, Str::set('\ramp\model\business\field\Option'));
     $this->add(new Option(0, Str::set('Please choose:')));
     $this->add(new Option(LoginAccountType::REGISTERED, Str::set('Registered')));
     $this->add(new Option(LoginAccountType::USER, Str::set('Customer')));

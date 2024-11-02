@@ -24,7 +24,7 @@ class SQLEnvironment extends Environment
    */
   public static function getInstance() : iEnvironment
   {
-    if (!isset(self::$INSTANCE)) {
+    if (!isset(SELF::$INSTANCE)) {
       $o = new SQLEnvironment();
       $o->setMemberAccess('.');
       $o->setAssignment('=');
@@ -38,8 +38,8 @@ class SQLEnvironment extends Environment
       $o->setClosingParenthesis('"');
       $o->setOpeningGroupingParenthesis('(');
       $o->setClosingGroupingParenthesis(')');
-      self::$INSTANCE = $o;
+      SELF::$INSTANCE = $o;
     }
-    return self::$INSTANCE;
+    return SELF::$INSTANCE;
   }
 }

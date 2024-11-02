@@ -38,7 +38,7 @@ final class HTMLight extends ValidationRule
    */
   public function __construct(Str $errorHint, array $tags)
   {
-    if (!isset(self::$type)) { self::$type = Str::set('textarea html-editor'); } 
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('textarea html-editor'); } 
     parent::__construct($errorHint);
   }
 
@@ -47,7 +47,7 @@ final class HTMLight extends ValidationRule
    */
   protected function get_inputType() : Str
   {
-    return self::$type;
+    return SELF::$type;
   }
 
   /**

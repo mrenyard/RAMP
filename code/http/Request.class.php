@@ -83,7 +83,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   private $filter;
   private $postData;
 
-  public static function reset() { self::$current = NULL; }
+  public static function reset() { SELF::$current = NULL; }
 
   /**
    * Current active HTTP Request based on CURRENT context.
@@ -94,8 +94,8 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    */
   public static function current() : Request
   {
-    if (!isset(self::$current)) { self::$current = new Request(); }
-    return self::$current;
+    if (!isset(SELF::$current)) { SELF::$current = new Request(); }
+    return SELF::$current;
   }
 
   /**

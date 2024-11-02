@@ -20,7 +20,7 @@
  * 
  * 
  */
-$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
+$tabindex = ($this->hasErrors)? 1:0;
 ?>
           <fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
             <legend><?=$this->label; ?></legend>

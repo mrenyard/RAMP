@@ -51,8 +51,8 @@ final class PrimaryKey extends RecordComponent
    */
   public function __construct(Record $parent)
   {
-    if (!isset(self::$name)) { self::$name = Str::set('primaryKey'); }
-    parent::__construct(self::$name, $parent, FALSE);
+    if (!isset(SELF::$name)) { SELF::$name = Str::set('primaryKey'); }
+    parent::__construct(SELF::$name, $parent, FALSE);
   }
 
   /**
@@ -61,7 +61,7 @@ final class PrimaryKey extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethosCallException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
-  public function offsetSet($offset, $object)
+  public function offsetSet($offset, $object) : void
   {
     if (
       (!($object instanceof field\Field))
@@ -104,7 +104,7 @@ final class PrimaryKey extends RecordComponent
   /**
    * @ignore
    */
-  final protected function get_value()
+  final protected function get_value() : ?string
   {
     return ($this->values !== NULL) ?
       (string)$this->values->implode(Str::BAR()):
@@ -123,7 +123,7 @@ final class PrimaryKey extends RecordComponent
   /**
    * @ignore
    */
-  protected function set_isEditable(bool $value)
+  protected function set_isEditable(bool $value) : void
   {
     // Changes nothing
   }

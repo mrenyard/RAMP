@@ -37,7 +37,7 @@ use ramp\core\Str;
  *
  * @property-read \ramp\core\Str $attribute Returns name of attribute to be restricted, evaluated or modified.
  * @property-read \ramp\condition\Operator $operator Returns the type of Operation to be performed.
- * @property mixed $comparable Value to be compared with attribute by operation.
+ * @property string|int|float|bool|NULL $comparable Value to be compared with attribute by operation.
  */
 abstract class Condition extends RAMPObject
 {
@@ -51,11 +51,12 @@ abstract class Condition extends RAMPObject
    * @param \ramp\condition\Operator $operator Operation to perform
    * @param mixed $comparable Value to be compared with attribute by operation
    */
-  public function __construct(Str $attribute, Operator $operator, $comparable = null)
+  public function __construct(Str $attribute, Operator $operator, $comparable = NULL)
   {
     $this->attribute = $attribute;
     $this->operator = $operator;
-    if (isset($comparable)) { $this->set_comparable($comparable); }
+    $this->comparable = NULL;
+    if ($comparable !== NULL) { $this->set_comparable($comparable); }
   }
 
   /**
@@ -77,7 +78,7 @@ abstract class Condition extends RAMPObject
   /**
    * @ignore
    */
-  final protected function get_comparable()
+  final protected function get_comparable() // : array|string|int|float|bool|NULL
   {
     return $this->comparable;
   }
@@ -85,7 +86,8 @@ abstract class Condition extends RAMPObject
   /**
    * @ignore
    */
-  protected function set_comparable($value) : void
+  // protected function set_comparable(string|int|float|bool|array $value) : void
+  protected function set_comparable($value) : void //string|int|float|bool|array $value) : void
   {
     $this->comparable = (is_string($value) && is_numeric($value))?
       ((float)$value == (int)$value)? (int)$value:
@@ -99,5 +101,5 @@ abstract class Condition extends RAMPObject
    * @param mixed $comparable Value to be compared with attribute by operation.
    * @return string Representation of condition based on provided target environment
    */
-  abstract public function __invoke(iEnvironment $targetEnvironment = null, $comparable = null) : string;
+  abstract public function __invoke(iEnvironment $targetEnvironment = NULL, $comparable = NULL) : string;
 }

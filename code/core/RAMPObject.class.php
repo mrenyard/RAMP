@@ -65,7 +65,7 @@ abstract class RAMPObject
    * ```
    *
    * @param string $propertyName Name of property (handled internally)
-   * @return mixed|void The value of requested property
+   * @return array|string|int|float|bool|NULL The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)

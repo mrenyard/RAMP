@@ -66,8 +66,8 @@ class Method extends RAMPObject
    */
   public static function GET() : Method
   {
-    if (!isset(self::$GET)) { self::$GET = new Method(1, Str::set('GET'));  }
-    return self::$GET;
+    if (!isset(SELF::$GET)) { SELF::$GET = new Method(1, Str::set('GET'));  }
+    return SELF::$GET;
   }
 
   /**
@@ -77,8 +77,8 @@ class Method extends RAMPObject
    */
   public static function POST() : Method
   {
-    if (!isset(self::$POST)) { self::$POST = new Method(2, Str::set('POST')); }
-    return self::$POST;
+    if (!isset(SELF::$POST)) { SELF::$POST = new Method(2, Str::set('POST')); }
+    return SELF::$POST;
   }
 
   /**
@@ -89,8 +89,8 @@ class Method extends RAMPObject
    */
   public static function LOCK() : Method
   {
-    if (!isset(self::$LOCK)) { self::$LOCK = new Method(3, Str::set('LOCK')); }
-    return self::$LOCK;
+    if (!isset(SELF::$LOCK)) { SELF::$LOCK = new Method(3, Str::set('LOCK')); }
+    return SELF::$LOCK;
   }
 
   /**
@@ -101,8 +101,8 @@ class Method extends RAMPObject
    */
   public static function UNLOCK() : Method
   {
-    if (!isset(self::$UNLOCK)) { self::$UNLOCK = new Method(4, Str::set('UNLOCK')); }
-    return self::$UNLOCK;
+    if (!isset(SELF::$UNLOCK)) { SELF::$UNLOCK = new Method(4, Str::set('UNLOCK')); }
+    return SELF::$UNLOCK;
   }
 
   /**
@@ -112,8 +112,8 @@ class Method extends RAMPObject
    */
   public static function PUT() : Method
   {
-    if (!isset(self::$PUT)) { self::$PUT = new Method(5, Str::set('PUT')); }
-    return self::$PUT;
+    if (!isset(SELF::$PUT)) { SELF::$PUT = new Method(5, Str::set('PUT')); }
+    return SELF::$PUT;
   }
 
   /**
@@ -124,8 +124,8 @@ class Method extends RAMPObject
    */
   public static function MOVE() : Method
   {
-    if (!isset(self::$MOVE)) { self::$MOVE = new Method(6, Str::set('MOVE')); }
-    return self::$MOVE;
+    if (!isset(SELF::$MOVE)) { SELF::$MOVE = new Method(6, Str::set('MOVE')); }
+    return SELF::$MOVE;
   }
 
   /**
@@ -135,8 +135,8 @@ class Method extends RAMPObject
    */
   public static function DELETE() : Method
   {
-    if (!isset(self::$DELETE)) { self::$DELETE = new Method(7, Str::set('DELETE')); }
-    return self::$DELETE;
+    if (!isset(SELF::$DELETE)) { SELF::$DELETE = new Method(7, Str::set('DELETE')); }
+    return SELF::$DELETE;
   }
 
   /**
