@@ -38,9 +38,9 @@ use ramp\model\business\validation\dbtype\VarChar;
  */
 class MultipartInput extends Input
 {
-  private static $type; // Str
-  private $splits; // string[]
-  private $parts; // [valueLength, propertyName, validationRule];
+  private static Str $type;
+  private array $splits; // string[]
+  private array $parts; // [valueLength, propertyName, validationRule];
 
   /**
    * Creates a multipart input field related to a single property with mutiply data storage fields.

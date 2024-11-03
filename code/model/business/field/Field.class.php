@@ -50,8 +50,8 @@ use ramp\model\business\validation\FailedValidationException;
  */
 abstract class Field extends RecordComponent
 {
-  private $title;
-  private $errorCollection;
+  private Str $title;
+  private StrCollection $errorCollection;
 
   /**
    * Base constructor for Field related to a single property of containing record.

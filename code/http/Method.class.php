@@ -32,29 +32,28 @@ use ramp\core\Str;
  */
 class Method extends RAMPObject
 {
-  private static $GET;
-  private static $POST;
-  private static $LOCK;
-  private static $UNLOCK;
-  private static $PUT;
-  private static $MOVE;
-  private static $DELETE;
+  private static Method $GET;
+  private static Method $POST;
+  private static Method $LOCK;
+  private static Method $UNLOCK;
+  private static Method $PUT;
+  private static Method $MOVE;
+  private static Method $DELETE;
 
-  private $index;
-  private $verb;
+  private int $index;
+  private Str $verb;
 
   /**
    * Constructor for new instance of Method.
    * @param int $index Number to be assigned to this Verb
    * @param \ramp\core\Str $verb Name of Method (verb/action) that this object is to represent
-   * @throws \InvalidArgumentException When $index is NOT an int
    */
-  protected function __construct($index, Str $verb) {
-    if (!is_int($index)) {
-    throw new \InvalidArgumentException(
-      get_class($this) . '::constructor expects first argument of type int.'
-      );
-    }
+  protected function __construct(int $index, Str $verb) {
+    // if (!is_int($index)) {
+    // throw new \InvalidArgumentException(
+    //   get_class($this) . '::constructor expects first argument of type int.'
+    //   );
+    // }
     $this->index = $index;
     $this->verb = $verb;
   }

@@ -40,9 +40,9 @@ use ramp\condition\Filter;
  */
 class RelationToOne extends Relation
 {
-  private $errorCollection; // StrCollection
-  private $withRecordName; // Str
-  private $keyMap; // Strcollection
+  private StrCollection $errorCollection;
+  private Str $withRecordName;
+  private array $keyMap;
 
   /**
    * Creates a relation from a single property of containing Record to another Record.

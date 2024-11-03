@@ -43,7 +43,7 @@ use ramp\view\ChildView;
  */
 abstract class ComplexView extends ChildView
 {
-  private $model;
+  private ?BusinessModel $model = NULL;
 
   /**
    * Provide read access to associated Model's properties.
@@ -68,13 +68,13 @@ abstract class ComplexView extends ChildView
    */
   public function __get($propertyName)
   {
-    if ($propertyName == 'isRequired' && isset($this->model) && $this->model instanceof \ramp\model\business\field\Field) {
+    if ($propertyName == 'isRequired' && $this->model !== NULL && $this->model instanceof \ramp\model\business\field\Field) {
       return ($this->model->isRequired);
     }
     try {
       return parent::__get($propertyName);
     } catch (BadPropertyCallException $exception) {
-      if (!isset($this->model)) { throw $exception; }
+      if ($this->model === NULL) { throw $exception; }
       return $this->model->$propertyName;
     }
   }
@@ -84,7 +84,7 @@ abstract class ComplexView extends ChildView
    */
   protected function get_hasModel() : bool
   {
-    return isset($this->model);
+    return ($this->model !== NULL);
   }
 
   /**
@@ -98,7 +98,7 @@ abstract class ComplexView extends ChildView
    */
   public function setModel(BusinessModel $model, bool $cascade = TRUE)
   {
-    if (isset($this->model)) { throw new \BadMethodCallException('model already set violation'); }
+    if ($this->model !== NULL) { throw new \BadMethodCallException('model already set violation'); }
     $this->model = $model;
     if (!$cascade) { return; }
     // TODO:mrenyard: Fix tests and reinstate code.

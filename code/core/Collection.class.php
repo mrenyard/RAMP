@@ -34,7 +34,7 @@ namespace ramp\core;
  */
 class Collection extends oList implements iCollection
 {
-  private $deepClone;
+  private bool $deepClone;
 
   /**
    * Constructor for new instance of Collection.

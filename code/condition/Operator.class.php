@@ -35,20 +35,20 @@ use ramp\core\RAMPObject;
  */
 class Operator extends RAMPObject
 {
-  private $type;
+  private string $type;
 
-  private static $MEMBER_ACCESS;
-  private static $ASSIGNMENT;
-  private static $EQUAL_TO;
-  private static $NOT_EQUAL_TO;
-  private static $LESS_THAN;
-  private static $GREATER_THAN;
-  private static $AND;
-  private static $OR;
-  private static $OPENING_PARENTHESIS;
-  private static $CLOSING_PARENTHESIS;
-  private static $OPENING_GROUPING_PARENTHESIS;
-  private static $CLOSING_GROUPING_PARENTHESIS;
+  private static Operator $MEMBER_ACCESS;
+  private static Operator $ASSIGNMENT;
+  private static Operator $EQUAL_TO;
+  private static Operator $NOT_EQUAL_TO;
+  private static Operator $LESS_THAN;
+  private static Operator $GREATER_THAN;
+  private static Operator $AND;
+  private static Operator $OR;
+  private static Operator $OPENING_PARENTHESIS;
+  private static Operator $CLOSING_PARENTHESIS;
+  private static Operator $OPENING_GROUPING_PARENTHESIS;
+  private static Operator $CLOSING_GROUPING_PARENTHESIS;
 
   private function __construct(string $type)
   {

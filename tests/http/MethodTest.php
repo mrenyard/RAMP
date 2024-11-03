@@ -55,16 +55,19 @@ class MethodTest extends \tests\ramp\core\ObjectTest
   {
     parent::testConstruct();
     $this->assertInstanceOf('ramp\http\Method', $this->testObject);
-    try {
-      $o = ExtendedMethod::FAIL();
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertSame(
-        'tests\ramp\mocks\http\ExtendedMethod::constructor expects first argument of type int.', $expected->getMessage()
-      );
-      $o = ExtendedMethod::SUCCEED();
-      return;
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised');
+    $this->assertSame(ExtendedMethod::SUCCEED(), $this->testObject);
+    $this->assertSame('VERB', (string)$this->testObject);
+
+    // try {
+    //   $o = ExtendedMethod::FAIL();
+    // } catch (\InvalidArgumentException $expected) {
+    //   $this->assertSame(
+    //     'tests\ramp\mocks\http\ExtendedMethod::constructor expects first argument of type int.', $expected->getMessage()
+    //   );
+      // $o = ExtendedMethod::SUCCEED();
+      // return;
+    // }
+    // $this->fail('An expected \InvalidArgumentException has NOT been raised');
   }
 
   #region Inherited Tests

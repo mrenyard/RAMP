@@ -31,9 +31,9 @@ class ISODate extends FormatBasedValidationRule
 {
   private static $type;
   // private static $maxlength;
-  private $min;
-  private $max;
-  private $step;
+  private ?Str $min;
+  private ?Str $max;
+  private int $step;
 
    /**
    * Constructor for month restricted regex pattern validation rule.

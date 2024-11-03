@@ -44,14 +44,14 @@ class SETTING
    * Domain under which this application is run.
    * @var string
    */
-  public static $RAMP_DOMAIN;
+  public static string $RAMP_DOMAIN;
 
   /**
    * Directory from which to locate application specific code
    * related only to this particular project.
    * @var string
    */
-  public static $RAMP_LOCAL_DIR;
+  public static string $RAMP_LOCAL_DIR;
 
   /**
    * Concrete BusinessModelManager used to handle data layer
@@ -59,20 +59,20 @@ class SETTING
    * - e.g. \ramp\model\business\SQLBusinessModelManager
    * @var string
    */
-  public static $RAMP_BUSINESS_MODEL_MANAGER;
+  public static string $RAMP_BUSINESS_MODEL_MANAGER;
 
   /**
    * Fully qualified namespace for business model classes.
    * - e.g. \ramp\model\business
    * @var string
    */
-  public static $RAMP_BUSINESS_MODEL_NAMESPACE;
+  public static string $RAMP_BUSINESS_MODEL_NAMESPACE;
 
   /**
    * Authenticatable Unit of specific business model Record.
    * @var string
    */
-  public static $RAMP_AUTHENTICATABLE_UNIT;
+  public static string $RAMP_AUTHENTICATABLE_UNIT;
 
   /**
    * Database connection string.
@@ -86,49 +86,49 @@ class SETTING
    *  - dbconnection = sqlite:my/database/path/database.db
    * @var string
    */
-  public static $DATABASE_CONNECTION;
+  public static string $DATABASE_CONNECTION;
 
   /**
    * Database user name.
    * @var string
    */
-  public static $DATABASE_USER;
+  public static string $DATABASE_USER;
 
   /**
    * Database password.
    * @var string
    */
-  public static $DATABASE_PASSWORD;
+  public static string $DATABASE_PASSWORD;
 
   /**
    * Maximum rows to display on a single page from a single query.
    * @var int
    */
-  public static $DATABASE_MAX_RESULTS;
+  public static int $DATABASE_MAX_RESULTS;
 
   /**
    * SALT value used for password encryption.
    * @var string
    */
-  public static $SECURITY_PASSWORD_SALT;
+  public static string $SECURITY_PASSWORD_SALT;
 
   /**
    * Name to be used when sending e-mail.
    * @var string
    */
-  public static $EMAIL_FROM_NAME;
+  public static string $EMAIL_FROM_NAME;
 
   /**
    * Sender's e-mail address.
    * @var string
    */
-  public static $EMAIL_FROM_ADDRESS;
+  public static string $EMAIL_FROM_ADDRESS;
 
   /**
    * 'Reply to' e-mail address.
    * @var string
    */
-  public static $EMAIL_REPLY_ADDRESS;
+  public static string $EMAIL_REPLY_ADDRESS;
 
   /**
    * Templete for the welcome email.
@@ -136,43 +136,43 @@ class SETTING
    * enencripted auto generated password
    * @var string
    */
-  public static $EMAIL_WELCOME_TEMPLATE;
+  public static string $EMAIL_WELCOME_TEMPLATE;
 
   /**
    * Welcome email template type.
    * one of (html | text)
    * @var string
    */
-  public static $EMAIL_WELCOME_TEMPLATE_TYPE;
+  public static string $EMAIL_WELCOME_TEMPLATE_TYPE;
 
   /**
    * Welcome email subject line.
    * The single line of text people see when they receive your email.
    * @var string
    */
-  public static $EMAIL_WELCOME_SUBJECT_LINE;
+  public static string $EMAIL_WELCOME_SUBJECT_LINE;
 
   /**
    * Boolean flag for testing mode.
    * @var bool
    */
-  public static $TEST_ON;
+  public static bool $TEST_ON;
 
   /**
    * Boolean reset session used in testing.
    * @var bool
    */
-  public static $TEST_RESET_SESSION;
+  public static bool $TEST_RESET_SESSION;
 
   /**
    * Boolean operating in Develpment Mode Environment.
    * @var bool
    */
-  public static $DEV_MODE;
+  public static bool $DEV_MODE;
 
   /**
    * Array of requested scratch style shreets.
    * @var array
    */
-  public static $SCRATCH__CSS;
+  public static array $SCRATCH__CSS;
 }

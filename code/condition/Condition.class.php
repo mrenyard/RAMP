@@ -41,8 +41,8 @@ use ramp\core\Str;
  */
 abstract class Condition extends RAMPObject
 {
-  private $attribute;
-  private $operator;
+  private Str $attribute;
+  private Operator $operator;
   private $comparable;
 
   /**

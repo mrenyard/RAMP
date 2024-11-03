@@ -42,8 +42,7 @@ use ramp\condition\PostData;
  */
 final class PrimaryKey extends RecordComponent
 {
-  private static $name;
-  private $errorCollection;
+  private static Str $name;
 
   /**
    * Define a multiple part primaryKey related to its parent record.

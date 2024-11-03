@@ -45,7 +45,7 @@ use ramp\view\View;
  */
 final class FileCreate extends Templated
 {
-  private $fullFileName;
+  private Str $fullFileName;
 
   /**
    * Constructs FileCreat templated document View.

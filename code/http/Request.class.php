@@ -71,17 +71,17 @@ use ramp\http\Method;
  */
 class Request extends RAMPObject implements iBusinessModelDefinition
 {
-  private static $current;
-  private $expectsFragment;
-  private $method;
-  private $modelURN;
-  private $resourceURL;
-  private $recordName;
-  private $recordKey;
-  private $propertyName;
-  private $fromIndex;
-  private $filter;
-  private $postData;
+  private static ?Request $current;
+  private bool $expectsFragment;
+  private Method $method;
+  private ?Str $modelURN;
+  private ?Str $resourceURL;
+  private ?Str $recordName;
+  private ?Str $recordKey;
+  private ?Str $propertyName;
+  private ?int $fromIndex;
+  private ?Filter $filter;
+  private ?PostData $postData;
 
   public static function reset() { SELF::$current = NULL; }
 
@@ -107,9 +107,14 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    */
   private function __construct()
   {
-    $this->expectsFragment = \FALSE;
-    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-      $this->expectsFragment = \TRUE;
+    $this->recordKey = NULL;
+    $this->propertyName = NULL;
+    $this->fromIndex = NULL;
+    $this->filter = NULL;
+    $this->postData = NULL;  
+    $this->expectsFragment = FALSE;
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+      $this->expectsFragment = TRUE;
     }
     $method = $_SERVER['REQUEST_METHOD'];
     $this->method = ((count($_POST) <1) && ($method == 'POST'))?
@@ -162,7 +167,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    */
   protected function get_expectsFragment() : bool
   {
-    return ($this->expectsFragment);
+    return $this->expectsFragment;
   }
 
   /**

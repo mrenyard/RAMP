@@ -30,9 +30,9 @@ use ramp\model\business\validation\FailedValidationException;
 class ISOTime extends FormatBasedValidationRule
 {
   private static $type;
-  private $min;
-  private $max;
-  private $step;
+  private ?Str $min;
+  private ?Str $max;
+  private int $step;
 
    /**
    * Constructor for Time restricted regex pattern validation rule.

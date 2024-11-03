@@ -28,9 +28,9 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class RegexValidationRule extends ValidationRule
 {
-  private $placeholder;
-  private $pattern;
-  private $format;
+  // private Str $placeholder;
+  private string $pattern;
+  private ?string $format;
 
    /**
    * Constructor for regex pattern matching validation.

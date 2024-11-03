@@ -99,7 +99,8 @@ class RequestTest extends \tests\ramp\core\ObjectTest
     $_GET = array();
     $_POST = array();
     $_SERVER['REQUEST_METHOD'] = 'GET';
-    $_SERVER['QUERY_STRING'] = null;
+    $_SERVER['QUERY_STRING'] = NULL;
+    $_SERVER['HTTP_X_REQUESTED_WITH'] = NULL;
   }
 
   #region Setup
@@ -107,6 +108,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
     \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/tests/mocks/http';
     set_include_path( "'" . \ramp\SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path() );
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'ramp\model\business';
+    \ramp\SETTING::$SECURITY_PASSWORD_SALT = 'mineral composed primarily of sodium chloride';
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
   }

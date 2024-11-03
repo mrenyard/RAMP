@@ -41,9 +41,9 @@ use ramp\condition\Filter;
  */
 class RelationLookup extends Relation
 {
-  private $withRecordName; // Str
-  public $keys; // array
-  public $foreignKeyNames; // Strcollection
+  private Str $withRecordName;
+  // public array $keys;
+  // public StrCollection $foreignKeyNames;
 
   /**
    * Creates a relation from a single property of containing record to a Record collection.

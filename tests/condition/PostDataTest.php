@@ -54,7 +54,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
 {
   #region Setup
   protected function preSetup() : void {
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
+    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\condition';
     $this->typeName = Str::set('ramp\condition\InputDataCondition');
     $this->record = Str::set('Record');
     $this->expectedAtNameIndex = new InputDataCondition($this->record, Str::NEW(), Str::set('propertyA'), 'ValueA');

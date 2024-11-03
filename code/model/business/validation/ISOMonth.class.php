@@ -29,11 +29,11 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class ISOMonth extends FormatBasedValidationRule
 {
-  private static $type;
-  private static $maxlength;
-  private $min;
-  private $max;
-  private $step;
+  private static Str $type;
+  private static int $maxlength;
+  private ?Str $min;
+  private ?Str $max;
+  private int $step;
 
    /**
    * Constructor for month restricted regex pattern validation rule.

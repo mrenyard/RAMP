@@ -84,10 +84,10 @@ final class Str extends RAMPObject
   /**
    * this value i.e. '', ':', ';' 'word', 'a sentance'.
    */
-  private $value;
+  private string $value;
   // Case variants.
-  private $lower;
-  private $upper;
+  private Str $lower;
+  private Str $upper;
 
   /**
    * Constructor for new instance of Str.
@@ -339,11 +339,11 @@ final class Str extends RAMPObject
    * @param boolean $lowerCaseFirstLetter Lowercase the first letter
    * @return \ramp\core\Str New Str camel cased based on provided
    */
-  public static function camelCase(Str $value, bool $lowerCaseFirstLetter = \NULL) : Str
+  public static function camelCase(Str $value, bool $lowerCaseFirstLetter = NULL) : Str
   {
     if ($value === SELF::_EMPTY()){ return $value; } // cannot camelCase an empty string
     $value = str_replace(' ', '', ucwords(str_replace('-', ' ', (string)$value)));
-    if ($lowerCaseFirstLetter !== \NULL && $lowerCaseFirstLetter) { $value = lcfirst($value); }
+    if ($lowerCaseFirstLetter !== NULL && $lowerCaseFirstLetter) { $value = lcfirst($value); }
     return Str::set($value);
   }
 

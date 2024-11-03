@@ -41,9 +41,9 @@ use ramp\condition\Filter;
  */
 class RelationToMany extends Relation
 {
-  private $errorCollection; // StrCollection
-  private $withRecordName; // Str
-  private $keyMap; // Strcollection
+  private StrCollection $errorCollection; // StrCollection
+  private Str $withRecordName; // Str
+  private array $keyMap; // Strcollection
 
   /**
    * Creates a relation from a single property of containing record to a Record collection.

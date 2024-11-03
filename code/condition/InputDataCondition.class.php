@@ -47,7 +47,7 @@ use ramp\core\Str;
  */
 final class InputDataCondition extends BusinessCondition
 {
-  private $primaryKeyValue;
+  private Str $primaryKeyValue;
 
   /**
    * Constructs a single verified representation of a 'attribute–value pair'.

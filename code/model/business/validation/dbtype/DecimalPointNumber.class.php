@@ -30,12 +30,12 @@ use ramp\model\business\validation\ValidationRule;
  */
 class DecimalPointNumber extends DbTypeValidation
 {
-  private static $inputType;
-  private $precision;
-  private $point;
-  private $min;
-  private $max;
-  private $step;
+  private static Str $inputType;
+  private ?int $precision;
+  private int $point;
+  private string $min;
+  private string $max;
+  private float $step;
 
   /**
    * Default constructor for a validation rule of database type DecimalPointNumber.
@@ -68,7 +68,7 @@ class DecimalPointNumber extends DbTypeValidation
       }
       $step = $step . '0';
     }
-    $this->step = $step;
+    $this->step = (float)$step;
     parent::__construct(Str::set($point)->append(Str::SPACE())->append($errorHint), NULL);
   }
 

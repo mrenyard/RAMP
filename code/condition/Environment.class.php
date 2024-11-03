@@ -46,18 +46,18 @@ use ramp\core\Str;
  */
 abstract class Environment extends RAMPObject implements iEnvironment
 {
-  private $memberAccess;
-  private $assignment;
-  private $equalTo;
-  private $notEqualTo;
-  private $lessThan;
-  private $greaterThan;
-  private $and;
-  private $or;
-  private $openingParenthesis;
-  private $closingParenthesis;
-  private $openingGroupingParenthesis;
-  private $closingGroupingParenthesis;
+  private string $memberAccess;
+  private string $assignment;
+  private string $equalTo;
+  private string $notEqualTo;
+  private string $lessThan;
+  private string $greaterThan;
+  private string $and;
+  private string $or;
+  private string $openingParenthesis;
+  private string $closingParenthesis;
+  private string $openingGroupingParenthesis;
+  private string $closingGroupingParenthesis;
 
   /**
    * Protected constructor for use by sub-classes only.

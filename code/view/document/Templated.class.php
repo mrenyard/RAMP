@@ -49,9 +49,9 @@ use ramp\view\document\DocumentView;
  */
 class Templated extends DocumentView
 {
-  private $templateName;
-  private $templateType;
-  private $templatePath;
+  private Str $templateName;
+  private Str $templateType;
+  private string $templatePath;
 
   /**
    * Constructs Templated Document View.

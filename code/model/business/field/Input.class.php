@@ -47,7 +47,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class Input extends Field
 {
-  private $validationRule;
+  private DbTypeValidation $validationRule;
 
   /**
    * Creates input field related to a single property of containing record.

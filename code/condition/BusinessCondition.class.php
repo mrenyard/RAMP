@@ -45,8 +45,8 @@ use ramp\model\business\Property;
  */
 abstract class BusinessCondition extends Condition
 {
-  private $record;
-  private $property;
+  private Str $record;
+  private Str $property;
 
   /**
    * Default constructor for BusinessCondition.

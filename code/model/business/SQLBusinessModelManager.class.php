@@ -38,11 +38,11 @@ use ramp\condition\SQLEnvironment;
  */
 final class SQLBusinessModelManager extends BusinessModelManager
 {
-  private static $instance;
-  private $maxResults;
-  private $recordCollection;
-  private $dataObjectCollection;
-  private $databaseHandle;
+  private static BusinessModelManager $instance;
+  private int $maxResults;
+  private \SplObjectStorage $recordCollection;
+  private \SplObjectStorage $dataObjectCollection;
+  private ?\PDO $databaseHandle;
 
   /**
    * Constuct the instance.
@@ -177,9 +177,9 @@ final class SQLBusinessModelManager extends BusinessModelManager
           $record = new $recordFullName($dataObject);
           $this->recordCollection->attach($record);
           $this->dataObjectCollection->attach($dataObject);
-          $this->databaseHandle = \NULL;
+          $this->databaseHandle = NULL;
         } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
-          $this->databaseHandle = \NULL;
+          $this->databaseHandle = NULL;
           throw new DataFetchException($pdoException->getMessage(), 0, $pdoException); // @codeCoverageIgnoreEnd
         }
       }
@@ -225,9 +225,9 @@ final class SQLBusinessModelManager extends BusinessModelManager
         }
         $collection->add($record);
       } while ($dataObject = $statementHandle->fetch());
-      $this->databaseHandle = \NULL;
+      $this->databaseHandle = NULL;
     } catch (\PDOException $pdoException) { // @codeCoverageIgnoreStart
-      $this->databaseHandle = \NULL;
+      $this->databaseHandle = NULL;
       throw new DataFetchException($pdoException->getMessage(), 0, $pdoException); // @codeCoverageIgnoreEnd
     }
     return $collection;
@@ -356,7 +356,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
         $this->updateRecord($record);
       }
     }
-    if (isset($this->databaseHandle)) { $this->databaseHandle = \NULL; }
+    if (isset($this->databaseHandle)) { $this->databaseHandle = NULL; }
   }
 
   /**

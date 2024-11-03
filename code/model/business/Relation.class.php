@@ -40,8 +40,8 @@ use ramp\condition\Filter;
  */
 abstract class Relation extends RecordComponent
 {
-  protected $manager; // BusinessModelManager
-  private $with; // Relatable
+  protected BusinessModelManager $manager;
+  private ?Relatable $with;
 
   /**
    * Creates a relation related to a single property of containing record.
@@ -53,6 +53,7 @@ abstract class Relation extends RecordComponent
   {
     $MODEL_MANAGER = \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     $this->manager = $MODEL_MANAGER::getInstance();
+    $this->with = NULL;
     parent::__construct($name, $parent, $editable);
   }
 

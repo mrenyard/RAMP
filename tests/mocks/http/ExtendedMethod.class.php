@@ -29,26 +29,7 @@ use ramp\http\Method;
  */
 final class ExtendedMethod extends Method
 {
-  /**
-   * Constructor for new instance of ExtendedMethod.
-   * @param int $index Number to be assigned to this Verb
-   * @param \ramp\core\Str $verb Name of Method (verb/action) that this object is to represent
-   * @throws \InvalidArgumentException When $index is NOT an int
-   */
-  protected function __construct($index, Str $verb)
-  {
-    parent::__construct($index, $verb);
-  }
-
-  /**
-   * Test failed creation of new Method (used exclusivly for testing).
-   * Nonsence method (for testing) improper use on constructor (first argument NOT an int)
-   * @throws \InvalidArgumentException Expected exception for testing.
-   */
-  public static function FAIL()
-  {
-    return new ExtendedMethod('eight', Str::set('VERB'));
-  }
+  private static Method $SUCCEED;
 
   /**
    * Test successful creation of new Method (used exclusivly for testing).
@@ -57,6 +38,9 @@ final class ExtendedMethod extends Method
    */
   public static function SUCCEED()
   {
-    return new ExtendedMethod(8, Str::set('VERB'));
+    if (!isset(SELF::$SUCCEED)) {
+      SELF::$SUCCEED = new ExtendedMethod(8, Str::set('VERB'));
+    }
+    return SELF::$SUCCEED;
   }
 }

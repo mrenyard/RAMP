@@ -53,8 +53,8 @@ use ramp\model\business\AuthenticatibleUnit;
  */
 final class LoginAccount extends Record
 {
-  private $authenticatableUnit;
-  private $unencryptedPassword;
+  private AuthenticatableUnit $authenticatableUnit;
+  private string $unencryptedPassword;
 
   /**
    * Flag for assiciated View expressing wish to show password field.

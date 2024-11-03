@@ -41,7 +41,7 @@ use ramp\condition\SQLEnvironment;
  */
 final class Filter extends Collection
 {
-  private $subOrGroups;
+  private ?Collection $subOrGroups;
 
   /**
    * Constructs an empty collection for \ramp\condition\FilterCondition.

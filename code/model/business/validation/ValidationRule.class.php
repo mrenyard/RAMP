@@ -49,9 +49,9 @@ use ramp\core\Str;
  */
 abstract class ValidationRule extends RAMPObject
 {
-  private static $defaultInputType;
-  private $errorHint;
-  private $subRule;
+  private static Str $defaultInputType;
+  private Str $errorHint;
+  private ?ValidationRule $subRule;
 
   /**
    * Default constructor for a ValidationRule.

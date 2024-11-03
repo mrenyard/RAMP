@@ -30,7 +30,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class VarChar extends DbTypeValidation
 {
-  private $maxlength;
+  private int $maxlength;
 
   /**
    * Default constructor for a validation rule of database type VarChar.

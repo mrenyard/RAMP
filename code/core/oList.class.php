@@ -35,8 +35,8 @@ namespace ramp\core;
  */
 class oList extends RAMPObject implements iList
 {
-  private $compositeType;
-  private $list;
+  private string $compositeType;
+  private array $list;
 
   /**
    * Constructor for new instance of oList.

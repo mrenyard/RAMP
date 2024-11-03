@@ -31,11 +31,11 @@ use ramp\model\business\validation\FailedValidationException;
 class DateTimeLocal extends RegexValidationRule
 {
   private static $type;
-  private $min;
-  private $max;
-  private $step;
-  private $minDT;
-  private $maxDT;
+  private ?Str $min;
+  private ?Str $max;
+  private int $step;
+  private string $minDT;
+  private string $maxDT;
 
    /**
    * Constructor for month restricted regex pattern validation rule.
@@ -51,10 +51,10 @@ class DateTimeLocal extends RegexValidationRule
   {
     $failed = FALSE;
     if (!isset(SELF::$type)) { SELF::$type = Str::set('datetime-local'); } 
-      // TODO:mrenyard: Internationalise 'from' & 'to'.
-      $errorHint = ($min != NULL && $max !== NULL) ?
-        $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
-          $errorHint;  
+    // TODO:mrenyard: Internationalise 'from' & 'to'.
+    $errorHint = ($min !== NULL && $max !== NULL) ?
+      $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
+        $errorHint;  
     parent::__construct(
       $errorHint, 
       '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])T(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?',

@@ -26,6 +26,7 @@ use ramp\core\Str;
 use ramp\condition\PostData;
 use ramp\condition\Filter;
 use ramp\condition\FilterCondition;
+use ramp\model\business\BusinessModelManager;
 use ramp\model\business\LoginAccountType;
 use ramp\model\business\LoginAccount;
 use ramp\model\business\SimpleBusinessModelDefinition;
@@ -58,12 +59,12 @@ use ramp\view\document\Email;
  */
 final class Session extends RAMPObject
 {
-  private static $instance;
+  private static Session $instance;
 
-  private $modelManager;
-  private $loginAccount;
-  private $accountEmailFilter;
-  private $accountEmailCondition;
+  private BusinessModelManager $modelManager;
+  private LoginAccount $loginAccount;
+  private Filter $accountEmailFilter;
+  private FilterCondition $accountEmailCondition;
 
   /**
    * Constuct the instance.

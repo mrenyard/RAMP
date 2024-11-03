@@ -32,7 +32,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class TinyText extends DbTypeValidation
 {
-  private $maxlength;
+  private int $maxlength;
 
   /**
    * Default constructor for a validation rule of database type TinyText.

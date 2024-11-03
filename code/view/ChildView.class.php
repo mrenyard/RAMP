@@ -30,7 +30,7 @@ use ramp\model\Model;
  */
 abstract class ChildView extends View
 {
-  private $parent;
+  private View $parent;
 
   /**
    * Base constructor for all Views that require a parent.

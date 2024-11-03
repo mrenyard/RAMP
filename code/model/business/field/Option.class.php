@@ -37,9 +37,9 @@ use ramp\model\business\BusinessModel;
  */
 class Option extends BusinessModel implements iOption
 {
-  private $key;
-  private $description;
-  private $parentField;
+  private int $key;
+  private Str $description;
+  private SelectFrom $parentField;
 
   /**
    * Constructor for new instance of Option.

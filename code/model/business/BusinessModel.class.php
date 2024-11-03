@@ -24,6 +24,7 @@ use ramp\core\Str;
 use ramp\core\iOption;
 use ramp\core\iList;
 use ramp\core\oList;
+use ramp\core\iCollection;
 use ramp\core\Collection;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
@@ -46,11 +47,10 @@ use ramp\model\Model;
  */
 abstract class BusinessModel extends Model implements iList
 {
-  private $children;
+  private iList $children;
 
   /**
    * Base constructor for Business Models.
-   * @param \ramp\model\business\BusinessModel $children business models.
    */
   public function __construct()
   {

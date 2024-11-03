@@ -29,15 +29,15 @@ use ramp\core\RAMPObject;
  */
 class SimpleBusinessModelDefinition extends RAMPObject implements iBusinessModelDefinition
 {
-  private $recordName;
-  private $recordKey;
-  private $propertyName;
+  private Str $recordName;
+  private ?Str $recordKey;
+  private ?Str $propertyName;
 
   /**
    * Constructs a SimpleBusinessModelDefinition.
    * @param \ramp\core\Str $recordName Value for RecordName
-   * @param \ramp\core\Str $recordKey Value for RecordKey
-   * @param \ramp\core\Str $propertyName Value for PropertyName
+   * @param ?\ramp\core\Str $recordKey Value for RecordKey
+   * @param ?\ramp\core\Str $propertyName Value for PropertyName
    */
   public function __construct(Str $recordName, Str $recordKey = NULL, Str $propertyName = NULL)
   {

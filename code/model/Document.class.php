@@ -29,30 +29,30 @@ use ramp\model\Model;
  * RESPONSIBILITIES
  * - Inherit generalized methods for property access (from {@see \ramp\core\RAMPObject})
  * - Define generalized properties for Documents
- * @property \svetle\core\Str $id Unique Identifier of document / fragment
- * @property \svetle\core\Str $title Title of document / fragment
- * @property \svetle\core\Str $heading Heading of document / fragment
- * @property \svetle\core\Str $label Synonym for heading (on form fields)
- * @property \svetle\core\Str $summary Overview, intro or description (single paragraph).
- * @property \svetle\core\Str $placeholder Synonym for summary (on form fields)
- * @property \svetle\core\Str $extendedSummary additional paragraphs to summary (optional/HTMLight).
- * @property \svetle\core\Str $extendedContent Main body of content (HTMLight).
- * @property \svetle\core\Str $footnote Footer contained content info: referances, index, glossery, disclamer.
- * @property \svetle\core\Str $style Look, sub group or class.
+ * @property Str $id Unique Identifier of document / fragment
+ * @property ?Str $title Title of document / fragment
+ * @property ?Str $heading Heading of document / fragment
+ * @property ?Str $label Synonym for heading (on form fields)
+ * @property ?Str $summary Overview, intro or description (single paragraph).
+ * @property ?Str $placeholder Synonym for summary (on form fields)
+ * @property ?Str $extendedSummary additional paragraphs to summary (optional/HTMLight).
+ * @property ?Str $extendedContent Main body of content (HTMLight).
+ * @property ?Str $footnote Footer contained content info: referances, index, glossery, disclamer.
+ * @property ?Str $style Look, sub group or class.
  */
 class Document extends Model
 {
   private static $NEXT_ID = 0;
   public static function reset() { SELF:: $NEXT_ID = 0; }
 
-  private $id;
-  private $title;
-  private $heading;
-  private $summary;
-  private $extendedSummary;
-  private $extendedContent;
-  private $footnote;
-  private $style;
+  private Str $id;
+  private ?Str $title;
+  private ?Str $heading;
+  private ?Str $summary;
+  private ?Str $extendedSummary;
+  private ?Str $extendedContent;
+  private ?Str $footnote;
+  private ?Str $style;
 
   /**
    * Constructs a Document.
@@ -60,6 +60,13 @@ class Document extends Model
   public function __construct()
   {
     $this->id = Str::set('uid' . ++SELF::$NEXT_ID);
+    $this->title = NULL;
+    $this->heading = NULL;
+    $this->summary = NULL;
+    $this->extendedSummary = NULL;
+    $this->extendedContent = NULL;
+    $this->footnote = NULL;
+    $this->style = NULL;
   }
 
   /**

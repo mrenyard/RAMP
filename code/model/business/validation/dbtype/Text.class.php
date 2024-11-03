@@ -31,7 +31,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Text extends DbTypeValidation
 {
-  private $maxlength;
+  private int $maxlength;
 
   /**
    * Default constructor for a validation rule of database type Text.

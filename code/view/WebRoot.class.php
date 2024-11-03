@@ -37,12 +37,12 @@ enum PageType : string
 class WebRoot extends View
 {
   private static $instance;
-  private $body;
-  private $pageType;
-  private $dialog;
-  private $main;
-  private $datalists;
-  private $modal;
+  private Templated $body;
+  private PageType $pageType;
+  private Templated $dialog;
+  private Templated $main;
+  private Templated $datalists;
+  private ?Templated $modal;
     
   protected function set_type(PageType $type) { $this->pageType = $type; }
   protected function get_type() : PageType { return (isset($this->pageType)) ? $this->pageType : PageType::DATA; }

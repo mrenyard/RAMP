@@ -40,23 +40,22 @@ use ramp\core\Str;
  */
 abstract class RecordComponent extends BusinessModel
 {
-  private $name;
-  private $parent;
-  private $editable;
+  private Str $name;
+  private Record $parent;
+  private ?bool $editable;
 
   /**
    * Creates a multiple part primary key field related to a collection of property of associated record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* RecordComponent.
-   * @param \ramp\model\business\BusinessModel $children Next sub BusinessModel.
+   * @param bool $editable Optional set preferance for editability.
    */
-  // public function __construct(Str $name, Record $parent, BusinessModel $children = NULL, bool $editable = NULL)
   public function __construct(Str $name, Record $parent, bool $editable = NULL)
   {
     $this->name = $name;
     $this->parent = $parent;
     $this->editable = ($editable === FALSE) ? FALSE : $editable;
-    parent::__construct(); //$children);
+    parent::__construct();
   }
 
   /**

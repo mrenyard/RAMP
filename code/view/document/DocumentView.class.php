@@ -43,7 +43,7 @@ use ramp\model\Document;
  */
 abstract class DocumentView extends ComplexView
 {
-  private $documentModel;
+  private Document $documentModel;
 
   /**
    * Base constructor for document based views.

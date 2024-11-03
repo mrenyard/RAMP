@@ -29,7 +29,7 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class EmailAddress extends ValidationRule
 {
-  private $placeholder;
+  private Str $placeholder;
 
   /**
    * Constructor for email address format validation.

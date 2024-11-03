@@ -30,9 +30,9 @@ use ramp\model\business\validation\FailedValidationException;
 class Integer extends DbTypeValidation
 {
   private static $inputType;
-  private $min;
-  private $max;
-  private $step;
+  private int $min;
+  private int $max;
+  private int $step;
 
   /**
    * Default constructor for a validation rule of database type Interger between -2147483648 and 2147483647.
@@ -50,9 +50,9 @@ class Integer extends DbTypeValidation
     }
     //TODO:mrenyard: add localisation inclusiveNumberPreposition.
     $inclusiveNumberPreposition = Str::set(' to ');
-    $this->min = ($min) ? $min : -2147483648;
-    $this->max = ($max) ? $max : 2147483647;
-    $this->step = ($step) ? $step : 1;
+    $this->min = ($min !== NULL) ? $min : -2147483648;
+    $this->max = ($max !== NULL) ? $max : 2147483647;
+    $this->step = ($step !== NULL) ? $step : 1;
     parent::__construct(
       $errorHint->append($inclusiveNumberPreposition
         ->prepend(Str::set($this->min))

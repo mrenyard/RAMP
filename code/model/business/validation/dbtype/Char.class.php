@@ -30,7 +30,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Char extends DbTypeValidation
 {
-  private $length;
+  private int $length;
 
   /**
    * Default constructor for a validation rule of database type Char.

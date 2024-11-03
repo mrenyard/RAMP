@@ -16,7 +16,7 @@ namespace ramp\condition;
  */
 class PHPEnvironment extends Environment
 {
-  private static $INSTANCE;
+  private static iEnvironment $INSTANCE;
 
   /**
    * Set up and return instance of *this* with full set of operators.

@@ -29,11 +29,11 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class ISOWeek extends FormatBasedValidationRule
 {
-  private static $type;
-  private static $maxlength;
-  private $min;
-  private $max;
-  private $step;
+  private static Str $type;
+  private static int $maxlength;
+  private ?Str $min;
+  private ?Str $max;
+  private int $step;
 
    /**
    * Constructor for week restricted regex pattern validation rule.
@@ -66,7 +66,7 @@ class ISOWeek extends FormatBasedValidationRule
       }
     }
     $this->min = $min; $this->max = $max;
-    $this->step = ($step) ? $step : 'any';
+    $this->step = ($step) ? $step : 1;
   }
 
   /**
