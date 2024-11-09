@@ -16,14 +16,14 @@
   failOnWarning="true"
   >
   <testsuites>
-      <testsuite name="default">
-          <directory>../tests</directory>
-      </testsuite>
+    <testsuite name="default">
+      <directory suffix="Test.php">../tests/</directory>
+    </testsuite>
   </testsuites>
   <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
-      <include>
-          <directory>../code</directory>
-      </include>
+    <include>
+      <directory suffix=".class.php">../code</directory>
+    </include>
   </source>
   <coverage>
     <report>

@@ -1,5 +1,8 @@
 {
     "recommendations": [
-        "recca0120.vscode-phpunit"
+        "recca0120.vscode-phpunit",
+        "xdebug.php-debug",
+        "xdebug.php-pack",
+        "zobo.php-intellisense"
     ]
 }
