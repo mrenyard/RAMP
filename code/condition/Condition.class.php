@@ -29,7 +29,7 @@ use ramp\core\Str;
  *
  * RESPONSIBILITIES
  * - Define base api for Conditions
- * - Hold values/references for attribute, operator and comparible
+ * - Hold values/references for attribute, operator and comparable
  *
  * COLLABORATORS
  * - {@see \ramp\condition\iEnvironment}

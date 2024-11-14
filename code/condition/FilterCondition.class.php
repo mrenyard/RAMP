@@ -31,7 +31,7 @@ use ramp\core\PropertyNotSetException;
  *
  * RESPONSIBILITIES
  * - Enforce 'equal to' operator as the primary operation.
- * - Set defaults target environment as {@see \ramp\condition\SQLEnvironment}
+ * - Set default target environment as {@see \ramp\condition\SQLEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
  *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *

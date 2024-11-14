@@ -61,7 +61,7 @@ final class Filter extends Collection
    * against RecordCollection
    * @throws \LengthException when $filters is empty
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
-   * as defined by your locally defined business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public static function build(Str $recordName, array $filters) : Filter
   {

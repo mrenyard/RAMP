@@ -26,9 +26,9 @@ use ramp\core\RAMPObject;
  * An operation to be performed against a Conditions predict.
  *
  * RESPONSIBILITIES
- * - Each variant of Operator is resposible for holding its type as a string.
+ * - Each variant of Operator is responsible for holding its type as a string.
  * - Act as a factory for a range of operation types.
- * - Work with iEnvironment in providing string literal representations of relavant operation.
+ * - Work with iEnvironment in providing string literal representations of relevant operation.
  *
  * COLLABORATORS
  * - {@see \ramp\condition\iEnvironment}

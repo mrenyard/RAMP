@@ -28,21 +28,21 @@ use ramp\core\Str;
  *
  * RESPONSIBILITIES
  * - Provide base implementation of iEnvironment.
- * - Hold full set of properties and there accessors.
- * - Simplify code base of inherited specalized environment classes.
+ * - Hold full set of properties and their accessors.
+ * - Simplify code base of inherited specialized environment classes.
  *
- * @property-read \ramp\core\Str $memberAccess Returns Str repesentation of environment specific 'member access' operator.
- * @property-read \ramp\core\Str $assignment   Returns Str repesentation of environment specific 'assignment' operator.
- * @property-read \ramp\core\Str $equalTo Returns Str repesentation of environment specific 'equal to' operator.
- * @property-read \ramp\core\Str $notEqualTo Returns Str repesentation of environment specific 'not equal to' operator.
- * @property-read \ramp\core\Str $lessThan Returns Str repesentation of environment specific 'less than' operator.
- * @property-read \ramp\core\Str $greaterThan Returns Str repesentation of environment specific 'greater than' operator.
- * @property-read \ramp\core\Str $and Returns Str repesentation of environment specific 'and' operator.
- * @property-read \ramp\core\Str $or Returns Str repesentation of environment specific 'or' operator.
- * @property-read \ramp\core\Str $openingParentheses Returns Str repesentation of environment specific 'openingParentheses' operator.
- * @property-read \ramp\core\Str $closingParentheses Returns Str repesentation of environment specific 'closingParentheses' operator.
- * @property-read \ramp\core\Str $openingGroupingParentheses Returns Str repesentation of environment specific 'openingGroupingParentheses' operator.
- * @property-read \ramp\core\Str $closingGroupingParentheses Returns Str repesentation of environment specific 'closingGroupingParentheses' operator.
+ * @property-read \ramp\core\Str $memberAccess Returns Str representation of environment specific 'member access' operator.
+ * @property-read \ramp\core\Str $assignment   Returns Str representation of environment specific 'assignment' operator.
+ * @property-read \ramp\core\Str $equalTo Returns Str representation of environment specific 'equal to' operator.
+ * @property-read \ramp\core\Str $notEqualTo Returns Str representation of environment specific 'not equal to' operator.
+ * @property-read \ramp\core\Str $lessThan Returns Str representation of environment specific 'less than' operator.
+ * @property-read \ramp\core\Str $greaterThan Returns Str representation of environment specific 'greater than' operator.
+ * @property-read \ramp\core\Str $and Returns Str representation of environment specific 'and' operator.
+ * @property-read \ramp\core\Str $or Returns Str representation of environment specific 'or' operator.
+ * @property-read \ramp\core\Str $openingParentheses Returns Str representation of environment specific 'openingParentheses' operator.
+ * @property-read \ramp\core\Str $closingParentheses Returns Str representation of environment specific 'closingParentheses' operator.
+ * @property-read \ramp\core\Str $openingGroupingParentheses Returns Str representation of environment specific 'openingGroupingParentheses' operator.
+ * @property-read \ramp\core\Str $closingGroupingParentheses Returns Str representation of environment specific 'closingGroupingParentheses' operator.
  */
 abstract class Environment extends RAMPObject implements iEnvironment
 {

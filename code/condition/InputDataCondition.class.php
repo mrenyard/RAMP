@@ -29,9 +29,9 @@ use ramp\core\Str;
  *
  * RESPONSIBILITIES
  * - Extend BusinessCondition to hold additional value for primaryKey,
- *    alone with record and property as component parts of attribute.
+ *    along with record and property as component parts of attribute.
  * - Enforce assignment operator as the primary operation.
- * - Set defaults target environment as {@see \ramp\condition\URNQueryEnvironment}
+ * - Set default target environment as {@see \ramp\condition\URNQueryEnvironment}
  * - Ensure components are restricted and evaluated by the constraints of local business model
  *    defined within RAMP_BUSINESS_MODEL_NAMESPACE.
  *
@@ -50,7 +50,7 @@ final class InputDataCondition extends BusinessCondition
   private Str $primaryKeyValue;
 
   /**
-   * Constructs a single verified representation of a 'attribute–value pair'.
+   * Constructs a single verified representation of an 'attribute–value pair'.
    * @param \ramp\core\Str $record Name of target business record
    * @param \ramp\core\Str $primaryKeyValue Primary Key value of target business record
    * @param \ramp\core\Str $property Name of target property

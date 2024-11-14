@@ -23,7 +23,7 @@ namespace ramp\condition;
 use ramp\core\Str;
 
 /**
- * Interface for environment specilised operators.
+ * Interface for environment specialised operators.
  */
 interface iEnvironment
 {
@@ -34,73 +34,73 @@ interface iEnvironment
   public static function getInstance() : iEnvironment;
 
   /**
-   * Return string repesentation of environment specific 'member access' operator.
+   * Return string representation of environment specific 'member access' operator.
    * @return \ramp\core\Str Str object composed environment specific 'member access' operator
    */
   public function get_memberAccess() : Str;
 
   /**
-   * Return string repesentation of environment specific 'assignment operator'.
+   * Return string representation of environment specific 'assignment operator'.
    * @return \ramp\core\Str Str object composed environment specific 'assignment operator'
    */
   public function get_assignment() : Str;
 
   /**
-   * Return string repesentation of environment specific 'equal to' operator.
+   * Return string representation of environment specific 'equal to' operator.
    * @return \ramp\core\Str Str object composed environment specific 'equal to' operator
    */
   public function get_equalTo() : Str;
 
   /**
-   * Return string repesentation of environment specific 'not equal to' operator.
+   * Return string representation of environment specific 'not equal to' operator.
    * @return \ramp\core\Str Str object composed environment specific 'not equal to' operator
    */
   public function get_notEqualTo() : Str;
 
   /**
-   * Return string repesentation of environment specific 'less than' operator.
+   * Return string representation of environment specific 'less than' operator.
    * @return \ramp\core\Str Str object composed environment specific 'less than' operator
    */
   public function get_lessThan() : Str;
 
   /**
-   * Return string repesentation of environment specific 'greater than' operator.
+   * Return string representation of environment specific 'greater than' operator.
    * @return \ramp\core\Str Str object composed environment specific 'greater than' operator
    */
   public function get_greaterThan() : Str;
 
   /**
-   * Return string repesentation of environment specific 'and' operator.
+   * Return string representation of environment specific 'and' operator.
    * @return \ramp\core\Str Str object composed environment specific 'and' operator
    */
   public function get_and() : Str;
 
   /**
-   * Return string repesentation of environment specific 'or' operator.
+   * Return string representation of environment specific 'or' operator.
    * @return \ramp\core\Str Str object composed environment specific 'or' operator
    */
   public function get_or() : Str;
 
   /**
-   * Return string repesentation of environment specific 'opening parenthesis' operator.
+   * Return string representation of environment specific 'opening parenthesis' operator.
    * @return \ramp\core\Str Str object composed environment specific 'opening parenthesis' operator
    */
   public function get_openingParenthesis() : Str;
 
   /**
-   * Return string repesentation of environment specific 'closing parenthesis' operator.
+   * Return string representation of environment specific 'closing parenthesis' operator.
    * @return \ramp\core\Str Str object composed environment specific 'closing parenthesis' operator
    */
   public function get_closingParenthesis() : Str;
 
   /**
-   * Return string repesentation of environment specific 'opening grouping parenthesis' operator.
+   * Return string representation of environment specific 'opening grouping parenthesis' operator.
    * @return \ramp\core\Str Str object composed environment specific 'opening grouping parenthesis' operator
    */
   public function get_openingGroupingParenthesis() : Str;
 
   /**
-   * Return string repesentation of environment specific 'closing grouping parenthesis' operator.
+   * Return string representation of environment specific 'closing grouping parenthesis' operator.
    * @return \ramp\core\Str Str object composed environment specific 'closing grouping parenthesis' operator
    */
   public function get_closingGroupingParenthesis() : Str;
