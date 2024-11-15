@@ -24,7 +24,7 @@ namespace ramp\core;
  * Collection for iOption.
  *
  * RESPONSIBILITIES
- * - Holds references to collection of varifiable {@see iOption}s.
+ * - Holds references to collection of verifiable {@see iOption}s.
  * - Implements the functionality of {@see iCollection}.
  *
  * COLLABORATORS

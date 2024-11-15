@@ -49,12 +49,12 @@ interface iOption
   public function get_key(): int;
 
   /**
-   * Get description or lable for a single option.
+   * Get description or label for a single option.
    * **DO NOT CALL DIRECTLY, USE:**
    * ```php
    * $this->description;
    * ```
-   * @return Str Description Text representing avalible option.
+   * @return Str Description Text representing available option.
    */
   public function get_description() : Str;
 
