@@ -50,8 +50,9 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   private $templateType;
 
   #region Setup
-  protected function preSetup() : void { 
-    SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
+  protected function preSetup() : void {
+    SETTING::$DEV_MODE = TRUE;
+    SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
 
