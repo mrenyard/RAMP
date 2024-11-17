@@ -25,7 +25,7 @@ namespace ramp\core;
  *
  * RESPONSIBILITIES
  * - Act as strongly typed Str class for type checking.
- * - Keep single referance to a set of simple regularly used strings.
+ * - Keep single reference to a set of simple regularly used strings.
  * - Provide an API for set of simple Str based functions.
  *
  * INVARIANT
@@ -82,7 +82,7 @@ final class Str extends RAMPObject
   private static $UNDERLINE;
 
   /**
-   * this value i.e. '', ':', ';' 'word', 'a sentance'.
+   * this value i.e. '', ':', ';' 'word', 'a sentence'.
    */
   private string $value;
   // Case variants.
@@ -334,10 +334,10 @@ final class Str extends RAMPObject
   }
 
   /**
-   * Creates a camelcase version of the provided Str.
-   * @param \ramp\core\Str $value Str to camelcase
+   * Creates a camelCase version of the provided Str.
+   * @param \ramp\core\Str $value Str to be camelCased
    * @param boolean $lowerCaseFirstLetter Lowercase the first letter
-   * @return \ramp\core\Str New Str camel cased based on provided
+   * @return \ramp\core\Str New Str camelCased based on provided
    */
   public static function camelCase(Str $value, bool $lowerCaseFirstLetter = NULL) : Str
   {
@@ -375,7 +375,7 @@ final class Str extends RAMPObject
   }
 
   /**
-   * Returns a StrCollection split at the point of designated seperator.
+   * Returns a StrCollection split at the point of designated separator.
    * @param \ramp\core\StrCollection $separator Separator used to determine points of separation. 
    */
   public function explode(Str $separator) : StrCollection

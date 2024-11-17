@@ -68,7 +68,7 @@ class oList extends RAMPObject implements iList
   }
 
   /**
-   * Implementation of \IteratorAggregate method for use with foreach etc.
+   * Implementation of \IteratorAggregate method for use with 'foreach' etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach.
    */
   final public function getIterator() : \Traversable
