@@ -31,7 +31,7 @@
         outputDirectory="../../../Code/Documentation/coverage/"
         lowUpperBound="50"
         highLowerBound="90"
-        customCssFile="tools/custom.css" />
+        customCssFile="custom.css" />
     </report>
   </coverage>
 </phpunit>
