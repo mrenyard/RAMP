@@ -24,7 +24,7 @@ use ramp\core\Str;
 
 /**
  * Alphanumeric phrase, paragraph, text or sentance Regex pattern validation containing 
- * letters, numbers, hyphens or underscores, special characters ("£$%^*+=/:;@~#) and punctuation: ',!?.
+ * letters, numbers, hyphens and underscores, special characters ("£$%^*+=/:;@~#) and punctuation: ',!?.
  */
 class AlphanumericPhrase extends RegexValidationRule
 {

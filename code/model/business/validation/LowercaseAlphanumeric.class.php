@@ -25,7 +25,7 @@ use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Lowercase alphnumaric Regex pattern validation, allows ONLY
- * lowercase letters, numbers, full stops, hypens or underscores, a single word.
+ * lowercase letters, numbers, full stops, hypens and underscores, a single word.
  */
 class LowercaseAlphanumeric extends RegexValidationRule
 {

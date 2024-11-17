@@ -24,13 +24,13 @@ use ramp\core\Str;
 
 /**
  * Strictly alphnumaric lowercase Regex pattern validation,
- * allows Only lowercase latin characters or numbers.
+ * allows Only lowercase latin characters and numbers.
  */
 class LowercaseAlphanumericStrict extends RegexValidationRule
 {
     /**
    * Constructor for strict alphnumaric regex pattern validation,
-   * allows Only letters or numbers, a single word.
+   * allows Only letters and numbers, a single word.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */

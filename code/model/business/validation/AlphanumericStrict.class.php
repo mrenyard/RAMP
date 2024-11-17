@@ -24,7 +24,7 @@ use ramp\core\Str;
 
 /**
  * Strictly alphnumaric Regex pattern validation, allows Only
- * uppercase and lowercase latin characters or numbers.
+ * uppercase and lowercase latin characters and numbers.
  */
 class AlphanumericStrict extends RegexValidationRule
 {

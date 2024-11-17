@@ -24,7 +24,7 @@ use ramp\core\Str;
 
 /**
  * Alphabetic Regex pattern validation, allows ONLY
- * letters, full stops, hypens or underscores, a single word.
+ * letters, full stops, hypens and underscores, a single word.
  */
 class Alphabetic extends RegexValidationRule
 {
