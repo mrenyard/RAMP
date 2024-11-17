@@ -51,8 +51,8 @@ class TimeTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
     $this->hint5 = Str::set('anything NOT BadValue');
     $this->hint4 = Str::set('under 4 chars');
     $this->hint3 = Str::set('hinted AAAA');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeTime($this->hint5,
@@ -152,11 +152,11 @@ class TimeTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess( // badValue (shoud be 00:00:00).
-    $badValue = '24:00', $goodValue = '23:29', $failPoint = 1, $ruleCount = 5,
+    array $badValues = ['24:00'], ?array $goodValues = ['23:29'], int $failPoint = 1, int $ruleCount = 5,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

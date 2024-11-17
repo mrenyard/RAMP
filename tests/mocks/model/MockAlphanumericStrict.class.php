@@ -1,6 +1,7 @@
 <?php
 /**
- * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ * Testing - RAMP - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,25 +16,28 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.test
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\AlphanumericStrict;
 
 /**
- * Alphabetic phrase, paragraph, text or sentance regex pattern validation.
+ * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
+ * .
  */
-class AlphabeticPhrase extends RegexValidationRule
+class MockAlphanumericStrict extends AlphanumericStrict
 {
-    /**
-   * Constructor for Alphabetic regex pattern validation.
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+  /**
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
    */
-  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
+  protected function test($value) : void
   {
-    parent::__construct($errorHint, '[a-zA-Z_\-,\'\. ]*', $subRule);
+    MockValidationRule::$testCallCount++;
+    parent::test($value);
   }
 }

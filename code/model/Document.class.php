@@ -170,7 +170,7 @@ class Document extends Model
    */
   protected function set_extendedSummary(string $value) : void
   {
-    // TODO:mrenyard: Safe HTMLight validation.
+    // TODO:mrenyard: Safe HTMLite validation.
     $this->extendedSummary = Str::set($value);
   }
 
@@ -187,7 +187,7 @@ class Document extends Model
    */
   protected function set_extendedContent(string $value) : void
   {
-    // TODO:mrenyard: Safe HTMLight validation.
+    // TODO:mrenyard: Safe HTMLite validation.
     $this->extendedContent = Str::set($value);
   }
 

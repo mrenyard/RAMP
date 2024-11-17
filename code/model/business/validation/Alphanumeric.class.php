@@ -23,19 +23,18 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Alphnumaric regex pattern validation,
- * containung ONLY letters, numbers, hypens or underscores, a single word.
+ * Alphnumaric Regex pattern validation, allows ONLY
+ * letters, numbers, full stops, hypens or underscores, a single word.
  */
 class Alphanumeric extends RegexValidationRule
 {
   /**
-   * Constructor for alphnumaric regex pattern validation,
-   * containung ONLY letters, numbers, hypens or underscores, a single word.
+   * Constructor for alphnumaric Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[a-zA-Z0-9_\-]*', $subRule);
+    parent::__construct($errorHint, "[0-9a-zA-Z_\-.']*", $subRule);
   }
 }

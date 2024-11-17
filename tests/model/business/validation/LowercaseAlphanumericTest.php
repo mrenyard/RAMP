@@ -21,66 +21,147 @@
  */
 namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/RegexValidationRuleTest.php';
+
 require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/MockLowercaseAlphanumeric.class.php';
+
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\LowercaseAlphanumeric;
+
+use tests\ramp\mocks\model\MockLowercaseAlphanumeric;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\LowercaseAlphanumeric.
  */
-class LowercaseAlphanumericTest extends \PHPUnit\Framework\TestCase
+class LowercaseAlphanumericTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
-  private $testObject;
-
-  /**
-   * Setup
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    $this->testObject = new LowercaseAlphanumeric(Str::set('lowerCase and alphanumeric'));
-    new VarChar(Str::set('string with a maximun character length of '), 40, $this->testObject);
+    $this->maxlength = 10;
+    $this->hint6 = Str::set('part six');
+    $this->hint5 = Str::set('part five');
+    $this->hint4 = Str::set('part four');
+    $this->hint3 = Str::set('part three');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
+  protected function getTestObject() : RAMPObject {
+    return new MockLowercaseAlphanumeric($this->hint6,
+      new PlaceholderValidationRule($this->hint5,
+        new PatternValidationRule($this->hint4,
+          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+            new FailOnBadValidationRule($this->hint2,
+              new MinMaxStepValidationRule($this->hint1)
+            )
+          )
+        )
+      )
+    );
+  }
+  #endregion
+
+  #region Sub process template
+  protected function doAttributeValueConfirmation()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
+      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
+      (string)$this->testObject->hint
+    );
+    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
+    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
+    $this->assertSame($this->maxlength, $this->testObject->maxlength);
+    $this->assertSame('[0-9a-z_\-\.\']*', (string)$this->testObject->pattern);
+    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
+    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
+    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
+  }
+  #endregion
 
   /**
    * Collection of assertions for ramp\validation\LowercaseAlphanumeric.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\RegexValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\LowercaseAlphanumeric}
    * @see \ramp\model\business\validation\LowercaseAlphanumeric
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\LowercaseAlphanumeric', $this->testObject);
+  }
+  #region Inherited Tests
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
   }
 
   /**
-   * Collection of assertions for ramp\model\business\validation\LowercaseAlphanumeric::process().
-   * - assert void returned when test successful
-   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see \ramp\model\business\validation\LowercaseAlphanumeric::process()
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
    */
-  public function testTest()
+  public function testBadPropertyCallExceptionOn__get() : void
   {
-    $this->assertNull($this->testObject->process('abcdefghijklmnopqrstuvwxyz1234567890'));
-    try {
-      $this->testObject->process('Not-LowercaseAlphanumeric');
-    } catch (FailedValidationException $expected) {
-      return;
-    }
-    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
+    parent::testBadPropertyCallExceptionOn__get();
   }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testProcess(
+    array $badValues = ['BAD+regex'], ?array $goodValues = ["good_'2-me."], int $failPoint = 1, int $ruleCount = 6,
+    $failMessage = '$value failed to match provided regex!'
+  ) : void
+  {
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
+  }
+  #endregion
 }

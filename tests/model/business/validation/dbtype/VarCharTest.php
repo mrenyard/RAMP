@@ -52,8 +52,8 @@ class VarCharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
     $this->hint5 = Str::set('string with a maximum length of ');
     $this->hint4 = Str::set('matching pattern');
     $this->hint3 = Str::set('hinted AAAA');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeVarChar($this->hint5, $this->maxlength,
@@ -154,11 +154,11 @@ class VarCharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess(
-    $badValue = 'LongerThan10Chars', $goodValue = 'nineChars', $failPoint = 1, $ruleCount = 5,
+    array $badValues = ['LongerThan10Chars'], ?array $goodValues = ['nineChars'], int $failPoint = 1, int $ruleCount = 5,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

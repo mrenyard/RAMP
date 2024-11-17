@@ -23,7 +23,8 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Alphabetic regex pattern validation.
+ * Alphabetic Regex pattern validation, allows ONLY
+ * letters, full stops, hypens or underscores, a single word.
  */
 class Alphabetic extends RegexValidationRule
 {
@@ -34,6 +35,6 @@ class Alphabetic extends RegexValidationRule
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[a-zA-Z_\-]*', $subRule);
+    parent::__construct($errorHint, '[a-zA-Z_\-\.\']*', $subRule);
   }
 }

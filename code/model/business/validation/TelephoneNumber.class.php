@@ -27,18 +27,16 @@ use ramp\core\Str;
  */
 class TelephoneNumber extends RegexValidationRule
 {
-  private static $type;
-  private static $maxlength;
+  private static Str $type;
 
    /**
-   * Constructor for telephone number restricted regex pattern validation.
+   * Constructor for telephone number restricted Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    */
-  public function __construct(Str $errorMessage)
+  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    if (!isset(SELF::$type)) { SELF::$type = Str::set('tel'); } 
-    if (!isset(SELF::$maxlength)) { SELF::$maxlength = Str::set('20'); }
-    parent::__construct($errorHint, '(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}');
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('tel'); }
+    parent::__construct($errorHint, '(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}', $subRule);
   }
 
   /**
@@ -47,13 +45,5 @@ class TelephoneNumber extends RegexValidationRule
   protected function get_inputType() : Str
   {
     return SELF::$type;
-  }
-
-  /**
-   * @ignore
-   */
-  protected function get_maxlength() : ?int
-  {
-    return SELF::$maxlength;
   }
 }

@@ -25,22 +25,20 @@ use ramp\core\Str;
 
 /**
  * Single validation rule to test against an input value before allowing a business model property
- *  to be set.
+ * to be set.
  *
  * RESPONSIBILITIES
  * - Defines API for test method, where a single code defined test is executed against provided value.
  * - Act as a decorator pattern where several tests can be organised to run consecutively.
- * - Works with other ValidationRules to provide more complex set of tests.
+ * - Works with other ValidationRules to provide a more complex set of tests.
  *
  * COLLABORATORS
  * - {@see \ramp\validation\ValidationRule}
  * 
- * @property-read \ramp\core\Str $inputType Input type.
- * @property-read \ramp\core\Str $pattern Regex pattern used in this validation rule.
-
-
  * @property-read ?\ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered.
  * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
+ * @property-read ?int $minlength The minimum allowed value length.
  * @property-read ?int $maxlength The maximum allowed value length.
  * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid.
@@ -71,7 +69,7 @@ abstract class ValidationRule extends RAMPObject
    * );
    * ```
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test..
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
@@ -102,6 +100,14 @@ abstract class ValidationRule extends RAMPObject
   protected function get_pattern() : ?Str
   {
     return ($this->subRule) ? $this->subRule->pattern : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_minlength() : ?int
+  {
+    return ($this->subRule) ? $this->subRule->minlength : NULL;
   }
 
   /**

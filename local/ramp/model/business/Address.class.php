@@ -40,10 +40,10 @@ class Address extends Record
     if ($this->register('countryCode', RecordComponentType::KEY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\Char(
+        new validation\dbtype\Char( // Str::set('e.g. UK'),
           Str::set('string with a maximum charactor length of '),
           2, new validation\Alphabetic(
-            Str::set('containung ONLY letters, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
       ));
@@ -56,10 +56,10 @@ class Address extends Record
     if ($this->register('postalCode', RecordComponentType::KEY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. SW1A 2AA'),
           Str::set('string with a maximum charactor length of '),
           8, new validation\PostCode(
-            Str::set('A UK PostCode')
+            Str::set('a UK PostCode')
           ),
         )
       ));
@@ -72,10 +72,10 @@ class Address extends Record
     if ($this->register('deliveryPointSuffix', RecordComponentType::KEY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\Char(
+        new validation\dbtype\Char( // Str::set('e.g. T1'),
           Str::set('string with a character length of exactly '),
           2, new validation\UppercaseAlphanumericStrict(
-            Str::set('containung ONLY letters or numbers, a single word')
+            Str::set('containing ONLY letters or numbers, a single word')
           ),
         )
       ));
@@ -88,10 +88,10 @@ class Address extends Record
     if ($this->register('buildingNumber', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. 123'),
           Str::set('string with a maximum charactor length of '),
           15, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));
@@ -104,10 +104,10 @@ class Address extends Record
     if ($this->register('buildingName', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. The Pentagon'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));
@@ -120,10 +120,10 @@ class Address extends Record
     if ($this->register('subBuildingNumber', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. 3'),
           Str::set('string with a maximum charactor length of '),
           15, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));
@@ -136,10 +136,10 @@ class Address extends Record
     if ($this->register('organisationName', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. Justified Ltd.'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -152,10 +152,10 @@ class Address extends Record
     if ($this->register('departmentName', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. Human Resources'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -168,10 +168,10 @@ class Address extends Record
     if ($this->register('PoBoxNumber', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. 2468'),
           Str::set('string with a maximum charactor length of '),
           15, new validation\Alphanumeric(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -184,10 +184,10 @@ class Address extends Record
     if ($this->register('dependentThoroughfare', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. South'),
           Str::set('string with a maximum charactor length of '),
           75, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -200,10 +200,10 @@ class Address extends Record
     if ($this->register('thoroughfare', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. High Street'),
           Str::set('string with a maximum charactor length of '),
           75, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -216,10 +216,10 @@ class Address extends Record
     if ($this->register('doubleDependentLocality', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. ...'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -232,10 +232,10 @@ class Address extends Record
     if ($this->register('dependentLocality', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. ...'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));
@@ -248,10 +248,10 @@ class Address extends Record
     if ($this->register('postTown', RecordComponentType::PROPERTY)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
-        new validation\dbtype\VarChar(
+        new validation\dbtype\VarChar( // Str::set('e.g. SOOUTHAMPTON'),
           Str::set('string with a maximum charactor length of '),
           45, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY spaces, letters, numbers, hypens or underscores, a ')
+            Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
         )
       ));

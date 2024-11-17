@@ -41,8 +41,8 @@ class DateTimeLocal extends RegexValidationRule
    * Constructor for month restricted regex pattern validation rule.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
-   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-dd).
-   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-dd).
+   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-ddThh:mm[:ss]).
+   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-ddThh:mm[:ss]).
    * @param int $step Optional number that specifies the granularity that the value must adhere to,
    * for date inputs, the value of step is given in days with the default of 1, indicating 1 day.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
@@ -118,7 +118,7 @@ class DateTimeLocal extends RegexValidationRule
   /**
    * @ignore
    */
-  protected function get_step() : ?Str
+  protected function get_step() : Str
   {
     return Str::set($this->step);
   }

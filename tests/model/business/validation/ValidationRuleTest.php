@@ -65,12 +65,12 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
   protected function preSetup() : void
   {
     $this->maxlength = 4;
-    $this->hint6 = Str::set('anything NOT BadValue');
-    $this->hint5 = Str::set('under 4 chars');
-    $this->hint4 = Str::set('hinted AAAA');
-    $this->hint3 = Str::set('maxlength');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint6 = Str::set('part six');
+    $this->hint5 = Str::set('part five');
+    $this->hint4 = Str::set('part four');
+    $this->hint3 = Str::set('part three');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockValidationRule($this->hint6,
@@ -172,24 +172,28 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
-  public function testProcess($badValue = 'BAD', $goodValue = 'GOOD', $failPoint = 5, $ruleCount = 6,
+  public function testProcess(array $badValues = ['BAD'], ?array $goodValues = ['GOOD'], int $failPoint = 5, int $ruleCount = 6,
     $failMessage = 'FailOnBadValidationRule has been given the value BAD'
   ) : void
   {
     MockValidationRule::reset();
-    try {
-      $this->testObject->process($badValue);
-    } catch (FailedValidationException $expected) {
-      $this->assertEquals($failMessage, $expected->getMessage());
-      $this->assertSame($failPoint, MockValidationRule::$testCallCount);
-      $this->doAttributeValueConfirmation();
-
+    $f = 0;
+    foreach ($badValues as $badValue) {
+      MockValidationRule::reset();
+      try {
+        $this->testObject->process($badValue);
+      } catch (FailedValidationException $expected) { $f++;
+        $this->assertEquals($failMessage, $expected->getMessage());
+        $this->assertSame($failPoint, MockValidationRule::$testCallCount);
+      }
+    }
+    if ($f != count($badValues)) { $this->fail('An expected \FailedValidationException has NOT been raised.'); }
+    $this->doAttributeValueConfirmation();
+    foreach ($goodValues as $goodValue) {
       MockValidationRule::reset();
       $this->testObject->process($goodValue);
       $this->assertSame($ruleCount, MockValidationRule::$testCallCount);
-      return;
-    }      
-    $this->fail('An expected \FailedValidationException has NOT been raised.');
+    }
   }
   #endregion
 }

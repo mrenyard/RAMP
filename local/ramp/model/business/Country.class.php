@@ -43,7 +43,7 @@ class Country extends Record
         new validation\dbtype\Char(
           Str::set('string with a maximum charactor length of '),
           2, new validation\Alphabetic(
-            Str::set('containung ONLY letters, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
       ));
@@ -59,7 +59,7 @@ class Country extends Record
         new validation\dbtype\Char(
           Str::set('string with a maximum charactor length of '),
           45, new validation\Alphabetic(
-            Str::set('containung ONLY letters, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
       ));

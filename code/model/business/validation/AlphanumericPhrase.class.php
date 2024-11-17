@@ -23,18 +23,18 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Alphanumeric phrase, paragraph, text or sentance regex pattern validation.
+ * Alphanumeric phrase, paragraph, text or sentance Regex pattern validation containing 
+ * letters, numbers, hyphens or underscores, special characters ("£$%^*+=/:;@~#) and punctuation: ',!?.
  */
 class AlphanumericPhrase extends RegexValidationRule
 {
     /**
-   * Constructor for alphnumaric phrase, paragraph, text or sentance regex pattern validation.
-   * ''
+   * Constructor for alphnumaric phrase, paragraph, text or sentance Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[a-zA-Z0-9_\-,\'\. ]*', $subRule);
+    parent::__construct($errorHint, '[0-9a-zA-Z_\-\.\'! "£\$%\^\*\(\)\+=\/\:;@~#\?,]*', $subRule);
   }
 }

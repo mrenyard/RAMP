@@ -24,8 +24,8 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Lower case alphanumeric validation.
- * Runs code defined test against provided value.
+ * Uppercase alphnumaric Regex pattern validation, allows ONLY
+ * uppercase letters, numbers, full stops, hypens or underscores, a single word.
  */
 class UppercaseAlphanumeric extends RegexValidationRule
 {
@@ -36,6 +36,6 @@ class UppercaseAlphanumeric extends RegexValidationRule
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[A-Z0-9_/-]*', $subRule);
+    parent::__construct($errorHint, '[0-9A-Z_\-\.\']*', $subRule);
   }
 }

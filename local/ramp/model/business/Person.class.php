@@ -38,7 +38,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           45, new validation\LowercaseAlphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));
@@ -54,7 +54,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           7, new validation\Alphabetic(
-            Str::set('containung ONLY letters, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
       ));
@@ -70,7 +70,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           45, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));
@@ -86,7 +86,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           45, new validation\Alphabetic(
-            Str::set('containung ONLY letters, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
       ));
@@ -102,7 +102,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           90, new validation\AlphanumericPhrase(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a space seperated list ')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a space seperated list ')
           ),
         )
       ));
@@ -118,7 +118,7 @@ class Person extends AuthenticatableUnit
         new validation\dbtype\VarChar(
           Str::set('string with a maximum charactor length of '),
           45, new validation\Alphanumeric(
-            Str::set('containung ONLY letters, numbers, hypens or underscores, a single word')
+            Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
       ));

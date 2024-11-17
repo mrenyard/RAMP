@@ -23,19 +23,19 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Strictly alphnumaric uppercase regex pattern validation,
- * containung ONLY uppercase letters or numbers, a single word.
+ * Strictly alphnumaric uppercase Regex pattern validation,
+ * allows uppercase latin characters or numbers, a single word.
  */
 class UppercaseAlphanumericStrict extends RegexValidationRule
 {
     /**
    * Constructor for strict alphnumaric regex pattern validation,
-   * containung ONLY letters or numbers, a single word.
+   * allows Only letters or numbers, a single word.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[A-Z0-9]*', $subRule);
+    parent::__construct($errorHint, '[0-9A-Z]*', $subRule);
   }
 }

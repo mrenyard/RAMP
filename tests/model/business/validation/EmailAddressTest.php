@@ -21,67 +21,116 @@
  */
 namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
-require_once '/usr/share/php/ramp/core/Str.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/ValidationRuleTest.php';
+
 require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
 
+require_once '/usr/share/php/tests/ramp/mocks/model/MockEmailAddress.class.php';
+
+use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\EmailAddress;
 
+use tests\ramp\mocks\model\MockEmailAddress;
+
 /**
  * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class EmailAddressTest extends \PHPUnit\Framework\TestCase
+class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationRuleTest
 {
-  private $testObject;
+  private Str $placeholder;
 
-  /**
-   * Setup
-   */
-  public function setUp() : void
+  #region Setup
+  protected function preSetup() : void
   {
-    $this->testObject = new EmailAddress(
-      Str::set('string with a maximun character length of '),
-      Str::set('e.g. jsmith@domain.com')
-    );
+    $this->hint = Str::set('string with a maximun character length of ');
+    $this->placeholder = Str::set('e.g. jsmith@domain.com');
   }
+  protected function getTestObject() : RAMPObject {
+    return new MockEmailAddress($this->hint, $this->placeholder);
+  }
+  #endregion
+
+  #region Sub process template
+  protected function doAttributeValueConfirmation()
+  {
+    $this->assertSame($this->hint, $this->testObject->hint);
+  }
+  #endregion
 
   /**
-   * Collection of assertions for ramp\model\business\validation\RegexEmail.
+   * Collection of assertions for ramp\model\business\validation\EmailAddressl.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\RegexEmail}
-   * @see \ramp\model\business\validation\RegexEmail
+   * - assert is instance of {@see \ramp\model\business\validation\EmailAddress}
+   * @see \ramp\model\business\validation\EmailAddress
    */
-  public function test__Construct()
+  public function testConstruct() : void
   {
-    $this->assertInstanceOf('ramp\core\RAMPObject', $this->testObject);
-    $this->assertInstanceOf('ramp\model\business\validation\ValidationRule', $this->testObject);
+    parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\EmailAddress', $this->testObject);
   }
 
+  #region Inherited Tests
   /**
-   * Collection of assertions for ramp\model\business\validation\RegexEmail::process().
-   * - assert void returned when test successful
-   * - assert {@see \ramp\model\business\FailedValidationException} thrown when test fails
-   * @see \ramp\model\business\validation\RegexEmail::process()
+   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\model\Model::__set()
    */
-  public function testProcess()
+  public function testPropertyNotSetExceptionOn__set() : void
   {
-    $this->assertNull($this->testObject->process('a.person@gmail.com'));
-    try {
-      $this->testObject->process('not.email.address');
-    } catch (FailedValidationException $expected) {
-      // try {
-      //   $this->testObject->process('a.person@baddomain.co.uk');
-      // } catch (FailedValidationException $expected) {
-        return;
-      // }
-    }
-    $this->fail('An expected \ramp\model\business\FailedValidationException has NOT been raised.');
+    parent::testPropertyNotSetExceptionOn__set();
   }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see \ramp\model\Model::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\model\Model::__toString().
+   * - assert returns empty string literal.
+   * @see \ramp\model\Model::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+
+  /**
+   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testProcess(
+    array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'], int $failPoint = 1, int $ruleCount = 1,
+    $failMessage = ''
+  ) : void
+  {
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
+  }
+  #endregion
 }

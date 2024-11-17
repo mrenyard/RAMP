@@ -140,11 +140,11 @@ class DecimalPointNumberTest extends \tests\ramp\model\business\validation\dbtyp
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess(
-    $badValue = 10.555, $goodValue = 10.50, $failPoint = 1, $ruleCount = 1,
+    array $badValues = [10.555], ?array $goodValues = [10.50], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

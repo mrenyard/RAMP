@@ -136,29 +136,12 @@ class FlagTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
    * @see \ramp\model\business\validation\ValidationRule::test()
    * @see \ramp\model\business\validation\ValidationRule::process()
    */
-  public function testProcess( // string in NOT booleam
-    $badValue = 'string', $goodValue = TRUE, $failPoint = 1, $ruleCount = 1,
+  public function testProcess( // string/int NOT booleam
+    array $badValues = ['string', 1], ?array $goodValues = [TRUE, FALSE], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
-  }
-  #endregion
-
-  #region New Extra Tests
-  /**
-   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::process() and test().
-   * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see \ramp\model\business\validation\validation\ValidationRule::test()
-   * @see \ramp\model\business\validation\validation\ValidationRule::process()
-   */
-  public function testProcessExtra( // int in NOT boolean
-    $badValue = 1, $goodValue = FALSE, $failPoint = 1, $ruleCount = 1,
-    $failMessage = ''
-  ) : void
-  {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

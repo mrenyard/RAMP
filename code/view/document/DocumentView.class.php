@@ -57,6 +57,7 @@ abstract class DocumentView extends ComplexView
   
   /**
    * Returns complete attbibute and value.
+   * @todo mrenyard:Moving this to Templated makes more sence?
    * @param string $propertyName Attribute Property Name 
    * @return \ramp\core\Str Attribute and value of requested property 
    * @throws \BadMethodCallException Unable to set property when undefined or inaccessible
@@ -69,14 +70,6 @@ abstract class DocumentView extends ComplexView
     if ($this->hasModel) {
       if ($propertyName == 'required') { return ($this->isRequired) ? Str::set(' required="required"') : NULL; }
       if ($propertyName == 'value' && ($this->hasErrors || $this->inputType == 'password')) { return Str::set(' value=""'); }
-
-      // if (
-      //   ((string)$this->type == 'input field' && $propertyName == 'placeholder') &&
-      //     ((string)$this->inputType != 'text' && (string)$this->inputType != 'search' && (string)$this->inputType != 'url' &&
-      //     (string)$this->inputType != 'tel' && (string)$this->inputType != 'email' && (string)$this->inputType != 'password')
-      // ) {
-      //   return NULL;
-      // }
     }
     try {
       $value = $this->__get($propertyName);

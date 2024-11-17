@@ -156,29 +156,12 @@ class IntegerTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
-  public function testProcess( // upper limit.
-    $badValue = 2147483648, $goodValue = 2147483647, $failPoint = 1, $ruleCount = 1,
+  public function testProcess( // upper/lower limits.
+    array $badValues = [2147483648, -2147483649], ?array $goodValues = [2147483647, -2147483648], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
-  }
-  #endregion
-
-  #region New Extra Tests
-  /**
-   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::process() and test().
-   * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see \ramp\model\business\validation\validation\ValidationRule::test()
-   * @see \ramp\model\business\validation\validation\ValidationRule::process()
-   */
-  public function testProcessExtra( // lower limit
-    $badValue = -2147483649, $goodValue = -2147483648, $failPoint = 1, $ruleCount = 1,
-    $failMessage = ''
-  ) : void
-  {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

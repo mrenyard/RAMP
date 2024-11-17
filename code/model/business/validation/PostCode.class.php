@@ -23,17 +23,38 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * UK PostCode max 8chars regex pattern validation,
+ * UK PostCode Regex pattern validation.
  */
 class PostCode extends RegexValidationRule
 {
+  private static int $minlength;
+  private static int $maxlength;
+
   /**
-   * Constructor for UK PostCode max 8chars regex pattern validation.
+   * Constructor for UK PostCode Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
+    if (!isset(SELF::$minlength)) { SELF::$minlength = 7; }
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 8; }
     parent::__construct($errorHint, '[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', $subRule);
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_minlength() : ?int
+  {
+    return SELF::$minlength;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?int
+  {
+    return SELF::$maxlength;
   }
 }

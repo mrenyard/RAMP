@@ -43,7 +43,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $max The maximum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
- * @property-read ?\svetle\core\Str $placeholder Placeholder text that appears in the form control when it has no value set.
+ * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered.
  */
 class Input extends Field
 {

@@ -25,22 +25,22 @@ use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Regex pattern matching validation.
+ * @property-read ?string $format format profile based on ISO standards.
  */
 class RegexValidationRule extends ValidationRule
 {
-  // private Str $placeholder;
+  // private ?string $format;
   private string $pattern;
-  private ?string $format;
 
-   /**
+  /**
    * Constructor for regex pattern matching validation.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myRule = new dbtype\FirstValidationRule(
    *   new RegexValidationRule(
    *     Str::set('regex format message/hint'),
-   *     '[a-zA-Z]'
-   *     new SpecialValidationRule(
+   *     '[a-zA-Z]',
+   *     new SpecialistValidationRule(
    *       Str::set('extra format message/hint')
    *     )
    *   )
@@ -49,28 +49,27 @@ class RegexValidationRule extends ValidationRule
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
-   * @param string $format Optional format profile based on ISO standards.
+  //  * @param string $format Optional format profile based on ISO standards.
    */
-  // public function __construct(Str $errorMessage, Str $placeholder, string $pattern, ValidationRule $subRule = NULL, string $format = NULL)
-  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = NULL, string $format = NULL)
+  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = NULL)//, string $format = NULL)
   {
     $this->pattern = $pattern;
-    $this->format = $format;
+    // $this->format = $format;
     parent::__construct($errorHint, $subRule);
   }
 
   /**
    * @ignore 
-   */
+   *
   protected function get_format() : ?string
   {
     return $this->format;
-  }
+  }*/
 
   /**
    * @ignore 
    */
-  protected function get_pattern() : ?Str
+  protected function get_pattern() : Str
   {
     return Str::set($this->pattern);
   }

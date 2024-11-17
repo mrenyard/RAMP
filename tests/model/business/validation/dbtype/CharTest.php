@@ -52,10 +52,10 @@ class CharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
     $this->specialAppendHint = '7';
     $this->hint6 = Str::set('of length ');
     $this->hint5 = Str::set('matching pattern');
-    $this->hint4 = Str::set('hinted AAAA');
-    $this->hint3 = Str::set('maxlength');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint4 = Str::set('part four');
+    $this->hint3 = Str::set('part three');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeChar($this->hint6, 7,
@@ -158,11 +158,11 @@ class CharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess(
-    $badValue = 'BAD', $goodValue = 'PATTERN', $failPoint = 1, $ruleCount = 6,
+    array $badValues = ['BAD'], ?array $goodValues = ['PATTERN'], int $failPoint = 1, int $ruleCount = 6,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

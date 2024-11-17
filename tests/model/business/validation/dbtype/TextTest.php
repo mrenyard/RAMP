@@ -54,8 +54,8 @@ class TextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
     $this->hint5 = Str::set('with a maximum character length of ');
     $this->hint4 = Str::set('under 4 chars');
     $this->hint3 = Str::set('hinted AAAA');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeText($this->hint5, NULL,
@@ -366,31 +366,16 @@ class TextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
-  public function testProcess( // badValue is an INT
-    $badValue = 1, $goodValue = NULL, $failPoint = 1, $ruleCount = 5,
+  public function testProcess( // badValues [INT, CharLimit] 
+    array $badValues = NULL, ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 5,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $this->longText, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess([1, $this->longText . $this->shortText], [$this->longText], $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 
   #region New Extra Tests
-  /**
-   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::process() and test().
-   * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
-   * @see \ramp\model\business\validation\validation\ValidationRule::test()
-   * @see \ramp\model\business\validation\validation\ValidationRule::process()
-   */
-  public function testProcessExtra( // over char limit
-    $badValue = NULL, $goodValue = NULL, $failPoint = 1, $ruleCount = 5,
-    $failMessage = ''
-  ) : void
-  {
-    parent::testProcess($this->longText . $this->shortText, $this->longText, $failPoint, $ruleCount, $failMessage);
-  }
-
   /**
    * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::maxlength.
    * - assert maxlength same as default limit when NON set from dbtype constructor or subRule.

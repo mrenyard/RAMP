@@ -49,12 +49,12 @@ class DateTimeTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
   protected function preSetup() : void
   {
     $this->maxlength = 4;
-    $this->hint6 = Str::set('anything NOT BadValue');
-    $this->hint5 = Str::set('under 4 chars');
+    $this->hint6 = Str::set('part six');
+    $this->hint5 = Str::set('part five');
     $this->hint4 = Str::set('maxlength');
     $this->hint3 = Str::set('hinted AAAA');
-    $this->hint2 = Str::set('not BAD');
-    $this->hint1 = Str::set('within min, max and step');
+    $this->hint2 = Str::set('part two');
+    $this->hint1 = Str::set('part one');
   }
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeDateTime($this->hint6,
@@ -157,11 +157,11 @@ class DateTimeTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess( // badValue (Shoud be 2006-12-24T00:00:00).
-    $badValue = '2006-12-24T24:00:00', $goodValue = '2006-12-24T23:29:59', $failPoint = 1, $ruleCount = 6,
+    array $badValues = ['2006-12-24T24:00:00'], ?array $goodValues = ['2006-12-24T23:29:59'], int $failPoint = 1, int $ruleCount = 6,
     $failMessage = ''
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

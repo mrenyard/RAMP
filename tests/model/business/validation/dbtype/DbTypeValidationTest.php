@@ -130,11 +130,11 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * @see \ramp\validation\ValidationRule::process()
    */
   public function testProcess(
-    $badValue = 'BAD', $goodValue = 'GOOD', $failPoint = 5, $ruleCount = 6,
+    array $badValues = ['BAD'], ?array $goodValues = ['GOOD'], int $failPoint = 5, int $ruleCount = 6,
     $failMessage = 'FailOnBadValidationRule has been given the value BAD'
   ) : void
   {
-    parent::testProcess($badValue, $goodValue, $failPoint, $ruleCount, $failMessage);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion
 }

@@ -23,21 +23,22 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 
 /**
- * Password restricted regex pattern matching validation.
+ * Password restricted Regex pattern matching validation.
  */
 class Password extends RegexValidationRule
 {
-  private static $type;
+  private static Str $type;
+  private static int $maxlength;
 
   /**
-   * Constructor for password restricted regex pattern validation.
+   * Constructor for password restricted Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test..
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
     if (!isset(SELF::$type)) { SELF::$type = Str::set('password'); } 
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 35; }
     parent::__construct($errorHint, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
   }
 
@@ -47,5 +48,13 @@ class Password extends RegexValidationRule
   protected function get_inputType() : Str
   {
     return SELF::$type;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?int
+  {
+    return SELF::$maxlength;
   }
 }

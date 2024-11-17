@@ -24,20 +24,18 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Lowercase alphnumaric regex pattern validation,
- * containung ONLY lowercase letters, numbers, hypens or underscores, a single word.
- * Runs code defined test against provided value.
+ * Lowercase alphnumaric Regex pattern validation, allows ONLY
+ * lowercase letters, numbers, full stops, hypens or underscores, a single word.
  */
 class LowercaseAlphanumeric extends RegexValidationRule
 {
   /**
-   * Constructor for lowercase alphnumaric regex pattern validation,
-   * containung ONLY lowercase letters, numbers, hypens or underscores, a single word.
+   * Constructor for lowercase alphnumaric Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[a-z0-9_\-]*', $subRule);
+    parent::__construct($errorHint, '[0-9a-z_\-\.\']*', $subRule);
   }
 }
