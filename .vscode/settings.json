@@ -1,12 +1,9 @@
 {
   "phpunit.php": "php",
-  "phpunit.paths": {
-    "${workspaceFolder}": "$HOME/Projects/RAMP"
-  },
-  "phpunit.phpunit" : "${workspaceFolder}/tools/phpunit.phar",
+  "phpunit.phpunit" : "${workspaceFolder}/phpunit.phar",
   "phpunit.args": [
     "-c",
-    "${workspaceFolder}/tools/phpunit.xml"
+    "${workspaceFolder}/phpunit.xml"
   ],
   "editor.tabSize": 2
 }
