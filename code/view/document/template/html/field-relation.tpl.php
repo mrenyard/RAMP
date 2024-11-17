@@ -38,7 +38,7 @@ switch ((string)$this->type) {
           <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
             <span class="name"><?=$this->label; ?></span>
             <select id="<?=$this->id; ?>" name="<?=$this->id; ?>"<?=($this->isRequired)? ' required size="' . $this->count . '"' : ''; ?> tabindex="<?=$tabindex; ?>"><?php foreach ($this->options as $option) { ?>
-              <option value="<?=$option->key; ?>"<?=($option->isSelected)? ' selected':''; ?>><?=$option->description; ?></option><?php } ?>
+              <option value="<?=($option->key == 0) ? '': $option->key; ?>"<?=($option->isSelected)? ' selected':''; ?>><?=$option->description; ?></option><?php } ?>
 
             </select>
 <?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>
