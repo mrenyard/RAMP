@@ -40,6 +40,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * 
  * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
  * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
+ * @property-read ?int $minlength Minimun character length allowed.
  * @property-read ?int $maxlength Maximun character length allowed.
  * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $max The maximum value that is acceptable and valid.
@@ -100,6 +101,14 @@ class Input extends Field
   protected function get_pattern() : ?Str
   {
     return $this->validationRule->pattern;    
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_minlength() : ?int
+  {
+    return $this->validationRule->minlength;
   }
 
   /**
