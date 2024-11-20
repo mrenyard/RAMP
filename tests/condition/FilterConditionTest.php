@@ -52,6 +52,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
   protected $comparable;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
     $this->record = Str::set('Record');
@@ -59,9 +60,11 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
     $this->operator = Operator::EQUAL_TO();
     $this->comparable = 'GOOD';
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new FilterCondition($this->record, $this->property, $this->comparable);
   }
+  #[\Override]
   protected function postSetup() : void { $this->attribute = $this->testObject->attribute; }
   #endregion
 
@@ -75,6 +78,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    *   - with message: *'Invalid $record $property $comparable arguments, do NOT match business model'*
    * @see \ramp\condition\FilterCondition
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -97,6 +101,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -107,6 +112,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -122,6 +128,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -132,6 +139,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -147,6 +155,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert 'attribute' is composite of [record]->[property]
    * @see \ramp\condition\Condition::$attribute
    */
+  #[\Override]
   public function testAttribute() : void
   {
     parent::testAttribute();
@@ -162,6 +171,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert retreved is same as provided to constructor.
    * @see \ramp\condition\Condition::$operator
    */
+  #[\Override]
   public function testOperator() : void
   {
     parent::testOperator();
@@ -176,6 +186,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert 'comparable' equal to that provided at creation
    * @see \ramp\condition\Condition::$comparable
    */
+  #[\Override]
   public function testComparable() : void
   {
     $this->assertSame('GOOD', $this->testObject->comparable);
@@ -195,6 +206,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert 'record' equal to provided at creation
    * @see \ramp\condition\BusinessCondition::$record
    */
+  #[\Override]
   public function testRecord() : void
   {
     parent::testRecord();
@@ -209,6 +221,7 @@ class FilterConditionTest extends \tests\ramp\condition\BusinessConditionTest
    * - assert 'property' equal to provided at creation
    * @see \ramp\condition\BusinessCondition::$property
    */
+  #[\Override]
   public function testProperty() : void
   {
     parent::testProperty();

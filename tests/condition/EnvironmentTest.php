@@ -47,10 +47,12 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
   protected $className;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     $this->instance = ConcreteEnvironment::getInstance();
     $this->className = 'tests\ramp\mocks\condition\ConcreteEnvironment';
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return ConcreteEnvironment::getInstance(); }
   #endregion
 
@@ -63,6 +65,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
    * - assert returns the SAME instance on every call.
    * @see \ramp\condition\Environment\getInstance()
    */
+  #[\Override]
   public function testConstruct() : void
   {
     try {
@@ -83,6 +86,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -93,6 +97,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -108,6 +113,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -118,6 +124,7 @@ class EnvironmentTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();

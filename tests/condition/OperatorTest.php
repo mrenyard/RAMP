@@ -46,7 +46,9 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
   private $targetEnvironment;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void { $this->targetEnvironment = ConcreteEnvironment::getInstance(); }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return Operator::MEMBER_ACCESS(); }
   #endregion
 
@@ -57,6 +59,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
    * - assert is instance of {@see \ramp\condition\Operator}
    * @see \ramp\condition\Environment\getInstance()
    */
+  #[\Override]
   public function testConstruct() : void
   {
     try {
@@ -76,6 +79,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -86,6 +90,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -101,6 +106,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -111,6 +117,7 @@ class OperatorTest extends \tests\ramp\core\ObjectTest
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();

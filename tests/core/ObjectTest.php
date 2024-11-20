@@ -46,8 +46,11 @@ class ObjectTest extends \tests\ramp\TestBase
   protected $testObject;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void { }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new AnObject(); }
+  #[\Override]
   protected function postSetup() : void { }
   #endregion
 

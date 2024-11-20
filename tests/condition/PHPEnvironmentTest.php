@@ -37,10 +37,12 @@ use \ramp\condition\PHPEnvironment;
 class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     $this->instance = PHPEnvironment::getInstance();
     $this->className = 'ramp\condition\PHPEnvironment';
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return PHPEnvironment::getInstance(); }
   #endregion
 
@@ -53,6 +55,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert returns the SAME instance on every call.
    * @see \ramp\condition\Environment\getInstance()
    */
+  #[\Override]
   public function testConstruct() : void
   {
     try {
@@ -71,6 +74,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -81,6 +85,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -96,6 +101,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -106,6 +112,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -120,6 +127,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction (->).
    * @see \ramp\condition\Environment::$memberAccess
    */
+  #[\Override]
   public function testMemberAccess($expectedOutput = '->') : void
   {
     parent::testMemberAccess($expectedOutput);
@@ -134,6 +142,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction (=).
    * @see \ramp\condition\Environment::$assignment
    */
+  #[\Override]
   public function testAssignment($expectedOutput = '=') : void
   {
     parent::testAssignment($expectedOutput);
@@ -148,6 +157,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( == ).
    * @see \ramp\condition\Environment::$equalTo
    */
+  #[\Override]
   public function testEqualTo($expectedOutput = ' == ') : void
   {
     parent::testEqualTo($expectedOutput);
@@ -162,6 +172,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( != ).
    * @see \ramp\condition\Environment::$notEqualTo
    */
+  #[\Override]
   public function testNotEqualTo($expectedOutput = ' != ') : void
   {
     parent::testNotEqualTo($expectedOutput);
@@ -176,6 +187,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( < ).
    * @see \ramp\condition\Environment::$lessThan
    */
+  #[\Override]
   public function testLessThan($expectedOutput = ' < ') : void
   {
     parent::testLessThan($expectedOutput);
@@ -190,6 +202,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( > ).
    * @see \ramp\condition\Environment::$greaterThan
    */
+  #[\Override]
   public function testGreaterThan($expectedOutput = ' > ') : void
   {
     parent::testGreaterThan($expectedOutput);
@@ -204,6 +217,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( && ).
    * @see \ramp\condition\Environment::$and
    */
+  #[\Override]
   public function testAnd($expectedOutput = ' && ') : void
   {
     parent::testAnd($expectedOutput);
@@ -218,6 +232,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction ( || ).
    * @see \ramp\condition\Environment::$or
    */
+  #[\Override]
   public function testOr($expectedOutput = ' || ') : void
   {
     parent::testOr($expectedOutput);
@@ -232,6 +247,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction (').
    * @see \ramp\condition\Environment::$openingParenthesis
    */
+  #[\Override]
   public function testOpeningParenthesis($expectedOutput = "'") : void
   {
     parent::testOpeningParenthesis($expectedOutput);
@@ -246,6 +262,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction (').
    * @see \ramp\condition\Environment::$closingParenthesis
    */
+  #[\Override]
   public function testClosingParenthesis($expectedOutput = "'") : void
   {
     parent::testClosingParenthesis($expectedOutput);
@@ -260,6 +277,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction [(].
    * @see \ramp\condition\Environment::$openingGroupingParenthesis
    */
+  #[\Override]
   public function testOpeningGroupingParenthesis($expectedOutput = '(') : void
   {
     parent::testOpeningGroupingParenthesis($expectedOutput);
@@ -274,6 +292,7 @@ class PHPEnvironmentTest extends \tests\ramp\condition\EnvironmentTest
    * - assert retreved is same string as provided at construction [)].
    * @see \ramp\condition\Environment::$closingGroupingParenthesis
    */
+  #[\Override]
   public function testClosingGroupingParenthesis($expectedOutput = ')') : void
   {
     parent::testClosingGroupingParenthesis($expectedOutput);

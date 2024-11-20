@@ -69,6 +69,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_memberAccess() : Str { return Str::set($this->memberAccess); }
 
   /**
@@ -79,6 +80,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_assignment() : Str { return Str::set($this->assignment); }
 
   /**
@@ -89,6 +91,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_equalTo() : Str { return Str::set($this->equalTo); }
 
   /**
@@ -99,6 +102,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_notEqualTo() : Str { return Str::set($this->notEqualTo); }
 
   /**
@@ -109,6 +113,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_lessThan() : Str { return Str::set($this->lessThan); }
   
   /**
@@ -119,6 +124,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_greaterThan() : Str { return Str::set($this->greaterThan); }
   
   /**
@@ -129,6 +135,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_and() : Str { return Str::set($this->and); }
   
   /**
@@ -139,6 +146,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_or() : Str { return Str::set($this->or); }
   
   /**
@@ -149,6 +157,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_openingParenthesis() : Str { return Str::set($this->openingParenthesis); }
   
   /**
@@ -159,6 +168,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_closingParenthesis() : Str { return Str::set($this->closingParenthesis); }
   
   /**
@@ -169,6 +179,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_openingGroupingParenthesis() : Str { return Str::set($this->openingGroupingParenthesis); }
   
   /**
@@ -179,6 +190,7 @@ abstract class Environment extends RAMPObject implements iEnvironment
   /**
    * @ignore
    */
+  #[\Override]
   public function get_closingGroupingParenthesis() : Str { return Str::set($this->closingGroupingParenthesis); }
   
   /**

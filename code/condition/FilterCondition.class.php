@@ -75,6 +75,7 @@ final class FilterCondition extends BusinessCondition
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
    * @see \ramp\model\business\Property::processValidationRules()
    */
+  #[\Override]
   protected function set_comparable($value) : void
   {
     if (!$this->property->contains(StrCollection::set('fk_'))) {
@@ -99,6 +100,7 @@ final class FilterCondition extends BusinessCondition
    *  property's processValidationRules()
    * @return string Representation of *this* filter based on provided target environment
    */
+  #[\Override]
   public function __invoke(iEnvironment $targetEnvironment = NULL, $comparable = NULL) : string
   {
     $targetEnvironment = ($targetEnvironment !== NULL) ?

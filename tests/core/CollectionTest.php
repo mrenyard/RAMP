@@ -44,12 +44,14 @@ use tests\ramp\mocks\core\BadObject;
 class CollectionTest extends \tests\ramp\core\ListTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->typeName = Str::set('tests\ramp\mocks\core\AnObject');
     $this->expectedAtNameIndex = new AnObject();
     $this->expectedAt0Index = new AnObject();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new Collection($this->typeName); }
   #endregion
   
@@ -67,6 +69,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\core\Collection
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -87,6 +90,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -97,6 +101,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -112,6 +117,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -122,6 +128,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -139,6 +146,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    *    NOT same as provided {@see \ramp\core\Str}
    * @see \ramp\core\List::isCompositeType()
    */
+  #[\Override]
   public function testIsCompositeType() : void
   {
     parent::testIsCompositeType();
@@ -152,6 +160,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * - assert value set at index same as retived at index.
    * @see \ramp\mocks\core\List::offsetSet()
    */
+  #[\Override]
   public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof tests\ramp\mocks\core\AnObject') : iList
   {
     return parent::testOffsetSet($message);
@@ -166,6 +175,7 @@ class CollectionTest extends \tests\ramp\core\ListTest
    * @param string Expected child type.
    * @see \ramp\mocks\core\List::offsetUnset()
    */
+  #[\Override]
   public function testOffsetUnset(iList $testObject, $expectedChildType = 'tests\ramp\mocks\core\AnObject') : void
   {
     parent::testOffsetUnset($testObject, $expectedChildType);

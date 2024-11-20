@@ -139,6 +139,7 @@ class oList extends RAMPObject implements iList
   /**
    * @ignore
    */
+  #[\Override]
   final public function get_count() : int
   {
     return count($this->list);

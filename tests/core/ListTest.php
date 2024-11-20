@@ -51,12 +51,14 @@ class ListTest extends \tests\ramp\core\ObjectTest
   protected $expectedAt0Index;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->typeName = Str::set('tests\ramp\mocks\core\AnObject');
     $this->expectedAtNameIndex = new AnObject();
     $this->expectedAt0Index = new AnObject();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new oList($this->typeName); }
   #endregion
 
@@ -72,6 +74,7 @@ class ListTest extends \tests\ramp\core\ObjectTest
    *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\core\List
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -95,6 +98,7 @@ class ListTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -105,6 +109,7 @@ class ListTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -120,6 +125,7 @@ class ListTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -130,6 +136,7 @@ class ListTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();

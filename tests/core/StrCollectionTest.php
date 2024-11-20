@@ -39,12 +39,14 @@ use tests\ramp\mocks\core\BadObject;
 class StrCollectionTest extends \tests\ramp\core\CollectionTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->typeName = Str::set('ramp\core\Str');
     $this->expectedAtNameIndex = Str::_EMPTY();
     $this->expectedAt0Index = Str::SPACE();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return StrCollection::set(); }
   #endregion
 
@@ -61,6 +63,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    *   - with message: *'All arguments MUST be string literals!'*
    * @see \ramp\core\StrCollection
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -74,6 +77,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -84,6 +88,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -99,6 +104,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -109,6 +115,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -120,6 +127,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
    * @see \ramp\core\StrCollection::isCompositeType()
    */
+  #[\Override]
   public function testIsCompositeType() : void
   {
     parent::testIsCompositeType();
@@ -133,6 +141,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * - assert value set at index same as retived at index.
    * @see \ramp\mocks\core\List::offsetSet()
    */
+  #[\Override]
   public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\core\Str') : iList
   {
     return parent::testOffsetSet($message);
@@ -147,6 +156,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * @param string Expected child type.
    * @see \ramp\mocks\core\List::offsetUnset()
    */
+  #[\Override]
   public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\core\Str') : void
   {
     parent::testOffsetUnset($testObject, $expectedChildType);
@@ -165,6 +175,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\core\Collection::add()
    * @see \ramp\core\Collection::count
    */
+  #[\Override]
   public function testIteratorAddCount($message = NULL, $o1 = NULL, $o2 = NULL, $o3 = NULL, $o4 = NULL) : void
   {
     parent::testIteratorAddCount(
@@ -182,6 +193,7 @@ class StrCollectionTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\mocks\core\Collection::__clone()
    * @see \ramp\mocks\core\Collection::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     $copy = clone $this->testObject;

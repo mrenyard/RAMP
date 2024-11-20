@@ -390,6 +390,7 @@ final class Str extends RAMPObject
    * Returns value of 'this' as string literal
    * @return string Stored value
    */
+  #[\Override]
   public function __toString() : string
   {
     return $this->value;

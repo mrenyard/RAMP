@@ -56,15 +56,18 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
   protected $record;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE='tests\ramp\mocks\condition';
     $this->record = Str::set('Record');
     $this->property = Str::set('propertyA');
     $this->operator = Operator::EQUAL_TO();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new ConcreteBusinessCondition($this->record, $this->property, $this->operator);
   }
+  #[\Override]
   protected function postSetup() : void { $this->attribute = $this->testObject->attribute; }
   #endregion
 
@@ -79,6 +82,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    *   - with message: *'Invalid $record $property arguments, do NOT match business model'*
    * @see \ramp\condition\BusinessCondition
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -109,6 +113,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -119,6 +124,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -134,6 +140,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -144,6 +151,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -159,6 +167,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert 'attribute' is composite of [record]->[property]
    * @see \ramp\condition\Condition::$attribute
    */
+  #[\Override]
   public function testAttribute() : void
   {
     parent::testAttribute();
@@ -174,6 +183,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert retreved is same as provided to constructor.
    * @see \ramp\condition\Condition::$operator
    */
+  #[\Override]
   public function testOperator() : void
   {
     parent::testOperator();
@@ -188,6 +198,7 @@ class BusinessConditionTest extends \tests\ramp\condition\ConditionTest
    * - assert 'comparable' equal to that provided at creation
    * @see \ramp\condition\Condition::$comparable
    */
+  #[\Override]
   public function testComparable() : void
   {
     $this->assertNull($this->testObject->comparable);

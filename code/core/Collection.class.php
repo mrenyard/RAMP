@@ -59,6 +59,7 @@ class Collection extends oList implements iCollection
    * @param \ramp\core\RAMPObject $object reference to be added
    * @throws \InvalidArgumentException When provided object NOT of expected type
    */
+  #[\Override]
   public function add(RAMPObject $object) : void
   {
     parent::offsetSet(count($this), $object);

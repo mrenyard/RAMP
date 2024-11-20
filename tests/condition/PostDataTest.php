@@ -53,6 +53,7 @@ use \ramp\condition\InputDataCondition;
 class PostDataTest extends \tests\ramp\core\CollectionTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\condition';
     $this->typeName = Str::set('ramp\condition\InputDataCondition');
@@ -60,6 +61,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
     $this->expectedAtNameIndex = new InputDataCondition($this->record, Str::NEW(), Str::set('propertyA'), 'ValueA');
     $this->expectedAt0Index = new InputDataCondition($this->record, Str::NEW(), Str::set('propertyB'), 'ValueA');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new PostData(); }
   #endregion
 
@@ -78,6 +80,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    *   - with message: *'$compositeType MUST be an accesible class name'*
    * @see \ramp\condition\PostData
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -90,6 +93,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -100,6 +104,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -115,6 +120,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -125,6 +131,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -136,6 +143,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * - assert returns FALSE when $compositeType name provided is NOT {@see \ramp\core\Str}
    * @see \ramp\core\StrCollection::isCompositeType()
    */
+  #[\Override]
   public function testIsCompositeType() : void
   {
     parent::testIsCompositeType();
@@ -149,6 +157,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * - assert value set at index same as retived at index.
    * @see \ramp\mocks\core\List::offsetSet()
    */
+  #[\Override]
   public function testOffsetSet($message = 'tests\ramp\mocks\core\BadObject NOT instanceof ramp\condition\InputDataCondition') : iList
   {
     return parent::testOffsetSet($message);
@@ -163,6 +172,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * @param string Expected child type.
    * @see \ramp\mocks\core\List::offsetUnset()
    */
+  #[\Override]
   public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\condition\InputDataCondition') : void
   {
     parent::testOffsetUnset($testObject, $expectedChildType);
@@ -181,6 +191,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\core\Collection::add()
    * @see \ramp\core\Collection::count
    */
+  #[\Override]
   public function testIteratorAddCount($message = NULL, $o1 = NULL, $o2 = NULL, $o3 = NULL, $o4 = NULL) : void
   {
     parent::testIteratorAddCount(
@@ -198,6 +209,7 @@ class PostDataTest extends \tests\ramp\core\CollectionTest
    * @see \ramp\mocks\core\Collection::__clone()
    * @see \ramp\mocks\core\Collection::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     $copy = clone $this->testObject;

@@ -41,6 +41,7 @@ use ramp\core\PropertyNotSetException;
 class StrTest extends \tests\ramp\core\ObjectTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return Str::set(); }
   #endregion
 
@@ -51,6 +52,7 @@ class StrTest extends \tests\ramp\core\ObjectTest
    * - assert is private inaccessable
    * @see \ramp\core\Str
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -70,6 +72,7 @@ class StrTest extends \tests\ramp\core\ObjectTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -80,6 +83,7 @@ class StrTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -95,6 +99,7 @@ class StrTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -105,6 +110,7 @@ class StrTest extends \tests\ramp\core\ObjectTest
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     $this->assertSame('', (string)$this->testObject);
