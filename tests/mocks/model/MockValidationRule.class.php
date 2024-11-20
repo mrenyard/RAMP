@@ -31,22 +31,16 @@ use ramp\model\business\validation\ValidationRule;
  */
 class MockValidationRule extends ValidationRule
 {
-  public static $testCallCount = 0;
-  public static $inputTypeValue;
-  public static $patternValue;
-  public static $placeholderValue;
-  public static $minValue;
-  public static $maxValue;
-  public static $stepValue;
+  const PATTERN = 'PATTERN';
+  const PLACEHOLDER = 'PLACEHOLDER';
+  const MIN = 'MIN';
+  const MAX = 'MAX';
+  const STEP = 'STEP';
 
-  public static function reset() {
+  public static $testCallCount = 0;
+
+  public static function reset() : void {
     SELF::$testCallCount = 0;
-    SELF::$inputTypeValue = Str::set('INPUT_TYPE');
-    SELF::$patternValue = Str::set('PATTERN');
-    SELF::$placeholderValue = Str::set('PLACEHOLDER');
-    SELF::$minValue = Str::set('MIN');
-    SELF::$maxValue = Str::set('MAX');
-    SELF::$stepValue = Str::set('STEP');
   }
 
   /**

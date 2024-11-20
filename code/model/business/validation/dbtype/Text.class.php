@@ -31,6 +31,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Text extends DbTypeValidation
 {
+  private static $inputType;
   private int $maxlength;
 
   /**
@@ -52,22 +53,63 @@ class Text extends DbTypeValidation
    */
   public function __construct(Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
-    $this->maxlength = ($maxlength !== NULL && $maxlength <= 16383) ? $maxlength : 16383;
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea'); }
+    $maxlength = ($maxlength !== NULL && $maxlength <= 16383) ? $maxlength : 16383;
+    $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
+    (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
+      throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
+    if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
+      throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
+    }
     parent::__construct($errorHint, $subRule);
   }
-
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?int
+  #[\Override]
+  protected function get_inputType() : Str
   {
-    return (parent::get_maxlength() !== NULL && parent::get_maxlength() <= $this->maxlength) ? parent::get_maxlength() : $this->maxlength;
+    return SELF::$inputType;
   }
 
   /**
    * @ignore
    */
-  protected function get_hint() : ?Str
+  #[\Override]
+  protected function get_pattern() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_maxlength() : ?int
+  {
+    return $this->maxlength;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_min() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_max() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_step() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_hint() : Str
   {
     return Str::set($this->get_maxlength())->prepend(parent::get_hint());
   }
@@ -77,6 +119,7 @@ class Text extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (is_string($value) && strlen($value) <= $this->maxlength) { return; }

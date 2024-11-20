@@ -32,6 +32,8 @@ use ramp\model\business\validation\ValidationRule;
  */
 class TinyText extends DbTypeValidation
 {
+  private static Str $inputType;
+  private Str $placeholder;
   private int $maxlength;
 
   /**
@@ -47,27 +49,81 @@ class TinyText extends DbTypeValidation
    *   Str::set('Format error message/hint')
    * );
    * ```
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param ?int $maxlength Optional maximum number of characters from 0 to 255 (defaults 255).
+   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    */
-  public function __construct(Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
+  public function __construct(Str $placeholder, Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
-    $this->maxlength = ($maxlength !== NULL && $maxlength <= 255) ? $maxlength : 255;
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea'); }
+    $this->placeholder = $placeholder;
+    $maxlength = ($maxlength !== NULL && $maxlength <= 255) ? $maxlength : 255;
+    $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
+    (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
+      throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
+    if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
+      throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
+    }
     parent::__construct($errorHint, $subRule);
   }
 
   /**
    * @ignore
    */
-  protected function get_maxlength() : ?int
+  #[\Override]
+  protected function get_inputType() : Str
   {
-    return (parent::get_maxlength() !== NULL && parent::get_maxlength() <= $this->maxlength) ? parent::get_maxlength() : $this->maxlength;
+    return SELF::$inputType;
   }
 
   /**
    * @ignore
    */
-  protected function get_hint() : ?Str
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return $this->placeholder;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_pattern() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_maxlength() : ?int
+  {
+    return $this->maxlength;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_min() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_max() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_step() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_hint() : Str
   {
     return Str::set($this->get_maxlength())->prepend(parent::get_hint());
   }
@@ -77,6 +133,7 @@ class TinyText extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (is_string($value) && strlen($value) <= 255) { return; }

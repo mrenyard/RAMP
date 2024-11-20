@@ -30,6 +30,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Char extends DbTypeValidation
 {
+  private Str $placeholder;
   private int $length;
 
   /**
@@ -49,19 +50,31 @@ class Char extends DbTypeValidation
    *   )
    * );
    * ```
+   * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $length Exact number of characters expected.
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added.
    */
-  public function __construct(Str $errorHint, int $length, ValidationRule $subRule)
+  public function __construct(Str $placeholder, Str $errorHint, int $length, ValidationRule $subRule)
   {
+    $this->placeholder = $placeholder;
     $this->length = $length;
     parent::__construct(Str::set($this->length)->prepend($errorHint), $subRule);
   }
 
   /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return $this->placeholder;
+  }
+
+  /**
    * @ignore 
    */
+  #[\Override]
   protected function get_pattern() : ?Str
   {
     return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
@@ -71,16 +84,45 @@ class Char extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
+  protected function get_minlength() : ?int
+  {
+    return $this->length;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
   protected function get_maxlength() : ?int
   {
     return $this->length;
   }
 
   /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_min() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_max() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_step() : ?Str { return NULL; }
+
+  /**
    * Asserts that $value is a string of exactly expected number of characters.
    * @param mixed $value Value to be tested.
    * @throws \ramp\model\business\validation\FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (is_string($value) && strlen($value) == $this->length) { return; }

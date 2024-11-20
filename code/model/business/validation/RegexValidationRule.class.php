@@ -61,6 +61,7 @@ class RegexValidationRule extends ValidationRule
   /**
    * @ignore 
    *
+  #[\Override]
   protected function get_format() : ?string
   {
     return $this->format;
@@ -69,6 +70,7 @@ class RegexValidationRule extends ValidationRule
   /**
    * @ignore 
    */
+  #[\Override]
   protected function get_pattern() : Str
   {
     return Str::set($this->pattern);
@@ -79,6 +81,7 @@ class RegexValidationRule extends ValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (preg_match('/^(?:' . $this->pattern . ')$/', $value)) { return; }

@@ -19,50 +19,50 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\validation;
+namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/RegexValidationRuleTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/DbTypeValidationTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/UppercaseAlphabeticStrict.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Year.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockUppercaseAlphabeticStrict.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeYear.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\UppercaseAlphabeticStrict;
+use ramp\model\business\validation\dbtype\Year;
 
-use tests\ramp\mocks\model\MockUppercaseAlphabeticStrict;
+use tests\ramp\mocks\model\MockDbTypeYear;
+use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
 use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
-use tests\ramp\mocks\model\MockValidationRule;
 
 /**
- * Collection of tests for \ramp\model\business\validation\UppercaseAlphabeticStrict.
+ * Collection of tests for \ramp\model\business\validation\dbtype\Year.
  */
-class UppercaseAlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
+class YearTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValidationTest
 {
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->maxlength = 10;
+    $this->maxlength = 4;
     $this->hint6 = Str::set('part six');
     $this->hint5 = Str::set('part five');
-    $this->hint4 = Str::set('part four');
+    $this->hint4 = Str::set('maxlength');
     $this->hint3 = Str::set('part three');
     $this->hint2 = Str::set('part two');
     $this->hint1 = Str::set('part one');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockUppercaseAlphabeticStrict($this->hint6,
+    return new MockDbTypeYear($this->hint6,
       new PlaceholderValidationRule($this->hint5,
-        new PatternValidationRule($this->hint4,
-          new LengthValidationRule($this->hint3, $this->maxlength, NULL,
+        new LengthValidationRule($this->hint4, $this->maxlength, NULL,
+          new PatternValidationRule($this->hint3,
             new FailOnBadValidationRule($this->hint2,
               new MinMaxStepValidationRule($this->hint1)
             )
@@ -74,21 +74,21 @@ class UppercaseAlphabeticStrictTest extends \tests\ramp\model\business\validatio
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\UppercaseAlphabeticStrict.
+   * Collection of assertions for ramp\validation\dbtype\DateTime.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\RegexValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\UppercaseAlphabeticStrict}
-   * @see \ramp\model\business\validation\UppercaseAlphabeticStrict
+   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
+   * - assert is instance of {@see \ramp\model\business\validation\Year}
+   * @see \ramp\model\business\validation\dbtype\DateTime
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\UppercaseAlphabeticStrict', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\dbtype\Year', $this->testObject);
   }
-  #region Inherited Tests
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -154,14 +154,15 @@ class UppercaseAlphabeticStrictTest extends \tests\ramp\model\business\validatio
   public function testExpectedAttributeValues()
   {
     $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . 
       $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
       (string)$this->testObject->hint
     );
-    $this->assertEquals('text', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertSame($this->maxlength, $this->testObject->maxlength);
-    $this->assertSame('[A-Z]*', (string)$this->testObject->pattern);
+    $this->assertEquals('text year', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
@@ -175,9 +176,9 @@ class UppercaseAlphabeticStrictTest extends \tests\ramp\model\business\validatio
    * @see \ramp\validation\ValidationRule::process()
    */
   #[\Override]
-  public function testProcess(
-    array $badValues = ['BAD@REGEX'], ?array $goodValues = ['GOODREGEX'], int $failPoint = 1, int $ruleCount = 6,
-    $failMessage = '$value failed to match provided regex!'
+  public function testProcess( // badValue (Shoud be 2006-12-24T00:00:00).
+    array $badValues = ['2006-12-24T24:00:00'], ?array $goodValues = ['2006-12-24T23:29:59'], int $failPoint = 1, int $ruleCount = 6,
+    $failMessage = ''
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

@@ -19,26 +19,27 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\condition\mocks\InputDataConditionTest;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
+use ramp\core\Str;
+use ramp\model\business\validation\ValidationRule;
 
 /**
- * Mock business record with property.
+ * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class Record extends RAMPObject
+class LengthValidationRule extends MockValidationRule
 {
-  private $property;
+  private $maxlength;
+  private $minlength;
 
-  /**
-   * A test getter for Record::property
-   */
-  protected function get_property()
+  public function __construct(Str $errorHint, int $maxlength, ?int $minlength = NULL, ValidationRule $subRule = NULL)
   {
-    if (!isset($this->property)) {
-      $this->property = new Field();
-    }
-    return $this->property;
+    $this->maxlength = $maxlength;
+    $this->minlength = $minlength;
+    parent::__construct($errorHint, $subRule);
   }
+
+  protected function get_maxlength() : ?int { return $this->maxlength; }
+  protected function get_minlength() : ?int { return $this->minlength; }
 }

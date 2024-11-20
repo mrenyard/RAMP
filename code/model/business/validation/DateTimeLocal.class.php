@@ -30,7 +30,7 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class DateTimeLocal extends RegexValidationRule
 {
-  private static $type;
+  private static $inputType;
   private ?Str $min;
   private ?Str $max;
   private int $step;
@@ -50,7 +50,7 @@ class DateTimeLocal extends RegexValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(SELF::$type)) { SELF::$type = Str::set('datetime-local'); } 
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('datetime-local'); } 
     // TODO:mrenyard: Internationalise 'from' & 'to'.
     $errorHint = ($min !== NULL && $max !== NULL) ?
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
@@ -94,14 +94,16 @@ class DateTimeLocal extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
-    return SELF::$type;
+    return SELF::$inputType;
   }
 
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return $this->min;
@@ -110,6 +112,7 @@ class DateTimeLocal extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return $this->max;
@@ -118,6 +121,7 @@ class DateTimeLocal extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : Str
   {
     return Str::set($this->step);
@@ -128,6 +132,7 @@ class DateTimeLocal extends RegexValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     parent::test($value);

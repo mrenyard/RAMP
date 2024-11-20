@@ -75,6 +75,7 @@ class DecimalPointNumber extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
     return SELF::$inputType;
@@ -83,6 +84,7 @@ class DecimalPointNumber extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return Str::set($this->min);
@@ -91,6 +93,7 @@ class DecimalPointNumber extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return Str::set($this->max);
@@ -99,6 +102,7 @@ class DecimalPointNumber extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : ?Str
   {
     return Str::set($this->step);
@@ -109,6 +113,7 @@ class DecimalPointNumber extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (

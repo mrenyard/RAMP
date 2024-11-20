@@ -29,6 +29,5 @@ use ramp\core\Str;
  */
 class PlaceholderValidationRule extends MockValidationRule
 {
-  protected function get_placeholder() : ?Str { return SELF::$placeholderValue; }
-  // protected function get_maxlength() : ?int { return SELF::$maxlengthValue; }
+  protected function get_placeholder() : ?Str { return Str::set(SELF::PLACEHOLDER);; }
 }

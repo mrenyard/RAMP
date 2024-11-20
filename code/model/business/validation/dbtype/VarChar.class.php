@@ -30,6 +30,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class VarChar extends DbTypeValidation
 {
+  private Str $placeholder;
   private int $maxlength;
 
   /**
@@ -46,38 +47,77 @@ class VarChar extends DbTypeValidation
    *   Str::set('Format error message/hint')
    * );
    * ```
+   * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $maxlength Maximum number of characters from 0 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @throws \InvalidArgumentException When $subRule contains a rule with maxlength > $maxlength provided here.
    */
-  public function __construct(Str $errorHint, int $maxlength, ValidationRule $subRule)
+  public function __construct(Str $placeholder, Str $errorHint, int $maxlength, ValidationRule $subRule)
   {
-    $this->maxlength = $maxlength;
+    $this->placeholder = $placeholder;
+    $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
+      (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
+        throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
+    if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
+      throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
+    }    
     parent::__construct(Str::set($maxlength)->prepend($errorHint), $subRule);
-  }
-
-  /**
-   * @ignore 
-   */
-  protected function get_pattern() : ?Str
-  {
-    return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
-    $value->prepend(Str::set('('))->append(Str::set('){0,' . $this->maxlength . '}')) : NULL;
   }
 
   /**
    * @ignore
    */
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return $this->placeholder;
+  }
+
+  /**
+   * @ignore 
+   */
+  #[\Override]
+  protected function get_pattern() : ?Str
+  {
+    $minlength = ($this->minlength) ? $this->minlength : 0;
+    return ($value = parent::get_pattern()) ? (str_ends_with((string)$value, '}') || str_ends_with((string)$value, '$')) ? $value :
+    $value->prepend(Str::set('('))->append(Str::set('){' . $minlength . ',' . $this->maxlength . '}')) : NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
   protected function get_maxlength() : ?int
   {
     return $this->maxlength;
   }
 
   /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_min() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_max() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_step() : ?Str { return NULL; }
+
+  /**
    * Asserts that $value is a string upto defined max length.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (is_string((string)$value) && strlen($value) <= $this->maxlength) { return; }

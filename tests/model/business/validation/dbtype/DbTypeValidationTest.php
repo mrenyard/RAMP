@@ -34,7 +34,7 @@ use ramp\model\business\validation\FailedValidationException;
 use tests\ramp\mocks\model\MockDbTypeValidation;
 use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -48,11 +48,12 @@ use tests\ramp\mocks\model\FailOnBadValidationRule;
 class DbTypeValidationTest extends \tests\ramp\model\business\validation\ValidationRuleTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new MockDbTypeValidation($this->hint6,
       new PlaceholderValidationRule($this->hint5,
         new PatternValidationRule($this->hint4,
-          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+          new LengthValidationRule($this->hint3, $this->maxlength, $this->minlength,
             new FailOnBadValidationRule($this->hint2,
               new MinMaxStepValidationRule($this->hint1)
             )
@@ -70,6 +71,7 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * - assert is instance of {@see \ramp\model\business\validation\dbtype\DbTypeValidation}
    * @see \ramp\validation\DbTypeValidationTest
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -82,6 +84,7 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -92,6 +95,7 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -107,6 +111,7 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -117,9 +122,29 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::hint
+   * @see \ramp\validation\ValidationRule::inputType
+   * @see \ramp\validation\ValidationRule::placeholder
+   * @see \ramp\validation\ValidationRule::minlength
+   * @see \ramp\validation\ValidationRule::maxlength
+   * @see \ramp\validation\ValidationRule::min
+   * @see \ramp\validation\ValidationRule::max
+   * @see \ramp\validation\ValidationRule::step
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    parent::testExpectedAttributeValues();
   }
 
   /**
@@ -129,6 +154,7 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess(
     array $badValues = ['BAD'], ?array $goodValues = ['GOOD'], int $failPoint = 5, int $ruleCount = 6,
     $failMessage = 'FailOnBadValidationRule has been given the value BAD'

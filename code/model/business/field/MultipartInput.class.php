@@ -33,8 +33,6 @@ use ramp\model\business\validation\dbtype\VarChar;
 /**
  * MultipartInput field related to a single property with mutiply data storage fields
  * (e.g. week actual (year + weekNumber) month actual (year + monthNumber)).
- * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
- * @property-read array|string|int|float|bool|NULL $value Returns value held by relevant property of associated record.
  */
 class MultipartInput extends Input
 {
@@ -53,7 +51,7 @@ class MultipartInput extends Input
    * @param \ramp\model\business\validation\dbtype\DbTypeValidation,... $dataValidation One or more Validation rule/s to test sub part data before data submition.
    * 
    * ```php
-   * new field\Input(Str::set('propertyName'), $parent,
+   * new field\MultipartInput(Str::set('propertyName'), $parent,
    *   Str::set('Expanded description of expected field content.'),
    *   new validation\FormValidationRule(
    *     Str::set('expected format'),

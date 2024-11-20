@@ -18,29 +18,20 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation;
+namespace ramp\model\business\validation\dbtype;
 
 use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
 
 /**
- * Light HTML validation list of allowed tags:
- *  - block: p, h2, h3, h4, ol, ul, li
- *  - inline: strong, em, s, sup, sub
- *  - link: <a href="[safe-web-address]">text</a>).
+ * DateTime database type validation rule, in the format YYYY-mm-ddThh:mm.
+ * Runs code defined test against provided value.
+ * TODO:mrenyard: Add UTC local conversion options on dbtype\DataTime.
  */
-final class HTMLight extends ValidationRule
+class Year extends DbTypeValidation
 {
-  private static $inputType;
-
-  /**
-   * Constructor for HexidecimalColorCode validation.
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   */
-  public function __construct(Str $errorHint, array $tags)
-  {
-    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea html-editor'); }
-    parent::__construct($errorHint);
-  }
+  private static Str $inputType;
 
   /**
    * @ignore
@@ -48,23 +39,45 @@ final class HTMLight extends ValidationRule
   #[\Override]
   protected function get_inputType() : Str
   {
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('text year'); }
     return SELF::$inputType;
   }
 
   /**
-   * Asserts that $value conforms to safe (allowed) html. 
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_pattern() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_minlength() : ?int { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_maxlength() : ?int { return NULL; }
+
+  /**
+   * Asserts that $value is a valid date time in the format YYYY-mm-ddThh:mm:ss.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   #[\Override]
   protected function test($value) : void
   {
-    $hrefMatches = array();
-    if (preg_match('/(<a href="*">*</a>)/', $value, $hrefMatches)) {
-      print_r('Textbox has ' . count($hrefMatches) . ' link/s');
-    }
-    if (preg_match('(?:<a href="(?:(https://[a-z0-9-_\.]|wwww.|)"<[a-z]\s*>', $value)) { return; }
-
+    $format = 'Y-m-d\TH:i:s';
+    $o = \DateTime::createFromFormat($format, $value);
+    if ($o && $o->format($format) === $value) { return; }
     throw new FailedValidationException();
   }
 }

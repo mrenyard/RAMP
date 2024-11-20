@@ -29,7 +29,7 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class ISOTime extends FormatBasedValidationRule
 {
-  private static $type;
+  private static $inputtType;
   private ?Str $min;
   private ?Str $max;
   private int $step;
@@ -48,7 +48,7 @@ class ISOTime extends FormatBasedValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(SELF::$type)) { SELF::$type = Str::set('time'); }
+    if (!isset(SELF::$inputtType)) { SELF::$inputtType = Str::set('time'); }
     // TODO:mrenyard: Internationalise 'from' & 'to'.
     $errorHint = ($min !== NULL && $max !== NULL) ?
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
@@ -73,14 +73,16 @@ class ISOTime extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
-    return SELF::$type;
+    return SELF::$inputtType;
   }
 
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return $this->min;
@@ -89,6 +91,7 @@ class ISOTime extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return $this->max;
@@ -97,6 +100,7 @@ class ISOTime extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : ?Str
   {
     return Str::set($this->step);

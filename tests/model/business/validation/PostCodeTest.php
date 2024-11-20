@@ -34,7 +34,7 @@ use ramp\model\business\validation\PostCode;
 
 use tests\ramp\mocks\model\MockPostCode;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -46,6 +46,7 @@ use tests\ramp\mocks\model\MockValidationRule;
 class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->hint6 = Str::set('part six');
@@ -54,6 +55,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
     $this->hint2 = Str::set('part two');
     $this->hint1 = Str::set('part one');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new MockPostCode($this->hint6,
       new PlaceholderValidationRule($this->hint5,
@@ -67,23 +69,6 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
   }
   #endregion
 
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
-      (string)$this->testObject->hint
-    );
-    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
-    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
-    $this->assertSame(8, $this->testObject->maxlength);
-    $this->assertSame('[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', (string)$this->testObject->pattern);
-    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
-    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
-    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
-  }
-  #endregion
-
   /**
    * Collection of assertions for ramp\validation\PostCode.
    * - assert is instance of {@see \ramp\core\RAMPObject}
@@ -92,6 +77,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * - assert is instance of {@see \ramp\model\business\validation\PostCode}
    * @see \ramp\model\business\validation\PostCode
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -104,6 +90,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -114,6 +101,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -129,6 +117,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -139,9 +128,38 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
+      (string)$this->testObject->hint
+    );
+    $this->assertEquals('text', (string)$this->testObject->inputType);
+    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertSame(8, $this->testObject->maxlength);
+    $this->assertSame('[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', (string)$this->testObject->pattern);
+    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
+    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
+    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
   }
 
   /**
@@ -151,6 +169,7 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess(
     array $badValues = ['bad code'], ?array $goodValues = ['SO16 8EL'], int $failPoint = 1, int $ruleCount = 5,
     $failMessage = '$value failed to match provided regex!'

@@ -31,18 +31,21 @@ use ramp\core\Str;
  * - Defines API for test method, where a single code defined test is executed against provided value.
  * - Act as a decorator pattern where several tests can be organised to run consecutively.
  * - Works with other ValidationRules to provide a more complex set of tests.
+ * - Provide API to common set of input element attributes that may relate to data types or test scenarios
+ * [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
+ * 
  *
  * COLLABORATORS
  * - {@see \ramp\validation\ValidationRule}
  * 
- * @property-read ?\ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
- * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered.
- * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
- * @property-read ?int $minlength The minimum allowed value length.
- * @property-read ?int $maxlength The maximum allowed value length.
- * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
- * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid.
- * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
+ * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
+ * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered or NULL.
+ * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule or NULL.
+ * @property-read ?int $minlength The minimum allowed value length or NULL.
+ * @property-read ?int $maxlength The maximum allowed value length or NULL.
+ * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid or NULL.
+ * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid or NULL.
+ * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any', or NULL. 
  * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
 abstract class ValidationRule extends RAMPObject
@@ -145,7 +148,7 @@ abstract class ValidationRule extends RAMPObject
   /**
    * @ignore
    */
-  protected function get_hint() : ?Str
+  protected function get_hint() : Str
   {
     return ($this->subRule) ? 
       $this->subRule->hint->append($this->errorHint->prepend(Str::SPACE())) :

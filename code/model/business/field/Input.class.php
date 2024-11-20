@@ -32,6 +32,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * - Implement property specific methods for iteration, validity checking & error reporting.
  * - Hold referance back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to process provided ValidationRule.
+ * - Provide API to common set of input element attributes[https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
  *
  * COLLABORATORS
  * - {@see \ramp\model\business\Record}

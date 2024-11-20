@@ -30,32 +30,48 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Time extends DbTypeValidation
 {
+  private static Str $inputType;
+
   /**
-   * Default constructor for a validation rule of database type Time.
-   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
-   * ```php
-   * $myValidationRule = new validation\dbtype\Time(
-   *   new validation\SecondValidationRule(
-   *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
-   *     )
-   *   ),
-   *   Str::set('Format error message/hint')
-   * );
-   * ```
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @ignore
    */
-  public function __construct(Str $errorHint, ValidationRule $subRule)
+  #[\Override]
+  protected function get_inputType() : Str
   {
-    parent::__construct($errorHint, $subRule);
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('time'); }
+    return SELF::$inputType;
   }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_pattern() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_minlength() : ?int { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_maxlength() : ?int { return NULL; }
 
   /**
    * Asserts that $value is a valid time in the format hh:mm:ss.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     $format = 'H:i:s';

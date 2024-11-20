@@ -42,6 +42,7 @@ class TelephoneNumber extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
     return SELF::$type;

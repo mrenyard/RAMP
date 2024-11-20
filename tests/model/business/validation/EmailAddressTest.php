@@ -33,6 +33,7 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\EmailAddress;
 
 use tests\ramp\mocks\model\MockEmailAddress;
+use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\RegexEmail.
@@ -42,20 +43,15 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
   private Str $placeholder;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->hint = Str::set('string with a maximun character length of ');
     $this->placeholder = Str::set('e.g. jsmith@domain.com');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new MockEmailAddress($this->hint, $this->placeholder);
-  }
-  #endregion
-
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertSame($this->hint, $this->testObject->hint);
   }
   #endregion
 
@@ -66,6 +62,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * - assert is instance of {@see \ramp\model\business\validation\EmailAddress}
    * @see \ramp\model\business\validation\EmailAddress
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -78,6 +75,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -88,6 +86,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -103,6 +102,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -113,9 +113,35 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertSame($this->hint, $this->testObject->hint);
+    $this->assertEquals('email', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
   }
 
   /**
@@ -125,6 +151,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess(
     array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''

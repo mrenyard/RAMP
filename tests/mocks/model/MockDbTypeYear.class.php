@@ -19,26 +19,25 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\condition\mocks\FilterConditionTest;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\RAMPObject;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\dbtype\Year;
 
 /**
- * Mock business record with property.
+ * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
  * .
  */
-class Record extends RAMPObject
+class MockDbTypeYear extends Year
 {
-  private $property;
-
   /**
-   * A test getter for Record::property
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
    */
-  protected function get_property()
+  protected function test($value) : void
   {
-    if (!isset($this->property)) {
-      $this->property = new Field();
-    }
-    return $this->property;
+    MockValidationRule::$testCallCount++;
+    parent::test($value);
   }
 }

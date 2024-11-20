@@ -65,6 +65,7 @@ class Integer extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
     return SELF::$inputType;
@@ -73,6 +74,7 @@ class Integer extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return Str::set($this->min);
@@ -81,6 +83,7 @@ class Integer extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return Str::set($this->max);
@@ -89,6 +92,7 @@ class Integer extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : ?Str
   {
     return Str::set($this->step);
@@ -99,6 +103,7 @@ class Integer extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (is_int($value) && $value <= $this->max && $value >= $this->min && ($value === 0 || $value % $this->step == 0)) { return; }

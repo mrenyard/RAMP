@@ -29,7 +29,7 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class ISOMonth extends FormatBasedValidationRule
 {
-  private static Str $type;
+  private static Str $inputType;
   private static int $maxlength;
   private ?Str $min;
   private ?Str $max;
@@ -48,7 +48,7 @@ class ISOMonth extends FormatBasedValidationRule
   public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
   {
     $failed = FALSE;
-    if (!isset(SELF::$type)) { SELF::$type = Str::set('month'); } 
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('month'); } 
     if (!isset(SELF::$maxlength)) { SELF::$maxlength = 7; }
     // TODO:mrenyard: Internationalise 'from' & 'to'.
     $errorHint = ($min !== NULL && $max !== NULL) ?
@@ -70,14 +70,16 @@ class ISOMonth extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
-    return SELF::$type;
+    return SELF::$inputType;
   }
 
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return $this->min;
@@ -86,6 +88,7 @@ class ISOMonth extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return $this->max;
@@ -94,6 +97,7 @@ class ISOMonth extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : ?Str
   {
     return Str::set($this->step);
@@ -104,6 +108,7 @@ class ISOMonth extends FormatBasedValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     parent::test($value);

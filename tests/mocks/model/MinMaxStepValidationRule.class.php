@@ -29,7 +29,7 @@ use ramp\core\Str;
  */
 class MinMaxStepValidationRule extends MockValidationRule
 {
-  protected function get_min() : ?Str { return SELF::$minValue; }
-  protected function get_max() : ?Str { return SELF::$maxValue; }
-  protected function get_step() : ?Str { return SELF::$stepValue; }
+  protected function get_min() : ?Str { return Str::set(SELF::MIN); }
+  protected function get_max() : ?Str { return Str::set(SELF::MAX); }
+  protected function get_step() : ?Str { return Str::set(SELF::STEP); }
 }

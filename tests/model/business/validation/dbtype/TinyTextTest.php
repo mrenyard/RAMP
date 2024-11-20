@@ -35,7 +35,7 @@ use ramp\model\business\validation\dbtype\TinyText;
 use tests\ramp\mocks\model\MockDbTypeTinyText;
 use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -46,16 +46,19 @@ use tests\ramp\mocks\model\FailOnBadValidationRule;
 class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValidationTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->hint5 = Str::set('with a maximum character length of ');
-    $this->hint4 = Str::set('placeholder');
-    $this->hint3 = Str::set('hinted AAAA');
+    $this->hint4 = Str::set('part four');
+    $this->hint3 = Str::set('part three');
     $this->hint2 = Str::set('part two');
     $this->hint1 = Str::set('part one');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockDbTypeTinyText($this->hint5, NULL,
+    return new MockDbTypeTinyText( Str::set(MockValidationRule::PLACEHOLDER),
+      $this->hint5, NULL,
       new PlaceholderValidationRule($this->hint4,
         new PatternValidationRule($this->hint3,
           new FailOnBadValidationRule($this->hint2,
@@ -65,13 +68,14 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
       )
     );
   }
+  #[\Override]
   protected function postSetup() : void
   {
     // Char length ~255
     $this->shortText = 'The copy warned the Little Blind Text, that where it came from it would '.
     'have been rewritten a thousand times and everything that was left from its origin would be '.
     'the word and the Little Blind Text should turn around and return to its own, safe country.';
-    // Char length ~16300.
+    // Char length > 255.
     $this->longText = 'Far far away, behind the word mountains, far from the countries Vokalia and ' .
     'Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at ' .
     'the coast of the Semantics, a large language ocean. A small river named Duden flows by ' .
@@ -88,211 +92,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
     'question ran over her cheek, then she continued her way. On her way she met a copy. The ' .
     'copy warned the Little Blind Text, that where it came from it would have been rewritten ' .
     'a thousand times and everything that was left from its origin would be the word "and" ' .
-    'and the Little Blind Text should turn around and return to its own, safe country.
-' . '
-' . 'But nothing the copy said could convince her and so it didn’t take long until a few ' .
-    'insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged ' .
-    'her into their agency, where they abused her for their projects again and again. And if ' .
-    'she hasn’t been rewritten, then they are still using her. Far far away, behind the word ' .
-    'mountains, far from the countries Vokalia and Consonantia, there live the blind texts. ' .
-    'Separated they live in Bookmarksgrove right at the coast of the Semantics, a large ' .
-    'language ocean. A small river named Duden flows by their place and supplies it with the ' .
-    'necessary regelialia. It is a paradisematic country, in which roasted parts of sentences ' .
-    'fly into your mouth. Even the all-powerful Pointing has no control about the blind texts ' .
-    'it is an almost unorthographic life One day however a small line of blind text by the ' .
-    'name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised ' .
-    'her not to do so, because there were thousands of bad Commas, wild Question Marks and ' .
-    'devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven ' .
-    'versalia, put her initial into the belt and made herself on the way. When she reached ' .
-    'the first hills of the Italic Mountains, she had a last view back on the skyline of her ' .
-    'hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own ' .
-    'road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued ' .
-    'her way. On her way she met a copy.
-' . '
-' . 'The copy warned the Little Blind Text, that where it came from it would have been ' .
-    'rewritten a thousand times and everything that was left from its origin would be the ' .
-    'word "and" and the Little Blind Text should turn around and return to its own, safe ' .
-    'country. But nothing the copy said could convince her and so it didn’t take long until ' .
-    'a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and ' .
-    'dragged her into their agency, where they abused her for their projects again and ' .
-    'again. And if she hasn’t been rewritten, then they are still using her. Far far away, ' .
-    'behind the word mountains, far from the countries Vokalia and Consonantia, there live ' .
-    'the blind texts. Separated they live in Bookmarksgrove right at the coast of the ' .
-    'Semantics, a large language ocean. A small river named Duden flows by their place and ' .
-    'supplies it with the necessary regelialia. It is a paradisematic country, in which ' .
-    'roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no ' .
-    'control about the blind texts it is an almost unorthographic life One day however a ' .
-    'small line of blind text by the name of Lorem Ipsum decided to leave for the far World ' .
-    'of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad ' .
-    'Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t ' .
-    'listen. She packed her seven versalia, put her initial into the belt and made herself on ' .
-    'the way.
-' . '
-' . 'When she reached the first hills of the Italic Mountains, she had a last view back on ' .
-    'the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the ' .
-    'subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, ' .
-    'then she continued her way. On her way she met a copy. The copy warned the Little Blind ' .
-    'Text, that where it came from it would have been rewritten a thousand times and ' .
-    'everything that was left from its origin would be the word "and" and the Little Blind ' .
-    'Text should turn around and return to its own, safe country. But nothing the copy said ' .
-    'could convince her and so it didn’t take long until a few insidious Copy Writers ' .
-    'ambushed her, made her drunk with Longe and Parole and dragged her into their agency, ' .
-    'where they abused her for their projects again and again. And if she hasn’t been ' .
-    'rewritten, then they are still using her. Far far away, behind the word mountains, far ' .
-    'from the countries Vokalia and Consonantia, there live the blind texts. Separated they ' .
-    'live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A ' .
-    'small river named Duden flows by their place and supplies it with the necessary ' .
-    'regelialia. It is a paradisematic country, in which roasted parts of sentences fly into ' .
-    'your mouth. Even the all-powerful Pointing has no control about the blind texts it is ' .
-    'an almost unorthographic life One day however a small line of blind text by the name of ' .
-    'Lorem Ipsum decided to leave for the far World of Grammar.
-' . '
-' . 'The Big Oxmox advised her not to do so, because there were thousands of bad Commas, ' .
-    'wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She ' .
-    'packed her seven versalia, put her initial into the belt and made herself on the way. ' .
-    'When she reached the first hills of the Italic Mountains, she had a last view back on ' .
-    'the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the ' .
-    'subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, ' .
-    'then she continued her way. On her way she met a copy. The copy warned the Little Blind ' .
-    'Text, that where it came from it would have been rewritten a thousand times and ' .
-    'everything that was left from its origin would be the word "and" and the Little Blind ' .
-    'Text should turn around and return to its own, safe country. But nothing the copy said ' .
-    'could convince her and so it didn’t take long until a few insidious Copy Writers ' .
-    'ambushed her, made her drunk with Longe and Parole and dragged her into their agency, ' .
-    'where they abused her for their projects again and again. And if she hasn’t been ' .
-    'rewritten, then they are still using her. Far far away, behind the word mountains, far ' .
-    'from the countries Vokalia and Consonantia, there live the blind texts. Separated they ' .
-    'live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A ' .
-    'small river named Duden flows by their place and supplies it with the necessary regelialia.
-' . '
-' . 'It is a paradisematic country, in which roasted parts of sentences fly into your mouth. ' .
-    ' Even the all-powerful Pointing has no control about the blind texts it is an almost ' .
-    'unorthographic life One day however a small line of blind text by the name of Lorem ' .
-    'Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to ' .
-    'do so, because there were thousands of bad Commas, wild Question Marks and devious ' .
-    'Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put ' .
-    'her initial into the belt and made herself on the way. When she reached the first hills ' .
-    'of the Italic Mountains, she had a last view back on the skyline of her hometown ' .
-    'Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the ' .
-    'Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way. ' .
-    'On her way she met a copy. The copy warned the Little Blind Text, that where it came ' .
-    'from it would have been rewritten a thousand times and everything that was left from ' .
-    'its origin would be the word "and" and the Little Blind Text should turn around and ' .
-    'return to its own, safe country. But nothing the copy said could convince her and so ' .
-    'it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk ' .
-    'with Longe and Parole and dragged her into their agency, where they abused her for ' .
-    'their projects again and again. And if she hasn’t been rewritten, then they are still ' .
-    'using her.
-' . '
-' . 'Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, ' .
-    'there live the blind texts. Separated they live in Bookmarksgrove right at the coast of ' .
-    'the Semantics, a large language ocean. A small river named Duden flows by their place ' .
-    'and supplies it with the necessary regelialia. It is a paradisematic country, in which ' .
-    'roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no ' .
-    'control about the blind texts it is an almost unorthographic life One day however a ' .
-    'small line of blind text by the name of Lorem Ipsum decided to leave for the far World ' .
-    'of Grammar. The Big Oxmox advised her not to do so, because there were thousands of ' .
-    'bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t ' .
-    'listen. She packed her seven versalia, put her initial into the belt and made herself ' .
-    'on the way. When she reached the first hills of the Italic Mountains, she had a last ' .
-    'view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet ' .
-    'Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran ' .
-    'over her cheek, then she continued her way. On her way she met a copy. The copy warned ' .
-    'the Little Blind Text, that where it came from it would have been rewritten a thousand ' .
-    'times and everything that was left from its origin would be the word "and" and the ' .
-    'Little Blind Text should turn around and return to its own, safe country.
-' . '
-' . 'But nothing the copy said could convince her and so it didn’t take long until a few ' .
-    'insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged ' .
-    'her into their agency, where they abused her for their projects again and again. And ' .
-    'if she hasn’t been rewritten, then they are still using her. Far far away, behind the ' .
-    'word mountains, far from the countries Vokalia and Consonantia, there live the blind ' .
-    'texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a ' .
-    'large language ocean. A small river named Duden flows by their place and supplies it ' .
-    'with the necessary regelialia. It is a paradisematic country, in which roasted parts ' .
-    'of sentences fly into your mouth. Even the all-powerful Pointing has no control about ' .
-    'the blind texts it is an almost unorthographic life One day however a small line of ' .
-    'blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. ' .
-    'The Big Oxmox advised her not to do so, because there were thousands of bad Commas, ' .
-    'wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She ' .
-    'packed her seven versalia, put her initial into the belt and made herself on the way. ' .
-    'When she reached the first hills of the Italic Mountains, she had a last view back on ' .
-    'the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the ' .
-    'subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, ' .
-    'then she continued her way. On her way she met a copy.
-' . '
-' . 'The copy warned the Little Blind Text, that where it came from it would have been ' .
-    'rewritten a thousand times and everything that was left from its origin would be the ' .
-    'word "and" and the Little Blind Text should turn around and return to its own, safe ' .
-    'country. But nothing the copy said could convince her and so it didn’t take long until ' .
-    'a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and ' .
-    'dragged her into their agency, where they abused her for their projects again and again. ' .
-    'And if she hasn’t been rewritten, then they are still using her. Far far away, behind ' .
-    'the word mountains, far from the countries Vokalia and Consonantia, there live the blind ' .
-    'texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a ' .
-    'large language ocean. A small river named Duden flows by their place and supplies it ' .
-    'with the necessary regelialia. It is a paradisematic country, in which roasted parts of ' .
-    'sentences fly into your mouth. Even the all-powerful Pointing has no control about the ' .
-    'blind texts it is an almost unorthographic life One day however a small line of blind ' .
-    'text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big ' .
-    'Oxmox advised her not to do so, because there were thousands of bad Commas, wild ' .
-    'Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She ' .
-    'packed her seven versalia, put her initial into the belt and made herself on the way. ' .
-    'When she reached the first hills of the Italic Mountains, she had a last view back on ' .
-    'the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the ' .
-    'subline of her own road, the Line Lane.
-' . '
-' . 'Pityful a rethoric question ran over her cheek, then she continued her way. On her way ' .
-    'she met a copy. The copy warned the Little Blind Text, that where it came from it would ' .
-    'have been rewritten a thousand times and everything that was left from its origin would ' .
-    'be the word "and" and the Little Blind Text should turn around and return to its own, ' .
-    'safe country. But nothing the copy said could convince her and so it didn’t take long ' .
-    'until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole ' .
-    'and dragged her into their agency, where they abused her for their projects again and ' .
-    'again. And if she hasn’t been rewritten, then they are still using her. Far far away, ' .
-    'behind the word mountains, far from the countries Vokalia and Consonantia, there live ' .
-    'the blind texts. Separated they live in Bookmarksgrove right at the coast of the ' .
-    'Semantics, a large language ocean. A small river named Duden flows by their place and ' .
-    'supplies it with the necessary regelialia. It is a paradisematic country, in which ' .
-    'roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no ' .
-    'control about the blind texts it is an almost unorthographic life One day however a ' .
-    'small line of blind text by the name of Lorem Ipsum decided to leave for the far World ' .
-    'of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad ' .
-    'Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t ' .
-    'listen. She packed her seven versalia, put her initial into the belt and made herself ' .
-    'on the way. When she reached the first hills of the Italic Mountains, she had a last ' .
-    'view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet ' .
-    'Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran ' .
-    'over her cheek, then she continued her way. On her way she met a copy. The copy warned ' .
-    'the Little Blind Text, that where it came from it would have been rewritten a thousand ' .
-    'times and everything that was left from its origin would be the word "and" and the ' .
-    'Little Blind Text should turn around and return to its own, safe country. But nothing ' .
-    'the copy said could convince her and so it didn’t take long until a few insidious Copy ' .
-    'Writers ambushed her, made her drunk with Longe and Parole and dragged her into their ' .
-    'agency, where they abused her for their projects again and again. And if she hasn’t ' .
-    'been rewritten, then they are still using her. Far far away, behind the word mountains, ' .
-    'far from the countries Vokalia and Consonantia, there live the blind texts. Separated ' .
-    'they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. ' .
-    'A small river named Duden flows by their place and supplies it with the necessary ' .
-    'regelialia. It is a paradisematic country, in which roasted parts of sentences fly into ' .
-    'your mouth.';    
-  }
-  #endregion
-
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . $this->hint4 . ' ' . $this->hint5 . '255',
-      (string)$this->testObject->hint
-    );
-    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
-    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
-    $this->assertEquals(255, $this->testObject->maxlength);
-    $this->assertSame(MockValidationRule::$patternValue, $this->testObject->pattern);
-    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
-    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
-    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
+    'and the Little Blind Text should turn around and return to its own, safe country.';
   }
   #endregion
 
@@ -304,6 +104,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * - assert is instance of {@see \ramp\model\business\validation\TinyText}
    * @see \ramp\model\business\validation\dbtype\TinyText
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -315,6 +116,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -325,6 +127,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -340,6 +143,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -350,9 +154,40 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . $this->hint4 . ' ' . $this->hint5 . '255',
+      (string)$this->testObject->hint
+    );
+    $this->assertEquals('textarea', (string)$this->testObject->inputType);
+    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertEquals(255, $this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
   }
 
   /**
@@ -362,6 +197,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess( // badValues [INT, CharLimit]
     array $badValues = NULL, ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 5, $failMessage = ''
   ) : void
@@ -372,7 +208,43 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
 
   #region New Extra Tests
   /**
-   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::maxlength.
+   * Constructor presented with a $subRule::maxlength that is greater than maximum avalible or set $maxlength.
+   * - assert \InvalidArgumentException thrown when $subRule contains a rule with maxlength > $maxlength param on constructor.
+   * @see \ramp\model\business\validation\dbtype\TinyText
+   * @see \ramp\model\business\validation\ValidationRule::maxlength
+   */
+  public function testInsufficientSpaceMismatchException()
+  {
+    $limit = 255;
+    $beyondLimit = 260;
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Possibly insufficient data space allocated for value!');
+    new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, NULL,
+      new LengthValidationRule($this->hint3, $beyondLimit)
+    );
+    $this->assertNull($this->testObject->minlength);
+    $this->assertEquals($limit, $this->testObject->maxlength);
+  }
+
+  /**
+   * Constructor presented with a $subRule::minlength that is greater than maximum avalible or set $maxlength.
+   * - assert \InvalidArgumentException thrown when $subRule contains a rule with minlength >= $maxlength.
+   * @see \ramp\model\business\validation\dbtype\TinyText
+   * @see \ramp\model\business\validation\ValidationRule::maxlength
+   */
+  public function testSubRuleMinlengthOutsideScopeException()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Provided $subRule::$minlength GREATER THAN $maxlength!');
+    $o1 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, NULL,
+      new LengthValidationRule($this->hint1, 200, 250)
+    );
+  }
+
+  /**
+   * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::maxlength and minlength.
    * - assert maxlength same as default limit when NON set from dbtype constructor or subRule.
    * - assert maxlength same as provided on dbtype constructor when within limit and NON on subRule/s.
    * - assert maxlength same as default limit when that provided on dbtype constructor greater than avalible limit.
@@ -386,41 +258,40 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
     $limit = 255;
     $withinLimit = 250;
     $beyondLimit = 260;
-    $o1 = new MockDbTypeTinyText($this->hint5, NULL,
-      new PatternValidationRule($this->hint3)
+    $o1 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, NULL,
+      new PatternValidationRule($this->hint1)
     );
     $this->assertSame($limit, $o1->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . $limit, (string)$o1->hint);
+    $this->assertSame('part one with a maximum character length of ' . $limit, (string)$o1->hint);
     
-    $o2 = new MockDbTypeTinyText($this->hint5, $withinLimit,
-      new PatternValidationRule($this->hint3)
+    $o2 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, $withinLimit,
+      new PatternValidationRule($this->hint1)
     );
     $this->assertSame($withinLimit, $o2->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . $withinLimit, (string)$o2->hint);
+    $this->assertSame('part one with a maximum character length of ' . $withinLimit, (string)$o2->hint);
 
-    $o3 = new MockDbTypeTinyText($this->hint5, $beyondLimit,
-      new PatternValidationRule($this->hint3)
+    $o3 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, $beyondLimit,
+      new PatternValidationRule($this->hint1)
     );
     $this->assertSame($limit, $o3->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . $limit, (string)$o3->hint);
+    $this->assertSame('part one with a maximum character length of ' . $limit, (string)$o3->hint);
     
-    $o4 = new MockDbTypeTinyText($this->hint5, NULL,
-      new MaxlengthValidationRule($this->hint3, $withinLimit)
+    $o4 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, NULL,
+      new LengthValidationRule($this->hint1, $withinLimit)
     );
     $this->assertSame($withinLimit, $o4->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . $withinLimit, (string)$o4->hint);
+    $this->assertSame('part one with a maximum character length of ' . $withinLimit, (string)$o4->hint);
 
-    $o5 = new MockDbTypeTinyText($this->hint5, NULL,
-      new MaxlengthValidationRule($this->hint3, $beyondLimit)
+    $o5 = new MockDbTypeTinyText( Str::_EMPTY(),
+      $this->hint5, $whitinLimit,
+      new LengthValidationRule($this->hint1, ($withinLimit - 100))
     );
-    $this->assertSame($limit, $o5->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . $limit, (string)$o5->hint);
-
-    $o6 = new MockDbTypeTinyText($this->hint5, $whitinLimit,
-      new MaxlengthValidationRule($this->hint3, ($withinLimit - 100))
-    );
-    $this->assertSame(($withinLimit - 100), $o6->maxlength);
-    $this->assertSame('hinted AAAA with a maximum character length of ' . ($withinLimit - 100), (string)$o6->hint);
+    $this->assertSame(($withinLimit - 100), $o5->maxlength);
+    $this->assertSame('part one with a maximum character length of ' . ($withinLimit - 100), (string)$o5->hint);
   }
   #endregion
 }

@@ -40,7 +40,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
     if ($this->register('uname', RecordComponentType::KEY)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('A special single word used alongside your email to uniquely identify you on our network'),
-        new VarChar(
+        new VarChar( Str::set('e.g. aname'),
           Str::set('string with a maximum length of '),
           20, new LowercaseAlphanumeric(
             Str::set('lowercase, letter and number charactered')
@@ -64,7 +64,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
     if ($this->register('familyName', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The mostly hereditary portion of a persons name that indicates family, in wester culture often refered to as lastname or surname.'),
-        new VarChar(
+        new VarChar( Str::set('e.g. Smith'),
           Str::set('string with a maximum character length of '),
           50, new Alphanumeric(
             Str::set('numbered, lowercase and uppercase lettered')
@@ -88,7 +88,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
     if ($this->register('givenName', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The name by which you are refered by, in western culture usually your first name.'),
-        new VarChar(
+        new VarChar( Str::set('e.g. Jane'),
           Str::set('string with a maximum character length of '),
           150, new Alphanumeric(
             Str::set('numbered, lowercase and uppercase lettered')

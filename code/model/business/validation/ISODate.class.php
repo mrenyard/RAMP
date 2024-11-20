@@ -30,7 +30,6 @@ use ramp\model\business\validation\FailedValidationException;
 class ISODate extends FormatBasedValidationRule
 {
   private static $type;
-  // private static $maxlength;
   private ?Str $min;
   private ?Str $max;
   private int $step;
@@ -49,7 +48,6 @@ class ISODate extends FormatBasedValidationRule
   {
     $failed = FALSE;
     if (!isset(SELF::$type)) { SELF::$type = Str::set('date'); } 
-    // if (!isset(SELF::$maxlength)) { SELF::$maxlength = 10; }
     // TODO:mrenyard: Internationalise 'from' & 'to'.
     $errorHint = ($min !== NULL && $max !== NULL) ?
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
@@ -79,6 +77,7 @@ class ISODate extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
     return SELF::$type;
@@ -87,6 +86,7 @@ class ISODate extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_min() : ?Str
   {
     return $this->min;
@@ -95,6 +95,7 @@ class ISODate extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_max() : ?Str
   {
     return $this->max;
@@ -103,6 +104,7 @@ class ISODate extends FormatBasedValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_step() : ?Str
   {
     return Str::set($this->step);
@@ -113,6 +115,7 @@ class ISODate extends FormatBasedValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     parent::test($value);

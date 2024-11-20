@@ -29,5 +29,5 @@ use ramp\core\Str;
  */
 class PatternValidationRule extends MockValidationRule
 {
-  protected function get_pattern() : ?Str { return SELF::$patternValue; }
+  protected function get_pattern() : ?Str { return Str::set(SELF::PATTERN); }
 }

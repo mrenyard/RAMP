@@ -36,11 +36,48 @@ use ramp\model\business\validation\ValidationRule;
 */
 class Date extends DbTypeValidation
 {
+  private static Str $inputType;
+  
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_inputType() : Str
+  {
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('date'); }
+    return SELF::$inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_pattern() : ?Str { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_minlength() : ?int { return NULL; }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_maxlength() : ?int { return NULL; }
+
   /**
    * Asserts that $value is a valid date in the format YYYY-MM-DD.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     $format = 'Y-m-d';

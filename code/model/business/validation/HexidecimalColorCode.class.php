@@ -27,7 +27,7 @@ use ramp\core\Str;
  */
 final class HexidecimalColorCode extends ValidationRule
 {
-  private static $type;
+  private static $inputType;
 
   /**
    * Constructor for HexidecimalColorCode validation.
@@ -35,21 +35,23 @@ final class HexidecimalColorCode extends ValidationRule
    */
   public function __construct(Str $errorMessage)
   {
-    if (!isset(SELF::$type)) { SELF::$type = Str::set('color'); } 
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('color'); } 
     parent::__construct($errorHint);
   }
 
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
-    return SELF::$type;
+    return SELF::$inputType;
   }
 
   /**
    * @ignore 
    */
+  #[\Override]
   protected function get_pattern() : ?Str
   {
     return NULL;
@@ -58,6 +60,7 @@ final class HexidecimalColorCode extends ValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_maxlength() : ?int
   {
     return NULL;
@@ -68,6 +71,7 @@ final class HexidecimalColorCode extends ValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (preg_match('/^(:?#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2})$/', $value)) { return; }

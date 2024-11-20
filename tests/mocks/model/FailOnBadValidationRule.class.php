@@ -30,8 +30,6 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class FailOnBadValidationRule extends MockValidationRule
 {
-  protected function get_inputType() : Str { return SELF::$inputTypeValue; }
-
   /**
    * {@inheritdoc}
    */

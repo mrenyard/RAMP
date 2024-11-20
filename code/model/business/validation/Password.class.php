@@ -45,6 +45,7 @@ class Password extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str
   {
     return SELF::$type;
@@ -53,6 +54,7 @@ class Password extends RegexValidationRule
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_maxlength() : ?int
   {
     return SELF::$maxlength;

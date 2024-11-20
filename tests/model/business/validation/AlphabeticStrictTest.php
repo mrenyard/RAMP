@@ -34,7 +34,7 @@ use ramp\model\business\validation\AlphabeticStrict;
 
 use tests\ramp\mocks\model\MockAlphabeticStrict;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -46,6 +46,7 @@ use tests\ramp\mocks\model\MockValidationRule;
 class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->maxlength = 10;
@@ -56,11 +57,12 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
     $this->hint2 = Str::set('part two');
     $this->hint1 = Str::set('part one');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new MockAlphabeticStrict($this->hint6,
       new PlaceholderValidationRule($this->hint5,
         new PatternValidationRule($this->hint4,
-          new MaxlengthValidationRule($this->hint3, $this->maxlength,
+          new LengthValidationRule($this->hint3, $this->maxlength, NULL,
             new FailOnBadValidationRule($this->hint2,
               new MinMaxStepValidationRule($this->hint1)
             )
@@ -68,24 +70,6 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
         )
       )
     );
-  }
-  #endregion
-
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
-      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
-      (string)$this->testObject->hint
-    );
-    $this->assertSame(MockValidationRule::$inputTypeValue, $this->testObject->inputType);
-    $this->assertSame(MockValidationRule::$placeholderValue, $this->testObject->placeholder);
-    $this->assertSame($this->maxlength, $this->testObject->maxlength);
-    $this->assertSame('[a-zA-Z]*', (string)$this->testObject->pattern);
-    $this->assertSame(MockValidationRule::$minValue, $this->testObject->min);
-    $this->assertSame(MockValidationRule::$maxValue, $this->testObject->max);
-    $this->assertSame(MockValidationRule::$stepValue, $this->testObject->step);
   }
   #endregion
 
@@ -97,6 +81,7 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * - assert is instance of {@see \ramp\model\business\validation\AlphabeticStrict}
    * @see \ramp\model\business\validation\AlphabeticStrict
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -109,6 +94,7 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -119,6 +105,7 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -134,6 +121,7 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -144,9 +132,39 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertEquals(
+      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
+      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
+      (string)$this->testObject->hint
+    );
+    $this->assertEquals('text', (string)$this->testObject->inputType);
+    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertSame($this->maxlength, $this->testObject->maxlength);
+    $this->assertSame('[a-zA-Z]*', (string)$this->testObject->pattern);
+    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
+    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
+    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
   }
 
   /**
@@ -156,6 +174,7 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess(
     array $badValues = ['bad@regex'], ?array $goodValues = ['goodRegex'], int $failPoint = 1, int $ruleCount = 6,
     $failMessage = '$value failed to match provided regex!'

@@ -43,6 +43,7 @@ class Flag extends DbTypeValidation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_inputType() : Str { return Str::_EMPTY(); }
 
   /**
@@ -50,6 +51,7 @@ class Flag extends DbTypeValidation
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if ($value === TRUE || $value === FALSE) { return; }

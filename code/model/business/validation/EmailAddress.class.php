@@ -28,6 +28,8 @@ use ramp\model\business\validation\FailedValidationException;
  */
 class EmailAddress extends ValidationRule
 {
+  private static Str $inputType;
+
   /**
    * Constructor for email address format validation and MX DNS domain check.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
@@ -44,6 +46,7 @@ class EmailAddress extends ValidationRule
    */
   public function __construct(Str $errorHint)
   {
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('email'); }
     parent::__construct($errorHint);
   }
 
@@ -52,13 +55,23 @@ class EmailAddress extends ValidationRule
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
     if (\filter_var($value, FILTER_VALIDATE_EMAIL)) {
       if (\checkdnsrr(explode('@', $value)[1], 'MX')) { return; }
-      throw new FailedValidationException('Provided email domain does NOT exist!');
+      throw new FailedValidationException('Provided email domain does NOT exist!'); // @codeCoverageIgnore
       return;
     }
     throw new FailedValidationException();
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_inputType() : Str
+  {
+    return SELF::$inputType;
   }
 }

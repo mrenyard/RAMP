@@ -34,7 +34,7 @@ use ramp\model\business\validation\TelephoneNumber;
 
 use tests\ramp\mocks\model\MockTelephoneNumber;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -46,26 +46,14 @@ use tests\ramp\mocks\model\MockValidationRule;
 class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->hint1 = Str::set('anything NOT BadValue');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     return new MockTelephoneNumber($this->hint1);
-  }
-  #endregion
-
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertEquals($this->hint1, (string)$this->testObject->hint);
-    $this->assertSame('tel', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertSame('(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}', (string)$this->testObject->pattern);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
   }
   #endregion
 
@@ -77,6 +65,7 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * - assert is instance of {@see \ramp\model\business\validation\TelephoneNumber}
    * @see \ramp\model\business\validation\TelephoneNumber
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -89,6 +78,7 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -99,6 +89,7 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -114,6 +105,7 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -124,9 +116,35 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertEquals($this->hint1, (string)$this->testObject->hint);
+    $this->assertSame('tel', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertSame('(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}', (string)$this->testObject->pattern);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
   }
 
   /**
@@ -136,6 +154,7 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess(
     array $badValues = ['bad.regex'], ?array $goodValues = ['023 4512 3456'], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'

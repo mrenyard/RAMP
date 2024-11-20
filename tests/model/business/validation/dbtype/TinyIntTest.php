@@ -35,7 +35,7 @@ use ramp\model\business\validation\dbtype\TinyInt;
 use tests\ramp\mocks\model\MockDbTypeTinyInt;
 use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\MaxlengthValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
 use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
@@ -46,28 +46,16 @@ use tests\ramp\mocks\model\FailOnBadValidationRule;
 class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void
   {
     $this->specialAppendHint = '-128 to 127';
     $this->hint1 = Str::set('a number from ');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockDbTypeTinyInt($this->hint1); }
   #endregion
   
-  #region Sub process template
-  protected function doAttributeValueConfirmation()
-  {
-    $this->assertEquals($this->hint1 . $this->specialAppendHint, (string)$this->testObject->hint);
-    $this->assertSame('number', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertEquals('-128', (string)$this->testObject->min);
-    $this->assertEquals('127', (string)$this->testObject->max);
-    $this->assertEquals('1', (string)$this->testObject->step);
-  }
-  #endregion
-
   /**
    * Collection of assertions for ramp\validation\dbtype\TinyInt::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
@@ -81,6 +69,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    *   - with message: *'$max has exceded 127 and or $min is less than -128'*
    * @see \ramp\model\business\validation\dbtype\TinyInt
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -110,6 +99,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -120,6 +110,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -135,6 +126,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -145,9 +137,36 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    * - assert returns empty string literal.
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
+  }
+
+  /**
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$placeholder
+   * @see \ramp\validation\ValidationRule::$minlength
+   * @see \ramp\validation\ValidationRule::$maxlength
+   * @see \ramp\validation\ValidationRule::$min
+   * @see \ramp\validation\ValidationRule::$max
+   * @see \ramp\validation\ValidationRule::$step
+   * @see \ramp\validation\ValidationRule::$hint
+   */
+  #[\Override]
+  public function testExpectedAttributeValues()
+  {
+    $this->assertEquals($this->hint1 . $this->specialAppendHint, (string)$this->testObject->hint);
+    $this->assertSame('number', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertEquals('-128', (string)$this->testObject->min);
+    $this->assertEquals('127', (string)$this->testObject->max);
+    $this->assertEquals('1', (string)$this->testObject->step);
   }
 
   /**
@@ -157,6 +176,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
+  #[\Override]
   public function testProcess( // $badValues upper/lowwer limits.
     array $badValues = [128, -129], ?array $goodValues = [127, -127], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''
