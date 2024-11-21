@@ -120,7 +120,7 @@ class Templated extends DocumentView
    */
   public function render() : void
   {
-    if (SETTING::$DEV_MODE && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'page.tpl.php'))) {
+    if (SETTING::$DEV_MODE && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'body.tpl.php'))) {
       include 'template/'. $this->templateType .'/info.tpl.php';
     }
     include $this->template;

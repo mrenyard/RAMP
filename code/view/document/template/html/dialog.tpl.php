@@ -22,4 +22,6 @@ namespace ramp\view;
 
 $site = WebRoot::getInstance();
 ?>
-    <!-- dialog id="modal" <?=$site->modalOpen; ?>data-confirm="Cancel,Confirm" data-submit="Cancel,Submit" data-reload="Wait,Reload"><?=($site->isModal) ? $site->modalForm : ''; ?></dialog -->
+    <dialog id="modal" <?=$site->modalOpen; ?>data-confirm="Cancel,Confirm" data-submit="Cancel,Submit" data-reload="Wait,Reload">
+<?=($site->isModal) ? $site->modalForm : ''; ?>
+    </dialog>

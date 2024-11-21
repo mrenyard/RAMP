@@ -18,14 +18,14 @@
  * @package RAMP
  * @version 0.0.9;
  */
-?><form method="post">
-      <header>
-        <h2><?=$this->heading; ?></h2>
-        <button formmethod="dialog">X</button>
-      </header>
-      
-      <footer>
-        <button formmethod="dialog">Cancel</button>
-        <button>Confirm</button>
-      </footer>
-    </form>
+?>
+      <form method="post">
+        <header>
+          <h2><?=$this->heading; ?></h2>
+          <button formmethod="dialog">X</button>
+        </header>
+        <footer>
+          <button formmethod="dialog">Cancel</button>
+          <button>Confirm</button>
+        </footer>
+      </form>

@@ -24,12 +24,11 @@ require_once('load.ini.php');
 if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
 
 $document = view\WebRoot::getInstance();
-// $document->type = view\PageType::INDEX;
+$document->type = view\PageType::CONTENT;
 new view\document\Templated($document, core\Str::set('empty'));
 
 // $modal = $document->setModal('modal404');
 // $modal->heading = core\Str::set('404 NOT FOUND!');
 // new view\document\Templated($modal, core\Str::set('empty'));
-
 
 $document->render();
