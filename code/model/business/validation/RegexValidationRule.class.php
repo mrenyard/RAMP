@@ -23,9 +23,9 @@ namespace ramp\model\business\validation;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
+// * @property-read ?string $format format profile based on ISO standards.
 /**
  * Regex pattern matching validation.
- * @property-read ?string $format format profile based on ISO standards.
  */
 class RegexValidationRule extends ValidationRule
 {

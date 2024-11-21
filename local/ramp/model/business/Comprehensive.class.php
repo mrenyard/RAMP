@@ -143,8 +143,9 @@ class Comprehensive extends Record
         Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
         new validation\dbtype\VarChar(
           Str::set('string with a maximun character length of '),
-          150,  new validation\EmailAddress(
-            Str::set('validly formatted email address')
+          150,  new validation\RegexEmailAddress(
+            Str::set('validly formatted email address'),
+            new validation\specialist\ServerSideEmail()
           )
         )
       ));

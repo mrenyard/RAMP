@@ -81,11 +81,11 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
   #endregion
 
   /**
-   * Collection of assertions for ramp\model\business\validation\EmailAddressl.
+   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\RegexValidationRule}
-   * @see \ramp\model\business\validation\EmailAddress
+   * @see \ramp\model\business\validation\RegexEmailAddress
    */
   #[\Override]
   public function testConstruct() : void

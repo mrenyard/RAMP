@@ -150,7 +150,7 @@ abstract class ValidationRule extends RAMPObject
    */
   protected function get_hint() : Str
   {
-    return ($this->subRule) ? 
+    return ($this->subRule && $this->subRule->hint !== Str::_EMPTY()) ? 
       $this->subRule->hint->append($this->errorHint->prepend(Str::SPACE())) :
         $this->errorHint;
   }

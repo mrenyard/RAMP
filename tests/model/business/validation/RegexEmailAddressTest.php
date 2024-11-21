@@ -23,22 +23,25 @@ namespace tests\ramp\model\business\validation;
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/ValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexEmailAddress.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/SpecialistValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockEmailAddress.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockRegexEmailAddress.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\EmailAddress;
+use ramp\model\business\validation\RegexEmailAddress;
+use ramp\model\business\validation\specialist\ServerSideEmail;
 
-use tests\ramp\mocks\model\MockEmailAddress;
+use tests\ramp\mocks\model\MockRegexEmailAddress;
 use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationRuleTest
+class RegexEmailAddressTest extends \tests\ramp\model\business\validation\ValidationRuleTest
 {
   private Str $placeholder;
 
@@ -47,26 +50,25 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
   protected function preSetup() : void
   {
     $this->hint = Str::set('string with a maximun character length of ');
-    $this->placeholder = Str::set('e.g. jsmith@domain.com');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockEmailAddress($this->hint, $this->placeholder);
+    return new MockRegexEmailAddress($this->hint, new ServerSideEmail());
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\model\business\validation\EmailAddressl.
+   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\EmailAddress}
-   * @see \ramp\model\business\validation\EmailAddress
+   * - assert is instance of {@see \ramp\model\business\validation\RegexEmailAddress}
+   * @see \ramp\model\business\validation\RegexEmailAddress
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\EmailAddress', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\RegexEmailAddress', $this->testObject);
   }
 
   #region Inherited Tests
@@ -134,11 +136,11 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertSame($this->hint, $this->testObject->hint);
+    $this->assertEquals($this->hint, $this->testObject->hint);
     $this->assertEquals('email', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->pattern);
+    $this->assertEquals('[a-zA-Z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}', (string)$this->testObject->pattern);
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);
     $this->assertNull($this->testObject->step);
@@ -154,7 +156,7 @@ class EmailAddressTest extends \tests\ramp\model\business\validation\ValidationR
   #[\Override]
   public function testProcess(
     array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = '$value failed to match provided regex!'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

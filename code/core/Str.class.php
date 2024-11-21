@@ -276,6 +276,7 @@ final class Str extends RAMPObject
   public function append(Str $value) : Str
   {
     if ($this === SELF::_EMPTY()){ return $value; } // cannot append to an empty string
+    if ($value === SELF::_EMPTY()) { return $this; } // empty strings do not append 
     return Str::set(($this->value . $value));
   }
 
@@ -286,7 +287,8 @@ final class Str extends RAMPObject
    */
   public function prepend(Str $value) : Str
   {
-    if ($this === SELF::_EMPTY()){ return $value; } // cannot prepend to an empty string
+    if ($this === SELF::_EMPTY()) { return $value; } // cannot prepend to an empty string
+    if ($value === SELF::_EMPTY()) { return $this; } // empty strings do not prepend 
     return Str::set(($value . $this->value));
   }
 

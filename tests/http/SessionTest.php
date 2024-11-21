@@ -48,7 +48,7 @@ require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/EmailAddress.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexEmailAddress.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Field.class.php';

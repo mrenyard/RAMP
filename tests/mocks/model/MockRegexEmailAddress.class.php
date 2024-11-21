@@ -22,13 +22,13 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\EmailAddress;
+use ramp\model\business\validation\RegexEmailAddress;
 
 /**
  * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
  * .
  */
-class MockEmailAddress extends EmailAddress
+class MockRegexEmailAddress extends RegexEmailAddress
 {
   /**
    * Runs code defined test against provided value.
