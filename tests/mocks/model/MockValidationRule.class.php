@@ -27,7 +27,6 @@ use ramp\model\business\validation\ValidationRule;
 
 /**
  * Concreate implementation of \ramp\validation\model\business\ValidationRule for testing against.
- * .
  */
 class MockValidationRule extends ValidationRule
 {
@@ -50,7 +49,7 @@ class MockValidationRule extends ValidationRule
    */
   protected function test($value) : void
   {
-    self::$testCallCount++;
+    SELF::$testCallCount++;
     if ($value === 'BadValue') {
       throw new FailedValidationException('MockValidationRule has been given the value BadValue');
     }

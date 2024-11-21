@@ -20,6 +20,7 @@
  */
 namespace ramp\model\business\validation\specialist;
 
+use ramp\core\Str;
 use ramp\model\business\validation\ValidationRule;
 
 /**
@@ -35,4 +36,28 @@ use ramp\model\business\validation\ValidationRule;
  */
 abstract class SpecialistValidationRule extends ValidationRule
 {
+  /**
+   * Default constructor for a ValidationRule.
+   * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
+   * ```php
+   * $myRule = new dbtype\FirstValidationRule(
+   *   Str::set('Format error message/hint'),
+   *   new SecondValidationRule(
+   *     Str::set('Format error message/hint'),
+   *     new ThirdValiationRule(
+   *       Str::set('Format error message/hint'),
+   *       new ForthValidationRule(
+   *         Str::set('Format error message/hint')
+   *       )
+   *     )
+   *   )
+   * );
+   * ```
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+   */
+  public function __construct(Str $errorHint, SpecialistValidationRule $subRule = NULL)
+  {
+    parent::__construct($errorHint, $subRule);
+  }
 }

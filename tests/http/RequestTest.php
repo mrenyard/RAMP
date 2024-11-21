@@ -56,6 +56,8 @@ require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/SpecialistValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexEmailAddress.class.php';

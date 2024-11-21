@@ -23,19 +23,22 @@ namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\specialist\SpecialistValidationRule;
+
+use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class FailOnBadValidationRule extends MockValidationRule
+class FailOnBadValidationRule extends SpecialistValidationRule
 {
   /**
    * {@inheritdoc}
    */
   protected function test($value) : void
   {
-    self::$testCallCount++;
+    MockValidationRule::$testCallCount++;
     if ($value === 'BAD') {
       throw new FailedValidationException('FailOnBadValidationRule has been given the value BAD');
     }

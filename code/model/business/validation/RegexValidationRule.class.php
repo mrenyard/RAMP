@@ -22,6 +22,7 @@ namespace ramp\model\business\validation;
 
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\specialist\SpecialistValidationRule;
 
 // * @property-read ?string $format format profile based on ISO standards.
 /**
@@ -51,7 +52,7 @@ class RegexValidationRule extends ValidationRule
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
   //  * @param string $format Optional format profile based on ISO standards.
    */
-  public function __construct(Str $errorHint, string $pattern, ValidationRule $subRule = NULL)//, string $format = NULL)
+  public function __construct(Str $errorHint, string $pattern, SpecialistValidationRule $subRule = NULL)//, string $format = NULL)
   {
     $this->pattern = $pattern;
     // $this->format = $format;

@@ -26,6 +26,7 @@ require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
 require_once '/usr/share/php/ramp/core/Str.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/SpecialistValidationRule.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/PlaceholderValidationRule.class.php';

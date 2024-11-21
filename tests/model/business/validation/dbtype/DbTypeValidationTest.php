@@ -69,13 +69,24 @@ class DbTypeValidationTest extends \tests\ramp\model\business\validation\Validat
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\dbtype\DbTypeValidation}
-   * @see \ramp\validation\DbTypeValidationTest
+   * - assert throws InvalidAgumentException if provided ValidationRule is instance of DbTypeValidationRule
+   *   - with message: *'DbTypeValidationRules CANNOT take DbTypeValidationRule as $subRule!'*
+   * @see \ramp\validation\DbTypeValidationRule
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\DbTypeValidation', $this->testObject);
+    try {
+      new MockDbTypeValidation(Str::NEW(),
+        new MockDbTypeValidation(Str::NEW())
+      );
+    } catch (\InvalidArgumentException $expected) {
+      $this->assertSame('DbTypeValidationRules CANNOT take DbTypeValidationRule as $subRule!', $expected->getMessage());
+      return;
+    }
+    $this->fail('An expected \InvalidArgumentException has NOT been raised');
   }
 
   #region Inherited Tests

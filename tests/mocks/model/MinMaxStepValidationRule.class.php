@@ -22,14 +22,31 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\specialist\SpecialistValidationRule;
+
+use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class MinMaxStepValidationRule extends MockValidationRule
+class MinMaxStepValidationRule extends SpecialistValidationRule
 {
-  protected function get_min() : ?Str { return Str::set(SELF::MIN); }
-  protected function get_max() : ?Str { return Str::set(SELF::MAX); }
-  protected function get_step() : ?Str { return Str::set(SELF::STEP); }
+  protected function get_min() : ?Str { return Str::set(MockValidationRule::MIN); }
+  protected function get_max() : ?Str { return Str::set(MockValidationRule::MAX); }
+  protected function get_step() : ?Str { return Str::set(MockValidationRule::STEP); }
+
+  /**
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
+   */
+  protected function test($value) : void
+  {
+    MockValidationRule::$testCallCount++;
+    if ($value === 'BadValue') {
+      throw new FailedValidationException('MockValidationRule has been given the value BadValue');
+    }
+  }
 }

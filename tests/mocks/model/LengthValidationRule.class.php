@@ -22,18 +22,21 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
-use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\specialist\SpecialistValidationRule;
+
+use tests\ramp\mocks\model\MockValidationRule;
 
 /**
  * Concreate implementation of \ramp\validation\ValidationRule for testing against.
  * .
  */
-class LengthValidationRule extends MockValidationRule
+class LengthValidationRule extends SpecialistValidationRule
 {
   private $maxlength;
   private $minlength;
 
-  public function __construct(Str $errorHint, int $maxlength, ?int $minlength = NULL, ValidationRule $subRule = NULL)
+  public function __construct(Str $errorHint, int $maxlength, ?int $minlength = NULL, SpecialistValidationRule $subRule = NULL)
   {
     $this->maxlength = $maxlength;
     $this->minlength = $minlength;
@@ -42,4 +45,17 @@ class LengthValidationRule extends MockValidationRule
 
   protected function get_maxlength() : ?int { return $this->maxlength; }
   protected function get_minlength() : ?int { return $this->minlength; }
+
+  /**
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
+   */
+  protected function test($value) : void
+  {
+    MockValidationRule::$testCallCount++;
+    if ($value === 'BadValue') {
+      throw new FailedValidationException('MockValidationRule has been given the value BadValue');
+    }
+  }
 }
