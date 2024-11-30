@@ -138,10 +138,11 @@ class TelephoneNumberTest extends \tests\ramp\model\business\validation\RegexVal
   public function testExpectedAttributeValues()
   {
     $this->assertEquals($this->hint1, (string)$this->testObject->hint);
-    $this->assertSame('tel', (string)$this->testObject->inputType);
+    $this->assertEquals('tel', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
-    $this->assertSame('(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}', (string)$this->testObject->pattern);
+    $this->assertEquals('(?:\+[1-9]{1,3} ?\(0\)|\+[1-9]{1,3} ?|0)[0-9\- ]{8,12}', (string)$this->testObject->pattern);
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);
     $this->assertNull($this->testObject->step);

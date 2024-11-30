@@ -155,8 +155,9 @@ class PostCodeTest extends \tests\ramp\model\business\validation\RegexValidation
     );
     $this->assertEquals('text', (string)$this->testObject->inputType);
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertSame(8, $this->testObject->maxlength);
-    $this->assertSame('[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', (string)$this->testObject->pattern);
+    $this->assertEquals(7, $this->testObject->minlength);
+    $this->assertEquals(8, $this->testObject->maxlength);
+    $this->assertEquals('[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}|GIR 0A{2}', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);

@@ -24,13 +24,11 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\specialist\SpecialistValidationRule;
 
-// * @property-read ?string $format format profile based on ISO standards.
 /**
  * Regex pattern matching validation.
  */
 class RegexValidationRule extends ValidationRule
 {
-  // private ?string $format;
   private string $pattern;
 
   /**
@@ -50,23 +48,12 @@ class RegexValidationRule extends ValidationRule
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
    * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
-  //  * @param string $format Optional format profile based on ISO standards.
    */
-  public function __construct(Str $errorHint, string $pattern, SpecialistValidationRule $subRule = NULL)//, string $format = NULL)
+  public function __construct(Str $errorHint, string $pattern, SpecialistValidationRule $subRule = NULL)
   {
     $this->pattern = $pattern;
-    // $this->format = $format;
     parent::__construct($errorHint, $subRule);
   }
-
-  /**
-   * @ignore 
-   *
-  #[\Override]
-  protected function get_format() : ?string
-  {
-    return $this->format;
-  }*/
 
   /**
    * @ignore 

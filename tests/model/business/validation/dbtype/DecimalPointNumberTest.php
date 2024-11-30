@@ -140,9 +140,9 @@ class DecimalPointNumberTest extends \tests\ramp\model\business\validation\dbtyp
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->pattern);
-    $this->assertSame('0', (string)$this->testObject->min);
-    $this->assertSame('999.99', (string)$this->testObject->max);
-    $this->assertSame('0.01', (string)$this->testObject->step);
+    $this->assertEquals('0', (string)$this->testObject->min);
+    $this->assertEquals('999.99', (string)$this->testObject->max);
+    $this->assertEquals('0.01', (string)$this->testObject->step);
   }
 
   /**

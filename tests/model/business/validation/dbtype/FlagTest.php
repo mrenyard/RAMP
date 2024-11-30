@@ -131,9 +131,10 @@ class FlagTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertSame($this->hint1, $this->testObject->hint);
-    $this->assertSame(Str::_EMPTY(), $this->testObject->inputType);
+    $this->assertEquals($this->hint1, $this->testObject->hint);
+    $this->assertEquals(Str::_EMPTY(), $this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->min);

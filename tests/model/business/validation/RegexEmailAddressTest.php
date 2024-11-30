@@ -23,6 +23,7 @@ namespace tests\ramp\model\business\validation;
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/ValidationRuleTest.php';
 
+require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexEmailAddress.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/specialist/SpecialistValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
@@ -139,6 +140,7 @@ class RegexEmailAddressTest extends \tests\ramp\model\business\validation\Valida
     $this->assertEquals($this->hint, $this->testObject->hint);
     $this->assertEquals('email', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertEquals('[a-zA-Z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}', (string)$this->testObject->pattern);
     $this->assertNull($this->testObject->min);

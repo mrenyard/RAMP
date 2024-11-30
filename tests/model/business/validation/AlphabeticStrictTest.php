@@ -160,8 +160,8 @@ class AlphabeticStrictTest extends \tests\ramp\model\business\validation\RegexVa
     );
     $this->assertEquals('text', (string)$this->testObject->inputType);
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertSame($this->maxlength, $this->testObject->maxlength);
-    $this->assertSame('[a-zA-Z]*', (string)$this->testObject->pattern);
+    $this->assertEquals($this->maxlength, $this->testObject->maxlength);
+    $this->assertEquals('[a-zA-Z]*', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);

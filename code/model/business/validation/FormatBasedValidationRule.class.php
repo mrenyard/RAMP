@@ -25,17 +25,29 @@ use ramp\model\business\validation\FailedValidationException;
 
 /**
  * ISO format based Regex pattern matching validation.
+ * @property-read string $format Format profile based on ISO standards.
  */
 class FormatBasedValidationRule extends RegexValidationRule
 {
-  //  * @param string $format Required format profile based on ISO standards.
-   /**
-   * Constructor ISO format based regex pattern matching validation..
+  private string $format;
+
+  /**
+   * Constructor ISO format based regex pattern matching validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
+   * @param string $format Required format profile based on ISO standards.
    */
-  public function __construct(Str $errorHint, string $pattern) //, string $format)
+  public function __construct(Str $errorHint, string $pattern, string $format)
   {
-    parent::__construct($errorHint, $pattern, NULL); //, $format);
+    $this->format = $format;
+    parent::__construct($errorHint, $pattern, NULL);
+  }
+
+  /**
+   * @ignore 
+   */
+  protected function get_format() : ?string
+  {
+    return $this->format;
   }
 }

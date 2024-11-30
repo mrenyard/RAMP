@@ -154,10 +154,11 @@ class PasswordTest extends \tests\ramp\model\business\validation\RegexValidation
       $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
       (string)$this->testObject->hint
     );
-    $this->assertSame('password', (string)$this->testObject->inputType);
+    $this->assertEquals('password', (string)$this->testObject->inputType);
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertSame(35, $this->testObject->maxlength);
-    $this->assertSame('[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', (string)$this->testObject->pattern);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertEquals(35, $this->testObject->maxlength);
+    $this->assertEquals('[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);

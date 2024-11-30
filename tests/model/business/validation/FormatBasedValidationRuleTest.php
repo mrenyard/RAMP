@@ -23,16 +23,16 @@ namespace tests\ramp\model\business\validation;
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/RegexValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/UppercaseAlphabetic.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FormatBasedValidationRule.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockUppercaseAlphabetic.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFormatBasedValidationRule.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\UppercaseAlphabetic;
+use ramp\model\business\validation\FormatBasedValidationRule;
 
-use tests\ramp\mocks\model\MockUppercaseAlphabetic;
+use tests\ramp\mocks\model\MockFormatBasedValidationRule;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
 use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
@@ -40,55 +40,44 @@ use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
 use tests\ramp\mocks\model\MockValidationRule;
 
+
 /**
- * Collection of tests for \ramp\model\business\validation\UppercaseAlphabetic.
+ * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class UppercaseAlphabeticTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
+class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
+  private string $pattern;
+  private string $format;
+
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->maxlength = 10;
-    $this->hint6 = Str::set('part six');
-    $this->hint5 = Str::set('part five');
-    $this->hint4 = Str::set('part four');
-    $this->hint3 = Str::set('part three');
-    $this->hint2 = Str::set('part two');
-    $this->hint1 = Str::set('part one');
+    $this->pattern = '[0-9]*';
+    $this->format = 'YYYY';
+    $this->hint = Str::set('format hint');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockUppercaseAlphabetic($this->hint6,
-      new PlaceholderValidationRule($this->hint5,
-        new PatternValidationRule($this->hint4,
-          new LengthValidationRule($this->hint3, $this->maxlength, NULL,
-            new FailOnBadValidationRule($this->hint2,
-              new MinMaxStepValidationRule($this->hint1)
-            )
-          )
-        )
-      )
-    );
+    return new MockFormatBasedValidationRule($this->hint, $this->pattern, $this->format);
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\UppercaseAlphabetic.
+   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\RegexValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\UppercaseAlphabetic}
-   * @see \ramp\model\business\validation\UppercaseAlphabetic
+   * - assert is instance of {@see \ramp\model\business\validation\FormatBasedValidationRule}
+   * @see \ramp\model\business\validation\RegexEmailAddress
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\UppercaseAlphabetic', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\FormatBasedValidationRule', $this->testObject);
   }
-  #region Inherited Tests
 
+  #region Inherited Tests
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -139,33 +128,34 @@ class UppercaseAlphabeticTest extends \tests\ramp\model\business\validation\Rege
   }
 
   /**
-   * Collection of assertions relateing to common set of input element attribute API.
-   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * Collection of assertions relating to common set of 'input element attribute'.
+   * - assert expected 'attribute value' are expected defaults for data type, test scenarios, or that provided by mock rules.
    * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$pattern
    * @see \ramp\validation\ValidationRule::$placeholder
    * @see \ramp\validation\ValidationRule::$minlength
    * @see \ramp\validation\ValidationRule::$maxlength
    * @see \ramp\validation\ValidationRule::$min
    * @see \ramp\validation\ValidationRule::$max
    * @see \ramp\validation\ValidationRule::$step
+   * - assert 'hint' returns concatenated combination of all ValidationRule::$errorHint/s glued together with a space.
    * @see \ramp\validation\ValidationRule::$hint
+   * - assert 'format' returns same string as provided at construction.
+   * @see \ramp\validation\ValidationRule::$format
    */
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
-      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
-      (string)$this->testObject->hint
-    );
+    $this->assertEquals($this->hint, (string)$this->testObject->hint);
     $this->assertEquals('text', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertEquals($this->pattern, $this->testObject->pattern);
+    $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
-    $this->assertEquals($this->maxlength, $this->testObject->maxlength);
-    $this->assertEquals('[A-Z_\-\.\']*', (string)$this->testObject->pattern);
-    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
-    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
-    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
+    $this->assertEquals($this->format, $this->testObject->format);
   }
 
   /**
@@ -177,10 +167,11 @@ class UppercaseAlphabeticTest extends \tests\ramp\model\business\validation\Rege
    */
   #[\Override]
   public function testProcess(
-    array $badValues = ['BAD@regex'], ?array $goodValues = ['GO-OD_RE.GEX'], int $failPoint = 1, int $ruleCount = 6,
+    array $badValues = ['bad.regex'], ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 6,
     $failMessage = '$value failed to match provided regex!'
   ) : void
   {
+    $goodValue = (isset($this->format)) ? [$this->format] : $goodValues;
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion

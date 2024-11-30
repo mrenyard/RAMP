@@ -160,8 +160,9 @@ class LowercaseAlphabeticStrictTest extends \tests\ramp\model\business\validatio
     );
     $this->assertEquals('text', (string)$this->testObject->inputType);
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertSame($this->maxlength, $this->testObject->maxlength);
-    $this->assertSame('[a-z]*', (string)$this->testObject->pattern);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertEquals($this->maxlength, $this->testObject->maxlength);
+    $this->assertEquals('[a-z]*', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);

@@ -158,7 +158,7 @@ class DateTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
       $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
       (string)$this->testObject->hint
     );
-    $this->assertSame('date', (string)$this->testObject->inputType);
+    $this->assertEquals('date', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
