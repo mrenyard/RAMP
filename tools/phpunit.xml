@@ -17,7 +17,7 @@
   >
   <testsuites>
     <testsuite name="default">
-      <directory suffix="Test.php">../tests/</directory>
+      <directory suffix="Test.php">../tests</directory>
     </testsuite>
   </testsuites>
   <source restrictDeprecations="true" restrictNotices="true" restrictWarnings="true">
@@ -28,10 +28,10 @@
   <coverage>
     <report>
       <html
-        outputDirectory="../../../Code/Documentation/coverage/"
+        outputDirectory="../../../Code/Documentation/coverage"
         lowUpperBound="50"
         highLowerBound="90"
-        customCssFile="custom.css" />
+        customCssFile="/home/mrenyard/Projects/RAMP/tools/custom.css" />
     </report>
   </coverage>
 </phpunit>
