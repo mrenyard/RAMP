@@ -19,69 +19,73 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\validation\dbtype;
+namespace tests\ramp\model\business\validation\specialist;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/IntegerTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/specialist/SpecialistValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Year.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeYear.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockServerSideEmail.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\dbtype\Year;
 
-use tests\ramp\mocks\model\MockDbTypeYear;
+use tests\ramp\mocks\model\MockValidationRule;
+use tests\ramp\mocks\model\MockServerSideEmail;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \ramp\model\business\validation\dbtype\Year.
+ * Collection of tests for \ramp\validation\ValidationRule.
+ *
+ * COLLABORATORS
+ * - {@see \tests\ramp\validation\MockValidationRule}
  */
-class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
+class ServerSideEmailTest extends \tests\ramp\model\business\validation\specialist\SpecialistValidationRuleTest
 {
   #region Setup
-  #[\Override]
   protected function preSetup() : void
   {
-    $this->specialAppendHint = '1901 to 2155';
-    $this->hint1 = Str::set('a number from ');
+    // $this->maxlength = 4;
+    // $this->minlength = 3;
+    // $this->hint6 = Str::set('part six');
+    // $this->hint5 = Str::set('part five');
+    // $this->hint4 = Str::set('part four');
+    // $this->hint3 = Str::set('part three');
+    // $this->hint2 = Str::set('part two');
+    // $this->hint1 = Str::set('part one');
   }
-  #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockDbTypeYear($this->hint1);
+    return new MockServerSideEmail(
+      // $this->hint6,
+      // new PlaceholderValidationRule($this->hint5,
+      //   new PatternValidationRule($this->hint4,
+      //     new LengthValidationRule($this->hint3, $this->maxlength, $this->minlength,
+      //       new FailOnBadValidationRule($this->hint2,
+      //         new MinMaxStepValidationRule($this->hint1)
+      //       )
+      //     )
+      //   )
+      // )
+    );
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\DateTime.
+   * Collection of assertions for ramp\validation\ValidationRule.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
-   * - assert is instance of {@see \ramp\model\business\validation\Year}
-   * @see \ramp\model\business\validation\dbtype\DateTime
+   * @see \ramp\validation\ValidationRule
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\dbtype\Year', $this->testObject);
-    try {
-      new MockDbTypeYear($this->hint1, NULL, 32768);
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-      try {
-        new MockDbTypeYear($this->hint1, -32769, NULL);
-      } catch (\InvalidArgumentException $expected) {
-        $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-        try {
-          new MockDbTypeYear($this->hint1, 1, 0);
-        } catch (\InvalidArgumentException $expected) {
-          $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-          return;
-        }
-      }
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised');
+    $this->assertInstanceOf('ramp\model\business\validation\specialist\SpecialistValidationRule', $this->testObject);
   }
 
   #region Inherited Tests
@@ -136,40 +140,46 @@ class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
 
   /**
    * Collection of assertions relateing to common set of input element attribute API.
+   * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
    * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
-   * @see \ramp\validation\ValidationRule::$inputType
-   * @see \ramp\validation\ValidationRule::$placeholder
-   * @see \ramp\validation\ValidationRule::$minlength
-   * @see \ramp\validation\ValidationRule::$maxlength
-   * @see \ramp\validation\ValidationRule::$min
-   * @see \ramp\validation\ValidationRule::$max
-   * @see \ramp\validation\ValidationRule::$step
-   * @see \ramp\validation\ValidationRule::$hint
+   * @see \ramp\validation\ValidationRule::hint
+   * @see \ramp\validation\ValidationRule::inputType
+   * @see \ramp\validation\ValidationRule::placeholder
+   * @see \ramp\validation\ValidationRule::minlength
+   * @see \ramp\validation\ValidationRule::maxlength
+   * @see \ramp\validation\ValidationRule::min
+   * @see \ramp\validation\ValidationRule::max
+   * @see \ramp\validation\ValidationRule::step
    */
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint1 . $this->specialAppendHint, $this->testObject->hint);
-    $this->assertEquals('number year', (string)$this->testObject->inputType);
+    $this->assertSame(Str::_EMPTY(), $this->testObject->hint);
+    $this->assertEquals('email', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->pattern);
-    $this->assertEquals('1901', $this->testObject->min);
-    $this->assertEquals('2155', $this->testObject->max);
-    $this->assertEquals('1', $this->testObject->step);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
   }
 
   /**
    * Collection of assertions for ramp\validation\ValidationRule::process() and test().
-   * - assert process touches each test method of each sub rule throughout any give set of tests
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+  
+   * - Provide API to common set of input element attributes that may relate to data types or test scenarios
+   * [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
+
+   * - assert 
+   * - assert process touches each test method of each sub rule throughout any give set of successful tests.
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
    * @see \ramp\validation\ValidationRule::test()
    * @see \ramp\validation\ValidationRule::process()
    */
   #[\Override]
-  public function testProcess( // badValue NOT in the range '1901' to '2155'.
-    array $badValues = ['1900', '2156', 1900], ?array $goodValues = ['2006', 2006], int $failPoint = 1, int $ruleCount = 1,
+  public function testProcess(
+    array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = ''
   ) : void
   {

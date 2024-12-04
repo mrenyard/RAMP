@@ -59,7 +59,7 @@ class RegexValidationRule extends ValidationRule
    * @ignore 
    */
   #[\Override]
-  protected function get_pattern() : Str
+  protected function get_pattern() : ?Str
   {
     return Str::set($this->pattern);
   }

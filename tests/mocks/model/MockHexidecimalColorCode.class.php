@@ -1,6 +1,7 @@
 <?php
 /**
- * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ * Testing - RAMP - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,36 +16,28 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.test
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation;
+namespace tests\ramp\mocks\model;
 
-use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\HexidecimalColorCode;
 
 /**
- * Regex pattern matching validation.
+ * Concreate implementation of \ramp\model\business\validation\DbTypeValidation for testing against.
+ * .
  */
-class HexidecimalColorCode extends FormatBasedValidationRule
+class MockHexidecimalColorCode extends HexidecimalColorCode
 {
-  private static $inputType;
-
   /**
-   * Constructor for HexidecimalColorCode validation.
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
    */
-  public function __construct(Str $errorHint)
+  protected function test($value) : void
   {
-    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('color'); } 
-    parent::__construct($errorHint, '#[0-9A-F]{1,2}[0-9A-F]{1,2}[0-9A-F]{1,2}', '#000000');
-  }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_inputType() : Str
-  {
-    return SELF::$inputType;
+    MockValidationRule::$testCallCount++;
+    parent::test($value);
   }
 }

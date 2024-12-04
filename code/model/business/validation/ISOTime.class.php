@@ -38,14 +38,14 @@ class ISOTime extends FormatBasedValidationRule
    * Constructor for Time restricted regex pattern validation rule.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
-   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (hh:mm[:ss]).
-   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (hh:mm[:ss]).
-   * @param int $step Optional number that specifies the granularity that the value must adhere in number of seconds you want to increment by;
+   * @param ?\ramp\core\Str $min Optional minimum value that is acceptable in the format (hh:mm[:ss]).
+   * @param ?\ramp\core\Str $max Optional maximum value that is acceptable in the format (hh:mm[:ss]).
+   * @param ?int $step Optional number that specifies the granularity that the value must adhere in number of seconds you want to increment by;
    * the default value being 60 seconds, or one minute unless specifed value less than 60 seconds (1 minute), then the time input will show a
    * seconds input area alongside the hours and minutes.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
-  public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, ?Str $min = NULL, ?Str $max = NULL, ?int $step = NULL)
   {
     $failed = FALSE;
     if (!isset(SELF::$inputtType)) { SELF::$inputtType = Str::set('time'); }
@@ -54,19 +54,29 @@ class ISOTime extends FormatBasedValidationRule
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
         $errorHint;  
     parent::__construct($errorHint, '(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?', 'hh:mm:ss');
-    try {
-      if ($min) { parent::test($min); }
-      if ($max) { parent::test($max); }
-    } catch (FailedValidationException $e) { $failed = TRUE; }
+    if ($min !== NULL) { try {
+      parent::test($min);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $min value is badly formatted!');
+    }}
+    if ($max !== NULL) { try {
+      parent::test($max);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $max value is badly formatted!');
+    }}
     if ($min !== NULL && $max !== NULL) {
-      $minHms = explode(':', (string)$min); $maxHms = explode(':', (string)$max);
-      if ($failed ||
+      $minHms = explode(':', (string)$min);
+      $maxHms = explode(':', (string)$max);
+      if (
         ($minHms[0] > $maxHms[0]) ||
         ($minHms[0] == $maxHms[0] && $minHms[1] > $maxHms[1]) ||
         ((isset($minHms[2]) && isset($maxHms[2])) && ($minHms[0] == $maxHms[0] && $minHms[1] == $maxHms[1] && $minHms[2] > $maxHms[2]))
-      ) { throw new \InvalidArgumentException('The provided $min and or $max values are badly formatted or illogical $min is greater than $max.'); }
+      ) {
+        throw new \InvalidArgumentException('Illogical $min is greater than $max!');
+      }
     }
-    $this->min = $min; $this->max = $max;
+    $this->min = $min;
+    $this->max = $max;
     $this->step = ($step) ? $step : 60; // seconds (1min).
   }
 
@@ -104,5 +114,38 @@ class ISOTime extends FormatBasedValidationRule
   protected function get_step() : ?Str
   {
     return Str::set($this->step);
+  }
+
+  /**
+   * Asserts that $value is lower case and alphanumeric.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
+   */
+  #[\Override]
+  protected function test($value) : void
+  {
+    parent::test($value);
+    $valueHms = explode(':', $value);
+    if ($this->max !== NULL) {
+      $maxHms = explode(':', $this->max);
+      if (
+        ($valueHms[0] > $maxHms[0]) ||
+        ($valueHms[0] == $maxHms[0] && $valueHms[1] > $maxHms[1]) ||
+        ($valueHms[0] == $maxHms[0] && $valueHms[1] == $maxHms[1] && $valueHms[2] > $maxHms[2])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $max bounds!');
+      }
+    }
+    if ($this->min !== NULL) {
+      $minHms = explode(':', $this->min);
+      if (
+        ($valueHms[0] < $minHms[0]) ||
+        ($valueHms[0] == $minHms[0] && $valueHms[1] < $minHms[1]) ||
+        ($valueHms[0] == $minHms[0] && $valueHms[1] == $minHms[1] && $valueHms[2] < $minHms[2])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $min bounds!');
+      }
+    }
+    return;
   }
 }

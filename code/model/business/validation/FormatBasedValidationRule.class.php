@@ -46,7 +46,16 @@ class FormatBasedValidationRule extends RegexValidationRule
   /**
    * @ignore 
    */
-  protected function get_format() : ?string
+  #[\Override]
+  protected function get_pattern() : ?Str
+  {
+    return NULL;
+  }
+
+  /**
+   * @ignore 
+   */
+  protected function get_format() : string
   {
     return $this->format;
   }

@@ -19,69 +19,62 @@
  * @package RAMP.test
  * @version 0.0.9;
  */
-namespace tests\ramp\model\business\validation\dbtype;
+namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/IntegerTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/FormatBasedValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Year.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/HexidecimalColorCode.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockDbTypeYear.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockHexidecimalColorCode.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\dbtype\Year;
+use ramp\model\business\validation\HexidecimalColorCode;
 
-use tests\ramp\mocks\model\MockDbTypeYear;
+use tests\ramp\mocks\model\MockHexidecimalColorCode;
+use tests\ramp\mocks\model\PlaceholderValidationRule;
+use tests\ramp\mocks\model\LengthValidationRule;
+use tests\ramp\mocks\model\PatternValidationRule;
+use tests\ramp\mocks\model\MinMaxStepValidationRule;
+use tests\ramp\mocks\model\FailOnBadValidationRule;
+use tests\ramp\mocks\model\MockValidationRule;
+
 
 /**
- * Collection of tests for \ramp\model\business\validation\dbtype\Year.
+ * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
+class HexidecimalColorCodeTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
+  private string $pattern;
+  private string $format;
+
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->specialAppendHint = '1901 to 2155';
-    $this->hint1 = Str::set('a number from ');
+    // $this->pattern = '[0-9]*';
+    $this->format = '#000000';
+    $this->hint = Str::set('a hash followed by three pairs of hexadecimal (0 through 9 to F) representing the luminescent gradiant of red, green and blue, character string with a character length of exactly 7');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockDbTypeYear($this->hint1);
+    return new MockHexidecimalColorCode($this->hint);
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\dbtype\DateTime.
+   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\validation\DbTypeValidation}
-   * - assert is instance of {@see \ramp\model\business\validation\Year}
-   * @see \ramp\model\business\validation\dbtype\DateTime
+   * - assert is instance of {@see \ramp\model\business\validation\HexidecimalColorCode}
+   * @see \ramp\model\business\validation\RegexEmailAddress
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\dbtype\Year', $this->testObject);
-    try {
-      new MockDbTypeYear($this->hint1, NULL, 32768);
-    } catch (\InvalidArgumentException $expected) {
-      $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-      try {
-        new MockDbTypeYear($this->hint1, -32769, NULL);
-      } catch (\InvalidArgumentException $expected) {
-        $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-        try {
-          new MockDbTypeYear($this->hint1, 1, 0);
-        } catch (\InvalidArgumentException $expected) {
-          $this->assertsame('$max has exceded 2155 and or $min is less than 1901', $expected->getMessage());
-          return;
-        }
-      }
-    }
-    $this->fail('An expected \InvalidArgumentException has NOT been raised');
+    $this->assertInstanceOf('ramp\model\business\validation\HexidecimalColorCode', $this->testObject);
   }
 
   #region Inherited Tests
@@ -135,29 +128,34 @@ class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
   }
 
   /**
-   * Collection of assertions relateing to common set of input element attribute API.
-   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * Collection of assertions relating to common set of 'input element attribute'.
+   * - assert expected 'attribute value' are expected defaults for data type, test scenarios, or that provided by mock rules.
    * @see \ramp\validation\ValidationRule::$inputType
+   * @see \ramp\validation\ValidationRule::$pattern
    * @see \ramp\validation\ValidationRule::$placeholder
    * @see \ramp\validation\ValidationRule::$minlength
    * @see \ramp\validation\ValidationRule::$maxlength
    * @see \ramp\validation\ValidationRule::$min
    * @see \ramp\validation\ValidationRule::$max
    * @see \ramp\validation\ValidationRule::$step
+   * - assert 'hint' returns concatenated combination of all ValidationRule::$errorHint/s glued together with a space.
    * @see \ramp\validation\ValidationRule::$hint
+   * - assert 'format' returns same string as provided at construction.
+   * @see \ramp\validation\ValidationRule::$format
    */
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint1 . $this->specialAppendHint, $this->testObject->hint);
-    $this->assertEquals('number year', (string)$this->testObject->inputType);
+    $this->assertEquals($this->hint, (string)$this->testObject->hint);
+    $this->assertEquals('color', (string)$this->testObject->inputType);
+    $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertEquals('1901', $this->testObject->min);
-    $this->assertEquals('2155', $this->testObject->max);
-    $this->assertEquals('1', $this->testObject->step);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
+    $this->assertEquals('#000000', $this->testObject->format);
   }
 
   /**
@@ -168,9 +166,9 @@ class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
    * @see \ramp\validation\ValidationRule::process()
    */
   #[\Override]
-  public function testProcess( // badValue NOT in the range '1901' to '2155'.
-    array $badValues = ['1900', '2156', 1900], ?array $goodValues = ['2006', 2006], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+  public function testProcess(
+    array $badValues = ['lightgreen','#aaffaa'], ?array $goodValues = ['#AAFFAA', '#333333'], int $failPoint = 1, int $ruleCount = 1,
+    $failMessage = '$value failed to match provided regex!'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

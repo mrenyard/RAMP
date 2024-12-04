@@ -34,17 +34,17 @@ class ISODate extends FormatBasedValidationRule
   private ?Str $max;
   private int $step;
 
-   /**
+  /**
    * Constructor for month restricted regex pattern validation rule.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
-   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-dd).
-   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-dd).
-   * @param int $step Optional number that specifies the granularity that the value must adhere to,
+   * @param ?\ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-mm-dd).
+   * @param ?\ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-mm-dd).
+   * @param ?int $step Optional number that specifies the granularity that the value must adhere to,
    * for date inputs, the value of step is given in days with the default of 1, indicating 1 day.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
-  public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, ?Str $min = NULL, ?Str $max = NULL, ?int $step = NULL)
   {
     $failed = FALSE;
     if (!isset(SELF::$type)) { SELF::$type = Str::set('date'); } 
@@ -53,24 +53,29 @@ class ISODate extends FormatBasedValidationRule
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
         $errorHint;
     parent::__construct($errorHint, '[0-9]{4}-(?:0[1-9]|1[0-2])-(?:[0-2][0-9]|3[0-1])', 'yyyy-mm-dd');
-    try {
-      if ($min) { parent::test($min); }
-      if ($max) { parent::test($max); }
-    } catch (FailedValidationException $e) { $failed = TRUE; }
+    if ($min !== NULL) { try {
+      parent::test($min);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $min value is badly formatted!');
+    }}
+    if ($max !== NULL) { try {
+      parent::test($max);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $max value is badly formatted!');
+    }}
     if ($min !== NULL && $max !== NULL) {
-      $minYmd = explode('-', (string)$min); $maxYmd = explode('-', (string)$max);
+      $minYmd = explode('-', (string)$min);
+      $maxYmd = explode('-', (string)$max);
       if (
-        $failed ||
         ($minYmd[0] > $maxYmd[0]) ||
         ($minYmd[0] == $maxYmd[0] && $minYmd[1] > $maxYmd[1]) ||
         ($minYmd[0] == $maxYmd[0] && $minYmd[1] == $maxYmd[1] && $minYmd[2] > $maxYmd[2])
-      ) { throw new \InvalidArgumentException(
-          ($e) ? $e->getMessage() :
-          'The provided $min and or $max values are badly formatted or illogical $min is greater than $max.'
-        );
+      ) {
+        throw new \InvalidArgumentException('Illogical $min is greater than $max!');
       }
     }
-    $this->min = $min; $this->max = $max;
+    $this->min = $min;
+    $this->max = $max;
     $this->step = ($step) ? $step : 1; // 1 day
   }
 
@@ -119,22 +124,27 @@ class ISODate extends FormatBasedValidationRule
   protected function test($value) : void
   {
     parent::test($value);
-    $valueDT = explode('T', $value);
     $valueYmd = explode('-', $value);
-    $minYmd = explode('-', $this->min);
-    $maxYmd = explode('-', $this->max);
-    if (
-      (
-        ($valueYmd[0] < $maxYmd[0]) || 
-        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] < $maxYmd[1]) || 
-        ($valueYm[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] < $maxYmd[2]))
-      ||
-      (
-        ($valueYw[0] > $minYmd[0]) ||
-        ($valueYmd[0] == $minYm[0] && $valueYmd[1] > $minYmd[1]) ||
-        ($valueYmd[0] == $minYm[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] > $minYmd[2])
-      )
-    ) { return; }
-    throw new FailedValidationException('Tested $value outside of $min and $max bounds.');
+    if ($this->max !== NULL) {
+      $maxYmd = explode('-', $this->max);
+      if (
+        ($valueYmd[0] > $maxYmd[0]) || 
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] > $maxYmd[1]) || 
+        ($valueYmd[0] == $maxYmd[0] && $valueYmd[1] == $maxYmd[1] && $valueYmd[2] > $maxYmd[2])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $max bounds!');
+      }  
+    }
+    if ($this->min !== NULL) {
+      $minYmd = explode('-', $this->min);
+      if (
+        ($valueYmd[0] < $minYmd[0]) ||
+        ($valueYmd[0] == $minYmd[0] && $valueYmd[1] < $minYmd[1]) ||
+        ($valueYmd[0] == $minYmd[0] && $valueYmd[1] == $minYmd[1] && $valueYmd[2] < $minYmd[2])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $min bounds!');
+      }  
+    }
+    return;
   }
 }

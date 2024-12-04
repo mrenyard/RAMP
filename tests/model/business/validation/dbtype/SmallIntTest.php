@@ -33,11 +33,6 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\SmallInt;
 
 use tests\ramp\mocks\model\MockDbTypeSmallInt;
-use tests\ramp\mocks\model\MockValidationRule;
-use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\PatternValidationRule;
-use tests\ramp\mocks\model\MinMaxStepValidationRule;
-use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\SmallInt.
@@ -74,11 +69,11 @@ class SmallIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerT
     parent::testConstruct();
     $this->assertInstanceOf('ramp\model\business\validation\dbtype\SmallInt', $this->testObject);
     try {
-      new MockDbTypeSmallInt($this->hint1, 0, 32768);
+      new MockDbTypeSmallInt($this->hint1, NULL, 32768);
     } catch (\InvalidArgumentException $expected) {
       $this->assertsame('$max has exceded 32767 and or $min is less than -32768', $expected->getMessage());
       try {
-        new MockDbTypeSmallInt($this->hint1, -32769, 0);
+        new MockDbTypeSmallInt($this->hint1, -32769, NULL);
       } catch (\InvalidArgumentException $expected) {
         $this->assertsame('$max has exceded 32767 and or $min is less than -32768', $expected->getMessage());
         try {
@@ -156,7 +151,7 @@ class SmallIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerT
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint1 . $this->specialAppendHint, (string)$this->testObject->hint);
+    $this->assertEquals($this->hint1 . $this->specialAppendHint, $this->testObject->hint);
     $this->assertSame('number', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);

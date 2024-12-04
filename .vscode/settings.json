@@ -1,9 +1,9 @@
 {
   "phpunit.php": "php",
-  "phpunit.phpunit" : "phpunit.phar",
+  "phpunit.phpunit" : "${workspaceFolder}/tools/phpunit.phar",
   "phpunit.args": [
     "-c",
-    "phpunit.xml"
+    "${workspaceFolder}/tools/phpunit.xml"
   ],
   "editor.tabSize": 2,
 }

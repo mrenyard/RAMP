@@ -21,18 +21,18 @@
  */
 namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/RegexValidationRuleTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/FormatBasedValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/FormatBasedValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISODate.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockFormatBasedValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockISODate.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\FormatBasedValidationRule;
+use ramp\model\business\validation\ISODate;
 
-use tests\ramp\mocks\model\MockFormatBasedValidationRule;
+use tests\ramp\mocks\model\MockISODate;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
 use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
@@ -44,7 +44,7 @@ use tests\ramp\mocks\model\MockValidationRule;
 /**
  * Collection of tests for \ramp\model\business\validation\RegexEmail.
  */
-class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
+class ISODateTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
   private string $pattern;
   private string $format;
@@ -53,28 +53,26 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
   #[\Override]
   protected function preSetup() : void
   {
-    $this->pattern = '[0-9]*';
-    $this->format = 'YYYY';
     $this->hint = Str::set('format hint');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockFormatBasedValidationRule($this->hint, $this->pattern, $this->format);
+    return new MockISODate($this->hint);
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
+   * Collection of assertions for ramp\model\business\validation\ISODate.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\FormatBasedValidationRule}
-   * @see \ramp\model\business\validation\RegexEmailAddress
+   * - assert is instance of {@see \ramp\model\business\validation\ISODate}
+   * @see \ramp\model\business\validation\ISODate
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\FormatBasedValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\ISODate', $this->testObject);
   }
 
   #region Inherited Tests
@@ -147,15 +145,15 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
   public function testExpectedAttributeValues()
   {
     $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('text', (string)$this->testObject->inputType);
+    $this->assertEquals('date', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
-    $this->assertEquals($this->format, $this->testObject->format);
+    $this->assertEquals(1, (int)$this->testObject->step);
+    $this->assertEquals('yyyy-mm-dd', $this->testObject->format);
   }
 
   /**
@@ -167,12 +165,82 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
    */
   #[\Override]
   public function testProcess(
-    array $badValues = ['bad.regex'], ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 6,
+    array $badValues = ['2024/05/06', '24-05-06'], ?array $goodValues = ['2024-05-05'], int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
   ) : void
   {
-    $goodValue = (isset($this->format)) ? [$this->format] : $goodValues;
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
-  #endregion 
+  #endregion
+
+  #region New Specialist Tests
+  /**
+   * Additional constructor 'optional minimum value' ($min) format validity test.
+   * - assert throws \InvalidArgumentException When constructor provided 'optional minimum value' NOT valid.
+   *   - with message: *'The provided $min value is badly formatted!'*
+   * @see \ramp\model\business\validation\ISODate
+   */
+  public function testBadlyFormattedMinString()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('The provided $min value is badly formatted!');
+    new MockISODate($this->hint, Str::set('24/05/06'));
+  }
+
+  /**
+   * Additional constructor 'optional maximum value' ($max) format validity test.
+   * - assert throws \InvalidArgumentException When constructor provided 'optional maximum value' NOT valid.
+   *   - with message: *'The provided $max value is badly formatted!'*
+   * @see \ramp\model\business\validation\ISODate
+   */
+  public function testBadlyFormattedMaxString()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('The provided $max value is badly formatted!');
+    new MockISODate($this->hint, NULL, Str::set('2024/05/06'));
+  }
+
+  /**
+   * Additional constructor 'optional minimum and maximum values' ($min/$max) illogical test.
+   * - assert throws \InvalidArgumentException When constructor provided 'optional $min $max value' NOT logical.
+   *   - with message: *'Illogical $min is greater than $max!'*
+   * @see \ramp\model\business\validation\ISODate
+   */
+  public function testMinGreaterThanMax()
+  {
+    $this->expectException(\InvalidArgumentException::class);
+    $this->expectExceptionMessage('Illogical $min is greater than $max!');
+    new MockISODate($this->hint, Str::set('2024-05-07'), Str::set('2024-05-06'));
+  }
+
+  /**
+   * Additional max bound ramp\validation\ISODate::process() and test() assertions.
+   * - assert throws \ramp\model\validaton\FailedValidationException When $value outside of maximum bounds.
+   *   - with message: *'Tested $value outside of $max bounds!'*
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testOutsideMaxBounds()
+  {
+    $o = new MockISODate($this->hint, NULL, Str::set('2024-05-07'));
+    $this->expectException(FailedValidationException::class);
+    $this->expectExceptionMessage('Tested $value outside of $max bounds!');
+    $o->process('2024-05-08');
+  }
+
+  /**
+   * Additional min bound ramp\validation\ISODate::process() and test() assertions.
+   * - assert throws \ramp\model\validaton\FailedValidationException When $value outside of minimum bounds.
+   *   - with message: *'Tested $value outside of $max bounds!'*
+   * @see \ramp\validation\ValidationRule::test()
+   * @see \ramp\validation\ValidationRule::process()
+   */
+  public function testOutsideMinBounds()
+  {
+    $o = new MockISODate($this->hint, Str::set('2024-05-06'));
+    $this->expectException(FailedValidationException::class);
+    $this->expectExceptionMessage('Tested $value outside of $min bounds!');
+    $o->process('2024-05-05');
+  }
+  #endregion
 }

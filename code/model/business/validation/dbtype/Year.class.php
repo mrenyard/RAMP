@@ -25,13 +25,28 @@ use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
 
 /**
- * DateTime database type validation rule, in the format YYYY-mm-ddThh:mm.
+ * Year database type validation rule, 4-digit strings in the range '1901' to '2155' in the format YYYY.
  * Runs code defined test against provided value.
- * TODO:mrenyard: Add UTC local conversion options on dbtype\DataTime.
  */
-class Year extends DbTypeValidation
+class Year extends Integer
 {
   private static Str $inputType;
+  
+  /**
+   * Default constructor for a validation rule of database type Year between 1901 and 2155.
+   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * @param int $min Optional minimum value that is acceptable and valid.
+   * @param int $max Optional maximum value that is acceptable and valid.
+   * @param int $step Optional number that specifies the granularity that the value must adhere to.
+   * @throws \InvalidArgumentException When $min or $max exceed limits.
+   */
+  public function __construct(Str $errorHint, int $min = NULL, int $max = NULL, int $step = NULL)
+  {
+    if (($max !== NULL && $max > 2155) || ($min !== NULL && $min < 1901) || ($max < $min)) {
+      throw new \InvalidArgumentException('$max has exceded 2155 and or $min is less than 1901');
+    }
+    parent::__construct($errorHint, ($min) ? $min : 1901, ($max) ? $max : 2155, ($step) ? $step : 1);
+  }
 
   /**
    * @ignore
@@ -39,7 +54,7 @@ class Year extends DbTypeValidation
   #[\Override]
   protected function get_inputType() : Str
   {
-    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('text year'); }
+    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('number year'); }
     return SELF::$inputType;
   }
 
@@ -68,16 +83,17 @@ class Year extends DbTypeValidation
   protected function get_maxlength() : ?int { return NULL; }
 
   /**
-   * Asserts that $value is a valid date time in the format YYYY-mm-ddThh:mm:ss.
+   * Asserts that $value is a valid date in the format YYYY.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
   #[\Override]
   protected function test($value) : void
   {
-    $format = 'Y-m-d\TH:i:s';
+    parent::test((int)$value);
+    $format = 'Y';
     $o = \DateTime::createFromFormat($format, $value);
-    if ($o && $o->format($format) === $value) { return; }
-    throw new FailedValidationException();
+    if ($o && $o->format($format) == $value) { return; }
+    throw new FailedValidationException(); // @codeCoverageIgnore
   }
 }

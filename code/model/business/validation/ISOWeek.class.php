@@ -39,13 +39,13 @@ class ISOWeek extends FormatBasedValidationRule
    * Constructor for week restricted regex pattern validation rule.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.,
    * if providing $min and $max values will be proceeded by $min 'to' $max).
-   * @param \ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-W00).
-   * @param \ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-W00).
-   * @param int $step Optional number that specifies the granularity that the value must adhere to,
+   * @param ?\ramp\core\Str $min Optional minimum value that is acceptable in the format (yyyy-W00).
+   * @param ?\ramp\core\Str $max Optional maximum value that is acceptable in the format (yyyy-W00).
+   * @param ?int $step Optional number that specifies the granularity that the value must adhere to,
    * given in weeks, the default value of step is 1, indicating 1 week.
    * @throws \InvalidArgumentException When $min and or $max are invalid.
    */
-  public function __construct(Str $errorHint, Str $min = NULL, Str $max = NULL, int $step = NULL)
+  public function __construct(Str $errorHint, ?Str $min = NULL, ?Str $max = NULL, ?int $step = NULL)
   {
     $failed = FALSE;
     if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('week'); } 
@@ -55,17 +55,28 @@ class ISOWeek extends FormatBasedValidationRule
       $errorHint->append(Str::set(' from '))->append($min)->append(Str::set(' to '))->append($max):
         $errorHint;
     parent::__construct($errorHint, '[0-9]{4}-W(?:0[1-9]|[1-4][0-9]|5[0-3]){1}', 'yyyy-W00');
-    try {
-      if ($min) { parent::test($min); }
-      if ($max) { parent::test($max); }
-    } catch (FailedValidationException $e) { $failed = TRUE; }
+    if ($min !== NULL) { try {
+      parent::test($min);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $min value is badly formatted!');
+    }}
+    if ($max !== NULL) { try {
+      parent::test($max);
+    } catch (FailedValidationException $e) {
+      throw new \InvalidArgumentException('The provided $max value is badly formatted!');
+    }}
     if ($min !== NULL && $max !== NULL) {
-      $minYw = explode('-W', (string)$min); $maxYw = explode('-W', (string)$max);
-      if ($failed || ($minYw[0] > $maxYw[0]) || ($minYw[0] == $maxYw[0] && $minYw[1] > $maxYw[1])) {
-        throw new \InvalidArgumentException('Provided $min and or $max values are badly formatted or illogical $min is greater than $max.');
+      $minYw = explode('-W', (string)$min);
+      $maxYw = explode('-W', (string)$max);
+      if (
+        ($minYw[0] > $maxYw[0]) ||
+        ($minYw[0] == $maxYw[0] && $minYw[1] > $maxYw[1])
+      ) {
+        throw new \InvalidArgumentException('Illogical $min is greater than $max!');
       }
     }
-    $this->min = $min; $this->max = $max;
+    $this->min = $min;
+    $this->max = $max;
     $this->step = ($step) ? $step : 1;
   }
 
@@ -115,12 +126,24 @@ class ISOWeek extends FormatBasedValidationRule
   {
     parent::test($value);
     $valueYw = explode('-W', $value);
-    $minYw = explode('-W', $this->min);
-    $maxYw = explode('-W', $this->max);
-    if (
-      ($valueYw[0] < $maxYw[0] || ($valueYw[0] == $maxYw[0] && $valueYw[1] < $maxYw[1])) ||
-      ($valueYw[0] > $minYw[0] || ($valueYw[0] == $minYw[0] && $valueYw[1] > $minYw[1]))
-    ) { return; }
-    throw new FailedValidationException();
+    if ($this->max !== NULL) {
+      $maxYw = explode('-W', $this->max);
+      if (
+        ($valueYw[0] > $maxYw[0]) ||
+        ($valueYw[0] == $maxYw[0] && $valueYw[1] > $maxYw[1])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $max bounds!');
+      }
+    }
+    if ($this->min !== NULL) {
+      $minYw = explode('-W', $this->min);
+      if (
+        ($valueYw[0] < $minYw[0]) ||
+        ($valueYw[0] == $minYw[0] && $valueYw[1] < $minYw[1])
+      ) {
+        throw new FailedValidationException('Tested $value outside of $min bounds!');
+      }
+    }
+    return;
   }
 }
