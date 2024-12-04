@@ -696,25 +696,21 @@ body > main {
       <div class="editor">
         <fieldset class="toolbar">
           <legend>Editor Toolbar (writer):</legend>
-          <div class="icon button field" title="Strongly emphasize text (bold)">
-            <button id="person:new:blog:bold" type="button"></button>
-            <label for="person:new:blog:bold">Bold</label>
-          </div>
           <div class="icon button field" title="Emphasize text (italic)">
             <button id="person:new:blog:italic" type="button"></button>
             <label for="person:new:blog:italic">Italic</label>
           </div>
-          <div class="icon button field" title="Underline text">
-            <button id="person:new:blog:underline" type="button"></button>
-            <label for="person:new:blog:underline">Underline</label>
+          <div class="icon button field" title="Strongly emphasize text (bold)">
+            <button id="person:new:blog:bold" type="button"></button>
+            <label for="person:new:blog:bold">Bold</label>
+          </div>
+          <div class="icon button field" title="Strike through text">
+            <button id="person:new:blog:s" type="button"></button>
+            <label for="person:new:blog:s">Strike</label>
           </div>
           <div class="icon button field" title="Mark as quote">
             <button id="person:new:blog:q" type="button"></button>
             <label for="person:new:blog:q">Quote</label>
-          </div>
-          <div class="icon button field" title="Strike through text">
-            <button id="person:new:blog:strike" type="button"></button>
-            <label for="person:new:blog:strike">Strike</label>
           </div>
           <div class="icon button field" title="Make text superscrip">
             <button id="person:new:blog:sup" type="button"></button>
@@ -723,6 +719,15 @@ body > main {
           <div class="icon button field" title="Make text subscrip">
             <button id="person:new:blog:sub" type="button"></button>
             <label for="person:new:blog:sub">Sub</label>
+          </div>
+          <div class="icon button field" title="Mark as abbreviation or acronym">
+            <button id="person:new:blog:abbr" type="button"></button>
+            <label for="person:new:blog:abbr">ABBR</label>
+          </div>
+          <div class="icon button field" title="Mark as code (inline)">
+            <button id="person:new:blog:code" type="button"></button>
+            <label for="person:new:blog:code">code</label>
+            <!-- select from: code:data-lang=, kbd or samp -->
           </div>
           <div class="icon button field" title="Unordered list of items (bullet)">
             <button id="person:new:blog:list-unordered" type="button"></button>
@@ -735,14 +740,6 @@ body > main {
           <div class="icon button field" title="Footnote (mark and add)">
             <button id="person:new:blog:footnote" type="button"></button>
             <label for="person:new:blog:footnote">Note</label>
-          </div>
-          <div class="icon button field" title="Mark as abbreviation or acronym">
-            <button id="person:new:blog:abbr" type="button"></button>
-            <label for="person:new:blog:abbr">ABBR</label>
-          </div>
-          <div class="icon button field" title="Mark as code (inline)">
-            <button id="person:new:blog:code" type="button"></button>
-            <label for="person:new:blog:code">Code</label>
           </div>
           <div class="icon button field" title="Add hyperlink">
             <button id="person:new:blog:link" type="button"></button>
@@ -773,8 +770,13 @@ body > main {
             <label for="person:new:blog:level">Level</label>
           </div>
         </fieldset>
-        <textarea></textarea>
-        <output></output>
+        <textarea spellcheck="true"></textarea>
+        <output contenteditable="true" spellcheck="true">
+          <p>Some texxt here!</p>
+          <ul>
+            <li>...</li>
+          </ul>
+        </output>
       </div>
       <fieldset class="list field wide">
         <legend>List of metered (GCSE Results)</legend>
