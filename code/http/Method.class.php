@@ -142,6 +142,7 @@ class Method extends RAMPObject
    * Returns string equivalent of this verb.
    * @return string Verb (method name)
    */
+  #[\Override]
   public function __toString() : string
   {
     return (string)$this->verb;

@@ -191,6 +191,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    * Can be called directly inline with iBusinessModelDefinition or by using this->recordName;
    * @return \ramp\core\Str Name of requested Record one or collection.
    */
+  #[\Override]
   public function get_recordName() : Str
   {
     return $this->recordName;
@@ -201,6 +202,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    * Can be called directly inline with iBusinessModelDefinition or by using this->recordKey;
    * @return \ramp\core\Str Primary key for requested Record if any.
    */
+  #[\Override]
   public function get_recordKey() : ?Str
   {
     if ($this->recordKey == '~') {
@@ -217,6 +219,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
    * Can be called directly inline with iBusinessModelDefinition or by using this->propertyName;
    * @return \ramp\core\Str Name of requested Property if any.
    */
+  #[\Override]
   public function get_propertyName() : ?Str
   {
     return $this->propertyName;

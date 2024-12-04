@@ -106,6 +106,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
   }
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/tests/mocks/http';
     set_include_path( "'" . \ramp\SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path() );
@@ -114,11 +115,13 @@ class RequestTest extends \tests\ramp\core\ObjectTest
     $this->record = Str::set('MockRecord');
     $this->key = Str::set('key');
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     $this->reset();
     $_SERVER['REQUEST_URI'] = '/';
     return Request::current();
   }
+  #[\Override]
   protected function postSetup() : void { }
   #endregion
 
@@ -129,6 +132,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
    * - assert is instance of {@see \ramp\http\Request}
    * @see \ramp\request\http\Request
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -142,6 +146,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -152,6 +157,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -167,6 +173,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -177,6 +184,7 @@ class RequestTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();

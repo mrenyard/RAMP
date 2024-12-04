@@ -40,6 +40,7 @@ use tests\ramp\mocks\http\ExtendedMethod;
 class MethodTest extends \tests\ramp\core\ObjectTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return ExtendedMethod::SUCCEED(); }
   #endregion
 
@@ -51,6 +52,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest
    *   - with message: *'[className]::constructor expects first argument of type int.'*
    * @see \ramp\http\Method::__construct()
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -76,6 +78,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -86,6 +89,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -101,6 +105,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -113,6 +118,7 @@ class MethodTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     $this->assertSame('VERB', (string)$this->testObject);
