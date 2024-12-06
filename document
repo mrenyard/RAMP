@@ -1,1 +1,1 @@
-sudo -S php tools/phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php -i tests/core/mocks/ -i tests/condition/mocks/ -i tests/http/mocks/ -i tests/view/mocks/ -i tests/mocks/ --visibility=public,protected
+sudo -S php tools/phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php --visibility=public,protected
