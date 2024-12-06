@@ -28,19 +28,19 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\view;
-$site = WebRoot::getInstance();
+namespace ramp;
+$site = view\WebRoot::getInstance();
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?=$this->title; ?> - <?=\ramp\SETTING::$RAMP_DOMAIN; ?></title>
+    <title><?=$this->title; ?> - <?=SETTING::$RAMP_DOMAIN; ?></title>
     <meta name="description" content="<?=$this->summary; ?>">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,interactive-widget=resizes-content">
 <?php include("head.php"); ?>
   </head>
-  <body id="<?=str_replace('.', '-', \ramp\SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>">
+  <body id="<?=str_replace('.', '-', SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>">
 <?=$site->dialog; ?>
     <header id="top">
 <?php include("page-navigation.php"); ?>

@@ -52,6 +52,5 @@
               <li><a href="//github.com/mrenyard">GitHub</a></li>
             </ul>
           </li>
-          <li><a href="#top" title="Jump back to Top-of-page (in-page Navigation), this is the last link on this page.">top</a></li>
         </ul>
       </nav>
