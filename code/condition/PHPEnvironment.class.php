@@ -34,6 +34,7 @@ class PHPEnvironment extends Environment
    * Set up and return instance of *this* with full set of operators.
    * @return \ramp\condition\iEnvironment this with full set of operators
    */
+  #[\Override]
   public static function getInstance() : iEnvironment
   {
     if (!isset(SELF::$INSTANCE)) {

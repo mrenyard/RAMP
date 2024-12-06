@@ -78,12 +78,12 @@ class SETTING
    * Database connection string.
    * replace [host] and [dbname] where appropriate
    * - MS SQL Server and Sybase with PDO_DBLIB
-   *  - dbconnection = mssql:host=[host];dbname=[dbname]
-   *  - dbconnection = sybase:host=[host];dbname=[dbname]
+   *   - dbconnection = mssql:host=[host];dbname=[dbname]
+   *   - dbconnection = sybase:host=[host];dbname=[dbname]
    * - MySQL with PDO_MYSQL
-   *  - dbconnection = mysql:host=[host];dbname=[dbname]
+   *   - dbconnection = mysql:host=[host];dbname=[dbname]
    * - SQLite Database
-   *  - dbconnection = sqlite:my/database/path/database.db
+   *   - dbconnection = sqlite:my/database/path/database.db
    * @var string
    */
   public static string $DATABASE_CONNECTION;
@@ -113,19 +113,19 @@ class SETTING
   public static string $SECURITY_PASSWORD_SALT;
 
   /**
-   * Name to be used when sending e-mail.
+   * Name to be used when sending e-mail (e.g. "Administration Team").
    * @var string
    */
   public static string $EMAIL_FROM_NAME;
 
   /**
-   * Sender's e-mail address.
+   * Sender's e-mail address (no-reply@domain.com).
    * @var string
    */
   public static string $EMAIL_FROM_ADDRESS;
 
   /**
-   * 'Reply to' e-mail address.
+   * 'Reply to' e-mail address (e.g. enquires@domain.com)
    * @var string
    */
   public static string $EMAIL_REPLY_ADDRESS;
@@ -133,14 +133,14 @@ class SETTING
   /**
    * Templete for the welcome email.
    * Sent at regisitration includes login details and
-   * enencripted auto generated password
+   * enencripted auto generated password: 
+   * default (welcome-email)
    * @var string
    */
   public static string $EMAIL_WELCOME_TEMPLATE;
 
   /**
-   * Welcome email template type.
-   * one of (html | text)
+   * Welcome email template type: (html|text)
    * @var string
    */
   public static string $EMAIL_WELCOME_TEMPLATE_TYPE;
@@ -148,6 +148,7 @@ class SETTING
   /**
    * Welcome email subject line.
    * The single line of text people see when they receive your email.
+   * (e.g. "Welcome to ... - All you need, login and more...")
    * @var string
    */
   public static string $EMAIL_WELCOME_SUBJECT_LINE;
@@ -171,7 +172,7 @@ class SETTING
   public static bool $DEV_MODE;
 
   /**
-   * Array of requested scratch style shreets.
+   * Array of requested scratch style sheets.
    * @var array
    */
   public static array $SCRATCH__CSS;

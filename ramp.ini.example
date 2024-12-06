@@ -93,7 +93,8 @@
 [email]
 
 ; Name to be used when sending e-mail
-;from_name =
+; e.g. "Administration Team"
+;from_name = 
 
 ; Sender's e-mail address
 ; e.g. no-reply@domain.com
@@ -107,13 +108,14 @@
 ; sent at regisitration
 ; includes login details and
 ; enencripted auto generated password
-;welcome_template =
+;welcome_template = welcome-email
 
-; Welcome email template type one of (html | text) 
+; Welcome email template type one of (html|text) 
 ;welcome_template_type =
 
 ; Welcome email subject line.
 ; The single line of text people see when they receive your email.
 ; This one line of text can often determine whether an email is opened
 ; or sent straight to trash, so make sure it's optimized toward your audience.
+; e.g. Welcome to ... - All you need, login and more...
 ;welcome_subject_line =
