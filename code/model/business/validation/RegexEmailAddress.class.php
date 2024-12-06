@@ -21,7 +21,6 @@
 namespace ramp\model\business\validation;
 
 use ramp\core\Str;
-use ramp\model\business\validation\specialist\ServerSideEmail;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
@@ -43,9 +42,9 @@ class RegexEmailAddress extends RegexValidationRule
    * );
    * ```
    * @param Str $errorHint Format hint to be displayed on failing test.
-   * @param ServerSideEmail $subRule Additional required server side email address complex format validation and MX DNS domain check.
+   * @param specialist\ServerSideEmail $subRule Additional required server side email address complex format validation and MX DNS domain check.
    */
-  public function __construct(Str $errorHint, ServerSideEmail $subRule)
+  public function __construct(Str $errorHint, specialist\ServerSideEmail $subRule)
   {
     parent::__construct($errorHint, '[a-zA-Z0-9\._%+\-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}', $subRule);
   }

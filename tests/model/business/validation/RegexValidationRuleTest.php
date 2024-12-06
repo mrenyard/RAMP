@@ -54,7 +54,6 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
   protected function preSetup() : void
   {
     $this->pattern = '[a-zA-Z]*';
-    // $this->format = 'goodRegx';
     $this->maxlength = 10;
     $this->hint6 = Str::set('part six');
     $this->hint5 = Str::set('part five');

@@ -31,68 +31,45 @@ use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
-use tests\ramp\mocks\model\MockValidationRule;
 use tests\ramp\mocks\model\MockServerSideEmail;
-use tests\ramp\mocks\model\PlaceholderValidationRule;
-use tests\ramp\mocks\model\LengthValidationRule;
-use tests\ramp\mocks\model\PatternValidationRule;
-use tests\ramp\mocks\model\MinMaxStepValidationRule;
-use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \ramp\validation\ValidationRule.
+ * Collection of tests for \ramp\model\business\validation\specialist\ServerSideEmail.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\validation\MockValidationRule}
+ * - {@see \tests\ramp\mocks\model\MockServerSideEmail}
  */
 class ServerSideEmailTest extends \tests\ramp\model\business\validation\specialist\SpecialistValidationRuleTest
 {
   #region Setup
-  protected function preSetup() : void
-  {
-    // $this->maxlength = 4;
-    // $this->minlength = 3;
-    // $this->hint6 = Str::set('part six');
-    // $this->hint5 = Str::set('part five');
-    // $this->hint4 = Str::set('part four');
-    // $this->hint3 = Str::set('part three');
-    // $this->hint2 = Str::set('part two');
-    // $this->hint1 = Str::set('part one');
-  }
+  #[\Override]
+  protected function preSetup() : void {  }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockServerSideEmail(
-      // $this->hint6,
-      // new PlaceholderValidationRule($this->hint5,
-      //   new PatternValidationRule($this->hint4,
-      //     new LengthValidationRule($this->hint3, $this->maxlength, $this->minlength,
-      //       new FailOnBadValidationRule($this->hint2,
-      //         new MinMaxStepValidationRule($this->hint1)
-      //       )
-      //     )
-      //   )
-      // )
-    );
+    return new MockServerSideEmail();
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\ValidationRule.
+   * Collection of assertions for \ramp\model\business\validation\specialist\ServerSideEmail.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * @see \ramp\validation\ValidationRule
+   * - assert is instance of {@see \ramp\model\business\validation\specialist\SpecialistValidationRule}
+   * - assert is instance of {@see \ramp\model\business\validation\specialist\ServerSideEmail}
+   * @see \ramp\model\business\validation\specialist\ServerSideEmail
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\specialist\SpecialistValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\specialist\ServerSideEmail', $this->testObject);
   }
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @see \ramp\model\Model::__set()
+   * @see \ramp\core\RAMPObject::__set()
    */
   #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
@@ -101,9 +78,9 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @see \ramp\model\Model::__get()
+   * @see \ramp\core\RAMPObject::__get()
    */
   #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
@@ -128,9 +105,9 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
   }
 
   /**
-   * Correct return of ramp\model\Model::__toString().
+   * Correct return of \ramp\core\RAMPObject::__toString().
    * - assert returns empty string literal.
-   * @see \ramp\model\Model::__toString()
+   * @see \ramp\core\RAMPObject::__toString()
    */
   #[\Override]
   public function testToString() : void
@@ -142,14 +119,14 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
    * Collection of assertions relateing to common set of input element attribute API.
    * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
    * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
-   * @see \ramp\validation\ValidationRule::hint
-   * @see \ramp\validation\ValidationRule::inputType
-   * @see \ramp\validation\ValidationRule::placeholder
-   * @see \ramp\validation\ValidationRule::minlength
-   * @see \ramp\validation\ValidationRule::maxlength
-   * @see \ramp\validation\ValidationRule::min
-   * @see \ramp\validation\ValidationRule::max
-   * @see \ramp\validation\ValidationRule::step
+   * @see \ramp\model\business\validation\ValidationRule::hint
+   * @see \ramp\model\business\validation\ValidationRule::inputType
+   * @see \ramp\model\business\validation\ValidationRule::placeholder
+   * @see \ramp\model\business\validation\ValidationRule::minlength
+   * @see \ramp\model\business\validation\ValidationRule::maxlength
+   * @see \ramp\model\business\validation\ValidationRule::min
+   * @see \ramp\model\business\validation\ValidationRule::max
+   * @see \ramp\model\business\validation\ValidationRule::step
    */
   #[\Override]
   public function testExpectedAttributeValues()
@@ -166,16 +143,11 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
   }
 
   /**
-   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
-  
-   * - Provide API to common set of input element attributes that may relate to data types or test scenarios
-   * [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
-
-   * - assert 
+   * Collection of assertions for ramp\model\business\validation\specialist\ServerSideEmail::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of successful tests.
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
-   * @see \ramp\validation\ValidationRule::test()
-   * @see \ramp\validation\ValidationRule::process()
+   * - assert {@see ramp\model\business\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
+   * @see ramp\model\business\validation\specialist\ServerSideEmail::test()
+   * @see ramp\model\business\validation\specialist\ServerSideEmail::process()
    */
   #[\Override]
   public function testProcess(

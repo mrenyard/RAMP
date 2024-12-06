@@ -47,10 +47,10 @@ use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
 
 /**
- * Collection of tests for \ramp\validation\ValidationRule.
+ * Collection of tests for \ramp\model\business\validation\ValidationRule.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\validation\MockValidationRule}
+ * - {@see \tests\ramp\mocks\model\MockValidationRule}
  */
 class ValidationRuleTest extends \tests\ramp\core\ObjectTest
 {
@@ -91,10 +91,10 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
   #endregion
 
   /**
-   * Collection of assertions for ramp\validation\ValidationRule.
+   * Collection of assertions for \ramp\model\business\validation\ValidationRule.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
-   * @see \ramp\validation\ValidationRule
+   * @see \ramp\model\business\validation\ValidationRule
    */
   #[\Override]
   public function testConstruct() : void
@@ -105,9 +105,9 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
-   * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
-   * @see \ramp\model\Model::__set()
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see \ramp\core\RAMPObject::__set()
    */
   public function testPropertyNotSetExceptionOn__set() : void
   {
@@ -115,9 +115,9 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
-   * @see \ramp\model\Model::__get()
+   * @see \ramp\core\RAMPObject::__get()
    */
   #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
@@ -141,9 +141,9 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
   }
 
   /**
-   * Correct return of ramp\model\Model::__toString().
+   * Correct return of ramp\core\RAMPObject::__toString().
    * - assert returns empty string literal.
-   * @see \ramp\model\Model::__toString()
+   * @see ramp\core\RAMPObject::__toString()
    */
   public function testToString() : void
   {
@@ -156,14 +156,14 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
    * Collection of assertions relateing to common set of input element attribute API.
    * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
    * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
-   * @see \ramp\validation\ValidationRule::hint
-   * @see \ramp\validation\ValidationRule::inputType
-   * @see \ramp\validation\ValidationRule::placeholder
-   * @see \ramp\validation\ValidationRule::minlength
-   * @see \ramp\validation\ValidationRule::maxlength
-   * @see \ramp\validation\ValidationRule::min
-   * @see \ramp\validation\ValidationRule::max
-   * @see \ramp\validation\ValidationRule::step
+   * @see \ramp\model\business\validation\ValidationRule::hint
+   * @see \ramp\model\business\validation\ValidationRule::inputType
+   * @see \ramp\model\business\validation\ValidationRule::placeholder
+   * @see \ramp\model\business\validation\ValidationRule::minlength
+   * @see \ramp\model\business\validation\ValidationRule::maxlength
+   * @see \ramp\model\business\validation\ValidationRule::min
+   * @see \ramp\model\business\validation\ValidationRule::max
+   * @see \ramp\model\business\validation\ValidationRule::step
    */
   public function testExpectedAttributeValues()
   {
@@ -183,16 +183,11 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
   }
 
   /**
-   * Collection of assertions for ramp\validation\ValidationRule::process() and test().
-  
-   * - Provide API to common set of input element attributes that may relate to data types or test scenarios
-   * [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
-
-   * - assert 
+   * Collection of assertions for ramp\model\business\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of successful tests.
-   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
-   * @see \ramp\validation\ValidationRule::test()
-   * @see \ramp\validation\ValidationRule::process()
+   * - assert {@see ramp\model\business\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
+   * @see ramp\model\business\validation\ValidationRule::test()
+   * @see ramp\model\business\validation\ValidationRule::process()
    */
   public function testProcess(
     array $badValues = ['BAD'], ?array $goodValues = ['GOOD'], int $failPoint = 5, int $ruleCount = 6,
