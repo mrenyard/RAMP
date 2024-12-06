@@ -32,9 +32,9 @@ class LowercaseAlphanumeric extends RegexValidationRule
   /**
    * Constructor for lowercase alphnumaric Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+   * @param specialist\SpecialistValidationRule $subRule Addtional optional rule/s to be added to *this* test.
    */
-  public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
+  public function __construct(Str $errorHint, specialist\SpecialistValidationRule $subRule = NULL)
   {
     parent::__construct($errorHint, '[0-9a-z_\-\.\']*', $subRule);
   }
