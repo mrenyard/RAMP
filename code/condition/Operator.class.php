@@ -57,7 +57,7 @@ class Operator extends RAMPObject
 
   /**
    * Returns the Operator object representing 'member access' operator syntax.
-   * @return \ramp\condition\Operator Representing member access operator syntax
+   * @return \ramp\condition\Operator Representing 'member access' operator syntax
    */
   public static function MEMBER_ACCESS() : Operator
   {
@@ -69,7 +69,7 @@ class Operator extends RAMPObject
 
   /**
    * Returns the Operator object representing 'assignment operator' syntax.
-   * @return \ramp\condition\Operator Representing assignment operator syntax
+   * @return \ramp\condition\Operator Representing 'assignment' operator syntax
    */
   public static function ASSIGNMENT() : Operator
   {

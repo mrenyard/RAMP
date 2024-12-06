@@ -25,7 +25,7 @@ use ramp\core\Str;
 /**
  * Single representation of a verified 'attribute (record:key:property) value pair' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
+ *   - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Extend BusinessCondition to hold additional value for primaryKey,

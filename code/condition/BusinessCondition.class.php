@@ -53,7 +53,7 @@ abstract class BusinessCondition extends Condition
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via ramp.ini):
-   *  - {@see \ramp\SETTING}::$RAMP_BUSINESS_MODEL_NAMESPACE
+   *   - {@see \ramp\SETTING}::$RAMP_BUSINESS_MODEL_NAMESPACE
    * @param \ramp\core\Str $record Name of business record containing property to evaluate
    * @param \ramp\core\Str $property Name of property to be evaluated
    * @param \ramp\condition\Operator $operator Operator to perform operation

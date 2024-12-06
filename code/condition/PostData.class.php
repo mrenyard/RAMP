@@ -26,10 +26,9 @@ use ramp\core\Collection;
 /**
  * Collection of verified 'property value pairs' for submission into system.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
+ *   - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * COLLABORATORS
- * - {@see \ramp\core\Str}
  * - Collection of {@see \ramp\condition\InputDataCondition}s
  */
 final class PostData extends Collection

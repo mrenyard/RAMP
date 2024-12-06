@@ -47,7 +47,7 @@ final class Filter extends Collection
    * Constructs an empty collection for \ramp\condition\FilterCondition.
    * A collection of verified filters for filtering collections of {@see \ramp\model\business\Record}s
    * - restricted and evaluated by the constraints of your business model
-   *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
+   *   - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public function __construct()
   {
@@ -59,6 +59,7 @@ final class Filter extends Collection
    * @param \ramp\core\Str $recordName Name of RecordCollection to apply filter/s
    * @param array $filters Simple array containing filterProperty filterValue pairs for processing
    * against RecordCollection
+   * @return Filter New Filter object based on provided values
    * @throws \LengthException when $filters is empty
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and limits
    * as defined by your locally defined business model (RAMP_BUSINESS_MODEL_NAMESPACE)

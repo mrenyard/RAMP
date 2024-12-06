@@ -47,7 +47,8 @@ abstract class RAMPObject
    * Allows C# type access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    * 
-   * **Passes:** `$object->aProperty;` **to:** `$object->get_aProperty();`
+   * **Passes:** `$object->aProperty;`
+   * **to:** `$object->get_aProperty();`
    *
    * Implementation in concrete Object
    * ```php
@@ -82,7 +83,8 @@ abstract class RAMPObject
    * Allows C# type access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    *
-   * **Passes:** `$object->aProperty = $value;` **to:** `$object->set_aProperty($value);`
+   * **Passes:** `$object->aProperty = $value;`
+   * **to:** `$object->set_aProperty($value);`
    *
    * Implementation in concrete Object
    * ```php

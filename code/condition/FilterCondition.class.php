@@ -27,7 +27,7 @@ use ramp\core\PropertyNotSetException;
 /**
  * Single representation of a verified filter for filtering \ramp\model\business\Records.
  * - restricted and evaluated by the constraints of your business model
- *  - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
+ *   - as defined within (RAMP_BUSINESS_MODEL_NAMESPACE)
  *
  * RESPONSIBILITIES
  * - Enforce 'equal to' operator as the primary operation.
@@ -40,8 +40,6 @@ use ramp\core\PropertyNotSetException;
  * - {@see \ramp\condition\iEnvironment}
  * - {@see \ramp\condition\SQLEnvironment} (Default)
  * - {@see \ramp\condition\Operator} (Operator::EQUAL_TO Enforced)
- *
- * @property-write mixed $comparable Sets value of comparable while comparing its validity against business model.
  */
 final class FilterCondition extends BusinessCondition
 {
@@ -70,7 +68,7 @@ final class FilterCondition extends BusinessCondition
    *
    * PRECONDITIONS
    * - Requires the following SETTING to have been set (usually via ramp.ini):
-   *  - SETTING::RAMP_BUSINESS_MODEL_NAMESPACE
+   *   - SETTING::RAMP_BUSINESS_MODEL_NAMESPACE
    * @param mixed $value Value to be compared
    * @throws \DomainException when argument does Not validate against its associated property's processValidationRule()
    * @see \ramp\model\business\Property::processValidationRules()
