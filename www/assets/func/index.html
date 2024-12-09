@@ -1,0 +1,33 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>README.md</title>
+    <link rel="stylesheet" href="https://style.ramp.matt-laptop.lan/import/base.css">
+    <link rel="stylesheet" href="https://style.ramp.matt-laptop.lan/import/layout.css">
+  </head>
+  <body class="content-page">
+    <main id="main"></main>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"></script>
+    <script>
+var converter = new showdown.Converter(),
+  main = document.getElementsByTagName('main')[0],
+  get = {}, s = window.location.search.replace('?', '').split('&');
+s.forEach(o => { let v = o.split('=');  get[v[0]] = v[1]; });
+get.mdfile = (get.mdfile) ? get.mdfile : 'README.md';
+fetch(get.mdfile)
+  .then(response => response.text())
+  .then(text => {
+    main.innerHTML = converter.makeHtml(text);
+    var links = main.getElementsByTagName('a');
+    for (var i=0, j=links.length; i < j; i++) { 
+      var url = new URL(links[i].href);
+      if (url.pathname.endsWith('.md')) {
+         var docs = (url.pathname.startsWith('/docs')) ? '' : '/docs';
+         links[i].href = '/?mdfile=' + docs + url.pathname + '#' + url.hash;
+      }
+    }  
+  });
+    </script>
+  </body>
+</html>
