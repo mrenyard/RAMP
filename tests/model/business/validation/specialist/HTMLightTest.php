@@ -23,9 +23,10 @@ namespace tests\ramp\model\business\validation\specialist;
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/specialist/SpecialistValidationRuleTest.php';
 
+require_once '/usr/share/php/ramp/SETTING.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/WebAddressURL.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/specialist/CheckSafeHREFs.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/specialist/DataTableHTML.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/specialist/InlineHTMLight.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/specialist/HTMLight.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockHTMLight.class.php';
@@ -33,8 +34,6 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockHTMLight.class.php';
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\specialist\CheckSafeHREFs;
-use ramp\model\business\validation\specialist\DataTableHTML;
-use ramp\model\business\validation\specialist\InlineHTMLight;
 use ramp\model\business\validation\FailedValidationException;
 
 use tests\ramp\mocks\model\MockHTMLight;
@@ -48,21 +47,18 @@ use tests\ramp\mocks\model\MockHTMLight;
 class HTMLightTest extends \tests\ramp\model\business\validation\specialist\SpecialistValidationRuleTest
 {
   #region Setup
+  /**
+   * @todo:mrenyard: Remove SETTING::$RAMP_LOCAL_DIR once DTD public.
+   */
   #[\Override]
   protected function preSetup() : void {
-    $this->hint1 = Str::set('HTMLight with safe links,');
-    $this->hint2 = Str::set('inline tags (em, strong, s, q, sup, sub, abbr, code, kdb, samp)');
-    $this->hint3 = Str::set('and blocklevel tags (p, h2, h3, h4, ol, ul, li, pre+code|kbd|samp, blockquote, figure),');
-    $this->hint4 = Str::set('allows data tables');
+    \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
+    $this->hint1 = Str::set('safe (href) links,');
+    $this->hint2 = Str::set('HTMLight [https://rampapp.info/assets/htmlight.dtd]');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockHTMLight($this->hint3,
-      new InlineHTMLight($this->hint2,
-        new CheckSafeHREFs($this->hint1)
-      ),
-      new DataTableHTML($this->hint4)
-    );
+    return new MockHTMLight($this->hint2, new CheckSafeHREFs($this->hint1));
   }
   #endregion
 
@@ -147,10 +143,7 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . $this->hint4,
-      $this->testObject->hint
-    );
+    $this->assertEquals($this->hint1 . ' ' . $this->hint2, $this->testObject->hint);
     $this->assertEquals('textarea html-editor', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
@@ -170,11 +163,99 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
    */
   #[\Override]
   public function testProcess(
-    array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'],
-    int $failPoint = 1, int $ruleCount = 1, $failMessage = ''
+    array $badValues = [
+      
+      '<bad>text</bad>',
+
+      '<p><a href="javascript:action">Click</a></p>',
+
+      '<p><a href="https://plex.domain.com:32400/web/index.html">Plex Media</a></p>',
+
+      '<p><a href="https://my.domain.com/$myvar">sneeky</a></p>',
+
+      '<p><?=$myVar; ?></p>',
+
+      '<p id="identifier">Some text</p>',
+    ],
+    ?array $goodValues = [
+      
+      '<p>simple text</p>',
+      
+      '<p><a href="https://www.bbc.co.uk/news" title="Something about Site.">BBC News</a> has the latest</p>',
+      
+      '<p><a href="#person:new:family-name" title="Jump to input field">field</a>!</p>',
+      
+      '<p><a href="https://my.domain.com/person/~/family-name/">My Family Name</a></p>',
+      
+      '<p>Search for <a href="https://www.google.com/?search=clientfirefox&amp;q=help">help</a>' .
+        'and <a href="https://domain.com/person/?family-name=renyard&amp;given-name=matt#main">My Family Name</a></p>',
+
+      '<ul>' .
+      '  <li>text <a href="https://www.site.com/" title="Something about Site.">Site</a> text</li>' .
+      '  <li><a href="#txt3"><strong>text3</strong></a></li>' .
+      '  <li><a href="https://www.google.com/search?client=firefox&amp;q=help"><strong>Help!</strong></a></li>' .
+      '  <li>' .
+      '    <ol>' .
+      '      <li><sub>Sub</sub> text one</li>' .
+      '      <li><sub>Sub</sub> text two</li>' .
+      '      <li><sub>Sub</sub> text <s>two</s>three</li>' .
+      '    </ol>' .
+      '  </li>' .
+      '  <li><h4>Header five</h4></li>' .
+      '</ul>',
+
+      '<p>According to Mozilla\'s website, <q cite="https://www.mozilla.org/en-US/about/history/details/">Firefox 1.0 was released in 2004 and became a big success.</q></p>',
+      
+      '<h3>Sub Heading <em>Two</em></h3>',
+      
+      '<figure data-mid="img:profile:101" />',
+      
+      '<p><strong>More text</strong></p>',
+      
+      '<blockquote>text</blockquote>',
+      
+      '<p><kbd>Ctrl+a</kbd></p>',
+
+      '<blockquote cite="https://www.huxley.net/bnw/four.html">' .
+      '  <p>Words can be like X-rays, if you use them properly they\'ll go through anything. You read and you\'re pierced.</p>' .
+      '  <footer>-Aldous Huxley, <cite>Brave New World</cite></footer>' .
+      '</blockquote>',
+
+      '<p>input: <code>print("hello " . $place);</code></p>',
+
+      '<p>output: <samp>Hello World!</samp></p>',
+
+      '<pre><code data-lang="php">' .
+      '  print("hello " . $place);' .
+      '</code></pre>',
+
+      '<pre><kbd>' .
+      '  Ctrl+A' .
+      '</kbd></pre>'
+      
+    ],
+    int $failPoint = 1, int $ruleCount = 1,
+    $failMessage = '$value failed to match provided regex!'
   ) : void
   {
+    set_error_handler(function() { /* suppress warnings */ }, E_WARNING);
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
+    restore_error_handler();
   }
   #endregion
+  
+  /**
+    *
+    * '<p>input: <code>print("hello " . $place);</code></p>',
+    *
+    * '<p>output: <samp>Hello World!</samp></p>',
+    *
+    * '<pre><code data-lang="php">' .
+    * '  print("hello " . $place);' .
+    * '</code></pre>',
+    *
+    * '<pre><kbd>',
+    * '  Ctrl+A',
+    * '</kbd></pre>'   
+   */
 }

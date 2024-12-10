@@ -163,8 +163,8 @@ class CheckSafeHREFsTest extends \tests\ramp\model\business\validation\specialis
       '<a href="https://www.bbc.co.uk/news">BBC News</a> has the latest. ' .
       '<a href="#person:new:family-name" title="Jump to input field">field</a>! ' .
       '<a href="https://my.domain.com/person/~/family-name/">My Family Name</a> ' .
-      'Search for <a href="https://www.google.com/search?client=firefox&q=help">help</a> ' .
-      'and <a href="https://domain.com/person/?family-name=renyard&given-name=matt#main">My Family Name</a>'
+      'Search for <a href="https://www.google.com/search?client=firefox&amp;q=help">help</a> ' .
+      'and <a href="https://domain.com/person/?family-name=renyard&amp;given-name=matt#main">My Family Name</a>'
     ],
     int $failPoint = 1, int $ruleCount = 1, $failMessage = '$value failed to match provided regex!'
   ) : void

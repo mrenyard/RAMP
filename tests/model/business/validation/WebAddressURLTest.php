@@ -158,14 +158,16 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
   public function testProcess(
     array $badValues = [
       'javascript:action',
-      'https://plex.domain.com:32400/web/index.html', // #!
-      '<?=$myVar; >"',
+      'https://plex.domain.com:32400/web/index.html',
+      'https://my.domain.com/<?=$myVar; ?>',
+      'https://my.domain.com/$myvar'
     ], ?array $goodValues = [
       'https://www.bbc.co.uk/news',
       '#person:new:family-name',
       'https://my.domain.com/person/~/family-name/',
-      'https://www.google.com/search?client=firefox&q=help',
-      'https://domain.com/person/?family-name=renyard&given-name=matt#main'
+      'https://www.google.com/search?client=firefox',
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
@@ -193,8 +195,9 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
     ], ?array $goodValues = [
       'https://www.bbc.co.uk/news',
       'https://my.domain.com/person/~/family-name/',
-      'https://www.google.com/search?client=firefox&q=help',
-      'https://domain.com/person/?family-name=renyard&given-name=matt#main'
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://www.google.com/search?client=firefox&amp;q=help&amp;time=bst',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
@@ -215,13 +218,13 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
   public function testAllowProtsProcess(
     array $badValues = [
       'javascript:action',
-      '<?=$myVar; >"'
+      '<?=$myVar; ?>'
     ], ?array $goodValues = [
       'https://www.bbc.co.uk:443/news',
       '#person:new:family-name',
-      'https://plex.domain.com:32400/web/index.html', // #!
-      'https://www.google.com/search?client=firefox&q=help',
-      'https://domain.com/person/?family-name=renyard&given-name=matt#main'
+      'https://plex.domain.com:32400/web/index.html',
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
