@@ -96,6 +96,7 @@ abstract class Relation extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet BLOKED!
    */
+  #[\Override]
   final public function offsetSet($offset, $object) : void
   {
     throw new \InvalidArgumentException('Adding properties through offsetSet BLOKED!');
@@ -105,6 +106,7 @@ abstract class Relation extends RecordComponent
    * Returns value held by relevant property of associated record.
    * @return mixed Value held by relevant property of associated record
    */
+  #[\Override]
   final protected function get_value()
   {
     return ($this->with !== NULL) ? (string)$this->with->id : NULL;

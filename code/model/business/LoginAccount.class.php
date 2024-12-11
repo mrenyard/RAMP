@@ -158,6 +158,7 @@ final class LoginAccount extends Record
    * @return mixed The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
+  #[\Override]
   public function __get($propertyName)
   {
     try {

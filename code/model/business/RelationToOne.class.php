@@ -99,6 +99,7 @@ class RelationToOne extends Relation
    * @param \ramp\condition\PostData $key Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
+  #[\Override]
   public function validate(PostData $postdata, $update = TRUE) : void
   {
     parent::validate($postdata);
@@ -166,6 +167,7 @@ class RelationToOne extends Relation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_hasErrors() : bool
   {
     return ((isset($this->errorCollection) && $this->errorCollection->count > 0) || parent::get_hasErrors());
@@ -174,6 +176,7 @@ class RelationToOne extends Relation
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_errors() : StrCollection
   {
     return (isset($this->errorCollection) && $this->errorCollection->count > 0) ? $this->errorCollection : parent::get_errors();
