@@ -43,8 +43,6 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
  */
 class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
-  protected $title;
-
   #region Setup
   protected function preSetup() : void {
     MockSqlBusinessModelManager::reset();
@@ -56,7 +54,6 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   protected function getTestObject() : RAMPObject { return $this->record->aProperty; }
   protected function postSetup() : void {
     $this->name = $this->record->propertyName;
-    $this->title = $this->record->title;
     $this->expectedChildCountNew = 0;
   }
   #endregion
@@ -363,7 +360,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
-    $this->assertSame($this->record->title, $this->title);
+    $this->assertSame($this->record->title, $this->testObject->title);
     $this->assertFalse($this->testObject->isRequired);
     // isEdiatable always remains TRUE while state is 'new'
     $this->assertTrue($this->testObject->isEditable);

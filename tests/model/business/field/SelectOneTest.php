@@ -43,7 +43,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   protected function getTestObject() : RAMPObject { return $this->record->selectOne; }
   protected function postSetup() : void {
     $this->name = $this->record->selectOneName;
-    $this->title = $this->record->title;
+    // $this->title = $this->record->title;
     $this->expectedChildCountNew = 3;
   }
   #endregion
