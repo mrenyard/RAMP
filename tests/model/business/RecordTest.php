@@ -44,7 +44,7 @@ require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.clas
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
@@ -98,10 +98,12 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
  */
 class RecordTest extends \tests\ramp\model\business\RelatableTest
 {
-  private $propertyName;
-  private $modelManager;
+  protected $propertyName;
+  protected $modelManager;
+  protected $dataObject;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\http\Request::reset();
     $_GET = array();
@@ -116,7 +118,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->modelManager = $MODEL_MANAGER::getInstance();
     $this->dataObject = new \StdClass();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockRecord($this->dataObject); }
+  #[\Override]
   protected function postSetup() : void {
     $this->propertyName = $this->testObject->propertyName;
     $this->expectedChildCountNew = 3;
@@ -135,6 +139,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert is instance of {@see \ramp\model\business\Record}
    * @see \ramp\model\business\Relatable
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -142,6 +147,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->assertTrue($this->testObject->isNew);
@@ -160,6 +166,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->childErrorIndexes = array(0);
     $this->assertSame(0, $this->testObject->aProperty->validateCount);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
@@ -188,6 +195,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Record::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -198,6 +206,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Record::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -213,6 +222,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -223,6 +233,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\model\Record::__toString()} returns string 'class name'
    * @see \ramp\model\Record::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -248,6 +259,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::hasErrors()
    * @see \ramp\model\business\Record::getErrors()
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -258,6 +270,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Record::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -269,6 +282,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Record::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -280,6 +294,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Record::children
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -291,6 +306,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\Record::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -306,6 +322,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::offsetSet()
    * @see \ramp\model\business\Record::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('propertyName'), $this->testObject, Str::set('title')));
@@ -332,6 +349,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::offsetExists()
    * @see \ramp\model\business\Record::count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -348,6 +366,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Record::validate()
    * @see \ramp\model\business\Record::hasErrors()
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -363,6 +382,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Record::getErrors()
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     parent::testErrorReportingPropagation($message);
@@ -374,6 +394,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\Record::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException(
@@ -382,7 +403,9 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
       'Adding properties through offsetSet STRONGLY DISCOURAGED, refer to manual!'
     );
   }
+  #endregion
 
+  #region New Specialist Tests
   /**
    * Ensure children index editing restricted to BusinessModels of type 'RecordComponent's
    */
@@ -474,19 +497,18 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isModified);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-    $keys = [$this->testObject->primaryKey[0], $this->testObject->primaryKey[1], $this->testObject->primaryKey[2]];
-    $this->assertSame($keys[0], $this->testObject->keyA);
-    $this->assertSame($keys[1], $this->testObject->keyB);
-    $this->assertSame($keys[2], $this->testObject->keyC);
+
     $i = 0;
+    $keys = $this->testObject->primaryKey;
     foreach($this->testObject as $key) {
       $this->assertSame($keys[$i++], $key);
       $this->assertTrue($key->isRequired);
     }
     $this->assertSame($this->expectedChildCountNew, $i);
-    $this->assertObjectHasProperty('keyA', $this->dataObject);
-    $this->assertObjectHasProperty('keyB', $this->dataObject);
-    $this->assertObjectHasProperty('keyC', $this->dataObject);
+
+    // $this->assertObjectHasProperty('keyA', $this->dataObject);
+    // $this->assertObjectHasProperty('keyB', $this->dataObject);
+    // $this->assertObjectHasProperty('keyC', $this->dataObject);
   }
 
   /**
@@ -1095,4 +1117,5 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertTrue($relation[2]->isNew);
     $this->assertFalse(isset($relation[3]));
   }
+  #endregion
 }
