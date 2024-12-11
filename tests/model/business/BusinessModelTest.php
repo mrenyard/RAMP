@@ -61,7 +61,9 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   protected $postData;
 
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockBusinessModel(); }
+  #[\Override]
   protected function postSetup() : void { $this->expectedChildCountNew = 0; }
   #endregion
 
@@ -76,6 +78,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\BusinessModel
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -116,6 +119,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\business\BusinessModel::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -126,6 +130,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\business\BusinessModel::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -141,6 +146,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -151,12 +157,14 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
    * - assert {@see \ramp\model\business\BusinessModel::__toString()} returns string 'class name'
    * @see \ramp\model\business\BusinessModel::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
   }
   #endregion
 
+  #region New Specialist Tests
   /**
    * Returns Business model type without namespace from full class name.
    * @param string $classFullName Full class name including path/namespace
