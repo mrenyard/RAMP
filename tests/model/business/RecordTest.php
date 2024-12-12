@@ -548,13 +548,13 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
    *   - assert isNew, isModified, isValid flags report expected (TRUE|TRUE|TRUE).
    *   - assert id matches expected result, in the format [class-name]:[keyA]|[keyB]|[keyC].
    * - assert post simulated updated() called from BusinessModelManager:
-   *   - assert isNew, isModified, isValid flags report expected (TRUE|FALSE|TRUE).
+   *   - assert isNew, isModified, isValid flags report expected (FALSE|TRUE|TRUE).
    */
   public function testNewRecordPrimaryKeyInput() : void
   {
     $this->assertTrue($this->testObject->isNew);
-    $this->assertFalse($this->testObject->isValid);
     $this->assertFalse($this->testObject->isModified);
+    $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
     $this->assertNull($this->dataObject->keyA);
@@ -562,9 +562,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertNull($this->dataObject->keyC);
     $this->assertNull($this->testObject->primaryKey->value);
     $keyAValue = 'A1'; $keyBValue = 'B1'; $keyCValue = 'C1';
-    // Simulate getPropertyValue() called from relevant RecordComponent.
-    $this->testObject->validate(PostData::build(array('mock-record:new:key-b' => $keyBValue)));
-    // $this->testObject->setPropertyValue('keyB', $keyBValue);
+    // Simulate setPropertyValue() called from relevant RecordComponent.
+    $this->testObject->setPropertyValue('keyB', $keyBValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyBValue, $this->testObject->keyB->value);
     $this->assertSame($this->dataObject->keyA, $this->testObject->keyA->value);
@@ -573,9 +572,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-    // Simulate getPropertyValue() called from relevant RecordComponent.
-    $this->testObject->validate(PostData::build(array('mock-record:new:key-a' => $keyAValue)));
-    // $this->testObject->setPropertyValue('keyA', $keyAValue);
+    // Simulate setPropertyValue() called from relevant RecordComponent.
+    $this->testObject->setPropertyValue('keyA', $keyAValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
     $this->assertSame($keyAValue, $this->testObject->keyA->value);
@@ -585,9 +583,8 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
-    // Simulate getPropertyValue() called from relevant RecordComponent.
-    $this->testObject->validate(PostData::build(array('mock-record:new:key-c' => $keyCValue)));
-    // $this->testObject->setPropertyValue('keyC', $keyCValue);
+    // Simulate setPropertyValue() called from relevant RecordComponent.
+    $this->testObject->setPropertyValue('keyC', $keyCValue);
     $this->assertSame($keyBValue, $this->dataObject->keyB);
     $this->assertSame($keyAValue, $this->dataObject->keyA);
     $this->assertSame($keyCValue, $this->dataObject->keyC);
@@ -595,6 +592,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertSame($this->dataObject->keyC, $this->testObject->keyC->value);
     $this->assertTrue($this->testObject->isNew);
     $this->assertTrue($this->testObject->isModified);
+    $this->assertTrue($this->testObject->isValid);
     $this->assertSame($this->testObject->keyA, $this->testObject->primaryKey[0]);
     $this->assertSame($this->testObject->keyB, $this->testObject->primaryKey[1]);
     $this->assertSame($this->testObject->keyC, $this->testObject->primaryKey[2]);
@@ -607,7 +605,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     // Simulate updated() called from BusinessModelManager
     $this->testObject->updated();
     $this->assertFalse($this->testObject->isNew);
-    $this->assertTrue($this->testObject->isValid);
     $this->assertFalse($this->testObject->isModified);
     $this->assertTrue($this->testObject->isValid);
   }
