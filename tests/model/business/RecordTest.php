@@ -170,21 +170,29 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-field field', (string)$this->testObject[0]->type);
+    $this->assertEquals('mock-field field', (string)$this->testObject[0]->type);
+    $this->assertEquals('aProperty', (string)$this->testObject[0]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-input input', (string)$this->testObject[1]->type);
+    $this->assertEquals('mock-input input', (string)$this->testObject[1]->type);
+    $this->assertEquals('input', (string)$this->testObject[1]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-flag flag', (string)$this->testObject[2]->type);
+    $this->assertEquals('mock-flag flag', (string)$this->testObject[2]->type);
+    $this->assertEquals('flag', (string)$this->testObject[2]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
-    $this->assertSame('mock-select-from select-from', (string)$this->testObject[3]->type);
+    $this->assertEquals('mock-select-from select-from', (string)$this->testObject[3]->type);
+    $this->assertEquals('selectFrom', (string)$this->testObject[3]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[4]->type);
-    $this->assertSame('select-one select-from', (string)$this->testObject[4]->type);
+    $this->assertEquals('select-one select-from', (string)$this->testObject[4]->type);
+    $this->assertEquals('selectOne', (string)$this->testObject[4]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[5]->type);
-    $this->assertSame('select-many select-from', (string)$this->testObject[5]->type);
+    $this->assertEquals('select-many select-from', (string)$this->testObject[5]->type);
+    $this->assertEquals('selectMany', (string)$this->testObject[5]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[6]->type);
-    $this->assertSame('mock-relation-to-many relation-to-many', (string)$this->testObject[6]->type);
+    $this->assertEquals('mock-relation-to-many relation-to-many', (string)$this->testObject[6]->type);
+    $this->assertEquals('relationAlpha', (string)$this->testObject[6]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[7]->type);
-    $this->assertSame('mock-relation-to-one relation-to-one', (string)$this->testObject[7]->type);
+    $this->assertEquals('mock-relation-to-one relation-to-one', (string)$this->testObject[7]->type);
+    $this->assertEquals('relationBeta', (string)$this->testObject[7]->name);
     $this->assertFalse(isset($this->testObject[8]));
   }
   #endregion
@@ -387,7 +395,6 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   {
     parent::testErrorReportingPropagation($message);
   }
-  #endregion
 
   /**
    * Offset addition minimum type checking test

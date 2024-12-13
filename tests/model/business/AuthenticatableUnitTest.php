@@ -39,13 +39,10 @@ use ramp\core\BadPropertyCallException;
 use ramp\condition\PostData;
 use ramp\model\business\BusinessModel;
 use ramp\model\business\AuthenticatableUnit;
-// use ramp\model\business\AuthenticatableUnitType;
-// use ramp\model\business\SimpleBusinessModelDefinition;
 
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\AnAuthenticatableUnit;
-// use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
  * Collection of tests for ramp\model\business\AuthenticatableUnit.
@@ -419,7 +416,10 @@ class AuthenticatableUnitTest extends \tests\ramp\model\business\RecordTest
     $this->assertFalse($this->testObject->isModified);
     $this->assertFalse($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-    $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':new', (string)$this->testObject->id);
+    $this->assertEquals(
+      $this->processType(get_class($this->testObject), TRUE) . ':new',
+      $this->testObject->id
+    );
     $this->assertNull($this->dataObject->uname);
     $this->assertNull($this->testObject->primaryKey->value);
     $keyValue = 'asmith';
@@ -431,7 +431,10 @@ class AuthenticatableUnitTest extends \tests\ramp\model\business\RecordTest
     $this->assertTrue($this->testObject->isModified);
     $this->assertTrue($this->testObject->isValid);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
-    $this->assertSame($this->processType(get_class($this->testObject), TRUE) . ':' . $keyValue, (string)$this->testObject->id);
+    $this->assertEquals(
+      $this->processType(get_class($this->testObject), TRUE) . ':' . $keyValue,
+      $this->testObject->id
+    );
     // Simulate updated() called from BusinessModelManager
     $this->testObject->updated();
     $this->assertFalse($this->testObject->isNew);

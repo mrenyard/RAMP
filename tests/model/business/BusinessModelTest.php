@@ -103,13 +103,14 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[0]->type);
+    $this->assertEquals('mock-business-model business-model', $this->testObject[0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1]->type);
+    $this->assertEquals('mock-business-model business-model', $this->testObject[1]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1][0]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[1][0]->type);
+    $this->assertEquals('mock-business-model business-model', $this->testObject[1][0]->type);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('mock-business-model business-model', (string)$this->testObject[2]->type);
+    $this->assertEquals('mock-business-model business-model', $this->testObject[2]->type);
+    $this->assertFalse(isset($this->testObject[3]));
   }
   #endregion
 
