@@ -56,6 +56,7 @@ final class RootView extends View
   /**
    * Render relevant output from child views
    */
+  #[\Override]
   public function render() : void
   {
     $this->children;
@@ -65,6 +66,7 @@ final class RootView extends View
    * Prevent cloning.
    * @throws \BadMethodCallException Cloning is not allowed!
    */
+  #[\Override]
   public function __clone()
   {
     throw new \BadMethodCallException('Cloning is not allowed');

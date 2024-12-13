@@ -32,6 +32,7 @@ final class Dump extends ChildView
   /**
    * Render relevant output as raw object data
    */
+  #[\Override]
   public function render() : void
   {
     echo '<pre>';
