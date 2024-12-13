@@ -50,6 +50,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   private $templateType;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     SETTING::$DEV_MODE = TRUE;
     SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
@@ -63,8 +64,9 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
     $this->templateType = Str::set('test');
     RootView::reset();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new Templated(RootView::getInstance(), $this->templateName, $this->templateType); }
-  protected function postSetup() : void {  }
+  // protected function postSetup() : void {  }
   #endregion
 
   /**
@@ -77,10 +79,61 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert is instance of {@see \ramp\view\document\Templated}
    * @see \ramp\view\document\Templated
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\document\Templated', $this->testObject);
+  }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  #[\Override]
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  #[\Override]
+  public function testToString() : void
+  {
+    parent::testToString();
   }
 
   /**
@@ -90,6 +143,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * @see \ramp\view\View::add()
    * @see \ramp\view\View::children
    */
+  #[\Override]
   public function testSubViewAddition(string $parentRender = 'ramp\view\document\Templated') : void
   {
     $subCollection = new \SplObjectStorage();
@@ -141,6 +195,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert cloned View with model re associated is equal to the original 
    * @see \ramp\view\View::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     parent::testClone();
@@ -152,6 +207,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    *   - with message: *'model already set violation'*
    * @see \ramp\view\ComplexView::setModel()
    */
+  #[\Override]
   public function testModelAlreadySetException() : void
   {
     parent::testModelAlreadySetException();
@@ -161,6 +217,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * Check read access to associated Model's properties.
    * - assert that property calls are passes to its component (contained) {@see \ramp\model\Model}.
    */
+  #[\Override]
   public function testPassthroughProperties() : void
   {
     parent::testPassthroughProperties();
@@ -176,6 +233,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    *   - each view added sequentially and hieratically as expected.
    *   - output from View->render() maintains sequance and hieratically format.
    */
+  #[\Override]
   public function testComplexModelCascading(string $parentViewType = 'ramp\view\document\Templated', $templateName = NULL, $templateType = NULL) : void
   {
     $this->assertSame(
@@ -191,15 +249,17 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert attribute('class') returns in expected format.
    * - assert model definition forms part of classlist as expected. 
    */
+  #[\Override]
   public function testClassProperyReturnValue()
   {
-    $this->testObject->style = Str::set('default');
-    $this->assertSame('default', (string)$this->testObject->class);
-    $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
-    $record = new MockRecord();
-    $this->testObject->setModel($record->aProperty);
-    $this->assertSame('mock-field field default', (string)$this->testObject->class);
-    $this->assertSame(' class="mock-field field default"', (string)$this->testObject->attribute('class'));
+    parent::testClassProperyReturnValue();
+    // $this->testObject->style = Str::set('default');
+    // $this->assertSame('default', (string)$this->testObject->class);
+    // $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
+    // $record = new MockRecord();
+    // $this->testObject->setModel($record->aProperty);
+    // $this->assertSame('mock-field field default', (string)$this->testObject->class);
+    // $this->assertSame(' class="mock-field field default"', (string)$this->testObject->attribute('class'));
   }
 
   /**
@@ -209,15 +269,17 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert retrieval throught either throught 'heading' or 'lable'
    * - assert when associated with a field, returns the field 'lable' in expected format. 
    */
+  #[\Override]
   public function testLabelHeadingProperyReturnValue()
   {
-    $this->assertSame('[HEADING]', (string)$this->testObject->heading); // DEFAULT
-    $record = new MockRecord();
-    $this->testObject->setModel($record->aProperty);
-    $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
-    $this->testObject->label = Str::set('My Heading');
-    $this->assertSame('My Heading', (string)$this->testObject->heading);
-    $this->assertSame($this->testObject->label, $this->testObject->heading); // overiden from documentView.
+    parent::testLabelHeadingProperyReturnValue();
+    // $this->assertSame('[HEADING]', (string)$this->testObject->heading); // DEFAULT
+    // $record = new MockRecord();
+    // $this->testObject->setModel($record->aProperty);
+    // $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
+    // $this->testObject->label = Str::set('My Heading');
+    // $this->assertSame('My Heading', (string)$this->testObject->heading);
+    // $this->assertSame($this->testObject->label, $this->testObject->heading); // overiden from documentView.
   }
   
   /**
@@ -225,16 +287,26 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert default when not set or related to data field returns unique uid[number].
    * - assert with data returns expected URN [record]:[key]:[property]
    */
+  #[\Override]
   public function testIdPropertyReturenValue()
   {
-    $this->assertMatchesRegularExpression('#^uid[0-9]*$#', (string)$this->testObject->id);
-    $data = new \stdClass();
-    $data->keyA = 1; $data->keyB = 1; $data->keyC = 1;
-    $record = new MockRecord($data);
-    $this->testObject->setModel($record->aProperty);
-    $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
+    parent::testIdPropertyReturenValue();
+    // $this->assertMatchesRegularExpression('#^uid[0-9]*$#', (string)$this->testObject->id);
+    // $data = new \stdClass();
+    // $data->keyA = 1; $data->keyB = 1; $data->keyC = 1;
+    // $record = new MockRecord($data);
+    // $this->testObject->setModel($record->aProperty);
+    // $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
   }
 
+  #[\Override]
+  public function testDocumentModelCopiedOnClone()
+  {
+    parent::testDocumentModelCopiedOnClone();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Constructor bad template path exception test.
    * - assert throws InvalidArgumentException when arguments do NOT map to a valid template file.
@@ -271,4 +343,5 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       $this->testObject->template
     );    
   }
+  #endregion
 }

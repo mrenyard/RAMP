@@ -40,7 +40,7 @@ require_once '/usr/share/php/ramp/model/Document.class.php';
 require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/dbtype/Text.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
@@ -89,13 +89,14 @@ use tests\ramp\mocks\view\MockDocumentView;
 class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     RootView::reset(); 
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockDocumentView(RootView::getInstance()); }
-  protected function postSetup() : void { }
   #endregion
 
   /**
@@ -107,10 +108,61 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * - assert is instance of {@see \ramp\view\document\DocumentView}
    * @see \ramp\view\document\DocumentView
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\document\DocumentView', $this->testObject);
+  }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  #[\Override]
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  #[\Override]
+  public function testToString() : void
+  {
+    parent::testToString();
   }
 
   /**
@@ -120,6 +172,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * @see \ramp\view\View::add()
    * @see \ramp\view\View::children
    */
+  #[\Override]
   public function testSubViewAddition(string $parentRender = 'tests\ramp\mocks\view\MockDocumentView ') : void
   {
     parent::postSetup();
@@ -134,6 +187,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * - assert cloned View with model re associated is equal to the original 
    * @see \ramp\view\View::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     parent::testClone();
@@ -145,6 +199,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    *   - with message: *'model already set violation'*
    * @see \ramp\view\ComplexView::setModel()
    */
+  #[\Override]
   public function testModelAlreadySetException() : void
   {
     parent::testModelAlreadySetException();
@@ -154,6 +209,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * Check read access to associated Model's properties.
    * - assert that property calls are passes to its component (contained) {@see \ramp\model\Model}.
    */
+  #[\Override]
   public function testPassthroughProperties() : void
   {
     parent::testPassthroughProperties();
@@ -169,11 +225,14 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    *   - each view added sequentially and hieratically as expected.
    *   - output from View->render() maintains sequance and hieratically format.
    */
+  #[\Override]
   public function testComplexModelCascading(string $parentViewType = 'tests\ramp\mocks\view\MockDocumentView', $templateName = NULL, $templateType = NULL) : void
   {
     parent::testComplexModelCascading($parentViewType, $templateName, $templateType);
   }
+  #endregion
 
+  #region New Specialist Tests
   /**
    * 'class' attribute managment and retrieval.
    * - assert 'style' setting adds to classlist
@@ -183,8 +242,8 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
   public function testClassProperyReturnValue()
   {
     $this->testObject->style = Str::set('default');
-    // $this->assertSame('default', (string)$this->testObject->class);
-    // $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
+    $this->assertSame('default', (string)$this->testObject->class);
+    $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
     $record = new MockRecord();
     $this->testObject->setModel($record->aProperty);
     $this->assertSame('mock-field field default', (string)$this->testObject->class);
@@ -246,4 +305,5 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
     $this->testObject->title = Str::set('Indervidual');
     $this->assertSame('Indervidual', (string)$o2->title);
   }
+  #endregion
 }

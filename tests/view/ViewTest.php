@@ -46,8 +46,9 @@ class ViewTest extends \tests\ramp\core\ObjectTest
   protected $subCollection;
   
   #region Setup
-  protected function preSetup() : void { }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockView(); }
+  #[\Override]
   protected function postSetup() : void
   {
     if (!isset($this->subCollection)) {
@@ -65,12 +66,65 @@ class ViewTest extends \tests\ramp\core\ObjectTest
    * - assert is instance of {@see \ramp\view\View}
    * @see \ramp\model\Model
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\View', $this->testObject);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  #[\Override]
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  #[\Override]
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Addition of sub views.
    * - assert each child view added sequentially.
@@ -131,4 +185,5 @@ class ViewTest extends \tests\ramp\core\ObjectTest
     $this->assertEquals($this->testObject, $clone);
     unset($clone);
   }
+  #endregion
 }
