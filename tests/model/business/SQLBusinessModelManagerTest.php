@@ -136,7 +136,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
-   *
+   */
   #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
@@ -147,7 +147,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Bad property (name) NOT accessable on \ramp\model\Model::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
-   *
+   */
   #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
@@ -163,7 +163,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * ```
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
-   *
+   */
   #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
@@ -174,12 +174,12 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Correct return of ramp\model\Model::__toString().
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
-   *
+   */
   #[\Override]
   public function testToString() : void
   {
     parent::testToString();
-  }*/
+  }
   #endregion
 
   #region New Specialist Tests
