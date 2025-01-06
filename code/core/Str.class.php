@@ -379,7 +379,8 @@ final class Str extends RAMPObject
 
   /**
    * Returns a StrCollection split at the point of designated separator.
-   * @param \ramp\core\StrCollection $separator Separator used to determine points of separation. 
+   * @param \ramp\core\Str $separator Separator used to determine points of separation.
+   * @return \ramp\core\StrCollection Collection of separated parts.
    */
   public function explode(Str $separator) : StrCollection
   {
