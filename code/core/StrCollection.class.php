@@ -39,7 +39,7 @@ final class StrCollection extends Collection
   final private function __construct() { parent::__construct(Str::set('ramp\core\Str')); }
 
   /**
-   * Instantiate a new StrCollection - Can take a (comma separated (args)) list of string literals.
+   * Instantiate a new StrCollection.
    * @param string[] ...$values Zero or more string literal values to form collection. 
    * @return \ramp\core\StrCollection Relevant StrCollection object
    */
@@ -55,7 +55,8 @@ final class StrCollection extends Collection
 
   /**
    * Returns Str representation of this collection, ordered, with provided 'glue' between each item.
-   * @param \ramp\core\Str $glue Glue to be used to stitch each item together. 
+   * @param \ramp\core\Str $glue Glue to be used to stitch each item together (defaults as space). 
+   * @return \ramp\core\Str New Str ordered and concatonated with provided 'glue' 
    */
   public function implode(Str $glue = NULL) : Str
   {
@@ -70,6 +71,7 @@ final class StrCollection extends Collection
   /**
    * Confirms existence of existing Str with same value.
    * @param \ramp\core\Str $value to check against.
+   * @return bool existance of existing Str
    */
   public function contains(Str $value) : bool
   {

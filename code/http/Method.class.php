@@ -26,7 +26,8 @@ use ramp\core\Str;
 /**
  * Request Method (Verb) (based on HTTP/1.1 specification).
  * INVARIANT
- * - State of *this* is always unchanged (all operations return one of several Method types)
+ * - State of *this* is always unchanged 
+ * (all operations return one of several Method types)
  * @see https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
  * @see http://tools.ietf.org/html/rfc2518  HTTP Extensions for Distributed Authoring -- WEBDAV
  */

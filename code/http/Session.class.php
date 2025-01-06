@@ -67,7 +67,7 @@ final class Session extends RAMPObject
   private FilterCondition $accountEmailCondition;
 
   /**
-   * Constuct the instance.
+   * Construct the instance.
    */
   private function __construct()
   {
@@ -108,9 +108,9 @@ final class Session extends RAMPObject
   }
 
   /**
-   * Returns wether the current authenticated $_SESSION has at least the specified authorization level.
+   * Returns whether the current authenticated $_SESSION has at least the specified authorization level.
    * @param int $authorizationLevel Authorization level to be surpassed.
-   * @return bool Current authenticated session login account authorized at authorization level
+   * @return bool If has at least the specified authorization level
    * @throws \BadMethodCallException Session::instance() MUST be called prior to use
    */
   public static function authorizedAs(int $authorizationLevel) : bool
@@ -291,8 +291,7 @@ final class Session extends RAMPObject
   }
 
   /**
-   * Accessor to logingAccount
-   * @return \ramp\model\business\LoginAccount loginAccount LoginAccount for authentication and authorization
+   * @ignore
    */
   protected function get_loginAccount() : LoginAccount
   {

@@ -33,12 +33,8 @@ namespace ramp\core;
  */
 interface iList extends \IteratorAggregate, \ArrayAccess, \Countable
 {
-  /**
-   * Returns the number of items currently referenced in *this* list.
-   * **DO NOT CALL DIRECTLY, USE:**
-   * ```php
-   * $this->count;
-   * ```
+  /*
+   * Returns the number of items currently referenced in 'this' list.
    * @return int Number of items in *this* list
    */
   public function get_count() : int;

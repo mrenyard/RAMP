@@ -44,7 +44,7 @@ namespace ramp\core;
 abstract class RAMPObject
 {
   /**
-   * Allows C# type access to properties.
+   * Allows C# type 'get'access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    * 
    * **Passes:** `$object->aProperty;`
@@ -80,7 +80,7 @@ abstract class RAMPObject
   }
 
   /**
-   * Allows C# type access to properties.
+   * Allows C# type 'set'access to properties.
    * **DO NOT CALL THIS METHOD DIRECTLY, TO BE HANDLED INTERNALLY!**
    *
    * **Passes:** `$object->aProperty = $value;`
