@@ -69,6 +69,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * - ensures default values set on relavant properties
    * @return \ramp\model\business\BusinessModelManager Single instance of BusinessModelManager
    */
+  #[\Override]
   public static function getInstance() : BusinessModelManager
   {
     if (!isset(SELF::$instance))
@@ -124,6 +125,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * @return \ramp\model\business\BusinessModel Relevant requested BusinessModel
    * @throws \ramp\model\business\DataFetchException When unable to fetch from data store
    */
+  #[\Override]
   public function getBusinessModel(iBusinessModelDefinition $definition, Filter $filter = NULL, $fromIndex = NULL) : BusinessModel
   {
     if (!$definition->recordKey)
@@ -240,6 +242,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    *  was not initially retrieved using *this* BusinessModelManager
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
+  #[\Override]
   public function update(BusinessModel $model) : void
   {
     if ($model instanceof \ramp\model\business\RecordCollection) {
@@ -349,6 +352,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
    * - {@see \ramp\model\business\Record::isModified}
    * @throws \ramp\model\business\DataWriteException When unable to write to data store
    */
+  #[\Override]
   public function updateAny() : void
   {
     foreach ($this->recordCollection as $record) {

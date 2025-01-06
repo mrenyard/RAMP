@@ -49,7 +49,7 @@ FUNC.[newModule] = function(elm)
 FUNC.Base Abstract Class Inherited Universally.
 --------------------------------------------------
 
-### An <<abstract>> class inherited from FUNC.Base
+### An &laquo;abstract&raquo; class inherited from FUNC.Base
 
 To indicate that a class in abstract use the following declaration
 within you constructor imediatly after super(). The fist action

@@ -63,6 +63,13 @@ class RelationLookup extends Relation
     parent::__construct($name, $parent);
   }
 
+  /**
+   * Add a reference to Record object, to this collection.
+   * POSTCONDITIONS
+   * - new object reference appended to this collection
+   * @param \ramp\model\business\Record $object reference to be added
+   * @throws \InvalidArgumentException When provided object NOT of expected type
+   */
   public function add(Record $object) : void
   {
     $this[$this->count] = $object;

@@ -39,7 +39,9 @@ use tests\ramp\mocks\view\MockViewD;
 class RootViewTest extends \tests\ramp\view\ViewTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void { RootView::reset(); }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return RootView::getInstance(); }
   #endregion
 
@@ -50,10 +52,61 @@ class RootViewTest extends \tests\ramp\view\ViewTest
    * - assert is instance of {@see \ramp\view\RootView}
    * @see \ramp\model\Model
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\RootView', $this->testObject);
+  }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  #[\Override]
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  #[\Override]
+  public function testToString() : void
+  {
+    parent::testToString();
   }
 
   /**
@@ -63,6 +116,7 @@ class RootViewTest extends \tests\ramp\view\ViewTest
    * @see \ramp\view\View::add()
    * @see \ramp\view\View::children
    */
+  #[\Override]
   public function testSubViewAddition(string $parentRender = '') : void
   {
     parent::testSubViewAddition($parentRender);
@@ -74,10 +128,12 @@ class RootViewTest extends \tests\ramp\view\ViewTest
    *   - with message *Cloning is not allowed*
    * @see \ramp\view\View::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage('Cloning is not allowed');
     $clone = clone $this->testObject;
   }
+  #endregion
 }

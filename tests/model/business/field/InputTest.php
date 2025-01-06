@@ -23,6 +23,7 @@ namespace tests\ramp\model\business\field;
 
 require_once '/usr/share/php/tests/ramp/model/business/field/FieldTest.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+// require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
 
 use ramp\core\RAMPObject;
@@ -368,12 +369,32 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
 
   #region New Specialist Tests
   /**
-   * TODO:mrenyard: Add the other attributes (pattern, maxlength, min, max. hint, placeholder).
-   *
-  public function testInputAttributeAccess()
+   * Collection of assertions relateing to common set of input element attribute API.
+   * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
+   * - assert expected 'attribute value' expected defaults for data type, test scenarios, or thet provided by mock rules in that sequance.
+   * @see \ramp\model\business\validation\ValidationRule::hint
+   * @see \ramp\model\business\validation\ValidationRule::inputType
+   * @see \ramp\model\business\validation\ValidationRule::placeholder
+   * @see \ramp\model\business\validation\ValidationRule::minlength
+   * @see \ramp\model\business\validation\ValidationRule::maxlength
+   * @see \ramp\model\business\validation\ValidationRule::min
+   * @see \ramp\model\business\validation\ValidationRule::max
+   * @see \ramp\model\business\validation\ValidationRule::step
+   */
+  public function testExpectedAttributeValues()
   {
-    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject->title);
-    // $this->assertEquals('Expanded description of expected field content.', (string)$this->testObject->title);
-  }*/
+    $this->assertEquals(
+      $this->record->hint1 . ' ' . $this->record->hint2 . $this->record->maxlength,
+      $this->testObject->hint
+    );
+    $this->assertEquals('text', $this->testObject->inputType);
+    $this->assertEquals('e.g. Some Text', $this->testObject->placeholder);
+    $this->assertNull($this->testObject->minlength);
+    $this->assertEquals($this->record->maxlength, $this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
+  }
   #endregion
 }

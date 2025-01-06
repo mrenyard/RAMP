@@ -18,41 +18,36 @@
  * @package RAMP
  * @version 0.0.9;
  */
-namespace ramp\model\business\validation;
+namespace ramp\model\business\validation\specialist;
 
 use ramp\core\Str;
+use ramp\model\business\validation\WebAddressURL;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Light HTML validation list of allowed tags:
- *  - block: p, h2, h3, h4, ol, ul, li
- *  - inline: strong, em, s, sup, sub
- *  - link: <a href="[safe-web-address]">text</a>).
+ * Validates any and all href links within provided string as safe.
+ * - link: &lt;a href="[safe-web-address]"&gt;text&lt;/a&gt;
  */
-final class HTMLight extends ValidationRule
+class CheckSafeHREFs extends SpecialistValidationRule
 {
-  private static $inputType;
+  private WebAddressURL $urlValidator;
 
   /**
-   * Constructor for HexidecimalColorCode validation.
-   * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
+   * Constructor for validation checking the saftey of 'href=' links within provided text.
+   * ```php
+   * $myRule = new validation\specialist\CheckSafeHREFs(Str::set(' safe links,'));
+   * ```
+   * @param Str $errorHint Format hint to be displayed on failing test.
+   * @param ?WebAddressURL $urlValidator Optionally provide specific with NON default configuration.
    */
-  public function __construct(Str $errorHint, array $tags)
+  public function __construct(Str $errorHint, ?WebAddressURL $urlValidator = NULL)
   {
-    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea html-editor'); }
+    $this->urlValidator = ($urlValidator) ? $urlValidator : new WebAddressURL(Str::_EMPTY());
     parent::__construct($errorHint);
   }
 
   /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_inputType() : Str
-  {
-    return SELF::$inputType;
-  }
-
-  /**
-   * Asserts that $value conforms to safe (allowed) html. 
+   * Asserts that $value conforms to safe (allowed) href. 
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
@@ -60,11 +55,11 @@ final class HTMLight extends ValidationRule
   protected function test($value) : void
   {
     $hrefMatches = array();
-    if (preg_match('/(<a href="*">*</a>)/', $value, $hrefMatches)) {
-      print_r('Textbox has ' . count($hrefMatches) . ' link/s');
+    if (preg_match_all('/href="([^"]*)"/', $value, $hrefMatches)) {
+      foreach ($hrefMatches[1] as $url) {
+        $this->urlValidator->process($url);
+      }
     }
-    if (preg_match('(?:<a href="(?:(https://[a-z0-9-_\.]|wwww.|)"<[a-z]\s*>', $value)) { return; }
-
-    throw new FailedValidationException();
+    return;
   }
 }

@@ -62,6 +62,7 @@ class WebRoot extends View
     $this->datalists = new Templated(RootView::getInstance(), Str::set('empty'));
   }
 
+  #[\Override]
   protected function get_children() : void
   {
     $this->dialog->render();
@@ -100,6 +101,9 @@ class WebRoot extends View
 
   public function clearModal() { $this->modal = NULL; }
 
+  #[\Override]
   public function render() : void { $this->body->render(); }
+
+  #[\Override]
   public function __clone() { throw new \BadMethodCallException('Cloning is not allowed'); }
 }

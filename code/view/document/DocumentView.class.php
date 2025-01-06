@@ -111,6 +111,7 @@ abstract class DocumentView extends ComplexView
    * @param mixed $propertyValue The value to set on requested property (handled internally)
    * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
+  #[\Override]
   final public function __set($propertyName, $propertyValue) : void
   {
     try {
@@ -145,6 +146,7 @@ abstract class DocumentView extends ComplexView
    * @return mixed The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
+  #[\Override]
   final public function __get($propertyName)
   {
     if ($propertyName == 'id' && $this->hasModel) {

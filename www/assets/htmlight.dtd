@@ -1,0 +1,72 @@
+<!-- Usage:
+<!DOCTYPE HTMLight PUBLIC "-//RAMP//DTD HTMLight//EN"
+  "https://rampapp.info/assets/htmlight.dtd">
+<htmlight>
+  ...
+</htmlight>
+-->
+<!ENTITY % block " p | h2 | h3 | h4 | h5 | h6 | ul | ol | blockquote | pre | figure ">
+<!ENTITY % inline " #PCDATA | a | em | strong | s | q | sup | sub | abbr | code | kbd | samp | cite ">
+<!ENTITY % flow " %inline; | %block; ">
+
+<!ENTITY % progLang "html|htmlight|css|js|json|php|php-class|php-tpl|sql|ramp-urn">
+
+<!ELEMENT htmlight (%block;)+>
+
+<!ELEMENT p (%inline;)*>
+<!ELEMENT h2 (%inline;)*>
+<!ELEMENT h3 (%inline;)*>
+<!ELEMENT h4 (%inline;)*>
+<!ELEMENT h5 (%inline;)*>
+<!ELEMENT h6 (%inline;)*>
+<!ELEMENT ul (li)+>
+<!ELEMENT ol (li)+>
+
+<!ELEMENT footer (%flow;)*>
+
+<!ELEMENT blockquote (#PCDATA | %block; | footer)*>
+<!ATTLIST blockquote
+  cite CDATA #IMPLIED
+  >
+
+<!ELEMENT pre (code|kbd|samp)>
+
+<!ELEMENT figure EMPTY>
+<!ATTLIST figure
+  data-mid CDATA #REQUIRED
+  >
+
+<!ELEMENT li (%flow;)*>
+
+<!-- ELEMENT table (caption,tr+,col*,colgroup*,thead*,tbody*) -->
+
+<!ELEMENT a (%inline;)*>
+<!ATTLIST a
+  href CDATA #REQUIRED
+  title CDATA #IMPLIED
+  >
+
+<!ELEMENT em (%inline;)*>
+<!ELEMENT strong (%inline;)*>
+<!ELEMENT s (%inline;)*>
+<!ELEMENT q (%inline;)*>
+<!ATTLIST q
+  cite CDATA #IMPLIED
+  >
+
+<!ELEMENT sup (%inline;)*>
+<!ELEMENT sub (%inline;)*>
+
+<!ELEMENT abbr (%inline;)*>
+<!ATTLIST abbr
+  title CDATA #REQUIRED
+  >
+
+<!ELEMENT code (#PCDATA)>
+<!ATTLIST code
+  data-lang (%progLang;) #IMPLIED
+  >
+
+<!ELEMENT kbd (#PCDATA)>
+<!ELEMENT samp (#PCDATA)>
+<!ELEMENT cite (%inline;)*>

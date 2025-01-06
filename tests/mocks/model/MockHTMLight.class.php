@@ -1,6 +1,7 @@
 <?php
 /**
- * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ * Testing - RAMP - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,20 +16,29 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.test
  * @version 0.0.9;
  */
-namespace ramp;
+namespace tests\ramp\mocks\model;
 
-require_once('load.ini.php');
-if (isset($_GET['scratch'])) { $GLOBALS["cssScratch"] = $_GET['scratch']; unset($_GET['scratch']); }
+use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\validation\specialist\HTMLight;
 
-$document = view\WebRoot::getInstance();
-$document->type = view\PageType::CONTENT;
-new view\document\Templated($document, core\Str::set('empty'));
-
-// $modal = $document->setModal('modal404');
-// $modal->heading = core\Str::set('404 NOT FOUND!');
-// new view\document\Templated($modal, core\Str::set('empty'));
-
-$document->render();
+/**
+ * Concreate implementation of \ramp\validation\model\business\ValidationRule for testing against.
+ */
+class MockHTMLight extends HTMLight
+{
+  /**
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
+   */
+  protected function test($value) : void
+  {
+    MockValidationRule::$testCallCount++;
+    parent::test($value);
+  }
+}

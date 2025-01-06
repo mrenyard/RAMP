@@ -23,34 +23,10 @@ namespace tests\ramp\model\business;
 
 require_once '/usr/share/php/tests/ramp/model/business/RecordComponentTest.php';
 
-// require_once '/usr/share/php/ramp/SETTING.class.php';
-// require_once '/usr/share/php/ramp/condition/iEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/Environment.class.php';
-// require_once '/usr/share/php/ramp/condition/PHPEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/SQLEnvironment.class.php';
 require_once '/usr/share/php/ramp/condition/URNQueryEnvironment.class.php';
-// require_once '/usr/share/php/ramp/condition/Operator.class.php';
-// require_once '/usr/share/php/ramp/condition/FilterCondition.class.php';
-// require_once '/usr/share/php/ramp/condition/Filter.class.php';
-// require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataWriteException.class.php';
-// require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
-// require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
-// require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
-// require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
-// require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
-// require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
-// require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
-// require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
 require_once '/usr/share/php/ramp/model/business/PrimaryKey.class.php';
-
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockInput.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
-// require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -71,6 +47,7 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     \ramp\http\Request::reset();
     $_GET = array();
@@ -85,7 +62,9 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     $this->record = new MockRecord($this->dataObject);
     // name?
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {  return $this->record->primaryKey; }
+  #[\Override]
   protected function postSetup() : void { $this->expectedChildCountNew = 3; }
   #endregion
 
@@ -102,6 +81,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\PrimaryKey
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -111,6 +91,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   #region Sub model templates model setup
   protected function buildConstructorWithChildren() : BusinessModel { return $this->getTestObject(); }
 
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 3;
@@ -121,6 +102,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     ));
     $this->childErrorIndexes = array(1);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
@@ -138,6 +120,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\buiness\Key::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -148,6 +131,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\buiness\Key::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -159,6 +143,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\buiness\Key::__set()
    * @see \ramp\model\buiness\Key::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -169,6 +154,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\model\buiness\Key::__toString()} returns string 'class name'
    * @see \ramp\model\buiness\Key::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -194,6 +180,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::hasErrors()
    * @see \ramp\model\business\Key::getErrors()
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -204,6 +191,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Key::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -214,6 +202,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Key::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -224,6 +213,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Key::children
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -234,6 +224,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\Key::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -245,6 +236,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    *   and expected associated record and unique to 'Key' propertyName.
    * @see \ramp\model\business\Key::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $MinAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException(
@@ -274,6 +266,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::offsetSet()
    * @see \ramp\model\business\Key::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockField(Str::set('KeyA'), $this->record, $this->record->title));
@@ -300,6 +293,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::offsetExists()
    * @see \ramp\model\business\Key::count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -313,6 +307,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::validate()
    * @see \ramp\model\business\Key::hasErrors()
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest= TRUE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -328,6 +323,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\Key::getErrors()
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     parent::testErrorReportingPropagation($message);
@@ -343,6 +339,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Key::record
    * @see \ramp\model\business\Key::parentProppertyName
    */
+  #[\Override]
   public function testStateChangesRecordComponent(string $name = NULL) : void
   {
     $this->assertSame('mock-record:new:primary-key', (string)$this->testObject->id);
@@ -371,6 +368,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue() : void
   {
     $this->assertSame($this->record->getPropertyValue('primaryKey'), $this->testObject->value);
@@ -381,6 +379,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\Key::record
    */
+  #[\Override]
   public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
@@ -391,6 +390,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\Key::propertyName
    */
+  #[\Override]
   public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();

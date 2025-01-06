@@ -85,6 +85,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
   private $recordName;
 
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     SETTING::$DEV_MODE = TRUE;
     $DIR = '/usr/share/php/tests/ramp/mocks/model';
@@ -97,10 +98,12 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
     $this->recordFullName = SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE . '\\' . $recordName;
     $this->recordName = Str::set($recordName);
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject {
     $MODEL_MANAGER = SETTING::$RAMP_BUSINESS_MODEL_MANAGER;
     return $MODEL_MANAGER::getInstance();
   }
+  #[\Override]
   protected function postSetup() : void {  \ChromePhp::clear(); }
   #endregion
 
@@ -114,6 +117,7 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    *   - with message *Cloning is not allowed*
    * @see \ramp\model\business\SQLBusinessModelManager
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -132,7 +136,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
-   *
+   */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -142,7 +147,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Bad property (name) NOT accessable on \ramp\model\Model::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
-   *
+   */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -157,7 +163,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * ```
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
-   *
+   */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -167,13 +174,15 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * Correct return of ramp\model\Model::__toString().
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
-   *
+   */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
-  }*/
+  }
   #endregion
 
+  #region New Specialist Tests
   /**
    * Retrieve 'new' Record from SQL data store where provided iBusinessModelDefinition::$recordKey equals 'new'.
    * - assert no SQL statement logged with \ChromePhp (Logger) as is 'new'.
@@ -671,4 +680,5 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
     }
     $this->fail('An expected \PDOException has NOT been raised.');
   }
+  #endregion
 }

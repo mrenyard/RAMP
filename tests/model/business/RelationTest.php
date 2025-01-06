@@ -66,6 +66,7 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class RelationTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
@@ -75,7 +76,9 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->record = new MockRecordMockRelation($this->dataObject);
     $this->name = $this->record->relationAlphaName;
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->relationAlpha; }
+  #[\Override]
   protected function postSetup() : void { $this->expectedChildCountNew = 0; }
   #endregion
 
@@ -92,6 +95,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \ramp\model\business\Relation}
    * @see \ramp\model\business\Relation
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -99,6 +103,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
   
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->postData = new PostData();
@@ -109,6 +114,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
     $this->expectedChildCountExisting = 3;
     $this->childErrorIndexes = array(1);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
@@ -127,6 +133,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property.
    * @see \ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -137,6 +144,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -152,6 +160,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -162,6 +171,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\model\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -187,6 +197,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -197,6 +208,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -207,6 +219,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -216,6 +229,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -226,6 +240,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children.
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -236,6 +251,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\BusinessModel::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $MinAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException('Relatable', new MockBusinessModel, 'Adding properties through offsetSet BLOKED!');
@@ -250,10 +266,12 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset($o);
   }
+  #[\Override]
   protected function offsetSet(BusinessModel $o, int $i)
   {
     $this->expectException(\InvalidArgumentException::class);
@@ -273,6 +291,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -287,6 +306,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -302,31 +322,11 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevant sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     parent::testErrorReportingPropagation($message);
   }
-
-  /**
-   * Set 'parent' NOT accessable.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'.
-   * @see \ramp\model\business\RecordComponent::$parent
-   */
-  public function testSetParentRecordPropertyNotSetException() : void
-  {
-    parent::testSetParentRecordPropertyNotSetException();
-  }
-
-  /**
-   * Set 'name' NOT accessable.
-   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
-   * @see \ramp\model\business\RecordComponent::$name
-   */
-  public function testSetParentPropertyNamePropertyNotSetException() : void
-  {
-    parent::testSetParentPropertyNamePropertyNotSetException();
-  }
-  #endregion
 
   /**
    * Hold reference back to associated 'parent' Record, property 'name' and format for id.
@@ -336,6 +336,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\RecordComponent::$parent
    * @see \ramp\model\business\RecordComponent::$name
    */
+  #[\Override]
   public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
@@ -347,11 +348,36 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue(string $expectedValue = '') : void
   {
     $this->assertEquals($expectedValue, $this->testObject->value);
   }
 
+  /**
+   * Set 'parent' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'.
+   * @see \ramp\model\business\RecordComponent::$parent
+   */
+  #[\Override]
+  public function testSetParentRecordPropertyNotSetException() : void
+  {
+    parent::testSetParentRecordPropertyNotSetException();
+  }
+
+  /**
+   * Set 'name' NOT accessable.
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
+   * @see \ramp\model\business\RecordComponent::$name
+   */
+  #[\Override]
+  public function testSetParentPropertyNamePropertyNotSetException() : void
+  {
+    parent::testSetParentPropertyNamePropertyNotSetException();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Check assigned protected propery $manager holds referance to expected BusinessModelManager.
    * - assert protected property $manager referances same object. 
@@ -393,4 +419,5 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   {
     $this->assertTrue(TRUE);
   }
+  #endregion
 }

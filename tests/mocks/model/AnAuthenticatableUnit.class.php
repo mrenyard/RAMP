@@ -27,7 +27,7 @@ use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\field\Input;
 use ramp\model\business\validation\dbtype\VarChar;
-use ramp\model\business\validation\Alphanumeric;
+use ramp\model\business\validation\Alphabetic;
 use ramp\model\business\validation\LowercaseAlphanumeric;
 
 /**
@@ -66,7 +66,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
         Str::set('The mostly hereditary portion of a persons name that indicates family, in wester culture often refered to as lastname or surname.'),
         new VarChar( Str::set('e.g. Smith'),
           Str::set('string with a maximum character length of '),
-          50, new Alphanumeric(
+          50, new Alphabetic(
             Str::set('numbered, lowercase and uppercase lettered')
           )
         )
@@ -90,7 +90,7 @@ class AnAuthenticatableUnit extends AuthenticatableUnit
         Str::set('The name by which you are refered by, in western culture usually your first name.'),
         new VarChar( Str::set('e.g. Jane'),
           Str::set('string with a maximum character length of '),
-          150, new Alphanumeric(
+          150, new Alphabetic(
             Str::set('numbered, lowercase and uppercase lettered')
           )
         )

@@ -66,7 +66,8 @@ abstract class ComplexView extends ChildView
    * @return array|string|int|float|bool|NULL $value The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
-  public function __get($propertyName)
+  #[\Override]
+   public function __get($propertyName)
   {
     if ($propertyName == 'isRequired' && $this->model !== NULL && $this->model instanceof \ramp\model\business\field\Field) {
       return ($this->model->isRequired);
@@ -141,8 +142,8 @@ abstract class ComplexView extends ChildView
   /**
    * Render relevant output.
    * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
-   */
-  abstract public function render() : void;
+   *
+  abstract public function render() : void;*/
 
   /**
    * Defines amendments post copy, cloning.
@@ -150,6 +151,7 @@ abstract class ComplexView extends ChildView
    *  - unset associated {@see \ramp\model\Model}
    *  - copy child views
    */
+  #[\Override]
   public function __clone()
   {
     $this->model = NULL;

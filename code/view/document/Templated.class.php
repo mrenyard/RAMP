@@ -118,6 +118,7 @@ class Templated extends DocumentView
    * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
+  #[\Override]
   public function render() : void
   {
     if (SETTING::$DEV_MODE && ((string)$this->templateType == 'html') && (!strrpos($this->template, 'body.tpl.php'))) {

@@ -49,6 +49,7 @@ final class Email extends Templated
    * Combining data {@see \ramp\model\business\BusinessModel} and {@see \ramp\model\document\DocumentModel}
    * with defined presentation as defined in referenced template file (.tpl.php).
    */
+  #[\Override]
   final public function render() : void
   {
     // catch the rendered output so we can email it

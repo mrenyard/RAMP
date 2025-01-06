@@ -38,6 +38,7 @@ use tests\ramp\mocks\model\MockModel;
 class ModelTest extends \tests\ramp\core\ObjectTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockModel(); }
   #endregion
 
@@ -47,6 +48,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert is instance of {@see \ramp\model\Model}
    * @see \ramp\model\Model
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -59,6 +61,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -69,6 +72,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -84,6 +88,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -94,6 +99,7 @@ class ModelTest extends \tests\ramp\core\ObjectTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();

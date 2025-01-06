@@ -23,46 +23,50 @@ namespace tests\ramp\model\business\validation\specialist;
 
 require_once '/usr/share/php/tests/ramp/model/business/validation/specialist/SpecialistValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/WebAddressURL.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/CheckSafeHREFs.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockServerSideEmail.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockCheckSafeHREFs.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
-use tests\ramp\mocks\model\MockServerSideEmail;
+use tests\ramp\mocks\model\MockCheckSafeHREFs;
 
 /**
- * Collection of tests for \ramp\model\business\validation\specialist\ServerSideEmail.
+ * Collection of tests for \ramp\model\business\validation\specialist\CheckSafeHREFs.
  *
  * COLLABORATORS
- * - {@see \tests\ramp\mocks\model\MockServerSideEmail}
+ * - {@see \tests\ramp\mocks\model\MockCheckSafeHREFs}
  */
-class ServerSideEmailTest extends \tests\ramp\model\business\validation\specialist\SpecialistValidationRuleTest
+class CheckSafeHREFsTest extends \tests\ramp\model\business\validation\specialist\SpecialistValidationRuleTest
 {
   #region Setup
   #[\Override]
-  protected function preSetup() : void {  }
+  protected function preSetup() : void { 
+    $this->hint1 = Str::set('error hint');
+  }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockServerSideEmail();
+    return new MockCheckSafeHREFs($this->hint1);
   }
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\validation\specialist\ServerSideEmail.
+   * Collection of assertions for \ramp\model\business\validation\specialist\CheckSafeHREFs.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\specialist\SpecialistValidationRule}
-   * - assert is instance of {@see \ramp\model\business\validation\specialist\ServerSideEmail}
-   * @see \ramp\model\business\validation\specialist\ServerSideEmail
+   * - assert is instance of {@see \ramp\model\business\validation\specialist\CheckSafeHREFs}
+   * @see \ramp\model\business\validation\specialist\CheckSafeHREFs
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\specialist\ServerSideEmail', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\specialist\CheckSafeHREFs', $this->testObject);
   }
 
   #region Inherited Tests
@@ -131,8 +135,8 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertSame(Str::_EMPTY(), $this->testObject->hint);
-    $this->assertEquals('email', (string)$this->testObject->inputType);
+    $this->assertEquals($this->hint1, $this->testObject->hint);
+    $this->assertEquals('text', (string)$this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
@@ -143,16 +147,26 @@ class ServerSideEmailTest extends \tests\ramp\model\business\validation\speciali
   }
 
   /**
-   * Collection of assertions for ramp\model\business\validation\specialist\ServerSideEmail::process() and test().
+   * Collection of assertions for ramp\model\business\validation\specialist\CheckSafeHREFs::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of successful tests.
    * - assert {@see ramp\model\business\validation\FailedValidationException} bubbles up when thrown at given test (failPoint).
-   * @see ramp\model\business\validation\specialist\ServerSideEmail::test()
-   * @see ramp\model\business\validation\specialist\ServerSideEmail::process()
+   * @see ramp\model\business\validation\specialist\CheckSafeHREFs::test()
+   * @see ramp\model\business\validation\specialist\CheckSafeHREFs::process()
    */
   #[\Override]
   public function testProcess(
-    array $badValues = ['not.email.address'], ?array $goodValues = ['a.person@gmail.com'], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    array $badValues = [
+      'click <a href="javascript:action">here</a>! ',
+      'Bad <a href="<?=$myVar; >">injected php</a>'
+    ],
+    ?array $goodValues = [
+      '<a href="https://www.bbc.co.uk/news">BBC News</a> has the latest. ' .
+      '<a href="#person:new:family-name" title="Jump to input field">field</a>! ' .
+      '<a href="https://my.domain.com/person/~/family-name/">My Family Name</a> ' .
+      'Search for <a href="https://www.google.com/search?client=firefox&amp;q=help">help</a> ' .
+      'and <a href="https://domain.com/person/?family-name=renyard&amp;given-name=matt#main">My Family Name</a>'
+    ],
+    int $failPoint = 1, int $ruleCount = 1, $failMessage = '$value failed to match provided regex!'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

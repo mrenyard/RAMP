@@ -43,8 +43,11 @@ use tests\ramp\mocks\view\MockViewC;
 class ChildViewTest extends \tests\ramp\view\ViewTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void { RootView::reset(); }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return new MockChildView(RootView::getInstance()); }
+  #[\Override]
   protected function postSetup() : void
   {
     if (!isset($this->subCollection)) {
@@ -63,10 +66,61 @@ class ChildViewTest extends \tests\ramp\view\ViewTest
    * - assert is instance of {@see \ramp\view\ChildView}
    * @see \ramp\view\ChildView
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
     $this->assertInstanceOf('\ramp\view\ChildView', $this->testObject);
+  }
+
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  #[\Override]
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  #[\Override]
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  #[\Override]
+  public function testToString() : void
+  {
+    parent::testToString();
   }
 
   /**
@@ -76,6 +130,7 @@ class ChildViewTest extends \tests\ramp\view\ViewTest
    * @see \ramp\view\View::add()
    * @see \ramp\view\View::children
    */
+  #[\Override]
   public function testSubViewAddition(string $parentRender = 'tests\ramp\mocks\view\MockChildView ') : void
   {
     $this->testObject->viewOnlyTesting = TRUE;
@@ -87,8 +142,10 @@ class ChildViewTest extends \tests\ramp\view\ViewTest
    * - assert cloned View without associated model is equal to the original
    * @see \ramp\view\View::__clone()
    */
+  #[\Override]
   public function testClone() : void
   {
     parent::testClone();
   }
+  #endregion
 }

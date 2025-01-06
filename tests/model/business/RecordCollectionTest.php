@@ -64,6 +64,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert is instance of {@see \ramp\model\business\RecordCollection}
    * @see \ramp\model\business\RecordCollection
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -71,6 +72,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->testObject->add(new MockMinRecord());
@@ -82,6 +84,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
     $this->postData = new PostData();
     $this->childErrorIndexes = array(1);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
@@ -101,6 +104,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -111,6 +115,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -126,6 +131,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -136,6 +142,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\model\RAMPObject::__toString()} returns string 'class name'
    * @see \ramp\core\RAMPObject::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -161,6 +168,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -171,6 +179,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -181,6 +190,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -191,6 +201,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -201,6 +212,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children.
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -212,6 +224,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\BusinessModel::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException('ramp\model\business\Record', $objectOutOfScope, $errorMessage);
@@ -226,6 +239,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new MockMinRecord());
@@ -243,6 +257,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -257,6 +272,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -272,6 +288,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     parent::testErrorReportingPropagation($message);

@@ -21,10 +21,9 @@
  */
 namespace tests\ramp\http;
 
+require_once '/usr/share/php/tests/ramp/core/ObjectTest.php';
+
 require_once '/usr/share/php/ramp/SETTING.class.php';
-require_once '/usr/share/php/ramp/core/PropertyNotSetException.class.php';
-require_once '/usr/share/php/ramp/core/BadPropertyCallException.class.php';
-require_once '/usr/share/php/ramp/core/RAMPObject.class.php';
 require_once '/usr/share/php/ramp/core/iList.class.php';
 require_once '/usr/share/php/ramp/core/oList.class.php';
 require_once '/usr/share/php/ramp/core/iCollection.class.php';
@@ -46,7 +45,9 @@ require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponent.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
-require_once '/usr/share/php/ramp/model/business/validation/Alphanumeric.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/SpecialistValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/specialist/ServerSideEmail.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/Alphabetic.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/LowercaseAlphanumeric.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/RegexEmailAddress.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
@@ -102,7 +103,7 @@ use ramp\model\business\AnAuthenticatableUnit;
 /**
  * Collection of tests for ramp\http\Session.
  */
-class SessionTest extends \PHPUnit\Framework\TestCase
+class SessionTest extends \tests\ramp\core\ObjectTest
 {
   public static $ref;
 
@@ -116,16 +117,17 @@ class SessionTest extends \PHPUnit\Framework\TestCase
    */
   public static $unencryptedPassword;
 
+  #region Setup
   /**
-   * Set-up.
+   * preSetup.
    * - Add values to SETTINGs for our simulated test environment
    * - Set test varibles for sessionLoginAccountEmail and unencryptedPassword
    * - assert throws \BadMethodCallException on calling static function
    *  Seesion::authorizedAs() prior to Seesion::getInstance().
    * - Calls Seesion::getInstance() if NOT already defined prior to test.
    */
-  public function setUp() : void
-  {
+  #[\Override]
+  protected function preSetup() : void {
     HttpBusinessModelManager::reset();
     SETTING::$TEST_ON = TRUE;
     SETTING::$TEST_RESET_SESSION = FALSE;
@@ -157,32 +159,73 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     }
     SETTING::$TEST_RESET_SESSION = FALSE;
   }
+  #[\Override]
+  protected function getTestObject() : RAMPObject { return Session::getInstance(); }
+  #[\Override]
+  protected function postSetup() : void { }
+  #endregion
 
   /**
-   * Collection of assertions for \ramp\http\Session::getInstance().
-   * - assert is instance of {@see \ramp\core\RAMPObject}
+   * Collection of assertions for ramp\http\Session::__construct().
+   * - assert is instance of {@see \ramp\core\Object}
    * - assert is instance of {@see \ramp\http\Session}
-   * - assert is same instance on every call (Singleton)
-   * - assert cannot be cloned, throws \BadMethodCallException
-   *   - with message: *'Clone is not allowed'*
-   * @see \ramp\http\Session
+   * @see \ramp\request\http\Session
    */
-  public function testGetInstance()
+  #[\Override]
+  public function testConstruct() : void
   {
-    $testObject = Session::getInstance();
-    $this->assertInstanceOf('\ramp\core\RAMPObject', $testObject);
-    $this->assertInstanceOf('\ramp\http\Session', $testObject);
-    $this->assertSame(Session::getInstance(), $testObject);
-    try {
-      $fail = clone $testObject;
-    } catch (\BadMethodCallException $expected) {
-      $this->AssertSame('Clone is not allowed', $expected->getMessage());
-      unset($fail);
-      return;
-    }
-    $this->fail('An expected \BadMethodCallException has NOT been raised');
+    parent::testConstruct();
+    $this->assertInstanceOf('ramp\http\Session', $this->testObject);
   }
 
+  #region Inherited Tests
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__set()
+   */
+  public function testPropertyNotSetExceptionOn__set() : void
+  {
+    parent::testPropertyNotSetExceptionOn__set();
+  }
+
+  /**
+   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
+   * @see ramp\core\RAMPObject::__get()
+   */
+  public function testBadPropertyCallExceptionOn__get() : void
+  {
+    parent::testBadPropertyCallExceptionOn__get();
+  }
+
+  /**
+   * Check property access through get and set methods.
+   * - assert get returns same as set.
+   * ```php
+   * $value = $object->aProperty
+   * $object->aProperty = $value
+   * ```
+   * @see \ramp\core\RAMPObject::__set()
+   * @see \ramp\core\RAMPObject::__get()
+   */
+  public function testAccessPropertyWith__set__get() : void
+  {
+    parent::testAccessPropertyWith__set__get();
+  }
+
+  /**
+   * Correct return of ramp\core\RAMPObject::__toString().
+   * - assert {@see \ramp\core\RAMPObject::__toString()} returns string 'class name'
+   * @see \ramp\core\RAMPObject::__toString()
+   */
+  public function testToString() : void
+  {
+    parent::testToString();
+  }
+  #endregion
+
+  #region New Specialist Tests
   /**
    * Collection of assertions for \ramp\http\Session::authorizedAs() and for \ramp\http\Session::loginAccount,
    *  with already Authenticated $_SESSION['LoginAccount'].
@@ -206,7 +249,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $sessionLoginAccount = new LoginAccount($dataObject);
     $_SESSION['loginAccount'] = $sessionLoginAccount;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::REGISTERED));
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::USER));
     $this->assertTrue(Session::AuthorizedAs(LoginAccountType::AFFILIATE));
@@ -214,7 +257,7 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::ADMINISTRATOR_MANAGER));
     $this->assertFalse(Session::AuthorizedAs(LoginAccountType::SYSTEM_ADMINISTRATOR));
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
-    $this->assertSame($sessionLoginAccount, $testObject->loginAccount);
+    $this->assertSame($sessionLoginAccount, $this->testObject->loginAccount);
   }
 
   /**
@@ -248,21 +291,21 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION['loginAccount'] = $sessionLoginAccount;
     $_POST = $postArray;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
-    $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED));
+    $this->testObject = Session::getInstance();
+    $this->assertNull($this->testObject->AuthorizeAs(LoginAccountType::REGISTERED));
     $this->assertSame($postArray, $_POST);
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
-    $this->assertNull($testObject->AuthorizeAs(LoginAccountType::USER));
+    $this->assertNull($this->testObject->AuthorizeAs(LoginAccountType::USER));
     $this->assertSame($postArray, $_POST);
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
-    $this->assertNull($testObject->AuthorizeAs(LoginAccountType::AFFILIATE));
+    $this->assertNull($this->testObject->AuthorizeAs(LoginAccountType::AFFILIATE));
     $this->assertSame($postArray, $_POST);
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
-    $this->assertNull($testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR));
+    $this->assertNull($this->testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR));
     $this->assertSame($postArray, $_POST);
     $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
     try {
-      $this->assertFalse($testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER));
+      $this->assertFalse($this->testObject->AuthorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER));
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(2, $expected->getCode());
       $this->assertSame(
@@ -272,12 +315,12 @@ class SessionTest extends \PHPUnit\Framework\TestCase
       $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
       $_POST = array();
       try {
-        $this->assertFalse($testObject->AuthorizeAs(LoginAccountType::SYSTEM_ADMINISTRATOR));
+        $this->assertFalse($this->testObject->AuthorizeAs(LoginAccountType::SYSTEM_ADMINISTRATOR));
       } catch (Unauthorized401Exception $expected) {
         $this->assertSame(1, $expected->getCode());
         $this->assertSame('Unauthenticated or insufficient authority', $expected->getMessage());
         $this->assertSame($_SESSION['loginAccount'], $sessionLoginAccount);
-        $this->assertSame($sessionLoginAccount, $testObject->loginAccount);
+        $this->assertSame($sessionLoginAccount, $this->testObject->loginAccount);
         return;
       }
     }
@@ -297,9 +340,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION = array();
     $_POST = array();
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(1, $expected->getCode());
       $this->assertSame('Unauthenticated or insufficient authority', $expected->getMessage());
@@ -328,9 +371,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION = array();
     $_POST = $postArray;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(2, $expected->getCode());
       $this->assertSame(
@@ -359,9 +402,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_SESSION = array();
     $_POST['login-email'] = 'not.email.address';
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(3, $expected->getCode());
       $this->assertSame('Invalid email format', $expected->getMessage());
@@ -393,9 +436,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = $additionalPostdata;
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(0, $expected->getCode());
       $this->assertSame('SHOULD NEVER REACH HERE!', $expected->getMessage());
@@ -429,9 +472,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = 'unregistered.email@domain.com';
     $_POST['login-password'] = self::$unencryptedPassword;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(4, $expected->getCode());
       $this->assertSame('Account (email) NOT in database', $expected->getMessage());
@@ -466,9 +509,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     $_POST['login-password'] = 'b@dP@ssw0rd';
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::REGISTERED);
+      $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(6, $expected->getCode());
       $this->assertSame('Invalid password or insufficient privileges', $expected->getMessage());
@@ -502,9 +545,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     $_POST['login-password'] = self::$unencryptedPassword;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $testObject->authorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER);
+      $this->testObject->authorizeAs(LoginAccountType::ADMINISTRATOR_MANAGER);
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(6, $expected->getCode());
       $this->assertSame('Invalid password or insufficient privileges', $expected->getMessage());
@@ -537,8 +580,8 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     $_POST['login-password'] = self::$unencryptedPassword;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
-    $testObject->authorizeAs(LoginAccountType::REGISTERED);
+    $this->testObject = Session::getInstance();
+    $this->testObject->authorizeAs(LoginAccountType::REGISTERED);
     $this->assertFalse(isset($_POST['login-email']));
     $this->assertFalse(isset($_POST['login-password']));
     $this->assertSame($postArray, $_POST);
@@ -548,9 +591,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertSame('existing', $_SESSION['loginAccount']->uname->value);
     $this->assertSame('Person', $_SESSION['loginAccount']->familyName->value);
     $this->assertSame('Exist', $_SESSION['loginAccount']->givenName->value);
-    $this->assertSame($_SESSION['loginAccount'], $testObject->loginAccount);
+    $this->assertSame($_SESSION['loginAccount'], $this->testObject->loginAccount);
     $this->assertSame(
-      $testObject->loginAccount->getPropertyValue('encryptedPassword'),
+      $this->testObject->loginAccount->getPropertyValue('encryptedPassword'),
       crypt(self::$unencryptedPassword, SETTING::$SECURITY_PASSWORD_SALT)
     );
   }
@@ -577,9 +620,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = $additionalPostdata;
     $_POST['login-email'] = 'misspell@email.com';
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $this->assertTrue($testObject->AuthorizeAs(LoginAccountType::REGISTERED));
+      $this->assertTrue($this->testObject->AuthorizeAs(LoginAccountType::REGISTERED));
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame(5, $expected->getCode());
       $this->assertSame('New Authenticatable Unit Form: e-mail mismatch', $expected->getMessage());
@@ -615,9 +658,9 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST = $additionalPostdata;
     $_POST['login-email'] = self::$sessionLoginAccountEmail;
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
+    $this->testObject = Session::getInstance();
     try {
-      $this->assertTrue($testObject->AuthorizeAs(LoginAccountType::REGISTERED));
+      $this->assertTrue($this->testObject->AuthorizeAs(LoginAccountType::REGISTERED));
     } catch (Unauthorized401Exception $expected) {
       $this->assertSame('Trying to create new login where one already exists!', $expected->getMessage());
       $this->assertFalse(isset($_POST['login-email']));
@@ -664,18 +707,18 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $_POST += $additionalPostdata;
     $_POST['login-email'] = 'new.person@domain.com';
     SETTING::$TEST_RESET_SESSION = TRUE;
-    $testObject = Session::getInstance();
-    $this->assertNull($testObject->AuthorizeAs(LoginAccountType::REGISTERED));
+    $this->testObject = Session::getInstance();
+    $this->assertNull($this->testObject->AuthorizeAs(LoginAccountType::REGISTERED));
     $this->assertFalse(isset($_POST['login-email']));
     $this->assertFalse(isset($_POST['login-password']));
     $this->assertFalse(isset($_SESSION['post_array']));
     $this->assertTrue(isset($_SESSION['loginAccount']));
-    $this->assertSame($_SESSION['loginAccount'], $testObject->loginAccount);
-    $this->assertTrue($testObject->loginAccount->isValid);
-    $this->assertSame('new.person@domain.com', $testObject->loginAccount->email->value);
-    $this->assertSame('newperson', $testObject->loginAccount->auPK->value);
+    $this->assertSame($_SESSION['loginAccount'], $this->testObject->loginAccount);
+    $this->assertTrue($this->testObject->loginAccount->isValid);
+    $this->assertSame('new.person@domain.com', $this->testObject->loginAccount->email->value);
+    $this->assertSame('newperson', $this->testObject->loginAccount->auPK->value);
     $this->assertSame(
-      crypt((string)$testObject->loginAccount->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
+      crypt((string)$this->testObject->loginAccount->getUnencryptedPassword(), \ramp\SETTING::$SECURITY_PASSWORD_SALT),
       $manager->newLoginData ->encryptedPassword
     );
     $this->assertEquals($_POST, $additionalPostdata);
@@ -683,4 +726,18 @@ class SessionTest extends \PHPUnit\Framework\TestCase
     $this->assertTrue(isset($manager->updateLog['ramp\model\business\LoginAccount:newperson']));
     unset($_SESSION);
   }
+
+  /**
+   * Cloning of RootView BadMethodCallException.
+   * - assert cannot be cloned, throws \BadMethodCallException
+   *   - with message *Cloning is not allowed*
+   * @see \ramp\view\View::__clone()
+   */
+  public function testClone() : void
+  {
+    $this->expectException(\BadMethodCallException::class);
+    $this->expectExceptionMessage('Cloning is not allowed');
+    $clone = clone $this->testObject;
+  }
+  #endregion
 }

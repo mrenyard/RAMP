@@ -57,6 +57,7 @@ class RecordCollection extends Relatable implements iCollection
    * ```
    * @return \ramp\core\Str Unique identifier for *this*
    */
+  #[\Override]
   final public function get_id() : Str
   {
     return $this->processType((string)$this, TRUE);

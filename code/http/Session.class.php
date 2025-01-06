@@ -304,6 +304,6 @@ final class Session extends RAMPObject
    */
   public function __clone()
   {
-    throw new \BadMethodCallException('Clone is not allowed');
+    throw new \BadMethodCallException('Cloning is not allowed');
   }
 }

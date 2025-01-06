@@ -35,8 +35,9 @@ use ramp\model\business\field\SelectMany;
 use ramp\model\business\RecordCollection;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
-use ramp\model\business\validation\dbtype\Text;
+// use ramp\model\business\validation\dbtype\Text;
 use ramp\model\business\validation\dbtype\Flag;
+use ramp\model\business\validation\dbtype\VarChar;
 use ramp\model\business\validation\Alphanumeric;
 
 /**
@@ -45,14 +46,17 @@ use ramp\model\business\validation\Alphanumeric;
 class MockRecord extends Record
 {
   private $requiered;
+  
   public $validateCount;
   public $hasErrorsCount;
   public $errorsTouchCount;
+
   public $relationAlphaName;
   public $relationBetaName;
   public $relationGammaWithRecordName;
   public $relationGammaWithPropertyName;
   public $selectDescriptionOne;
+
   public $propertyName;
   public $inputName;
   public $flagName;
@@ -62,7 +66,12 @@ class MockRecord extends Record
   public $selectOneName;
   public $selectManyList;
   public $selectManyName;
+
   public $title;
+
+  public $hint1;
+  public $hint2;
+  public $maxlength;
 
   public function __construct(\stdClass $dataObject = null, bool $setAllFieldsRequiered = FALSE)
   {
@@ -72,7 +81,13 @@ class MockRecord extends Record
     $this->relationGammaWithRecordName = Str::set('MockMinRecord');
     $this->relationGammaWithPropertyName = Str::set('relationDelta');
     $this->selectDescriptionOne = Str::set('DESCRIPTION ONE');
+
     $this->title = Str::set('Expanded description of expected field content.');
+
+    $this->hint1 = Str::set('format hint for MockValidationRule!');
+    $this->hint2 = Str::set('with a character length of');
+    $this->maxlength = 10;
+
     parent::__construct($dataObject);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
@@ -131,10 +146,11 @@ class MockRecord extends Record
       $this->inputName = $this->registeredName;
       $this->initiate(new MockInput(
         $this->registeredName, $this, $this->title,
-        new Text(
-          Str::set('Error MESSAGE BadValue Submited!'), NULL,
+        new VarChar(
+          Str::set('e.g. Some Text'),
+          $this->hint2, $this->maxlength,
           new MockValidationRule(
-            Str::set('Error MESSAGE BadValue Submited!')
+            $this->hint1
           ))
       ));
     }
@@ -160,7 +176,7 @@ class MockRecord extends Record
       $this->selectFromList->add(new MockOption(1, $this->selectDescriptionOne));
       $this->selectFromList->add(new MockOption(2, Str::set('DESCRIPTION TWO')));  
       $this->initiate(new MockSelectFrom($this->registeredName, $this,
-        Str::set('Expanded description of expected field content.'),
+        $this->title,
         $this->selectFromList
       ));
     }
@@ -176,7 +192,7 @@ class MockRecord extends Record
       $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->initiate(new SelectOne($this->registeredName, $this,
-        Str::set('Expanded description of expected field content.'),
+        $this->title,
         $this->selectOneList
       ));
     }
@@ -193,7 +209,7 @@ class MockRecord extends Record
       $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
       $this->initiate(new SelectMany($this->registeredName, $this,
-        Str::set('Expanded description of expected field content.'),
+        $this->title, //Str::set('Expanded description of expected field content.'),
         $this->selectManyList
       ));
     }

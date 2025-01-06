@@ -21,18 +21,18 @@
  */
 namespace tests\ramp\model\business\validation;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/ValidationRuleTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/RegexValidationRuleTest.php';
 
-require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/WebAddressURL.class.php';
 
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRegexValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockWebAddressURL.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
-use ramp\model\business\validation\RegexValidationRule;
+use ramp\model\business\validation\WebAddressURL;
 
-use tests\ramp\mocks\model\MockRegexValidationRule;
+use tests\ramp\mocks\model\MockWebAddressURL;
 use tests\ramp\mocks\model\PlaceholderValidationRule;
 use tests\ramp\mocks\model\LengthValidationRule;
 use tests\ramp\mocks\model\PatternValidationRule;
@@ -40,60 +40,39 @@ use tests\ramp\mocks\model\MinMaxStepValidationRule;
 use tests\ramp\mocks\model\FailOnBadValidationRule;
 use tests\ramp\mocks\model\MockValidationRule;
 
-
 /**
- * Collection of tests for \ramp\model\business\validation\RegexEmail.
+ * Collection of tests for \ramp\model\business\validation\WebAddressURL.
  */
-class RegexValidationRuleTest extends \tests\ramp\model\business\validation\ValidationRuleTest
+class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->pattern = '[a-zA-Z]*';
-    $this->maxlength = 10;
-    $this->hint6 = Str::set('part six');
-    $this->hint5 = Str::set('part five');
-    $this->hint4 = Str::set('part four');
-    $this->hint3 = Str::set('part three');
-    $this->hint2 = Str::set('part two');
-    $this->hint1 = Str::set('part one');
+    $this->hint1 = Str::set('error hint');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockRegexValidationRule($this->hint6, $this->pattern,
-      new PlaceholderValidationRule($this->hint5,
-        new PatternValidationRule($this->hint4,
-          new LengthValidationRule($this->hint3, $this->maxlength, NULL,
-            new FailOnBadValidationRule($this->hint2,
-              new MinMaxStepValidationRule($this->hint1)
-            )
-          )
-        )
-      )
-      // $this->format
-    );
+    return new MockWebAddressURL($this->hint1);
   }
   #endregion
 
   /**
-   * Collection of assertions for ramp\model\business\validation\RegexEmailAddressl.
+   * Collection of assertions for ramp\validation\WebAddressURL.
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\business\validation\ValidationRule}
    * - assert is instance of {@see \ramp\model\business\validation\RegexValidationRule}
-   * @see \ramp\model\business\validation\RegexEmailAddress
+   * - assert is instance of {@see \ramp\model\business\validation\WebAddressURL}
+   * @see \ramp\model\business\validation\WebAddressURL
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('ramp\model\business\validation\RegexValidationRule', $this->testObject);
+    $this->assertInstanceOf('ramp\model\business\validation\WebAddressURL', $this->testObject);
   }
-
   #region Inherited Tests
+
   /**
    * Bad property (name) NOT accessable on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
@@ -158,19 +137,14 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' .
-      $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
-      (string)$this->testObject->hint
-    );
-    $this->assertEquals('text', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertEquals($this->maxlength, $this->testObject->maxlength);
-    $this->assertEquals($this->pattern, (string)$this->testObject->pattern);
-    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
-    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
-    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
+    $this->assertEquals($this->hint1, $this->testObject->hint);
+    $this->assertEquals('text', $this->testObject->inputType);
+    $this->assertNull($this->testObject->placeholder);
+    $this->assertNull($this->testObject->maxlength);
+    $this->assertNull($this->testObject->pattern);
+    $this->assertNull($this->testObject->min);
+    $this->assertNull($this->testObject->max);
+    $this->assertNull($this->testObject->step);
   }
 
   /**
@@ -182,11 +156,81 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
    */
   #[\Override]
   public function testProcess(
-    array $badValues = ['bad.regex'], ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 6,
+    array $badValues = [
+      'javascript:action',
+      'https://plex.domain.com:32400/web/index.html',
+      'https://my.domain.com/<?=$myVar; ?>',
+      'https://my.domain.com/$myvar'
+    ], ?array $goodValues = [
+      'https://www.bbc.co.uk/news',
+      '#person:new:family-name',
+      'https://my.domain.com/person/~/family-name/',
+      'https://www.google.com/search?client=firefox',
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+    ],
+    int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
   ) : void
   {
-    $goodValue = (isset($this->format)) ? [$this->format] : $goodValues;
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
+  }
+  #endregion
+
+  #region New Specialist Tests
+
+  /**
+   * Additional assertions for NOT allowing InpageLinks variant of ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\WebAddressURL
+   * @see \ramp\validation\WebAddressURL::test()
+   * @see \ramp\validation\WebAddressURL::process()
+   */
+  public function testNotAllowInpageLinksProcess(
+    array $badValues = [
+      'javascript:action',
+      '#person:new:family-name',
+      '<?=$myVar; >"'
+    ], ?array $goodValues = [
+      'https://www.bbc.co.uk/news',
+      'https://my.domain.com/person/~/family-name/',
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://www.google.com/search?client=firefox&amp;q=help&amp;time=bst',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+    ],
+    int $failPoint = 1, int $ruleCount = 1,
+    $failMessage = '$value failed to match provided regex!'
+  ) : void
+  {
+    $this->testObject = new MockWebAddressURL($this->hint1, FALSE, FALSE);
+    parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
+  }
+
+  /**
+   * Additional assertions for $allowPorts variant of ramp\validation\ValidationRule::process() and test().
+   * - assert process touches each test method of each sub rule throughout any give set of tests
+   * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
+   * @see \ramp\validation\WebAddressURL
+   * @see \ramp\validation\WebAddressURL::test()
+   * @see \ramp\validation\WebAddressURL::process()
+   */
+  public function testAllowProtsProcess(
+    array $badValues = [
+      'javascript:action',
+      '<?=$myVar; ?>'
+    ], ?array $goodValues = [
+      'https://www.bbc.co.uk:443/news',
+      '#person:new:family-name',
+      'https://plex.domain.com:32400/web/index.html',
+      'https://www.google.com/search?client=firefox&amp;q=help',
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+    ],
+    int $failPoint = 1, int $ruleCount = 1,
+    $failMessage = '$value failed to match provided regex!'
+  ) : void
+  {
+    $this->testObject = new MockWebAddressURL($this->hint1, TRUE);
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion

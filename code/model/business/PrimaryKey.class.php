@@ -60,6 +60,7 @@ final class PrimaryKey extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethosCallException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
+  #[\Override]
   public function offsetSet($offset, $object) : void
   {
     if (
@@ -103,6 +104,7 @@ final class PrimaryKey extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
   final protected function get_value() : ?string
   {
     return ($this->values !== NULL) ?
@@ -122,6 +124,7 @@ final class PrimaryKey extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
   protected function set_isEditable(bool $value) : void
   {
     // Changes nothing
@@ -132,6 +135,7 @@ final class PrimaryKey extends RecordComponent
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    * @throws \ramp\model\business\DataExistingEntryException An entry already exists with this key!
    */
+  #[\Override]
   public function validate(PostData $postdata, $update = TRUE) : void
   {
     if ($this->values !== NULL) { return; } // Once set cannot be changed

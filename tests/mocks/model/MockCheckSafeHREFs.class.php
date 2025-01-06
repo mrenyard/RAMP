@@ -1,6 +1,7 @@
 <?php
 /**
- * RAMP - Rapid web application development environment for building flexible, customisable web systems.
+ * Testing - RAMP - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -15,29 +16,29 @@
  * MA 02110-1301, USA.
  *
  * @author Matt Renyard (renyard.m@gmail.com)
- * @package RAMP
+ * @package RAMP.test
  * @version 0.0.9;
  */
-namespace ramp\view;
+namespace tests\ramp\mocks\model;
 
-use ramp\view\ChildView;
+use ramp\core\Str;
+use ramp\model\business\validation\FailedValidationException;
+use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\validation\specialist\CheckSafeHREFs;
 
 /**
- * Specialist presentation of model as raw object data
- * 
- * {@inheritdoc}
+ * Concreate implementation of \ramp\validation\model\business\ValidationRule for testing against.
  */
-final class Dump extends ChildView
+class MockCheckSafeHREFs extends CheckSafeHREFs
 {
   /**
-   * Render relevant output as raw object data
+   * Runs code defined test against provided value.
+   * @param mixed $value Value to be tested.
+   * @throws FailedValidationException When test fails.
    */
-  #[\Override]
-  public function render() : void
+  protected function test($value) : void
   {
-    echo '<pre>';
-    var_dump($this);
-    echo '</pre>';
-    $this->children;
+    MockValidationRule::$testCallCount++;
+    parent::test($value);
   }
 }

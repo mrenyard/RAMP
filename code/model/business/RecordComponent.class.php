@@ -61,6 +61,7 @@ abstract class RecordComponent extends BusinessModel
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_id() : Str
   {
     return Str::COLON()->prepend(

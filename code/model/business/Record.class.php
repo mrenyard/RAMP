@@ -120,6 +120,7 @@ abstract class Record extends Relatable
   /**
    * @ignore
    */
+  #[\Override]
   final protected function get_id() : Str
   {
     $primaryKeyValue = ($this->primaryKey->values === NULL) ?
@@ -141,6 +142,7 @@ abstract class Record extends Relatable
    * Implementation of \IteratorAggregate method for use with foreach etc.
    * @return \Traversable Iterator to iterate over *this* traversable using foreach etc.
    */
+  #[\Override]
   public function getIterator() : \Traversable
   {
     return ($this->primaryKey->value === NULL)? $this->primaryKey->getIterator() : parent::getIterator();
@@ -149,6 +151,7 @@ abstract class Record extends Relatable
   /**
    * @ignore
    */
+  #[\Override]
   public function get_count() : int
   {
     return ($this->primaryKey->value === NULL)? count($this->primaryKey) : parent::get_count();
@@ -160,6 +163,7 @@ abstract class Record extends Relatable
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
+  #[\Override]
   public function offsetSet($offset, $object) : void
   {
     if (!($object instanceof \ramp\model\business\RecordComponent)) {
@@ -243,6 +247,7 @@ abstract class Record extends Relatable
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
    */
+  #[\Override]
   public function validate(PostData $postdata, $update = TRUE) : void
   {
     // if (!$this->isEditable) {
@@ -256,6 +261,7 @@ abstract class Record extends Relatable
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_hasErrors() : bool
   {
     return ($this->primaryKey->hasErrors)? TRUE : parent::get_hasErrors();
@@ -264,6 +270,7 @@ abstract class Record extends Relatable
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_errors() : StrCollection
   {
     if ($this->primaryKey->hasErrors) {
