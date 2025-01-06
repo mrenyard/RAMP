@@ -329,6 +329,7 @@ final class Str extends RAMPObject
    * Returns a new Str based on 'this' with all occurrences of $search:Str replaced as directed.
    * @param \ramp\core\Str $search Sub string to be search and replaced.
    * @param \ramp\core\Str $replace Replacement value.
+   * @return \ramp\core\Str New Str based on *this* with replacements as directed
    */
   public function replace(Str $search, Str $replace) : Str
   {
@@ -378,7 +379,7 @@ final class Str extends RAMPObject
 
   /**
    * Returns a StrCollection split at the point of designated separator.
-   * @param \ramp\core\StrCollection $separator Separator used to determine points of separation. 
+   * @param \ramp\core\Str $separator Separator used to determine points of separation. 
    */
   public function explode(Str $separator) : StrCollection
   {

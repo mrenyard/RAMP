@@ -59,7 +59,7 @@ use ramp\http\Method;
  * @see https://tools.ietf.org/html/rfc2616 Hypertext Transfer Protocol - HTTP/1.1 (RFC2616)
  * @see https://tools.ietf.org/html/rfc2616#section-9 Method Definitions (RFC2616 Section 9)
  * @see https://www.ietf.org/rfc/rfc2141.txt URN defintion (RFC2141)
- * @see https://www.ietf.org/rfc/rfc2396.txt URI Specification
+ * @see https://www.ietf.org/rfc/rfc2396.txt URI Specification (RFC2396)
  *
  * @property-read bool $expectsFragment Returns whether this request is expecting a document fragment or a complete document.
  * @property-read \ramp\http\Method $method Returns request Method (Verb) (based on HTTP/1.1 specification).
@@ -83,14 +83,18 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   private ?Filter $filter;
   private ?PostData $postData;
 
-  public static function reset() { SELF::$current = NULL; }
+  /**
+   * Clear current request - used almost exclusively by test suite.
+   */
+  public static function reset() : void { SELF::$current = NULL; }
 
   /**
    * Current active HTTP Request based on CURRENT context.
    * PRECONDITIONS
+   * - SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE MUST be set.
    * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and
-   * limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
+   * limits as defined by local business model (RAMP_BUSINESS_MODEL_NAMESPACE)
    */
   public static function current() : Request
   {
@@ -101,6 +105,7 @@ class Request extends RAMPObject implements iBusinessModelDefinition
   /**
    * Interprets HTTP and constructs new Request based on context.
    * PRECONDITIONS
+   * - SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE MUST be set.
    * - SETTING::$RAMP_BUSINESS_MODEL_MANAGER MUST be set.
    * @throws \DomainException When supplied arguments do NOT meet the restrictions and
    * limits as defined by local business model (RAMP_BUESINESS_MODEL_NAMESPACE)
@@ -188,7 +193,11 @@ class Request extends RAMPObject implements iBusinessModelDefinition
 
   /**
    * Returns name of requested Record one or collection.
-   * Can be called directly inline with iBusinessModelDefinition or by using this->recordName;
+   * Can be called directly inline with
+   * {@link classes/ramp-model-business-iBusinessModelDefinition iBusinessModelDefinition} or by using:
+   * ```php
+   * $this->recordName;
+   * ```
    * @return \ramp\core\Str Name of requested Record one or collection.
    */
   #[\Override]
@@ -199,7 +208,11 @@ class Request extends RAMPObject implements iBusinessModelDefinition
 
   /**
    * Returns primary key value of requested ramp\model\business\Record or NULL.
-   * Can be called directly inline with iBusinessModelDefinition or by using this->recordKey;
+   * Can be called directly inline with
+   * {@link classes/ramp-model-business-iBusinessModelDefinition iBusinessModelDefinition} or by using:
+   * ```php
+   * $this->recordKey;
+   * ```
    * @return \ramp\core\Str Primary key for requested Record if any.
    */
   #[\Override]
@@ -216,7 +229,11 @@ class Request extends RAMPObject implements iBusinessModelDefinition
 
   /**
    * Returns name of requested Property of ramp\model\business\Record or NULL.
-   * Can be called directly inline with iBusinessModelDefinition or by using this->propertyName;
+   * Can be called directly inline with
+   * {@link classes/ramp-model-business-iBusinessModelDefinition iBusinessModelDefinition} or by using:
+   * ```php
+   * $this->propertyName;
+   * ```
    * @return \ramp\core\Str Name of requested Property if any.
    */
   #[\Override]
