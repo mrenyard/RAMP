@@ -106,7 +106,8 @@ class Integer extends DbTypeValidation
   #[\Override]
   protected function test($value) : void
   {
-    if (is_int($value) && $value <= $this->max && $value >= $this->min && ($value === 0 || $value % $this->step == 0)) { return; }
-    throw new FailedValidationException();
+    $value = (is_numeric($value)) ? (int)$value : 'NAN';
+    if (is_int($value) && (int)$value <= $this->max && $value >= $this->min && ($value === 0 || $value % $this->step == 0)) { return; }
+    throw new FailedValidationException('Expected an integer within the range ' . $this->min . ' - ' . $this->max);
   }
 }

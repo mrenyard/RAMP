@@ -21,10 +21,9 @@
  */
 namespace tests\ramp\model\business\field;
 
-require_once '/usr/share/php/tests/ramp/model/business/field/FieldTest.php';
-require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockFormatBasedValidationRule.class.php';
+require_once '/usr/share/php/tests/ramp/model/business/field/InputTest.php';
+
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMultipartInput.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -38,48 +37,51 @@ use tests\ramp\mocks\model\MockBusinessModel;
 use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 
 /**
- * Collection of tests for \ramp\model\business\field\Input.
+ * Collection of tests for \ramp\model\business\field\MultipartInput.
  */
-class InputTest extends \tests\ramp\model\business\field\FieldTest
+class MultipartInputTest extends \tests\ramp\model\business\field\InputTest
 {
-  protected string $hint;
-  protected string $inputType;
-  protected ?string $placeHolder;
+  protected string $pattern;
 
   #region Setup
   #[\Override]
-  protected function getTestObject() : RAMPObject { return $this->record->input; }
+  protected function getTestObject() : RAMPObject { return $this->record->multipartInput; }
   #[\Override]
   protected function postSetup() : void {
-    $this->name = $this->record->inputName;
+    $this->name = $this->record->multipartInputName;
     $this->title = $this->record->title;
     $this->expectedChildCountNew = 0;
 
-    $this->hint = $this->record->inputHint1 . ' ' . $this->record->inputHint2 . $this->record->maxlength;
+    $this->format = $this->record->multipartFormat;
+    $this->hint = 
+      $this->record->multipartHint1 . $this->record->db1From . ' to ' . $this->record->db1To . ' followed by ' .
+      $this->record->multipartHint2 . $this->record->db2From . ' to ' . $this->record->db2To . ' ' .
+      $this->record->multipartHint3 . '(' . $this->format . ') ' .
+      'total characters: ' . strlen($this->format);
     $this->inputType = 'text'; // default
-    $this->placeholder = $this->record->placeholder;
   }
   #endregion
 
   /**
-   * Collection of assertions for \ramp\model\business\field\Input::__construct().
+   * Collection of assertions for \ramp\model\business\field\MultipartInput::__construct().
    * - assert is instance of {@see \ramp\core\RAMPObject}
    * - assert is instance of {@see \ramp\model\Model}
    * - assert is instance of {@see \ramp\model\business\BusinessModel}
    * - assert is instance of {@see \ramp\model\business\RecordComponent}
    * - assert is instance of {@see \ramp\model\field\Field}
    * - assert is instance of {@see \ramp\model\field\Input}
+   * - assert is instance of {@see \ramp\model\field\MultipartInput}
    * - assert is instance of {@see \ramp\core\iList}
    * - assert is instance of {@see \IteratorAggregate}
    * - assert is instance of {@see \ArrayAccess}
    * - assert is instance of {@see \Countable}
-   * @see \ramp\model\business\field\Input
+   * @see \ramp\model\business\field\MultipartInput
    */
   #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
-    $this->assertInstanceOf('\ramp\model\business\field\Input', $this->testObject);
+    $this->assertInstanceOf('\ramp\model\business\field\MultipartInput', $this->testObject);
   }
 
   #region Sub model templates model setup
@@ -91,9 +93,7 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
     $this->dataObject->keyC = 'A';
     $this->testObject->parent->updated();
     $this->expectedChildCountExisting = 0;
-    $this->postData = PostData::build(array(
-      'mock-record:a|a|a:input' => 'BadValue'
-    ));
+    // $this->postData = PostData::build(array('mock-record:a|a|a:multipartInput' => 'BADVALUE'));
     $this->childErrorIndexes = array(0);
   }
   #[\Override]
@@ -176,7 +176,15 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   #[\Override]
   public function testInitStateMin() : void
   {
-    parent::testInitStateMin();
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
+    $this->assertSame('input field', (string)$this->testObject->type);
+    $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
+    $i = 0; foreach ($this->testObject as $child) { $i++; }
+    $this->assertSame($this->expectedChildCountNew, $i);
+    $this->assertFalse(isset($this->testObject[$this->expectedChildCountExisting]));
+    $this->assertFalse($this->testObject->hasErrors);
+    $this->assertInstanceOf('\ramp\core\StrCollection', $this->testObject->errors);
+    $this->assertSame(0, $this->testObject->errors->count);
   }
 
   /**
@@ -199,7 +207,6 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
-
   }
 
   /**
@@ -281,9 +288,15 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
   #[\Override]
-  public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
+  public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
   {
+    $this->postData = PostData::build(array('mock-record:a|a|a:multipartInput' => 'BADVALUE'));
     parent::testTouchValidityAndErrorMethods($touchCountTest);
+    // $this->populateSubModelTree();
+    // $this->assertNull($this->testObject->validate($this->postData)); // 1 validation + 1 hasErrors
+    // $this->assertTrue($this->testObject->hasErrors); // +1 hasErrors
+    $this->assertSame(1, $this->testObject->validateCount); // 1
+    $this->assertSame(2, $this->testObject->hasErrorsCount); // 2
   }
 
   /**
@@ -297,9 +310,16 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::$errors
    */
   #[\Override]
-  public function testErrorReportingPropagation($message = 'MockValidationRule has been given the value BadValue') : void
+  public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
-    parent::testErrorReportingPropagation($message);
+    $this->postData = PostData::build(array('mock-record:a|a|a:multipartInput' => 'BADVALUE'));
+    parent::testErrorReportingPropagation('Invalid character length!');
+
+    $this->postData = PostData::build(array('mock-record:a|a|a:multipartInput' => '1900-12'));
+    parent::testErrorReportingPropagation('monthYear Expected an integer within the range 1901 - 2155');
+
+    $this->postData = PostData::build(array('mock-record:a|a|a:multipartInput' => '1901-13'));
+    parent::testErrorReportingPropagation('monthNumber Expected an integer within the range 1 - 12');
   }
 
   /**
@@ -322,9 +342,9 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\Record::getPropertyValue()
    */
   #[\Override]
-  public function testRecordComponentValue() : void
+  public function testRecordComponentValue(string $propertyName = 'multipartInput') : void
   {
-    parent::testRecordComponentValue();
+    parent::testRecordComponentValue($propertyName);
   }
 
   /**
@@ -362,9 +382,36 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\field\Field::$isEditable
    */
   #[\Override]
-  public function testStateChangesField($fieldName = 'input', $defaultValue = NULL, $value = 'VALUE', $newValue = 'NEW_VALUE') : void
+  public function testStateChangesField($fieldName = 'multipartInput', $defaultValue = NULL, $value = '1901-12', $newValue = ['1901','12']) : void
   {
-    parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
+    $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
+    $this->assertSame($this->record->title, $this->testObject->title);
+    $this->assertFalse($this->testObject->isRequired);
+    // isEdiatable always remains TRUE while state is 'new'
+    $this->assertTrue($this->testObject->isEditable);
+    // even after requested change.
+    $this->isEditable = FALSE;
+    $this->assertTrue($this->testObject->isEditable);
+    // Now.. Update associated Record as 'validAtSource'
+    $this->dataObject->keyA = 1;
+    $this->dataObject->keyB = 1;
+    $this->dataObject->keyC = 1;
+    $this->record->updated();
+    $this->assertTrue($this->record->isValid);
+    $this->assertFalse($this->record->isNew);
+    // isEditable still defaults to TRUE
+    $this->assertTrue($this->testObject->isEditable);
+    // but allows state change.
+    $this->testObject->isEditable = FALSE;
+    $this->assertFalse($this->testObject->isEditable);
+    $this->assertSame($defaultValue, $this->testObject->value);
+    $this->dataObject->monthYear = 1901;
+    $this->dataObject->monthNumber = 12;
+    $this->assertSame('1901-12', $this->testObject->value);
+    $this->testObject->isEditable = TRUE; // Reset editable
+    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $newValue)));
+    $this->assertSame('1901-12', $this->testObject->value);
   }
 
   /**
@@ -398,9 +445,7 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
     }
     $this->fail('An expected \ramp\core\PropertyNotSetException has NOT been raised.');
   }*/
-  #endregion
 
-  #region New Specialist Tests
   /**
    * Collection of assertions relateing to common set of input element attribute API.
    * - assert hint equal to the component parts of each rules errorHint value concatenated with spaces between. 
@@ -414,13 +459,14 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\validation\ValidationRule::max
    * @see \ramp\model\business\validation\ValidationRule::step
    */
+  #[\Override]
   public function testExpectedAttributeValues()
   {
     $this->assertEquals($this->hint, $this->testObject->hint);
     $this->assertEquals($this->inputType, $this->testObject->inputType);
-    $this->assertEquals($this->placeholder, $this->testObject->placeholder);
+    $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
-    $this->assertEquals($this->record->maxlength, $this->testObject->maxlength);
+    $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);

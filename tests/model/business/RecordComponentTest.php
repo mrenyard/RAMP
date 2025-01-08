@@ -50,13 +50,22 @@ require_once '/usr/share/php/ramp/model/business/field/Option.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
+require_once '/usr/share/php/ramp/model/business/field/MultipartInput.class.php';
 require_once '/usr/share/php/ramp/model/business/iBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/SimpleBusinessModelDefinition.class.php';
 require_once '/usr/share/php/ramp/model/business/BusinessModelManager.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FormatBasedValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISOMonth.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Char.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Integer.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/SmallInt.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
+
 require_once '/usr/share/php/ramp/http/Request.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/model/MockValidationRule.class.php';
@@ -72,6 +81,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMultipartInput.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -357,7 +367,9 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
    */
   public function testRecordComponentValue() : void
   {
-    $this->assertSame($this->record->getPropertyValue('primaryKey'), $this->testObject->value);
+    $this->assertNull($this->record->getPropertyValue($this->name));
+    $this->assertNull($this->testObject->value);
+    $this->assertEquals($this->record->getPropertyValue($this->name), $this->testObject->value);
   }
 
   /**

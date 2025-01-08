@@ -94,7 +94,7 @@ class Flag extends Field
    */
   public function processValidationRule($value) : void
   {
-    $rule = new Rule(Str::set('Flag input can only be one of True or False.'));
+    $rule = new Rule(Str::set('one of either TRUE or FALSE'));
     $rule->process($value);
   }
 }

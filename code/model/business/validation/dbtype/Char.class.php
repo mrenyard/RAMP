@@ -126,6 +126,6 @@ class Char extends DbTypeValidation
   protected function test($value) : void
   {
     if (is_string($value) && strlen($value) == $this->length) { return; }
-    throw new FailedValidationException();
+    throw new FailedValidationException('Invalid character length!');
   }
 }

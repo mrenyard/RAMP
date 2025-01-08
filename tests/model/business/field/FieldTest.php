@@ -50,6 +50,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
+    $this->record->reset();
   }
   protected function getTestObject() : RAMPObject { return $this->record->aProperty; }
   protected function postSetup() : void {
@@ -294,8 +295,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
-    // TODO:mrenyard: re test one error messaging re implemented;
-    // $this->assertSame($message, (string)$this->testObject->errors[0]);
+    $this->assertSame($message, (string)$this->testObject->errors[0]);
   }
 
   /**

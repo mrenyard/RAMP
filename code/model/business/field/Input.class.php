@@ -39,13 +39,14 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * - {@see \ramp\validation\ValidationRule}
  * 
  * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
- * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
- * @property-read ?int $minlength Minimun character length allowed.
- * @property-read ?int $maxlength Maximun character length allowed.
- * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
- * @property-read ?\ramp\core\Str $max The maximum value that is acceptable and valid.
- * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
- * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered.
+ * @property-read ?\ramp\core\Str $placeholder Example of the type of data that should be entered or NULL.
+ * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule or NULL.
+ * @property-read ?int $minlength The minimum allowed value length or NULL.
+ * @property-read ?int $maxlength The maximum allowed value length or NULL.
+ * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid or NULL.
+ * @property-read ?\ramp\core\Str $max The maxnimum value that is acceptable and valid or NULL.
+ * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any', or NULL. 
+ * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
 class Input extends Field
 {
@@ -82,6 +83,7 @@ class Input extends Field
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \BadMethodCallException Array access unsetting is not allowed.
    */
+  #[\Override]
   public function offsetSet($offset, $object) : void
   {
     throw new \BadMethodCallException('Array access setting is not allowed.');
@@ -93,6 +95,14 @@ class Input extends Field
   protected function get_inputType() : Str
   {
     return $this->validationRule->inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_placeholder() : ?Str
+  {
+    return $this->validationRule->placeholder;
   }
 
   /**
@@ -152,18 +162,11 @@ class Input extends Field
   }
 
   /**
-   * @ignore
-   */
-  protected function get_placeholder() : ?Str
-  {
-    return $this->validationRule->placeholder;
-  }
-
-  /**
    * Process provided validation rule.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
+  #[\Override]
   public function processValidationRule($value) : void
   {
     $this->validationRule->process($value);

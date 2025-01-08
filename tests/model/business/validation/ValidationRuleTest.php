@@ -54,18 +54,20 @@ use tests\ramp\mocks\model\FailOnBadValidationRule;
  */
 class ValidationRuleTest extends \tests\ramp\core\ObjectTest
 {
-  protected $maxlength;
-  protected $minlength;
-  protected $specialAppendHint;
-  protected $hint5;
-  protected $hint4;
-  protected $hint3;
-  protected $hint2;
-  protected $hint1;
+  protected string $inputType;
+  protected int $maxlength;
+  protected int $minlength;
+  protected Str $hint5;
+  protected Str $hint4;
+  protected Str $hint3;
+  protected Str $hint2;
+  protected Str $hint1;
+  protected string $specialAppendHint;
 
   #region Setup
   protected function preSetup() : void
   {
+    $this->inputType = 'text'; // default
     $this->maxlength = 4;
     $this->minlength = 3;
     $this->hint6 = Str::set('part six');
@@ -172,14 +174,14 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
       $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
       (string)$this->testObject->hint
     );
-    $this->assertEquals('text', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertEquals($this->inputType, $this->testObject->inputType);
+    $this->assertEquals(MockValidationRule::PLACEHOLDER, $this->testObject->placeholder);
     $this->assertSame($this->minlength, $this->testObject->minlength);
     $this->assertSame($this->maxlength, $this->testObject->maxlength);
-    $this->assertEquals(MockValidationRule::PATTERN, (string)$this->testObject->pattern);
-    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
-    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
-    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
+    $this->assertEquals(MockValidationRule::PATTERN, $this->testObject->pattern);
+    $this->assertEquals(MockValidationRule::MIN, $this->testObject->min);
+    $this->assertEquals(MockValidationRule::MAX, $this->testObject->max);
+    $this->assertEquals(MockValidationRule::STEP, $this->testObject->step);
   }
 
   /**

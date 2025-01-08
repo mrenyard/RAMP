@@ -39,19 +39,17 @@ use tests\ramp\mocks\model\MockISOWeek;
  */
 class ISOWeekTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('format hint');
+    $this->step = 1;
+    $this->inputType = 'week';
+    $this->hint = Str::set('Week number in the format: ');
+    $this->format = 'yyyy-W00';
   }
   #[\Override]
-  protected function getTestObject() : RAMPObject {
-    return new MockISOWeek($this->hint);
-  }
+  protected function getTestObject() : RAMPObject { return new MockISOWeek($this->hint); }
   #endregion
 
   /**
@@ -137,16 +135,7 @@ class ISOWeekTest extends \tests\ramp\model\business\validation\FormatBasedValid
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('week', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertEquals(1, (int)$this->testObject->step);
-    $this->assertEquals('yyyy-W00', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

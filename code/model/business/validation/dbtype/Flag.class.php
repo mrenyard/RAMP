@@ -55,6 +55,6 @@ class Flag extends DbTypeValidation
   protected function test($value) : void
   {
     if ($value === TRUE || $value === FALSE) { return; }
-    throw new FailedValidationException();
+    throw new FailedValidationException('Flag input can only be one of True or False.');
   }
 }

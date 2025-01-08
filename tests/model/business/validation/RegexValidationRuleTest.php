@@ -46,13 +46,13 @@ use tests\ramp\mocks\model\MockValidationRule;
  */
 class RegexValidationRuleTest extends \tests\ramp\model\business\validation\ValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
+  protected string $pattern;
 
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
+    $this->inputType = 'text';// default
     $this->pattern = '[a-zA-Z]*';
     $this->maxlength = 10;
     $this->hint6 = Str::set('part six');
@@ -74,7 +74,6 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
           )
         )
       )
-      // $this->format
     );
   }
   #endregion
@@ -163,14 +162,14 @@ class RegexValidationRuleTest extends \tests\ramp\model\business\validation\Vali
       $this->hint4 . ' ' . $this->hint5 . ' ' . $this->hint6,
       (string)$this->testObject->hint
     );
-    $this->assertEquals('text', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    $this->assertEquals('text', $this->testObject->inputType);
+    $this->assertEquals(MockValidationRule::PLACEHOLDER, $this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertEquals($this->maxlength, $this->testObject->maxlength);
-    $this->assertEquals($this->pattern, (string)$this->testObject->pattern);
-    $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
-    $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
-    $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
+    $this->assertEquals($this->pattern, $this->testObject->pattern);
+    $this->assertEquals(MockValidationRule::MIN, $this->testObject->min);
+    $this->assertEquals(MockValidationRule::MAX, $this->testObject->max);
+    $this->assertEquals(MockValidationRule::STEP, $this->testObject->step);
   }
 
   /**
