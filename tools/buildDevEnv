@@ -1,9 +1,10 @@
 #!/bin/bash -eu
-if [[ "${HOME}" == "/root" ]]; then
-  echo "${HOME} IS AN INVALID HOME PATH";
-  read -p "Enter (linux) username: " USERNAME;
-  HOME="/home/${USERNAME}";
-fi
+if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
+# if [[ "${HOME}" == "/root" ]]; then
+#   echo "${HOME} IS AN INVALID HOME PATH";
+#   read -p "Enter (linux) username: " USERNAME;
+#   HOME="/home/${USERNAME}";
+# fi
 
 function mkLinkTests {
   cd /usr/share/php/tests
