@@ -17,7 +17,6 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
  * @version 0.0.9;
- * 
  */
 $tabindex = ($this->hasErrors)? 1:0;
 switch ((string)$this->type) {
