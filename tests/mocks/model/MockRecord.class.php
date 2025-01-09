@@ -70,6 +70,7 @@ class MockRecord extends Record
   public OptionList $selectManyList;
   public ?Str $selectManyName;
   public ?Str $multipartInputName;
+  // public ?Str $textareaName;
 
   public array $multipartInputDataProperties;
 
