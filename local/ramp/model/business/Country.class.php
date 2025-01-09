@@ -41,8 +41,9 @@ class Country extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Char(
-          Str::set('string with a maximum charactor length of '),
-          2, new validation\Alphabetic(
+          Str::set('e.g. UK'),
+          Str::set('string with a maximum charactor length of '), 2,
+          new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
@@ -57,8 +58,9 @@ class Country extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Char(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\Alphabetic(
+          Str::set('e.g. United Kingdom'),
+          Str::set('string with a maximum charactor length of '), 45,
+          new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
