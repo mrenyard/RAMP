@@ -82,6 +82,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToOne.class.php'
 require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMultipartInput.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFormatBasedValidationRule.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;

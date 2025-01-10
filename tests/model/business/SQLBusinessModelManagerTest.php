@@ -201,8 +201,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * - assert state of Record (isNew, isValid and isModified) is as expected following
    *   SQLBusinessModelManager::update(BusinessModel) or SQLBusinessModelManager::updateAny().
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
-   * @depends testConstruct
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testConstruct')]
   public function testGetBusinessModelNewRecord() : void
   {
     $newRecord = $this->testObject->getBusinessModel(
@@ -335,8 +335,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * - assert duplicate requests (same iBusinessModelDefinition::$recordName and $recordKey)
    *   returns referance to same Record without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
-   * @depends testGetBusinessModelNewRecord
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testGetBusinessModelNewRecord')]
   public function testGetBusinessModelStoredRecord() : void
   {
     $recordKey = Str::set('A|A|A');
@@ -408,8 +408,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * - assert throws \DomainException as provided iBusinessModelDefinition::$recordKey NOT found
    *   - with message: *'No matching Record(s) found in data storage!'*
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
-   * @depends testGetBusinessModelStoredRecord
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testGetBusinessModelStoredRecord')]
   public function testGetBusinessModelRecordNotStored() : void
   {
     try {
@@ -440,8 +440,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * - assert duplicate requests (same iBusinessModelDefinition::$recordName, $recordKey and
    *   $propertyName) returns referance to same Field without contacting data store
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
-   * @depends testGetBusinessModelRecordNotStored
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testGetBusinessModelRecordNotStored')]
   public function testGetBusinessModelProperty() : void
   {
     $recordKey = Str::set('A|A|C');
@@ -492,8 +492,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    *   - with message: *'No matching Record(s) found in data storage!'*
    * - assert update(ALL) runs update on full Record collection.
    * @see \ramp\model\business\SQLBusinessModelManager::getBusinessModel()
-   * @depends testGetBusinessModelProperty
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testGetBusinessModelProperty')]
   public function testGetBusinessModelCollection() : void
   {
     $all = $this->testObject->getBusinessModel(new SimpleBusinessModelDefinition($this->recordName));
@@ -634,8 +634,8 @@ class SQLBusinessModelManagerTest extends \tests\ramp\model\business\BusinessMod
    * - assert logged error reports and delayed atempts reported in \ChromePhp (Logger)
    * @see \ramp\model\business\SQLBusinessModelManager::update()
    * @see \ramp\model\business\SQLBusinessModelManager::updateAny()
-   * @depends testGetBusinessModelCollection
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testGetBusinessModelCollection')]
   public function EXTRADataWriteException()
   {
     $badRecord = $this->testObject->getBusinessModel(
