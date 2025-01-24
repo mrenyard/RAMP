@@ -30,7 +30,7 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to process provided ValidationRule.
  * - Provide API to common set of input element attributes[https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html].
  *
@@ -40,8 +40,8 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  * 
  * @property-read \ramp\core\Str $inputType HTML input type [https://www.w3.org/TR/2011/WD-html5-20110525/the-input-element.html#attr-input-type].
  * @property-read ?\ramp\core\Str $pattern Regex pattern used in this validation rule.
- * @property-read ?int $minlength Minimun character length allowed.
- * @property-read ?int $maxlength Maximun character length allowed.
+ * @property-read ?int $minlength Minimum character length allowed.
+ * @property-read ?int $maxlength Maximum character length allowed.
  * @property-read ?\ramp\core\Str $min The minimum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $max The maximum value that is acceptable and valid.
  * @property-read ?\ramp\core\Str $step Number that specifies the granularity that the value must adhere to or the keyword 'any'. 
@@ -57,7 +57,7 @@ class Input extends Field
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\validation\dbtype\DbTypeValidation $validationRule Validation rule to test against
-   * proir to allowing property value change.
+   * prior to allowing property value change.
    * ```php
    * new field\Input(Str::set('propertyName'), $parent,
    *   Str::set('Expanded description of expected field content.'),
@@ -68,7 +68,7 @@ class Input extends Field
    *   )
    * );
    * ```
-   * @param bool $editable Optional set preferance for editability.
+   * @param bool $editable Optional set preference for editability.
    */
   public function __construct(Str $name, Record $parent, Str $title, DbTypeValidation $validationRule, bool $editable = TRUE)
   {

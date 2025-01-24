@@ -31,7 +31,7 @@ use ramp\model\business\validation\dbtype\Char;
 use ramp\model\business\validation\dbtype\VarChar;
 
 /**
- * MultipartInput field related to a single property with mutiply data storage fields
+ * MultipartInput field related to a single property with multiple data storage fields
  * (e.g. week actual (year + weekNumber) month actual (year + monthNumber)).
  */
 class MultipartInput extends Input
@@ -41,7 +41,7 @@ class MultipartInput extends Input
   private array $parts; // [valueLength, propertyName, validationRule];
 
   /**
-   * Creates a multipart input field related to a single property with mutiply data storage fields.
+   * Creates a multipart input field related to a single property with multiple data storage fields.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $title An expanded description of expected field content.

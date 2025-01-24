@@ -30,15 +30,15 @@ use \ramp\model\business\Record;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to process provided ValidationRule.
- * - Manage and present list of Options avalible for selection.
+ * - Manage and present list of Options available for selection.
  *
  * COLLABORATORS
  * - {@see \ramp\core\OptionList}
  * - {@see \ramp\model\business\Record}
  *
- * @property-read \ramp\core\OptionList $options Return reference to list of Options avalible for selection.
+ * @property-read \ramp\core\OptionList $options Return reference to list of Options available for selection.
  */
 abstract class SelectFrom extends Field
 {

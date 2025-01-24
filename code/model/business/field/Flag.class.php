@@ -31,7 +31,7 @@ use ramp\model\business\validation\dbtype\Flag as Rule;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to process provided ValidationRule.
  *
  * COLLABORATORS

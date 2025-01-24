@@ -58,7 +58,7 @@ abstract class Field extends RecordComponent
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property
    * @param \ramp\core\Str $title An expanded description of expected field content.
-   * @param bool $editable Optional set preferance for editability.
+   * @param bool $editable Optional set preference for editability.
    */
   public function __construct(Str $name, Record $parent, Str $title, bool $editable = TRUE)
   {
@@ -118,7 +118,7 @@ abstract class Field extends RecordComponent
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-   * @param bool $update Default is to update on succesful validation, TRUE to skip.
+   * @param bool $update Default is to update on successful validation, TRUE to skip.
    */
   public function validate(PostData $postdata, $update = TRUE) : void
   {
