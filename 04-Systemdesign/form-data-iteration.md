@@ -1,24 +1,33 @@
+```
 object (self)
+```
+```html
   <fieldset id="object:id">
     <label id="object:id:property" ...>
      select-one <input with list or select>
      select-many checkboxes
   </fieldset>
-
+```
 object relationships
 --------------------
+```
 one-to-one i.e. homeAddress -> Address
                 uniAddress -> Address
+```
+```html
   <fieldset id="address:id" class="record">
     <legend>Home Address</legend>
-
+```
+```
 one-to-many i.e. oranisation.employees (org-person-lookup) (many-to-many)
+```
+```html
   <section id="oranisation:id:employees" class="record-collection">
     <header><h3>Employees</h3></header>
     <fieldset id="person:id1" ...>
     <fieldset id="person:id2" ...>
-
-
+```
+```
 person:mrenyard (0)
   person:mrenyard:property=value (1)
   person:mrenyard:select-one (1)
@@ -46,3 +55,4 @@ person:mrenyard (0)
         person:pk:select-many (4)
           from avalible/add (5)
           = values (5)
+```
