@@ -2,7 +2,7 @@
 Full list of avalible properties
 for use in template files (.tpl)
 --------------------------------
-## Universally avalible
+## Universally available
 
  - id
  - title
@@ -16,20 +16,22 @@ for use in template files (.tpl)
  - style
  - class
 
-`->hasModel:bool`
+## Available under condition
+
+`->hasModel:TRUE`
  - type
 
-` ->hasErrors:bool`
+` ->hasErrors:TRUE`
  -   errors:foreach
 
-`->type='[…] record-component'`
+`->type == '[…] record-component'`
  - isEditable
  - value
 
-`->type='[…] field'`
+`->type == '[…] field'`
  - isRequired
 
-`->type='input field'`
+`->type =='input field'`
  - inputType
  - pattern
  - minlength
