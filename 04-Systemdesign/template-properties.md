@@ -2,6 +2,7 @@
 Full list of avalible properties
 for use in template files (.tpl)
 --------------------------------
+```
 id
 title
 heading
@@ -31,3 +32,4 @@ class
     max
     step
     hint
+```
