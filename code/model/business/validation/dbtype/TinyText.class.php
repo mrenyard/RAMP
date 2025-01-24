@@ -30,12 +30,8 @@ use ramp\model\business\validation\ValidationRule;
  * @property-read ?int $maxlength The maximum allowed value length.
  * @property-read \ramp\core\Str $hint Format hint to be displayed on failing test.
  */
-class TinyText extends DbTypeValidation
+class TinyText extends Text
 {
-  private static Str $inputType;
-  private Str $placeholder;
-  private int $maxlength;
-
   /**
    * Default constructor for a validation rule of database type TinyText.
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
@@ -56,87 +52,7 @@ class TinyText extends DbTypeValidation
    */
   public function __construct(Str $placeholder, Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
-    if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea'); }
-    $this->placeholder = $placeholder;
     $maxlength = ($maxlength !== NULL && $maxlength <= 255) ? $maxlength : 255;
-    $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
-    (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
-      throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
-    if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
-      throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
-    }
-    parent::__construct($errorHint, $subRule);
-  }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_inputType() : Str
-  {
-    return SELF::$inputType;
-  }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_placeholder() : ?Str
-  {
-    return $this->placeholder;
-  }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_pattern() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_maxlength() : ?int
-  {
-    return $this->maxlength;
-  }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_min() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_max() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_step() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_hint() : Str
-  {
-    return Str::set($this->get_maxlength())->prepend(parent::get_hint());
-  }
-
-  /**
-   * Asserts that $value is a string no more than 255 characters.
-   * @param mixed $value Value to be tested.
-   * @throws FailedValidationException When test fails.
-   */
-  #[\Override]
-  protected function test($value) : void
-  {
-    if (is_string($value) && strlen($value) <= 255) { return; }
-    throw new FailedValidationException();
+    parent::__construct($placeholder, $errorHint, $maxlength, $subRule);
   }
 }

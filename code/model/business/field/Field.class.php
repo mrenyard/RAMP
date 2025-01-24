@@ -51,7 +51,7 @@ use ramp\model\business\validation\FailedValidationException;
 abstract class Field extends RecordComponent
 {
   private Str $title;
-  private StrCollection $errorCollection;
+  protected StrCollection $errorCollection;
 
   /**
    * Base constructor for Field related to a single property of containing record.
@@ -80,6 +80,7 @@ abstract class Field extends RecordComponent
    * @param mixed $object RAMPObject to be placed at provided index.
    * @throws \InvalidArgumentException Adding properties through offsetSet STRONGLY DISCOURAGED!
    */
+  #[\Override]
   public function offsetSet($offset, $object) : void
   {
     if (!($object instanceof \ramp\core\iOption)) {
@@ -101,6 +102,7 @@ abstract class Field extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_isEditable() : bool
   {
     return ((!$this->parent->isValid) || parent::get_isEditable());
@@ -118,9 +120,14 @@ abstract class Field extends RecordComponent
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
+<<<<<<< HEAD
    * @param bool $update Default is to update on successful validation, TRUE to skip.
+=======
+   * @param bool $update Default is to update on succesful validation, FALSE to skip.
+>>>>>>> f887dc211b8bdc00be14993ba96c981ab25031ec
    */
-  public function validate(PostData $postdata, $update = TRUE) : void
+  #[\Override]
+  public function validate(PostData $postdata, bool $update = TRUE) : void
   {
     $this->errorCollection = StrCollection::set();
     foreach ($postdata as $inputdata)
@@ -146,6 +153,7 @@ abstract class Field extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_hasErrors() : bool
   {
     return (isset($this->errorCollection) && $this->errorCollection->count > 0);
@@ -154,6 +162,7 @@ abstract class Field extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
   protected function get_errors() : StrCollection
   {
     return (isset($this->errorCollection)) ? $this->errorCollection : StrCollection::set();

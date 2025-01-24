@@ -1,0 +1,1 @@
+sudo -S php tools/phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php --visibility=public,protected

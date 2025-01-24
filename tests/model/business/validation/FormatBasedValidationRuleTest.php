@@ -46,16 +46,18 @@ use tests\ramp\mocks\model\MockValidationRule;
  */
 class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validation\RegexValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
+  protected string $format;
+  protected Str $hint;
+  protected ?string $step;
 
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->pattern = '[0-9]*';
+    $this->inputType = 'text'; // default
+    $this->pattern = '[0-9]{4}';
     $this->format = 'YYYY';
-    $this->hint = Str::set('format hint');
+    $this->hint = Str::set('...in the format: ');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -146,15 +148,19 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('text', (string)$this->testObject->inputType);
+    $this->assertEquals($this->hint . '(' . $this->format . ')', $this->testObject->hint);
+    $this->assertEquals($this->inputType, $this->testObject->inputType);
     $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertNull($this->testObject->maxlength);
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
+    if (!isset($this->step) || $this->step === NULL) {
+      $this->assertNull($this->testObject->step);
+    } else {
+      $this->assertEquals($this->step, (int)$this->testObject->step);
+    }
     $this->assertEquals($this->format, $this->testObject->format);
   }
 

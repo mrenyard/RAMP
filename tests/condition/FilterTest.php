@@ -199,12 +199,11 @@ class FilterTest extends \tests\ramp\core\CollectionTest
    * Collection of assertions for ramp\core\oList::offsetUnset().
    * - assert value unset with name key is no longer retivable with same name key
    * - assert value set at index is no longer retivable at same index.
-   * @depends testOffsetSet
    * @param iList The test object.
    * @param string Expected child type.
    * @see \ramp\mocks\core\List::offsetUnset()
    */
-  #[\Override]
+  #[\Override, \PHPUnit\Framework\Attributes\Depends('testOffsetSet')]
   public function testOffsetUnset(iList $testObject, $expectedChildType = 'ramp\condition\FilterCondition') : void
   {
     parent::testOffsetUnset($testObject, $expectedChildType);

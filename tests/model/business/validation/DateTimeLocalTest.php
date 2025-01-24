@@ -39,14 +39,14 @@ use tests\ramp\mocks\model\MockDateTimeLocal;
  */
 class DateTimeLocalTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('format hint');
+    $this->inputType = 'datetime-local';
+    $this->hint = Str::set('date and time in the format: ');
+    $this->format = 'yyyy-mm-ddThh:mm:ss';
+    $this->step = 1;
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -137,16 +137,7 @@ class DateTimeLocalTest extends \tests\ramp\model\business\validation\FormatBase
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('datetime-local', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertEquals(1, (int)$this->testObject->step);
-    $this->assertEquals('yyyy-mm-ddThh:mm:ss', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

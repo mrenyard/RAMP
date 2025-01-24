@@ -32,6 +32,7 @@ use ramp\model\business\validation\ValidationRule;
 class Text extends DbTypeValidation
 {
   private static $inputType;
+  private Str $placeholder;
   private int $maxlength;
 
   /**
@@ -47,13 +48,15 @@ class Text extends DbTypeValidation
    *   )
    * );
    * ```
+   * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $maxlength Maximum number of characters from 1 to 16383
    * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
    */
-  public function __construct(Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
+  public function __construct(Str $placeholder, Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {
     if (!isset(SELF::$inputType)) { SELF::$inputType = Str::set('textarea'); }
+    $this->placeholder = $placeholder;
     $maxlength = ($maxlength !== NULL && $maxlength <= 16383) ? $maxlength : 16383;
     $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
     (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
@@ -70,6 +73,15 @@ class Text extends DbTypeValidation
   protected function get_inputType() : Str
   {
     return SELF::$inputType;
+  }
+
+  /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return $this->placeholder;
   }
 
   /**

@@ -60,7 +60,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
-    // name?
+    $this->name = Str::set('primaryKey');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {  return $this->record->primaryKey; }
@@ -370,8 +370,9 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
    */
   #[\Override]
   public function testRecordComponentValue() : void
+  // public function testRecordComponentValue(string $propertyName = 'primaryKey') : void
   {
-    $this->assertSame($this->record->getPropertyValue('primaryKey'), $this->testObject->value);
+    parent::testRecordComponentValue();
   }
 
   /**

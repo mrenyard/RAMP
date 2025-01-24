@@ -21,7 +21,7 @@
  */
 namespace tests\ramp\model\business\validation\dbtype;
 
-require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/DbTypeValidationTest.php';
+require_once '/usr/share/php/tests/ramp/model/business/validation/dbtype/TextTest.php';
 
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyText.class.php';
 
@@ -43,27 +43,27 @@ use tests\ramp\mocks\model\FailOnBadValidationRule;
 /**
  * Collection of tests for \ramp\model\business\validation\dbtype\TinyText.
  */
-class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValidationTest
+class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\TextTest
 {
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint5 = Str::set('with a maximum character length of ');
-    $this->hint4 = Str::set('part four');
+    $this->inputType = 'textarea';
+    $this->maxlength = 255;
+    $this->hint4 = Str::set('with a maximum character length of ');
     $this->hint3 = Str::set('part three');
     $this->hint2 = Str::set('part two');
     $this->hint1 = Str::set('part one');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
-    return new MockDbTypeTinyText( Str::set(MockValidationRule::PLACEHOLDER),
-      $this->hint5, NULL,
-      new PlaceholderValidationRule($this->hint4,
-        new PatternValidationRule($this->hint3,
-          new FailOnBadValidationRule($this->hint2,
-            new MinMaxStepValidationRule($this->hint1)
-          )
+    return new MockDbTypeTinyText(
+      Str::set(MockValidationRule::PLACEHOLDER),
+      $this->hint4, NULL,
+      new PatternValidationRule($this->hint3,
+        new FailOnBadValidationRule($this->hint2,
+          new MinMaxStepValidationRule($this->hint1)
         )
       )
     );
@@ -175,19 +175,20 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals(
-      $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . $this->hint4 . ' ' . $this->hint5 . '255',
-      (string)$this->testObject->hint
-    );
-    $this->assertEquals('textarea', (string)$this->testObject->inputType);
-    $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertEquals(255, $this->testObject->maxlength);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
+    parent::testExpectedAttributeValues();
+    // $this->assertEquals(
+    //   $this->hint1 . ' ' . $this->hint2 . ' ' . $this->hint3 . ' ' . $this->hint4 . ' ' . $this->hint5 . '255',
+    //   (string)$this->testObject->hint
+    // );
+    // $this->assertEquals('textarea', (string)$this->testObject->inputType);
+    // $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
+    // $this->assertNull($this->testObject->pattern);
+    // $this->assertNull($this->testObject->minlength);
+    // $this->assertEquals(255, $this->testObject->maxlength);
+    // $this->assertNull($this->testObject->pattern);
+    // $this->assertNull($this->testObject->min);
+    // $this->assertNull($this->testObject->max);
+    // $this->assertNull($this->testObject->step);
   }
 
   /**
@@ -199,7 +200,8 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    */
   #[\Override]
   public function testProcess( // badValues [INT, CharLimit]
-    array $badValues = NULL, ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 5, $failMessage = ''
+    array $badValues = NULL, ?array $goodValues = NULL, int $failPoint = 1, int $ruleCount = 4,
+    $failMessage = ''
   ) : void
   {
     parent::testProcess([1, $this->longText], [$this->shortText], $failPoint, $ruleCount, $failMessage);
@@ -213,14 +215,16 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * @see \ramp\model\business\validation\dbtype\TinyText
    * @see \ramp\model\business\validation\ValidationRule::maxlength
    */
-  public function testInsufficientSpaceMismatchException()
+  #[\Override]
+  public function testInsufficientSpaceMismatchException() //int $limit = 255, int $beyondLimit = 256)
   {
+    // parent::testInsufficientSpaceMismatchException($limit, $beyondLimit);
     $limit = 255;
     $beyondLimit = 260;
     $this->expectException(\InvalidArgumentException::class);
     $this->expectExceptionMessage('Possibly insufficient data space allocated for value!');
     new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, NULL,
+      $this->hint4, NULL,
       new LengthValidationRule($this->hint3, $beyondLimit)
     );
     $this->assertNull($this->testObject->minlength);
@@ -233,14 +237,16 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * @see \ramp\model\business\validation\dbtype\TinyText
    * @see \ramp\model\business\validation\ValidationRule::maxlength
    */
+  #[\Override]
   public function testSubRuleMinlengthOutsideScopeException()
   {
-    $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Provided $subRule::$minlength GREATER THAN $maxlength!');
-    $o1 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, NULL,
-      new LengthValidationRule($this->hint1, 200, 250)
-    );
+    parent::testSubRuleMinlengthOutsideScopeException();
+    // $this->expectException(\InvalidArgumentException::class);
+    // $this->expectExceptionMessage('Provided $subRule::$minlength GREATER THAN $maxlength!');
+    // $o1 = new MockDbTypeTinyText( Str::_EMPTY(),
+    //   $this->hint4, NULL,
+    //   new LengthValidationRule($this->hint1, 200, 250)
+    // );
   }
 
   /**
@@ -253,41 +259,43 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVa
    * - assert maxlength same as provided on subRule when less than that provided on dbtype constructor and within limit.
    * @see \ramp\model\business\validation\validation\ValidationRule::maxlength
    */
-  public function testMaxlengthVariations()
+  #[\Override]
+  public function testMaxlengthVariations() //int $limit = 255, int $withinLimit = 250, int $beyondLimit = 260)
   {
+    // parent::testMaxlengthVariations($limit = 255, $withinLimit = 250, $beyondLimit = 260);
     $limit = 255;
     $withinLimit = 250;
     $beyondLimit = 260;
     $o1 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, NULL,
+      $this->hint4, NULL,
       new PatternValidationRule($this->hint1)
     );
     $this->assertSame($limit, $o1->maxlength);
     $this->assertSame('part one with a maximum character length of ' . $limit, (string)$o1->hint);
     
     $o2 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, $withinLimit,
+      $this->hint4, $withinLimit,
       new PatternValidationRule($this->hint1)
     );
     $this->assertSame($withinLimit, $o2->maxlength);
     $this->assertSame('part one with a maximum character length of ' . $withinLimit, (string)$o2->hint);
 
     $o3 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, $beyondLimit,
+      $this->hint4, $beyondLimit,
       new PatternValidationRule($this->hint1)
     );
     $this->assertSame($limit, $o3->maxlength);
     $this->assertSame('part one with a maximum character length of ' . $limit, (string)$o3->hint);
     
     $o4 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, NULL,
+      $this->hint4, NULL,
       new LengthValidationRule($this->hint1, $withinLimit)
     );
     $this->assertSame($withinLimit, $o4->maxlength);
     $this->assertSame('part one with a maximum character length of ' . $withinLimit, (string)$o4->hint);
 
     $o5 = new MockDbTypeTinyText( Str::_EMPTY(),
-      $this->hint5, $whitinLimit,
+      $this->hint4, $whitinLimit,
       new LengthValidationRule($this->hint1, ($withinLimit - 100))
     );
     $this->assertSame(($withinLimit - 100), $o5->maxlength);

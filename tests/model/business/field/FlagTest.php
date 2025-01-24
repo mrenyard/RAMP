@@ -42,7 +42,9 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class FlagTest extends \tests\ramp\model\business\field\FieldTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->flag; }
+  #[\Override]
   protected function postSetup() : void {
     $this->name = $this->record->flagName;
     $this->title = $this->record->title;
@@ -64,6 +66,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\field\Flag
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -71,6 +74,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->dataObject->keyA = 'A';
@@ -83,6 +87,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
     ));
     $this->childErrorIndexes = array(0);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertFalse(isset($this->testObject[0]));
@@ -95,6 +100,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -105,6 +111,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -120,6 +127,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -130,6 +138,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -155,6 +164,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$Errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -165,6 +175,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\BusinessModel::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -175,6 +186,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -185,6 +197,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -196,6 +209,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -207,6 +221,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see https://www.php.net/manual/class.badmethodcallexception.php \BadMethodCallException} thrown.
    * @see \ramp\model\business\Record::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     $this->expectException(\BadMethodCallException::class);
@@ -222,6 +237,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     $this->expectException(\BadMethodCallException::class);
@@ -241,6 +257,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -255,6 +272,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -270,6 +288,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Flag input can only be one of True or False.') : void
   {
     parent::testErrorReportingPropagation($message);
@@ -282,6 +301,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\field\Field::record
    * @see \ramp\model\business\field\Field::parentProppertyName
    */
+  #[\Override]
   public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
@@ -293,6 +313,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue() : void
   {
     $this->assertNull($this->record->getPropertyValue($this->name));
@@ -305,6 +326,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
    */
+  #[\Override]
   public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
@@ -315,6 +337,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\field\Field::propertyName
    */
+  #[\Override]
   public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
@@ -332,6 +355,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
+  #[\Override]
   public function testStateChangesField($fieldName = 'flag', $defaultValue = FALSE, $value = FALSE, $newValue = TRUE) : void
   {
     parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
@@ -342,6 +366,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * - assert isRequired defaults TRUE when explicitly set at registration.
    * @see \ramp\model\business\field\Field::isRequired
    */
+  #[\Override]
   public function testCheckIsRequiredWhenSet() : void
   {
     parent::testCheckIsRequiredWhenSet();

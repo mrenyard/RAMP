@@ -44,14 +44,18 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
+  #[\Override]
   protected function preSetup() : void {
     MockSqlBusinessModelManager::reset();
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
     \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
     $this->dataObject = new \StdClass();
     $this->record = new MockRecord($this->dataObject);
+    $this->record->reset();
   }
+  #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->aProperty; }
+  #[\Override]
   protected function postSetup() : void {
     $this->name = $this->record->propertyName;
     $this->expectedChildCountNew = 0;
@@ -71,6 +75,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert is instance of {@see \Countable}
    * @see \ramp\model\business\field\Field
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -78,6 +83,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 0'));
@@ -89,6 +95,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     ));
     $this->childErrorIndexes = array(1);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
@@ -107,6 +114,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -117,6 +125,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -132,6 +141,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -142,6 +152,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -167,6 +178,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$Errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -177,6 +189,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\BusinessModel::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -187,6 +200,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -197,6 +211,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * Get 'children' NOT accessable.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -208,6 +223,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -218,6 +234,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \InvalidArgumentException} thrown when offset type outside of acceptable scope.
    * @see \ramp\model\business\Record::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException(
@@ -236,6 +253,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
@@ -253,6 +271,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -267,6 +286,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = TRUE) : void
   {
     $this->populateSubModelTree();
@@ -288,14 +308,14 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Error MESSAGE BadValue Submited!') : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->testObject->validate($this->postData)); // Call
     $this->assertTrue($this->testObject->hasErrors);
     $this->assertSame(count($this->childErrorIndexes), $this->testObject->errors->count);
-    // TODO:mrenyard: re test one error messaging re implemented;
-    // $this->assertSame($message, (string)$this->testObject->errors[0]);
+    $this->assertSame($message, (string)$this->testObject->errors[0]);
   }
 
   /**
@@ -305,6 +325,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\field\Field::record
    * @see \ramp\model\business\field\Field::parentProppertyName
    */
+  #[\Override]
   public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
@@ -316,6 +337,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue() : void
   {
     parent::testRecordComponentValue();
@@ -326,6 +348,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
    */
+  #[\Override]
   public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
@@ -336,6 +359,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\field\Field::propertyName
    */
+  #[\Override]
   public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
@@ -364,8 +388,8 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->assertFalse($this->testObject->isRequired);
     // isEdiatable always remains TRUE while state is 'new'
     $this->assertTrue($this->testObject->isEditable);
-    // even after requested change.
-    $this->isEditable = FALSE;
+    // even after requested preferance change.
+    $this->testObject->isEditable = FALSE;
     $this->assertTrue($this->testObject->isEditable);
     // Now.. Update associated Record as 'validAtSource'
     $this->dataObject->keyA = 1;
@@ -374,16 +398,15 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->record->updated();
     $this->assertTrue($this->record->isValid);
     $this->assertFalse($this->record->isNew);
-    // isEditable still defaults to TRUE
-    $this->assertTrue($this->testObject->isEditable);
-    // but allows state change.
-    $this->testObject->isEditable = FALSE;
+    // isEditable NOW follows most recently set preference
     $this->assertFalse($this->testObject->isEditable);
+    // but allows state change.
+    $this->testObject->isEditable = TRUE;
+    $this->assertTrue($this->testObject->isEditable);
     $this->assertSame($defaultValue, $this->testObject->value);
     $dataValue = ($value instanceof Option) ? $value->key : $value;
     $this->dataObject->$fieldName = $dataValue;
     $this->assertSame($value, $this->testObject->value);
-    $this->testObject->isEditable = TRUE; // Reset editable
     $dataNewValue = ($newValue instanceof Option) ? $newValue->key : $newValue;
     $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $dataNewValue)));
     $this->assertSame($newValue, $this->testObject->value);

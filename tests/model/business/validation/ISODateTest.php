@@ -46,14 +46,14 @@ use tests\ramp\mocks\model\MockValidationRule;
  */
 class ISODateTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('format hint');
+    $this->inputType = 'date';
+    $this->hint = Str::set('date in the format: ');
+    $this->format = 'yyyy-mm-dd';
+    $this->step = 1;
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -144,16 +144,7 @@ class ISODateTest extends \tests\ramp\model\business\validation\FormatBasedValid
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('date', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertEquals(1, (int)$this->testObject->step);
-    $this->assertEquals('yyyy-mm-dd', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

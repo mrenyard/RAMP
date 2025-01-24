@@ -154,8 +154,9 @@ abstract class BusinessModel extends Model implements iList
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
+   * @param bool $update Default is to update on succesful validation, FALSE to skip.
    */
-  public function validate(PostData $postdata, $update = TRUE) : void
+  public function validate(PostData $postdata, bool $update = TRUE) : void
   {
     foreach ($this->children as $child) {
       $child->validate($postdata);

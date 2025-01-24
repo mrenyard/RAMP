@@ -60,8 +60,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('First single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a total character length of exactly '),
-          1, new validation\AlphanumericStrict(
+          Str::set('e.g. A'),
+          Str::set('string with a total character length of exactly '), 1,
+          new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
         )
@@ -76,8 +77,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Second single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a total character length of exactly '),
-          1, new validation\AlphanumericStrict(
+          Str::set('e.g. B'),
+          Str::set('string with a total character length of exactly '), 1,
+          new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
         )
@@ -92,8 +94,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Third single character key element.'),
         new validation\dbtype\Char(
-          Str::set('string with a total character length of exactly '),
-          1, new validation\AlphanumericStrict(
+          Str::set('e.g. C'),
+          Str::set('string with a total character length of exactly '), 1,
+          new validation\AlphanumericStrict(
             Str::set('strictly latin alphabetical or numeric')
           )
         )
@@ -108,8 +111,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('Main thematic colour of presentation.'),
         new validation\dbtype\Char(
-          Str::set('string with a character length of exactly '),
-          7, new validation\HexidecimalColorCode(
+          Str::set('e.g. #FF0000'),
+          Str::set('string with a character length of exactly '), 7,
+          new validation\HexidecimalColorCode(
             Str::set('representing the luminescent gradiant of red, green and blue, a hash followed by three pairs of hexadecimal (0 through 9 to F) character ')
           )
         ),
@@ -125,8 +129,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The name by which you are refered to; in Western culture usually your first name.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum character length of '),
-          20, new validation\RegexValidationRule(
+          Str::set('e.g. Jane'),
+          Str::set('string with a maximum character length of '), 20,
+          new validation\RegexValidationRule(
             Str::set('single latin alphabetical word'),
             '[A-Za-z\-]*'
           )
@@ -142,8 +147,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximun character length of '),
-          150,  new validation\RegexEmailAddress(
+          Str::set('e.g. jdoe@domain.com'),
+          Str::set('string with a maximun character length of '), 150,
+          new validation\RegexEmailAddress(
             Str::set('validly formatted email address'),
             new validation\specialist\ServerSideEmail()
           )
@@ -159,8 +165,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum character length of '),
-          20, new validation\TelephoneNumber(
+          Str::set('e.g. 07700 1234 5678'),
+          Str::set('string with a maximum character length of '), 20,
+          new validation\TelephoneNumber(
             Str::set('valid telephone number')
           )
         )
@@ -175,8 +182,9 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum character length of '),
-          35, new validation\Password(
+          Str::set('e.g. N0T-PA55W0RD'),
+          Str::set('string with a maximum character length of '), 35,
+          new validation\Password(
             Str::set("8 character minimum alphanumeric and special characters (!#$%&+,-.:;?[]^*_{|}{~@')")
           )
         )

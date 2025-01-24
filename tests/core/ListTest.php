@@ -190,11 +190,11 @@ class ListTest extends \tests\ramp\core\ObjectTest
    * Collection of assertions for ramp\core\oList::offsetUnset().
    * - assert value unset with name key is no longer retivable with same name key
    * - assert value set at index is no longer retivable at same index.
-   * @depends testOffsetSet
    * @param iList The test object.
    * @param string Expected child type.
    * @see \ramp\mocks\core\List::offsetUnset()
    */
+  #[\PHPUnit\Framework\Attributes\Depends('testOffsetSet')]
   public function testOffsetUnset(iList $testObject, $expectedChildType = 'tests\ramp\mocks\core\AnObject') : void
   {
     $this->assertInstanceOf($expectedChildType, $testObject['name']);

@@ -39,14 +39,14 @@ use tests\ramp\mocks\model\MockISOTime;
  */
 class ISOTimeTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('format hint');
+    $this->inputType = 'time';
+    $this->hint = Str::set('time in the format: ');
+    $this->format = 'hh:mm:ss';
+    $this->step = 1;
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -137,16 +137,7 @@ class ISOTimeTest extends \tests\ramp\model\business\validation\FormatBasedValid
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('time', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertEquals(1, (int)$this->testObject->step);
-    $this->assertEquals('hh:mm:ss', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

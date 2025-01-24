@@ -38,7 +38,7 @@ class Char extends DbTypeValidation
    * Multiple ValidationRules can be wrapped within each other to form a more complex set of tests:
    * ```php
    * $myRule = new dbtype\Char(
-   *   20, Str::set('Format error message/hint'),
+   *   Str::set('Format error message/hint'), 20,
    *   new SecondValidationRule(
    *     Str::set('Format error message/hint'),
    *     new ThirdValiationRule(
@@ -126,6 +126,6 @@ class Char extends DbTypeValidation
   protected function test($value) : void
   {
     if (is_string($value) && strlen($value) == $this->length) { return; }
-    throw new FailedValidationException();
+    throw new FailedValidationException('Invalid character length!');
   }
 }

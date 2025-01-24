@@ -39,14 +39,14 @@ use tests\ramp\mocks\model\MockISOMonth;
  */
 class ISOMonthTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('format hint');
+    $this->inputType = 'month';
+    $this->hint = Str::set('month in the format: ');
+    $this->format = 'yyyy-mm';
+    $this->step = 1;
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -137,16 +137,7 @@ class ISOMonthTest extends \tests\ramp\model\business\validation\FormatBasedVali
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('month', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertEquals(1, (int)$this->testObject->step);
-    $this->assertEquals('yyyy-mm', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

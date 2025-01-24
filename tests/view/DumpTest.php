@@ -25,14 +25,11 @@ require_once '/usr/share/php/tests/ramp/view/ChildViewTest.php';
 
 require_once '/usr/share/php/ramp/view/Dump.class.php';
 
-// require_once '/usr/share/php/tests/ramp/mocks/view/MockChildView.class.php';
-
 use ramp\core\RAMPObject;
 use ramp\view\ChildView;
 use ramp\view\RootView;
 use ramp\view\Dump;
 
-// use tests\ramp\mocks\view\MockChildView;
 use tests\ramp\mocks\view\MockViewA;
 use tests\ramp\mocks\view\MockViewB;
 use tests\ramp\mocks\view\MockViewC;
@@ -48,12 +45,6 @@ class DumpTest extends \tests\ramp\view\ChildViewTest
   #[\Override]
   protected function postSetup() : void
   {
-    // if (!isset($this->subCollection)) {
-    //   $this->subCollection = new \SplObjectStorage();
-    //   $this->subCollection->attach(new MockViewA());
-    //   $this->subCollection->attach(new MockViewB());
-    //   $this->subCollection->attach(new MockViewC());
-    // }
   }
   #endregion
 

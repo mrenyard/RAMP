@@ -17,13 +17,15 @@
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
  * @version 0.0.9;
- * 
  */
 ?>
           <div class="<?=$this->inputType; ?> <?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
             <label for="<?=$this->id; ?>"><?=$this->label; ?></label>
+<?php if ($this->inputType == 'textarea') { ?>
+            <textarea id="<?=$this->id; ?>" name="<?=$this->id; ?>" tabindex="<?=($this->hasErrors)? 1:0; ?>"<?=$this->attribute('placeholder') ?><?=$this->attribute('required'); ?><?=$this->attribute('maxlength'); ?><?=(!$this->isEditable) ? ' readonly' : ''; ?>><?=$this->value; ?></textarea>
+<?php } else { ?>
             <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="<?=$this->inputType; ?>" tabindex="<?=($this->hasErrors)? 1:0; ?>"<?=$this->attribute('placeholder') ?><?=$this->attribute('required'); ?><?=$this->attribute('pattern'); ?><?=$this->attribute('maxlength'); ?><?=$this->attribute('min'); ?><?=$this->attribute('max'); ?><?=$this->attribute('step'); ?><?=(!$this->isEditable) ? ' readonly' : ''; ?><?=$this->attribute('value'); ?>>
-<?php if ($this->hasErrors) { ?>
+<?php } if ($this->hasErrors) { ?>
             <span class="hint"><?=$this->hint; ?>.<?php if ($this->value != '') { ?> <em>Previous value was: <?=$this->value; ?>.</em><?php } ?></span>
 <?php } ?>
           </div>

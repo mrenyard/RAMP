@@ -36,8 +36,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\LowercaseAlphanumeric(
+          Str::set('e.g. jdoe'),
+          Str::set('string with a maximum charactor length of '), 45,
+          new validation\LowercaseAlphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
@@ -52,8 +53,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          7, new validation\Alphabetic(
+          Str::set('e.g. Mx'),
+          Str::set('string with a maximum charactor length of '), 7,
+          new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
@@ -68,8 +70,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\Alphanumeric(
+          Str::set('e,g, Doe'),
+          Str::set('string with a maximum charactor length of '), 45,
+          new validation\Alphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )
@@ -84,8 +87,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\Alphabetic(
+          Str::set('e.g. Jane'),
+          Str::set('string with a maximum charactor length of '), 45,
+          new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
         )
@@ -100,8 +104,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          90, new validation\AlphanumericPhrase(
+          Str::set('e.g. ann mary'),
+          Str::set('string with a maximum charactor length of '), 90,
+          new validation\AlphanumericPhrase(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a space seperated list ')
           ),
         )
@@ -116,8 +121,9 @@ class Person extends AuthenticatableUnit
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
-          Str::set('string with a maximum charactor length of '),
-          45, new validation\Alphanumeric(
+          Str::set('e.g. BSc'),
+          Str::set('string with a maximum charactor length of '), 45,
+          new validation\Alphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
         )

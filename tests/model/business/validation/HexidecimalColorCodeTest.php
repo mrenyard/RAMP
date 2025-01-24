@@ -46,14 +46,12 @@ use tests\ramp\mocks\model\MockValidationRule;
  */
 class HexidecimalColorCodeTest extends \tests\ramp\model\business\validation\FormatBasedValidationRuleTest
 {
-  private string $pattern;
-  private string $format;
-
   #region Setup
   #[\Override]
   protected function preSetup() : void
   {
     // $this->pattern = '[0-9]*';
+    $this->inputType = 'color';
     $this->format = '#000000';
     $this->hint = Str::set('a hash followed by three pairs of hexadecimal (0 through 9 to F) representing the luminescent gradiant of red, green and blue, character string with a character length of exactly 7');
   }
@@ -146,16 +144,7 @@ class HexidecimalColorCodeTest extends \tests\ramp\model\business\validation\For
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint, (string)$this->testObject->hint);
-    $this->assertEquals('color', (string)$this->testObject->inputType);
-    $this->assertNull($this->testObject->pattern);
-    $this->assertNull($this->testObject->placeholder);
-    $this->assertNull($this->testObject->minlength);
-    $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
-    $this->assertEquals('#000000', $this->testObject->format);
+    parent::testExpectedAttributeValues();
   }
 
   /**

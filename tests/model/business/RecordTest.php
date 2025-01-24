@@ -43,14 +43,22 @@ require_once '/usr/share/php/ramp/model/business/DataFetchException.class.php';
 require_once '/usr/share/php/ramp/model/business/DataExistingEntryException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/FailedValidationException.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/ValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/RegexValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/FormatBasedValidationRule.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/ISOMonth.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/DbTypeValidation.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Char.class.php';
 require_once '/usr/share/php/ramp/model/business/validation/dbtype/VarChar.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/Integer.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/SmallInt.class.php';
+require_once '/usr/share/php/ramp/model/business/validation/dbtype/TinyInt.class.php';
 require_once '/usr/share/php/ramp/model/business/Relation.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToOne.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationToMany.class.php';
 require_once '/usr/share/php/ramp/model/business/RelationLookup.class.php';
 require_once '/usr/share/php/ramp/model/business/RecordComponentType.class.php';
 require_once '/usr/share/php/ramp/model/business/field/Input.class.php';
+require_once '/usr/share/php/ramp/model/business/field/MultipartInput.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectFrom.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectOne.class.php';
 require_once '/usr/share/php/ramp/model/business/field/SelectMany.class.php';
@@ -76,6 +84,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php
 require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockMultipartInput.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\core\Str;
@@ -161,7 +170,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertFalse($this->testObject->isNew);
     $this->assertSame('mock-record:3|3|3', (string)$this->testObject->id);
     
-    $this->expectedChildCountExisting = 8;
+    $this->expectedChildCountExisting = 9;
     $this->postData = PostData::build(array('mock-record:3|3|3:a-property' => 'BadValue'));
     $this->childErrorIndexes = array(0);
     $this->assertSame(0, $this->testObject->aProperty->validateCount);
@@ -187,13 +196,18 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[5]->type);
     $this->assertEquals('select-many select-from', (string)$this->testObject[5]->type);
     $this->assertEquals('selectMany', (string)$this->testObject[5]->name);
+
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[6]->type);
-    $this->assertEquals('mock-relation-to-many relation-to-many', (string)$this->testObject[6]->type);
-    $this->assertEquals('relationAlpha', (string)$this->testObject[6]->name);
+    $this->assertEquals('input field', (string)$this->testObject[6]->type);
+    $this->assertEquals('multipartInput', (string)$this->testObject[6]->name);
+
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[7]->type);
-    $this->assertEquals('mock-relation-to-one relation-to-one', (string)$this->testObject[7]->type);
-    $this->assertEquals('relationBeta', (string)$this->testObject[7]->name);
-    $this->assertFalse(isset($this->testObject[8]));
+    $this->assertEquals('mock-relation-to-many relation-to-many', (string)$this->testObject[7]->type);
+    $this->assertEquals('relationAlpha', (string)$this->testObject[7]->name);
+    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[8]->type);
+    $this->assertEquals('mock-relation-to-one relation-to-one', (string)$this->testObject[8]->type);
+    $this->assertEquals('relationBeta', (string)$this->testObject[8]->name);
+    $this->assertFalse(isset($this->testObject[9]));
   }
   #endregion
 
