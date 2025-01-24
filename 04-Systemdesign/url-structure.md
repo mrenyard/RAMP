@@ -1,4 +1,4 @@
-
+```
  _________________________________________________________
  RECORD COLLECTION WITH FILTER                    FIGURE-1
  ---------------------------------------------------------
@@ -15,8 +15,8 @@
 
  [R-C] = RECORD-COLLECTION
  _________________________________________________________
-
-
+```
+```
  ______________________________
  SINGLE RECORD         FIGURE-2
  ------------------------------
@@ -32,8 +32,8 @@
 
  /[controller]/person/mrenyard/
  ______________________________
-
-
+```
+```
  __________________________________________
  PROPERTY OF RECORD                FIGURE-3
  ------------------------------------------
@@ -49,17 +49,18 @@
 
  /[controller]/person/mrenyard/family-name/
  __________________________________________
-
-
+```
+```
 viewId
 
 filterCollection
   filter
     name
     value
-
+```
+```
 model (recordType, key = null, propertyName = null)
   recordName
   recordId
   propertyName
-
+```
