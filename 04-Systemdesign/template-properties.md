@@ -5,6 +5,8 @@ for use in template files (.tpl)
 ## Universally available
 
  - id
+ - class
+ - style
  - title
  - heading
  - label
@@ -13,8 +15,6 @@ for use in template files (.tpl)
  - extendedSummary (NOT as attribute)
  - extendedContent (NOT as attribute)
  - footnote (NOT as attribute)
- - style
- - class
 
 ## Available under condition
 
