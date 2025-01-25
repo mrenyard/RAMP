@@ -3,40 +3,54 @@ Full list of avalible properties
 for use in template files (.tpl)
 --------------------------------
 ## Universally available
-
  - id
+   - attribute('id')
  - title
+   - attribute('title')
  - heading
  - label
  - summary
  - placeholder
- - extendedSummary (NOT as attribute)
- - extendedContent (NOT as attribute)
- - footnote (NOT as attribute)
+   - attribute('placeholder')
+ - extendedSummary
+ - extendedContent
+ - footnote
  - style
  - class
+   - attribute('class')
+
+ - children
 
 ## Available under condition
-
-`->hasModel:TRUE`
+`hasModel === TRUE` is prerequisite for all following properties. 
  - type
 
-` ->hasErrors:TRUE`
- -   errors:foreach
+` ->hasErrors === TRUE` before `foreach($this->errors as $error) {…`
+ - errors :foreach
 
-`->type == '[…] record-component'`
- - isEditable
+`type == '[…] record-component' || type == '[…] field'`
+ - isEditable :boolean
+   - attribute('readonly')
  - value
+   - attribute('value')
 
-`->type == '[…] field'`
+`type == '[…] field'`
  - isRequired
+   - attribute('required')
 
-`->type =='input field'`
+`type =='input field'`
  - inputType
  - pattern
+   - attribute('pattern')
  - minlength
+   - attribute('minlength')
  - maxlength
+   - attribute('maxlength')
  - min
+   - attribute('min')
  - max
+   - attribute('max')
  - step
+   - attribute('step')
  - hint
+   - attribute('hint')
