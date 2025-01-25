@@ -37,8 +37,8 @@ enum PageType : string
 class WebRoot extends View
 {
   private static $instance;
-  private Templated $body;
   private PageType $pageType;
+  private Templated $body;
   private Templated $dialog;
   private Templated $main;
   private Templated $datalists;
@@ -63,12 +63,7 @@ class WebRoot extends View
   }
 
   #[\Override]
-  protected function get_children() : void
-  {
-    $this->dialog->render();
-    $this->main->render();
-    $this->datalists->render();
-  }
+  protected function get_children() : void { return; }
 
   /**
    * Get instance - same instance (singleton) within same HTTP request.

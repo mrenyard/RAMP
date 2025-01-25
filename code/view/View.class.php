@@ -25,17 +25,15 @@ use ramp\core\Str;
 use ramp\core\Collection;
 
 /**
- * Definition of presentation format and type to be associated with a given Model.
+ * Abstract definition of basic presentation for rendering.
  * 
  * RESPONSIBILITIES
  * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
- * - Enable read access to associated {@see \ramp\model\Model}.
  * - Provide Decorator pattern implementation
- *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\Model}.
+ *  - enabling Ordered and Hierarchical structures that interlace.
  * 
  * COLLABORATORS
  * - {@see \ramp\view\View}
- * - {@see \ramp\model\Model}
  */
 abstract class View extends RAMPObject
 {
@@ -90,7 +88,7 @@ abstract class View extends RAMPObject
 
   /**
    * Render relevant output.
-   * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
+   * As in defined presentation ({@see View}) optionally combining with any avalible data (@see \ramp\view\ComplexView).
    */
   abstract public function render() : void;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Svelte - Rapid web application development using best practice.
+ * RAMP - Rapid web application development environment for building flexible, customisable web systems.
  *
  * This program is free software; you can redistribute it and/or modify it under the terms of the
  * GNU General Public License as published by the Free Software Foundation; either version 2 of
@@ -13,18 +13,23 @@
  * You should have received a copy of the GNU General Public License along with this program; if
  * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @package RAMP
+ * @version 0.0.9;
  */
+namespace ramp;
+require_once('load.ini.php');
 ?>
 <h1>Development List</h1>
 <ol>
-  <li><a href="/assets/style/docs/">Style Guid and CSS Design Patterns</a></li>
-  <li><a href="/assets/func">Front-end Utilities for Networked Client Documentation</a></li>
-  <!--li><a href="https://style.ramp.matt-laptop.lan/img/svg.php/icon-settings/0,200,200">SVG icon colors</a></li>
-  <li><a href="https://media.ramp.matt-laptop.lan/sized.php/500x300">Sized SVG images</a></li-->
+  <li><a href="//style.<?=SETTING::$RAMP_DOMAIN; ?>/">Style Guid and CSS Design Patterns</a></li>
+  <li><a href="//func.<?=SETTING::$RAMP_DOMAIN; ?>/">Front-end Utilities for Networked Client Documentation</a></li>
+  <!--li><a href="//style.<?=SETTING::$RAMP_DOMAIN; ?>/img/svg.php/icon-settings/0,200,200">SVG icon colors</a></li>
+  <li><a href="//media.<?=SETTING::$RAMP_DOMAIN; ?>/sized.php/500x300">Sized SVG images</a></li-->
   <li><a href="/person/?scratch=mrenyard">Person form CSS mrenyard(scratch)</a></li>
   <li><a href="/address/?scratch=mrenyard">Address form CSS mrenyard(scratch)</a></li>
   <li><a href="/country/?scratch=mrenyard">Country form CSS mrenyard(scratch)</a></li>
   <li><a href="/comprehensive/new/?scratch=mrenyard">Comprehensive form CSS mrenyard(scratch)</a></li>
-  <!--li><a href="/assets/func/docs/drag">Drag 'n' drop event test</a></li-->
   <li><a href="uml/class/model-detail.html">Experimental Class Diagram</a></li>
 </ol>

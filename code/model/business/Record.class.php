@@ -246,6 +246,7 @@ abstract class Record extends Relatable
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
+   * @todo:mrenyard: uncomment isEditable test.
    */
   #[\Override]
   public function validate(PostData $postdata, $update = TRUE) : void

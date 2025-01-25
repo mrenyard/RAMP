@@ -28,7 +28,7 @@ require_once '/usr/share/php/ramp/model/business/BusinessModel.class.php';
 require_once '/usr/share/php/ramp/view/ComplexView.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/view/MockComplexView.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/model/MockBusinessModel.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/view/MockBusinessModel.class.php';
 
 use ramp\core\RAMPObject;
 use ramp\view\ChildView;
@@ -43,7 +43,7 @@ use tests\ramp\mocks\view\MockComplexViewA;
 use tests\ramp\mocks\view\MockComplexViewB;
 use tests\ramp\mocks\view\MockComplexViewC;
 use tests\ramp\mocks\view\MockComplexViewD;
-use tests\ramp\mocks\model\MockBusinessModel;
+use tests\ramp\mocks\view\MockBusinessModel;
 
 /**
  * Collection of tests for \ramp\view\ComplexView.
@@ -149,7 +149,7 @@ class ComplexViewTest extends \tests\ramp\view\ChildViewTest
   #[\Override]
   public function testClone() : void
   {
-    $clone = clone $this->testObject; 
+    $clone = clone $this->testObject;
     $this->assertNotSame($this->testObject, $clone);
     $this->assertEquals($this->testObject, $clone);
     $this->testObject->setModel(new MockBusinessModel());

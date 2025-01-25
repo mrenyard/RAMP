@@ -192,13 +192,13 @@ class DocumentTest extends \tests\ramp\model\ModelTest
    */
   public function testGetSet_summaryPlaceholder() : void
   {
-    $this->testObject->summary = Str::set('Heading');
+    $this->testObject->summary = Str::set('Summary');
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->summary);
-    $this->assertEquals('Heading', (string)$this->testObject->summary);
+    $this->assertEquals('Summary', (string)$this->testObject->summary);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->placeholder);
-    $this->assertEquals('Heading', (string)$this->testObject->placeholder);
-    $this->testObject->placeholder = Str::set('Label');
-    $this->assertEquals('Label', (string)$this->testObject->summary);
+    $this->assertEquals('Summary', (string)$this->testObject->placeholder);
+    $this->testObject->placeholder = Str::set('Placeholder');
+    $this->assertEquals('Placeholder', (string)$this->testObject->summary);
   }
 
   /**

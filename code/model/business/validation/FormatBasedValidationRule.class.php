@@ -44,10 +44,35 @@ class FormatBasedValidationRule extends RegexValidationRule
   }
 
   /**
+   * @ignore
+   */
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return NULL;
+  }
+
+  /**
    * @ignore 
    */
   #[\Override]
   protected function get_pattern() : ?Str
+  {
+    return NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_minlength() : ?int
+  {
+    return NULL;
+  }
+
+  /**
+   * @ignore
+   */
+  protected function get_maxlength() : ?int
   {
     return NULL;
   }
