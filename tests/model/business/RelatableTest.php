@@ -91,7 +91,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Relatable::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Relatable::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Relatable::__set()
    */
@@ -102,7 +102,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Relatable::__get().
+   * Bad property (name) NOT accessible on \ramp\model\Relatable::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Relatable::__get()
    */
@@ -166,7 +166,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\Relatable::id.
+   * Set 'id' NOT accessible on \ramp\model\business\Relatable::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Relatable::id
    */
@@ -177,7 +177,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'type' NOT accessable.
+   * Set 'type' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Relatable::$type
    */
@@ -189,7 +189,7 @@ class RelatableTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Get 'children' NOT accessable.
+   * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    */
   #[\Override]

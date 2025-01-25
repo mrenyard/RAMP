@@ -41,7 +41,7 @@ class VarChar extends DbTypeValidation
    *   20,
    *   new validation\SecondValidationRule(
    *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
+   *       new validation\FourthValidationRule()
    *     )
    *   ),
    *   Str::set('Format error message/hint')
@@ -50,7 +50,7 @@ class VarChar extends DbTypeValidation
    * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $maxlength Maximum number of characters from 0 to 16383
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @param \ramp\model\business\validation\ValidationRule $subRule additional rule/s to be added
    * @throws \InvalidArgumentException When $subRule contains a rule with maxlength > $maxlength provided here.
    */
   public function __construct(Str $placeholder, Str $errorHint, int $maxlength, ValidationRule $subRule)

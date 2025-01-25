@@ -116,7 +116,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\buiness\Key::__set().
+   * Bad property (name) NOT accessible on \ramp\model\buiness\Key::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\buiness\Key::__set()
    */
@@ -127,7 +127,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\buiness\Key::__get().
+   * Bad property (name) NOT accessible on \ramp\model\buiness\Key::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\buiness\Key::__get()
    */
@@ -138,7 +138,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Good property is accessable on \ramp\model\buiness\Key::__get() and \ramp\model\buiness\Key::__set()
+   * Good property is accessible on \ramp\model\buiness\Key::__get() and \ramp\model\buiness\Key::__set()
    * - assert get <i>RAMPObject->aProperty</i> returns same as set <i>RAMPObject->aProperty = $value</i>
    * @see \ramp\model\buiness\Key::__set()
    * @see \ramp\model\buiness\Key::__get()
@@ -187,7 +187,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\Key::id.
+   * Set 'id' NOT accessible on \ramp\model\business\Key::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Key::id
    */
@@ -198,7 +198,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\Key::type.
+   * Set 'type' NOT accessible on \ramp\model\business\Key::type.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Key::type
    */
@@ -209,7 +209,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\Key::children.
+   * Get 'children' NOT accessible on \ramp\model\business\Key::children.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Key::children
    */
@@ -376,7 +376,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'record' NOT accessable ramp\model\business\Key::record.
+   * Set 'record' NOT accessible ramp\model\business\Key::record.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\Key::record
    */
@@ -387,7 +387,7 @@ class PrimaryKeyTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'propertyName' NOT accessable ramp\model\business\Key::propertyName.
+   * Set 'propertyName' NOT accessible ramp\model\business\Key::propertyName.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\Key::propertyName
    */

@@ -31,7 +31,7 @@ class UppercaseAlphabetic extends RegexValidationRule
     /**
    * Constructor for uppercase alphabetic Regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param specialist\SpecialistValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+   * @param specialist\SpecialistValidationRule $subRule additional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, specialist\SpecialistValidationRule $subRule = NULL)
   {

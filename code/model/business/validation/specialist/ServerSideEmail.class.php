@@ -36,7 +36,7 @@ class ServerSideEmail extends SpecialistValidationRule
    * pattern matching and validation\dbtype\VarChar:
    * ```php
    * $myRule = new validation\dbtype\VarChar( Str::set('e.g. jsmith@domain.com')
-   *   Str::set('string with a maximun character length of '), 150,
+   *   Str::set('string with a maximum character length of '), 150,
    *   new validation\RegexEmailAddres(
    *     Str::set('validly formatted email address'),
    *     new validation\special\ServerSideEmail()

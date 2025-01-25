@@ -100,7 +100,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable.
+   * Bad property (name) NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__set()
    */
@@ -111,7 +111,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Bad property (name) NOT accessable.
+   * Bad property (name) NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__get()
    */
@@ -175,7 +175,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Set 'id' NOT accessable.
+   * Set 'id' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
@@ -186,7 +186,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Set 'type' NOT accessable.
+   * Set 'type' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
@@ -198,7 +198,7 @@ class RecordCollectionTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Get 'children' NOT accessable.
+   * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   #[\Override]

@@ -116,7 +116,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\business\BusinessModel::__set().
+   * Bad property (name) NOT accessible on \ramp\model\business\BusinessModel::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\business\BusinessModel::__set()
    */
@@ -127,7 +127,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\business\BusinessModel::__get().
+   * Bad property (name) NOT accessible on \ramp\model\business\BusinessModel::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\business\BusinessModel::__get()
    */
@@ -216,7 +216,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\BusinessModel::$id.
+   * Set 'id' NOT accessible on \ramp\model\business\BusinessModel::$id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
@@ -228,7 +228,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\BusinessModel::$type.
+   * Set 'type' NOT accessible on \ramp\model\business\BusinessModel::$type.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
@@ -240,7 +240,7 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Get 'children' NOT accessable.
+   * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   public function testGetChildrenBadPropertyCallException() : void

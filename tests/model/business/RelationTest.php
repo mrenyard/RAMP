@@ -140,7 +140,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Bad property (name) NOT accessable.
+   * Bad property (name) NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__get()
    */
@@ -204,7 +204,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'id' NOT accessable.
+   * Set 'id' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'.
    * @see \ramp\model\business\BusinessModel::$id
    */
@@ -215,7 +215,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'type' NOT accessable.
+   * Set 'type' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::$type
    */
@@ -226,7 +226,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Get 'children' NOT accessable.
+   * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   #[\Override]
@@ -355,7 +355,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'parent' NOT accessable.
+   * Set 'parent' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'.
    * @see \ramp\model\business\RecordComponent::$parent
    */
@@ -366,7 +366,7 @@ class RelationTest extends \tests\ramp\model\business\RecordComponentTest
   }
 
   /**
-   * Set 'name' NOT accessable.
+   * Set 'name' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'name'.
    * @see \ramp\model\business\RecordComponent::$name
    */

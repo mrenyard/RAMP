@@ -89,7 +89,7 @@ class SpecialistValidationRuleTest extends \tests\ramp\model\business\validation
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__set().
+   * Bad property (name) NOT accessible on \ramp\core\RAMPObject::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see ramp\core\RAMPObject::__set()
    */
@@ -100,7 +100,7 @@ class SpecialistValidationRuleTest extends \tests\ramp\model\business\validation
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\core\RAMPObject::__get().
+   * Bad property (name) NOT accessible on \ramp\core\RAMPObject::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\core\RAMPObject::__get()
    */

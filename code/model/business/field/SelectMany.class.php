@@ -33,7 +33,7 @@ use ramp\model\business\validation\FailedValidationException;
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
  * - Implement template method, processValidationRule to validate against available iOptions.
  *
  * COLLABORATORS
@@ -60,7 +60,7 @@ final class SelectMany extends SelectFrom
   /**
    * Validate that value is an array contain zero or many of available options.
    * @param mixed $value Value to be processed
-   * @throws \BadMethodCallException When $value parameter in NOT an array.
+   * @throws \BadMethodCallException When $value parameter is NOT an array.
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
   public function processValidationRule($value) : void

@@ -47,7 +47,7 @@ class RegexValidationRule extends ValidationRule
    * ```
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param string $pattern Regex pattern to be validated against.
-   * @param ValidationRule $subRule Optional addtional rule to be added to *this* test.
+   * @param ValidationRule $subRule Optional additional rule to be added to *this* test.
    */
   public function __construct(Str $errorHint, string $pattern, SpecialistValidationRule $subRule = NULL)
   {

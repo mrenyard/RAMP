@@ -30,7 +30,7 @@ use ramp\model\business\validation\ValidationRule;
  * RESPONSIBILITIES
  * - Inherits API for test method, where a single code defined test is executed against provided value.
  * - Act as the first validation rule of a decorator pattern where several tests can be organised to run consecutively.
- * - Takes and argument of $errorMessage to bubble up as message of FailedValidationException when test fails.
+ * - Takes an argument of $errorMessage to bubble up as message of FailedValidationException when test fails.
  *
  * COLLABORATORS
  * - {@see \ramp\validation\ValidationRule}
@@ -55,7 +55,7 @@ abstract class DbTypeValidation extends ValidationRule
    * );
    * ```
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param ?ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+   * @param ?ValidationRule $subRule additional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, ValidationRule $subRule = NULL)
   {

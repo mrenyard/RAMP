@@ -131,7 +131,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
 
   #region Inherited Tests
     /**
-   * Bad property (name) NOT accessable on \ramp\model\Record::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Record::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Record::__set()
    */
@@ -142,7 +142,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Record::__get().
+   * Bad property (name) NOT accessible on \ramp\model\Record::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Record::__get()
    */
@@ -208,7 +208,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\Record::id.
+   * Set 'id' NOT accessible on \ramp\model\business\Record::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Record::id
    */
@@ -220,7 +220,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\Record::type.
+   * Set 'type' NOT accessible on \ramp\model\business\Record::type.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Record::type
    */
@@ -232,7 +232,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\Record::children.
+   * Get 'children' NOT accessible on \ramp\model\business\Record::children.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Record::children
    */

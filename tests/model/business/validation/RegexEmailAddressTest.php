@@ -50,7 +50,7 @@ class RegexEmailAddressTest extends \tests\ramp\model\business\validation\Valida
   #[\Override]
   protected function preSetup() : void
   {
-    $this->hint = Str::set('string with a maximun character length of ');
+    $this->hint = Str::set('string with a maximum character length of ');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -74,7 +74,7 @@ class RegexEmailAddressTest extends \tests\ramp\model\business\validation\Valida
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
@@ -85,7 +85,7 @@ class RegexEmailAddressTest extends \tests\ramp\model\business\validation\Valida
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * Bad property (name) NOT accessible on \ramp\model\Model::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */

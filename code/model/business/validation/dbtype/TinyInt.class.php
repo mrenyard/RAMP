@@ -23,13 +23,13 @@ namespace ramp\model\business\validation\dbtype;
 use ramp\core\Str;
 
 /**
- * Tiny Interger database type validation rule, whole number (not decimal) from -128 to 127.
+ * Tiny integer database type validation rule, whole number (not decimal) from -128 to 127.
  * Runs code defined test against provided value.
  */
 class TinyInt extends Integer
 {
   /**
-   * Default constructor for a validation rule of database type Interger between -128 and 127.
+   * Default constructor for a validation rule of database type integer between -128 and 127.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $min Optional minimum value that is acceptable and valid.
    * @param int $max Optional maximum value that is acceptable and valid.

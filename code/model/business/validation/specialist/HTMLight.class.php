@@ -39,11 +39,11 @@ class HTMLight extends SpecialistValidationRule
 
   /**
    * Constructor for light HTML format validation.
-   * HTMLight validation usualy wrapped within validation\dbtype\Text
+   * HTMLight validation usually wrapped within validation\dbtype\Text
    * and requires validation\specialist\CheckSafeHREFs validation:
    * ```php
    * $myRule = new validation\dbtype\Text(
-   *   Str::set('with a maximun character length of '), NULL,
+   *   Str::set('with a maximum character length of '), NULL,
    *   new validation\HTMLight(
    *     Str::set('HTMLight [https://rampapp.info/assets/htmlight.dtd]'),
    *     new validation\specialist\CheckSafeHREFs(Str::set('safe (href) links,'))
@@ -71,7 +71,7 @@ class HTMLight extends SpecialistValidationRule
 
   /**
    * Asserts that $value conforms to safe (allowed) html. 
-   * @todo:mrenyard: replace DTD location once public accessable.
+   * @todo:mrenyard: replace DTD location once public accessible.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */

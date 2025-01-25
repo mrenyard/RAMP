@@ -60,7 +60,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * The following methods are accessable and return as defined in constructor.
+   * The following methods are accessible and return as defined in constructor.
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals null
    * - getPropertyName() equals null
@@ -77,7 +77,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * The following methods are accessable and return as defined in constructor.
+   * The following methods are accessible and return as defined in constructor.
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals null
@@ -94,7 +94,7 @@ class SimpleBusinessModelDefinitionTest extends \PHPUnit\Framework\TestCase {
   }
 
   /**
-   * The following methods are accessable and return as defined in constructor.
+   * The following methods are accessible and return as defined in constructor.
    * - getRecordName() equals Str with the value 'Record'
    * - getRecordKey() equals Str with the value 'key'
    * - getPropertyName() equals Str with the value 'property'

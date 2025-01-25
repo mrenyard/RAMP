@@ -147,7 +147,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
@@ -158,7 +158,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Bad property (name) NOT accessable.
+   * Bad property (name) NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
@@ -222,7 +222,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\BusinessModel::id.
+   * Set 'id' NOT accessible on \ramp\model\business\BusinessModel::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\BusinessModel::id
    */
@@ -233,7 +233,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\BusinessModel::$type.
+   * Set 'type' NOT accessible on \ramp\model\business\BusinessModel::$type.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
@@ -244,7 +244,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Get 'children' NOT accessable.
+   * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
   #[\Override]
@@ -374,7 +374,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'record' NOT accessable.
+   * Set 'record' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
    */
@@ -386,7 +386,7 @@ class RecordComponentTest extends \tests\ramp\model\business\BusinessModelTest
   }
 
   /**
-   * Set 'propertyName' NOT accessable.
+   * Set 'propertyName' NOT accessible.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\field\Field::propertyName
    */

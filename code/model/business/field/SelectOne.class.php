@@ -26,14 +26,14 @@ use ramp\model\business\Record;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Specilised field for selecting one from a collection of iOptions tied to a single property of
+ * Specialised field for selecting one from a collection of iOptions tied to a single property of
  * its parent \ramp\model\business\Record.
  *
  * RESPONSIBILITIES
  * - Provide generalised methods for property access (inherited from {@see \ramp\core\RAMPObject}).
  * - Implement property specific methods for iteration, validity checking & error reporting.
- * - Hold referance back to parent Record and restrict polymorphic composite association. 
- * - Implement template method, processValidationRule to validate against avalible iOptions.
+ * - Hold reference back to parent Record and restrict polymorphic composite association. 
+ * - Implement template method, processValidationRule to validate against available iOptions.
  * 
  * COLLABORATORS
  * - {@see \ramp\model\business\Record}
@@ -52,7 +52,7 @@ final class SelectOne extends SelectFrom
   }
 
   /**
-   * Validate that value is one of avalible options.
+   * Validate that value is one of available options.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
@@ -62,6 +62,6 @@ final class SelectOne extends SelectFrom
     {
       if ((string)$value == (string)$option->id) { return; }
     }
-    throw new FailedValidationException('Selected value NOT an avalible option!');
+    throw new FailedValidationException('Selected value NOT an available option!');
   }
 }

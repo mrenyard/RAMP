@@ -43,7 +43,7 @@ class Text extends DbTypeValidation
    *   Str::set('Format error message/hint'), NULL|n,
    *   new validation\SecondValidationRule(
    *     new validation\ThirdValiationRule(
-   *       new validation\ForthValidationRule()
+   *       new validation\FourthValidationRule()
    *     )
    *   )
    * );
@@ -51,7 +51,7 @@ class Text extends DbTypeValidation
    * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $maxlength Maximum number of characters from 1 to 16383
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added
+   * @param \ramp\model\business\validation\ValidationRule $subRule additional rule/s to be added
    */
   public function __construct(Str $placeholder, Str $errorHint, int $maxlength = NULL, ValidationRule $subRule)
   {

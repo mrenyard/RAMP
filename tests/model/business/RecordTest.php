@@ -213,7 +213,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Record::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Record::__set().
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Record::__set()
    */
@@ -224,7 +224,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Record::__get().
+   * Bad property (name) NOT accessible on \ramp\model\Record::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Record::__get()
    */
@@ -288,7 +288,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Set 'id' NOT accessable on \ramp\model\business\Record::id.
+   * Set 'id' NOT accessible on \ramp\model\business\Record::id.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\Record::id
    */
@@ -300,7 +300,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Set 'type' NOT accessable on \ramp\model\business\Record::type.
+   * Set 'type' NOT accessible on \ramp\model\business\Record::type.
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'
    * @see \ramp\model\business\Record::type
    */
@@ -312,7 +312,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Get 'children' NOT accessable on \ramp\model\business\Record::children.
+   * Get 'children' NOT accessible on \ramp\model\business\Record::children.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'
    * @see \ramp\model\business\Record::children
    */
@@ -631,7 +631,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
  
   /**
-   * Set 'new' relation on Record (ONE) accessable with appropiate state changes.
+   * Set 'new' relation on Record (ONE) accessible with appropiate state changes.
    * - assert dataObject of parent Record does NOT contain relation name.
    * - assert dataObject of parent Record contains expected 'foreign keys'.
    * - assert pre ANY validation:
@@ -791,7 +791,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Set 'existing' relation on Record (ONE) accessable with appropiate state changes.
+   * Set 'existing' relation on Record (ONE) accessible with appropiate state changes.
    * - assert post validate() related record is as expected.
    * - assert 'value' matches 'id' of expected related Record mock-min-record:a|b|c).
    * - assert interator on relation returns expected properties.
@@ -843,7 +843,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Unset 'existing' relation on Record (ONE) accessable with appropiate state changes.
+   * Unset 'existing' relation on Record (ONE) accessible with appropiate state changes.
    * - assert dataObject of parent Record does NOT contain relation name.
    * - assert dataObject of parent Record contains expected 'foreign keys'.
    * - assert while relation NOT isEditable no change occurs.
@@ -907,7 +907,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Add 'existing' and 'new' relation on Record collection (MANY) accessable with appropiate state changes.
+   * Add 'existing' and 'new' relation on Record collection (MANY) accessible with appropiate state changes.
    * - assert Record with relation (MANY) holds expected collection of associated Records.
    * - assert default relation NOT isEditable (no extra 'new' Record appended to collection as default).
    * - assert following change to isEditable=TRUE property has appended 'new' record ready to recieve primaryKey values.
@@ -1064,7 +1064,7 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
   }
 
   /**
-   * Remove 'existing' relation on Record collection (MANY) accessable with appropiate state changes.
+   * Remove 'existing' relation on Record collection (MANY) accessible with appropiate state changes.
    * - assert Record with relation (MANY) holds expected collection of associated Records.
    * - assert following change to isEditable=TRUE property has appended 'new' record ready to recieve primaryKey values.
    * - assert error recorded on attempting an Illegal UNSET Action.

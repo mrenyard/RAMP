@@ -24,7 +24,7 @@ use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 
 /**
- * Interger database type validation rule, whole number (not decimal) from -2147483648 to 2147483647.
+ * Integer database type validation rule, whole number (not decimal) from -2147483648 to 2147483647.
  * Runs code defined test against provided value.
  */
 class Integer extends DbTypeValidation
@@ -35,7 +35,7 @@ class Integer extends DbTypeValidation
   private int $step;
 
   /**
-   * Default constructor for a validation rule of database type Interger between -2147483648 and 2147483647.
+   * Default constructor for a validation rule of database type integer between -2147483648 and 2147483647.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $min Optional minimum value that is acceptable and valid.
    * @param int $max Optional maximum value that is acceptable and valid.
@@ -99,7 +99,7 @@ class Integer extends DbTypeValidation
   }
 
   /**
-   * Asserts that $value is an Interger, a whole number.
+   * Asserts that $value is an integer, a whole number.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */

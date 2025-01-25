@@ -46,7 +46,7 @@ class DecimalPointNumber extends DbTypeValidation
    * ```
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $point Number of places from decimal point expected
-   * @param int $precision Number of digets including decimal places that are storable places from decimal point expected
+   * @param int $precision Number of digits including decimal places that are storable places from decimal point expected
    */
   public function __construct(Str $errorHint, int $point, int $precision = NULL)
   {

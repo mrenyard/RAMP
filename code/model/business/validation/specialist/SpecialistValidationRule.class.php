@@ -54,7 +54,7 @@ abstract class SpecialistValidationRule extends ValidationRule
    * );
    * ```
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
-   * @param ValidationRule $subRule Addtional optional rule/s to be added to *this* test.
+   * @param ValidationRule $subRule additional optional rule/s to be added to *this* test.
    */
   public function __construct(Str $errorHint, SpecialistValidationRule $subRule = NULL)
   {
