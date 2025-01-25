@@ -120,11 +120,7 @@ abstract class Field extends RecordComponent
    * Validate postdata against this and update accordingly.
    * @param \ramp\condition\PostData $postdata Collection of InputDataCondition\s
    *  to be assessed for validity and imposed on *this* business model.
-<<<<<<< HEAD
-   * @param bool $update Default is to update on successful validation, TRUE to skip.
-=======
-   * @param bool $update Default is to update on succesful validation, FALSE to skip.
->>>>>>> f887dc211b8bdc00be14993ba96c981ab25031ec
+   * @param bool $update Default is to update on successful validation, FALSE to skip.
    */
   #[\Override]
   public function validate(PostData $postdata, bool $update = TRUE) : void

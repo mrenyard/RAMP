@@ -24,10 +24,7 @@ namespace tests\ramp\view\document;
 require_once '/usr/share/php/tests/ramp/view/document/DocumentViewTest.php';
 
 require_once '/usr/share/php/ramp/SETTING.class.php';
-// require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/view/document/Templated.class.php';
-
-require_once '/usr/share/php/tests/ramp/mocks/model/MockRecord.class.php';
 
 use ramp\SETTING;
 use ramp\core\RAMPObject;
@@ -36,7 +33,7 @@ use ramp\core\PropertyNotSetException;
 use ramp\view\RootView;
 use ramp\view\document\Templated;
 
-use tests\ramp\mocks\model\MockRecord;
+use tests\ramp\mocks\view\MockRecord;
 use tests\ramp\mocks\view\MockViewA;
 use tests\ramp\mocks\view\MockViewB;
 use tests\ramp\mocks\view\MockViewC;
@@ -53,10 +50,8 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   #[\Override]
   protected function preSetup() : void {
     SETTING::$DEV_MODE = TRUE;
+    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\view';
     SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
-    SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
-
     if (!\str_contains(get_include_path(), SETTING::$RAMP_LOCAL_DIR)) {
       \set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path());
     }  
@@ -66,7 +61,6 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   }
   #[\Override]
   protected function getTestObject() : RAMPObject { return new Templated(RootView::getInstance(), $this->templateName, $this->templateType); }
-  // protected function postSetup() : void {  }
   #endregion
 
   /**
@@ -240,73 +234,251 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
       $this->testObject->template
     );
-    parent::testComplexModelCascading($parentViewType, Str::set('path'), Str::set('test'));
+    parent::testComplexModelCascading($parentViewType, $this->templateName, $this->templateType);
   }
 
-  /**
-   * 'class' attribute managment and retrieval.
-   * - assert 'style' setting adds to classlist
-   * - assert attribute('class') returns in expected format.
-   * - assert model definition forms part of classlist as expected. 
-   */
-  #[\Override]
-  public function testClassProperyReturnValue()
-  {
-    parent::testClassProperyReturnValue();
-    // $this->testObject->style = Str::set('default');
-    // $this->assertSame('default', (string)$this->testObject->class);
-    // $this->assertSame(' class="default"', (string)$this->testObject->attribute('class'));
-    // $record = new MockRecord();
-    // $this->testObject->setModel($record->aProperty);
-    // $this->assertSame('mock-field field default', (string)$this->testObject->class);
-    // $this->assertSame(' class="mock-field field default"', (string)$this->testObject->attribute('class'));
-  }
-
-  /**
-   * heading/label element value managment and retrieval.
-   * - assert default value '[Heading/Lable]'
-   * - assert access setting through $this->label.
-   * - assert retrieval throught either throught 'heading' or 'lable'
-   * - assert when associated with a field, returns the field 'lable' in expected format. 
-   */
-  #[\Override]
-  public function testLabelHeadingProperyReturnValue()
-  {
-    parent::testLabelHeadingProperyReturnValue();
-    // $this->assertSame('[HEADING]', (string)$this->testObject->heading); // DEFAULT
-    // $record = new MockRecord();
-    // $this->testObject->setModel($record->aProperty);
-    // $this->assertSame('A Property', (string)$this->testObject->label); // from Field name
-    // $this->testObject->label = Str::set('My Heading');
-    // $this->assertSame('My Heading', (string)$this->testObject->heading);
-    // $this->assertSame($this->testObject->label, $this->testObject->heading); // overiden from documentView.
-  }
-  
   /**
    * 'id' attribute managment and retrieval.
    * - assert default when not set or related to data field returns unique uid[number].
    * - assert with data returns expected URN [record]:[key]:[property]
+   * - assert attribute('id') returns in expected format.
    */
   #[\Override]
   public function testIdPropertyReturenValue()
   {
     parent::testIdPropertyReturenValue();
-    // $this->assertMatchesRegularExpression('#^uid[0-9]*$#', (string)$this->testObject->id);
-    // $data = new \stdClass();
-    // $data->keyA = 1; $data->keyB = 1; $data->keyC = 1;
-    // $record = new MockRecord($data);
-    // $this->testObject->setModel($record->aProperty);
-    // $this->assertSame('mock-record:1|1|1:a-property', (string)$this->testObject->id);
+    $this->assertEquals(' id="mock-record:1|1|1:a-property"', $this->testObject->attribute('id'));
   }
 
+  /**
+   * 'class' attribute managment and retrieval.
+   * - assert 'style' setting adds to classlist
+   * - assert model definition forms part of classlist as expected. 
+   * - assert attribute('class') returns in expected format.
+   */
   #[\Override]
-  public function testDocumentModelCopiedOnClone()
+  public function testClassStyleProperyReturnValue(Str $setStyle = NULL)
   {
-    parent::testDocumentModelCopiedOnClone();
+    $setStyle = Str::set('default');
+    $this->testObject->style = $setStyle;
+    $this->assertEquals(' class="' . $setStyle . '"', $this->testObject->attribute('class'));
+
+    parent::testClassStyleProperyReturnValue($setStyle);
+    $this->assertEquals(' class="mock-input input ' . $setStyle . '"', $this->testObject->attribute('class'));
+  }
+
+  /**
+   * title element value managment and retrieval.
+   * - assert default value '[TITLE]'
+   * - assert access setting through $this->title = $value.
+   * - assert retrieval throught '$this->title' as expected.
+   * - assert attribute('title') returns in expected format.
+   */
+  #[\Override]
+  public function testTitlePropertyReturnValue(string $value = NULL)
+  {
+    $value = ($value === NULL) ? 'Full context descriptive title' : $value;
+    parent::testTitlePropertyReturnValue($value);
+    $this->assertEquals(' title="' . $value . '"', $this->testObject->attribute('title'));
+  }
+
+  /**
+   * heading/label element value managment and retrieval.
+   * - assert default value '[HEADING/LABEL]'
+   * - assert when associated with a field, returns the field 'label' in expected format. 
+   * - assert access setting through $this->label and $this->heading.
+   * - assert retrieval throught either 'heading' or 'lable'
+   * - assert attribute('heading/label') returns in expected format.
+   */
+  #[\Override]
+  public function testHeadingLabelProperyReturnValue()
+  {
+    parent::testHeadingLabelProperyReturnValue();
+    $this->assertEquals(' heading="My Heading"', $this->testObject->attribute('heading'));
+    $this->assertEquals(' label="My Heading"', $this->testObject->attribute('label'));
+  }
+
+  /**
+   * summary/placeholder element value managment and retrieval.
+   * - assert default value '[SUMMARY/PLACEHOLDER]'
+   * - assert access setting through $this->summary and $this->placeholder.
+   * - assert retrieval throught either 'summary' or 'placeholder'
+   * - assert attribute('summary/placeholder') returns in expected format.
+   * @todo:mrenyard: check for NULL return on inputType != text|search|url|tel|email|password
+   */
+  #[\Override]
+  public function testSummaryPlaceholderProperyReturnValue()
+  {
+    parent::testSummaryPlaceholderProperyReturnValue();
+    $this->assertEquals(' summary="My Placeholder"', $this->testObject->attribute('summary'));
+    $this->assertEquals(' placeholder="My Placeholder"', $this->testObject->attribute('placeholder'));
+  }
+
+  /**
+   * extendedSummary element value managment and retrieval.
+   * - assert default value NULL.
+   * - assert access setting through $this->extendedSummary.
+   * - assert retrieval throught either throught 'extendedSummary'.
+   * - assert attribute('extendedSummary') throws \BadMethodCallException 
+   *   - with message: *'extendedSummary is NOT avalible as an HTML attribute!'*.
+   */
+  #[\Override]
+  public function testExtendedSummaryProperyReturnValue()
+  {
+    parent::testExtendedSummaryProperyReturnValue();
+    try {
+      $this->testObject->attribute('extendedSummary');
+    } catch (\BadMethodCallException $expected) {
+      $this->assertEquals(
+        'extendedSummary is NOT avalible in attribute format!',
+        $expected->getMessage()
+      );
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * extendedContent element value managment and retrieval.
+   * - assert default value NULL.
+   * - assert access setting through $this->extendedContent.
+   * - assert retrieval throught either throught 'extendedContent'.
+   * - assert attribute('extendedContent') throws \BadMethodCallException 
+   *   - with message: *'extendedContent is NOT avalible as an HTML attribute!'*.
+   */
+  #[\Override]
+  public function testExtendedContentProperyReturnValue()
+  {
+    parent::testExtendedContentProperyReturnValue();
+    try {
+      $this->testObject->attribute('extendedContent');
+    } catch (\BadMethodCallException $expected) {
+      $this->assertEquals(
+        'extendedContent is NOT avalible in attribute format!',
+        $expected->getMessage()
+      );
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * footnote element value managment and retrieval.
+   * - assert default value NULL.
+   * - assert access setting through $this->footnote.
+   * - assert retrieval throught either throught 'footnote'.
+   * - assert attribute('footnote') throws \BadMethodCallException 
+   *   - with message: *'footnote is NOT avalible as an HTML attribute!'*.
+   */
+  #[\Override]
+  public function testFootnoteProperyReturnValue()
+  {
+    parent::testFootnoteProperyReturnValue();
+    try {
+      $this->testObject->attribute('footnote');
+    } catch (\BadMethodCallException $expected) {
+      $this->assertEquals(
+        'footnote is NOT avalible in attribute format!',
+        $expected->getMessage()
+      );
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'type' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('type') prior to setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling 'type' prior to setting modal.
+   * - assert hasModel prior setting 'setModel' returns FALSE.
+   * - assert hasModel post setting 'setModel' returns TRUE.
+   * - assert 'type' successfuly return as expected based on associated model.
+   * - assert attribute('type') returns in expected format.
+   */
+  #[\Override]
+  public function testHasModelTypePropertyReturnValue()
+  {
+    try {
+      $this->testObject->attribute('type');
+    } catch(\BadMethodCallException $expected) {
+      parent::testHasModelTypePropertyReturnValue();
+      $this->assertEquals(' type="mock-input input"', $this->testObject->attribute('type'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'errors' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('errors') both prior and post setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling 'hasErrors' prior to setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling 'errors' prior to setting modal.
+   * - assert hesErrors successfully reports FALSE pre POST.
+   * - assert hasErrors reports TRUE following BAD data POST.
+   * - assert 'errors' returns itterator and successfuly cycles corret number of errors in foreach.
+   */
+  #[\Override]
+  public function testHasErrorsForeachError()
+  {
+    try {
+      $this->testObject->attribute('errors');
+    } catch(\BadMethodCallException $expected) {
+      parent::testHasErrorsForeachError();
+      try {
+        $this->testObject->attribute('errors');
+      } catch (\BadMethodCallException $expected) {
+        return;
+      }
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'isEditable' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('isEditable') both prior and post setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling 'isEditable' prior to setting modal.
+   * - assert 'isEditable' successfully return as expected.
+   */
+  #[\Override]
+  public function testIsEditable()
+  {
+    try {
+      $this->testObject->attribute('isEditable');
+    } catch (\BadMethodCallException $expected) {
+      parent::testIsEditable();
+      try {
+        $this->testObject->attribute('isEditable');
+      } catch (\BadMethodCallException $expected) {
+        return;
+      }
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
   }
   #endregion
 
   #region New Specialist Tests
+  /**
+   * 
+   */
+  public function testAttributeRequiredOutput()
+  {
+    $this->testObject->setModel($this->record->aProperty);
+    $this->assertFalse($this->testObject->isRequired);
+    $this->assertNull($this->testObject->attribute('required'));
+
+    $recordWithRequiredFields = new MockRecord(NULL, TRUE);
+    $testObject2 = new Templated(RootView::getInstance(), $this->templateName, $this->templateType);
+    $testObject2->setModel($recordWithRequiredFields->aProperty);
+    $this->assertTrue($recordWithRequiredFields->aProperty->isRequired);
+    $this->assertEquals(' required="required"', $testObject2->attribute('required'));
+  }
+
+  public function testAttributeValueOutput()
+  {
+    $this->testObject->setModel($this->record->aProperty);
+    $this->assertNull($this->testObject->attribute('value'));
+  }
+
   /**
    * Constructor bad template path exception test.
    * - assert throws InvalidArgumentException when arguments do NOT map to a valid template file.
@@ -330,18 +502,37 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/'. $this->templateType .'/'. $this->templateName . '.tpl.php',
       $this->testObject->template
     );
-    $this->testObject->templateType = Str::set('text');
+    $this->testObject->templateType = Str::set('html');
     $this->assertSame(
-      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/text/'. $this->templateName . '.tpl.php',
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/html/'. $this->templateName . '.tpl.php',
       $this->testObject->template
     );
     $this->expectException(PropertyNotSetException::class);
-    $this->expectExceptionMessage('Provided $templateName (path) of $templateType (html) is non existant!');
-    $this->testObject->templateType = Str::set('html');
+    $this->expectExceptionMessage('Provided $templateName (path) of $templateType (text) is non existant!');
+    $this->testObject->templateType = Str::set('text');
     $this->assertSame(
-      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/text/'. $this->templateName . '.tpl.php',
+      SETTING::$RAMP_LOCAL_DIR . '/ramp/view/document/template/html/'. $this->templateName . '.tpl.php',
       $this->testObject->template
     );    
+  }
+
+  /**
+   * Alow template type swithiching through set templateType.
+   * - assert get $this->template returns valid template full path.
+   * - assert changing templateType changes to relevant new full path.
+   * - assert exeption throws PropertyNotSetException when teplate file missing and reverts to last valid path.
+   */
+  public function testRender()
+  {
+    $this->testObject->templateType = Str::set('html');
+    ob_start();
+    $this->testObject->render();
+    $output = ob_get_clean();
+    $this->assertSame(
+      '<!-- /home/mrenyard/Projects/RAMP/local/ramp/view/document/template/html/path.tpl.php -->' . PHP_EOL .
+      'ramp\view\document\Templated',
+      $output
+    );
   }
   #endregion
 }

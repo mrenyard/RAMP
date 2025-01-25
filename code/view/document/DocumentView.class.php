@@ -54,35 +54,6 @@ abstract class DocumentView extends ComplexView
     parent::__construct($parent);
     $this->documentModel = new Document();
   }
-  
-  /**
-   * Returns complete attbibute and value.
-   * @todo mrenyard:Moving this to Templated makes more sence?
-   * @param string $propertyName Attribute Property Name 
-   * @return \ramp\core\Str Attribute and value of requested property 
-   * @throws \BadMethodCallException Unable to set property when undefined or inaccessible
-   */
-  public function attribute($propertyName) : ?Str
-  {
-    if ($propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote') {
-      throw new \BadMethodCallException($propertyName . ' is NOT avalible as an HTML attribute');
-    }
-    if ($this->hasModel) {
-      if ($propertyName == 'required') { return ($this->isRequired) ? Str::set(' required="required"') : NULL; }
-      if ($propertyName == 'value' && ($this->hasErrors || $this->inputType == 'password')) { return Str::set(' value=""'); }
-    }
-    try {
-      $value = $this->__get($propertyName);
-      if ($value == '[PLACEHOLDER]' && ((string)$this->inputType != 'text' && (string)$this->inputType != 'search' && (string)$this->inputType != 'url' &&
-      (string)$this->inputType != 'tel' && (string)$this->inputType != 'email' && (string)$this->inputType != 'password')) {
-        return NULL;
-      }
-    } catch (\ramp\core\BadPropertyCallException $exception) {
-      throw new \BadMethodCallException($exception);
-    }
-    if ($value !== NULL && (!($value instanceof \ramp\core\Str))) { $value = Str::set((string)$value); }
-    return ($value) ? $value->prepend(Str::set(' ' . $propertyName . '="'))->append(Str::set('"')) : NULL;
-  }
 
   /**
    * Allows C# type access to properties.
@@ -149,7 +120,7 @@ abstract class DocumentView extends ComplexView
   #[\Override]
   final public function __get($propertyName)
   {
-    if ($propertyName == 'id' && $this->hasModel) {
+    if ($propertyName == 'id' && $this->hasModel) { // pref model::id were avalible.
       return parent::__get($propertyName);
     }
     if ($propertyName == 'class') {
@@ -169,5 +140,19 @@ abstract class DocumentView extends ComplexView
       if ($propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote') { return NULL; }
       return Str::set('[' . $propertyName . ']')->uppercase;
     }
+  }
+
+  /**
+   * Defines amendments post copy, cloning.
+   * POSTCONDITIONS
+   *  - copy associated  {@see \ramp\model\Document}
+   *  - unset associated {@see \ramp\model\Model}
+   *  - copy child views
+   */
+  #[\Override]
+  public function __clone()
+  {
+    $this->documentModel = clone $this->documentModel;
+    parent::__clone();
   }
 }

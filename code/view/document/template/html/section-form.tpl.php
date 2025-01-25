@@ -18,12 +18,11 @@
  * @package RAMP
  * @version 0.0.9;
  */
-$tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
 ?>
-<section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>>
+      <section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a>
         <header>
-          <h2><!-- a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a--><?=$this->heading; ?></h2>
-          <p class="note"><?=$this->summary; ?></p>
+          <h2><?=$this->heading; ?></h2>
+          <p><?=$this->summary; ?></p>
 <?php if (isset($this->hasErrors) && $this->hasErors) { ?>
           <ol class="error">
 <?php foreach ($this->errors as $error) { ?>            
@@ -34,7 +33,7 @@ $tabindex = (isset($this->hasErrors) && $this->hasErrors)? 1:0;
         </header>
 <?=$this->children; ?>
 <?php if (isset($this->footnote)) { ?>
-        <footer><p><?=$this->footnote; ?></p></footer>
+        <footer><?=$this->footnote; ?></footer>
 <?php } ?>
         <div class="controls"><input type="submit" value="Update" /></div>
       </section><!-- #<?=$this->id; ?> -->

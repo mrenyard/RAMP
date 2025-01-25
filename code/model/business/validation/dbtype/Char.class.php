@@ -23,6 +23,7 @@ namespace ramp\model\business\validation\dbtype;
 use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\ValidationRule;
+use ramp\model\business\validation\FormatBasedValidationRule;
 
 /**
  * Char database type validation rule, a string of characters of an exact length.
@@ -30,6 +31,7 @@ use ramp\model\business\validation\ValidationRule;
  */
 class Char extends DbTypeValidation
 {
+  private bool $isFormatRule;
   private Str $placeholder;
   private int $length;
 
@@ -59,6 +61,7 @@ class Char extends DbTypeValidation
   {
     $this->placeholder = $placeholder;
     $this->length = $length;
+    $this->isFormatRule = ($subRule instanceof FormatBasedValidationRule);
     parent::__construct(Str::set($this->length)->prepend($errorHint), $subRule);
   }
 
@@ -68,7 +71,7 @@ class Char extends DbTypeValidation
   #[\Override]
   protected function get_placeholder() : ?Str
   {
-    return $this->placeholder;
+    return (!$this->isFormatRule) ? $this->placeholder : NULL;
   }
 
   /**
@@ -87,7 +90,7 @@ class Char extends DbTypeValidation
   #[\Override]
   protected function get_minlength() : ?int
   {
-    return $this->length;
+    return (!$this->isFormatRule) ? $this->length : NULL;
   }
 
   /**
@@ -96,7 +99,7 @@ class Char extends DbTypeValidation
   #[\Override]
   protected function get_maxlength() : ?int
   {
-    return $this->length;
+    return (!$this->isFormatRule) ? $this->length : NULL;
   }
 
   /**

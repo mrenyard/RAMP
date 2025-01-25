@@ -30,7 +30,7 @@ use ramp\view\ChildView;
  * Definition of presentation format and type to be associated with a given Model.
  * 
  * RESPONSIBILITIES
- * - Defines API for render() method, where a single view (fragment) is defined for presentation.  
+ * - Inherits API for render() method, where a single view (fragment) is defined for presentation.  
  * - Enable read access to associated {@see \ramp\model\Model}.
  * - Provide Decorator pattern implementation
  *  - enabling Ordered and Hierarchical structures that interlace with provided {@see \ramp\model\Model}.
@@ -138,12 +138,6 @@ abstract class ComplexView extends ChildView
       } // END foreach
     } // END if
   }
-
-  /**
-   * Render relevant output.
-   * Combining data (@see \ramp\model\Model) with defined presentation ({@see View}).
-   *
-  abstract public function render() : void;*/
 
   /**
    * Defines amendments post copy, cloning.
