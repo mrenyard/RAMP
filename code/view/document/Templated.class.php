@@ -126,7 +126,7 @@ class Templated extends DocumentView
       $propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote' ||
       $propertyName == 'errors' || $propertyName == 'isEditable' || $propertyName == 'isRequired'
     ) {
-      throw new \BadMethodCallException($propertyName . ' is NOT avalible in attribute format!');
+      throw new \BadMethodCallException($propertyName . ' is NOT available in attribute format!');
     }
     if ($this->hasModel) {
       if ($propertyName == 'isEditable') {

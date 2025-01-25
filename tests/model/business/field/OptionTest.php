@@ -320,7 +320,7 @@ class OptionTest extends \tests\ramp\model\business\BusinessModelTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
-  public function testErrorReportingPropagation($message = 'Selected value NOT an avalible option!') : void
+  public function testErrorReportingPropagation($message = 'Selected value NOT an available option!') : void
   {
     $this->populateSubModelTree();
     $this->assertNull($this->field->validate($this->postData)); // Call

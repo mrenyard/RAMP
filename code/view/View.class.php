@@ -88,7 +88,7 @@ abstract class View extends RAMPObject
 
   /**
    * Render relevant output.
-   * As in defined presentation ({@see View}) optionally combining with any avalible data (@see \ramp\view\ComplexView).
+   * As in defined presentation ({@see View}) optionally combining with any available data (@see \ramp\view\ComplexView).
    */
   abstract public function render() : void;
 

@@ -78,7 +78,7 @@ class MockSelectFrom extends SelectFrom
   }
 
   /**
-   * Validate that value is one of avalible options.
+   * Validate that value is one of available options.
    * @param mixed $value Value to be processed
    * @throws \ramp\validation\FailedValidationException When test fails.
    */
@@ -88,6 +88,6 @@ class MockSelectFrom extends SelectFrom
     {
       if ((string)$value == (string)$option->id) { return; }
     }
-    throw new FailedValidationException('Selected value NOT an avalible option!');
+    throw new FailedValidationException('Selected value NOT an available option!');
   }
 }

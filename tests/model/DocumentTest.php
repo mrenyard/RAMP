@@ -270,7 +270,7 @@ class DocumentTest extends \tests\ramp\model\ModelTest
   /**
    * Collection of assertions for \ramp\model\business\BusinessModel::clone().
    * - assert clone is instance of {@see \ramp\model\document\Document}.
-   * - assert clone id has been set to next avalible uniqie id
+   * - assert clone id has been set to next available uniqie id
    * - assert clone has same properties as cloned excluding id
    * - assert clone property values matches expected results.
    * @see \ramp\model\business\BusinessModel::clone()

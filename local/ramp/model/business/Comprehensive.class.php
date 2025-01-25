@@ -251,7 +251,7 @@ class Comprehensive extends Record
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Time(Str::set('valid time formatted (hh:mm[:ss])'),
-          new validation\ISOTime(Str::set('an appointment slot avalible ever 30min'),
+          new validation\ISOTime(Str::set('an appointment slot available ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
         )

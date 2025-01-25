@@ -320,7 +320,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert access setting through $this->extendedSummary.
    * - assert retrieval throught either throught 'extendedSummary'.
    * - assert attribute('extendedSummary') throws \BadMethodCallException 
-   *   - with message: *'extendedSummary is NOT avalible as an HTML attribute!'*.
+   *   - with message: *'extendedSummary is NOT available as an HTML attribute!'*.
    */
   #[\Override]
   public function testExtendedSummaryProperyReturnValue()
@@ -330,7 +330,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       $this->testObject->attribute('extendedSummary');
     } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
-        'extendedSummary is NOT avalible in attribute format!',
+        'extendedSummary is NOT available in attribute format!',
         $expected->getMessage()
       );
       return;
@@ -344,7 +344,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert access setting through $this->extendedContent.
    * - assert retrieval throught either throught 'extendedContent'.
    * - assert attribute('extendedContent') throws \BadMethodCallException 
-   *   - with message: *'extendedContent is NOT avalible as an HTML attribute!'*.
+   *   - with message: *'extendedContent is NOT available as an HTML attribute!'*.
    */
   #[\Override]
   public function testExtendedContentProperyReturnValue()
@@ -354,7 +354,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       $this->testObject->attribute('extendedContent');
     } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
-        'extendedContent is NOT avalible in attribute format!',
+        'extendedContent is NOT available in attribute format!',
         $expected->getMessage()
       );
       return;
@@ -368,7 +368,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert access setting through $this->footnote.
    * - assert retrieval throught either throught 'footnote'.
    * - assert attribute('footnote') throws \BadMethodCallException 
-   *   - with message: *'footnote is NOT avalible as an HTML attribute!'*.
+   *   - with message: *'footnote is NOT available as an HTML attribute!'*.
    */
   #[\Override]
   public function testFootnoteProperyReturnValue()
@@ -378,7 +378,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       $this->testObject->attribute('footnote');
     } catch (\BadMethodCallException $expected) {
       $this->assertEquals(
-        'footnote is NOT avalible in attribute format!',
+        'footnote is NOT available in attribute format!',
         $expected->getMessage()
       );
       return;

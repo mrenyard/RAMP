@@ -120,7 +120,7 @@ abstract class DocumentView extends ComplexView
   #[\Override]
   final public function __get($propertyName)
   {
-    if ($propertyName == 'id' && $this->hasModel) { // pref model::id were avalible.
+    if ($propertyName == 'id' && $this->hasModel) { // pref model::id were available.
       return parent::__get($propertyName);
     }
     if ($propertyName == 'class') {

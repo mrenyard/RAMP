@@ -124,12 +124,12 @@ FUNC.my.[moduleName][index];
 FUNC.[moduleName]();
 ```
 
-For more details on avalible modules see the list below,
+For more details on available modules see the list below,
 you will find API documentaion within the adjacent docs folder.
 
 Matt Renyard.
 
-List of avalible Libaries
+List of available Libaries
 --------------------------------------------------
 - [Base Classes and the INIT System (init.js)](docs/init.md)
 - [Library of Commonly Used Functionality Across FUNC Modules (FUNC.core)](docs/core.md)
@@ -138,7 +138,7 @@ List of avalible Libaries
 - ...hijax
 - ...
 
-List of avalible Modules
+List of available Modules
 --------------------------------------------------
 - ...forms
 - [Manipulate, Draw and Arrange a Range of Diagrams (FUNC.diagram)](docs/diagram.md)

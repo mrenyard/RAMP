@@ -3,7 +3,7 @@
  * Content-Type text/css; charset=utf-8
  * /img/svg.php/[type]-x[size]-[name]/r,g,b
  * 
- * TODO:mrenyard: This should eventualy be a static file generated during theming of style sheets were part of that process would include selecting relevant icons from those avalible. 
+ * TODO:mrenyard: This should eventualy be a static file generated during theming of style sheets were part of that process would include selecting relevant icons from those available. 
  */
 header('Content-Type: text/css; charset=utf-8');
 ?>

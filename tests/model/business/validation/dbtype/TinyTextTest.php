@@ -210,7 +210,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\TextTest
 
   #region New Extra Tests
   /**
-   * Constructor presented with a $subRule::maxlength that is greater than maximum avalible or set $maxlength.
+   * Constructor presented with a $subRule::maxlength that is greater than maximum available or set $maxlength.
    * - assert \InvalidArgumentException thrown when $subRule contains a rule with maxlength > $maxlength param on constructor.
    * @see \ramp\model\business\validation\dbtype\TinyText
    * @see \ramp\model\business\validation\ValidationRule::maxlength
@@ -232,7 +232,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\TextTest
   }
 
   /**
-   * Constructor presented with a $subRule::minlength that is greater than maximum avalible or set $maxlength.
+   * Constructor presented with a $subRule::minlength that is greater than maximum available or set $maxlength.
    * - assert \InvalidArgumentException thrown when $subRule contains a rule with minlength >= $maxlength.
    * @see \ramp\model\business\validation\dbtype\TinyText
    * @see \ramp\model\business\validation\ValidationRule::maxlength
@@ -253,9 +253,9 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\TextTest
    * Collection of assertions for an additional ramp\model\business\validation\validation\ValidationRule::maxlength and minlength.
    * - assert maxlength same as default limit when NON set from dbtype constructor or subRule.
    * - assert maxlength same as provided on dbtype constructor when within limit and NON on subRule/s.
-   * - assert maxlength same as default limit when that provided on dbtype constructor greater than avalible limit.
+   * - assert maxlength same as default limit when that provided on dbtype constructor greater than available limit.
    * - assert maxlength same as provided on subRule when within limit.
-   * - assert maxlength same as default limit when that provided on subRule greater than avalible limit.
+   * - assert maxlength same as default limit when that provided on subRule greater than available limit.
    * - assert maxlength same as provided on subRule when less than that provided on dbtype constructor and within limit.
    * @see \ramp\model\business\validation\validation\ValidationRule::maxlength
    */

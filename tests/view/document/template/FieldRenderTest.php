@@ -501,7 +501,7 @@ class FieldRenderTest extends TestBase
       '          <div class="time input field compact required" title="Scheduled start time for this appointment.">' . PHP_EOL .
       '            <label for="comprehensive-record:1|1|1:time">Start Time</label>' . PHP_EOL .
       '            <input id="comprehensive-record:1|1|1:time" name="comprehensive-record:1|1|1:time" type="time" tabindex="0" required="required" pattern="(?:[0,1][0-9]|2[0-3]):[0-5][0-9](?::[0-5][0-9])?" min="08:30" max="17:30" step="1800" value="16:30" />' . PHP_EOL .
-      '            <span class="hint">an appointment slot avalible ever 30min from 08:30 to 17:30 valid time formated (hh:mm[:ss])</span>' . PHP_EOL .
+      '            <span class="hint">an appointment slot available ever 30min from 08:30 to 17:30 valid time formated (hh:mm[:ss])</span>' . PHP_EOL .
       '          </div>' . PHP_EOL . '',
       $output
     );

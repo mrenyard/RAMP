@@ -1,5 +1,5 @@
 --------------------------------
-Full list of avalible properties
+Full list of available properties
 for use in template files (.tpl)
 --------------------------------
 ## Universally available

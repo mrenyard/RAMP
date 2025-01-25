@@ -501,7 +501,7 @@ FUNC.diagram = function(elm)
   };
 
   //- INITIALISE
-  // Read and add diagram components from avalible Shapes in DOM.
+  // Read and add diagram components from available Shapes in DOM.
   // UML (Class, Object, Actor, Task, System, Action, Swimlane, Decision, Fork, Merge) ERD (Entity)
   Array.prototype.slice.call(elm.getElementsByTagName('article')).forEach((e) => { 
     let CLASS = eval(e.classList[0].charAt(0).toUpperCase() + e.classList[0].slice(1));
@@ -510,18 +510,18 @@ FUNC.diagram = function(elm)
     // } catch {
     //   throw new Ex(
     //     Ex.types.UNDECLAREDCLASS,
-    //     'HtmlAttribute:classList @index 0 (' + CLASS.name + ') does NOT match avalible Shapes. (diagram.js:453)'
+    //     'HtmlAttribute:classList @index 0 (' + CLASS.name + ') does NOT match available Shapes. (diagram.js:453)'
     //   );
     // }
   });
-  // Read and add diagram from avalible diagram classes.
+  // Read and add diagram from available diagram classes.
   let DIAGRAM = eval((((s = _type.name.split('-')[1]).charAt(0).toUpperCase() + s.slice(1))) + 'Diagram');
   try {
     _diagram = new DIAGRAM();
   } catch {
     throw new Ex(
       Ex.types.UNDECLAREDCLASS,
-      'HtmlAttribute:classList @index 0 (' + DIAGRAM.name + ') does NOT match avalible Diagrams. (diagram.js:464)'
+      'HtmlAttribute:classList @index 0 (' + DIAGRAM.name + ') does NOT match available Diagrams. (diagram.js:464)'
     );
   }
 

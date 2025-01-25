@@ -273,7 +273,7 @@ class ComprehensiveRecord extends Record
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('expanded description of expected field content'),
         new Time(Str::set('valid time formatd (hh:mm[:ss])'),
-          new ISOTime(Str::set('an appointment slot avalible ever 30min'),
+          new ISOTime(Str::set('an appointment slot available ever 30min'),
             Str::set('08:30'), Str::set('17:30'), (30*60)
           )
         )

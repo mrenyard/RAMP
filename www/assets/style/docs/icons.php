@@ -57,7 +57,7 @@ $blue = (isset($_POST['blue'])) ? $_POST['blue'] : 0;
   </head>
   <body>
     <main id="main"><form action="#main" method="post" class="gallery">
-      <header><a href="#main" title="Full set of icons avalible with RAMP">#</a>
+      <header><a href="#main" title="Full set of icons available with RAMP">#</a>
         <h1>Full Dymanic ICON Set (icon-*)</h1>
       </header>
 <?php

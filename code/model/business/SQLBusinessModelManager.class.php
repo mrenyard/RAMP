@@ -104,7 +104,7 @@ final class SQLBusinessModelManager extends BusinessModelManager
   }
 
   /**
-   * Return cached record if avalible.
+   * Return cached record if available.
    */
   private function getRecordIfCached(Str $recordName, string $primaryKey) : ?Record
   {

@@ -203,7 +203,7 @@ class VarCharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
   }
 
   /**
-   * Constructor presented with a $subRule::minlength that is greater than maximum avalible or set $maxlength.
+   * Constructor presented with a $subRule::minlength that is greater than maximum available or set $maxlength.
    * - assert \InvalidArgumentException thrown when $subRule contains a rule with minlength >= $maxlength.
    * @see \ramp\model\business\validation\dbtype\VarChar
    * @see \ramp\model\business\validation\ValidationRule::maxlength
