@@ -53,7 +53,7 @@ class Char extends DbTypeValidation
    * @param \ramp\core\Str $placeholder Example of the type of data that should be entered.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param int $length Exact number of characters expected.
-   * @param \ramp\model\business\validation\ValidationRule $subRule Addtional rule/s to be added.
+   * @param \ramp\model\business\validation\ValidationRule $subRule Additional rule/s to be added.
    */
   public function __construct(Str $placeholder, Str $errorHint, int $length, ValidationRule $subRule)
   {

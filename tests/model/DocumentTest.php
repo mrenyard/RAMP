@@ -60,7 +60,7 @@ class DocumentTest extends \tests\ramp\model\ModelTest
 
   #region Inherited Tests
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__set().
+   * Bad property (name) NOT accessible on \ramp\model\Model::__set().
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
@@ -71,7 +71,7 @@ class DocumentTest extends \tests\ramp\model\ModelTest
   }
 
   /**
-   * Bad property (name) NOT accessable on \ramp\model\Model::__get().
+   * Bad property (name) NOT accessible on \ramp\model\Model::__get().
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
