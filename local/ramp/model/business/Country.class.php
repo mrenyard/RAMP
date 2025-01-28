@@ -42,7 +42,7 @@ class Country extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Char(
           Str::set('e.g. UK'),
-          Str::set('string with a maximum charactor length of '), 2,
+          Str::set('string with a maximum character length of '), 2,
           new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
@@ -59,7 +59,7 @@ class Country extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Char(
           Str::set('e.g. United Kingdom'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),

@@ -42,7 +42,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\Char(
           Str::set('e.g. UK'),
-          Str::set('string with a maximum charactor length of '), 2,
+          Str::set('string with a maximum character length of '), 2,
           new validation\Alphabetic(
             Str::set('containing ONLY letters, hypens or underscores, a single word')
           ),
@@ -59,7 +59,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. SW1A 2AA'),
-          Str::set('string with a maximum charactor length of '), 8,
+          Str::set('string with a maximum character length of '), 8,
           new validation\PostCode(
             Str::set('a UK PostCode')
           ),
@@ -93,7 +93,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. 123'),
-          Str::set('string with a maximum charactor length of '), 15,
+          Str::set('string with a maximum character length of '), 15,
           new validation\Alphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
@@ -110,7 +110,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. The Pentagon'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\Alphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
@@ -127,7 +127,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. 3'),
-          Str::set('string with a maximum charactor length of '), 15,
+          Str::set('string with a maximum character length of '), 15,
           new validation\Alphanumeric(
             Str::set('containing ONLY letters, numbers, hypens or underscores, a single word')
           ),
@@ -144,7 +144,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. Justified Ltd.'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -161,7 +161,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. Human Resources'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -178,7 +178,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. 2468'),
-          Str::set('string with a maximum charactor length of '), 15,
+          Str::set('string with a maximum character length of '), 15,
           new validation\Alphanumeric(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -195,7 +195,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. South'),
-          Str::set('string with a maximum charactor length of '), 75,
+          Str::set('string with a maximum character length of '), 75,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -212,7 +212,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. High Street'),
-          Str::set('string with a maximum charactor length of '), 75,
+          Str::set('string with a maximum character length of '), 75,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -229,7 +229,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. ...'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -246,7 +246,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. ...'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
@@ -263,7 +263,7 @@ class Address extends Record
         Str::set('expanded description of expected field content'),
         new validation\dbtype\VarChar(
           Str::set('e.g. SOOUTHAMPTON'),
-          Str::set('string with a maximum charactor length of '), 45,
+          Str::set('string with a maximum character length of '), 45,
           new validation\AlphanumericPhrase(
             Str::set('containing ONLY spaces, letters, numbers, hypens or underscores, a ')
           ),
