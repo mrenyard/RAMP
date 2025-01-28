@@ -94,8 +94,7 @@ abstract class RecordComponent extends BusinessModel
   {
     // TODO:mrenyard: Change to commented once Record::isEditable added
     // return ($this->parent->isNew || ($this->parent->isEditable && $this->editable !== FALSE));
-    $o = ($this->parent->isNew || ($this->editable !== FALSE));
-    return $o;
+    return ($this->parent->isNew || ($this->editable !== FALSE));
   }
 
   /**

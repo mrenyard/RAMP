@@ -115,7 +115,6 @@ class Templated extends DocumentView
   
   /**
    * Returns complete attbibute and value.
-   * @todo mrenyard:Moving this to Templated makes more sence?
    * @param string $propertyName Attribute Property Name 
    * @return \ramp\core\Str Attribute and value of requested property 
    * @throws \BadMethodCallException Unable to set property when undefined or inaccessible
@@ -123,20 +122,21 @@ class Templated extends DocumentView
   public function attribute($propertyName) : ?Str
   {
     if (
-      $propertyName == 'extendedSummary' || $propertyName == 'extendedContent' || $propertyName == 'footnote' ||
-      $propertyName == 'errors' || $propertyName == 'isEditable' || $propertyName == 'isRequired'
+      $propertyName == 'extendedSummary' || $propertyName == 'extendedContent' ||
+      $propertyName == 'footnote' || $propertyName == 'inputType' || $propertyName == 'errors'||
+      $propertyName == 'isEditable' || $propertyName == 'isRequired' || $propertyName == 'hint'
     ) {
       throw new \BadMethodCallException($propertyName . ' is NOT available in attribute format!');
     }
     if ($this->hasModel) {
-      if ($propertyName == 'isEditable') {
+      if ($propertyName == 'readonly') {
         return (!$this->isEditable) ? Str::set(' readonly') : NULL;
-      }
-      if ($propertyName == 'required') {
-        return ($this->isRequired) ? Str::set(' required="required"') : NULL;
       }
       if ($propertyName == 'value' && (string)$this->type == 'input field' && ($this->hasErrors || $this->inputType == 'password')) {
         return Str::set(' value=""');
+      }
+      if ($propertyName == 'required') {
+        return ($this->isRequired) ? Str::set(' required="required"') : NULL;
       }
     }
     try {

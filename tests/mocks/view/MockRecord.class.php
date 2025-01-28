@@ -25,30 +25,31 @@ use ramp\core\Str;
 use ramp\model\business\Record;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
+use ramp\model\business\field\Input;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
  */
 class MockRecord extends Record
 {
-  private bool $requiered;
   public ?Str $propertyName;
   public Str $title;
-  public MockInput $input;
+  public Input $input;
+  public Str $hint;
 
-  public function __construct(\stdClass $dataObject = null, bool $setAllFieldsRequiered = FALSE)
+  public function __construct(\stdClass $dataObject = null)
   {
-    $this->requiered = $setAllFieldsRequiered;
     $this->title = Str::set('Expanded description of expected field content.');
+    $this->hint = Str::set('Error hint');
     parent::__construct($dataObject);
   }   
 
   protected function get_keyA() : ?RecordComponent
   {
     if ($this->register('keyA', RecordComponentType::KEY)) {
-      $this->initiate(new MockInput(
+      $this->initiate(new Input(
         $this->registeredName, $this, $this->title,
-        new MockDbTypeValidation(Str::set('Error hint'))
+        new MockDbTypeValidation($this->hint)
       ));
     }
     return $this->registered; 
@@ -57,9 +58,9 @@ class MockRecord extends Record
   protected function get_keyB() : ?RecordComponent
   {
     if ($this->register('keyB', RecordComponentType::KEY)) {
-      $this->initiate(new MockInput(
+      $this->initiate(new Input(
         $this->registeredName, $this, $this->title,
-        new MockDbTypeValidation(Str::set('Error hint'))
+        new MockDbTypeValidation($this->hint)
       ));
     }
     return $this->registered; 
@@ -68,9 +69,9 @@ class MockRecord extends Record
   protected function get_keyC() : ?RecordComponent
   {
     if ($this->register('keyC', RecordComponentType::KEY)) {
-      $this->initiate(new MockInput(
+      $this->initiate(new Input(
         $this->registeredName, $this, $this->title,
-        new MockDbTypeValidation(Str::set('Error hint'))
+        new MockDbTypeValidation($this->hint)
       ));
     }
     return $this->registered; 
@@ -78,14 +79,37 @@ class MockRecord extends Record
 
   protected function get_aProperty() : ?RecordComponent
   {
-    if ($this->register('aProperty', RecordComponentType::PROPERTY, $this->requiered)) {
+    if ($this->register('aProperty', RecordComponentType::PROPERTY)) {
       $this->propertyName = $this->registeredName;
-      $this->input = new MockInput(
+      $this->input = new Input(
         $this->propertyName, $this, $this->title,
-        new MockDbTypeValidation(Str::set('Error hint'))
+        new MockDbTypeValidation($this->hint)
       );
       $this->initiate($this->input);
     }
     return $this->registered; 
+  }
+
+  protected function get_readonlyProperty() : ?RecordComponent
+  {
+    if ($this->register('readonlyProperty', RecordComponentType::PROPERTY)) {
+      $this->initiate(new Input(
+        $this->registeredName, $this, $this->title,
+        new MockDbTypeValidation($this->hint),
+        FALSE
+      ));
+    }
+    return $this->registered;
+  }
+
+  protected function get_requiredProperty() : ?RecordComponent
+  {
+    if ($this->register('requiredProperty', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input(
+        $this->registeredName, $this, $this->title,
+        new MockDbTypeValidation($this->hint)
+      ));
+    }
+    return $this->registered;
   }
 }

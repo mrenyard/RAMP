@@ -1,7 +1,5 @@
---------------------------------
-Full list of available properties
-for use in template files (.tpl)
---------------------------------
+Full list of available properties for use in template files (.tpl)
+------------------------------------------------------------------
 ## Universally available
  - id
    - attribute('id')

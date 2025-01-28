@@ -21,6 +21,7 @@
  */
 namespace tests\ramp\mocks\view;
 
+use ramp\core\Str;
 use ramp\model\business\validation\FailedValidationException;
 use ramp\model\business\validation\dbtype\DbTypeValidation;
 
@@ -30,14 +31,85 @@ use ramp\model\business\validation\dbtype\DbTypeValidation;
  */
 class MockDbTypeValidation extends DbTypeValidation
 {
+  public static Str $inputType;
+  public static ?Str $placeholder;
+  public static ?Str $pattern;
+  public static ?int $minlength;
+  public static ?int $maxlength;
+  public static ?Str $min;
+  public static ?Str $max;
+  public static ?Str $step;
+  public static Str $hint;
+
+  public function __construct(Str $errorHint)
+  {
+    if (!isset(SELF::$intpuType)) { SELF::$inputType = Str::set('text'); }
+    if (!isset(SELF::$placeholder)) { SELF::$placeholder = Str::set('e.g PLACEHOLDER'); }
+    if (!isset(SELF::$pattern)) { SELF::$pattern = Str::set('PATTERN'); }
+    if (!isset(SELF::$minlength)) { SELF::$minlength = 10; }
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 15; }
+    if (!isset(SELF::$min)) { SELF::$min = Str::set('10'); }
+    if (!isset(SELF::$max)) { SELF::$max = Str::set('15'); }
+    if (!isset(SELF::$step)) { SELF::$step = Str::set('1'); }
+    parent::__construct($errorHint);
+  }
+
+  #[\Override]
+  public function get_inputType() : Str
+  {
+    return SELF::$inputType;
+  }
+
+  #[\Override]
+  protected function get_placeholder() : ?Str
+  {
+    return SELF::$placeholder;
+  }
+
+  #[\Override]
+  protected function get_pattern() : ?Str
+  {
+    return SELF::$pattern;
+  }
+
+  #[\Override]
+  protected function get_minlength() : ?int
+  {
+    return SELF::$minlength;
+  }
+
+  #[\Override]
+  protected function get_maxlength() : ?int
+  {
+    return SELF::$maxlength;
+  }
+
+  #[\Override]
+  protected function get_min() : ?Str
+  {
+    return SELF::$min;
+  }
+
+  #[\Override]
+  protected function get_max() : ?Str
+  {
+    return SELF::$max;
+  }
+
+  #[\Override]
+  protected function get_step() : ?Str
+  {
+    return SELF::$step;
+  }
+
   /**
    * Runs code defined test against provided value.
    * @param mixed $value Value to be tested.
    * @throws FailedValidationException When test fails.
    */
+  #[\Override]
   protected function test($value) : void
   {
-    MockValidationRule::$testCallCount++;
     if ($value === 'BadValue') {
       throw new FailedValidationException('MockDbValidationRule has been given the value BadValue');
     }

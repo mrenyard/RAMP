@@ -47,7 +47,6 @@ require_once '/usr/share/php/ramp/model/business/Record.class.php';
 require_once '/usr/share/php/ramp/view/document/DocumentView.class.php';
 
 require_once '/usr/share/php/tests/ramp/mocks/view/MockDbTypeValidation.class.php';
-require_once '/usr/share/php/tests/ramp/mocks/view/MockInput.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/view/MockRecord.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/view/MockDocumentView.class.php';
 
@@ -59,6 +58,7 @@ use ramp\view\RootView;
 use tests\ramp\mocks\view\MockRecord;
 use tests\ramp\mocks\view\MockBusinessModel;
 use tests\ramp\mocks\view\MockDocumentView;
+use tests\ramp\mocks\view\MockDbTypeValidation;
 
 /**
  * Collection of tests for \ramp\view\ComplexView.
@@ -281,19 +281,22 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
     $this->assertEquals($setStyle, $this->testObject->class);
     $this->testObject->setModel($this->record->aProperty);
     $this->assertEquals($setStyle, $this->testObject->style);
-    $this->assertEquals('mock-input input ' . $setStyle, $this->testObject->class);
+    $this->assertEquals('input field ' . $setStyle, $this->testObject->class);
   }
 
   /**
    * 'title' property value managment and retrieval.
    * - assert default value '[TITLE]'
-   * - assert access setting through $this->title = $value.
+   * - assert same as set on model once model set.
+   * - assert setting through $this->title = $value overides that of model.
    * - assert retrieval throught '$this->title' as expected.
    */
   public function testTitlePropertyReturnValue(string $value = NULL)
   {
     $value = ($value === NULL) ? 'Full context descriptive title' : $value;
     $this->assertEquals('[TITLE]', $this->testObject->title); // DEFAULT
+    $this->testObject->setModel($this->record->aProperty);
+    $this->assertEquals($this->record->title, $this->testObject->title);
     $this->testObject->title = Str::set($value);
     $this->assertEquals($value, $this->testObject->title);
   }
@@ -391,7 +394,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
       $this->assertFalse($this->testObject->hasModel);
       $this->testObject->setModel($this->record->aProperty);
       $this->assertTrue($this->testObject->hasModel);
-      $this->assertEquals('mock-input input', $this->testObject->type);  
+      $this->assertEquals('input field', $this->testObject->type);  
       return;
     }
     $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
@@ -405,7 +408,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * - assert hasErrors reports TRUE following BAD data POST.
    * - assert 'errors' returns itterator and successfuly cycles corret number of errors in foreach.
    */
-  public function testHasErrorsForeachError()
+  public function testHasErrorsForeachErrorsProperyReturnValue()
   {
     try {
       $this->testObject->hasErros;
@@ -418,7 +421,7 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
         $this->testObject->setModel($this->record->aProperty);
         $this->assertTrue($this->testObject->hasModel);
         $this->assertFalse($this->testObject->hasErrors);
-        $this->record->validate(PostData::build(array('mock-record:1|1|1:a-property' => 'BAD')));
+        $this->record->validate(PostData::build(array('mock-record:1|1|1:a-property' => 'BadValue')));
         $this->assertTrue($this->testObject->hasErrors);
         $i = 0;
         foreach ($this->testObject->errors as $error) { $i++; }
@@ -434,14 +437,265 @@ class DocumentViewTest extends \tests\ramp\view\ComplexViewTest
    * - assert throws \ramp\core\BadPropertyCallException when calling 'isEditable' prior to setting modal.
    * - assert 'isEditable' successfully return as expected.
    */
-  public function testIsEditable()
+  public function testIsEditableProperyReturnValue()
   {
     try {
       $this->testObject->isEditable;
     } catch (\ramp\core\BadPropertyCallException $expected) {
       $this->testObject->setModel($this->record->aProperty);
       $this->assertTrue($this->testObject->hasModel);
-      $this->assertTrue($this->testObject->isEditable);  
+      $this->assertTrue($this->testObject->isEditable);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'value' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `value` prior to setting modal.
+   * - assert 'value' successfully return as expected.
+   */
+  public function testValueProperyReturnValue()
+  {
+    try {
+      $this->testObject->value;
+    } catch (\ramp\core\BadPropertyCallException $expencted) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertNull($this->testObject->value);
+      $this->data->aProperty = 'GOOD';
+      $this->record->updated();
+      $this->assertEquals('GOOD', $this->testObject->value);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'isRequired' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `isRequired` prior to setting modal.
+   * - assert `isRequired` successfully return as expected.
+   */
+  public function testIsRequieredReturnValue()
+  {
+    try {
+      $this->testObject->isRequired;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->requiredProperty);
+      $this->assertTrue($this->testObject->isRequired);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'inputType' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `inputType` prior to setting modal.
+   * - assert `inputType` successfully return as expected for each of the following variants:
+   *   - text
+   *   - search
+   *   - tel
+   *   - url
+   *   - email
+   *   - password
+   *   - date
+   *   - month
+   *   - week
+   *   - time
+   *   - datetime-local
+   *   - number
+   *   - range
+   *   - color
+   */
+  public function testInputTypeReturnValue()
+  {
+    try {
+      $this->testObject->inputType;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertEquals('text', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('search');
+      $this->assertEquals('search', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('tel');
+      $this->assertEquals('tel', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('url');
+      $this->assertEquals('url', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('email');
+      $this->assertEquals('email', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('password');
+      $this->assertEquals('password', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('date');
+      $this->assertEquals('date', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('month');
+      $this->assertEquals('month', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('week');
+      $this->assertEquals('week', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('time');
+      $this->assertEquals('time', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('datetime-local');
+      $this->assertEquals('datetime-local', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('number');
+      $this->assertEquals('number', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('range');
+      $this->assertEquals('range', $this->testObject->inputType);
+      MockDbTypeValidation::$inputType = Str::set('color');
+      $this->assertEquals('color', $this->testObject->inputType);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'pattern' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `pattern` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testPatternReturnValue()
+  {
+    try {
+      $this->testObject->pattern;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$pattern, $this->testObject->pattern);
+      MockDbtypevalidation::$pattern = NULL;
+      $this->assertNull($this->testObject->pattern);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'minlength' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `minlength` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testMinlengthReturnValue()
+  {
+    try {
+      $this->testObject->minlength;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$minlength, $this->testObject->minlength);
+      MockDbtypevalidation::$minlength = NULL;
+      $this->assertNull($this->testObject->minlength);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'maxlength' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `maxlength` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testMaxlengthReturnValue()
+  {
+    try {
+      $this->testObject->maxlength;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$maxlength, $this->testObject->maxlength);
+      MockDbtypevalidation::$maxlength = NULL;
+      $this->assertNull($this->testObject->maxlength);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'min' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `min` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testMinReturnValue()
+  {
+    try {
+      $this->testObject->min;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$min, $this->testObject->min);
+      MockDbtypevalidation::$min = NULL;
+      $this->assertNull($this->testObject->min);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'max' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `max` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testMaxReturnValue()
+  {
+    try {
+      $this->testObject->max;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$max, $this->testObject->max);
+      MockDbtypevalidation::$max = NULL;
+      $this->assertNull($this->testObject->max);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'step' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `step` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   */
+  public function testStepReturnValue()
+  {
+    try {
+      $this->testObject->step;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame(MockDbtypevalidation::$step, $this->testObject->step);
+      MockDbtypevalidation::$step = NULL;
+      $this->assertNull($this->testObject->step);
+      return;
+    }
+    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+  }
+
+  /**
+   * 'hint' property value mamagment and retrieval.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `hint` prior to setting modal.
+   * - assert return as set on Sub validation rule.
+   */
+  public function testHintReturnValue()
+  {
+    try {
+      $this->testObject->hint;
+    } catch (\ramp\core\BadPropertyCallException $expected) {
+      $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+      $this->record->updated();
+      $this->testObject->setModel($this->record->aProperty);
+      $this->assertSame($this->record->hint, $this->testObject->hint);
       return;
     }
     $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');

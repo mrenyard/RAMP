@@ -30,6 +30,7 @@ use ramp\SETTING;
 use ramp\core\RAMPObject;
 use ramp\core\Str;
 use ramp\core\PropertyNotSetException;
+use ramp\condition\PostData;
 use ramp\view\RootView;
 use ramp\view\document\Templated;
 
@@ -37,6 +38,7 @@ use tests\ramp\mocks\view\MockRecord;
 use tests\ramp\mocks\view\MockViewA;
 use tests\ramp\mocks\view\MockViewB;
 use tests\ramp\mocks\view\MockViewC;
+use tests\ramp\mocks\view\MockDbTypeValidation;
 
 /**
  * Collection of tests for \ramp\view\ComplexView.
@@ -264,13 +266,14 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
     $this->assertEquals(' class="' . $setStyle . '"', $this->testObject->attribute('class'));
 
     parent::testClassStyleProperyReturnValue($setStyle);
-    $this->assertEquals(' class="mock-input input ' . $setStyle . '"', $this->testObject->attribute('class'));
+    $this->assertEquals(' class="input field ' . $setStyle . '"', $this->testObject->attribute('class'));
   }
 
   /**
    * title element value managment and retrieval.
    * - assert default value '[TITLE]'
-   * - assert access setting through $this->title = $value.
+   * - assert same as set on model once model set.
+   * - assert setting through $this->title = $value overides that of model.
    * - assert retrieval throught '$this->title' as expected.
    * - assert attribute('title') returns in expected format.
    */
@@ -402,7 +405,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
       $this->testObject->attribute('type');
     } catch(\BadMethodCallException $expected) {
       parent::testHasModelTypePropertyReturnValue();
-      $this->assertEquals(' type="mock-input input"', $this->testObject->attribute('type'));
+      $this->assertEquals(' type="input field"', $this->testObject->attribute('type'));
       return;
     }
     $this->fail('An expected \BadMethodCallException has NOT been raised');
@@ -418,12 +421,12 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * - assert 'errors' returns itterator and successfuly cycles corret number of errors in foreach.
    */
   #[\Override]
-  public function testHasErrorsForeachError()
+  public function testHasErrorsForeachErrorsProperyReturnValue()
   {
     try {
       $this->testObject->attribute('errors');
     } catch(\BadMethodCallException $expected) {
-      parent::testHasErrorsForeachError();
+      parent::testHasErrorsForeachErrorsProperyReturnValue();
       try {
         $this->testObject->attribute('errors');
       } catch (\BadMethodCallException $expected) {
@@ -437,48 +440,305 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
    * 'isEditable' property value mamagment and retrieval.
    * - assert throws \BadMethodCallException when calling attribute('isEditable') both prior and post setting modal.
    * - assert throws \ramp\core\BadPropertyCallException when calling 'isEditable' prior to setting modal.
+   * - assert throws \BadMethodCallException when calling attribute('readonly') prior setting modal.
    * - assert 'isEditable' successfully return as expected.
+   * - assert attribute('readonly') returns NULL when isEditable.
+   * - assert attribute('readonly') returns ' readonly' when NOT isEditable.
    */
   #[\Override]
-  public function testIsEditable()
+  public function testIsEditableProperyReturnValue()
   {
     try {
       $this->testObject->attribute('isEditable');
     } catch (\BadMethodCallException $expected) {
-      parent::testIsEditable();
       try {
-        $this->testObject->attribute('isEditable');
+        $this->testObject->attribute('readonly');
+      } catch (\BadMethodCallException $expected) {
+        parent::testIsEditableProperyReturnValue();
+        try {
+          $this->testObject->attribute('isEditable');
+        } catch (\BadMethodCallException $expected) {
+          $this->assertNull($this->testObject->attribute('readonly'));
+
+          $o = new Templated(RootView::getInstance(), $this->templateName, $this->templateType);
+          $this->data->keyA = 1; $this->data->keyB = 1; $this->data->keyC = 1;
+          $this->data->requiredProperty = 'GOOD';
+          $this->data->readonlyProperty = 'GOOD';
+          $this->record->updated();
+          $o->setModel($this->record->readonlyProperty);
+          $this->assertFalse($o->isEditable);
+          $this->assertEquals(' readonly', (string)$o->attribute('readonly'));
+          return;
+        }
+      }
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'value' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('value') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling 'value' prior to setting modal.
+   * - assert 'value' successfully return as expected.
+   * - assert check type equals `'input field'`.
+   * - assert attribute('value') returns ' value="GOOD"' when GOOD value.
+   * - assert attribute('value') returns NULL when NOT set.
+   * - assert attribute('value') returns ' value=""' when `type == 'input field'`.
+   * - assert attribute('value') returns ' value=""' when `type == `hasErrors`.
+   */
+  #[\Override]
+  public function testValueProperyReturnValue()
+  {
+    try {
+      $this->testObject->attribute('value');
+    } catch (\BadMethodCallException $expected) {
+      parent::testValueProperyReturnValue();
+      $this->assertEquals('input field', $this->testObject->type);
+      $this->assertEquals(' value="GOOD"', $this->testObject->attribute('value'));
+      $this->data->aProperty = NULL;
+      $this->record->updated();
+      $this->assertNull($this->testObject->attribute('value'));
+      $this->assertEquals('mock-record:1|1|1:a-property', $this->record->aProperty->id);
+      $this->record->validate(PostData::build(
+        array('mock-record:1|1|1:a-property' => 'BadValue')
+      ));
+      $this->assertTrue($this->record->hasErrors);
+      $this->assertEquals(' value=""', $this->testObject->attribute('value'));
+      $this->record->validate(PostData::build(
+        array('mock-record:1|1|1:a-property' => 'GOOD')
+      ));
+      MockDbTypeValidation::$inputType = Str::set('password');
+      $this->record->updated();
+      $this->assertEquals('password', $this->testObject->inputType);
+      $this->assertEquals(' value=""', $this->testObject->attribute('value'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'isRequired' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('required') prior setting modal.
+   * - assert throws \BadMethodCallException when calling attribute('isRequired') anytime.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `isRequired` prior to setting modal.
+   * - assert `isRequired` successfully return as expected.
+   * - assert attribute('required') returns ' required="required"' when isRequired == TRUE.
+   */
+  #[\Override]
+  public function testIsRequieredReturnValue()
+  {
+    try {
+      $this->testObject->attribute('required');
+    } catch (\BadMethodCallException $expected) {
+      parent::testIsRequieredReturnValue();
+       try {
+        $this->testObject->attribute('isRequired');
+      } catch (\BadMethodCallException $expected) {
+        $this->assertEquals(' required="required"', $this->testObject->attribute('required'));
+        return;
+      }
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'inputType' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('inputType') both prior and post setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `inputType` prior to setting modal.
+   * - assert `inputType` successfully return as expected for each of the following variants:
+   *   - text
+   *   - search
+   *   - tel
+   *   - url
+   *   - email
+   *   - password
+   *   - date
+   *   - month
+   *   - week
+   *   - time
+   *   - datetime-local
+   *   - number
+   *   - range
+   *   - color
+   */
+  #[\Override]
+  public function testInputTypeReturnValue()
+  {
+    try {
+      $this->testObject->attribute('inputType');
+    } catch (\BadMethodCallException $expected) {
+      parent::testInputTypeReturnValue();
+       try {
+        $this->testObject->attribute('inputType');
       } catch (\BadMethodCallException $expected) {
         return;
       }
     }
-    $this->fail('An expected \ramp\core\BadPropertyCallException has NOT been raised');
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'pattern' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('required') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `pattern` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('pattern') returns expencted ' pattern="PATTERN"' when set.
+   */
+  #[\Override]
+  public function testPatternReturnValue()
+  {
+    try {
+      $this->testObject->attribute('pattern');
+    } catch (\BadMethodCallException $expected) {
+      parent::testPatternReturnValue();
+      $this->assertNull($this->testObject->attribute('pattern'));
+      MockDbtypevalidation::$pattern = Str::set('PATTERN');
+      $this->assertEquals(' pattern="PATTERN"', $this->testObject->attribute('pattern'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'minlength' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('minlength') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `minlength` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('minlength') returns expencted ' minlength="10"' when set.
+   */
+  #[\Override]
+  public function testMinlengthReturnValue()
+  {
+    try {
+      $this->testObject->attribute('minlength');
+    } catch (\BadMethodCallException $expected) {
+      parent::testMinlengthReturnValue();
+      $this->assertNull($this->testObject->attribute('minlength'));
+      MockDbtypevalidation::$minlength = 10;
+      $this->assertEquals(' minlength="10"', $this->testObject->attribute('minlength'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'maxlength' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('maxlength') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `maxlength` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('maxlength') returns expencted ' maxlength="15"' when set.
+   */
+  #[\Override]
+  public function testMaxlengthReturnValue()
+  {
+    try {
+      $this->testObject->attribute('maxlength');
+    } catch (\BadMethodCallException $expected) {
+      parent::testMaxlengthReturnValue();
+      $this->assertNull($this->testObject->attribute('maxlength'));
+      MockDbtypevalidation::$maxlength = 15;
+      $this->assertEquals(' maxlength="15"', $this->testObject->attribute('maxlength'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'min' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('min') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `min` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('min') returns expencted ' min="10"' when set.
+   */
+  #[\Override]
+  public function testMinReturnValue()
+  {
+    try {
+      $this->testObject->attribute('min');
+    } catch (\BadMethodCallException $expected) {
+      parent::testMinReturnValue();
+      $this->assertNull($this->testObject->attribute('min'));
+      MockDbtypevalidation::$min = Str::set('10');
+      $this->assertEquals(' min="10"', $this->testObject->attribute('min'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'max' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('max') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `max` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('max') returns expencted ' max="15"' when set.
+   */
+  #[\Override]
+  public function testMaxReturnValue()
+  {
+    try {
+      $this->testObject->attribute('max');
+    } catch (\BadMethodCallException $expected) {
+      parent::testMaxReturnValue();
+      $this->assertNull($this->testObject->attribute('max'));
+      MockDbtypevalidation::$max = Str::set('15');
+      $this->assertEquals(' max="15"', $this->testObject->attribute('max'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'step' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('step') prior setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `step` prior to setting modal.
+   * - assert return as set on Sub validation rule if set.
+   * - assert returns NULL if unset.
+   * - assert attribute('step') returns expencted ' step="1"' when set.
+   */
+  #[\Override]
+  public function testStepReturnValue()
+  {
+    try {
+      $this->testObject->attribute('step');
+    } catch (\BadMethodCallException $expected) {
+      parent::testStepReturnValue();
+      $this->assertNull($this->testObject->attribute('step'));
+      MockDbtypevalidation::$step = Str::set('1');
+      $this->assertEquals(' step="1"', $this->testObject->attribute('step'));
+      return;
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
+  }
+
+  /**
+   * 'hint' property value mamagment and retrieval.
+   * - assert throws \BadMethodCallException when calling attribute('hint') both prior and post setting modal.
+   * - assert throws \ramp\core\BadPropertyCallException when calling `hint` prior to setting modal.
+   * - assert return as set on Sub validation rule.
+   */
+  #[\Override]
+  public function testHintReturnValue()
+  {
+    try {
+      $this->testObject->attribute('hint');
+    } catch (\BadMethodCallException $expected) {
+      parent::testHintReturnValue();
+      try {
+        $this->testObject->attribute('hint');
+      } catch (\BadMethodCallException $expected) {
+        return;
+      }
+    }
+    $this->fail('An expected \BadMethodCallException has NOT been raised');
   }
   #endregion
 
   #region New Specialist Tests
-  /**
-   * 
-   */
-  public function testAttributeRequiredOutput()
-  {
-    $this->testObject->setModel($this->record->aProperty);
-    $this->assertFalse($this->testObject->isRequired);
-    $this->assertNull($this->testObject->attribute('required'));
-
-    $recordWithRequiredFields = new MockRecord(NULL, TRUE);
-    $testObject2 = new Templated(RootView::getInstance(), $this->templateName, $this->templateType);
-    $testObject2->setModel($recordWithRequiredFields->aProperty);
-    $this->assertTrue($recordWithRequiredFields->aProperty->isRequired);
-    $this->assertEquals(' required="required"', $testObject2->attribute('required'));
-  }
-
-  public function testAttributeValueOutput()
-  {
-    $this->testObject->setModel($this->record->aProperty);
-    $this->assertNull($this->testObject->attribute('value'));
-  }
-
   /**
    * Constructor bad template path exception test.
    * - assert throws InvalidArgumentException when arguments do NOT map to a valid template file.
