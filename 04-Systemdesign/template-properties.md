@@ -23,7 +23,7 @@ Full list of available properties for use in template files (.tpl)
 `hasModel === TRUE` is prerequisite for all following properties. 
  - type
 
-` ->hasErrors === TRUE` before `foreach($this->errors as $error) {…`
+`hasErrors === TRUE` before `foreach($this->errors as $error) {…`
  - errors :foreach
 
 `type == '[…] record-component' || type == '[…] field'`
