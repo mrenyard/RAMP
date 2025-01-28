@@ -147,6 +147,41 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 
+  protected function get_text() : ?RecordComponent
+  {
+    if ($this->register('text', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The name by which you are refered by, in western culture usually your first name.'),
+        new VarChar(
+          Str::set('e.g. John'),
+          Str::set('string with a maximum charactor length of '), 20,
+          new RegexValidationRule(
+            Str::set('single word with only latin alphabet charactered'),
+            '[A-Za-z]*'
+          )
+        )
+      ));
+    }
+    return $this->registered; 
+  }
+/*
+  protected function get_tel() : ?RecordComponent
+  {
+    if ($this->register('tel', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The number used to contact (call or text) said particular persons mobile device.'),
+        new VarChar(
+          Str::set(''),
+          Str::set('string with a maximum charactor length of '),
+          20, new TelephoneNumber(
+            Str::set('valid telephone number')
+          )
+        )
+      ));
+    }
+    return $this->registered; 
+  }
+
   protected function get_primaryColor() : ?RecordComponent
   {
     if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
@@ -165,39 +200,6 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 /*
-  protected function get_givenName() : ?RecordComponent
-  {
-    if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new Input($this->registeredName, $this,
-        Str::set('The name by which you are refered by, in western culture usually your first name.'),
-        new VarChar(
-          Str::set('string with a maximum charactor length of '),
-          20, new RegexValidationRule(
-            Str::set('single word with only latin alphabet charactered'),
-            '[A-Za-z]*'
-          )
-        )
-      ));
-    }
-    return $this->registered; 
-  }
-
-  protected function get_mobile() : ?RecordComponent
-  {
-    if ($this->register(SELF::$mobileLabel, RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new Input($this->registeredName, $this,
-        SELF::$mobileTitle,
-        //Str::set('The number used to contact (call or text) said particular persons mobile device.'),
-        new VarChar(SELF::$mobilePlaceholder,
-          Str::set('string with a maximum charactor length of '),
-          20, new TelephoneNumber(
-            Str::set('valid telephone number')
-          )
-        )
-      ));
-    }
-    return $this->registered; 
-  }
 
   protected function get_password() : ?RecordComponent
   {
