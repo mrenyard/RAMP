@@ -38,8 +38,8 @@ class Password extends RegexValidationRule
   public function __construct(Str $errorHint, specialist\SpecialistValidationRule $subRule = NULL)
   {
     if (!isset(SELF::$type)) { SELF::$type = Str::set('password'); } 
-    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 35; }
-    parent::__construct($errorHint, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', $subRule);
+    if (!isset(SELF::$maxlength)) { SELF::$maxlength = 75; }
+    parent::__construct($errorHint, '[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,75}', $subRule);
   }
 
   /**
