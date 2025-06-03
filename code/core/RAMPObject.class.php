@@ -66,7 +66,7 @@ abstract class RAMPObject
    * ```
    *
    * @param string $propertyName Name of property (handled internally)
-   * @return array|string|int|float|bool|NULL The value of requested property
+   * @return mixed The value of requested property
    * @throws \ramp\core\BadPropertyCallException Undefined or inaccessible property called
    */
   public function __get($propertyName)
@@ -102,10 +102,10 @@ abstract class RAMPObject
    * ```
    *
    * @param string $propertyName Name of property (handled internally)
-   * @param mixed $propertyValue The value to set on requested property (handled internally)
+   * @param  mixed $propertyValue The value to set on requested property (handled internally)
    * @throws \ramp\core\PropertyNotSetException Unable to set property when undefined or inaccessible
    */
-  public function __set($propertyName, $propertyValue) : void
+  public function __set(string $propertyName, $propertyValue) : void
   {
     if (!method_exists($this, ($method = 'set_'.$propertyName))) {
       throw new PropertyNotSetException(
