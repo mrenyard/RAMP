@@ -157,8 +157,8 @@ class PasswordTest extends \tests\ramp\model\business\validation\RegexValidation
     $this->assertEquals('password', (string)$this->testObject->inputType);
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
-    $this->assertEquals(35, $this->testObject->maxlength);
-    $this->assertEquals('[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,35}', (string)$this->testObject->pattern);
+    $this->assertEquals(75, $this->testObject->maxlength);
+    $this->assertEquals('[a-zA-Z0-9!#$%&\(\)+,-\.:;?\[\]\^*_\{\|\}\{~@ ]{8,75}', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);
