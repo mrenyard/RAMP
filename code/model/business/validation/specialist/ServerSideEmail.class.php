@@ -35,11 +35,12 @@ class ServerSideEmail extends SpecialistValidationRule
    * Usually used in conjunction with validation\Regex Email Address for client side
    * pattern matching and validation\dbtype\VarChar:
    * ```php
-   * $myRule = new validation\dbtype\VarChar( Str::set('e.g. jsmith@domain.com')
+   * $myRule = new validation\dbtype\VarChar(
+   *   Str::set('e.g. jsmith@domain.com'),
    *   Str::set('string with a maximum character length of '), 150,
    *   new validation\RegexEmailAddres(
    *     Str::set('validly formatted email address'),
-   *     new validation\special\ServerSideEmail()
+   *     new validation\specialist\ServerSideEmail()
    *   )
    * );
    * ```
