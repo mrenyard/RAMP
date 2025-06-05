@@ -152,7 +152,7 @@ class FlagTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
   #[\Override]
   public function testProcess( // string/int NOT booleam
     array $badValues = ['string', 1], ?array $goodValues = [TRUE, FALSE], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = 'Flag input can only be one of True or False.'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

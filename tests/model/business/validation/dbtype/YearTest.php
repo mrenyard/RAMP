@@ -170,7 +170,7 @@ class YearTest extends \tests\ramp\model\business\validation\dbtype\IntegerTest
   #[\Override]
   public function testProcess( // badValue NOT in the range '1901' to '2155'.
     array $badValues = ['1900', '2156', 1900], ?array $goodValues = ['2006', 2006], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = 'Expected an integer within the range 1901 - 2155'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

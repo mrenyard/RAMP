@@ -179,7 +179,7 @@ class TinyIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerTe
   #[\Override]
   public function testProcess( // $badValues upper/lowwer limits.
     array $badValues = [128, -129], ?array $goodValues = [127, -127], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = 'Expected an integer within the range -128 - 127'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

@@ -172,7 +172,7 @@ class SmallIntTest extends \tests\ramp\model\business\validation\dbtype\IntegerT
   #[\Override]
   public function testProcess( // upper/lower limits.
     array $badValues = [32768, -32769], ?array $goodValues = [32767, -32767], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = 'Expected an integer within the range -32768 - 32767'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

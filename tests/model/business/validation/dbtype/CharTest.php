@@ -181,7 +181,7 @@ class CharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
   #[\Override]
   public function testProcess(
     array $badValues = ['BAD'], ?array $goodValues = ['PATTERN'], int $failPoint = 1, int $ruleCount = 6,
-    $failMessage = ''
+    $failMessage = 'Invalid character length!'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);

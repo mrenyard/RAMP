@@ -172,7 +172,7 @@ class IntegerTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
   #[\Override]
   public function testProcess( // upper/lower limits.
     array $badValues = [2147483648, -2147483649], ?array $goodValues = [2147483647, -2147483648], int $failPoint = 1, int $ruleCount = 1,
-    $failMessage = ''
+    $failMessage = 'Expected an integer within the range -2147483648 - 2147483647'
   ) : void
   {
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
