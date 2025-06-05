@@ -789,7 +789,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
     $this->testObject->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<!-- /home/mrenyard/Projects/RAMP/local/ramp/view/document/template/html/path.tpl.php -->' . PHP_EOL .
+      '<!-- ' . getenv("HOME") . '/Projects/RAMP/local/ramp/view/document/template/html/path.tpl.php -->' . PHP_EOL .
       'ramp\view\document\Templated',
       $output
     );
