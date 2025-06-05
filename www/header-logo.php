@@ -24,7 +24,9 @@
  * @package RAMP
  * @version 0.0.9;
  */
-?>
+if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- header-logo.php -->
+<?php } ?>
       <div id="logo">[HEADER]</div>
       <!-- <figure class="logo">
         <a tabindex="-1" href="/" rel="home"><img src="//media.<?=\ramp\SETTING::$RAMP_DOMAIN; ?>/tmp/logo.svg" alt=""></a>

@@ -23,7 +23,9 @@
  * @package RAMP
  * @version 0.0.9;
  */
-?>
+if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- footer.php -->
+<?php } ?>
       <address>
         RAMP App FOSS Foundation.<br>
         c/o Justified Web Marketng Ltd.<br>

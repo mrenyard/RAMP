@@ -22,7 +22,9 @@
  * @package RAMP
  * @version 0.0.9;
  */
-?>
+if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- site-navigation.php -->
+<?php } ?>
       <h2>N</h2>
       <ol>
         <li><a href="#" title="[title]">[1]</a></li>

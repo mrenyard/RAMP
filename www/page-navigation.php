@@ -36,8 +36,9 @@
  * 5) 'External link to|for ...' - These links will navigate you away from this website to another site.
  * 6) Internal links should/will usually contain the words 'this ...(site|application)' or 'for more on...'
  */
-namespace ramp;
-?>
+if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- page-navigation.php -->
+<?php } ?>
       <nav>
         <ul id="quick-links">
           <li><a href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
@@ -47,7 +48,7 @@ namespace ramp;
         </ul>
         <form id="quick-search" method="get" action="/search#results">
           <div class="search input field">
-            <label for="query" title="Here to search <?=SETTING::$RAMP_DOMAIN; ?> for the latest content, data and more.">Search</label>
+            <label for="query" title="Here to search <?=\ramp\SETTING::$RAMP_DOMAIN; ?> for the latest content, data and more.">Search</label>
             <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
             <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi aliquam, voluptates ad ex ab laborum eveniet quia eos quibusdam deserunt similique ducimus molestias corporis odit ratione laudantium quis nesciunt? Ullam.</span>
           </div>            

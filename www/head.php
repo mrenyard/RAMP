@@ -26,6 +26,9 @@
  * @package RAMP
  * @version 0.0.9;
  */
+if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- head.php -->
+<?php }
 $cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
 if (\ramp\SETTING::$DEV_MODE && file_exists($cssManifest)) {
 

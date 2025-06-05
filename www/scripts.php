@@ -19,6 +19,7 @@
  * @version 0.0.9;
  */
 if (\ramp\SETTING::$DEV_MODE) { ?>
+<!-- scripts.php -->
     <script src="/assets/func/init-full.js"></script>
     <script>
 FUNC.modsPath = '/assets/func/mods/full/';
