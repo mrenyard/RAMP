@@ -193,7 +193,7 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
    */
   public function testProcess(
     array $badValues = ['BAD'], ?array $goodValues = ['GOOD'], int $failPoint = 5, int $ruleCount = 6,
-    // $failMessage = 'FailOnBadValidationRule has been given the value BAD'
+    $failMessage = 'FailOnBadValidationRule has been given the value BAD'
   ) : void
   {
     MockValidationRule::reset();
@@ -203,7 +203,7 @@ class ValidationRuleTest extends \tests\ramp\core\ObjectTest
       try {
         $this->testObject->process($badValue);
       } catch (FailedValidationException $expected) { $f++;
-        // $this->assertEquals($failMessage, $expected->getMessage());
+        $this->assertEquals($failMessage, $expected->getMessage());
         $this->assertSame($failPoint, MockValidationRule::$testCallCount);
       }
     }

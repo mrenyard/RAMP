@@ -100,6 +100,6 @@ class HTMLight extends SpecialistValidationRule
       $tester->appendChild($testerNode);
       if ($tester->validate()) { return; }
     } catch (\Error $e) { }
-    throw new FailedValidationException();
+    throw new FailedValidationException('$value failed to match provided regex!');
   }
 }

@@ -52,7 +52,7 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
    */
   #[\Override]
   protected function preSetup() : void {
-    \ramp\SETTING::$RAMP_LOCAL_DIR = '/home/mrenyard/Projects/RAMP/local';
+    \ramp\SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
     $this->hint1 = Str::set('safe (href) links,');
     $this->hint2 = Str::set('HTMLight [https://rampapp.info/assets/htmlight.dtd]');
   }
@@ -176,6 +176,7 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
       '<p><?=$myVar; ?></p>',
 
       '<p id="identifier">Some text</p>',
+
     ],
     ?array $goodValues = [
       
@@ -243,19 +244,4 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
     restore_error_handler();
   }
   #endregion
-  
-  /**
-    *
-    * '<p>input: <code>print("hello " . $place);</code></p>',
-    *
-    * '<p>output: <samp>Hello World!</samp></p>',
-    *
-    * '<pre><code data-lang="php">' .
-    * '  print("hello " . $place);' .
-    * '</code></pre>',
-    *
-    * '<pre><kbd>',
-    * '  Ctrl+A',
-    * '</kbd></pre>'   
-   */
 }
