@@ -18,6 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp;
 ?>
       <section id="<?=$this->id; ?>"<?=$this->attribute('class'); ?>><a href="#<?=$this->id; ?>"<?=$this->attribute('title'); ?>>#</a>
         <header>

@@ -18,6 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp;
 ?>
         <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
           <legend><?=$this->heading; ?></legend>

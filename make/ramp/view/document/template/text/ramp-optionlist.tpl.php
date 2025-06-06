@@ -60,7 +60,6 @@ class <?=$this->name; ?> extends OptionList
   public function __construct()
   {
     parent::__construct(null, Str::set('\ramp\model\business\field\Option'));
-    $this->add(new Option(0, Str::set('Please choose:')));
 <?php foreach($this->options as $option) { ?>
     $this->add(new Option(<?=$this->name; ?>::<?=$option->ucDescription; ?>(), Str::set('<?=$option->description; ?>')));
 <?php } ?>

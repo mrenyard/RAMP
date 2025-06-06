@@ -16,25 +16,14 @@
  *
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
- * @version 0.0.9;
+ * @version 0.0.9
  */
-namespace ramp;
-
-$page = view\WebRoot::getInstance();
-$data = ($page->type == view\PageType::DATA);
-$index = (!$data && $page->type == view\PageType::INDEX);
 ?>
-    <main id="main"><?php if ($data) { ?><form action="#main" method="post"><a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a>
-      <h1><?=$this->heading; ?></h1>
+          <fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>
+
+            data-placeholder="Select from available" data-placeholder-selected="See selected" tabindex="-1">
+            <legend><?=$this->label; ?></legend>
+            <ul>
 <?=$this->children; ?>
-    </form></main>
-<?php } else { ?><a href="#main" title="Here for Page Main content: <?=$this->title; ?>">#</a>
-      <header>
-        <h1><?=$this->heading; ?></h1>
-        <p><?=$this->summary; ?></p>
-<?=$this->extendedSummary; ?>
-      </header>
-<?=$this->extendedContent; ?>
-<?php if (!$index) { $this->children; } ?>
-    </main>
-<?php if ($index) { $this->children; } } ?>
+            </ul>
+          </fieldset>
