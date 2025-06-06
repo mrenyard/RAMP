@@ -18,5 +18,10 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp;
+$inputType = ((string)$this->type === 'select-one field') ? 'radio' : 'checkbox';
 ?>
-                <option value="<?=$this->id; ?>"<?=($this->isSelected)? ' selected':''; ?>><?=$this->description; ?></option>
+              <li>
+                <input id="<?=$this->id; ?>" name="<?=$this->name; ?>" type="<?=$inputType; ?>" value="<?=$this->key; ?>"<?=($this->isSelected)? ' checked':''; ?>>
+                <label for="<?=$this->id; ?>"><?=$this->description; ?></label>
+              </li>

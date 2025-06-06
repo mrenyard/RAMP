@@ -18,7 +18,8 @@
  * @package RAMP
  * @version 0.0.9;
  */
-$tabindex = ($this->hasErrors)? 1:0;
+namespace ramp;
+
 switch ((string)$this->type) {
   case 'relation record-component': ?>
           <fieldset id="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
@@ -33,17 +34,10 @@ switch ((string)$this->type) {
 <?=$this->children; ?>
           </fieldset><!-- #<?=$this->id; ?> -->
 <?php break; 
-  case 'select-one select-from': ?>
-          <label class="<?=$this->type; ?>" for="<?=$this->id; ?>"<?=$this->attribute('title'); ?>>
-            <span class="name"><?=$this->label; ?></span>
-            <select id="<?=$this->id; ?>" name="<?=$this->id; ?>"<?=($this->isRequired)? ' required size="' . $this->count . '"' : ''; ?> tabindex="<?=$tabindex; ?>"><?php foreach ($this->options as $option) { ?>
-              <option value="<?=($option->key == 0) ? '': $option->key; ?>"<?=($option->isSelected)? ' selected':''; ?>><?=$option->description; ?></option><?php } ?>
-
-            </select>
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>
-            <span class="error"><?=$error; ?></span><?php } } ?>
-          </label>
-<?php break;
+  case 'select-one field':
+  case 'select-many field':
+    include('select-from.tpl.php');
+    break;
   case 'input field':
     include('input.tpl.php');
     break;

@@ -19,5 +19,6 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp;
 ?>
 <?=$this->children; ?>

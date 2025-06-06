@@ -5,9 +5,9 @@
  * --------------------------
  * 
  * This file forms the root base for every page on your web application / site and must NOT be edited.
- * The following sub files can be edited by a frount-end developer:
+ * The following sub include files can be edited by a frount-end developer:
  * 
- * header-logo.php, site-navigation.php, footer.php
+ * /www/header-logo.php, /www/site-navigation.php, /wwww/footer.php
  * 
  * -----------------------------------------------------------------------------------------------------
  * RAMP - Rapid web application development environment for building flexible, customisable web systems.

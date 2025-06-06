@@ -16,15 +16,12 @@
  *
  * @author Matt Renyard (renyard.m@gmail.com)
  * @package RAMP
- * @version 0.0.9;
- * 
- * 
+ * @version 0.0.9; 
  */
-$tabindex = ($this->hasErrors)? 1:0;
+namespace ramp;
 ?>
           <fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
             <legend><?=$this->label; ?></legend>
-            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>:true" type="checkbox" tabindex="<?=$tabindex; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=($this->value) ? ' checked="checked"' : ''; ?> />
+            <input id="<?=$this->id; ?>" name="<?=$this->name; ?>:true" type="checkbox" tabindex="<?=($this->hasErrors)? 1:0; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=(!$this->hasErrors && $this->value === TRUE) ? ' checked="checked"' : ''; ?> />
             <label for="<?=$this->id; ?>"><?=$this->summary; ?></label>
-<?php if ($this->hasErrors) { foreach ($this->errors as $error) { ?>        <span class="error"><?=$error; ?></span><?php } } ?>
           </fieldset>
