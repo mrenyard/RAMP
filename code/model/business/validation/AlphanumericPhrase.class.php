@@ -35,6 +35,6 @@ class AlphanumericPhrase extends RegexValidationRule
    */
   public function __construct(Str $errorHint, specialist\SpecialistValidationRule $subRule = NULL)
   {
-    parent::__construct($errorHint, '[0-9a-zA-Z_\-\.\'! "£\$%\^\*\(\)\+=\/\:;@~#\?,]*', $subRule);
+    parent::__construct($errorHint, '[0-9a-zA-Z_\-\.\'! £\$%\^\*\(\)\+=\/\:;@~#\?,]*', $subRule);
   }
 }
