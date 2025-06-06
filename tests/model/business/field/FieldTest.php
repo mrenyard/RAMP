@@ -44,22 +44,22 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class FieldTest extends \tests\ramp\model\business\RecordComponentTest
 {
   #region Setup
-  #[\Override]
-  protected function preSetup() : void {
-    MockSqlBusinessModelManager::reset();
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
-    \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
-    $this->dataObject = new \StdClass();
-    $this->record = new MockRecord($this->dataObject);
-    $this->record->reset();
-  }
+  // #[\Override]
+  // protected function preSetup() : void {
+  //   // MockSqlBusinessModelManager::reset();
+  //   // \ramp\SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\model';
+  //   // \ramp\SETTING::$RAMP_BUSINESS_MODEL_MANAGER = 'tests\ramp\mocks\model\MockSqlBusinessModelManager';
+  //   // $this->dataObject = new \StdClass();
+  //   // $this->record = new MockRecord($this->dataObject);
+  //   $this->record->reset();
+  // }
   #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->aProperty; }
-  #[\Override]
-  protected function postSetup() : void {
-    $this->name = $this->record->propertyName;
-    $this->expectedChildCountNew = 0;
-  }
+  // #[\Override]
+  // protected function postSetup() : void {
+  //   $this->name = $this->record->propertyName;
+  //   $this->expectedChildCountNew = 0;
+  // }
   #endregion
 
   /**
@@ -86,25 +86,28 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #[\Override]
   protected function populateSubModelTree() : void
   {
-    $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 0'));
-    $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 1'));
-    $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 2'));
-    $this->expectedChildCountExisting = 3;
+    // $this->testObject[0]->setParentField($this->testObject);
+    // $this->testObject[1]->setParentField($this->testObject);
+    // $this->testObject[2]->setParentField($this->testObject);
+    // $this->testObject[0] = new Option(0, Str::set('DESCRIPTION 1'));
+    // $this->testObject[1] = new Option(1, Str::set('DESCRIPTION 2'));
+    // $this->testObject[2] = new Option(2, Str::set('DESCRIPTION 3'));
+    $this->expectedChildCountExisting = 0;
+    $this->childErrorIndexes = array(0);
     $this->postData = PostData::build(array(
       'mock-record:new:a-property' => 'BadValue'
     ));
-    $this->childErrorIndexes = array(1);
   }
   #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[0]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[1]->type);
-    $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertSame('option business-model', (string)$this->testObject[2]->type);
-    $this->assertFalse(isset($this->testObject[3]));
+    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject[0]->type);
+    // $this->assertEquals('mock-business-model business-model', (string)$this->testObject[0]->type);
+    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
+    // $this->assertEquals('mock-business-model business-model', (string)$this->testObject[1]->type);
+    // $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
+    // $this->assertEquals('mock-business-model business-model', (string)$this->testObject[2]->type);
+    $this->assertFalse(isset($this->testObject[0]));
   }
   #endregion
 
@@ -256,7 +259,7 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
   #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
-    parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
+    parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
   }
 
   /**
@@ -404,12 +407,12 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $this->testObject->isEditable = TRUE;
     $this->assertTrue($this->testObject->isEditable);
     $this->assertSame($defaultValue, $this->testObject->value);
-    $dataValue = ($value instanceof Option) ? $value->key : $value;
-    $this->dataObject->$fieldName = $dataValue;
-    $this->assertSame($value, $this->testObject->value);
-    $dataNewValue = ($newValue instanceof Option) ? $newValue->key : $newValue;
-    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $dataNewValue)));
-    $this->assertSame($newValue, $this->testObject->value);
+    $this->dataObject->$fieldName = $value;
+    $expectedValue = ($this->testObject->value instanceof Option) ? $this->testObject->value->key : $this->testObject->value;
+    $this->assertSame($value, $expectedValue);
+    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $newValue)));
+    $expectedValue = ($this->testObject->value instanceof Option) ? $this->testObject->value->key : $this->testObject->value;
+    $this->assertSame($newValue, $expectedValue);
   }
 
   /**

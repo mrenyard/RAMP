@@ -69,6 +69,15 @@ abstract class Field extends RecordComponent
   /**
    * @ignore
    */
+  #[\Override]
+  protected function get_type() : Str
+  {
+    return BusinessModel::processType((string)$this, TRUE)->append(Str::set(' field'));
+  }
+
+  /**
+   * @ignore
+   */
   protected function get_label() : Str
   {
     return Str::set(ucwords(trim(preg_replace('/((?:^|[A-Z])[a-z]+)/', ' $0', $this->name))));
@@ -167,7 +176,7 @@ abstract class Field extends RecordComponent
   /**
    * Template method for use in validation.
    * @param mixed $value Value to be processed
-   * @throws \ramp\validation\FailedValidationException When test fails.
+   * @throws \ramp\model\business\validation\FailedValidationException When test fails.
    */
   abstract public function processValidationRule($value) : void;
 }

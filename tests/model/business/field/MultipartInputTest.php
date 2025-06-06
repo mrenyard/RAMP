@@ -54,9 +54,7 @@ class MultipartInputTest extends \tests\ramp\model\business\field\InputTest
 
     $this->format = $this->record->multipartFormat;
     $this->hint = 
-      $this->record->multipartHint1 . $this->record->db1From . ' to ' . $this->record->db1To . ' followed by ' .
-      $this->record->multipartHint2 . $this->record->db2From . ' to ' . $this->record->db2To . ' ' .
-      $this->record->multipartHint3 . '(' . $this->format . ') ' .
+      $this->record->multipartFormHint . ' (' . $this->format . ') ' .
       'total characters: ' . strlen($this->format);
     $this->inputType = 'text'; // default
   }
@@ -257,7 +255,7 @@ class MultipartInputTest extends \tests\ramp\model\business\field\InputTest
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage('Array access setting is not allowed');
-    parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
+    parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
   }
 
   /**

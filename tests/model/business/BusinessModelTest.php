@@ -204,7 +204,8 @@ class BusinessModelTest extends \tests\ramp\model\ModelTest
   {
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->type);
     $type1 = $this->processType(get_class($this->testObject), TRUE);
-    $type2 = $this->processType(get_parent_class($this->testObject), TRUE);
+    $type2 = ($this->testObject instanceof \ramp\model\business\field\Field) ?
+      Str::set('field') : $this->processType(get_parent_class($this->testObject), TRUE);
     $this->assertSame($type1 . ' ' . $type2, (string)$this->testObject->type);
     $this->assertInstanceOf('\Traversable', $this->testObject->getIterator());
     $i = 0; foreach ($this->testObject as $child) { $i++; }

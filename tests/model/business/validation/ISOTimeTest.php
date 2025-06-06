@@ -44,7 +44,7 @@ class ISOTimeTest extends \tests\ramp\model\business\validation\FormatBasedValid
   protected function preSetup() : void
   {
     $this->inputType = 'time';
-    $this->hint = Str::set('time in the format: ');
+    $this->hint = Str::set('time in the format:');
     $this->format = 'hh:mm:ss';
     $this->step = 1;
   }

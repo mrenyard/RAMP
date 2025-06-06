@@ -57,7 +57,7 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
     $this->inputType = 'text'; // default
     $this->pattern = '[0-9]{4}';
     $this->format = 'YYYY';
-    $this->hint = Str::set('...in the format: ');
+    $this->hint = Str::set('...in the format:');
   }
   #[\Override]
   protected function getTestObject() : RAMPObject {
@@ -148,7 +148,7 @@ class FormatBasedValidationRuleTest extends \tests\ramp\model\business\validatio
   #[\Override]
   public function testExpectedAttributeValues()
   {
-    $this->assertEquals($this->hint . '(' . $this->format . ')', $this->testObject->hint);
+    $this->assertEquals($this->hint . ' (' . $this->format . ')', $this->testObject->hint);
     $this->assertEquals($this->inputType, $this->testObject->inputType);
     $this->assertNull($this->testObject->pattern);
     $this->assertNull($this->testObject->placeholder);

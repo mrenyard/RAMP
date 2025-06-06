@@ -21,6 +21,7 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\core\iOption;
 use ramp\core\OptionList;
 use ramp\model\business\Record;
 use ramp\model\business\validation\FailedValidationException;
@@ -45,10 +46,13 @@ final class SelectOne extends SelectFrom
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */
-  final protected function get_value()
+  final protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
-    $index = $this->parent->getPropertyValue($this->name);
-    return (isset($index))? $this[$index] : $this[0];
+    $key = $this->parent->getPropertyValue($this->name);
+    foreach ($this as $option) {
+      if ($option->key == (int)$key) { return $option; }
+    }
+    return NULL;
   }
 
   /**
@@ -58,9 +62,8 @@ final class SelectOne extends SelectFrom
    */
   public function processValidationRule($value) : void
   {
-    foreach ($this as $option)
-    {
-      if ((string)$value == (string)$option->id) { return; }
+    foreach ($this as $option) {
+      if ((string)$value == (string)$option->key) { return; }
     }
     throw new FailedValidationException('Selected value NOT an available option!');
   }

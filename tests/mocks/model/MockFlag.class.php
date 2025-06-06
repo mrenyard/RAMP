@@ -36,9 +36,9 @@ class MockFlag extends Flag
   public $validateCount;
   public $hasErrorsCount;
 
-  public function __construct(Str $name, Record $parent, Str $title)
+  public function __construct(Str $name, Record $parent, Str $title, Str $summary)
   {
-    parent::__construct($name, $parent, $title);
+    parent::__construct($name, $parent, $title, $summary);
     $this->validateCount = 0;
     $this->hasErrorsCount = 0;
   }

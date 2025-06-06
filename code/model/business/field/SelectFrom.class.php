@@ -61,5 +61,5 @@ abstract class SelectFrom extends Field
       $option->setParentField($this);
       $this[$i++] = $option;
     }
-  }  
+  }
 }

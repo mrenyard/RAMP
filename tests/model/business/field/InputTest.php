@@ -250,7 +250,7 @@ class InputTest extends \tests\ramp\model\business\field\FieldTest
   {
     $this->expectException(\BadMethodCallException::class);
     $this->expectExceptionMessage('Array access setting is not allowed');
-    parent::testOffsetSetOffsetUnset(new Option(0, Str::set('DESCRIPTION 1')));
+    parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
   }
 
   /**

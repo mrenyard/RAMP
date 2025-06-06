@@ -21,6 +21,8 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\OptionList;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\condition\Filter;
@@ -107,7 +109,7 @@ abstract class Relation extends RecordComponent
    * @return mixed Value held by relevant property of associated record
    */
   #[\Override]
-  final protected function get_value()
+  final protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
     return ($this->with !== NULL) ? (string)$this->with->id : NULL;
   }

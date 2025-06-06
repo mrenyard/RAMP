@@ -166,9 +166,9 @@ class CharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
     $this->assertEquals(7, $this->testObject->minlength);
     $this->assertEquals(7, $this->testObject->maxlength);
     $this->assertEquals('(PATTERN){7}', (string)$this->testObject->pattern);
-    $this->assertNull($this->testObject->min);
-    $this->assertNull($this->testObject->max);
-    $this->assertNull($this->testObject->step);
+    $this->assertEquals('MIN', $this->testObject->min);
+    $this->assertEquals('MAX', $this->testObject->max);
+    $this->assertEquals('STEP', $this->testObject->step);
   }
 
   /**

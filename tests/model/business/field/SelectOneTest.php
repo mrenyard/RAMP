@@ -40,10 +40,11 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->selectOne; }
+  #[\Override]
   protected function postSetup() : void {
     $this->name = $this->record->selectOneName;
-    // $this->title = $this->record->title;
     $this->expectedChildCountNew = 3;
   }
   #endregion
@@ -61,6 +62,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert is instance of {@see \ramp\model\field\SelectOne}
    * @see \ramp\model\business\field\Flag
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -68,6 +70,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
     $this->expectedChildCountExisting = 3;
@@ -76,6 +79,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
     ));
     $this->childErrorIndexes = array(0);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertSame($this->record->selectOneList[0], $this->testObject[0]);
@@ -91,6 +95,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -101,6 +106,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -116,6 +122,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -126,6 +133,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -151,6 +159,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$Errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -161,6 +170,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\BusinessModel::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -171,6 +181,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -181,6 +192,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -192,6 +204,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -202,6 +215,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see https://www.php.net/manual/class.badmethodcallexception.php \BadMethodCallException} thrown.
    * @see \ramp\model\business\Record::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException($minAllowedType, $objectOutOfScope, $errorMessage);
@@ -216,6 +230,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
@@ -233,6 +248,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -247,6 +263,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -262,6 +279,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'Selected value NOT an available option!') : void
   {
     parent::testErrorReportingPropagation($message);
@@ -274,6 +292,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\field\Field::record
    * @see \ramp\model\business\field\Field::parentProppertyName
    */
+  #[\Override]
   public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
@@ -285,9 +304,10 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue() : void
   {
-    $this->assertSame($this->record->selectOneList[0], $this->testObject->value);
+    parent::testRecordComponentValue();
   }
 
   /**
@@ -295,6 +315,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
    */
+  #[\Override]
   public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
@@ -305,6 +326,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\field\Field::propertyName
    */
+  #[\Override]
   public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
@@ -322,7 +344,8 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
-  public function testStateChangesField($fieldName = 'selectOne', $defaultValue = 0, $value = 1, $newValue = 2) : void
+  #[\Override]
+  public function testStateChangesField($fieldName = 'selectOne', $defaultValue = NULL, $value = 1, $newValue = 2) : void
   {
     parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
   }
@@ -332,6 +355,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert isRequired defaults TRUE when explicitly set at registration.
    * @see \ramp\model\business\field\Field::isRequired
    */
+  #[\Override]
   public function testCheckIsRequiredWhenSet() : void
   {
     parent::testCheckIsRequiredWhenSet();
@@ -364,6 +388,7 @@ class SelectOneTest extends \tests\ramp\model\business\field\SelectFromTest
    *   - with message: *'OptionList $options compositeType MUST be \ramp\model\business\field\Option'*
    * @see \ramp\model\business\field\SelectFrom
    */
+  #[\Override]
   public function testConstructorInvalidArgumentException()
   {
     parent::testConstructorInvalidArgumentException();

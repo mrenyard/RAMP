@@ -21,9 +21,12 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\OptionList;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
 use ramp\model\business\validation\dbtype\Flag as Rule;
+use ramp\model\business\validation\FailedValidationException;
 
 /**
  * Flag  boolean field related to a single property of its parent \ramp\model\business\Record.
@@ -39,14 +42,18 @@ use ramp\model\business\validation\dbtype\Flag as Rule;
  */
 class Flag extends Field
 {
+  private $summary;
+
   /**
    * Creates boolean field related to a single property of containing record.
    * @param \ramp\core\Str $name Related dataObject property name of parent record.
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $title An expanded description of expected field content.
+   * @param \ramp\core\Str $summary Overview, of a given statment or selection.
    */
-  public function __construct(Str $name, Record $parent, Str $title)
+  public function __construct(Str $name, Record $parent, Str $title, Str $summary)
   {
+    $this->summary = $summary;
     parent::__construct($name, $parent, $title);
   }
 
@@ -61,11 +68,21 @@ class Flag extends Field
     throw new \BadMethodCallException('Array access setting is not allowed.');
   }
 
+  final protected function get_summary()
+  {
+    return $this->summary;
+  }
+
+  final protected function get_placeholder()
+  {
+    return $this->get_summary();
+  }
+
   /**
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */
-  final protected function get_value()
+  final protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
     return ((bool)$this->parent->getPropertyValue((string)$this->name));
   }
@@ -96,5 +113,8 @@ class Flag extends Field
   {
     $rule = new Rule(Str::set('one of either TRUE or FALSE'));
     $rule->process($value);
+    if ($this->parent->isRequiredField($this->name) && $value !== TRUE) {
+      throw new FailedValidationException('Flag input MUST be Checked!');
+    }
   }
 }

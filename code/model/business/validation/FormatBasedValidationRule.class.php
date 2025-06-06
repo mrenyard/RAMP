@@ -40,7 +40,7 @@ class FormatBasedValidationRule extends RegexValidationRule
   public function __construct(Str $errorHint, string $pattern, string $format)
   {
     $this->format = $format;
-    parent::__construct($errorHint->append(Str::set('('. $format . ')')), $pattern, NULL);
+    parent::__construct($errorHint->append(Str::set(' ('. $format . ')')), $pattern, NULL);
   }
 
   /**

@@ -284,7 +284,7 @@ abstract class Record extends Relatable
    * Gets the value of a given property.
    * **DO NOT USE, METHOD TO ONLY BE CALLED FROM CHILD FIELD**
    * @param string $propertyName Name of property.
-   * @return mixed The value of property assosiated with requested property.
+   * @return string|int|float|bool|NULL The value of property assosiated with requested property.
    */
   public function getPropertyValue(string $propertyName) : string|int|float|bool|NULL
   {
@@ -295,9 +295,9 @@ abstract class Record extends Relatable
    * Sets the value of a given property.
    * **DO NOT USE, METHOD TO ONLY BE CALLED FROM CHILD FIELD**
    * @param string $propertyName Name of property to be set.
-   * @param mixed|NULL The value to be set on provided property or NULL to initiate. 
+   * @param string|int|float|bool|NULL The value to be set on provided property or NULL to initiate. 
    */
-  public function setPropertyValue(string $propertyName, $value = NULL) : void
+  public function setPropertyValue(string $propertyName, string|int|float|bool $value = NULL) : void
   {
     $value = (\is_string($value) && $value === '')? NULL : $value;
     if ($this->getPropertyValue($propertyName) == $value) { return; }

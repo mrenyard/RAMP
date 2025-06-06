@@ -21,6 +21,8 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\OptionList;
 
 /**
  * Abstract Business Model Record Component.
@@ -36,7 +38,7 @@ use ramp\core\Str;
  * @property-read \ramp\core\Str $name Related parent record associated property name.
  * @property-read \ramp\model\business\Record $parent Related parent Record associated with this component.
  * @property bool $isEditable Editability flag of *this*, some defaults are NOT overridable.
- * @property-read array|string|int|float|bool|NULL $value Returns value held by relevant property of associated record.
+ * @property-read \ramp\core\OptionList|\ramp\core\iOption|string|int|float|bool|NULL $value Returns value held by relevant property of associated record.
  */
 abstract class RecordComponent extends BusinessModel
 {
@@ -108,7 +110,7 @@ abstract class RecordComponent extends BusinessModel
   /**
    * @ignore
    */
-  protected function get_value()
+  protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
     return $this->parent->getPropertyValue((string)$this->name);
   }

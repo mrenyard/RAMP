@@ -80,9 +80,9 @@ class MockRecord extends Record
   public Str $inputHint2;
   public int $maxlength;
 
-  public Str $multipartHint1;
-  public Str $multipartHint2;
-  public Str $multipartHint3;
+  public Str $multipartDataHint1;
+  public Str $multipartDataHint2;
+  public Str $multipartFormHint;
   public string $multipartPattern;
   public string $multipartFormat;
   public int $db1From; public int $db1To;
@@ -104,11 +104,11 @@ class MockRecord extends Record
     $this->placeholder = Str::set('e.g. Some Text');
     $this->maxlength = 10;
 
-    $this->multipartHint1 = Str::set('a 4 digit year from ');
+    $this->multipartDataHint1 = Str::set('a 4 digit year from ');
     $this->db1From = 1901; $this->db1To = 2155;
-    $this->multipartHint2 = Str::set('a 2 digit month number from ');
+    $this->multipartDataHint2 = Str::set('a 2 digit month number from ');
     $this->db2From = 01; $this->db2To = 12;
-    $this->multipartHint3 = Str::set('formatted: ');
+    $this->multipartFormHint = Str::set('valid ISO formated month');
     $this->multipartFormat = 'YYYY-mm';
     $this->multipartPattern = '[0-9]{4}-[0-9]{2}';
 
@@ -190,7 +190,9 @@ class MockRecord extends Record
     if ($this->register('flag', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->flagName = $this->registeredName;
       $this->initiate(new MockFlag(
-        $this->registeredName, $this, $this->title));
+        $this->registeredName, $this, $this->title,
+        Str::set('Overview, of a given statment or selection.')
+      ));
     }
     return $this->registered;
   }
@@ -200,9 +202,9 @@ class MockRecord extends Record
     if ($this->register('selectFrom', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectFromName = $this->registeredName;
       $this->selectFromList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-      $this->selectFromList->add(new MockOption(0, Str::set('Please choose:')));
       $this->selectFromList->add(new MockOption(1, $this->selectDescriptionOne));
       $this->selectFromList->add(new MockOption(2, Str::set('DESCRIPTION TWO')));  
+      $this->selectFromList->add(new MockOption(3, Str::set('DESCRIPTION THREE')));  
       $this->initiate(new MockSelectFrom($this->registeredName, $this,
         $this->title,
         $this->selectFromList
@@ -216,9 +218,9 @@ class MockRecord extends Record
     if ($this->register('selectOne', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectOneName = $this->registeredName;
       $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-      $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
       $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
-      $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));
+      $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION THREE')));
       $this->initiate(new SelectOne($this->registeredName, $this,
         $this->title,
         $this->selectOneList
@@ -232,7 +234,6 @@ class MockRecord extends Record
     if ($this->register('selectMany', RecordComponentType::PROPERTY, $this->requiered)) {
       $this->selectManyName = $this->registeredName;
       $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-      $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
       $this->selectManyList->add(new Option(1, $this->selectDescriptionOne));
       $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
       $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
@@ -251,11 +252,11 @@ class MockRecord extends Record
       $this->multipartInputDataProperties = ['monthYear', 'monthNumber'];
       $this->initiate(new MockMultipartInput($this->registeredName, $this,
         $this->title,
-        new MockFormatBasedValidationRule($this->multipartHint3, $this->multipartPattern, $this->multipartFormat),
+        new MockFormatBasedValidationRule($this->multipartFormHint, $this->multipartPattern, $this->multipartFormat),
         ['-'],
         $this->multipartInputDataProperties,
-        new SmallInt($this->multipartHint1, $this->db1From, $this->db1To),
-        new TinyInt($this->multipartHint2, $this->db2From, $this->db2To)
+        new SmallInt($this->multipartDataHint1, $this->db1From, $this->db1To),
+        new TinyInt($this->multipartDataHint2, $this->db2From, $this->db2To)
       ));
     }
     return $this->registered;

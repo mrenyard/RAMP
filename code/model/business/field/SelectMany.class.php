@@ -21,8 +21,8 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\core\iOption;
 use ramp\core\OptionList;
-use ramp\core\Collection;
 use ramp\model\business\Record;
 use ramp\model\business\validation\FailedValidationException;
 
@@ -46,13 +46,15 @@ final class SelectMany extends SelectFrom
    * Returns value held by relevant property of containing record.
    * @return mixed Value held by relevant property of containing record
    */
-  final protected function get_value()
+  final protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
-    $selection = new Collection();
+    $selection = new OptionList();
     $value = $this->parent->getPropertyValue($this->name);
     $value = ($value !== NULL) ? explode('|', $value) : array(0);
-    foreach ($value as $index) {
-      $selection->add($this[$index]);
+    foreach ($value as $key) {
+      foreach ($this as $option) {
+        if ($option->key == (int)$key) { $selection->add($option); }
+      }
     }
     return $selection;
   }
@@ -71,7 +73,7 @@ final class SelectMany extends SelectFrom
     foreach ($value as $selected) {
       $valid = FALSE;
       foreach ($this as $option) {
-        if ((string)$selected == (string)$option->id) {
+        if ((string)$selected == (string)$option->key) {
           $valid = TRUE;
           continue;
         }

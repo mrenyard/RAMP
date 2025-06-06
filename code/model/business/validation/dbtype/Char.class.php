@@ -32,7 +32,7 @@ use ramp\model\business\validation\FormatBasedValidationRule;
 class Char extends DbTypeValidation
 {
   private bool $isFormatRule;
-  private Str $placeholder;
+  private ?Str $placeholder;
   private int $length;
 
   /**
@@ -101,24 +101,6 @@ class Char extends DbTypeValidation
   {
     return (!$this->isFormatRule) ? $this->length : NULL;
   }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_min() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_max() : ?Str { return NULL; }
-
-  /**
-   * @ignore
-   */
-  #[\Override]
-  protected function get_step() : ?Str { return NULL; }
 
   /**
    * Asserts that $value is a string of exactly expected number of characters.

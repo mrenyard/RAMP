@@ -21,6 +21,8 @@
 namespace ramp\model\business\field;
 
 use ramp\core\Str;
+use ramp\core\iOption;
+use ramp\core\OptionList;
 use ramp\core\StrCollection;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
@@ -57,13 +59,8 @@ class MultipartInput extends Input
   private array $parts; // [n][valueLength, propertyName, validationRule];
 
   /**
-<<<<<<< HEAD
-   * Creates a multipart input field related to a single property with multiple data storage fields.
-   * @param \ramp\core\Str $name Related dataObject property name of parent record.
-=======
    * Creates a multipart input field related to a single property with mutiply data storage fields.
    * @param \ramp\core\Str $name Related field name of parent record.
->>>>>>> f887dc211b8bdc00be14993ba96c981ab25031ec
    * @param \ramp\model\business\Record $parent Record parent of *this* property.
    * @param \ramp\core\Str $title An expanded description of expected field content.
    * @param \ramp\model\business\validation\FormatBasedValidationRule $formValidation Validation rule to test user submited value against.
@@ -78,7 +75,7 @@ class MultipartInput extends Input
     $this->splits = $splits;
     $fparts = preg_split('/(' . implode('|', $splits) . ')/', $formValidation->format);
     if (count($fparts) != count($dataProperties)) { throw new \InvalidArgumentException(''); }
-    // TODO:mrenyard: Internationalise 'total length' & 'maxinmum length'
+    // TODO:mrenyard: Internationalise 'total characters: '
     parent::__construct($name, $parent, $title,
       new Char(Str::_EMPTY(), Str::set('total characters: '), strlen($formValidation->format), $formValidation)
     );
@@ -114,9 +111,33 @@ class MultipartInput extends Input
   #[\Override]
   protected function get_maxlength() : ?int { return NULL; }
 
-  /**
+  /*
    * @ignore
-   */
+   *
+  protected function get_min() : ?Str
+  {
+    return $this->$formValidation->min;
+  }
+
+  /*
+   * @ignore
+   *
+  protected function get_max() : ?Str
+  {
+    return $this->$formValidation->max;
+  }
+
+  /*
+   * @ignore
+   *
+  protected function get_step() : ?Str
+  {
+    return $this->$formValidation->step;
+  }*/
+
+  /*
+   * @ignore
+   *
   #[\Override]
   protected function get_hint() : Str
   {
@@ -127,13 +148,13 @@ class MultipartInput extends Input
       $rtn = $rtn->append($validationRule->hint)->append(Str::SPACE())->append($followedBy);
     }
     return $rtn->trimEnd($followedBy)->append(parent::get_hint());
-  }
+  }*/
 
   /**
    * @ignore
    */
   #[\Override]
-  protected function get_value()
+  protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
     $i = 0; $rtn = '';
     foreach ($this->parts as $propMeta) {

@@ -22,6 +22,7 @@
 namespace tests\ramp\mocks\model;
 
 use ramp\core\Str;
+use ramp\core\iOption;
 use ramp\core\OptionList;
 use ramp\condition\PostData;
 use ramp\model\business\Record;
@@ -69,12 +70,15 @@ class MockSelectFrom extends SelectFrom
 
   /**
    * Returns value held by relevant property of containing record.
-   * @return mixed Value held by relevant property of containing record
+   * @return \ramp\core\OptionList|\ramp\core\iOption|string|int|float|bool|NULL Value held by relevant property of containing record
    */
-  final protected function get_value()
+  final protected function get_value() : OptionList|iOption|string|int|float|bool|NULL
   {
-    $index = $this->parent->getPropertyValue($this->name);
-    return (isset($index))? $this[$index] : $this[0];
+    $key = $this->parent->getPropertyValue($this->name);
+    foreach ($this as $option) {
+      if ($option->key == (int)$key) { return $option; }
+    }
+    return NULL;
   }
 
   /**
@@ -84,9 +88,8 @@ class MockSelectFrom extends SelectFrom
    */
   public function processValidationRule($value) : void
   {
-    foreach ($this as $option)
-    {
-      if ((string)$value == (string)$option->id) { return; }
+    foreach ($this as $option) {
+      if ((string)$value == (string)$option->key) { return; }
     }
     throw new FailedValidationException('Selected value NOT an available option!');
   }

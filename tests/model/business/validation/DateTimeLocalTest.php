@@ -44,7 +44,7 @@ class DateTimeLocalTest extends \tests\ramp\model\business\validation\FormatBase
   protected function preSetup() : void
   {
     $this->inputType = 'datetime-local';
-    $this->hint = Str::set('date and time in the format: ');
+    $this->hint = Str::set('date and time in the format:');
     $this->format = 'yyyy-mm-ddThh:mm:ss';
     $this->step = 1;
   }

@@ -51,7 +51,7 @@ class ISODateTest extends \tests\ramp\model\business\validation\FormatBasedValid
   protected function preSetup() : void
   {
     $this->inputType = 'date';
-    $this->hint = Str::set('date in the format: ');
+    $this->hint = Str::set('date in the format:');
     $this->format = 'yyyy-mm-dd';
     $this->step = 1;
   }

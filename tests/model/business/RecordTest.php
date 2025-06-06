@@ -84,6 +84,7 @@ require_once '/usr/share/php/tests/ramp/mocks/model/MockRelationToMany.class.php
 require_once '/usr/share/php/tests/ramp/mocks/model/MockFlag.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockSqlBusinessModelManager.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockOption.class.php';
+require_once '/usr/share/php/tests/ramp/mocks/model/MockFormatBasedValidationRule.class.php';
 require_once '/usr/share/php/tests/ramp/mocks/model/MockMultipartInput.class.php';
 
 use ramp\core\RAMPObject;
@@ -101,6 +102,7 @@ use tests\ramp\mocks\model\MockRecordComponent;
 use tests\ramp\mocks\model\MockRecord;
 use tests\ramp\mocks\model\MockField;
 use tests\ramp\mocks\model\MockSqlBusinessModelManager;
+use tests\ramp\mocks\model\MockFormatBaseValidationRule;
 
 /**
  * Collection of tests for \ramp\model\business\Record.
@@ -182,19 +184,19 @@ class RecordTest extends \tests\ramp\model\business\RelatableTest
     $this->assertEquals('mock-field field', (string)$this->testObject[0]->type);
     $this->assertEquals('aProperty', (string)$this->testObject[0]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[1]->type);
-    $this->assertEquals('mock-input input', (string)$this->testObject[1]->type);
+    $this->assertEquals('mock-input field', (string)$this->testObject[1]->type);
     $this->assertEquals('input', (string)$this->testObject[1]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[2]->type);
-    $this->assertEquals('mock-flag flag', (string)$this->testObject[2]->type);
+    $this->assertEquals('mock-flag field', (string)$this->testObject[2]->type);
     $this->assertEquals('flag', (string)$this->testObject[2]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[3]->type);
-    $this->assertEquals('mock-select-from select-from', (string)$this->testObject[3]->type);
+    $this->assertEquals('mock-select-from field', (string)$this->testObject[3]->type);
     $this->assertEquals('selectFrom', (string)$this->testObject[3]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[4]->type);
-    $this->assertEquals('select-one select-from', (string)$this->testObject[4]->type);
+    $this->assertEquals('select-one field', (string)$this->testObject[4]->type);
     $this->assertEquals('selectOne', (string)$this->testObject[4]->name);
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[5]->type);
-    $this->assertEquals('select-many select-from', (string)$this->testObject[5]->type);
+    $this->assertEquals('select-many field', (string)$this->testObject[5]->type);
     $this->assertEquals('selectMany', (string)$this->testObject[5]->name);
 
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject[6]->type);

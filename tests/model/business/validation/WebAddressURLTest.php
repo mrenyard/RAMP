@@ -138,10 +138,13 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
   public function testExpectedAttributeValues()
   {
     $this->assertEquals($this->hint1, $this->testObject->hint);
-    $this->assertEquals('text', $this->testObject->inputType);
+    $this->assertEquals('url', $this->testObject->inputType);
     $this->assertNull($this->testObject->placeholder);
     $this->assertNull($this->testObject->maxlength);
-    $this->assertNull($this->testObject->pattern);
+    $this->assertEquals(
+      '(https:\/\/[a-z0-9-\.]+)?\/([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&amp;([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?',
+      $this->testObject->pattern
+    );
     $this->assertNull($this->testObject->min);
     $this->assertNull($this->testObject->max);
     $this->assertNull($this->testObject->step);
@@ -159,15 +162,17 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
     array $badValues = [
       'javascript:action',
       'https://plex.domain.com:32400/web/index.html',
+      '#person:new:family-name',
       'https://my.domain.com/<?=$myVar; ?>',
       'https://my.domain.com/$myvar'
     ], ?array $goodValues = [
+      'https://www.bbc.co.uk/',
       'https://www.bbc.co.uk/news',
-      '#person:new:family-name',
+      '/person/~/family-name/',
       'https://my.domain.com/person/~/family-name/',
       'https://www.google.com/search?client=firefox',
       'https://www.google.com/search?client=firefox&amp;q=help',
-      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#person:mrenyard'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
@@ -178,32 +183,35 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
   #endregion
 
   #region New Specialist Tests
-
   /**
-   * Additional assertions for NOT allowing InpageLinks variant of ramp\validation\ValidationRule::process() and test().
+   * Additional assertions for allowing InpageLinks variant of ramp\validation\ValidationRule::process() and test().
    * - assert process touches each test method of each sub rule throughout any give set of tests
    * - assert {@see \ramp\validation\FailedValidationException} bubbles up when thrown in any given test.
    * @see \ramp\validation\WebAddressURL
    * @see \ramp\validation\WebAddressURL::test()
    * @see \ramp\validation\WebAddressURL::process()
    */
-  public function testNotAllowInpageLinksProcess(
+  public function testAllowInpageLinksProcess(
     array $badValues = [
       'javascript:action',
-      '#person:new:family-name',
-      '<?=$myVar; >"'
+      'https://plex.domain.com:32400/web/index.html',
+      'https://my.domain.com/<?=$myVar; ?>',
+      'https://my.domain.com/$myvar'
     ], ?array $goodValues = [
+      'https://www.bbc.co.uk/',
       'https://www.bbc.co.uk/news',
+      '/person/~/family-name/',
+      '#person:new:family-name',
       'https://my.domain.com/person/~/family-name/',
+      'https://www.google.com/search?client=firefox',
       'https://www.google.com/search?client=firefox&amp;q=help',
-      'https://www.google.com/search?client=firefox&amp;q=help&amp;time=bst',
-      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#person:mrenyard'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
   ) : void
   {
-    $this->testObject = new MockWebAddressURL($this->hint1, FALSE, FALSE);
+    $this->testObject = new MockWebAddressURL($this->hint1, FALSE, TRUE);
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
 
@@ -215,22 +223,27 @@ class WebAddressURLTest extends \tests\ramp\model\business\validation\RegexValid
    * @see \ramp\validation\WebAddressURL::test()
    * @see \ramp\validation\WebAddressURL::process()
    */
-  public function testAllowProtsProcess(
+  public function testAllowPortsProcess(
     array $badValues = [
       'javascript:action',
-      '<?=$myVar; ?>'
-    ], ?array $goodValues = [
-      'https://www.bbc.co.uk:443/news',
       '#person:new:family-name',
+      'https://my.domain.com/<?=$myVar; ?>',
+      'https://my.domain.com/$myvar'
+    ], ?array $goodValues = [
+      'https://www.bbc.co.uk/',
+      'https://www.bbc.co.uk/news',
+      '/person/~/family-name/',
+      'https://my.domain.com/person/~/family-name/',
       'https://plex.domain.com:32400/web/index.html',
+      'https://www.google.com/search?client=firefox',
       'https://www.google.com/search?client=firefox&amp;q=help',
-      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#main'
+      'https://domain.com/person/?family-name=renyard&amp;given-name=matt#person:mrenyard'
     ],
     int $failPoint = 1, int $ruleCount = 1,
     $failMessage = '$value failed to match provided regex!'
   ) : void
   {
-    $this->testObject = new MockWebAddressURL($this->hint1, TRUE);
+    $this->testObject = new MockWebAddressURL($this->hint1, TRUE, FALSE);
     parent::testProcess($badValues, $goodValues, $failPoint, $ruleCount, $failMessage);
   }
   #endregion

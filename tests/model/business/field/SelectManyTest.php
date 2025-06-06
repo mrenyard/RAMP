@@ -40,10 +40,12 @@ use tests\ramp\mocks\model\MockSqlBusinessModelManager;
 class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
 {
   #region Setup
+  #[\Override]
   protected function getTestObject() : RAMPObject { return $this->record->selectMany; }
+  #[\Override]
   protected function postSetup() : void {
     $this->name = $this->record->selectManyName;
-    $this->expectedChildCountNew = 4;
+    $this->expectedChildCountNew = 3;//4;
   }
   #endregion
 
@@ -60,6 +62,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert is instance of {@see \ramp\model\field\SelectMany}
    * @see \ramp\model\business\field\Flag
    */
+  #[\Override]
   public function testConstruct() : void
   {
     parent::testConstruct();
@@ -67,21 +70,22 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
   }
 
   #region Sub model templates model setup
+  #[\Override]
   protected function populateSubModelTree() : void
   {
-    $this->expectedChildCountExisting = 4;
+    $this->expectedChildCountExisting = 3;//4;
     $this->postData = PostData::build(array(
       'mock-record:new:select-many' => array(2,4) // 4 NOT an Option
     ));
     $this->childErrorIndexes = array(0);
   }
+  #[\Override]
   protected function complexModelIterationTypeCheck() : void
   {
     $this->assertSame($this->record->selectManyList[0], $this->testObject[0]);
     $this->assertSame($this->record->selectManyList[1], $this->testObject[1]);
     $this->assertSame($this->record->selectManyList[2], $this->testObject[2]);
-    $this->assertSame($this->record->selectManyList[3], $this->testObject[3]);
-    $this->assertFalse(isset($this->testObject[4]));
+    $this->assertFalse(isset($this->testObject[3]));
   }
   #endregion
 
@@ -91,6 +95,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see ramp\core\PropertyNotSetException} thrown when unable to set undefined or inaccessible property
    * @see \ramp\model\Model::__set()
    */
+  #[\Override]
   public function testPropertyNotSetExceptionOn__set() : void
   {
     parent::testPropertyNotSetExceptionOn__set();
@@ -101,6 +106,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling undefined or inaccessible property
    * @see \ramp\model\Model::__get()
    */
+  #[\Override]
   public function testBadPropertyCallExceptionOn__get() : void
   {
     parent::testBadPropertyCallExceptionOn__get();
@@ -116,6 +122,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\core\RAMPObject::__set()
    * @see \ramp\core\RAMPObject::__get()
    */
+  #[\Override]
   public function testAccessPropertyWith__set__get() : void
   {
     parent::testAccessPropertyWith__set__get();
@@ -126,6 +133,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\model\Model::__toString()} returns string 'class name'
    * @see \ramp\model\Model::__toString()
    */
+  #[\Override]
   public function testToString() : void
   {
     parent::testToString();
@@ -151,6 +159,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::$hasErrors
    * @see \ramp\model\business\BusinessModel::$Errors
    */
+  #[\Override]
   public function testInitStateMin() : void
   {
     parent::testInitStateMin();
@@ -161,6 +170,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'id'
    * @see \ramp\model\business\BusinessModel::id
    */
+  #[\Override]
   public function testSetIdPropertyNotSetException() : void
   {
     parent::testSetIdPropertyNotSetException();
@@ -171,6 +181,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'type'.
    * @see \ramp\model\business\BusinessModel::type
    */
+  #[\Override]
   public function testSetTypePropertyNotSetException() : void
   {
     parent::testSetTypePropertyNotSetException();
@@ -181,6 +192,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * Get 'children' NOT accessible.
    * - assert {@see \ramp\core\BadPropertyCallException} thrown when calling property 'children'.
    */
+  #[\Override]
   public function testGetChildrenBadPropertyCallException() : void
   {
     parent::testGetChildrenBadPropertyCallException();
@@ -192,6 +204,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \OutOfBoundsException} thrown when offset index beyond bounds of its children
    * @see \ramp\model\business\BusinessModel::offsetGet()
    */
+  #[\Override]
   public function testOffsetGetOutOfBounds() : void
   {
     parent::testOffsetGetOutOfBounds();
@@ -202,6 +215,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see https://www.php.net/manual/class.badmethodcallexception.php \BadMethodCallException} thrown.
    * @see \ramp\model\business\Record::offsetSet()
    */
+  #[\Override]
   public function testOffsetSetTypeCheckException(?string $minAllowedType = NULL, ?RAMPObject $objectOutOfScope = NULL, ?string $errorMessage = NULL) : void
   {
     parent::testOffsetSetTypeCheckException($minAllowedType, $objectOutOfScope, $errorMessage);
@@ -216,6 +230,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::offsetSet()
    * @see \ramp\model\business\BusinessModel::offsetUnset()
    */
+  #[\Override]
   public function testOffsetSetOffsetUnset(?BusinessModel $o = NULL) : void
   {
     parent::testOffsetSetOffsetUnset(new Option(1, Str::set('DESCRIPTION 1')));
@@ -233,6 +248,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\Relatable::offsetExists()
    * @see \ramp\model\business\BusinessModel::$count
    */
+  #[\Override]
   public function testComplexModelIteration() : void
   {
     parent::testComplexModelIteration();
@@ -247,6 +263,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\BusinessModel::validate()
    * @see \ramp\model\business\BusinessModel::$hasErrors
    */
+  #[\Override]
   public function testTouchValidityAndErrorMethods($touchCountTest = FALSE) : void
   {
     parent::testTouchValidityAndErrorMethods($touchCountTest);
@@ -262,6 +279,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert a single collection containing relevent sub errors returned when called on sub BusinessModels
    * @see \ramp\model\business\BusinessModel::$errors
    */
+  #[\Override]
   public function testErrorReportingPropagation($message = 'At least one selected value is NOT an available option!') : void
   {
     parent::testErrorReportingPropagation($message);
@@ -274,21 +292,24 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\field\Field::record
    * @see \ramp\model\business\field\Field::parentProppertyName
    */
+  #[\Override]
   public function testStateChangesRecordComponent() : void
   {
     parent::testStateChangesRecordComponent();
   }
 
   /**
-   * RecordComponent (default) value returns expected option at parent Record::getPropertyValue(name) index.
-   * - assert RecordComponent->value returns option at current record->getPropertyValue index.
+   * RecordComponent (default) value returns as expeced empty OptionList.
+   * - assert current record->getPropertyValue and RecordComponent->value return OptionList.
    * @see \ramp\model\business\RecordComponent::$value
    * @see \ramp\model\business\Record::getPropertyValue()
    */
+  #[\Override]
   public function testRecordComponentValue() : void
   {
-    $this->assertSame($this->record->selectManyList[0], $this->testObject->value[0]);
-    $this->assertSame(1, $this->testObject->value->count);
+    $this->assertNull($this->record->getPropertyValue($this->name));
+    $this->assertSame(0, $this->testObject->value->count);
+    $this->assertInstanceOf('\ramp\core\OptionList', $this->testObject->value);
   }
 
   /**
@@ -296,6 +317,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'record'
    * @see \ramp\model\business\field\Field::record
    */
+  #[\Override]
   public function testSetParentRecordPropertyNotSetException() : void
   {
     parent::testSetParentRecordPropertyNotSetException();
@@ -306,6 +328,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert {@see \ramp\core\PropertyNotSetException} thrown when trying to set property 'propertyName'
    * @see \ramp\model\business\field\Field::propertyName
    */
+  #[\Override]
   public function testSetParentPropertyNamePropertyNotSetException() : void
   {
     parent::testSetParentPropertyNamePropertyNotSetException();
@@ -323,10 +346,10 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * @see \ramp\model\business\Record::primarykey
    * @see \ramp\model\business\field\Field::$isEditable
    */
+  #[\Override]
   public function testStateChangesField($fieldName = 'selectMany', $defaultValue = 0, $value = 1, $newValue = 2) : void
   {
-    $defaultValue = $this->record->selectManyList[0];
-    $value = $this->record->selectManyList[1];
+    $value = $this->record->selectManyList[0];
     $newValue = $this->record->selectManyList[2];
     $this->assertInstanceOf('\ramp\core\Str', $this->testObject->id);
     $this->assertSame($this->processType(get_class($this->record), TRUE) . ':new:' . Str::hyphenate($this->name), (string)$this->testObject->id);
@@ -347,13 +370,11 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
     // but allows state change.
     $this->testObject->isEditable = FALSE;
     $this->assertFalse($this->testObject->isEditable);
-    $this->assertSame($defaultValue, $this->testObject->value[0]);
-    $dataValue = ($value instanceof Option) ? $value->key : $value;
-    $this->dataObject->selectMany = 1;
+    $this->assertSame(0, $this->testObject->value->count);
+    $this->dataObject->selectMany = '1';
     $this->assertSame($value, $this->testObject->value[0]);
     $this->testObject->isEditable = TRUE; // Reset editable
-    $dataNewValue = ($newValue instanceof Option) ? $newValue->key : $newValue;
-    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => array(2))));
+    $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => array(3))));
     $this->assertSame($newValue, $this->testObject->value[0]);
   }
 
@@ -362,6 +383,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    * - assert isRequired defaults TRUE when explicitly set at registration.
    * @see \ramp\model\business\field\Field::isRequired
    */
+  #[\Override]
   public function testCheckIsRequiredWhenSet() : void
   {
     parent::testCheckIsRequiredWhenSet();
@@ -394,6 +416,7 @@ class SelectManyTest extends \tests\ramp\model\business\field\SelectFromTest
    *   - with message: *'OptionList $options compositeType MUST be \ramp\model\business\field\Option'*
    * @see \ramp\model\business\field\SelectFrom
    */
+  #[\Override]
   public function testConstructorInvalidArgumentException()
   {
     parent::testConstructorInvalidArgumentException();

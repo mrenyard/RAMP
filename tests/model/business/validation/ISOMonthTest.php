@@ -44,7 +44,7 @@ class ISOMonthTest extends \tests\ramp\model\business\validation\FormatBasedVali
   protected function preSetup() : void
   {
     $this->inputType = 'month';
-    $this->hint = Str::set('month in the format: ');
+    $this->hint = Str::set('month in the format:');
     $this->format = 'yyyy-mm';
     $this->step = 1;
   }

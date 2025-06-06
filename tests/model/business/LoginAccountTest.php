@@ -117,7 +117,7 @@ class LoginAccountTest extends \tests\ramp\model\business\RecordTest
     $iterator->rewind();
     foreach ($this->testObject as $child) {
       $this->assertInstanceOf('\ramp\core\Str', $this->testObject[$i]->type);
-      $this->assertEquals(($i == 1) ? 'select-one select-from' : 'input field', $this->testObject[$i]->type);
+      $this->assertEquals(($i == 1) ? 'select-one field' : 'input field', $this->testObject[$i]->type);
       $this->assertEquals(($i == 0)? 'email' : 'loginAccountType', $this->testObject[$i]->name);
       $iterator->next();
       $i++;

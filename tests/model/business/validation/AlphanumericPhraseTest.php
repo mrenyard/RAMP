@@ -162,7 +162,7 @@ class AlphanumericPhraseTest extends \tests\ramp\model\business\validation\Regex
     $this->assertEquals(MockValidationRule::PLACEHOLDER, (string)$this->testObject->placeholder);
     $this->assertNull($this->testObject->minlength);
     $this->assertEquals($this->maxlength, $this->testObject->maxlength);
-    $this->assertEquals('[0-9a-zA-Z_\-\.\'! "£\$%\^\*\(\)\+=\/\:;@~#\?,]*', (string)$this->testObject->pattern);
+    $this->assertEquals('[0-9a-zA-Z_\-\.\'! £\$%\^\*\(\)\+=\/\:;@~#\?,]*', (string)$this->testObject->pattern);
     $this->assertEquals(MockValidationRule::MIN, (string)$this->testObject->min);
     $this->assertEquals(MockValidationRule::MAX, (string)$this->testObject->max);
     $this->assertEquals(MockValidationRule::STEP, (string)$this->testObject->step);

@@ -18,6 +18,7 @@
  * @package RAMP
  * @version 0.0.9;
  */
+namespace ramp;
 $tabindex = ($this->hasErrors)? 1:0;
 switch ($this->type) {
   case 'option business-model': ?>

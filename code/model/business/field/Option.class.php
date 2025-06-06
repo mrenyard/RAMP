@@ -85,7 +85,21 @@ class Option extends BusinessModel implements iOption
    */
   public function get_id() : Str
   {
-    return Str::set($this->key);
+    return $this->parentField->id->append(
+      Str::set($this->key)->prepend(Str::COLON())
+    );
+  }
+
+  protected function get_type() : Str
+  {
+    return $this->parentField->type;
+  }
+
+  public function get_name() : Str
+  {
+    return ((string)$this->type === 'select-one field') ? 
+     $this->parentField->id :
+      $this->parentField->id->append(Str::set('[]'));
   }
 
   /**
@@ -116,11 +130,11 @@ class Option extends BusinessModel implements iOption
       throw new BadPropertyCallException('Must set parentField before calling isSelected.');
     }
     if ($this->parentField instanceof SelectMany) {
-      foreach($this->parentField->value as $selected) {
+      foreach($this->parentField->value as $selected) { // bar seperate string
         if ($selected->key === $this->key) { return TRUE; }
       }
       return FALSE;
-    }
-    return ($this->parentField->value->key === $this->key);
+    } // iOption or NULL
+    return ($this->parentField->value && $this->parentField->value->key === $this->key);
   }
 }

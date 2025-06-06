@@ -38,11 +38,11 @@ class CheckSafeHREFs extends SpecialistValidationRule
    * $myRule = new validation\specialist\CheckSafeHREFs(Str::set(' safe links,'));
    * ```
    * @param Str $errorHint Format hint to be displayed on failing test.
-   * @param ?WebAddressURL $urlValidator Optionally provide specific with NON default configuration.
+   * @param ?WebAddressURL $urlValidator Optionally provide specifically configured own version.
    */
   public function __construct(Str $errorHint, ?WebAddressURL $urlValidator = NULL)
   {
-    $this->urlValidator = ($urlValidator) ? $urlValidator : new WebAddressURL(Str::_EMPTY());
+    $this->urlValidator = ($urlValidator) ? $urlValidator : new WebAddressURL(Str::_EMPTY(), FALSE, TRUE);
     parent::__construct($errorHint);
   }
 

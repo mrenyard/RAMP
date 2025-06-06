@@ -27,28 +27,39 @@ use ramp\core\Str;
  */
 class WebAddressURL extends RegexValidationRule
 {
-    /**
+  private static Str $type;
+
+  /**
    * Constructor for WebAddressURL regex pattern validation.
    * @param \ramp\core\Str $errorHint Format hint to be displayed on failing test.
    * @param bool $allowPorts Optionally allow port number as part of allowed URL (Defaults FALSE).
-   * @param bool $allowInpageLinks Optionally allow in-page fragment links (Defaults TRUE).
+   * @param bool $allowInpageLinks Optionally test for in-page relative fragment links (Defaults FALSE).
    */
-  public function __construct(Str $errorHint, bool $allowPorts = FALSE, bool $allowInpageLinks = TRUE)
+  public function __construct(Str $errorHint, bool $allowPorts = FALSE, bool $allowInpageLinks = FALSE)
   {
-    $ports = ($allowPorts) ? '(:[0-9])?' : '';
+    if (!isset(SELF::$type)) { SELF::$type = Str::set('url'); }
+    $ports = ($allowPorts) ? '(:[0-9]*)?' : '';
     $inpage = ($allowInpageLinks) ? '|#[a-z0-9\-\:]*' : '';
-    parent::__construct($errorHint, 'https:\/\/[a-z0-9-\.]+' . $ports . '([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&amp;([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?' . $inpage);
+    parent::__construct($errorHint,
+      '(https:\/\/[a-z0-9-\.]+' . $ports . ')?\/([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&amp;([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?' . $inpage
+    );
   }
-  // ^(?:https:\/\/[a-z0-9-\.]+([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?)$
-  // https:\/\/[a-z0-9-\.]+([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?
-  // 'https:\/\/[a-z0-9-\.]+' . $ports . '([a-z0-9-\.\/\~]+)?((\?[a-z][a-z0-9\-]*=[a-z][a-z0-9\-]*)+((&([a-z0-9\-]+=[a-z0-9\-]+))*)?)?(#[a-z0-9\-\:]*)?' . $inpage
 
   /**
-   * @ignore 
+   * @ignore
    */
+  #[\Override]
+  protected function get_inputType() : Str
+  {
+    return SELF::$type;
+  }
+
+  /*
+   * @ignore 
+   *
   #[\Override]
   protected function get_pattern() : ?Str
   {
     return NULL;
-  }
+  }*/
 }

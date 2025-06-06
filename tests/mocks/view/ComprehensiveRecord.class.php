@@ -22,10 +22,14 @@
 namespace ramp\model\business;
 
 use ramp\core\Str;
+use ramp\core\OptionList;
 use ramp\model\business\Record;
 use ramp\model\business\field\Input;
 use ramp\model\business\field\MultipartInput;
 use ramp\model\business\field\Flag;
+use ramp\model\business\field\Option;
+use ramp\model\business\field\SelectOne;
+use ramp\model\business\field\SelectMany;
 use ramp\model\business\RecordComponent;
 use ramp\model\business\RecordComponentType;
 use ramp\model\business\validation\dbtype\Char;
@@ -37,15 +41,18 @@ use ramp\model\business\validation\dbtype\Time;
 use ramp\model\business\validation\dbtype\Date;
 use ramp\model\business\validation\dbtype\DateTime;
 use ramp\model\business\validation\RegexValidationRule;
+use ramp\model\business\validation\TelephoneNumber;
+use ramp\model\business\validation\WebAddressURL;
+use ramp\model\business\validation\RegexEmailAddress;
 use ramp\model\business\validation\LowercaseAlphanumeric;
 use ramp\model\business\validation\HexidecimalColorCode;
-use ramp\model\business\validation\TelephoneNumber;
 use ramp\model\business\validation\ISOWeek;
 use ramp\model\business\validation\ISOMonth;
 use ramp\model\business\validation\ISOTime;
 use ramp\model\business\validation\ISODate;
 use ramp\model\business\validation\DateTimeLocal;
 use ramp\model\business\validation\Password;
+use ramp\model\business\validation\specialist\ServerSideEmail;
 
 /**
  * Mock Concreate implementation of \ramp\model\business\Record for testing against.
@@ -154,7 +161,7 @@ class ComprehensiveRecord extends Record
         Str::set('The name by which you are refered by, in western culture usually your first name.'),
         new VarChar(
           Str::set('e.g. John'),
-          Str::set('string with a maximum charactor length of '), 20,
+          Str::set('string with a maximum character length of '), 20,
           new RegexValidationRule(
             Str::set('single word with only latin alphabet charactered'),
             '[A-Za-z]*'
@@ -164,16 +171,16 @@ class ComprehensiveRecord extends Record
     }
     return $this->registered; 
   }
-/*
+
   protected function get_tel() : ?RecordComponent
   {
     if ($this->register('tel', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
         Str::set('The number used to contact (call or text) said particular persons mobile device.'),
         new VarChar(
-          Str::set(''),
-          Str::set('string with a maximum charactor length of '),
-          20, new TelephoneNumber(
+          Str::set('e.g. 0234 567 891'),
+          Str::set('string with a maximum character length of '), 20,
+          new TelephoneNumber(
             Str::set('valid telephone number')
           )
         )
@@ -182,34 +189,16 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 
-  protected function get_primaryColor() : ?RecordComponent
+  protected function get_url() : ?RecordComponent
   {
-    if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
+    if ($this->register('url', RecordComponentType::PROPERTY)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('Main thematic colour of presentation.'),
-        new Char(
-          Str::set('e.g. #FFFFFF'),
-          Str::set('with a length of exactly '), 7,
-          new HexidecimalColorCode(
-            Str::set('representing the luminescent gradiant of red, green and blue, a hash followed by three pairs of hexadecimal characters (0 through 9 to F) formated: ')
-          )
-        ),
-        
-      ));
-    }
-    return $this->registered; 
-  }
-/*
-
-  protected function get_password() : ?RecordComponent
-  {
-    if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new Input($this->registeredName, $this,
-        Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
+        Str::set('The Uniform Resource Locator (URL) that points to a webpage you would like to visit.'),
         new VarChar(
-          Str::set('string with a maximum charactor length of '),
-          35, new Password(
-            Str::set("8 charactor minimum alphanumeric and special charactors (!#$%&+,-.:;<=>?[]^*_{|}{~@')")
+          Str::set('e.g. https://www.domain-name.com/top-article'),
+          Str::set('string with a maximum character length of '), 150,
+          new WebAddressURL(
+            Str::set('a validly formatted web address (URL)'), FALSE, FALSE
           )
         )
       ));
@@ -217,38 +206,53 @@ class ComprehensiveRecord extends Record
     return $this->registered; 
   }
 
-  protected function get_wholeNumber() : ?RecordComponent
+  protected function get_email() : ?RecordComponent
   {
-    if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('The non fractional number related to this query'),
-        new SmallInt(Str::set('whole number from '))
+        Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
+        new VarChar(
+          Str::set('e.g. jsmith@domain.com'),
+          Str::set('string with a maximum character length of '), 150,
+          new RegexEmailAddress(
+            Str::set('validly formatted email address'),
+            new ServerSideEmail()
+          )
+        )
       ));
     }
     return $this->registered; 
   }
 
-  protected function get_currency() : ?RecordComponent
+  protected function get_password() : ?RecordComponent
   {
-    if ($this->register('currency', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('password', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('The ammount of money in UK pounds and pence that you have access to.'),
-        new DecimalPointNumber(Str::set('place decimal point number'), 2, 5)
+        Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
+        new VarChar(
+          Str::set('e.g. N0t-Pa55w0rd!'),
+          Str::set('string with a maximum character length of '), 75,
+          new Password(
+            Str::set("8 character minimum alphanumeric and special characters (!#$%&+,-.:;<=>?[]^*_{|}{~@')")
+          )
+        )
       ));
     }
     return $this->registered; 
   }
 
-  protected function get_week() : ?RecordComponent
+  protected function get_date() : ?RecordComponent
   {
-    if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new MultipartInput($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new ISOWeek(Str::set('valid week formatd (yyyy-W00)'), Str::set('2024-W06'), Str::set('2024-W52')),
-        ['-W'],
-        ['weekYear', 'weekNumber'],
-        new SmallInt(Str::set('4 digit year from '), 0, 9999),
-        new TinyInt(Str::set('2 digit week number from '), 1, 53)
+    if ($this->register('date', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The day, month, and year that you were born.'),
+        new Date(
+          Str::set('date of birth'),
+          new ISODate(
+            Str::set('valid ISO formated date'),
+            Str::set('1900-01-01'), Str::set('2023-12-31')
+          )
+        )
       ));
     }
     return $this->registered;
@@ -258,8 +262,8 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('month', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new MultipartInput($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new ISOMonth(Str::set('valid month formatd (yyyy-mm)'), Str::set('2024-01'), Str::set('2024-12')),
+        Str::set('An estimate of when a pregnancy began, based on the first day of the last menstrual period (LMP).'),
+        new ISOMonth(Str::set('valid ISO formated month'), Str::set('2024-01'), Str::set('2024-12')),
         ['-'],
         ['monthYear', 'monthNumber'],
         new SmallInt(Str::set('a 4 digit year from '), 0, 9999),
@@ -269,29 +273,29 @@ class ComprehensiveRecord extends Record
     return $this->registered;
   }
 
-  protected function get_time() : ?RecordComponent
+  protected function get_week() : ?RecordComponent
   {
-    if ($this->register('time', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new Input($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new Time(Str::set('valid time formatd (hh:mm[:ss])'),
-          new ISOTime(Str::set('an appointment slot available ever 30min'),
-            Str::set('08:30'), Str::set('17:30'), (30*60)
-          )
-        )
+    if ($this->register('week', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new MultipartInput($this->registeredName, $this,
+        Str::set('Year-over-year week used for comparison of financial performance to the same week in the previous year.'),
+        new ISOWeek(Str::set('valid ISO formated week'), Str::set('2024-W01'), Str::set('2024-W52')),
+        ['-W'],
+        ['weekYear', 'weekNumber'],
+        new SmallInt(Str::set('4 digit year from '), 0, 9999),
+        new TinyInt(Str::set('2 digit week number from '), 1, 53)
       ));
     }
     return $this->registered;
   }
 
-  protected function get_date() : ?RecordComponent
+  protected function get_time() : ?RecordComponent
   {
-    if ($this->register('date', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('time', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new Date(Str::set('valid date formatd (yyyy-mm-dd)'),
-          new ISODate(Str::set('date of birth'),
-            Str::set('1900-01-01'), Str::set('2023-12-31')
+        Str::set('Requested time when your 30 minute appointment is scheduled to begin.'),
+        new Time(Str::set('for your appointment start'),
+          new ISOTime(Str::set('valid ISO formated time'),
+            Str::set('08:30'), Str::set('17:30'), (30*60)
           )
         )
       ));
@@ -303,10 +307,10 @@ class ComprehensiveRecord extends Record
   {
     if ($this->register('datetime', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate(new Input($this->registeredName, $this,
-        Str::set('expanded description of expected field content'),
-        new DateTime(Str::set('valid date time formatd (yyyy-mm-ddThh:mm:ss)'),
-          new DateTimeLocal(Str::set('Start date and time of your event within the next 18 months, form '),
-            Str::set('2024-03-05T00:00'), Str::set('2025-09-30T00:00')
+        Str::set('Start date and time of your event within the next 18 months.'),
+        new DateTime(Str::set('for the start of your event'),
+          new DateTimeLocal(Str::set('valid ISO formated date-time'),
+            Str::set('2025-03-05T00:00'), Str::set('2026-09-30T00:00')
           )
         )
       ));
@@ -314,56 +318,97 @@ class ComprehensiveRecord extends Record
     return $this->registered;
   }
 
-  protected function get_flag() : ?RecordComponent
+  protected function get_wholeNumber() : ?RecordComponent
   {
-    if ($this->register('flag', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate( 
-        new Flag($this->registeredName, $this,
-        Str::set('expanded description of expected field content')
+    if ($this->register('wholeNumber', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The non fractional number related to this query.'),
+        new SmallInt(Str::set('whole number from '))
       ));
     }
     return $this->registered; 
-  }*/
+  }
 
-  // protected function get_selectFrom() : ?RecordComponent
-  // {
-  //   if ($this->register('selectFrom', RecordComponentType::PROPERTY)) {
-  //     $this->selectFromName = $this->registeredName;
-  //     $this->selectFromList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-  //     $this->selectFromList->add(new MockOption(0, Str::set('Please choose:')));
-  //     $this->selectFromList->add(new MockOption(1, $this->selectDescriptionOne));
-  //     $this->selectFromList->add(new MockOption(2, Str::set('DESCRIPTION TWO')));  
-  //     $this->initiate(new MockSelectFrom($this->registeredName, $this, $this->selectFromList));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_decimalPointNumber() : ?RecordComponent
+  {
+    if ($this->register('decimalPointNumber', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('The ammount of money in UK pounds and pence that you have access to.'),
+        new DecimalPointNumber(Str::set('place decimal point number'), 2, 5)
+      ));
+    }
+    return $this->registered; 
+  }
 
-  // protected function get_selectOne() : ?RecordComponent
-  // {
-  //   if ($this->register('selectOne', RecordComponentType::PROPERTY)) {
-  //     $this->selectOneName = $this->registeredName;
-  //     $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-  //     $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
-  //     $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
-  //     $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
-  //     $this->initiate(new SelectOne($this->registeredName, $this, $this->selectOneList));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_color() : ?RecordComponent
+  {
+    if ($this->register('color', RecordComponentType::PROPERTY)) {
+      $this->initiate(new Input($this->registeredName, $this,
+        Str::set('Main thematic colour of presentation.'),
+        new Char(
+          Str::set('e.g. #FFFFFF'),
+          Str::set('with a length of exactly '), 7,
+          new HexidecimalColorCode(
+            Str::set('representing the luminescent gradiant of red, green and blue, a hash followed by three pairs of hexadecimal characters (0 through 9 to F) formated:')
+          )
+        ),
+        
+      ));
+    }
+    return $this->registered; 
+  }
 
-  // protected function get_selectMany() : ?RecordComponent
-  // {
-  //   if ($this->register('selectMany', RecordComponentType::PROPERTY)) {
-  //     $this->selectManyName = $this->registeredName;
-  //     $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-  //     $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
-  //     $this->selectManyList->add(new Option(1, $this->selectDescriptionOne));
-  //     $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
-  //     $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
-  //     $this->initiate(new SelectMany($this->registeredName, $this, $this->selectManyList));
-  //   }
-  //   return $this->registered; 
-  // }
+  protected function get_requiredFlag() : ?RecordComponent
+  {
+    if ($this->register('requiredFlag', RecordComponentType::PROPERTY, TRUE)) {
+      $this->initiate(new Flag($this->registeredName, $this,
+        Str::set('You must agree to terms and conditions to continue to use this site.'),
+        Str::set('I have read and agree to site terms and conditions.')
+      ));
+    }
+    return $this->registered; 
+  }
+  
+  protected function get_flag() : ?RecordComponent
+  {
+    if ($this->register('flag', RecordComponentType::PROPERTY)) {
+      $this->initiate(new Flag($this->registeredName, $this,
+        Str::set('Do you like Chips and gravy; the popular comfort food in the UK?'),
+        Str::set('I like gravy on my chips.')
+      ));
+    }
+    return $this->registered;
+  }
+
+  protected function get_selectOne() : ?RecordComponent
+  {
+    if ($this->register('selectOne', RecordComponentType::PROPERTY, TRUE)) {
+      $selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
+      $selectOneList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $selectOneList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
+      $this->initiate(new SelectOne($this->registeredName, $this,
+        Str::set('Select your favourte ... from the list of items below.'),
+        $selectOneList
+      ));
+    }
+    return $this->registered; 
+  }
+
+  protected function get_selectMany() : ?RecordComponent
+  {
+    if ($this->register('selectMany', RecordComponentType::PROPERTY)) {
+      $selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
+      $selectManyList->add(new Option(1, Str::set('DESCRIPTION ONE')));
+      $selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
+      $selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  
+      $this->initiate(new SelectMany($this->registeredName, $this,
+        Str::set('Select your favourites ... from the list of items below.'),
+        $selectManyList
+      ));
+    }
+    return $this->registered; 
+  }
 
   // protected function get_relationAlpha() : ?RecordComponent
   // {

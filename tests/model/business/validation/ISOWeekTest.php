@@ -45,7 +45,7 @@ class ISOWeekTest extends \tests\ramp\model\business\validation\FormatBasedValid
   {
     $this->step = 1;
     $this->inputType = 'week';
-    $this->hint = Str::set('Week number in the format: ');
+    $this->hint = Str::set('Week number in the format:');
     $this->format = 'yyyy-W00';
   }
   #[\Override]
