@@ -1,9 +1,15 @@
 #!/bin/bash -eu
+
 if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
-# Edit 'SAVE_PATH' to your preferred save location.
-SAVE_PATH="${HOME}/Code/Compiled/deb-packages/";
+# Edit 'SAVE_AS' to your preferred save location and package name.
+read -p "Save package as location/name_version-release_architecture.deb [../ramp_0.1-0_all.deb]: " SAVE_AS;
+SAVE_AS=${SAVE_AS:-"../ramp_0.1-0_all.deb"};
+# Set other varables
 SCRIPT=`readlink -f $0`; SCRIPTPATH=`dirname "$SCRIPT"`; cd "$SCRIPTPATH";
 PROCESS_TYPE=; if [ "$#" -eq 0 ]; then PROCESS_TYPE="--build"; else PROCESS_TYPE=${1}; fi
+# Check & add user group developer
+if [ ! $(getent group developer) ]; then sudo addgroup developer; fi
+# Process based on switches
 case ${PROCESS_TYPE} in
   "--deploy") ;&
   "--purge") ;&
@@ -16,43 +22,40 @@ case ${PROCESS_TYPE} in
        echo "This script must be run as root" 1>&2;
        exit 1;
     fi
-    case ${PROCESS_TYPE} in
+  case ${PROCESS_TYPE} in
     "--deploy") ;&
     "--purge") ;&
     "--build")
-      echo "BUILDING..."
-      if [ -f ramp-0.1_all.deb ]; then
-        rm -f ramp-0.1_all.deb;
-      fi
+      echo "BUILDING...";
+      if [ -f ${SAVE_AS} ]; then rm -f ${SAVE_AS}; fi
       sudo rsync -avv ../code/ ../debian/usr/share/php/ramp;
       sudo chown -R root:root ../debian/usr;
       sudo chmod -R 664 ../debian/usr/share/php/ramp/;
       sudo dpkg-deb --build ../debian;
-      echo "renaming 'debian.deb' to 'ramp-0.1_all.deb'";
-      mv ../debian.deb ${SAVE_PATH}ramp-0.1_all.deb;
-      sudo chmod 775 ${SAVE_PATH}ramp-0.1_all.deb;
-      sudo chown ${USER}:developer ${SAVE_PATH}ramp-0.1_all.deb
+      echo "renaming 'debian.deb' to '${SAVE_AS}'";
+      mv ../debian.deb ${SAVE_AS};
+      sudo chmod 775 ${SAVE_AS};
+      sudo chown ${USER}:developer ${SAVE_AS}
       sudo chown -R ${USER}:${USER} ../debian;
       sudo chmod -R 775 ../debian/usr/share/php/ramp/
       sudo rm -R ../debian/usr/share/php/ramp/
       echo "BUILD SUCCESFULLY COMPLETED!";
       ;;
-    esac
-    case ${PROCESS_TYPE} in
+  esac
+  case ${PROCESS_TYPE} in
     "--deploy") ;&
     "--purge")
       echo "PURGING...nothing to purge";
-      # echo "PURGE ...COMPLETED!";
       ;;
-    esac
-    case ${PROCESS_TYPE} in
+  esac
+  case ${PROCESS_TYPE} in
     "--deploy")
       echo "DEPLOYING..."
       echo "  ...not to be deployed in production enviroment!"
       echo "  TRY: 'sudo ln -s code /usr/share/php/ramp'"
       echo "NOT DEPLOYED!";
       ;;
-    esac
+  esac
     ;;
   *)
     echo "USAGE: ...";

@@ -12,7 +12,7 @@
   </source>
   <coverage>
     <report>
-      <html outputDirectory="../../Code/Documentation/coverage" lowUpperBound="50" highLowerBound="90" customCssFile="./tools/custom.css" />
+      <html outputDirectory="../../Code/Documentation/coverage" lowUpperBound="50" highLowerBound="90" customCssFile="tools/custom.css" />
     </report>
   </coverage>
 </phpunit>
