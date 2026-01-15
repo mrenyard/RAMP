@@ -1,0 +1,68 @@
+<?php
+$value = '
+<p>Some text</p>
+<h2>Sub Heading one</h2>
+<p><em>Text</em></p>
+<ul>
+  <li>text <a href="https://www.site.com" title="Somting about Site.">Site</a> text</li>
+  <li><a href="#txt3"><strong>text3</strong></a></li>
+  <li><a href="https://www.google.com/search?client=firefox&amp;q=help"><strong>Help!</strong></a></li>
+  <li>
+    <ol>
+      <li><sub>Sub</sub> text one</li>
+      <li><sub>Sub</sub> text two</li>
+      <li><sub>Sub</sub> text <s>two</s>three</li>
+    </ol>
+  </li>
+  <li>
+    <h4>Header five</h4>
+  </li>
+</ul>
+<p>According to Mozilla\'s website, <q cite="https://www.mozilla.org/en-US/about/history/details/">Firefox 1.0 was released in 2004 and became a big success.</q></p>
+<h3>Sub Heading <em>Two</em></h3>
+<figure data-mid="img:profile:101" />
+<p><strong>More text</strong></p>
+<blockquote>text</blockquote>
+<p><kbd>Ctrl+a</kbd></p>
+<blockquote cite="https://www.huxley.net/bnw/four.html">
+  <p>Words can be like X-rays, if you use them properly they\'ll go through anything. You read and you\'re pierced.</p>
+  <footer>-Aldous Huxley, <cite>Brave New World</cite></footer>
+</blockquote>
+<p>input: <code>print("hello " . $place);</code></p>
+<p>output: <samp>Hello World!</samp></p>
+<pre><code data-lang="php">
+print("hello " . $place);
+</code></pre>
+<pre><kbd>
+Ctrl+A
+</kbd></pre>
+';
+
+$root = 'htmlight';
+$DTD = file_get_contents('assets/htmlight.dtd');
+$providedXML = new DOMDocument;
+$providedXML->loadXML(
+'<?xml version="1.0"?>
+<!DOCTYPE HTMLight PUBLIC "-//RAMP//DTD HTMLight//EN"
+  "https://ramp.matt-laptop.lan/assets/htmlight.dtd">
+<htmlight>' . $value . '</htmlight>'
+);
+
+$creator = new DOMImplementation();
+$tester = $creator->createDocument(
+  NULL, NULL,
+  $creator->createDocumentType(
+    $root, NULL, 'data://text/plain;base64,'.base64_encode($DTD)
+  )
+);
+$tester->encoding = "utf-8";
+
+$providedXMLNode = $providedXML->getElementsByTagName($root)->item(0);
+$testerNode = $tester->importNode($providedXMLNode, true);
+$tester->appendChild($testerNode);
+
+if (!$tester->validate()) {
+    echo "NOT Valid";
+} else {
+    echo "Valid";
+}

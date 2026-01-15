@@ -356,7 +356,7 @@ class FlagTest extends \tests\ramp\model\business\field\FieldTest
    * @see \ramp\model\business\field\Field::$isEditable
    */
   #[\Override]
-  public function testStateChangesField($fieldName = 'flag', $defaultValue = FALSE, $value = FALSE, $newValue = TRUE) : void
+  public function testStateChangesField($fieldName = 'flag', $defaultValue = FALSE, $value = FALSE, $newValue = 'on') : void
   {
     parent::testStateChangesField($fieldName, $defaultValue, $value, $newValue);
   }

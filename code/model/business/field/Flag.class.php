@@ -97,9 +97,8 @@ class Flag extends Field
     parent::validate($postdata);
     if ($this->parent->isModified) {
       $currentValue = $this->parent->getPropertyValue((string)$this->name);
-      if ($currentValue === TRUE || $currentValue === FALSE) {
-        $newValue = ($currentValue)? 1:0;
-        $this->parent->setPropertyValue((string)$this->name, $newValue);
+      if ($currentValue === 'on') {
+        $this->parent->setPropertyValue((string)$this->name, ($currentValue === 'on') ? 1:0);
       }
     }
   }
@@ -113,7 +112,7 @@ class Flag extends Field
   {
     $rule = new Rule(Str::set('one of either TRUE or FALSE'));
     $rule->process($value);
-    if ($this->parent->isRequiredField($this->name) && $value !== TRUE) {
+    if ($this->parent->isRequiredField($this->name) && $value !== 'on') {
       throw new FailedValidationException('Flag input MUST be Checked!');
     }
   }

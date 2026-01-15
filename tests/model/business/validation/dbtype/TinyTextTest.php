@@ -222,7 +222,7 @@ class TinyTextTest extends \tests\ramp\model\business\validation\dbtype\TextTest
     $limit = 255;
     $beyondLimit = 260;
     $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Possibly insufficient data space allocated for value!');
+    $this->expectExceptionMessage('Possibly insufficient character space allocated for value!');
     new MockDbTypeTinyText( Str::_EMPTY(),
       $this->hint4, NULL,
       new LengthValidationRule($this->hint3, $beyondLimit)

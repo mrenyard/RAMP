@@ -57,8 +57,8 @@ class VarChar extends DbTypeValidation
   {
     $this->placeholder = $placeholder;
     $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
-      (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
-        throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
+      (($subRule->maxlength <= $maxlength) ? $subRule->maxlength :
+        throw new \InvalidArgumentException('Possibly insufficient character space allocated for value!'));
     if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
       throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
     }    

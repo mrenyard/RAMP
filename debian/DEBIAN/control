@@ -7,9 +7,10 @@ Depends: apache2-webshop-conf, php-fpdf (>=1.6), php-curl, postfix, php-sqlite3
 Recomends: webproject-tools
 Maintainer: renyard.m@gmail.com
 Description: RAMP
-  Rapid easy-to-use 'best practice' web application development enviroment.
-   - Clear seperation of form and function
-   - total control over output (semantic HTML etc)
-   - serverside development independatly of front-end design (markup)
-   - in-build ajax fuctionality applied through progressive enhancments
-   - easliy customisable at every level
+  Rapid Application (Minimal Production) Maximum Product web application development environment for building accessible, flexible, customisable web systems using the LAMP development Stack. 
+    - Clear seperation of form and function
+    - total control over output (semantic HTML etc)
+    - serverside development independatly of front-end design (markup)
+    - in-build ajax fuctionality applied through progressive enhancments
+    - easliy customisable at every level
+    - modular design for re-use of code

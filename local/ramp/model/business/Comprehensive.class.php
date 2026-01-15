@@ -104,7 +104,7 @@ class Comprehensive extends Record
     }
     return $this->registered; 
   }
-
+/*
   protected function get_primaryColor() : ?RecordComponent
   {
     if ($this->register('primaryColor', RecordComponentType::PROPERTY)) {
@@ -125,7 +125,7 @@ class Comprehensive extends Record
 
   protected function get_givenName() : ?RecordComponent
   {
-    if ($this->register('givenName', RecordComponentType::PROPERTY, TRUE)) {
+    if ($this->register('givenName', RecordComponentType::PROPERTY)) { //, TRUE)) {
       $this->initiate(new field\Input($this->registeredName, $this,
         Str::set('The name by which you are refered to; in Western culture usually your first name.'),
         new validation\dbtype\VarChar(
@@ -141,23 +141,23 @@ class Comprehensive extends Record
     return $this->registered; 
   }
 
-  protected function get_email() : ?RecordComponent
-  {
-    if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
-      $this->initiate(new field\Input($this->registeredName, $this,
-        Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
-        new validation\dbtype\VarChar(
-          Str::set('e.g. jdoe@domain.com'),
-          Str::set('string with a maximum character length of '), 150,
-          new validation\RegexEmailAddress(
-            Str::set('validly formatted email address'),
-            new validation\specialist\ServerSideEmail()
-          )
-        )
-      ));
-    }
-    return $this->registered; 
-  }
+  // protected function get_email() : ?RecordComponent
+  // {
+  //   if ($this->register('email', RecordComponentType::PROPERTY, TRUE)) {
+  //     $this->initiate(new field\Input($this->registeredName, $this,
+  //       Str::set('A uniquely identified electronic mailbox at which you receive written messages.'),
+  //       new validation\dbtype\VarChar(
+  //         Str::set('e.g. jdoe@domain.com'),
+  //         Str::set('string with a maximum character length of '), 150,
+  //         new validation\RegexEmailAddress(
+  //           Str::set('validly formatted email address'),
+  //           new validation\specialist\ServerSideEmail()
+  //         )
+  //       )
+  //     ));
+  //   }
+  //   return $this->registered; 
+  // }
 
   protected function get_mobile() : ?RecordComponent
   {
@@ -183,7 +183,7 @@ class Comprehensive extends Record
         Str::set('The secret word or phrase that you wish to used to confirm your identity and gain access.'),
         new validation\dbtype\VarChar(
           Str::set('e.g. N0T-PA55W0RD'),
-          Str::set('string with a maximum character length of '), 35,
+          Str::set('string with a maximum character length of '), 75,
           new validation\Password(
             Str::set("8 character minimum alphanumeric and special characters (!#$%&+,-.:;?[]^*_{|}{~@')")
           )
@@ -289,15 +289,16 @@ class Comprehensive extends Record
     }
     return $this->registered;
   }
-
+*/
   protected function get_flag() : ?RecordComponent
   {
-    if ($this->register('flag', RecordComponentType::PROPERTY)) { //, TRUE)) {
+    if ($this->register('flag', RecordComponentType::PROPERTY, TRUE)) {
       $this->initiate( new field\Flag($this->registeredName, $this,
-        Str::set('expanded description of expected field content')
+        Str::set('expanded description of expected field content'),
+        Str::set('Overview, of a given statment or selection.')
       ));
     }
-    return $this->registered; 
+    return $this->registered;
   }
 
   // protected function get_selectFrom() : ?RecordComponent
@@ -318,7 +319,6 @@ class Comprehensive extends Record
   //   if ($this->register('selectOne', RecordComponentType::PROPERTY)) {
   //     $this->selectOneName = $this->registeredName;
   //     $this->selectOneList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-  //     $this->selectOneList->add(new Option(0, Str::set('Please choose:')));
   //     $this->selectOneList->add(new Option(1, $this->selectDescriptionOne));
   //     $this->selectOneList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
   //     $this->initiate(new SelectOne($this->registeredName, $this, $this->selectOneList));
@@ -331,7 +331,6 @@ class Comprehensive extends Record
   //   if ($this->register('selectMany', RecordComponentType::PROPERTY)) {
   //     $this->selectManyName = $this->registeredName;
   //     $this->selectManyList = new OptionList(null, Str::set('\ramp\model\business\field\Option'));
-  //     $this->selectManyList->add(new Option(0, Str::set('Please choose:')));
   //     $this->selectManyList->add(new Option(1, $this->selectDescriptionOne));
   //     $this->selectManyList->add(new Option(2, Str::set('DESCRIPTION TWO')));  
   //     $this->selectManyList->add(new Option(3, Str::set('DESCRIPTION THREE')));  

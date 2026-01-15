@@ -1,1 +1,12 @@
-sudo -S php tools/phpDocumentor.phar run -d code/,tests/ -t $HOME/Code/Documentation/php --visibility=public,protected
+#!/bin/bash -eu
+
+if [[ "$0" != "tools/document" && "$0" != "./tools/document" ]]; then
+  echo "Must be run from parent project containing directory NOT $0";
+  exit 1;
+fi
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root" 1>&2;
+  exit 1;
+fi
+
+sudo -S php tools/phpDocumentor.phar run -d code/,tests/ -t /var/www/docs/php --visibility=public,protected

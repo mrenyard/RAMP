@@ -1,0 +1,177 @@
+<?php
+/**
+ * Testing - Svelte - Rapid web application development enviroment for building
+ *  flexible, customisable web systems.
+ *
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ * @author Matt Renyard (renyard.m@gmail.com)
+ * @version 0.0.9;
+ */
+namespace tests\svelte\model\business\field;
+
+require_once '/usr/share/php/svelte/core/SvelteObject.class.php';
+require_once '/usr/share/php/svelte/core/Str.class.php';
+require_once '/usr/share/php/svelte/core/PropertyNotSetException.class.php';
+require_once '/usr/share/php/svelte/core/iCollection.class.php';
+require_once '/usr/share/php/svelte/core/Collection.class.php';
+require_once '/usr/share/php/svelte/core/iOption.class.php';
+require_once '/usr/share/php/svelte/core/OptionList.class.php';
+require_once '/usr/share/php/svelte/model/Model.class.php';
+require_once '/usr/share/php/svelte/model/business/BusinessModel.class.php';
+require_once '/usr/share/php/svelte/model/business/Record.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Field.class.php';
+require_once '/usr/share/php/svelte/model/business/field/Option.class.php';
+require_once '/usr/share/php/svelte/model/business/field/RecordAsOption.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectOne.class.php';
+require_once '/usr/share/php/svelte/model/business/field/SelectMany.class.php';
+
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/RecordAsOptionTest/MockRecord.class.php';
+require_once '/usr/share/php/tests/svelte/model/business/field/mocks/OptionTest/MockField.class.php';
+
+use svelte\core\Str;
+use svelte\core\OptionList;
+use svelte\core\PropertyNotSetException;
+use svelte\model\business\field\RecordAsOption;
+use svelte\model\business\field\SelectOne;
+use svelte\model\business\field\SelectMany;
+
+use tests\svelte\model\business\field\mocks\OptionTest\MockField;
+use tests\svelte\model\business\field\mocks\RecordAsOptionTest\MockRecord;
+
+/**
+ * Collection of tests for \svelte\model\business\field\RecordAsOption.
+ */
+class RecordAsOptionTest extends \PHPUnit\Framework\TestCase
+{
+  private $testObject;
+  private $mockRecord;
+  private $description;
+  private $key;
+
+  /**
+   * Setup - add variables
+   */
+  public function setUp() : void
+  {
+    $this->dataObject = new \stdClass();
+    $this->dataObject->id = 2;
+    $this->dataObject->description = 'DESCRIPTION';
+    $this->mockOptionRecord = new MockRecord($this->dataObject);
+    $this->testObject = new RecordAsOption($this->mockOptionRecord);
+  }
+
+  /**
+   * Collection of assertions for \svelte\model\business\field\RecordAsOption::__construct().
+   * - assert is instance of {@link \svelte\core\SvelteObject}
+   * - assert is instance of {@link \svelte\core\iOption}
+   * - assert is instance of {@link \svelte\model\business\field\RecordAsOption}
+   * @link svelte.core.Option svelte\core\Option
+   */
+  public function test__construction()
+  {
+    $this->assertInstanceOf('\svelte\core\SvelteObject', $this->testObject);
+    $this->assertInstanceOf('\svelte\core\iOption', $this->testObject);
+    $this->assertInstanceOf('\svelte\model\business\field\RecordAsOption', $this->testObject);
+  }
+
+  /**
+   * Collection of assertions for \svelte\model\business\field\RecordAsOption::get_isSelected
+   * - assert throws \BadMethodCallException When isSelected called without first setting <em>set_parentField</em>.
+   *   - with message: <em>'Must set parentField before calling isSelected.'</em>
+   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
+   */
+  public function testIsSelected()
+  {
+    $this->expectException(\BadMethodCallException::class);
+    $this->expectExceptionMessage('Must set parentField before calling isSelected.');
+    $this->testObject->isSelected;
+  }
+
+  /**
+   * Collection of assertions for \svelte\model\business\field\RecordAsOption::get_isSelected and
+   *  \svelte\model\business\field\RecordAsOption::setParentField with setParentField correctly set.
+   * - assert isSelected returns FALSE by default.
+   * - assert isSelected returns FALSE when Field type is NOT one of {@link SelectOne} or {@link SelectMany}
+   * - assert isSelected returns TRUE on SelectOne were selected
+   * - assert isSelected returns FALSE on SelectOne were another is selected
+   * - assert isSelected returns TRUE on SelectMany were is one of selected
+   * - assert is Selected returns FALSE on SelectMany were is NOT one of selected 
+   * @link svelte.core.Option#method_get_isSelected svelte\core\Option::isSelected
+   * @link svelte.core.Option#method_setParentField svelte\core\Option::setParentField
+   */
+  public function testIsSelectedAndSetParentField()
+  {    
+    $options = new OptionList(null, Str::set('\svelte\model\business\field\Option'));
+    $dataObject1 = new \stdClass(); $dataObject1->id = 1;
+    $options->add(new RecordAsOption(new MockRecord($dataObject1)));
+    $options->add($this->testObject);
+    $dataObject3 = new \stdClass(); $dataObject3->id = 3;
+    $options->add(new RecordAsOption(new MockRecord($dataObject3)));
+    $dataObject4 = new \stdClass(); $dataObject4->id = 4;
+    $options->add(new RecordAsOption(new MockRecord($dataObject4)));
+
+    $this->testObject->setParentField(new MockField(Str::set('aProperty'), $this->mockOptionRecord, $options));
+    $this->assertFalse($this->testObject->isSelected);
+
+    $this->dataObject->aProperty = 2;
+    $this->testObject->setParentField(new SelectOne(Str::set('aProperty'), $this->mockOptionRecord, $options));
+    $this->assertTrue($this->testObject->isSelected);
+
+    $this->dataObject->aProperty = array(2,3);
+    $this->testObject->setParentField(new SelectMany(Str::set('aProperty'), $this->mockOptionRecord, $options));
+    $this->assertTrue($this->testObject->isSelected);
+
+    // $this->dataObject->aProperty = array(1,3);
+    // $this->testObject->setParentField(new SelectMany(Str::set('aProperty'), $this->mockOptionRecord, $options));
+    // $this->assertFalse($this->testObject->isSelected);
+  }
+
+  /**
+   * Collection of assertions for \svelte\model\business\field\RecordAsOption::id.
+   * - assert {@link \svelte\core\PropertyNotSetException} thrown
+   *   when trying to set property 'id'
+   * - assert property 'id' is gettable.
+   * - assert returned value matches expected result.
+   * @link svelte.core.Option#method_get_id svelte\core\Option::id
+   */
+  public function testGet_key()
+  {
+    try {
+      $this->testObject->key = 1;
+    } catch (PropertyNotSetException $expected) {
+      $this->assertEquals('svelte\model\business\field\RecordAsOption->key is NOT settable', $expected->getMessage());
+      $this->assertSame((string)$this->mockOptionRecord->id, $this->testObject->key);
+    }
+  }
+
+  /**
+   * Collection of assertions for \svelte\model\business\field\RecordAsOption::description.
+   * - assert {@link \svelte\core\PropertyNotSetException} thrown
+   *   when trying to set property 'description'
+   * - assert property 'description' is gettable.
+   * - assert returned value instance of {@link \svelte\core\Str}.
+   * - assert returned value matches expected result.
+   * @link svelte.core.Option#method_get_description svelte\core\Option::description
+   */
+  public function testGet_description()
+  {
+    try {
+      $this->testObject->description = 1;
+    } catch (PropertyNotSetException $expected) {
+      $this->assertEquals('svelte\model\business\field\RecordAsOption->description is NOT settable', $expected->getMessage());
+      $this->assertInstanceOf('\svelte\core\Str', $this->testObject->description);
+      $this->assertSame((string)$this->mockOptionRecord, (string)$this->testObject->description);
+    }
+  }
+}

@@ -1,0 +1,93 @@
+MAPING: HTML5 ELEMENTS - OOP - SQL
+
+    <input autofocus>                             Property                VARCHAR
+
+    <input>                                       Property                VARCHAR
+
+    <input required>                              Property                VARCHAR NOT NULL
+
+    <input type=text>                             Property                VARCHAR
+
+    <textarea></textarea>                         Property                TEXT
+
+    <input type=password placeholder=password>    Property                MD5
+
+    <input type=radio>                            Enum                    Relation with ...Type, ...List, ...Range
+
+    <input type=radio checked>                    Enum                    Relation with ...Type, ...List, ...Range
+
+    <input type=checkbox>                         EnumCollection          many-to-many lookup
+
+    <input type=checkbox checked>                 EnumCollection          many-to-many lookup
+
+    <select>
+      <option></option>                           EnumCollection          Relation with ...Type, ...List, ...Range
+    </select>
+
+    <select>
+      <optgroup label="Option group 1">           EnumCollection          Relation with ...Type, ...List, ...Range
+        <option>Option 1</option>
+        <option>Option 2</option>
+      </optgroup>
+      <optgroup>
+        <option>Option 3</option>
+      </optgroup>
+    </select>
+
+    <input type=text placeholder=placeholder>     Property                VARCHAR
+
+    <input type=search>
+
+    <input type=file>                             Property link-to File   metadata + location/blob
+
+    <fieldset>
+      <legend>Legend</legend>
+      <label for=field>Label</label>
+      <input id=field>
+    </fieldset>
+
+
+    <input type=submit>
+
+    <button>Button</button>
+
+    <input type=reset>
+
+    <input type=email>
+
+    <input type=tel>
+
+    <input type=url>
+
+    <input type=number>
+
+    <input type=number min=0 max=15 step=3>
+
+    <input type=range>
+
+    <input type=range min=0 max=15 step=3>
+
+    <input type=date>
+
+    <input type=month>
+
+    <input type=week>
+
+    <input type=time>
+
+    <input type=datetime>
+
+    <input type=datetime-local>
+
+    <input type=color>
+
+    <input type=color value="#e76252">
+
+
+
+    <progress max="100" value="70"></progress>
+
+
+
+    <progress></progress>
+

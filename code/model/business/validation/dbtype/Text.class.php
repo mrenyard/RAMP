@@ -60,7 +60,7 @@ class Text extends DbTypeValidation
     $maxlength = ($maxlength !== NULL && $maxlength <= 16383) ? $maxlength : 16383;
     $this->maxlength = ($subRule->maxlength === NULL) ? $maxlength :
     (($subRule->maxlength <= $maxlength) ? $subRule->maxlength : 
-      throw new \InvalidArgumentException('Possibly insufficient data space allocated for value!'));
+      throw new \InvalidArgumentException('Possibly insufficient character space allocated for value!'));
     if ($subRule->minlength !== NULL && $subRule->minlength >= $this->maxlength) {
       throw new \InvalidArgumentException('Provided $subRule::$minlength GREATER THAN $maxlength!');
     }
