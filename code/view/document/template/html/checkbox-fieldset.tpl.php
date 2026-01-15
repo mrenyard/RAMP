@@ -22,6 +22,6 @@ namespace ramp;
 ?>
           <fieldset class="<?=$this->class; ?><?=($this->isRequired) ? ' required' : ''; ?><?=($this->hasErrors) ? ' error' : ''; ?>"<?=$this->attribute('title'); ?>>
             <legend><?=$this->label; ?></legend>
-            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>:true" type="checkbox" tabindex="<?=($this->hasErrors)? 1:0; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=(!$this->hasErrors && $this->value === TRUE) ? ' checked="checked"' : ''; ?> />
+            <input id="<?=$this->id; ?>" name="<?=$this->id; ?>" type="checkbox" tabindex="<?=($this->hasErrors)? 1:0; ?>"<?=$this->attribute('required'); ?><?=(!$this->isEditable) ? ' readonly="readonly"' : ''; ?><?=(!$this->hasErrors && $this->value === TRUE) ? ' checked="checked"' : ''; ?> />
             <label for="<?=$this->id; ?>"><?=$this->summary; ?></label>
           </fieldset>

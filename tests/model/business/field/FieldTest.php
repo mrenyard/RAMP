@@ -411,7 +411,10 @@ class FieldTest extends \tests\ramp\model\business\RecordComponentTest
     $expectedValue = ($this->testObject->value instanceof Option) ? $this->testObject->value->key : $this->testObject->value;
     $this->assertSame($value, $expectedValue);
     $this->testObject->validate(PostData::build(array('mock-record:1|1|1:' . $fieldName => $newValue)));
-    $expectedValue = ($this->testObject->value instanceof Option) ? $this->testObject->value->key : $this->testObject->value;
+    $expectedValue = ($this->testObject->value instanceof Option) ? $this->testObject->value->key :  (
+      ($newValue === 'on') ? TRUE : $this->testObject->value
+    );
+    $newValue = ($newValue === 'on') ? TRUE : $newValue;
     $this->assertSame($newValue, $expectedValue);
   }
 

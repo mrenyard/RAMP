@@ -411,7 +411,7 @@ class TextTest extends \tests\ramp\model\business\validation\dbtype\DbTypeValida
     $limit = 16383;
     $beyondLimit = 16384;
     $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Possibly insufficient data space allocated for value!');
+    $this->expectExceptionMessage('Possibly insufficient character space allocated for value!');
     new MockDbTypeText(Str::_EMPTY(),
       $this->hint4, NULL,
       new LengthValidationRule($this->hint3, $beyondLimit)

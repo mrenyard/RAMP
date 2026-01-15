@@ -1,0 +1,11 @@
+ View									| DocumentModel				| BusinessModel				| Field					| Option
+-----------------------------------------------------------------------------------------------------
+ 											|	id									|	id*									|	id						| id (key:int)		|
+ 											|	title*							|(link?)							|								|									|
+ label								| heading/label				| 										|	label					|									|
+ 											|	summary/placeholder | summary/placeholder*| placeholder		| description			|
+ class								|	style								|	type . style				| type*					|									|
+											|											|											|								|									|
+									->	|											| 										|								| isSelected:bool	|
+									->	|											|	hasErrors:bool			|								|									|
+									->	|											|	errors:Iterable			|								|									|

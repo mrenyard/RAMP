@@ -1,0 +1,12 @@
+#!/bin/bash -eu
+
+if [[ "$0" != "tools/test" && "$0" != "./tools/test" ]]; then
+  echo "Must be run from parent project containing directory NOT $0";
+  exit 1;
+fi
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root" 1>&2;
+  exit 1;
+fi
+
+sudo tools/phpunit.phar -c tools/phpunit.xml

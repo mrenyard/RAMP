@@ -1,10 +1,21 @@
 #!/bin/bash -eu
+
+if [[ "$0" != "tools/document" && "$0" != "./tools/document" ]]; then
+  echo "Must be run from parent project containing directory NOT $0";
+  exit 1;
+fi
+if [[ $EUID -ne 0 ]]; then
+  echo "This script must be run as root" 1>&2;
+  exit 1;
+fi
+
 if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
-# if [[ "${HOME}" == "/root" ]]; then
-#   echo "${HOME} IS AN INVALID HOME PATH";
-#   read -p "Enter (linux) username: " USERNAME;
-#   HOME="/home/${USERNAME}";
-# fi
+while [[ "${HOME}" == "/root" || ! -d "${HOME}" ]]; do
+  echo "USER HOME PATH ${HOME} IS INVALID!";
+  read -p "Enter username: " USER
+  HOME=`echo "/home/${USER}"`;
+done
+export HOME USER;
 
 function mkLinkTests {
   cd /usr/share/php/tests
@@ -13,8 +24,7 @@ function mkLinkTests {
 }
 
 sudo mkdir -p /usr/share/php/tests
-mkdir -p ~/Code/Documentation/coverage ~/Code/Documentation/php ~/Code/packages/deb
-sudo chmod 664 /etc/php/*/cli/php.ini
+chmod 664 /etc/php/*/cli/php.ini
 sudo echo "xdebug.mode=develop,debug,coverage" >> /etc/php/*/cli/php.ini
 if [ -L /usr/share/php/ramp ]; then
   if [ -L /usr/share/php/tests/ramp ]; then exit 0; fi

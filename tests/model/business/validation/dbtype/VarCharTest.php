@@ -194,7 +194,7 @@ class VarCharTest extends \tests\ramp\model\business\validation\dbtype\DbTypeVal
   public function testInsufficientSpaceMismatchException()
   {
     $this->expectException(\InvalidArgumentException::class);
-    $this->expectExceptionMessage('Possibly insufficient data space allocated for value!');
+    $this->expectExceptionMessage('Possibly insufficient character space allocated for value!');
     new MockDbTypeVarChar(Str::_EMPTY(), $this->hint5, $this->maxlength, // 10
       new LengthValidationRule($this->hint3, 15, 5)
     );

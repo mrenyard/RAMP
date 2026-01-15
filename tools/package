@@ -1,20 +1,13 @@
 #!/bin/bash -eu
 
 if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
-# Edit 'SAVE_AS' to your preferred save location and package name.
-read -p "Save package as location/name_version-release_architecture.deb [../ramp_0.1-0_all.deb]: " SAVE_AS;
-SAVE_AS=${SAVE_AS:-"../ramp_0.1-0_all.deb"};
-# Set other varables
 SCRIPT=`readlink -f $0`; SCRIPTPATH=`dirname "$SCRIPT"`; cd "$SCRIPTPATH";
 PROCESS_TYPE=; if [ "$#" -eq 0 ]; then PROCESS_TYPE="--build"; else PROCESS_TYPE=${1}; fi
-# Check & add user group developer
-if [ ! $(getent group developer) ]; then sudo addgroup developer; fi
-# Process based on switches
 case ${PROCESS_TYPE} in
   "--deploy") ;&
   "--purge") ;&
   "--build")
-    if [ "$0" != "tools/package" ]; then
+    if [ "$0" != "tools/package" && "$0" != "./tools/package"]; then
       echo "Must be run from parent project containing directory NOT $0";
       exit 1;
     fi
@@ -22,12 +15,15 @@ case ${PROCESS_TYPE} in
        echo "This script must be run as root" 1>&2;
        exit 1;
     fi
+    read -p "Save package as location/name_version-release_architecture.deb [../ramp_0.1-0_all.deb]: " SAVE_AS;
+    SAVE_AS=${SAVE_AS:-"../ramp_0.1-0_all.deb"};
   case ${PROCESS_TYPE} in
     "--deploy") ;&
     "--purge") ;&
     "--build")
       echo "BUILDING...";
       if [ -f ${SAVE_AS} ]; then rm -f ${SAVE_AS}; fi
+      if [ ! $(getent group developer) ]; then sudo addgroup developer; fi
       sudo rsync -avv ../code/ ../debian/usr/share/php/ramp;
       sudo chown -R root:root ../debian/usr;
       sudo chmod -R 664 ../debian/usr/share/php/ramp/;

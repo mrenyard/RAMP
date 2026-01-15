@@ -901,7 +901,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame('<!-- /usr/share/php/ramp/view/document/template/html/field-relation.tpl.php -->' . PHP_EOL .
       '          <fieldset class="flag field compact required" title="You must agree to terms and conditions to continue to use this site.">' . PHP_EOL . 
       '            <legend>Terms &amp; conditions</legend>' . PHP_EOL . 
-      '            <input id="comprehensive-record:1|1|1:required-flag" name="comprehensive-record:1|1|1:required-flag:true" type="checkbox" tabindex="0" required="required" checked="checked" />' . PHP_EOL . 
+      '            <input id="comprehensive-record:1|1|1:required-flag" name="comprehensive-record:1|1|1:required-flag" type="checkbox" tabindex="0" required="required" checked="checked" />' . PHP_EOL . 
       '            <label for="comprehensive-record:1|1|1:required-flag">I have read and agree to site terms and conditions.</label>' . PHP_EOL . 
       '          </fieldset>' . PHP_EOL . '',
       $output1
@@ -916,7 +916,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '          <fieldset class="flag field compact required error" title="You must agree to terms and conditions to continue to use this site.">' . PHP_EOL . 
       '            <legend>Terms &amp; conditions</legend>' . PHP_EOL . 
-      '            <input id="comprehensive-record:1|1|1:required-flag" name="comprehensive-record:1|1|1:required-flag:true" type="checkbox" tabindex="1" required="required" />' . PHP_EOL . 
+      '            <input id="comprehensive-record:1|1|1:required-flag" name="comprehensive-record:1|1|1:required-flag" type="checkbox" tabindex="1" required="required" />' . PHP_EOL . 
       '            <label for="comprehensive-record:1|1|1:required-flag">I have read and agree to site terms and conditions.</label>' . PHP_EOL . 
       '          </fieldset>' . PHP_EOL . '',
       $output2
@@ -956,7 +956,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame('<!-- /usr/share/php/ramp/view/document/template/html/field-relation.tpl.php -->' . PHP_EOL .
       '          <fieldset class="flag field compact" title="Do you like Chips and gravy; the popular comfort food in the UK?">' . PHP_EOL . 
       '            <legend>Gravy Chips Y/N?</legend>' . PHP_EOL . 
-      '            <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag:true" type="checkbox" tabindex="0" />' . PHP_EOL . 
+      '            <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag" type="checkbox" tabindex="0" />' . PHP_EOL . 
       '            <label for="comprehensive-record:1|1|1:flag">I like gravy on my chips.</label>' . PHP_EOL . 
       '          </fieldset>' . PHP_EOL . '',
       $output1
@@ -971,7 +971,7 @@ class FieldRenderTest extends TestBase
     $this->assertSame(
       '          <fieldset class="flag field compact error" title="Do you like Chips and gravy; the popular comfort food in the UK?">' . PHP_EOL . 
       '            <legend>Gravy Chips Y/N?</legend>' . PHP_EOL . 
-      '            <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag:true" type="checkbox" tabindex="1" />' . PHP_EOL . 
+      '            <input id="comprehensive-record:1|1|1:flag" name="comprehensive-record:1|1|1:flag" type="checkbox" tabindex="1" />' . PHP_EOL . 
       '            <label for="comprehensive-record:1|1|1:flag">I like gravy on my chips.</label>' . PHP_EOL . 
       '          </fieldset>' . PHP_EOL . '',
       $output2

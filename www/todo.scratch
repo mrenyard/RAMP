@@ -1,0 +1,51 @@
+<ol>
+  <li>Replace depreciated uses of Primary::value</li>
+  <li><del>Refactor model\business\RecordComponent</del></li>
+  <li><del>Rewrite (refactor) model\business\key\Primary.class</del></li>
+  <li><del>Rewrite (refactor) model\business\key\Foreign.class</del></li>
+  <li>Rewrite (refactor) model\business\Relation.class</li>
+  <li>Add abstract label property to Record (?BusinessModel) that pulls together relevant field values</li> 
+  <li><del>Add isEditable property to field\Field (include Validation restrictions)</del></li>
+  <li>Improvments to Managing Relations
+    <ol>
+      <li><del>Change Record to change visability of PrimaryKeys only on 'new' all but PKs ediatable on added</del></li>
+      <li><del>Change Relation::id property to id of containingRecord:  containing-record:3:relation-alpha</del></li>
+      <li><del>Change Relation::value to value of this field = PrimaryKey that links the relationship (new | 2)</del></li>
+      <li>Add a new property to all field/Field of URL - Relation of URL property to equal that of related object.</li>
+      <li>Need to look how many-to-many will work.</li>
+      <li><del>Add a method to remove an existing relation.</del></li>
+    </ol>
+  </li>
+  <li>Add errorCollection::addCollection to take ErrorCollections</li>
+  <li>More advanced Errors with id and or URL</li>
+  <li>Add property of requeried StrCollection to Record and use the manage check requiered along with primarykeys</li>
+  <li><del>Own login-account data managment (~)</del></li>
+  <li>Add RecordAsOption</li>
+  <li>?RecordCollection OptionList</li>
+  <li>?Add DbListOption/DbTypeOption</li>
+  <li>Modify Default ViewManager</li>
+  <li>Intergrate CSS for a beta release v0.9.0</li>
+  <li>Handle field\Input segestions (DataList)s / Datalist managment</li>
+  <li>Write tests for default template set</li>
+  <li><del>Add view\document\Email</del></li>
+  <li><del>Read, check and document everything in \ramp\core</del>
+    <ol>
+      <li><del>Write StrCollection implode() method +test</del></li>
+      <li><del>Write StrCollection contains() method +test</del></li>
+    </ol>
+  </li>
+  <li><del>Read, check and document everything in \ramp\condition</del></li>
+  <li>Read, check and document everything in \ramp\model
+    <ol>
+      <li><del>Complete business\field\SelectFrom unit tests</del></li>
+      <li><del>Complete business\field\PrimaryKey::processValidationRule() method tests</del></li>
+      <li>Write or remove business\validation\dbtypeSmallInt unit tests</li>
+    </ol>
+  </li>
+  <li>Read, check and document everything in \ramp\http
+    <ol>
+      <li><del>Write Request get recordKey property test</del></li>
+      <li><del>Write Session get loginAccount property test</del></li>
+    </ol>
+  </li>
+</ol>

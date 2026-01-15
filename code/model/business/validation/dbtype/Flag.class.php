@@ -54,7 +54,7 @@ class Flag extends DbTypeValidation
   #[\Override]
   protected function test($value) : void
   {
-    if ($value === TRUE || $value === FALSE) { return; }
+    if ($value === 'on') { return; }
     throw new FailedValidationException('Flag input can only be one of True or False.');
   }
 }
