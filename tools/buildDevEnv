@@ -17,12 +17,115 @@ while [[ "${HOME}" == "/root" || ! -d "${HOME}" ]]; do
 done
 export HOME USER;
 
+LAN=false; LAN_HOSTNAME="${HOSTNAME,,}.lan"; if [[ "${HOSTNAME}" == *.lan ]]; then LAN=true; LAN_HOSTNAME=${HOSTNAME}; fi
+
+# RAMP Setup
+echo -e "\nSETTING UP RAMP Development Environment...";
+
+echo -e "\nUPDATING APT REPOSITORIES...";
+sudo apt update -y;
+echo -e "\nUPGRADING EXISTING PACKAGES...";
+sudo apt upgrade -y;
+echo -e "\nINSTALLing REQUIRED DEPENDENCIES...";
+sudo apt install curl -y;
+
+buildApache2WebShopConf () {
+  echo -e "\nINSTALLing Apache2 WebShop Configuration (LAMP)...";
+  sudo apt install openssl postfix apache2 -y;
+  sudo ufw allow "Apache Full";
+  sudo ufw enable;
+  sudo apt install mysql-server -y;
+  sudo apt install php php-xdebug libapache2-mod-php php-xml php-mbstring php-gd php-sqlite3 php-mysql -y;
+  VERSION=`curl -sk --head https://github.com/mrenyard/Apache2-WebShop-Configuration/releases/latest/ | grep -o "location: https://github.com/mrenyard/Apache2-WebShop-Configuration/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+  wget https://github.com/mrenyard/Apache2-WebShop-Configuration/releases/download/v${VERSION}/apache2-webshop-conf_${VERSION}-0_all.deb
+  sudo chmod 644 apache2-webshop-conf_${VERSION}-0_all.deb;
+  sudo chown ${USER}:${USER} apache2-webshop-conf_${VERSION}-0_all.deb;
+  sudo dpkg -i apache2-webshop-conf_${VERSION}-0_all.deb;
+  if [ -d /etc/apache2/ssl ]; then sudo rm -rf /etc/apache2/ssl; fi;
+  sudo mkdir /etc/apache2/ssl;
+  echo "CREATING SELF-SIGNED SSL CERTIFICATE; USE ${LAN_HOSTNAME} as FDQN";
+  sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache.key -out /etc/apache2/ssl/apache.crt;
+  sudo chown root:ssl-cert /etc/apache2/ssl/*;
+  sudo chmod 710 /etc/apache2/ssl/*;
+  sudo webstart;
+  sudo rm apache2-webshop-conf_${VERSION}-0_all.deb;
+  echo "  Apache2 WebShop Configuration (LAMP) INSTALLED...";
+}
+
+# Apache2 WebShop Configuration (LAMP) Setup
+if test -x "$(which webstart)" && curl -sk --head https://misc.${LAN_HOSTNAME}/info.php | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null; then
+  AWC=true;
+  echo "Apache2 WebShop Configuration (LAMP) already installed. Skipping...";
+else
+  read -p "Install Apache2 WebShop Configuration (LAMP)? [Y/n] " -n 1 -r; echo;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    buildApache2WebShopConf;
+    AWC=true;
+  fi
+fi
+
+# Web Project Management Tools Setup
+if test -x "$(which webproject)" && test -x "$(which virtualhost)"; then
+  echo "Web Project Management Tools already installed. Skipping...";
+else
+  read -p "Install Web Project Management Tools for WebShop? [Y/n] " -n 1 -r; echo;
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if [[ ${AWC} == false ]]; then
+      echo "Web Project Management Tools require Apache2 WebShop Configuration (LAMP)...";
+      buildApache2WebShopConf;
+    fi
+    echo -e "\nINSTALLing Web Project Management Tools for WebShop...";
+    sudo apt install httrack mmv -y;
+    VERSION=`curl -sk --head https://github.com/mrenyard/Web-Project-Managment-Tools/releases/latest/ | grep -o "location: https://github.com/mrenyard/Web-Project-Managment-Tools/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+    wget https://github.com/mrenyard/Web-Project-Managment-Tools/releases/download/v${VERSION}/webproject-tools_${VERSION}-0_all.deb;
+    sudo chmod 644 webproject-tools_${VERSION}-0_all.deb;
+    sudo chown ${USER}:${USER} webproject-tools_${VERSION}-0_all.deb;
+    sudo dpkg -i webproject-tools_${VERSION}-0_all.deb;
+    sudo rm webproject-tools_${VERSION}-0_all.deb;
+    echo "  Web Project Management Tools for WebShop INSTALLED...";
+  fi
+fi
+
+# link assets (FUNC.js, STyLE & MEDIA)
+if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
+  if [ ! -d ${HOME}/Projects/FUNC.js ]; then
+    echo -e "\nCLONING FUNC.js REPOSITORY...";
+    # VERSION=`curl -sk --head https://github.com/mrenyard/FUNC.js/releases/latest/ | grep -o "location: https://github.com/mrenyard/FUNC.js/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/FUNC.js/archive/refs/tags/v${VERSION}.tar.gz");
+    git clone https://github.com/mrenyard/FUNC.js.git
+    # sudo mv ${HOME}/Projects/FUNC.js-${VERSION}/* ${HOME}/Projects/FUNC.js/;
+  fi
+  echo -e "\nLINKING RAMP FUNC.js ASSET...";
+  sudo ln -s ${HOME}/Projects/RAMP/assets/func ${HOME}/Projects/FUNC.js/
+fi
+if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
+  if [ ! -d ${HOME}/Projects/MEDIA ]; then
+  echo -e "\nCLONING MEDIA REPOSITORY...";
+    # VERSION=`curl -sk --head https://github.com/mrenyard/MEDIA/releases/latest/ | grep -o "location: https://github.com/mrenyard/MEDIA/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/MEDIA/archive/refs/tags/v${VERSION}.tar.gz");
+    git clone https://github.com/mrenyard/MEDIA.git
+    # sudo mv ${HOME}/Projects/MEDIA-${VERSION}/* ${HOME}/Projects/MEDIA/;
+  fi
+  echo -e "\nLINKING RAMP MEDIA ASSET...";
+  sudo ln -s ${HOME}/Projects/RAMP/assets/media ${HOME}/Projects/MEDIA/
+fi
+if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
+  if [ ! -d ${HOME}/Projects/STyLE ]; then
+    echo -e "\nCLONING STyLE REPOSITORY...";
+    # VERSION=`curl -sk --head https://github.com/mrenyard/STyLE/releases/latest/ | grep -o "location: https://github.com/mrenyard/STyLE/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/STyLE/archive/refs/tags/v${VERSION}.tar.gz"); 
+    git clone https://github.com/mrenyard/STyLE.git
+    # sudo mv ${HOME}/Projects/STyLE-${VERSION}/* ${HOME}/Projects/STyLE/;
+  fi
+  echo -e "\nLINKING RAMP STyLE ASSET...";
+  sudo ln -s ${HOME}/Projects/RAMP/assets/style ${HOME}/Projects/STyLE/
+fi
+
 function mkLinkTests {
   cd /usr/share/php/tests
   sudo ln -s ${HOME}/Projects/RAMP/tests/ "ramp"
   cd ${OLDPWD}
 }
-
 sudo mkdir -p /usr/share/php/tests
 chmod 664 /etc/php/*/cli/php.ini
 sudo echo "xdebug.mode=develop,debug,coverage" >> /etc/php/*/cli/php.ini

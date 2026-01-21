@@ -3,7 +3,7 @@ Version: 0.1
 Section: base
 Priority: optional
 Architecture: all
-Depends: apache2-webshop-conf, php-fpdf (>=1.6), php-curl, postfix, php-sqlite3
+Depends: apache2-webshop-conf, php-fpdf (>=1.6), postfix, php-sqlite3
 Recomends: webproject-tools
 Maintainer: renyard.m@gmail.com
 Description: RAMP

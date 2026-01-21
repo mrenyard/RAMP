@@ -1,0 +1,11 @@
+.*
+!.gitignore
+!.vscode
+*.ini
+!*.ini.example
+*~
+www/uml
+www/backup
+www/assets/func
+www/assets/style
+www/assets/media

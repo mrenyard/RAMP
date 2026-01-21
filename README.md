@@ -1,14 +1,11 @@
-RAMP
-====
+# RAMP
 
 **Rapid Application (Minimal Production) Maximum Product
 web application development environment for building
 accessible, flexible, customisable web systems using the
 LAMP development Stack**
 
-
-DESIGN PRINCIPLES FOR RAMP
----------------------------------------------------------
+## DESIGN PRINCIPLES FOR RAMP
 
 Rapid Development path from a good data structure design
 to an early demonstratable, functioning, robust, working,
@@ -54,3 +51,33 @@ Enhancement and Highly Customisable.
 
 The RAMP way to building better systems.
 
+## Setting up a development environment for the first time
+
+Setting up a development environment to work on the main
+RAMP project is much more envolved than it is to setup RAMP
+as the base for your own projects...
+
+>NOTE: Only for developers that wishing to contrabute to the RAMP project core.
+> For your indervidual RAMP projects you will want to install RAMP using our latest released package.
+
+This development environment setup proces will get and install
+multiple dependant parts not just RAMP but also:
+
+- Apache2 WebShop Configuration (LAMP),
+- Web Project Management Tools,
+- FUNC.js
+- MEDIA
+- and STyLE
+- ...plus connect all the relevant sub project and libararies.
+
+```console
+if [ ! -d ${HOME}/Projects ]; then mkdir ${HOME}/Projects; fi & cd ${HOME}/Projects/ fi
+```
+
+```console
+git clone https://github.com/mrenyard/RAMP.git
+```
+
+```console
+cd RAMP/ && sudo tools/buildDevEnv
+```
