@@ -91,10 +91,7 @@ cd ${HOME}/Projects/;
 if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
   if [ ! -d ${HOME}/Projects/FUNC.js ]; then
     echo -e "\nCLONING FUNC.js REPOSITORY...";
-    # VERSION=`curl -sk --head https://github.com/mrenyard/FUNC.js/releases/latest/ | grep -o "location: https://github.com/mrenyard/FUNC.js/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
-    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/FUNC.js/archive/refs/tags/v${VERSION}.tar.gz");
     git clone https://github.com/mrenyard/FUNC.js.git
-    # sudo mv ${HOME}/Projects/FUNC.js-${VERSION}/* ${HOME}/Projects/FUNC.js/;
   fi
   echo -e "\nLINKING RAMP FUNC.js ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/func ${HOME}/Projects/FUNC.js/
@@ -102,10 +99,7 @@ fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
   echo -e "\nCLONING MEDIA REPOSITORY...";
-    # VERSION=`curl -sk --head https://github.com/mrenyard/MEDIA/releases/latest/ | grep -o "location: https://github.com/mrenyard/MEDIA/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
-    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/MEDIA/archive/refs/tags/v${VERSION}.tar.gz");
     git clone https://github.com/mrenyard/MEDIA.git
-    # sudo mv ${HOME}/Projects/MEDIA-${VERSION}/* ${HOME}/Projects/MEDIA/;
   fi
   echo -e "\nLINKING RAMP MEDIA ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/media ${HOME}/Projects/MEDIA/
@@ -113,16 +107,17 @@ fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
   if [ ! -d ${HOME}/Projects/STyLE ]; then
     echo -e "\nCLONING STyLE REPOSITORY...";
-    # VERSION=`curl -sk --head https://github.com/mrenyard/STyLE/releases/latest/ | grep -o "location: https://github.com/mrenyard/STyLE/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
-    # sudo tar xvz -C ${HOME}/Projects/ < <(wget -q -O - "https://github.com/mrenyard/STyLE/archive/refs/tags/v${VERSION}.tar.gz"); 
     git clone https://github.com/mrenyard/STyLE.git
-    # sudo mv ${HOME}/Projects/STyLE-${VERSION}/* ${HOME}/Projects/STyLE/;
   fi
   echo -e "\nLINKING RAMP STyLE ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/style ${HOME}/Projects/STyLE/
 fi
 
-sudo webproject "RAMP" new;
+if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null;); then
+  echo -e "\nAdd webproject \"RAMP\" new...";
+  sudo webproject "RAMP" new;
+  sudo webstart;
+fi
 
 function mkLinkTests {
   cd /usr/share/php/tests
