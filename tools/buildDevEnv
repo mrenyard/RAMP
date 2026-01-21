@@ -121,6 +121,8 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
   sudo ln -s ${HOME}/Projects/RAMP/assets/style ${HOME}/Projects/STyLE/
 fi
 
+sudo webproject "RAMP" new;
+
 function mkLinkTests {
   cd /usr/share/php/tests
   sudo ln -s ${HOME}/Projects/RAMP/tests/ "ramp"
