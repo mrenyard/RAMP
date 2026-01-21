@@ -87,6 +87,7 @@ else
 fi
 
 # link assets (FUNC.js, STyLE & MEDIA)
+cd ${HOME}/Projects/;
 if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
   if [ ! -d ${HOME}/Projects/FUNC.js ]; then
     echo -e "\nCLONING FUNC.js REPOSITORY...";
