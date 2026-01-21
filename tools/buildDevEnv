@@ -1,6 +1,6 @@
 #!/bin/bash -eu
 
-if [[ "$0" != "tools/document" && "$0" != "./tools/document" ]]; then
+if [[ "$0" != "tools/buildDevEnv" && "$0" != "./tools/buildDevEnv" ]]; then
   echo "Must be run from parent project containing directory NOT $0";
   exit 1;
 fi
