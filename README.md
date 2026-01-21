@@ -71,7 +71,7 @@ multiple dependant parts not just RAMP but also:
 - ...plus connect all the relevant sub project and libararies.
 
 ```console
-if [ ! -d ${HOME}/Projects ]; then mkdir ${HOME}/Projects; fi & cd ${HOME}/Projects/
+if [ ! -d ${HOME}/Projects ]; then mkdir ${HOME}/Projects; fi && cd ${HOME}/Projects/
 ```
 
 ```console
