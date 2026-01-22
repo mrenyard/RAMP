@@ -2,6 +2,7 @@
 !.gitignore
 !.vscode
 *.ini
+!*.ini.php
 !*.ini.example
 *~
 www/uml

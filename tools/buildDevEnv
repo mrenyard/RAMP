@@ -29,7 +29,10 @@ sudo apt upgrade -y;
 echo -e "\nINSTALLing REQUIRED DEPENDENCIES...";
 sudo apt install curl -y;
 
-buildApache2WebShopConf () {
+# Apache2 WebShop Configuration (LAMP) Setup
+if test -x "$(which webstart)" && curl -sk --head https://misc.${LAN_HOSTNAME}/info.php | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null; then
+  echo "Apache2 WebShop Configuration (LAMP) already installed. Skipping...";
+else
   echo -e "\nINSTALLing Apache2 WebShop Configuration (LAMP)...";
   sudo apt install openssl postfix apache2 -y;
   sudo ufw allow "Apache Full";
@@ -50,40 +53,21 @@ buildApache2WebShopConf () {
   sudo webstart;
   sudo rm apache2-webshop-conf_${VERSION}-0_all.deb;
   echo "  Apache2 WebShop Configuration (LAMP) INSTALLED...";
-}
-
-# Apache2 WebShop Configuration (LAMP) Setup
-if test -x "$(which webstart)" && curl -sk --head https://misc.${LAN_HOSTNAME}/info.php | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null; then
-  AWC=true;
-  echo "Apache2 WebShop Configuration (LAMP) already installed. Skipping...";
-else
-  read -p "Install Apache2 WebShop Configuration (LAMP)? [Y/n] " -n 1 -r; echo;
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    buildApache2WebShopConf;
-    AWC=true;
-  fi
 fi
 
 # Web Project Management Tools Setup
 if test -x "$(which webproject)" && test -x "$(which virtualhost)"; then
   echo "Web Project Management Tools already installed. Skipping...";
 else
-  read -p "Install Web Project Management Tools for WebShop? [Y/n] " -n 1 -r; echo;
-  if [[ $REPLY =~ ^[Yy]$ ]]; then
-    if [[ ${AWC} == false ]]; then
-      echo "Web Project Management Tools require Apache2 WebShop Configuration (LAMP)...";
-      buildApache2WebShopConf;
-    fi
-    echo -e "\nINSTALLing Web Project Management Tools for WebShop...";
-    sudo apt install httrack mmv -y;
-    VERSION=`curl -sk --head https://github.com/mrenyard/Web-Project-Managment-Tools/releases/latest/ | grep -o "location: https://github.com/mrenyard/Web-Project-Managment-Tools/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
-    wget https://github.com/mrenyard/Web-Project-Managment-Tools/releases/download/v${VERSION}/webproject-tools_${VERSION}-0_all.deb;
-    sudo chmod 644 webproject-tools_${VERSION}-0_all.deb;
-    sudo chown ${USER}:${USER} webproject-tools_${VERSION}-0_all.deb;
-    sudo dpkg -i webproject-tools_${VERSION}-0_all.deb;
-    sudo rm webproject-tools_${VERSION}-0_all.deb;
-    echo "  Web Project Management Tools for WebShop INSTALLED...";
-  fi
+  echo "INSTALLing Web Project Management Tools for WebShop...";
+  sudo apt install httrack mmv -y;
+  VERSION=`curl -sk --head https://github.com/mrenyard/Web-Project-Managment-Tools/releases/latest/ | grep -o "location: https://github.com/mrenyard/Web-Project-Managment-Tools/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
+  wget https://github.com/mrenyard/Web-Project-Managment-Tools/releases/download/v${VERSION}/webproject-tools_${VERSION}-0_all.deb;
+  sudo chmod 644 webproject-tools_${VERSION}-0_all.deb;
+  sudo chown ${USER}:${USER} webproject-tools_${VERSION}-0_all.deb;
+  sudo dpkg -i webproject-tools_${VERSION}-0_all.deb;
+  sudo rm webproject-tools_${VERSION}-0_all.deb;
+  echo "  Web Project Management Tools for WebShop INSTALLED...";
 fi
 
 # link assets (FUNC.js, STyLE & MEDIA)
@@ -92,14 +76,16 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
   if [ ! -d ${HOME}/Projects/FUNC.js ]; then
     echo -e "\nCLONING FUNC.js REPOSITORY...";
     git clone https://github.com/mrenyard/FUNC.js.git
+    sudo chown -R ${USER}:${USER} ${HOME}/Projects/FUNC.js;
   fi
   echo -e "\nLINKING RAMP FUNC.js ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/func ${HOME}/Projects/FUNC.js/
 fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
-  echo -e "\nCLONING MEDIA REPOSITORY...";
+    echo -e "\nCLONING MEDIA REPOSITORY...";
     git clone https://github.com/mrenyard/MEDIA.git
+    sudo chown -R ${USER}:${USER} ${HOME}/Projects/MEDIA;
   fi
   echo -e "\nLINKING RAMP MEDIA ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/media ${HOME}/Projects/MEDIA/
@@ -108,11 +94,11 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
   if [ ! -d ${HOME}/Projects/STyLE ]; then
     echo -e "\nCLONING STyLE REPOSITORY...";
     git clone https://github.com/mrenyard/STyLE.git
+    sudo chown -R ${USER}:${USER} ${HOME}/Projects/STyLE;
   fi
   echo -e "\nLINKING RAMP STyLE ASSET...";
   sudo ln -s ${HOME}/Projects/RAMP/assets/style ${HOME}/Projects/STyLE/
 fi
-
 if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null;); then
   echo -e "\nAdd webproject \"RAMP\" new...";
   sudo webproject "RAMP" new;
