@@ -10,7 +10,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [ $USER == 'root' ]; then USER=$SUDO_USER; HOME="/home/${SUDO_USER}"; fi
-while [[ "${HOME}" == "/root" || ! -d "${HOME}" ]]; do
+while [[ "${HOME}" == "/root" || "${HOME}" == "/home/root" || ! -d "${HOME}" ]]; do
   echo "USER HOME PATH ${HOME} IS INVALID!";
   read -p "Enter username: " USER
   HOME=`echo "/home/${USER}"`;
@@ -79,7 +79,7 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/FUNC.js;
   fi
   echo -e "\nLINKING RAMP FUNC.js ASSET...";
-  sudo ln -s ${HOME}/Projects/RAMP/assets/func ${HOME}/Projects/FUNC.js/
+  ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/assets/func
 fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
@@ -88,7 +88,7 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/MEDIA;
   fi
   echo -e "\nLINKING RAMP MEDIA ASSET...";
-  sudo ln -s ${HOME}/Projects/RAMP/assets/media ${HOME}/Projects/MEDIA/
+  sudo ln -s ${HOME}/Projects/MEDIA/ ${HOME}/Projects/RAMP/assets/media
 fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
   if [ ! -d ${HOME}/Projects/STyLE ]; then
@@ -97,7 +97,7 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/STyLE;
   fi
   echo -e "\nLINKING RAMP STyLE ASSET...";
-  sudo ln -s ${HOME}/Projects/RAMP/assets/style ${HOME}/Projects/STyLE/
+  sudo ln -s ${HOME}/Projects/STyLE/ ${HOME}/Projects/RAMP/assets/style
 fi
 if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null;); then
   echo -e "\nAdd webproject \"RAMP\" new...";
