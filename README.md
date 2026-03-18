@@ -51,18 +51,19 @@ Enhancement and Highly Customisable.
 
 The RAMP way to building better systems.
 
-## Setting up a development environment for the first time
 
-Setting up a development environment to work on the main
-RAMP project is much more envolved than it is to setup RAMP
-as the base for your own projects...
+## Contraburing to the main RAMP project
+
+This is more involved than using RAMP for your own projects...
 
 >NOTE: Only for developers that wishing to contrabute to the RAMP project core.
-> For your indervidual RAMP projects you will want to install RAMP using our latest released package.
+> For your indervidual RAMP projects you will want to install RAMP using one of our latest released packages.
 
-This development environment setup proces will get and install
-multiple dependant parts not just RAMP but also:
+First you will need to set up a development environment, We recomend doing this on one of
+any number of typical Debbian based Linux system by follow the below processs which will
+download and install multiple dependant parts:
 
+- RAMP
 - Apache2 WebShop Configuration (LAMP),
 - Web Project Management Tools,
 - FUNC.js
@@ -70,14 +71,18 @@ multiple dependant parts not just RAMP but also:
 - and STyLE
 - ...plus connect all the relevant sub project and libararies.
 
+1) Check, create and access the 'Projects' folder in your home directory.
 ```console
 if [ ! -d ${HOME}/Projects ]; then mkdir ${HOME}/Projects; fi && cd ${HOME}/Projects/
 ```
-
+2) Check for or clone the latest RAMP git repository.
 ```console
-git clone https://github.com/mrenyard/RAMP.git
+if [ ! -d RAMP ]; then git clone https://github.com/mrenyard/RAMP.git; fi && cd RAMP
 ```
-
+3) Install and setup RAMP development dependant sub-projects and utilities.
 ```console
-cd RAMP/ && sudo tools/buildDevEnv
+sudo tools/buildDevEnv
 ```
+4) You are now ready to start looking through and playing with the project code in your
+preferred IDE. We recommend Visual Code which you can install through your default
+application installation method (Snap, APT, FlatPak or AppCentre)

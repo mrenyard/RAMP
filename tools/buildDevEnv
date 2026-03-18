@@ -75,33 +75,32 @@ cd ${HOME}/Projects/;
 if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
   if [ ! -d ${HOME}/Projects/FUNC.js ]; then
     echo -e "\nCLONING FUNC.js REPOSITORY...";
-    git clone https://github.com/mrenyard/FUNC.js.git
+    git clone https://github.com/mrenyard/FUNC.js.git ${HOME}/Projects/FUNC.js;
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/FUNC.js;
   fi
   echo -e "\nLINKING RAMP FUNC.js ASSET...";
-  ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/assets/func
+  ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/www/assets/func
 fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
     echo -e "\nCLONING MEDIA REPOSITORY...";
-    git clone https://github.com/mrenyard/MEDIA.git
+    git clone https://github.com/mrenyard/MEDIA.git ${HOME}/Projects/MEDIA;
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/MEDIA;
   fi
   echo -e "\nLINKING RAMP MEDIA ASSET...";
-  sudo ln -s ${HOME}/Projects/MEDIA/ ${HOME}/Projects/RAMP/assets/media
+  sudo ln -s ${HOME}/Projects/MEDIA/ ${HOME}/Projects/RAMP/www/assets/media
 fi
 if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
   if [ ! -d ${HOME}/Projects/STyLE ]; then
     echo -e "\nCLONING STyLE REPOSITORY...";
-    git clone https://github.com/mrenyard/STyLE.git
+    git clone https://github.com/mrenyard/STyLE.git ${HOME}/Projects/STyLE;
     sudo chown -R ${USER}:${USER} ${HOME}/Projects/STyLE;
   fi
   echo -e "\nLINKING RAMP STyLE ASSET...";
-  sudo ln -s ${HOME}/Projects/STyLE/ ${HOME}/Projects/RAMP/assets/style
+  sudo ln -s ${HOME}/Projects/STyLE/ ${HOME}/Projects/RAMP/www/assets/style
 fi
 if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null;); then
-  echo -e "\nAdd webproject \"RAMP\" new...";
-  sudo webproject "RAMP" new;
+  sudo virtualhost "RAMP" add ramp;
   sudo webstart;
 fi
 
