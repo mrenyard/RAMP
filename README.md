@@ -52,11 +52,11 @@ Enhancement and Highly Customisable.
 The RAMP way to building better systems.
 
 
-## Contraburing to the main RAMP project
+## Contributing to the main RAMP project
 
 This is more involved than using RAMP for your own projects...
 
->NOTE: Only for developers that wishing to contrabute to the RAMP project core.
+>NOTE: Only for developers that wishing to contribute to the RAMP project core.
 > For your indervidual RAMP projects you will want to install RAMP using one of our latest released packages.
 
 First you will need to set up a development environment, We recomend doing this on one of
@@ -83,6 +83,6 @@ if [ ! -d RAMP ]; then git clone https://github.com/mrenyard/RAMP.git; fi && cd 
 ```console
 sudo tools/buildDevEnv
 ```
-4) You are now ready to start looking through and playing with the project code in your
+You are now ready to start looking through and playing with the project code in your
 preferred IDE. We recommend Visual Code which you can install through your default
-application installation method (Snap, APT, FlatPak or AppCentre)
+application installation method (Snap, APT, FlatPak or AppCentre).
