@@ -50,7 +50,7 @@
 ; Authenticatible Unit of specific business model
 ; MUST have property email as a required field
 ; e.g. Person or Organisation
-;authenticatible_unit =
+;authenticatable_unit =
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

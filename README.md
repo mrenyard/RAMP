@@ -51,7 +51,6 @@ Enhancement and Highly Customisable.
 
 The RAMP way to building better systems.
 
-
 ## Contributing to the main RAMP project
 
 This is more involved than using RAMP for your own projects...
@@ -63,26 +62,30 @@ First you will need to set up a development environment, We recomend doing this 
 any number of typical Debbian based Linux system by follow the below processs which will
 download and install multiple dependant parts:
 
-- RAMP
+- The develpment RAMP project,
 - Apache2 WebShop Configuration (LAMP),
 - Web Project Management Tools,
-- FUNC.js
-- MEDIA
-- and STyLE
-- ...plus connect all the relevant sub project and libararies.
+- connect all the relevant sub project and libararies (FUNC.js, MEDIA, STyLE)
+- ... plus run first unit testing with code coverage and produce documentation.
 
-1) Check, create and access the 'Projects' folder in your home directory.
+Check, create and access the 'Projects' folder in your home directory.
+
 ```console
 if [ ! -d ${HOME}/Projects ]; then mkdir ${HOME}/Projects; fi && cd ${HOME}/Projects/
 ```
-2) Check for or clone the latest RAMP git repository.
+
+Check for or clone the latest RAMP git repository.
+
 ```console
 if [ ! -d RAMP ]; then git clone https://github.com/mrenyard/RAMP.git; fi && cd RAMP
 ```
-3) Install and setup RAMP development dependant sub-projects and utilities.
+
+Run buildDevEnv to install and setup RAMP development dependant sub-projects, utilities, unit testing and documention.
+
 ```console
 sudo tools/buildDevEnv
 ```
+
 You are now ready to start looking through and playing with the project code in your
 preferred IDE. We recommend Visual Code which you can install through your default
 application installation method (Snap, APT, FlatPak or AppCentre).

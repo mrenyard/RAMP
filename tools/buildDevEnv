@@ -19,6 +19,18 @@ export HOME USER;
 
 LAN=false; LAN_HOSTNAME="${HOSTNAME,,}.lan"; if [[ "${HOSTNAME}" == *.lan ]]; then LAN=true; LAN_HOSTNAME=${HOSTNAME}; fi
 
+trap "closing_message" EXIT
+function closing_message {
+  if [ $? -ne 0 ]; then
+    echo -e "\nBUILD \e[0;31mFAILED WITH ERRORS\e[0m. PLEASE CHECK OUTPUT AND FIX ANY ISSUES BEFORE RE-RUNNING THIS SCRIPT.";
+    exit 1;
+  fi
+  echo -e "\nBUILD COMPLETED \e[0;32mSUCCESSFULLY\e[0m. RAMP DEVELOPMENT ENVIRONMENT IS READY TO USE.";
+  echo -e "Documentation for RAMP can be found by navigating to \033[0;47;4;34mhttps://docs.${LAN_HOSTNAME}\033[0m in your web browser,";
+  echo -e "and you can access the current example working RAMP application at \033[0;47;4;34mhttp://dev.ramp.${LAN_HOSTNAME}\033[0m";
+  exit 0;
+}
+
 # RAMP Setup
 echo -e "\nSETTING UP RAMP Development Environment...";
 
@@ -59,7 +71,7 @@ fi
 if test -x "$(which webproject)" && test -x "$(which virtualhost)"; then
   echo "Web Project Management Tools already installed. Skipping...";
 else
-  echo "INSTALLing Web Project Management Tools for WebShop...";
+  echo -e "\nINSTALLing Web Project Management Tools for WebShop...";
   sudo apt install httrack mmv -y;
   VERSION=`curl -sk --head https://github.com/mrenyard/Web-Project-Managment-Tools/releases/latest/ | grep -o "location: https://github.com/mrenyard/Web-Project-Managment-Tools/releases/tag/v.*" | cut -d"v" -f2- | tr -d "\r"`;
   wget https://github.com/mrenyard/Web-Project-Managment-Tools/releases/download/v${VERSION}/webproject-tools_${VERSION}-0_all.deb;
@@ -72,7 +84,7 @@ fi
 
 # link assets (FUNC.js, STyLE & MEDIA)
 cd ${HOME}/Projects/;
-if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
+if [ ! -L ${HOME}/Projects/RAMP/www/assets/func ]; then
   if [ ! -d ${HOME}/Projects/FUNC.js ]; then
     echo -e "\nCLONING FUNC.js REPOSITORY...";
     git clone https://github.com/mrenyard/FUNC.js.git ${HOME}/Projects/FUNC.js;
@@ -81,7 +93,7 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/func ]; then
   echo -e "\nLINKING RAMP FUNC.js ASSET...";
   ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/www/assets/func
 fi
-if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
+if [ ! -L ${HOME}/Projects/RAMP/www/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
     echo -e "\nCLONING MEDIA REPOSITORY...";
     git clone https://github.com/mrenyard/MEDIA.git ${HOME}/Projects/MEDIA;
@@ -90,7 +102,7 @@ if [ ! -L ${HOME}/Projects/RAMP/assets/media ]; then
   echo -e "\nLINKING RAMP MEDIA ASSET...";
   sudo ln -s ${HOME}/Projects/MEDIA/ ${HOME}/Projects/RAMP/www/assets/media
 fi
-if [ ! -L ${HOME}/Projects/RAMP/assets/style ]; then
+if [ ! -L ${HOME}/Projects/RAMP/www/assets/style ]; then
   if [ ! -d ${HOME}/Projects/STyLE ]; then
     echo -e "\nCLONING STyLE REPOSITORY...";
     git clone https://github.com/mrenyard/STyLE.git ${HOME}/Projects/STyLE;
@@ -103,6 +115,42 @@ if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | gre
   sudo virtualhost "RAMP" add ramp;
   sudo webstart;
 fi
+
+echo -e "\nCREATING development database (ramp_db) with dummy data...";
+sudo mysql -e "DROP USER IF EXISTS 'RAMP'@'localhost';"
+cd ${HOME}/Projects/RAMP/03-D.A.T.A.design && sudo mysql < ramp_db.sql && sudo mysql < dummy_data.sql && cd $OLDPWD
+read -p "Please provide password for RAMP user: " PASSWORD
+sudo mysql -e "CREATE USER 'RAMP'@'localhost' IDENTIFIED BY '${PASSWORD}'; GRANT ALL PRIVILEGES ON ramp_db.* TO 'RAMP'@'localhost'; FLUSH PRIVILEGES;"
+echo "  Development database (ramp_db) CREATED...";
+
+if [ ! -f ${HOME}/Projects/RAMP/ramp.ini ]; then
+  echo -e "\nCreating RAMP configuration file...";
+  sudo cp ${HOME}/Projects/RAMP/ramp.ini.example ${HOME}/Projects/RAMP/ramp.ini;
+  sudo sed -i -e "s/;domain =/domain = \"ramp.${LAN_HOSTNAME}\"/g" ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e "s/;local_dir =/local_dir = ${HOME//\//\\\/}\/Projects\/RAMP\/local/g" ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;business_model_manager =/business_model_manager = ramp\\model\\business\\SQLBusinessModelManager/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;business_model_namespace =/business_model_namespace = ramp\\model\\business/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;authenticatable_unit =/authenticatable_unit = Person/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;connection =/connection = "mysql:host=localhost;dbname=ramp_db"/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;user =/user = RAMP/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e "s/;password =/password = ${PASSWORD}/g" ${HOME}/Projects/RAMP/ramp.ini
+  read -p "Please provide SALT value used for password encryption: " SALT
+  sudo sed -i -e "s/;password_salt =/password_salt = \"${SALT}\"/g" ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;from_name =/from_name = "RAMP Administration Team"/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e "s/;from_address =/from_address = no-reply@${LAN_HOSTNAME}/g" ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e "s/;reply_address =/reply_address = support@${LAN_HOSTNAME}/g" ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;welcome_template =/welcome_template = welcome-email/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;welcome_template_type =/welcome_template_type = text/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo sed -i -e 's/;welcome_subject_line =/welcome_subject_line = "Welcome to RAMP - All you need, login and more..."/g' ${HOME}/Projects/RAMP/ramp.ini
+  sudo chown ${USER}:${USER} ${HOME}/Projects/RAMP/ramp.ini;
+  echo "   RAMP configuration file CREATED...";
+fi
+
+echo -e "\nPreparing RAMP tests, code coverage and documentation...";
+cd ${HOME}/Projects/RAMP;
+#sudo tools/test;
+sudo tools/document;
+cd ${OLDPWD};
 
 function mkLinkTests {
   cd /usr/share/php/tests
