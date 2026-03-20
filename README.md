@@ -80,7 +80,7 @@ Check for or clone the latest RAMP git repository.
 if [ ! -d RAMP ]; then git clone https://github.com/mrenyard/RAMP.git; fi && cd RAMP
 ```
 
-Run buildDevEnv to install and setup RAMP development dependant sub-projects, utilities, unit testing and documention.
+Run buildDevEnv to finalise setup.
 
 ```console
 sudo tools/buildDevEnv
