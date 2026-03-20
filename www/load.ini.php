@@ -23,8 +23,10 @@ namespace ramp;
 require_once '/usr/share/php/ramp/SETTING.class.php';
 
 SETTING::$DEV_MODE = (explode('.', $_SERVER['HTTP_HOST'])[0] == 'dev');
-if (SETTING::$DEV_MODE && isset($_GET['scratch'])) {
-  SETTING::$SCRATCH__CSS = explode('|', $_GET['scratch']);
+if (isset($_GET['scratch'])) {
+  if (SETTING::$DEV_MODE) {
+    SETTING::$SCRATCH__CSS = explode('|', $_GET['scratch']);
+  }
   unset($_GET['scratch']);
 }
 

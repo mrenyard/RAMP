@@ -45,6 +45,7 @@ use tests\ramp\mocks\view\MockDbTypeValidation;
  */
 class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
 {
+  private $home_path;
   private $templareName;
   private $templateType;
 
@@ -53,7 +54,8 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
   protected function preSetup() : void {
     SETTING::$DEV_MODE = TRUE;
     SETTING::$RAMP_BUSINESS_MODEL_NAMESPACE = 'tests\ramp\mocks\view';
-    SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
+    $this->home_path = \str_split(__DIR__, strpos(__DIR__, 'Projects'))[0];
+    SETTING::$RAMP_LOCAL_DIR = $this->home_path . 'Projects/RAMP/local';
     if (!\str_contains(get_include_path(), SETTING::$RAMP_LOCAL_DIR)) {
       \set_include_path( "'" . SETTING::$RAMP_LOCAL_DIR . "'" . PATH_SEPARATOR . get_include_path());
     }  
@@ -789,7 +791,7 @@ class TemplatedTest extends \tests\ramp\view\document\DocumentViewTest
     $this->testObject->render();
     $output = ob_get_clean();
     $this->assertSame(
-      '<!-- ' . getenv("HOME") . '/Projects/RAMP/local/ramp/view/document/template/html/path.tpl.php -->' . PHP_EOL .
+      '<!-- ' . $this->home_path . 'Projects/RAMP/local/ramp/view/document/template/html/path.tpl.php -->' . PHP_EOL .
       'ramp\view\document\Templated',
       $output
     );

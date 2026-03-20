@@ -154,18 +154,6 @@ class SETTING
   public static string $EMAIL_WELCOME_SUBJECT_LINE;
 
   /**
-   * Boolean flag for testing mode.
-   * @var bool
-   */
-  public static bool $TEST_ON;
-
-  /**
-   * Boolean reset session used in testing.
-   * @var bool
-   */
-  public static bool $TEST_RESET_SESSION;
-
-  /**
    * Boolean operating in Develpment Mode Environment.
    * @var bool
    */
@@ -176,4 +164,16 @@ class SETTING
    * @var array
    */
   public static array $SCRATCH__CSS;
+
+  /**
+   * Boolean flag for testing mode.
+   * @var bool
+   */
+  public static bool $TEST_ON;
+
+  /**
+   * Boolean reset session used in testing.
+   * @var bool
+   */
+  public static bool $TEST_RESET_SESSION;
 }

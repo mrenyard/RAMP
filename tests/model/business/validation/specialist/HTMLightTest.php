@@ -52,7 +52,8 @@ class HTMLightTest extends \tests\ramp\model\business\validation\specialist\Spec
    */
   #[\Override]
   protected function preSetup() : void {
-    \ramp\SETTING::$RAMP_LOCAL_DIR = getenv("HOME") . '/Projects/RAMP/local';
+    $this->home_path = \str_split(__DIR__, strpos(__DIR__, 'Projects'))[0];
+    \ramp\SETTING::$RAMP_LOCAL_DIR = $this->home_path . 'Projects/RAMP/local';
     $this->hint1 = Str::set('safe (href) links,');
     $this->hint2 = Str::set('HTMLight [https://rampapp.info/assets/htmlight.dtd]');
   }
