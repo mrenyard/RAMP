@@ -31,6 +31,14 @@ enum PageType : string
   case DATA = 'data';
 }
 
+enum ModalType : string
+{
+  case MESSAGE = 'message';
+  case CONFIRM = 'confirm';
+  case SUBMIT = 'submit';
+  case RELOAD = 'reload';
+}
+
 /**
  * Defined once per HTTP request.
  */
@@ -38,6 +46,7 @@ class WebRoot extends View
 {
   private static $instance;
   private PageType $pageType;
+  private ModalType $modalType;
   private Templated $body;
   private Templated $dialog;
   private Templated $main;
@@ -51,8 +60,7 @@ class WebRoot extends View
   protected function get_main() { $this->main->render(); }
   protected function get_datalists() { $this->datalists->render(); }
   protected function get_isModal() : bool { return (isset($this->modal)); }
-  protected function get_modalForm() : void { $this->modal->render(); }
-  protected function get_modalOpen() : string { return ($this->isModal) ? 'open ' : ''; }
+  protected function get_modalOpen() : string { return (isset($this->modalType)) ? 'open ' : ''; }
 
   private function __construct()
   {
@@ -88,10 +96,15 @@ class WebRoot extends View
 
   }
 
-  public function setModal(string $templateName) : DocumentView
+  public function setModal(ModalType $type, Str $heading, Str $summary, Str $extendedSummary = null) : View
   {
-    $this->modal = new Templated($this->dialog, Str::set($templateName));
-    return $this->modal;
+    $this->modalType = $type;
+    $this->dialog->heading = $heading;
+    $this->dialog->summary = $summary;
+    if ($extendedSummary !== null) {
+      $this->dialog->extendedSummary = $extendedSummary;
+    }
+    return $this->dialog;
   }
 
   public function clearModal() { $this->modal = NULL; }

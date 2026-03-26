@@ -19,14 +19,18 @@
  * @version 0.0.9;
  */
 namespace ramp;
+
 ?>
       <form method="post">
         <header>
           <h2><?=$this->heading; ?></h2>
-          <button formmethod="dialog">X</button>
+          <p><?=$this->summary; ?></p>
+<?=$this->extendedSummary; ?>
         </header>
+<?=$this->extendedContent; ?>
+<?=$this->children; ?>
         <footer>
           <button formmethod="dialog">Cancel</button>
-          <button>Confirm</button>
+          <button hidden>Confirm</button>
         </footer>
       </form>

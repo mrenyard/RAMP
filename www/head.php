@@ -26,28 +26,24 @@
  * @package RAMP
  * @version 0.0.9;
  */
-if (\ramp\SETTING::$DEV_MODE) { ?>
-<!-- head.php -->
-<?php }
-$cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
-if (\ramp\SETTING::$DEV_MODE && file_exists($cssManifest)) {
-
+if (\ramp\SETTING::$DEV_MODE) {
   $STYLE_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/style';
   $MEDIA_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/media';
-  $FUNC_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/func';
-
+  $FUNC_SERVER = '//'.$_SERVER["HTTP_HOST"].'/assets/func';  
+?>
+<!-- head.php -->
+    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
+    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/icons.css.php">
+<?php
+$cssManifest = $_SERVER["DOCUMENT_ROOT"].'/assets/style/import/css.manifest';
+if (file_exists($cssManifest)) {
   foreach (file($cssManifest) as $line) {
     $line = trim($line);
     if((strpos($line,';') !== 0) && ( $line !== '')) {
-
 ?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/<?=$line; ?>.css">
-<?php }} if (isset(\ramp\SETTING::$SCRATCH__CSS)) { foreach (\ramp\SETTING::$SCRATCH__CSS as $cssScratchFile) { ?>
+<?php }}} if (isset(\ramp\SETTING::$SCRATCH__CSS)) { foreach (\ramp\SETTING::$SCRATCH__CSS as $cssScratchFile) { ?>
     <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/scratch/<?=$cssScratchFile; ?>.css">
-<?php }} ?>
-    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/icons.css.php">
-    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
-<?php } else {
-
+<?php }}} else {
   $STYLE_SERVER = '//style.'.$_SERVER["HTTP_HOST"];
   $MEDIA_SERVER = '//media.'.$_SERVER["HTTP_HOST"];
   $FUNC_SERVER = '//func.'.$_SERVER["HTTP_HOST"];
@@ -61,8 +57,8 @@ if (\ramp\SETTING::$DEV_MODE && file_exists($cssManifest)) {
       $mostRecentDate = ($mostRecentDate < $date) ? $date : $mostRecentDate;
     }
   }
-?>    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined/<?=$mostRecentDate; ?>.css">
-    <!-- TODO:mrenyard: Auto add into combined/YYYY-mm-DD.css -->
+?>    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
+    <!-- TODO:mrenyard: Auto add 'icons' into combined/YYYY-mm-DD.css -->
     <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/import/icons.css.php">
-    <script src="<?=$FUNC_SERVER; ?>/extlibs/modernizr-custom.js"></script>
+    <link rel="stylesheet" href="<?=$STYLE_SERVER; ?>/combined/<?=$mostRecentDate; ?>.css">
 <?php } ?>

@@ -21,6 +21,16 @@
 namespace ramp;
 $site = view\WebRoot::getInstance();
 ?>
-    <dialog id="modal" <?=$site->modalOpen; ?>data-confirm="Cancel,Confirm" data-submit="Cancel,Submit" data-reload="Wait,Reload">
-<?=($site->isModal) ? $site->modalForm : ''; ?>
-    </dialog>
+    <dialog id="modal" <?=$site->modalOpen; ?>data-confirm="Cancel,Confirm" data-submit="Cancel,Submit" data-reload="Wait,Reload"><form method="post">
+      <header>
+        <h2><?=$this->heading; ?></h2>
+        <p><?=$this->summary; ?></p>
+      </header>
+  <?=$this->extendedSummary; ?>
+  <?=$this->extendedContent; ?>
+  <?=$this->children; ?>
+      <footer>
+        <button formmethod="dialog">OK</button>
+        <button hidden>Confirm</button>
+      </footer>
+    </form></dialog>
