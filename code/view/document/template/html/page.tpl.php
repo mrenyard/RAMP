@@ -35,6 +35,11 @@ $index = (!$data && $page->type == view\PageType::INDEX);
 <?=$this->extendedSummary; ?>
       </header>
 <?=$this->extendedContent; ?>
-<?php if (!$index) { $this->children; } ?>
+<?php if (!$index) { $this->children; ?>
+      <footer>
+<?=$page->footnotes; ?>
+         <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
+      </footer>  
+<?php } ?>
     </main>
 <?php if ($index) { $this->children; } } ?>

@@ -29,8 +29,8 @@ new view\document\Templated($document, core\Str::set('empty'));
 $modal = $document->setModal(
   view\ModalType::MESSAGE,
   core\Str::set('HELLO WORLD!'),
-  core\Str::set('This is a message from whithin a model dialogue.')
-  // core\Str::set('<p>This is an extended summary, it can be used to provide additional information or instructions to the user. It can also contain HTML content, such as links, lists, or images.</p>')
+  core\Str::set('This is a message from whithin a model dialogue.'),
+  core\Str::set('<p>This is an extended summary, it can be used to provide additional information or instructions to the user. It can also contain HTML content, such as links, lists, or images.</p>')
 );
 new view\document\Templated($modal, core\Str::set('empty'));
 

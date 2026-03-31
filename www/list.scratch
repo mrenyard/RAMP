@@ -25,11 +25,12 @@ require_once('load.ini.php');
 <ol>
   <li><a href="//style.<?=SETTING::$RAMP_DOMAIN; ?>/">Style Guid and CSS Design Patterns</a></li>
   <li><a href="//func.<?=SETTING::$RAMP_DOMAIN; ?>/">Front-end Utilities for Networked Client Documentation</a></li>
-  <!--li><a href="//style.<?=SETTING::$RAMP_DOMAIN; ?>/img/svg.php/icon-settings/0,200,200">SVG icon colors</a></li>
-  <li><a href="//media.<?=SETTING::$RAMP_DOMAIN; ?>/sized.php/500x300">Sized SVG images</a></li-->
+  li><a href="//style.<?=SETTING::$RAMP_DOMAIN; ?>/img/svg.php/icon-settings/0,200,200">SVG icon colors</a></li>
+  <li><a href="//media.<?=SETTING::$RAMP_DOMAIN; ?>/sized.php/500x300">Sized SVG images</a></li>
   <li><a href="/controller/person/?scratch=mrenyard">Person form CSS mrenyard(scratch)</a></li>
   <li><a href="/controller/address/?scratch=mrenyard">Address form CSS mrenyard(scratch)</a></li>
   <li><a href="/controller/country/?scratch=mrenyard">Country form CSS mrenyard(scratch)</a></li>
   <li><a href="/controller/comprehensive/new/?scratch=mrenyard">Comprehensive form CSS mrenyard(scratch)</a></li>
   <li><a href="uml/class/model-detail.html">Experimental Class Diagram</a></li>
+  <li><a href="/simple-view-controller/?scratch=mrenyard">Simple view controller</a></li>
 </ol>

@@ -33,25 +33,31 @@
  * 2) 'Skip to ...' - Simalar to 'Jump to ...' but with the indication that you are bypassing content ahead. 
  * 3) 'Back to ...' - when returning to content that was previously jumped from.
  * 4) 'Here for ...' - Anchor links that denote the start of a section of content.
- * 5) 'External link to|for ...' - These links will navigate you away from this website to another site.
- * 6) Internal links should/will usually contain the words 'this ...(site|application)' or 'for more on...'
+ * 5) 'For more on [subject]' - Used for links that will take you to another page within this website for more information on a topic.
+ * 6) 'this ...(site|application)' - Used for links that will take you to another page within this website. 
+ * 7) 'External link to|for ...' - These links will navigate you away from this website to another site.
  */
 if (\ramp\SETTING::$DEV_MODE) { ?>
 <!-- page-navigation.php -->
 <?php } ?>
       <nav>
         <ul id="quick-links">
-          <li><a href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
+          <li><a id="accessibility-link" href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
           <li><a href="#main" title="Skip to Page Main content: <?=$this->title; ?>">Main Content</a></li>
           <li><a href="#site-nav" title="Jump to Full Site Map (Navigation)">Site Navigation</a></li>
+          <!-- <li><a href="/me" title="Enter My Account, access favourite tools and settings">My Account</a></li> -->
           <li><a href="#contentinfo" title="Jump to Site Information: contact address, legal, copyright and privacy statement etc.">Site Information</a></li>
         </ul>
         <form id="quick-search" method="get" action="/search#results">
           <div class="search input field">
             <label for="query" title="Here to search <?=\ramp\SETTING::$RAMP_DOMAIN; ?> for the latest content, data and more.">Search</label>
             <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
-            <span class="hint">Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit tempore cum debitis voluptatem alias quos esse nostrum illo repudiandae incidunt. Magnam dolorum iste libero esse odit sit harum corrupti dolore? Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi aliquam, voluptates ad ex ab laborum eveniet quia eos quibusdam deserunt similique ducimus molestias corporis odit ratione laudantium quis nesciunt? Ullam.</span>
-          </div>            
+          </div>
           <input type="submit" value="Go">
         </form>
+        <!--ol id="me" grid="me" class="app-list">
+          <li><a href="/app-one">App One</a></li>
+          <li><a href="/app-two">App Two</a></li>
+          <li><a href="/app-three">App Three</a></li>
+        </ol--> 
       </nav>

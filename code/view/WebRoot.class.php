@@ -52,6 +52,7 @@ class WebRoot extends View
   private Templated $main;
   private Templated $datalists;
   private ?Templated $modal;
+  private ?Templated $footnotes;
     
   protected function set_type(PageType $type) { $this->pageType = $type; }
   protected function get_type() : PageType { return (isset($this->pageType)) ? $this->pageType : PageType::DATA; }
@@ -61,6 +62,8 @@ class WebRoot extends View
   protected function get_datalists() { $this->datalists->render(); }
   protected function get_isModal() : bool { return (isset($this->modal)); }
   protected function get_modalOpen() : string { return (isset($this->modalType)) ? 'open ' : ''; }
+  protected function get_hasFootnotes() : bool { return (isset($this->footnotes)); }
+  protected function get_footnotes() { $this->footnotes->render(); }
 
   private function __construct()
   {
@@ -93,7 +96,18 @@ class WebRoot extends View
 
   public function addDatalist(OptionList $value) : void
   {
+    if (!isset($this->datalists)) {
+      $this->datalists = new Templated(RootView::getInstance(), Str::set('datalists'));
+    }
+    $this->datalists->add($value);
+  }
 
+  public function addFootnote(OptionList $value) : void
+  {
+    if (!isset($this->footnotes)) {
+      $this->footnotes = new Templated(RootView::getInstance(), Str::set('footnotes'));
+    }
+    $this->footnotes->add($value);
   }
 
   public function setModal(ModalType $type, Str $heading, Str $summary, Str $extendedSummary = null) : View
