@@ -37,7 +37,7 @@ $index = (!$data && $page->type == view\PageType::INDEX);
 <?=$this->extendedContent; ?>
 <?php if (!$index) { $this->children; ?>
       <footer>
-<?=$page->footnotes; ?>
+<?php if ($page->hasFootnotes) { $page->footnotes; } ?>
          <a href="#top" title="Jump back to Top-of-page (in-page Navigation)">top</a>
       </footer>  
 <?php } ?>
