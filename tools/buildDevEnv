@@ -82,17 +82,8 @@ else
   echo "  Web Project Management Tools for WebShop INSTALLED...";
 fi
 
-# link assets (FUNC.js, STyLE & MEDIA)
+# link assets (MEDIA, STyLE & FUNC.js)
 cd ${HOME}/Projects/;
-if [ ! -L ${HOME}/Projects/RAMP/www/assets/func ]; then
-  if [ ! -d ${HOME}/Projects/FUNC.js ]; then
-    echo -e "\nCLONING FUNC.js REPOSITORY...";
-    git clone https://github.com/mrenyard/FUNC.js.git ${HOME}/Projects/FUNC.js;
-    sudo chown -R ${USER}:${USER} ${HOME}/Projects/FUNC.js;
-  fi
-  echo -e "\nLINKING RAMP FUNC.js ASSET...";
-  ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/www/assets/func
-fi
 if [ ! -L ${HOME}/Projects/RAMP/www/assets/media ]; then
   if [ ! -d ${HOME}/Projects/MEDIA ]; then
     echo -e "\nCLONING MEDIA REPOSITORY...";
@@ -110,6 +101,16 @@ if [ ! -L ${HOME}/Projects/RAMP/www/assets/style ]; then
   fi
   echo -e "\nLINKING RAMP STyLE ASSET...";
   sudo ln -s ${HOME}/Projects/STyLE/ ${HOME}/Projects/RAMP/www/assets/style
+fi
+if [ ! -L ${HOME}/Projects/RAMP/www/assets/func ]; then
+  if [ ! -d ${HOME}/Projects/FUNC.js ]; then
+    echo -e "\nCLONING FUNC.js REPOSITORY...";
+    git clone https://github.com/mrenyard/FUNC.js.git ${HOME}/Projects/FUNC.js;
+    sudo chown -R ${USER}:${USER} ${HOME}/Projects/FUNC.js;
+  fi
+  echo -e "\nLINKING RAMP FUNC.js ASSET...";
+  ln -s ${HOME}/Projects/FUNC.js/ ${HOME}/Projects/RAMP/www/assets/func
+# ln -s ${HOME}/Projects/STyLE/docs/inc/ ${HOME}/Projects/FUNC.js/demos/inc;
 fi
 if ( ! curl -sk --head https://ramp.${LAN_HOSTNAME}/index.html | head -n 1 | grep "HTTP/1.[01] 200." > /dev/null;); then
   sudo virtualhost "RAMP" add ramp;
