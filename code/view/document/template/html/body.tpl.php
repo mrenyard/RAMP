@@ -41,12 +41,12 @@ $site = view\WebRoot::getInstance();
 <?php include("head.php"); ?>
   </head>
   <body id="<?=str_replace('.', '-', SETTING::$RAMP_DOMAIN) ?>" class="<?=$site->pageType; ?>">
-<?=$site->dialog; ?>
-    <header id="top">
+    <header id="top"<?=($_URL['path'] === '/') ? ' class="hero"': ''; ?>>
 <?php include("page-navigation.php"); ?>
 <?php include("header-logo.php"); ?>
     </header>
 <?=$site->main; ?>
+<!-- $site->aside; -->
     <nav id="site-nav" tabindex="-1">
 <?php include("site-navigation.php"); ?>
     </nav>
@@ -54,6 +54,7 @@ $site = view\WebRoot::getInstance();
 <?php include("footer.php"); ?>
       <a href="#top" title="Jump back to Top-of-page (in-page Navigation), this is the last link on this page.">top</a>
     </footer>
+<?=$site->dialog; ?>
 <?=$site->dataLists; ?>
 <?php include("scripts.php"); ?>
   </body>

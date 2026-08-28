@@ -26,17 +26,23 @@
 if (\ramp\SETTING::$DEV_MODE) { ?>
 <!-- footer.php -->
 <?php } ?>
+      <h2>Site Information &amp; Useful Links</h2>
       <address>
         RAMP App FOSS Foundation.<br>
         c/o Justified Web Marketng Ltd.<br>
-        157 Oakwood Drive,<br>
         Southampton<br>
-        SO16 8EL.<br>
+        SO16 ***.<br>
         United Kingdom.
       </address>
       <nav>
-        <h2>Site Information &amp; Useful Links</h2>
         <ul>
+          <li>Socal Media
+            <ul>
+              <li><a href="//www.instagram.com//mrenyard">Instagram</a></li>
+              <li><a href="//github.com/mrenyard">GitHub</a></li>
+              <li><a href="//x.com/mrenyard">x</a></li>
+            </ul>
+          </li>
           <li>legal, copyright, privacy etc.
             <ul>
               <li><a href="#">Link One</a></li>
@@ -45,13 +51,6 @@ if (\ramp\SETTING::$DEV_MODE) { ?>
               <li><a href="#">Link Four</a></li>
               <li><a href="#">Link Five</a></li>
               <li><a href="#">Link Six</a></li>
-            </ul>
-          </li>
-          <li>Socal Media
-            <ul style="display: flex;">
-              <li><a href="//x.com/mrenyard">x</a></li>
-              <li><a href="//www.instagram.com//mrenyard">Instagram</a></li>
-              <li><a href="//github.com/mrenyard">GitHub</a></li>
             </ul>
           </li>
         </ul>

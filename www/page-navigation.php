@@ -45,7 +45,7 @@ if (\ramp\SETTING::$DEV_MODE) { ?>
           <li><a id="accessibility-link" href="/accessibility#main" title="Interacting with, accessing and getting around this web application">Accessibility</a></li>
           <li><a href="#main" title="Skip to Page Main content: <?=$this->title; ?>">Main Content</a></li>
           <li><a href="#site-nav" title="Jump to Full Site Map (Navigation)">Site Navigation</a></li>
-          <!-- <li><a href="/me" title="Enter My Account, access favourite tools and settings">My Account</a></li> -->
+          <li><a href="#me" title="Enter My Account, access favourite tools and settings">My Account - (<abbr title="Full Name">FN</abbr>)</a></li>
           <li><a href="#contentinfo" title="Jump to Site Information: contact address, legal, copyright and privacy statement etc.">Site Information</a></li>
         </ul>
         <form id="quick-search" method="get" action="/search#results">
@@ -54,10 +54,5 @@ if (\ramp\SETTING::$DEV_MODE) { ?>
             <input id="query" name="query" type="search" tabindex="0" placeholder="e.g. keyword, contact, organisation.">
           </div>
           <input type="submit" value="Go">
-        </form>
-        <!--ol id="me" grid="me" class="app-list">
-          <li><a href="/app-one">App One</a></li>
-          <li><a href="/app-two">App Two</a></li>
-          <li><a href="/app-three">App Three</a></li>
-        </ol--> 
+        </form> 
       </nav>
