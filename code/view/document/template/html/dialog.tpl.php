@@ -23,7 +23,7 @@ $site = view\WebRoot::getInstance();
 ?>
     <dialog id="modal" <?=$site->modalOpen; ?>data-confirm="Cancel,Confirm" data-submit="Cancel,Submit" data-reload="Wait,Reload"><form method="post">
       <header>
-        <h2><?=$this->heading; ?></h2>
+        <h1><?=$this->heading; ?></h1>
         <p><?=$this->summary; ?></p>
       </header>
   <?=$this->extendedSummary; ?>
